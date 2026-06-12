@@ -4,7 +4,6 @@
   "name": "DL-ATM41G2 - Eleven Parameter Weather Station",
   "categories": [
     "climate",
-    "light",
     "weather-station",
     "wind",
     "rain-gauge"
@@ -34,6 +33,5 @@
     "codecFile": "dl-atm41g2.js",
     "codecSha256": "6baa1446f0d79fcdb23665a4995a0d2bc57ef667fcd7c5dc26ef12f9fe4ac77b",
     "referencedAt": "2026-06-12"
-  },
-  "draft": true
+  }
 }

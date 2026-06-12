@@ -1,109 +1,72 @@
 {
   "uplink": [
     {
-      "description": "Example 1",
+      "description": "Example 1 - full greenhouse block (PAR, temp/humidity, CO2, pressure, VPD, dew point) + battery",
       "input": {
         "fPort": 1,
-        "bytes": [
-          2,
-          83,
-          43,
-          0,
-          3,
-          135,
-          38,
-          137,
-          32,
-          129,
-          20,
-          130,
-          151,
-          165,
-          115,
-          128,
-          207,
-          129,
-          112,
-          11,
-          188
-        ]
+        "bytes": [2, 83, 43, 0, 3, 135, 38, 137, 32, 129, 20, 130, 151, 165, 115, 128, 207, 129, 112, 11, 188]
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "air_humidity": {
-            "displayName": "Air humidity",
-            "unit": "%",
-            "value": 27.6
-          },
-          "air_temperature": {
-            "displayName": "Air temperature",
-            "unit": "°C",
-            "value": 23.36
-          },
-          "atmospheric_pressure": {
-            "displayName": "Atmospheric pressure",
-            "unit": "kPa",
-            "value": 95.87
-          },
-          "battery_voltage": {
-            "displayName": "Battery voltage",
-            "unit": "V",
-            "value": 3.004
-          },
-          "co2_concentration": {
-            "displayName": "CO2 concentration",
-            "unit": "ppm",
-            "value": 663
-          },
-          "device_id": 21291,
-          "dew_point": {
-            "displayName": "Dew point",
-            "unit": "°C",
-            "value": 3.68
-          },
-          "photosynthetically_active_radiation": {
-            "displayName": "Photosynthetically active radiation",
-            "unit": "µmol⋅m⁻²⋅s⁻¹",
-            "value": 183
-          },
-          "protocol_version": 2,
-          "vapor_pressure_deficit": {
-            "displayName": "Vapor pressure deficit",
-            "unit": "kPa",
-            "value": 2.07
+      "expected": {
+        "data": {
+          "photosyntheticallyActiveRadiation": 183,
+          "vaporPressureDeficit": 2.07,
+          "dewPoint": 3.68,
+          "battery": 3.004,
+          "air": {
+            "temperature": 23.36,
+            "relativeHumidity": 27.6,
+            "co2": 663,
+            "pressure": 958.7
           }
         }
-      }
+      },
+      "source": "ttn-example"
     },
     {
-      "description": "Example 2",
+      "description": "Example 2 - battery only (greenhouse block absent, flags clear bit 0)",
       "input": {
         "fPort": 1,
-        "bytes": [
-          2,
-          82,
-          133,
-          0,
-          2,
-          11,
-          188
-        ]
+        "bytes": [2, 82, 133, 0, 2, 11, 188]
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "battery_voltage": {
-            "displayName": "Battery voltage",
-            "unit": "V",
-            "value": 3.004
-          },
-          "device_id": 21125,
-          "protocol_version": 2
+      "expected": {
+        "data": {
+          "battery": 3.004
         }
-      }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Protocol version mismatch - first byte is not 2",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 82, 133, 0, 2, 11, 188]
+      },
+      "expected": {
+        "errors": ["protocol version 1 doesn't match v2"]
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Short payload - fewer than 5 header bytes",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 83, 43]
+      },
+      "expected": {
+        "errors": ["payload too short"]
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Truncated sensor block - greenhouse flag set but words missing",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 83, 43, 0, 1, 135, 38, 137, 32]
+      },
+      "expected": {
+        "errors": ["payload too short: truncated sensor block"]
+      },
+      "source": "synthetic"
     }
   ],
   "downlink": []

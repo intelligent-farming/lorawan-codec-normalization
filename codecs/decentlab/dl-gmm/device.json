@@ -5,11 +5,10 @@
   "categories": [
     "climate",
     "air-quality",
-    "light",
     "weather-station"
   ],
   "sensors": [
-    "solar radiation",
+    "photosynthetically active radiation",
     "temperature",
     "humidity",
     "barometer",
@@ -30,6 +29,5 @@
     "codecFile": "dl-gmm.js",
     "codecSha256": "09b4342b6440f853f3a96a2412b71156629d0db08a50e957fdfed8708a7c32ca",
     "referencedAt": "2026-06-12"
-  },
-  "draft": true
+  }
 }
