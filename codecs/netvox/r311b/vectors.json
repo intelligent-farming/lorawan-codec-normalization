@@ -1,120 +1,30 @@
 {
   "uplink": [
     {
-      "description": "Startup version report",
-      "input": {
-        "fPort": 6,
-        "bytes": [
-          1,
-          75,
-          0,
-          100,
-          11,
-          32,
-          25,
-          5,
-          40,
-          0,
-          0
-        ]
-      },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "Device": "R311B",
-          "SWver": 10,
-          "HWver": 11,
-          "Datecode": "20190528"
-        }
-      }
+      "description": "Status report: battery 3.0 V, illuminance 120 lux (TTN example bytes)",
+      "input": { "fPort": 6, "bytes": [1, 75, 1, 30, 0, 120, 0, 0, 0, 0, 0] },
+      "expected": { "data": { "battery": 3, "air": { "lightIntensity": 120 } } },
+      "source": "ttn-example"
     },
     {
-      "description": "Status report",
-      "input": {
-        "fPort": 6,
-        "bytes": [
-          1,
-          75,
-          1,
-          30,
-          0,
-          120,
-          0,
-          0,
-          0,
-          0,
-          0
-        ]
+      "description": "Low-battery report with higher illuminance (synthetic)",
+      "input": { "fPort": 6, "bytes": [1, 75, 1, 156, 1, 44, 0, 0, 0, 0, 0] },
+      "expected": {
+        "data": { "lowBattery": true, "battery": 2.8, "air": { "lightIntensity": 300 } }
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "Device": "R311B",
-          "Volt": 3,
-          "Illuminance": 120
-        }
-      }
+      "source": "synthetic"
     },
     {
-      "description": "Configure report response",
-      "input": {
-        "fPort": 7,
-        "bytes": [
-          129,
-          75,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ]
-      },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "Cmd": "ConfigReportRsp",
-          "Device": "R311B",
-          "Status": "Success"
-        }
-      }
+      "description": "Startup version report carries no measurement (TTN example bytes)",
+      "input": { "fPort": 6, "bytes": [1, 75, 0, 100, 11, 32, 25, 5, 40, 0, 0] },
+      "expected": { "errors": ["no measurement"] },
+      "source": "ttn-example"
     },
     {
-      "description": "Read configure report response",
-      "input": {
-        "fPort": 7,
-        "bytes": [
-          130,
-          75,
-          3,
-          132,
-          7,
-          8,
-          1,
-          0,
-          200,
-          0,
-          0
-        ]
-      },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "Cmd": "ReadConfigReportRsp",
-          "Device": "R311B",
-          "MinTime": 900,
-          "MaxTime": 1800,
-          "BatteryChange": 0.1,
-          "IlluminanceThreshold": 200
-        }
-      }
+      "description": "Config response on fPort 7 is unsupported (TTN example bytes)",
+      "input": { "fPort": 7, "bytes": [129, 75, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "ttn-example"
     }
   ],
   "downlink": []

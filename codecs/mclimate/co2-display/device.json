@@ -9,6 +9,7 @@
     "motion"
   ],
   "sensors": [
+    "battery",
     "temperature",
     "humidity",
     "pir",
@@ -27,6 +28,5 @@
     "codecFile": "co2-display.js",
     "codecSha256": "0eafb57587b7a1b9fd49aa75c847aa192f5eafd66735309574e78cf58bdf1122",
     "referencedAt": "2026-06-12"
-  },
-  "draft": true
+  }
 }

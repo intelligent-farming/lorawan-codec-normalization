@@ -1,90 +1,82 @@
 {
   "uplink": [
     {
-      "description": "Ambience Monitoring Sensors (example 1) - Milesight IoT",
+      "description": "Ambience Monitoring Sensors (example 1) - battery, temperature, humidity, PIR activity",
       "input": {
         "fPort": 85,
-        "bytes": [
-          1,
-          117,
-          92,
-          3,
-          103,
-          52,
-          1,
-          4,
-          104,
-          101,
-          5,
-          106,
-          73,
-          0
-        ]
+        "bytes": [1, 117, 92, 3, 103, 52, 1, 4, 104, 101, 5, 106, 73, 0]
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "battery": 92,
-          "temperature": 30.8,
-          "humidity": 50.5,
-          "activity": 73
+      "expected": {
+        "data": {
+          "batteryPercent": 92,
+          "air": {
+            "temperature": 30.8,
+            "relativeHumidity": 50.5
+          },
+          "action": {
+            "motion": {
+              "count": 73
+            }
+          }
         }
-      }
+      },
+      "source": "ttn-example"
     },
     {
-      "description": "Ambience Monitoring Sensors (example 2) - Milesgiht IoT",
+      "description": "Ambience Monitoring Sensors (example 2) - light (illuminance + infrared)",
       "input": {
         "fPort": 85,
-        "bytes": [
-          6,
-          101,
-          28,
-          0,
-          121,
-          0,
-          20,
-          0
-        ]
+        "bytes": [6, 101, 28, 0, 121, 0, 20, 0]
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "illumination": 28,
-          "infrared": 20,
-          "infrared_and_visible": 121
+      "expected": {
+        "data": {
+          "air": {
+            "lightIntensity": 28,
+            "infraredAndVisible": 121,
+            "infrared": 20
+          }
         }
-      }
+      },
+      "source": "ttn-example"
     },
     {
-      "description": "Ambience Monitoring Sensors (example 3) - Milesgiht IoT",
+      "description": "Ambience Monitoring Sensors (example 3) - CO2, TVOC, pressure",
       "input": {
         "fPort": 85,
-        "bytes": [
-          7,
-          125,
-          231,
-          4,
-          8,
-          125,
-          7,
-          0,
-          9,
-          115,
-          63,
-          39
-        ]
+        "bytes": [7, 125, 231, 4, 8, 125, 7, 0, 9, 115, 63, 39]
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "co2": 1255,
-          "tvoc": 7,
-          "pressure": 1004.7
+      "expected": {
+        "data": {
+          "air": {
+            "co2": 1255,
+            "tvoc": 7,
+            "pressure": 1004.7
+          }
         }
-      }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Unrecognized channel - no decodable Milesight TLV",
+      "input": {
+        "fPort": 85,
+        "bytes": [255, 255, 0, 0]
+      },
+      "expected": {
+        "errors": ["no recognized Milesight channels"]
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Empty payload",
+      "input": {
+        "fPort": 85,
+        "bytes": []
+      },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic"
     }
   ],
   "downlink": []

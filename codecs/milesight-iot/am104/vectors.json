@@ -1,61 +1,55 @@
 {
   "uplink": [
     {
-      "description": "Ambience Monitoring Sensors (example 1) - Milesight IoT",
+      "description": "Battery, temperature, humidity and PIR activity (TTN example 1)",
       "input": {
         "fPort": 85,
-        "bytes": [
-          1,
-          117,
-          92,
-          3,
-          103,
-          52,
-          1,
-          4,
-          104,
-          101,
-          5,
-          106,
-          73,
-          0
-        ]
+        "bytes": [1, 117, 92, 3, 103, 52, 1, 4, 104, 101, 5, 106, 73, 0]
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "battery": 92,
-          "temperature": 30.8,
-          "humidity": 50.5,
-          "activity": 73
+      "expected": {
+        "data": {
+          "batteryPercent": 92,
+          "air": {
+            "temperature": 30.8,
+            "relativeHumidity": 50.5
+          },
+          "action": {
+            "motion": {
+              "count": 73,
+              "detected": true
+            }
+          }
         }
-      }
+      },
+      "source": "ttn-example"
     },
     {
-      "description": "Ambience Monitoring Sensors (example 2) - Milesgiht IoT",
+      "description": "Light channel: illuminance plus raw spectral counts (TTN example 2)",
       "input": {
         "fPort": 85,
-        "bytes": [
-          6,
-          101,
-          28,
-          0,
-          121,
-          0,
-          20,
-          0
-        ]
+        "bytes": [6, 101, 28, 0, 121, 0, 20, 0]
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "illumination": 28,
+      "expected": {
+        "data": {
+          "infraredAndVisible": 121,
           "infrared": 20,
-          "infrared_and_visible": 121
+          "air": {
+            "lightIntensity": 28
+          }
         }
-      }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Unrecognized channel/type yields an error",
+      "input": {
+        "fPort": 85,
+        "bytes": [2, 2]
+      },
+      "expected": {
+        "errors": ["no recognized Milesight channels"]
+      },
+      "source": "synthetic"
     }
   ],
   "downlink": []

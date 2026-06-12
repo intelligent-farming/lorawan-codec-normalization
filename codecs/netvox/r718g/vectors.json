@@ -1,176 +1,30 @@
 {
   "uplink": [
     {
-      "description": "Startup version report",
-      "input": {
-        "fPort": 6,
-        "bytes": [
-          1,
-          30,
-          0,
-          100,
-          11,
-          32,
-          25,
-          17,
-          40,
-          0,
-          0
-        ]
-      },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "Device": "R718G",
-          "SWver": 10,
-          "HWver": 11,
-          "Datecode": "20191128"
-        }
-      }
+      "description": "Status report (TTN example bytes): 3.0 V, 5000 lux",
+      "input": { "fPort": 6, "bytes": [1, 30, 1, 30, 0, 0, 19, 136, 0, 0, 0] },
+      "expected": { "data": { "battery": 3, "air": { "lightIntensity": 5000 } } },
+      "source": "ttn-example"
     },
     {
-      "description": "Status report",
-      "input": {
-        "fPort": 6,
-        "bytes": [
-          1,
-          30,
-          1,
-          30,
-          0,
-          0,
-          19,
-          136,
-          0,
-          0,
-          0
-        ]
+      "description": "Low-battery report with higher illuminance (synthetic): 2.8 V, 100000 lux",
+      "input": { "fPort": 6, "bytes": [1, 30, 1, 156, 0, 1, 134, 160, 0, 0, 0] },
+      "expected": {
+        "data": { "lowBattery": true, "battery": 2.8, "air": { "lightIntensity": 100000 } }
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "Device": "R718G",
-          "Volt": 3,
-          "Illuminance": 5000
-        }
-      }
+      "source": "synthetic"
     },
     {
-      "description": "Configure report response",
-      "input": {
-        "fPort": 7,
-        "bytes": [
-          129,
-          30,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ]
-      },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "Cmd": "ConfigReportRsp",
-          "Device": "R718G",
-          "Status": "Success"
-        }
-      }
+      "description": "Startup version report (byte2 == 0) carries no measurement (TTN example bytes)",
+      "input": { "fPort": 6, "bytes": [1, 30, 0, 100, 11, 32, 25, 17, 40, 0, 0] },
+      "expected": { "errors": ["no measurement"] },
+      "source": "ttn-example"
     },
     {
-      "description": "Read configure report response",
-      "input": {
-        "fPort": 7,
-        "bytes": [
-          130,
-          30,
-          3,
-          132,
-          7,
-          8,
-          1,
-          0,
-          0,
-          1,
-          244
-        ]
-      },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "Cmd": "ReadConfigReportRsp",
-          "Device": "R718G",
-          "MinTime": 900,
-          "MaxTime": 1800,
-          "BatteryChange": 0.1,
-          "IlluminanceChange": 500
-        }
-      }
-    },
-    {
-      "description": "Set sunlight sample range response",
-      "input": {
-        "fPort": 7,
-        "bytes": [
-          131,
-          30,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ]
-      },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "Cmd": "SetSunlightSampleRangeRsp",
-          "Device": "R718G",
-          "Status": "Success"
-        }
-      }
-    },
-    {
-      "description": "Get sunlight sample range response",
-      "input": {
-        "fPort": 7,
-        "bytes": [
-          132,
-          30,
-          1,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ]
-      },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "Cmd": "GetSunlightSampleRangeRsp",
-          "Device": "R718G",
-          "RangeSetting": 1
-        }
-      }
+      "description": "Config response on fPort 7 is unsupported (TTN example bytes)",
+      "input": { "fPort": 7, "bytes": [129, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "ttn-example"
     }
   ],
   "downlink": []
