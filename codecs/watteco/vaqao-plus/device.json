@@ -3,20 +3,12 @@
   "device": "vaqao-plus",
   "name": "Vaqa'O+Plus - Temp/Hum/VOC/IAQ/CO2/Motion Sensor",
   "categories": [
-    "climate",
-    "air-quality",
-    "light",
-    "weather-station",
-    "motion"
+    "climate"
   ],
   "sensors": [
     "temperature",
     "humidity",
-    "iaq",
-    "co2",
-    "pressure",
-    "light",
-    "motion"
+    "iaq"
   ],
   "variantOf": null,
   "downlink": {
@@ -30,6 +22,5 @@
     "codecFile": "vaqao-lite.js",
     "codecSha256": "6ac2691fc5b6a241484e10ca6b673b0a73cec27725425bac1322e561c58ec5e2",
     "referencedAt": "2026-06-12"
-  },
-  "draft": true
+  }
 }

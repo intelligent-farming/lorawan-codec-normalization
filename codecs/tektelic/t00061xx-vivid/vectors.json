@@ -1,57 +1,90 @@
 {
   "uplink": [
     {
-      "description": "Light Detection Uplink",
+      "description": "Temperature, humidity & battery uplink (climate)",
       "input": {
         "fPort": 10,
-        "bytes": [
-          2,
-          0,
-          1
-        ]
+        "bytes": [3, 103, 1, 38, 4, 104, 51, 0, 186, 11, 209]
       },
       "expected": {
-        "errors": []
+        "data": {
+          "battery": 3.025,
+          "air": {
+            "temperature": 29.4,
+            "relativeHumidity": 25.5
+          }
+        }
       },
       "source": "ttn-example"
     },
     {
-      "description": "Temperature & Humidity Uplink",
+      "description": "Motion event uplink (motion)",
       "input": {
         "fPort": 10,
-        "bytes": [
-          3,
-          103,
-          1,
-          38,
-          4,
-          104,
-          51,
-          0,
-          186,
-          11,
-          209
-        ]
+        "bytes": [10, 0, 255]
       },
       "expected": {
-        "errors": []
+        "data": {
+          "action": {
+            "motion": {
+              "detected": true
+            }
+          }
+        }
       },
       "source": "ttn-example"
     },
     {
-      "description": "Motion Event Uplink",
+      "description": "Ambient light intensity uplink, 120 lux (light)",
       "input": {
         "fPort": 10,
-        "bytes": [
-          10,
-          0,
-          255
-        ]
+        "bytes": [16, 2, 120]
       },
       "expected": {
-        "errors": []
+        "data": {
+          "air": {
+            "lightIntensity": 120
+          }
+        }
       },
-      "source": "ttn-example"
+      "source": "datasheet"
+    },
+    {
+      "description": "Reed switch open uplink (contact)",
+      "input": {
+        "fPort": 10,
+        "bytes": [1, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "action": {
+            "contactState": "open"
+          }
+        }
+      },
+      "source": "datasheet"
+    },
+    {
+      "description": "Unsupported fPort is rejected",
+      "input": {
+        "fPort": 5,
+        "bytes": [3, 103, 1, 38]
+      },
+      "expected": {
+        "errors": ["unsupported fPort"]
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unrecognized channel/type is rejected",
+      "input": {
+        "fPort": 10,
+        "bytes": [255, 255, 0]
+      },
+      "expected": {
+        "errors": ["unrecognized channel/type"]
+      },
+      "source": "synthetic"
     }
   ],
   "downlink": []

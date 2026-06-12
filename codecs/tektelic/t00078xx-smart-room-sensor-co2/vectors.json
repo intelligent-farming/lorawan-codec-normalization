@@ -1,24 +1,74 @@
 {
   "uplink": [
     {
-      "description": "Ambient Temperature and Motion Event Count",
+      "description": "Full frame: battery (V + capacity %), display capacity, temperature, humidity, pressure, CO2 (filtered + raw), motion state + count",
       "input": {
         "fPort": 10,
         "bytes": [
-          3,
-          103,
-          255,
-          204,
-          13,
-          4,
-          0,
-          2
+          0, 186, 14, 17,
+          0, 211, 87,
+          17, 211, 90,
+          3, 103, 0, 215,
+          4, 104, 96,
+          12, 115, 39, 148,
+          11, 228, 2, 100,
+          14, 228, 2, 108,
+          10, 0, 1,
+          13, 4, 0, 7
         ]
       },
       "expected": {
-        "errors": []
+        "data": {
+          "battery": 3.601,
+          "batteryPercent": 87,
+          "displayBatteryPercent": 90,
+          "air": {
+            "temperature": 21.5,
+            "relativeHumidity": 48,
+            "pressure": 1013.2,
+            "co2": 612,
+            "co2Raw": 620
+          },
+          "action": {
+            "motion": {
+              "detected": true,
+              "count": 7
+            }
+          }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Ambient Temperature and Motion Event Count (upstream example)",
+      "input": {
+        "fPort": 10,
+        "bytes": [3, 103, 255, 204, 13, 4, 0, 2]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": -5.2
+          },
+          "action": {
+            "motion": {
+              "count": 2
+            }
+          }
+        }
       },
       "source": "ttn-example"
+    },
+    {
+      "description": "Unrecognized channel/type header",
+      "input": {
+        "fPort": 10,
+        "bytes": [255, 255, 0, 0]
+      },
+      "expected": {
+        "errors": ["unrecognized channel/type"]
+      },
+      "source": "synthetic"
     }
   ],
   "downlink": []

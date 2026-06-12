@@ -3,8 +3,6 @@
   "device": "lw001-bgpro",
   "name": "LW001-BG PRO - Tracker",
   "categories": [
-    "light",
-    "motion",
     "gps-tracker"
   ],
   "sensors": [
@@ -29,6 +27,5 @@
     "codecFile": "lw001-bgpro.js",
     "codecSha256": "ad312f3582027ca3b1729179c45208e74847b702ec4b726d816d6e04f5611e03",
     "referencedAt": "2026-06-12"
-  },
-  "draft": true
+  }
 }

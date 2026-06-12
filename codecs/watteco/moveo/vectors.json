@@ -1,267 +1,133 @@
 {
   "uplink": [
     {
-      "description": "uplink standard report containing temperature value | payload:110A04020000290B89",
+      "description": "standard report, temperature -> air.temperature | payload:110A04020000290B89",
       "input": {
-        "bytes": [
-          17,
-          10,
-          4,
-          2,
-          0,
-          0,
-          41,
-          11,
-          137
-        ],
-        "fPort": 125,
-        "recvTime": "2023-07-19T07:51:31.598957793Z"
+        "bytes": [17, 10, 4, 2, 0, 0, 41, 11, 137],
+        "fPort": 125
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "samples": [
-            {
-              "variable": "temperature",
-              "value": 29.53,
-              "date": "2023-07-19T07:51:31.598957793Z"
-            }
-          ],
-          "temperature": 29.53
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 29.53
+          }
         }
-      }
+      },
+      "source": "ttn-example"
     },
     {
-      "description": "uplink standard report containing humidity value | payload:110A04050000210E89",
+      "description": "standard report, humidity -> air.relativeHumidity | payload:110A04050000210E89",
       "input": {
-        "bytes": [
-          17,
-          10,
-          4,
-          5,
-          0,
-          0,
-          33,
-          14,
-          137
-        ],
-        "fPort": 125,
-        "recvTime": "2023-07-19T07:51:25.508306410Z"
+        "bytes": [17, 10, 4, 5, 0, 0, 33, 14, 137],
+        "fPort": 125
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "samples": [
-            {
-              "variable": "humidity",
-              "value": 37.21,
-              "date": "2023-07-19T07:51:25.508306410Z"
-            }
-          ],
-          "humidity": 37.21
+      "expected": {
+        "data": {
+          "air": {
+            "relativeHumidity": 37.21
+          }
         }
-      }
+      },
+      "source": "ttn-example"
     },
     {
-      "description": "uplink standard report containing violation detection | payload:110A000F00551001",
+      "description": "standard report, illuminance -> air.lightIntensity (lux) | payload:110A04000000210745",
       "input": {
-        "bytes": [
-          17,
-          10,
-          0,
-          15,
-          0,
-          85,
-          16,
-          1
-        ],
-        "fPort": 125,
-        "recvTime": "2023-07-19T07:51:25.508306410Z"
+        "bytes": [17, 10, 4, 0, 0, 0, 33, 7, 69],
+        "fPort": 125
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "samples": [
-            {
-              "variable": "violation_detection",
-              "value": true,
-              "date": "2023-07-19T07:51:25.508306410Z"
-            }
-          ],
-          "violation_detection": true
+      "expected": {
+        "data": {
+          "air": {
+            "lightIntensity": 1861
+          }
         }
-      }
+      },
+      "source": "ttn-example"
     },
     {
-      "description": "uplink standard report containing illuminance value | payload:110A04000000210745",
+      "description": "standard report, occupancy -> action.motion.detected | payload:110A040600001801",
       "input": {
-        "bytes": [
-          17,
-          10,
-          4,
-          0,
-          0,
-          0,
-          33,
-          7,
-          69
-        ],
-        "fPort": 125,
-        "recvTime": "2023-07-19T07:51:25.508306410Z"
+        "bytes": [17, 10, 4, 6, 0, 0, 24, 1],
+        "fPort": 125
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "samples": [
-            {
-              "variable": "illuminance",
-              "value": 1861,
-              "date": "2023-07-19T07:51:25.508306410Z"
+      "expected": {
+        "data": {
+          "action": {
+            "motion": {
+              "detected": true
             }
-          ],
-          "illuminance": 1861
+          }
         }
-      }
+      },
+      "source": "ttn-example"
     },
     {
-      "description": "uplink standard report containing occupancy value | payload:110A040600001801",
+      "description": "standard report, violation/pin-state -> action.motion.detected | payload:110A000F00551001",
       "input": {
-        "bytes": [
-          17,
-          10,
-          4,
-          6,
-          0,
-          0,
-          24,
-          1
-        ],
-        "fPort": 125,
-        "recvTime": "2023-07-19T07:51:25.508306410Z"
+        "bytes": [17, 10, 0, 15, 0, 85, 16, 1],
+        "fPort": 125
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "samples": [
-            {
-              "variable": "occupancy",
-              "value": true,
-              "date": "2023-07-19T07:51:25.508306410Z"
+      "expected": {
+        "data": {
+          "action": {
+            "motion": {
+              "detected": true
             }
-          ],
-          "occupancy": true
+          }
         }
-      }
+      },
+      "source": "ttn-example"
     },
     {
-      "description": "uplink standard report containing firmware version | payload:110100000002000D0305020015E2",
+      "description": "standard report, disposable battery voltage -> battery (V) | payload:110A00500006410503040E6804",
       "input": {
-        "bytes": [
-          17,
-          1,
-          0,
-          0,
-          0,
-          2,
-          0,
-          13,
-          3,
-          5,
-          2,
-          0,
-          21,
-          226
-        ],
-        "fPort": 125,
-        "recvTime": "2023-07-19T07:51:25.508306410Z"
+        "bytes": [17, 10, 0, 80, 0, 6, 65, 5, 3, 4, 14, 104, 4],
+        "fPort": 125
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "samples": [
-            {
-              "variable": "firmware",
-              "value": "3.5.2.5602",
-              "date": "2023-07-19T07:51:25.508306410Z"
-            }
-          ],
+      "expected": {
+        "data": {
+          "battery": 3.688
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "config frame, firmware version -> firmware extra (no measurement) | payload:110100000002000D0305020015E2",
+      "input": {
+        "bytes": [17, 1, 0, 0, 0, 2, 0, 13, 3, 5, 2, 0, 21, 226],
+        "fPort": 125
+      },
+      "expected": {
+        "data": {
           "firmware": "3.5.2.5602"
         }
-      }
+      },
+      "source": "ttn-example"
     },
     {
-      "description": "uplink standard report  containing battery charge | payload:110A00500006410503040E6804",
+      "description": "config frame, dataup info -> messageType extra (no measurement) | payload:110180040000000800",
       "input": {
-        "bytes": [
-          17,
-          10,
-          0,
-          80,
-          0,
-          6,
-          65,
-          5,
-          3,
-          4,
-          14,
-          104,
-          4
-        ],
-        "fPort": 125,
-        "recvTime": "2023-07-19T07:51:25.508306410Z"
+        "bytes": [17, 1, 128, 4, 0, 0, 0, 8, 0],
+        "fPort": 125
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "samples": [
-            {
-              "variable": "disposable_battery_voltage",
-              "value": 3.688,
-              "date": "2023-07-19T07:51:25.508306410Z"
-            }
-          ],
-          "disposable_battery_voltage": 3.688
+      "expected": {
+        "data": {
+          "messageType": "unconfirmed"
         }
-      }
+      },
+      "source": "ttn-example"
     },
     {
-      "description": "uplink standard report containing dataup info | payload:110180040000000800",
+      "description": "wrong fPort is rejected",
       "input": {
-        "bytes": [
-          17,
-          1,
-          128,
-          4,
-          0,
-          0,
-          0,
-          8,
-          0
-        ],
-        "fPort": 125,
-        "recvTime": "2023-07-19T07:51:25.508306410Z"
+        "bytes": [17, 10, 4, 2, 0, 0, 41, 11, 137],
+        "fPort": 1
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "samples": [
-            {
-              "variable": "message_type",
-              "value": "unconfirmed",
-              "date": "2023-07-19T07:51:25.508306410Z"
-            }
-          ],
-          "message_type": "unconfirmed"
-        }
-      }
+      "expected": {
+        "errors": ["unsupported fPort"]
+      },
+      "source": "synthetic"
     }
   ],
   "downlink": []

@@ -1,57 +1,45 @@
 {
   "uplink": [
     {
-      "description": "Light Detection Uplink",
-      "input": {
-        "fPort": 10,
-        "bytes": [
-          2,
-          0,
-          1
-        ]
-      },
+      "description": "Temperature & humidity uplink (climate: air.temperature + air.relativeHumidity, battery in volts)",
+      "input": { "fPort": 10, "bytes": [3, 103, 1, 38, 4, 104, 51, 0, 186, 11, 209] },
       "expected": {
-        "errors": []
+        "data": {
+          "battery": 3.025,
+          "air": { "temperature": 29.4, "relativeHumidity": 25.5 }
+        }
       },
       "source": "ttn-example"
     },
     {
-      "description": "Temperature & Humidity Uplink",
-      "input": {
-        "fPort": 10,
-        "bytes": [
-          3,
-          103,
-          1,
-          38,
-          4,
-          104,
-          51,
-          0,
-          186,
-          11,
-          209
-        ]
-      },
+      "description": "Motion event uplink (motion: action.motion.detected)",
+      "input": { "fPort": 10, "bytes": [10, 0, 255] },
       "expected": {
-        "errors": []
+        "data": {
+          "action": { "motion": { "detected": true } }
+        }
       },
       "source": "ttn-example"
     },
     {
-      "description": "Motion Event Uplink",
-      "input": {
-        "fPort": 10,
-        "bytes": [
-          10,
-          0,
-          255
-        ]
-      },
+      "description": "Light detection uplink (categorical flag -> camelCase extra, NOT air.lightIntensity which is lux)",
+      "input": { "fPort": 10, "bytes": [2, 0, 1] },
       "expected": {
-        "errors": []
+        "data": { "lightDetected": true }
       },
       "source": "ttn-example"
+    },
+    {
+      "description": "Unsupported fPort is rejected",
+      "input": { "fPort": 100, "bytes": [0, 1, 2, 3] },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unknown channel/type is rejected",
+      "input": { "fPort": 10, "bytes": [255, 255, 0] },
+      "expected": { "errors": ["unknown channel/type"] },
+      "source": "synthetic"
     }
   ],
   "downlink": []

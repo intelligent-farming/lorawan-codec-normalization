@@ -1,35 +1,71 @@
 {
   "uplink": [
     {
-      "description": "Periodic uplink",
+      "description": "Periodic uplink (ambient temperature + humidity) — upstream example",
       "input": {
         "fPort": 10,
-        "bytes": [
-          3,
-          103,
-          0,
-          10,
-          4,
-          104,
-          40
-        ]
+        "bytes": [3, 103, 0, 10, 4, 104, 40]
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "ambient_temperature": 1,
-          "relative_humidity": 20
-        },
-        "normalizedOutput": [
-          {
-            "air": {
-              "temperature": 1,
-              "relativeHumidity": 20
-            }
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 1,
+            "relativeHumidity": 20
           }
-        ]
-      }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Full reading: battery, reed/contact, light flag, temp, humidity, moisture, PIR motion state+count, light intensity",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 255, 1, 98, 1, 0, 0, 2, 0, 1, 3, 103, 0, 235, 4, 104, 97, 9, 0, 42, 10, 0, 1, 13, 4, 0, 7, 16, 2, 55]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.54,
+          "action": {
+            "contactState": "closed",
+            "motion": {
+              "detected": true,
+              "count": 7
+            }
+          },
+          "air": {
+            "temperature": 23.5,
+            "relativeHumidity": 48.5,
+            "lightIntensity": 55
+          },
+          "soil": {
+            "moisture": 42
+          },
+          "lightDetected": true
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unsupported fPort (config/registers on fPort 100 are not decoded)",
+      "input": {
+        "fPort": 100,
+        "bytes": [0, 1, 2]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 100"]
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unknown channel/type header on fPort 10",
+      "input": {
+        "fPort": 10,
+        "bytes": [153, 153, 0]
+      },
+      "expected": {
+        "errors": ["unknown channel/type"]
+      },
+      "source": "synthetic"
     }
   ],
   "downlink": []

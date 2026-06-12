@@ -5,14 +5,12 @@
   "categories": [
     "climate",
     "air-quality",
-    "light",
     "weather-station",
     "motion"
   ],
   "sensors": [
     "temperature",
     "humidity",
-    "light",
     "barometer",
     "co2",
     "pir"
@@ -29,6 +27,5 @@
     "codecFile": "decoder_smart_room_sensor_co2.js",
     "codecSha256": "f132cd1a8add1afe2dd10b23c4c717cf738b3485e65379a23b32df38aa5e98ec",
     "referencedAt": "2026-06-12"
-  },
-  "draft": true
+  }
 }

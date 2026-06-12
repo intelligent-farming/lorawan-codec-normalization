@@ -1,35 +1,71 @@
 {
   "uplink": [
     {
-      "description": "Periodic uplink",
+      "description": "Periodic uplink: ambient temperature + relative humidity",
       "input": {
         "fPort": 10,
-        "bytes": [
-          3,
-          103,
-          0,
-          10,
-          4,
-          104,
-          40
-        ]
+        "bytes": [3, 103, 0, 10, 4, 104, 40]
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "ambient_temperature": 1,
-          "relative_humidity": 20
-        },
-        "normalizedOutput": [
-          {
-            "air": {
-              "temperature": 1,
-              "relativeHumidity": 20
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 1,
+            "relativeHumidity": 20
+          }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Full uplink: battery, temperature, humidity, light intensity, PIR motion state + count",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 255, 1, 44, 3, 103, 0, 215, 4, 104, 90, 16, 2, 128, 10, 0, 1, 13, 4, 0, 7]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "air": {
+            "temperature": 21.5,
+            "relativeHumidity": 45,
+            "lightIntensity": 128
+          },
+          "action": {
+            "motion": {
+              "detected": true,
+              "count": 7
             }
           }
-        ]
-      }
+        }
+      },
+      "source": "datasheet"
+    },
+    {
+      "description": "Negative ambient temperature (two's complement)",
+      "input": {
+        "fPort": 10,
+        "bytes": [3, 103, 255, 236, 4, 104, 64]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": -2,
+            "relativeHumidity": 32
+          }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unrecognized channel/type header",
+      "input": {
+        "fPort": 10,
+        "bytes": [153, 153, 0]
+      },
+      "expected": {
+        "errors": ["unrecognized channel/type"]
+      },
+      "source": "synthetic"
     }
   ],
   "downlink": []

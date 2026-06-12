@@ -1,474 +1,114 @@
 {
   "uplink": [
     {
-      "description": "uplink standard report containing temperature value | payload:110A04020000290B89",
+      "description": "standard report temperature 29.53C (cluster 0x0402) | payload:110A04020000290B89",
       "input": {
-        "bytes": [
-          17,
-          10,
-          4,
-          2,
-          0,
-          0,
-          41,
-          11,
-          137
-        ],
+        "bytes": [17, 10, 4, 2, 0, 0, 41, 11, 137],
         "fPort": 125,
         "recvTime": "2023-07-19T07:51:31.598957793Z"
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "samples": [
-            {
-              "variable": "temperature_1",
-              "value": 29.53,
-              "date": "2023-07-19T07:51:31.598957793Z"
-            }
-          ],
-          "temperature_1": 29.53
-        }
-      }
+      "expected": { "data": { "air": { "temperature": 29.53 } } },
+      "source": "ttn-example"
     },
     {
-      "description": "uplink standard report containing humidity value | payload:110A04050000210E89",
+      "description": "standard report relative humidity 37.21% (cluster 0x0405) | payload:110A04050000210E89",
       "input": {
-        "bytes": [
-          17,
-          10,
-          4,
-          5,
-          0,
-          0,
-          33,
-          14,
-          137
-        ],
+        "bytes": [17, 10, 4, 5, 0, 0, 33, 14, 137],
         "fPort": 125,
         "recvTime": "2023-07-19T07:51:25.508306410Z"
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "samples": [
-            {
-              "variable": "humidity_1",
-              "value": 37.21,
-              "date": "2023-07-19T07:51:25.508306410Z"
-            }
-          ],
-          "humidity_1": 37.21
-        }
-      }
+      "expected": { "data": { "air": { "relativeHumidity": 37.21 } } },
+      "source": "ttn-example"
     },
     {
-      "description": "uplink standard report containing IAQ value | payload:110A800C0000210019",
+      "description": "standard report IAQ index 25 (cluster 0x800C, endpoint 0 -> extra iaq) | payload:110A800C0000210019",
       "input": {
-        "bytes": [
-          17,
-          10,
-          128,
-          12,
-          0,
-          0,
-          33,
-          0,
-          25
-        ],
+        "bytes": [17, 10, 128, 12, 0, 0, 33, 0, 25],
         "fPort": 125,
         "recvTime": "2023-07-19T07:51:25.508306410Z"
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "samples": [
-            {
-              "variable": "IAQ",
-              "value": 25,
-              "date": "2023-07-19T07:51:25.508306410Z"
-            }
-          ],
-          "IAQ": 25
-        }
-      }
+      "expected": { "data": { "iaq": 25 } },
+      "source": "ttn-example"
     },
     {
-      "description": "uplink standard report containing state the case | payload:110A000F00551001",
+      "description": "standard report CO2 410 ppm (cluster 0x800C, endpoint 1 -> air.co2)",
       "input": {
-        "bytes": [
-          17,
-          10,
-          0,
-          15,
-          0,
-          85,
-          16,
-          1
-        ],
+        "bytes": [33, 10, 128, 12, 0, 0, 33, 1, 154],
+        "fPort": 125,
+        "recvTime": "2026-01-01T00:00:00.000Z"
+      },
+      "expected": { "data": { "air": { "co2": 410 } } },
+      "source": "synthetic"
+    },
+    {
+      "description": "standard report illuminance 160 lux (cluster 0x0400 -> air.lightIntensity)",
+      "input": {
+        "bytes": [17, 10, 4, 0, 0, 0, 33, 0, 160],
+        "fPort": 125,
+        "recvTime": "2026-01-01T00:00:00.000Z"
+      },
+      "expected": { "data": { "air": { "lightIntensity": 160 } } },
+      "source": "synthetic"
+    },
+    {
+      "description": "standard report pressure 1011 hPa (cluster 0x0403 -> air.pressure)",
+      "input": {
+        "bytes": [17, 10, 4, 3, 0, 0, 41, 3, 243],
+        "fPort": 125,
+        "recvTime": "2026-01-01T00:00:00.000Z"
+      },
+      "expected": { "data": { "air": { "pressure": 1011 } } },
+      "source": "synthetic"
+    },
+    {
+      "description": "standard report case-violation true (cluster 0x000F attr 0x0055 -> action.motion.detected)",
+      "input": {
+        "bytes": [17, 10, 0, 15, 0, 85, 16, 1],
         "fPort": 125,
         "recvTime": "2023-07-19T07:51:25.508306410Z"
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "samples": [
-            {
-              "variable": "violation_detection",
-              "value": true,
-              "date": "2023-07-19T07:51:25.508306410Z"
-            }
-          ],
-          "violation_detection": true
-        }
-      }
+      "expected": { "data": { "action": { "motion": { "detected": true } } } },
+      "source": "ttn-example"
     },
     {
-      "description": "uplink standard report containing firmware version | payload:110100000002000D0305020015E2",
+      "description": "standard report disposable battery 3.688 V (cluster 0x0050 attr 0x0006 -> battery) | payload:110A00500006410503040E6804",
       "input": {
-        "bytes": [
-          17,
-          1,
-          0,
-          0,
-          0,
-          2,
-          0,
-          13,
-          3,
-          5,
-          2,
-          0,
-          21,
-          226
-        ],
+        "bytes": [17, 10, 0, 80, 0, 6, 65, 5, 3, 4, 14, 104, 4],
         "fPort": 125,
         "recvTime": "2023-07-19T07:51:25.508306410Z"
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "samples": [
-            {
-              "variable": "firmware",
-              "value": "3.5.2.5602",
-              "date": "2023-07-19T07:51:25.508306410Z"
-            }
-          ],
-          "firmware": "3.5.2.5602"
-        }
-      }
+      "expected": { "data": { "battery": 3.688 } },
+      "source": "ttn-example"
     },
     {
-      "description": "uplink standard report  containing battery charge | payload:110A00500006410503040E6804",
+      "description": "batch (Huffman multi-sample) report is not supported | payload:30b2...",
       "input": {
-        "bytes": [
-          17,
-          10,
-          0,
-          80,
-          0,
-          6,
-          65,
-          5,
-          3,
-          4,
-          14,
-          104,
-          4
-        ],
+        "bytes": [48, 178, 0, 182, 231, 199, 0, 77, 136, 135],
         "fPort": 125,
         "recvTime": "2023-07-19T07:51:25.508306410Z"
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "samples": [
-            {
-              "variable": "disposable_battery_voltage",
-              "value": 3.688,
-              "date": "2023-07-19T07:51:25.508306410Z"
-            }
-          ],
-          "disposable_battery_voltage": 3.688
-        }
-      }
+      "expected": { "errors": ["batch report not supported"] },
+      "source": "ttn-example"
     },
     {
-      "description": "uplink standard report containing dataup info | payload:110180040000000800",
+      "description": "read-response firmware frame carries metadata, not a measurement | payload:110100000002...",
       "input": {
-        "bytes": [
-          17,
-          1,
-          128,
-          4,
-          0,
-          0,
-          0,
-          8,
-          0
-        ],
+        "bytes": [17, 1, 0, 0, 0, 2, 0, 13, 3, 5, 2, 0, 21, 226],
         "fPort": 125,
         "recvTime": "2023-07-19T07:51:25.508306410Z"
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "samples": [
-            {
-              "variable": "message_type",
-              "value": "unconfirmed",
-              "date": "2023-07-19T07:51:25.508306410Z"
-            }
-          ],
-          "message_type": "unconfirmed"
-        }
-      }
+      "expected": { "errors": ["unsupported ZCL command"] },
+      "source": "ttn-example"
     },
     {
-      "description": "uplink batch report | payload:30b200b6e7c7004d8887202fda75b914b4b28276cbf26e59bb5bd6ed96e5ddb2948076cb9200f6",
+      "description": "unknown cluster standard report is rejected",
       "input": {
-        "bytes": [
-          48,
-          178,
-          0,
-          182,
-          231,
-          199,
-          0,
-          77,
-          136,
-          135,
-          32,
-          47,
-          218,
-          117,
-          185,
-          20,
-          180,
-          178,
-          130,
-          118,
-          203,
-          242,
-          110,
-          89,
-          187,
-          91,
-          214,
-          237,
-          150,
-          229,
-          221,
-          178,
-          148,
-          128,
-          118,
-          203,
-          146,
-          0,
-          246
-        ],
+        "bytes": [17, 10, 9, 153, 0, 0, 33, 0, 1],
         "fPort": 125,
-        "recvTime": "2023-07-19T07:51:25.508306410Z"
+        "recvTime": "2026-01-01T00:00:00.000Z"
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "samples": [
-            {
-              "variable": "temperature_1",
-              "value": 22.9,
-              "date": "2023-07-19T07:01:25.508Z"
-            },
-            {
-              "variable": "temperature_1",
-              "value": 22.8,
-              "date": "2023-07-19T07:11:25.508Z"
-            },
-            {
-              "variable": "humidity_1",
-              "value": 53,
-              "date": "2023-07-19T07:51:25.508Z"
-            },
-            {
-              "variable": "CO2",
-              "value": 410,
-              "date": "2023-07-19T07:01:15.508Z"
-            },
-            {
-              "variable": "CO2",
-              "value": 420,
-              "date": "2023-07-19T07:11:15.508Z"
-            },
-            {
-              "variable": "CO2",
-              "value": 440,
-              "date": "2023-07-19T07:21:15.508Z"
-            },
-            {
-              "variable": "CO2",
-              "value": 420,
-              "date": "2023-07-19T07:31:15.508Z"
-            },
-            {
-              "variable": "CO2",
-              "value": 430,
-              "date": "2023-07-19T07:41:15.508Z"
-            },
-            {
-              "variable": "CO2",
-              "value": 420,
-              "date": "2023-07-19T07:51:15.508Z"
-            }
-          ],
-          "temperature_1": 22.8,
-          "humidity_1": 53,
-          "CO2": 420
-        }
-      }
-    },
-    {
-      "description": "uplink batch report | payload:70060000e2760090cfc0015b028423fb03272919804c121c003ebc5bd6895f0040000b68b72c27a0ddb4dc8076db920c68b72c19605b04",
-      "input": {
-        "bytes": [
-          112,
-          6,
-          0,
-          0,
-          226,
-          118,
-          0,
-          144,
-          207,
-          192,
-          1,
-          91,
-          2,
-          132,
-          35,
-          251,
-          3,
-          39,
-          41,
-          25,
-          128,
-          76,
-          18,
-          28,
-          0,
-          62,
-          188,
-          91,
-          214,
-          137,
-          95,
-          0,
-          64,
-          0,
-          11,
-          104,
-          183,
-          44,
-          39,
-          160,
-          221,
-          180,
-          220,
-          128,
-          118,
-          219,
-          146,
-          12,
-          104,
-          183,
-          44,
-          25,
-          96,
-          91,
-          4
-        ],
-        "fPort": 125,
-        "recvTime": "2024-12-27T18:35:54.000Z"
-      },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "samples": [
-            {
-              "variable": "occupancy",
-              "value": 0,
-              "date": "2024-12-27T18:15:38.000Z"
-            },
-            {
-              "variable": "temperature_1",
-              "value": 18.7,
-              "date": "2024-12-27T18:15:53.000Z"
-            },
-            {
-              "variable": "temperature_1",
-              "value": 18.5,
-              "date": "2024-12-27T18:25:54.000Z"
-            },
-            {
-              "variable": "humidity_1",
-              "value": 31,
-              "date": "2024-12-27T18:15:52.000Z"
-            },
-            {
-              "variable": "CO2",
-              "value": 450,
-              "date": "2024-12-27T18:15:53.000Z"
-            },
-            {
-              "variable": "CO2",
-              "value": 470,
-              "date": "2024-12-27T18:25:53.000Z"
-            },
-            {
-              "variable": "IAQ",
-              "value": 240,
-              "date": "2024-12-27T18:19:20.000Z"
-            },
-            {
-              "variable": "IAQ",
-              "value": 250,
-              "date": "2024-12-27T18:29:20.000Z"
-            },
-            {
-              "variable": "illuminance",
-              "value": 50,
-              "date": "2024-12-27T18:17:21.000Z"
-            },
-            {
-              "variable": "illuminance",
-              "value": 160,
-              "date": "2024-12-27T18:27:23.000Z"
-            },
-            {
-              "variable": "pressure",
-              "value": 1011,
-              "date": "2024-12-27T18:29:20.000Z"
-            }
-          ],
-          "occupancy": 0,
-          "temperature_1": 18.5,
-          "humidity_1": 31,
-          "CO2": 470,
-          "IAQ": 250,
-          "illuminance": 160,
-          "pressure": 1011
-        }
-      }
+      "expected": { "errors": ["unsupported cluster"] },
+      "source": "synthetic"
     }
   ],
   "downlink": []

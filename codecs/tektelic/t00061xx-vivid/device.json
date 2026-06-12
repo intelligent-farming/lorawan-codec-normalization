@@ -5,8 +5,6 @@
   "categories": [
     "climate",
     "light",
-    "water-leak",
-    "water-meter",
     "motion",
     "contact"
   ],
@@ -15,7 +13,6 @@
     "humidity",
     "light",
     "pir",
-    "water",
     "reed switch"
   ],
   "variantOf": null,
@@ -30,6 +27,5 @@
     "codecFile": "decoder_smart_room_sensor.js",
     "codecSha256": "461a020e6bce744a03886b8924671234d7fb0618b78729a06f435d95cbfd620a",
     "referencedAt": "2026-06-12"
-  },
-  "draft": true
+  }
 }

@@ -4,19 +4,13 @@
   "name": "Animal Activity Sensor",
   "categories": [
     "climate",
-    "light",
-    "weather-station",
-    "motion"
+    "light"
   ],
   "sensors": [
     "temperature",
     "humidity",
     "light",
-    "pir",
-    "digital input",
-    "analog input",
     "battery",
-    "barometer",
     "time"
   ],
   "variantOf": null,
@@ -31,6 +25,5 @@
     "codecFile": "codec-mr1.js",
     "codecSha256": "66bb12d2481b8c2a3767763d8fadcf06c3c89118a808ba4d9897a24f8d5c33d9",
     "referencedAt": "2026-06-12"
-  },
-  "draft": true
+  }
 }
