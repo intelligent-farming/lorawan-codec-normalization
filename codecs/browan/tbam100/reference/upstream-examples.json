@@ -1,0 +1,44 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/browan/tbam100-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Light status changed",
+      "input": {
+        "fPort": 104,
+        "bytes": [
+          18,
+          251,
+          54,
+          12,
+          98,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "battery": 3.6,
+          "darker": 0,
+          "lighter": 1,
+          "temperatureBoard": 22,
+          "statusChange": 1,
+          "lux": 251,
+          "keepAlive": 0
+        }
+      }
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [
+          1
+        ]
+      },
+      "output": {
+        "errors": [
+          "unknown FPort"
+        ]
+      }
+    }
+  ]
+}

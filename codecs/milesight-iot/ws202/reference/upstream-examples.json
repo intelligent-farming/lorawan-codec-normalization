@@ -1,0 +1,37 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/milesight-iot/ws202-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "PIR Sensors (example 1) - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          3,
+          0,
+          1
+        ]
+      },
+      "output": {
+        "data": {
+          "pir": "trigger"
+        }
+      }
+    },
+    {
+      "description": "PIR Sensors (example 2) - Milesgiht IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          4,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "light": "dark"
+        }
+      }
+    }
+  ]
+}

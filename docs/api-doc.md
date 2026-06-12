@@ -150,6 +150,16 @@ Public description of a registry device, from its `device.json`.
 
 > **encode**: `boolean`
 
+##### draft?
+
+> `optional` **draft?**: `boolean`
+
+True for a scaffolded-but-not-yet-authored device: the folder, reference
+snapshot, provenance, and seeded vectors exist, but `codec.js` is still a
+stub. Drafts are hidden from [devices](#devices) by default, are not counted as
+"covered" by the sync diff, and the conformance suite skips their
+vector/decode checks rather than failing them.
+
 ##### name
 
 > **name**: `string`
@@ -736,7 +746,10 @@ Convenience: refresh the device cache, then diff. Requires the peer.
 
 > **codecScript**(`vendor`, `deviceId`): `string`
 
-Raw `codec.js` text for a device (console-ready). Throws if unknown.
+Raw `codec.js` text for a device (console-ready). Throws if the device is
+unknown, or if it is a draft (scaffolded but not yet authored) — a draft has
+only a stub, so callers should treat it as "not available here" and fall back
+to the upstream codec.
 
 #### Parameters
 
@@ -780,7 +793,8 @@ Parsed `device.json` for one device. Throws if unknown.
 
 > **devices**(`opts?`): [`DeviceInfo`](#deviceinfo)[]
 
-List every registry device, optionally filtered to one category.
+List registry devices. Authored devices only by default; pass
+`includeDrafts: true` to also include scaffolded-but-unauthored drafts.
 
 #### Parameters
 
@@ -789,6 +803,14 @@ List every registry device, optionally filtered to one category.
 ###### category?
 
 `string`
+
+Restrict to devices declaring this category.
+
+###### includeDrafts?
+
+`boolean`
+
+Include `draft: true` devices (default false).
 
 #### Returns
 

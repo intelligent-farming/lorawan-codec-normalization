@@ -1,0 +1,28 @@
+{
+  "vendor": "netvox",
+  "device": "rb11e",
+  "name": "RB11E - Wireless Occupancy/Temperature/Light Sensor",
+  "categories": [
+    "light",
+    "motion"
+  ],
+  "sensors": [
+    "light",
+    "temperature",
+    "occupancy"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "rb11e",
+    "codecId": "rb11e-codec",
+    "codecFile": "payload/rb11e.js",
+    "codecSha256": "003961b121dd9c16e3d0cbb0befc7937ce1cee51be94a8187833f1d2404aed10",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

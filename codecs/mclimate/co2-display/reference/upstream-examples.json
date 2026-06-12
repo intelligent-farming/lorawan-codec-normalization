@@ -1,0 +1,35 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/mclimate/co2-display-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Periodic uplink",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          1,
+          2,
+          103,
+          130,
+          11,
+          124,
+          147,
+          32,
+          0,
+          55,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "sensorTemperature": 21.5,
+          "relativeHumidity": 50.78,
+          "batteryVoltage": 2.94,
+          "ppm": 1171,
+          "powerSourceStatus": 0,
+          "lux": 55,
+          "pir": false
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "vendor": "milesight-iot",
+  "device": "vs370",
+  "name": "Radar Human Presence Sensor",
+  "categories": [
+    "light",
+    "motion"
+  ],
+  "sensors": [
+    "motion",
+    "light"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "vs370",
+    "codecId": "vs370-codec",
+    "codecFile": "vs370.js",
+    "codecSha256": "60212306b4b2c0ab0a467c6ba45150bd713db2f7974b8bcb361adc6613f61e8b",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

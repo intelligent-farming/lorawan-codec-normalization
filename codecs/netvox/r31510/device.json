@@ -1,0 +1,34 @@
+{
+  "vendor": "netvox",
+  "device": "r31510",
+  "name": "R31510 - Wireless Temperature / Humidity / Light / PIR / Water Leak / External Vibration Sensor",
+  "categories": [
+    "climate",
+    "light",
+    "water-leak",
+    "water-meter",
+    "motion"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "light",
+    "pir",
+    "water",
+    "vibration"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r31510",
+    "codecId": "r315-codec",
+    "codecFile": "payload/r315.js",
+    "codecSha256": "f72c534f51a6013134a63e9be777e31bcc9045767c80546f8e01bb8a5a91481c",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

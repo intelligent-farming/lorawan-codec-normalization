@@ -1,0 +1,29 @@
+{
+  "uplink": [
+    {
+      "description": "Battery + illuminance (TTN example 1)",
+      "input": { "fPort": 85, "bytes": [1, 117, 92, 3, 148, 80, 0, 0, 0] },
+      "expected": { "data": { "batteryPercent": 92, "air": { "lightIntensity": 80 } } },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Higher battery, same illuminance (TTN example 2)",
+      "input": { "fPort": 85, "bytes": [1, 117, 100, 3, 148, 80, 0, 0, 0] },
+      "expected": { "data": { "batteryPercent": 100, "air": { "lightIntensity": 80 } } },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Large illuminance value (synthetic, exercises uint32 LE)",
+      "input": { "fPort": 85, "bytes": [1, 117, 88, 3, 148, 160, 134, 1, 0] },
+      "expected": { "data": { "batteryPercent": 88, "air": { "lightIntensity": 100000 } } },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unrecognized channel returns an error",
+      "input": { "fPort": 85, "bytes": [255, 1] },
+      "expected": { "errors": ["no recognized Milesight channels"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

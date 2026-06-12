@@ -1,0 +1,30 @@
+{
+  "vendor": "mclimate",
+  "device": "wireless-thermostat",
+  "name": "Wireless Thermostat",
+  "categories": [
+    "climate",
+    "light",
+    "motion"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "pir",
+    "light"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "mclimate",
+    "device": "wireless-thermostat",
+    "codecId": "wireless-thermostat-codec",
+    "codecFile": "wireless-thermostat.js",
+    "codecSha256": "10727a6e26c3d5f7c107b46c0b4a37cbb921c99dbbc3f3a31534660d5637a6e9",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

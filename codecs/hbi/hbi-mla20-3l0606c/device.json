@@ -1,0 +1,27 @@
+{
+  "vendor": "hbi",
+  "device": "hbi-mla20-3l0606c",
+  "name": "SERIES 300 EAGLE - Emergency lighting",
+  "categories": [
+    "light"
+  ],
+  "sensors": [
+    "battery",
+    "light",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "hbi",
+    "device": "hbi-mla20-3l0606c",
+    "codecId": "hbi-mla20-codec",
+    "codecFile": "hbi-mla20.js",
+    "codecSha256": "99bab25d7d5588787fb88419247f8736941a2130367193db45283d0da2f2f841",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

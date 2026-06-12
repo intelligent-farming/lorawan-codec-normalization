@@ -1,0 +1,26 @@
+{
+  "vendor": "sensecap",
+  "device": "sensecapt1000-tracker-ab",
+  "name": "T1000 Tracker A/B",
+  "categories": [
+    "light"
+  ],
+  "sensors": [
+    "temperature",
+    "light"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "sensecap",
+    "device": "sensecapt1000-tracker-ab",
+    "codecId": "sensecapt1000-tracker-ab-codec",
+    "codecFile": "sensecapt1000-tracker-ab-decoder.js",
+    "codecSha256": "d4eb82e6a1e6aef868adb12ed40589fe3532678569eb1ed76f716476a0eebd1b",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

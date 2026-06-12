@@ -95,17 +95,38 @@ export function device(vendor: string, deviceId: string): DeviceInfo {
   return info;
 }
 
-/** List every registry device, optionally filtered to one category. */
-export function devices(opts?: { category?: string }): DeviceInfo[] {
-  const all = locations().map((l) => device(l.vendor, l.device));
+/**
+ * List registry devices. Authored devices only by default; pass
+ * `includeDrafts: true` to also include scaffolded-but-unauthored drafts.
+ *
+ * @param opts.category - Restrict to devices declaring this category.
+ * @param opts.includeDrafts - Include `draft: true` devices (default false).
+ */
+export function devices(opts?: {
+  category?: string;
+  includeDrafts?: boolean;
+}): DeviceInfo[] {
+  let all = locations().map((l) => device(l.vendor, l.device));
+  if (!opts?.includeDrafts) all = all.filter((d) => !d.draft);
   if (opts?.category) {
-    return all.filter((d) => d.categories.includes(opts.category as string));
+    all = all.filter((d) => d.categories.includes(opts.category as string));
   }
   return all;
 }
 
-/** Raw `codec.js` text for a device (console-ready). Throws if unknown. */
+/**
+ * Raw `codec.js` text for a device (console-ready). Throws if the device is
+ * unknown, or if it is a draft (scaffolded but not yet authored) — a draft has
+ * only a stub, so callers should treat it as "not available here" and fall back
+ * to the upstream codec.
+ */
 export function codecScript(vendor: string, deviceId: string): string {
+  const info = device(vendor, deviceId);
+  if (info.draft) {
+    throw new Error(
+      `${info.vendor}/${info.device} is a draft (codec not yet authored); fall back to the upstream codec`,
+    );
+  }
   return fs.readFileSync(path.join(deviceDir(vendor, deviceId), 'codec.js'), 'utf8');
 }
 

@@ -1,0 +1,36 @@
+{
+  "vendor": "milesight-iot",
+  "device": "am307",
+  "name": "Milesight AM307-LoRaWAN Indoor Air Quality Sensor (7 in 1)",
+  "categories": [
+    "climate",
+    "air-quality",
+    "light",
+    "weather-station",
+    "motion"
+  ],
+  "sensors": [
+    "battery",
+    "temperature",
+    "humidity",
+    "co2",
+    "tvoc",
+    "pressure",
+    "pir",
+    "light"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "am307",
+    "codecId": "am307-codec",
+    "codecFile": "am307l.js",
+    "codecSha256": "53979781f09586e93719d6958100f007667d4407ed4eaafafc805c664d29c11d",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

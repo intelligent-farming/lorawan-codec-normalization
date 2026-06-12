@@ -1,0 +1,35 @@
+{
+  "uplink": [
+    {
+      "description": "Periodic uplink",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          1,
+          2,
+          99,
+          135,
+          10,
+          172,
+          57,
+          16,
+          1,
+          23
+        ]
+      },
+      "source": "ttn-example",
+      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
+      "_upstreamHint": {
+        "output": {
+          "sensorTemperature": 21.1,
+          "relativeHumidity": 52.73,
+          "batteryVoltage": 2.73,
+          "CO2": 569,
+          "powerSourceStatus": 0,
+          "lux": 279
+        }
+      }
+    }
+  ],
+  "downlink": []
+}

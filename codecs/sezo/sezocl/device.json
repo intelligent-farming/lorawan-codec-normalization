@@ -1,0 +1,32 @@
+{
+  "vendor": "sezo",
+  "device": "sezocl",
+  "name": "CL - Air Quality Sensor",
+  "categories": [
+    "climate",
+    "air-quality",
+    "light",
+    "weather-station"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "barometer",
+    "light",
+    "iaq"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "sezo",
+    "device": "sezocl",
+    "codecId": "sezo-codec",
+    "codecFile": "sezo.js",
+    "codecSha256": "f631c38e39655f15ecb1a6e838ad5735dd7c0e0792f03d28ee7f71f6f1d9defa",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

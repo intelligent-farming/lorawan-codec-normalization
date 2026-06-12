@@ -1,0 +1,85 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/milesight-iot/am107-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Ambience Monitoring Sensors (example 1) - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          1,
+          117,
+          92,
+          3,
+          103,
+          52,
+          1,
+          4,
+          104,
+          101,
+          5,
+          106,
+          73,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "battery": 92,
+          "temperature": 30.8,
+          "humidity": 50.5,
+          "activity": 73
+        }
+      }
+    },
+    {
+      "description": "Ambience Monitoring Sensors (example 2) - Milesgiht IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          6,
+          101,
+          28,
+          0,
+          121,
+          0,
+          20,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "illumination": 28,
+          "infrared": 20,
+          "infrared_and_visible": 121
+        }
+      }
+    },
+    {
+      "description": "Ambience Monitoring Sensors (example 3) - Milesgiht IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          7,
+          125,
+          231,
+          4,
+          8,
+          125,
+          7,
+          0,
+          9,
+          115,
+          63,
+          39
+        ]
+      },
+      "output": {
+        "data": {
+          "co2": 1255,
+          "tvoc": 7,
+          "pressure": 1004.7
+        }
+      }
+    }
+  ]
+}

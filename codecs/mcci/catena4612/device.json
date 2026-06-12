@@ -1,0 +1,35 @@
+{
+  "vendor": "mcci",
+  "device": "catena4612",
+  "name": "Catena® 4612 Node",
+  "categories": [
+    "climate",
+    "light",
+    "weather-station"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "light",
+    "digital input",
+    "analog input",
+    "battery",
+    "barometer",
+    "pulse count",
+    "pulse frequency"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "mcci",
+    "device": "catena4612",
+    "codecId": "codec-catena-generic",
+    "codecFile": "codec-catena-generic.js",
+    "codecSha256": "df34bafdb00a6502fbc5d241be7c82e1a48b8f923fa161e9c7d01a04dbb6f20c",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

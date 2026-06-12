@@ -1,0 +1,48 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/elsys/ers-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "ERS temperature, humidity, light and motion",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          1,
+          0,
+          226,
+          2,
+          41,
+          4,
+          0,
+          39,
+          5,
+          6
+        ]
+      },
+      "output": {
+        "data": {
+          "temperature": 22.6,
+          "humidity": 41,
+          "light": 39,
+          "motion": 6
+        }
+      },
+      "normalizedOutput": {
+        "data": [
+          {
+            "air": {
+              "temperature": 22.6,
+              "relativeHumidity": 41,
+              "lightIntensity": 39
+            },
+            "action": {
+              "motion": {
+                "detected": true,
+                "count": 6
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

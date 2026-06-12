@@ -1,0 +1,74 @@
+{
+  "uplink": [
+    {
+      "description": "concatenated data format",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          1,
+          39,
+          16,
+          25,
+          1,
+          244,
+          254,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "source": "ttn-example",
+      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
+      "_upstreamHint": {
+        "output": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3
+          },
+          "humidity": {
+            "displayName": "Relative humidity",
+            "unit": "%",
+            "value": 50
+          },
+          "light": {
+            "displayName": "Red led status",
+            "value": "ON"
+          },
+          "pressure": {
+            "displayName": "Barometric pressure",
+            "unit": "hPa",
+            "value": 1000
+          },
+          "temperature": {
+            "displayName": "Internal temperature",
+            "unit": "°C",
+            "value": 25
+          }
+        }
+      }
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [
+          1,
+          42
+        ]
+      },
+      "expected": {
+        "errors": [
+          "unknown FPort"
+        ]
+      },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

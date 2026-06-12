@@ -1,0 +1,106 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/decentlab/dl-gmm-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Example 1",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          83,
+          43,
+          0,
+          3,
+          135,
+          38,
+          137,
+          32,
+          129,
+          20,
+          130,
+          151,
+          165,
+          115,
+          128,
+          207,
+          129,
+          112,
+          11,
+          188
+        ]
+      },
+      "output": {
+        "data": {
+          "air_humidity": {
+            "displayName": "Air humidity",
+            "unit": "%",
+            "value": 27.6
+          },
+          "air_temperature": {
+            "displayName": "Air temperature",
+            "unit": "°C",
+            "value": 23.36
+          },
+          "atmospheric_pressure": {
+            "displayName": "Atmospheric pressure",
+            "unit": "kPa",
+            "value": 95.87
+          },
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.004
+          },
+          "co2_concentration": {
+            "displayName": "CO2 concentration",
+            "unit": "ppm",
+            "value": 663
+          },
+          "device_id": 21291,
+          "dew_point": {
+            "displayName": "Dew point",
+            "unit": "°C",
+            "value": 3.68
+          },
+          "photosynthetically_active_radiation": {
+            "displayName": "Photosynthetically active radiation",
+            "unit": "µmol⋅m⁻²⋅s⁻¹",
+            "value": 183
+          },
+          "protocol_version": 2,
+          "vapor_pressure_deficit": {
+            "displayName": "Vapor pressure deficit",
+            "unit": "kPa",
+            "value": 2.07
+          }
+        }
+      }
+    },
+    {
+      "description": "Example 2",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          82,
+          133,
+          0,
+          2,
+          11,
+          188
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.004
+          },
+          "device_id": 21125,
+          "protocol_version": 2
+        }
+      }
+    }
+  ]
+}

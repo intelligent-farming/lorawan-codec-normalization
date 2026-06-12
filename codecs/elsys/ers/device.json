@@ -1,0 +1,30 @@
+{
+  "vendor": "elsys",
+  "device": "ers",
+  "name": "ERS smart building sensor",
+  "categories": [
+    "climate",
+    "light",
+    "motion"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "light",
+    "motion"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "elsys",
+    "device": "ers",
+    "codecId": "ers-codec",
+    "codecFile": "elsys.js",
+    "codecSha256": "b2ed840ebd22065c17c4401d7675ecb16959e0cb73c5db8a9b481e17c0154282",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

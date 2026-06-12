@@ -1,0 +1,30 @@
+{
+  "vendor": "fencyboy",
+  "device": "fencyboy",
+  "name": "Fency boy - Electric Fence Sensor",
+  "categories": [
+    "light"
+  ],
+  "sensors": [
+    "voltage",
+    "pulse count",
+    "battery",
+    "solar radiation",
+    "temperature",
+    "rssi"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "fencyboy",
+    "device": "fencyboy",
+    "codecId": "fencyboy-v1-3-1-codec",
+    "codecFile": "fencyboy-v1-3-1_payload_decoder_ttn.js",
+    "codecSha256": "dab1d60d9441b52f489db81f11292c10c0d99d614be50edf9f4f6f126fd485e0",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

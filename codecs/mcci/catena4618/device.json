@@ -1,0 +1,31 @@
+{
+  "vendor": "mcci",
+  "device": "catena4618",
+  "name": "Catena® 4618 Node",
+  "categories": [
+    "climate",
+    "light"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "light",
+    "digital input",
+    "analog input",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "mcci",
+    "device": "catena4618",
+    "codecId": "codec-catena4618",
+    "codecFile": "codec-catena4618.js",
+    "codecSha256": "836b021b5830bdadf3a1c349b15b2425322cda279eb3c2337b685c580e0a55aa",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

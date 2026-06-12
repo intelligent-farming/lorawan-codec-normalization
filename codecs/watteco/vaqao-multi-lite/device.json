@@ -1,0 +1,35 @@
+{
+  "vendor": "watteco",
+  "device": "vaqao-multi-lite",
+  "name": "Vaqa'O Multi Lite - Temperature, Humidity, Luminosity, Atmospheric Pressure, IAQ, CO2 & motion sensor",
+  "categories": [
+    "climate",
+    "air-quality",
+    "light",
+    "weather-station",
+    "motion"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "iaq",
+    "co2",
+    "pressure",
+    "light",
+    "motion"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "watteco",
+    "device": "vaqao-multi-lite",
+    "codecId": "vaqao-lite-codec",
+    "codecFile": "vaqao-lite.js",
+    "codecSha256": "6ac2691fc5b6a241484e10ca6b673b0a73cec27725425bac1322e561c58ec5e2",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

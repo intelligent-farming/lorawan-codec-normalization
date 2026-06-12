@@ -1,0 +1,31 @@
+{
+  "uplink": [
+    {
+      "description": "Radar Human Presence Sensor- Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          1,
+          117,
+          100,
+          3,
+          0,
+          1,
+          4,
+          0,
+          0
+        ]
+      },
+      "source": "ttn-example",
+      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
+      "_upstreamHint": {
+        "output": {
+          "battery": 100,
+          "occupancy": "occupied",
+          "illuminance": "dim"
+        }
+      }
+    }
+  ],
+  "downlink": []
+}

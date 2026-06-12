@@ -1,0 +1,33 @@
+{
+  "vendor": "enginko",
+  "device": "mcf-lw12co2",
+  "name": "MCF-LW12CO2 - Indoor Environmental Sensor",
+  "categories": [
+    "climate",
+    "air-quality",
+    "light",
+    "weather-station"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "barometer",
+    "light",
+    "bvoc",
+    "co2"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "enginko",
+    "device": "mcf-lw12co2",
+    "codecId": "mcf-environmental-codec",
+    "codecFile": "decoder-environmental.js",
+    "codecSha256": "72ec3f7022ae4b629a9e1c55a075db3fd4fbb9452686768855fcc4c16184f2a3",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

@@ -1,0 +1,182 @@
+{
+  "uplink": [
+    {
+      "description": "Startup version report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          3,
+          0,
+          100,
+          10,
+          32,
+          32,
+          6,
+          17,
+          0,
+          0
+        ]
+      },
+      "source": "ttn-example",
+      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
+      "_upstreamHint": {
+        "output": {
+          "Device": "RB11E",
+          "SWver": 10,
+          "HWver": 10,
+          "Datecode": "20200611"
+        }
+      }
+    },
+    {
+      "description": "Status report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          3,
+          1,
+          36,
+          10,
+          75,
+          0,
+          120,
+          1,
+          0,
+          0
+        ]
+      },
+      "source": "ttn-example",
+      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
+      "_upstreamHint": {
+        "output": {
+          "Device": "RB11E",
+          "Volt": 3.6,
+          "Temp": 26.35,
+          "Illuminance": 120,
+          "Occupy": 1,
+          "DisassembledAlarm": 0
+        }
+      }
+    },
+    {
+      "description": "Configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          129,
+          3,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "source": "ttn-example",
+      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
+      "_upstreamHint": {
+        "output": {
+          "Cmd": "ConfigReportRsp",
+          "Device": "RB11E",
+          "Status": "Success"
+        }
+      }
+    },
+    {
+      "description": "Read configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          130,
+          3,
+          3,
+          132,
+          7,
+          8,
+          1,
+          0,
+          50,
+          0,
+          100
+        ]
+      },
+      "source": "ttn-example",
+      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
+      "_upstreamHint": {
+        "output": {
+          "Cmd": "ReadConfigReportRsp",
+          "Device": "RB11E",
+          "MinTime": 900,
+          "MaxTime": 1800,
+          "BatteryChange": 0.1,
+          "TempChange": 0.5,
+          "IlluminanceChange": 100
+        }
+      }
+    },
+    {
+      "description": "Set IR disable time response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          131,
+          3,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "source": "ttn-example",
+      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
+      "_upstreamHint": {
+        "output": {
+          "Cmd": "SetIRDisableTimeRsp",
+          "Device": "RB11E",
+          "Status": "Success"
+        }
+      }
+    },
+    {
+      "description": "Get IR disable time response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          132,
+          3,
+          0,
+          30,
+          1,
+          44,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "source": "ttn-example",
+      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
+      "_upstreamHint": {
+        "output": {
+          "Cmd": "GetIRDisableTimeRsp",
+          "Device": "RB11E",
+          "IRDisableTime": 30,
+          "IRDetectionTime": 300
+        }
+      }
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,31 @@
+{
+  "uplink": [
+    {
+      "description": "Illuminance report (TTN example bytes)",
+      "input": { "fPort": 6, "bytes": [1, 4, 1, 30, 0, 120, 0, 0, 0, 0, 0] },
+      "expected": { "data": { "battery": 3, "air": { "lightIntensity": 120 } } },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Low-battery report with higher illuminance (synthetic)",
+      "input": { "fPort": 6, "bytes": [1, 4, 1, 156, 1, 44, 0, 0, 0, 0, 0] },
+      "expected": {
+        "data": { "lowBattery": true, "battery": 2.8, "air": { "lightIntensity": 300 } }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Device-info frame carries no measurement (TTN example bytes)",
+      "input": { "fPort": 6, "bytes": [1, 4, 0, 100, 11, 32, 25, 17, 40, 0, 0] },
+      "expected": { "errors": ["no measurement"] },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Config frame on fPort 7 is unsupported",
+      "input": { "fPort": 7, "bytes": [129, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

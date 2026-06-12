@@ -1,0 +1,36 @@
+{
+  "vendor": "sensecap",
+  "device": "sensecaps2120-8-in-1",
+  "name": "S2120 8-in-1 LoRaWAN® Weather Sensor",
+  "categories": [
+    "soil-monitor",
+    "light",
+    "weather-station",
+    "wind",
+    "rain-gauge"
+  ],
+  "sensors": [
+    "moisture",
+    "temperature",
+    "barometer",
+    "wind speed",
+    "wind direction",
+    "light",
+    "uv",
+    "rainfall"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "sensecap",
+    "device": "sensecaps2120-8-in-1",
+    "codecId": "sensecap2120-8-in-1-codec",
+    "codecFile": "sensecap2120-8-in-1-decoder.js",
+    "codecSha256": "87e7f5b7779304f4b4d10c8f93d1f9bc5355c5b3e0cc97c4f3b843a3a1187646",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

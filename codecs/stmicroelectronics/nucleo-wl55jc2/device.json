@@ -1,0 +1,30 @@
+{
+  "vendor": "stmicroelectronics",
+  "device": "nucleo-wl55jc2",
+  "name": "NUCLEO-WL55JC2",
+  "categories": [
+    "climate",
+    "light",
+    "weather-station"
+  ],
+  "sensors": [
+    "light",
+    "pressure",
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "stmicroelectronics",
+    "device": "nucleo-wl55jc2",
+    "codecId": "nucleo-wl55jc-codec",
+    "codecFile": "nucleo-wl55jc.js",
+    "codecSha256": "26393ff12b9b748cb7a263af8a8afa37be59565c0a8466b2bf5fe34427a51ec1",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

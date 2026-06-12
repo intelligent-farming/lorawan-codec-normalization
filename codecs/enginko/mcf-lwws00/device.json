@@ -1,0 +1,37 @@
+{
+  "vendor": "enginko",
+  "device": "mcf-lwws00",
+  "name": "MCF-LWWS00 - Weather Station",
+  "categories": [
+    "climate",
+    "light",
+    "weather-station",
+    "wind",
+    "rain-gauge"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "barometer",
+    "wind speed",
+    "wind direction",
+    "rainfall",
+    "precipitation",
+    "solar radiation",
+    "uv"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "enginko",
+    "device": "mcf-lwws00",
+    "codecId": "mcf-lwws0x-codec",
+    "codecFile": "decoder-weather.js",
+    "codecSha256": "72ec3f7022ae4b629a9e1c55a075db3fd4fbb9452686768855fcc4c16184f2a3",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

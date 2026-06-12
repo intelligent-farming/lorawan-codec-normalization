@@ -225,6 +225,14 @@ export interface DeviceInfo {
   downlink: { encode: boolean; decode: boolean };
   /** TTN provenance, or null for devices with no upstream (e.g. Makerfabs). */
   ttn: TtnProvenance | null;
+  /**
+   * True for a scaffolded-but-not-yet-authored device: the folder, reference
+   * snapshot, provenance, and seeded vectors exist, but `codec.js` is still a
+   * stub. Drafts are hidden from {@link devices} by default, are not counted as
+   * "covered" by the sync diff, and the conformance suite skips their
+   * vector/decode checks rather than failing them.
+   */
+  draft?: boolean;
 }
 
 /** A TTN device absent from this module (from {@link findMissingDevices}). */

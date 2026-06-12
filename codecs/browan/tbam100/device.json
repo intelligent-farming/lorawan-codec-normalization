@@ -1,0 +1,24 @@
+{
+  "vendor": "browan",
+  "device": "tbam100",
+  "name": "Ambient Light Sensor",
+  "categories": [
+    "light"
+  ],
+  "sensors": [
+    "light"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "browan",
+    "device": "tbam100",
+    "codecId": "tbam100-codec",
+    "codecFile": "tbam100.js",
+    "codecSha256": "515bc9adb04c2c5288dd10792902adbeb1723134137c321f4cf26c749884bb3d",
+    "referencedAt": "2026-06-12"
+  }
+}

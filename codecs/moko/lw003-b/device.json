@@ -1,0 +1,31 @@
+{
+  "vendor": "moko",
+  "device": "lw003-b",
+  "name": "LW003-B - Bluetooth Probe",
+  "categories": [
+    "climate",
+    "light"
+  ],
+  "sensors": [
+    "battery",
+    "button",
+    "humidity",
+    "light",
+    "temperature",
+    "time"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "moko",
+    "device": "lw003-b",
+    "codecId": "lw003-b-codec",
+    "codecFile": "lw003-b.js",
+    "codecSha256": "ed559d51966e6583c11703d7f9754d2066abc3faf3be42ad1a27290d36c4a5ae",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

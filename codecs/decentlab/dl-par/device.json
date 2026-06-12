@@ -1,0 +1,26 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-par",
+  "name": "DL-PAR - Photosynthetically Active Radiation Sensor",
+  "categories": [
+    "light"
+  ],
+  "sensors": [
+    "solar radiation",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-par",
+    "codecId": "dl-par-codec",
+    "codecFile": "dl-par.js",
+    "codecSha256": "cf8535754854808a31315444cde0a7856bf6145b4861acf8c9440e86fc123033",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

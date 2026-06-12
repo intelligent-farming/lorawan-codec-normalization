@@ -1,0 +1,32 @@
+{
+  "vendor": "lansitec",
+  "device": "badge-tracker",
+  "name": "Badge Tracker",
+  "categories": [
+    "light",
+    "motion",
+    "gps-tracker"
+  ],
+  "sensors": [
+    "accelerometer",
+    "gps",
+    "light",
+    "battery",
+    "button",
+    "rssi"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "lansitec",
+    "device": "badge-tracker",
+    "codecId": "badge-tracker-codec",
+    "codecFile": "badge-tracker.js",
+    "codecSha256": "5a5fcc84a3442afee674c1131bc1b2dd5fcb806d5a94d3b22db72ddd6ea5684c",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

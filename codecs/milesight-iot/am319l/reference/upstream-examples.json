@@ -1,0 +1,64 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/milesight-iot/am319l-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Ambience Monitoring Sensors (example 1) - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          3,
+          103,
+          52,
+          1,
+          4,
+          104,
+          101,
+          5,
+          0,
+          1,
+          6,
+          203,
+          2,
+          7,
+          125,
+          168,
+          3,
+          8,
+          125,
+          37,
+          0,
+          9,
+          115,
+          102,
+          39,
+          10,
+          125,
+          4,
+          0,
+          11,
+          125,
+          32,
+          0,
+          12,
+          125,
+          48,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "temperature": 30.8,
+          "humidity": 50.5,
+          "pir": "trigger",
+          "light_level": 2,
+          "co2": 936,
+          "tvoc": 0.37,
+          "pressure": 1008.6,
+          "hcho": 0.04,
+          "pm2_5": 32,
+          "pm10": 48
+        }
+      }
+    }
+  ]
+}

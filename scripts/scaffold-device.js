@@ -44,10 +44,11 @@ function knownCategories() {
 
 function parseArgs(argv) {
   const positional = [];
-  const opts = { ttn: undefined, noTtn: false, devicesDir: undefined };
+  const opts = { ttn: undefined, noTtn: false, devicesDir: undefined, draft: false };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--no-ttn') opts.noTtn = true;
+    else if (a === '--draft') opts.draft = true;
     else if (a === '--ttn') opts.ttn = argv[++i];
     else if (a === '--devices-dir') opts.devicesDir = argv[++i];
     else positional.push(a);
@@ -240,6 +241,8 @@ function main() {
   } else {
     fs.mkdirSync(targetDir, { recursive: true });
   }
+
+  if (opts.draft) deviceJson.draft = true;
 
   fs.writeFileSync(
     path.join(targetDir, 'device.json'),

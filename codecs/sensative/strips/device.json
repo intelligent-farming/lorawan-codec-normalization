@@ -1,0 +1,34 @@
+{
+  "vendor": "sensative",
+  "device": "strips",
+  "name": "Strips - Multisensor",
+  "categories": [
+    "climate",
+    "light",
+    "water-leak",
+    "water-meter",
+    "contact"
+  ],
+  "sensors": [
+    "magnetometer",
+    "temperature",
+    "light",
+    "water",
+    "humidity",
+    "infrared"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "sensative",
+    "device": "strips",
+    "codecId": "strips-codec",
+    "codecFile": "strips.js",
+    "codecSha256": "1b65650175a6850b62f919d4cbadfcdf668000df8c7a6d3c1d76850d04f78721",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

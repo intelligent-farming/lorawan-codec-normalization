@@ -1,0 +1,36 @@
+{
+  "vendor": "milesight-iot",
+  "device": "am107",
+  "name": "AM107 - Ambience Monitoring Sensors",
+  "categories": [
+    "climate",
+    "air-quality",
+    "light",
+    "weather-station",
+    "motion"
+  ],
+  "sensors": [
+    "battery",
+    "temperature",
+    "humidity",
+    "co2",
+    "tvoc",
+    "pressure",
+    "pir",
+    "light"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "am107",
+    "codecId": "am107-codec",
+    "codecFile": "am107.js",
+    "codecSha256": "e6b3885a85a2cb4ae2b300689da7995fb196aeb6c97a4841e4c463bab780b491",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

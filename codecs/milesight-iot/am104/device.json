@@ -1,0 +1,31 @@
+{
+  "vendor": "milesight-iot",
+  "device": "am104",
+  "name": "Milesight AM104 - LoRaWAN® Indoor Air Quality Sensor (4 in 1)",
+  "categories": [
+    "climate",
+    "light",
+    "motion"
+  ],
+  "sensors": [
+    "battery",
+    "temperature",
+    "humidity",
+    "pir",
+    "light"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "am104",
+    "codecId": "am104-codec",
+    "codecFile": "am104.js",
+    "codecSha256": "cb2ef75364b9de52a5fd0c43b15a10e78b83d349adfc63c2f1a42ad190049aa7",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

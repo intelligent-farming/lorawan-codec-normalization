@@ -1,0 +1,36 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/tektelic/t00048xx-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Periodic uplink",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          3,
+          103,
+          0,
+          10,
+          4,
+          104,
+          40
+        ]
+      },
+      "output": {
+        "data": {
+          "ambient_temperature": 1,
+          "relative_humidity": 20
+        }
+      },
+      "normalizedOutput": {
+        "data": [
+          {
+            "air": {
+              "temperature": 1,
+              "relativeHumidity": 20
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

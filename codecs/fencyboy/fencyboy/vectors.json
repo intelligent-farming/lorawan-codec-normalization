@@ -1,0 +1,63 @@
+{
+  "uplink": [
+    {
+      "description": "Normal operation but 0 V on electric fence",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          28,
+          14,
+          4,
+          0,
+          0,
+          14,
+          16,
+          70,
+          60,
+          253,
+          139,
+          12,
+          97
+        ]
+      },
+      "expected": {
+        "errors": []
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Normal operation with 10860 V on electric fence",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          29,
+          13,
+          254,
+          1,
+          217,
+          42,
+          108,
+          4,
+          115,
+          41,
+          108,
+          43,
+          83,
+          14,
+          9,
+          70,
+          61,
+          2,
+          56,
+          13,
+          75
+        ]
+      },
+      "expected": {
+        "errors": []
+      },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,37 @@
+{
+  "vendor": "milesight-iot",
+  "device": "am319l",
+  "name": "Milesight AM319L-LoRaWAN Indoor Air Quality Sensor (9 in 1)",
+  "categories": [
+    "climate",
+    "air-quality",
+    "light",
+    "weather-station",
+    "motion"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "co2",
+    "tvoc",
+    "pressure",
+    "pir",
+    "light",
+    "pm2.5",
+    "pm10"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "am319l",
+    "codecId": "am319l-codec",
+    "codecFile": "am319l.js",
+    "codecSha256": "135283e37ffaff5b4be7eb87f6c026d94c72507a5c8998b4fa1cef0f9e2e46f9",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

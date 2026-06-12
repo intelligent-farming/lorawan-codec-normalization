@@ -1,0 +1,30 @@
+{
+  "vendor": "rakwireless",
+  "device": "wisblock-kit1",
+  "name": "Wisblock Kit 1 - Indoor Ambient Monitor",
+  "categories": [
+    "climate",
+    "light",
+    "weather-station"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "barometer",
+    "light"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "rakwireless",
+    "device": "wisblock-kit1",
+    "codecId": "wisblock-kit-codec",
+    "codecFile": "decoder-rakwireless-standardized-payload.js",
+    "codecSha256": "c4b76a59475c5d05c070262b7926efb03d19331e2b312dbe3b0111510baba538",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

@@ -1,0 +1,144 @@
+{
+  "uplink": [
+    {
+      "description": "checkin upload",
+      "input": {
+        "fPort": 88,
+        "bytes": [
+          11,
+          33,
+          170,
+          232,
+          10,
+          104,
+          8,
+          7,
+          238,
+          8,
+          14,
+          7,
+          0
+        ]
+      },
+      "source": "ttn-example",
+      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
+      "_upstreamHint": {
+        "output": {
+          "head": 11,
+          "ver": 1745545386,
+          "interval": 1800,
+          "splrate": 1800,
+          "bat": 238,
+          "volt": 3592,
+          "frequency": 7,
+          "subband": 0
+        }
+      }
+    },
+    {
+      "description": "datain upload",
+      "input": {
+        "fPort": 88,
+        "bytes": [
+          12,
+          33,
+          0,
+          141,
+          243,
+          10,
+          104,
+          1,
+          23,
+          0,
+          23,
+          0,
+          219,
+          2,
+          31,
+          0,
+          144,
+          1,
+          0,
+          0,
+          11,
+          10,
+          217,
+          7
+        ]
+      },
+      "source": "ttn-example",
+      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
+      "_upstreamHint": {
+        "output": {
+          "head": 12,
+          "model": 33,
+          "tsmode": 0,
+          "timestamp": 1745548173,
+          "splfmt": 1,
+          "data_size": 16,
+          "pm25": 23,
+          "pm10": 23,
+          "lux": 731,
+          "hcho": 31,
+          "co2": 265,
+          "co": 0,
+          "temperature": 2571,
+          "humidity": 2009
+        }
+      }
+    },
+    {
+      "description": "holdin upload",
+      "input": {
+        "fPort": 88,
+        "bytes": [
+          13,
+          33,
+          0,
+          141,
+          243,
+          10,
+          104,
+          1,
+          23,
+          0,
+          23,
+          0,
+          219,
+          2,
+          31,
+          0,
+          144,
+          1,
+          0,
+          0,
+          11,
+          10,
+          217,
+          7
+        ]
+      },
+      "source": "ttn-example",
+      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
+      "_upstreamHint": {
+        "output": {
+          "head": 13,
+          "model": 33,
+          "tsmode": 0,
+          "timestamp": 1745548173,
+          "splfmt": 1,
+          "data_size": 16,
+          "pm25": 23,
+          "pm10": 23,
+          "lux": 731,
+          "hcho": 31,
+          "co2": 265,
+          "co": 0,
+          "temperature": 2571,
+          "humidity": 2009
+        }
+      }
+    }
+  ],
+  "downlink": []
+}

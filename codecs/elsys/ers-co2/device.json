@@ -1,0 +1,33 @@
+{
+  "vendor": "elsys",
+  "device": "ers-co2",
+  "name": "ERS CO2 advanced indoor environment",
+  "categories": [
+    "climate",
+    "air-quality",
+    "light",
+    "motion"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "light",
+    "motion",
+    "co2",
+    "pir"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "elsys",
+    "device": "ers-co2",
+    "codecId": "ers-co2-codec",
+    "codecFile": "elsys.js",
+    "codecSha256": "b2ed840ebd22065c17c4401d7675ecb16959e0cb73c5db8a9b481e17c0154282",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

@@ -1,0 +1,39 @@
+{
+  "uplink": [
+    {
+      "description": "Sensor report format 0x14, no pulse/power input",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          20,
+          29,
+          67,
+          35,
+          17,
+          25,
+          82,
+          95,
+          151,
+          174,
+          1,
+          2
+        ]
+      },
+      "source": "ttn-example",
+      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
+      "_upstreamHint": {
+        "output": {
+          "boot": 17,
+          "error": "none",
+          "lux": 258,
+          "p": 978.84,
+          "rh": 67.96875,
+          "tDewC": 18.981996766825645,
+          "tempC": 25.3203125,
+          "vBat": 4.196044921875
+        }
+      }
+    }
+  ],
+  "downlink": []
+}

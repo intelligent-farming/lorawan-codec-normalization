@@ -1,0 +1,32 @@
+{
+  "vendor": "thermokon",
+  "device": "mcs-lrw",
+  "name": "MCS LRW - Multisensor",
+  "categories": [
+    "climate",
+    "light",
+    "motion"
+  ],
+  "sensors": [
+    "battery",
+    "digital input",
+    "motion",
+    "humidity",
+    "temperature",
+    "light"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "thermokon",
+    "device": "mcs-lrw",
+    "codecId": "thermokon-codec",
+    "codecFile": "thermokon-codec.js",
+    "codecSha256": "b6d8be2b7c48a232ab9bf0025598b85e61d25d3be939be8dd1d017f3e36da1c8",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

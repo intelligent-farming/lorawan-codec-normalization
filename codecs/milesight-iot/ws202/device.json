@@ -1,0 +1,28 @@
+{
+  "vendor": "milesight-iot",
+  "device": "ws202",
+  "name": "Milesight WS202 PIR & Light Sensor",
+  "categories": [
+    "light",
+    "motion"
+  ],
+  "sensors": [
+    "battery",
+    "pir",
+    "light"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "ws202",
+    "codecId": "ws202-codec",
+    "codecFile": "ws202.js",
+    "codecSha256": "ca2ea1eb0e49a68a7616e395c7442b139f1c1d2b9d1d5ba35d8391744c8dbb15",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

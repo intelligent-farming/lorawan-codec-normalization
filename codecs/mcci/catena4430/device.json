@@ -1,0 +1,36 @@
+{
+  "vendor": "mcci",
+  "device": "catena4430",
+  "name": "Animal Activity Sensor",
+  "categories": [
+    "climate",
+    "light",
+    "weather-station",
+    "motion"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "light",
+    "pir",
+    "digital input",
+    "analog input",
+    "battery",
+    "barometer",
+    "time"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "mcci",
+    "device": "catena4430",
+    "codecId": "codec-port2-fmt2",
+    "codecFile": "codec-port2-fmt2.js",
+    "codecSha256": "0b6d05a9ef9afc34d8eb334cbecef27c3b0a915df1a3aa7361d6027801a3a2ad",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

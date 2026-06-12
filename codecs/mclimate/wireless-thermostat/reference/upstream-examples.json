@@ -1,0 +1,35 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/mclimate/wireless-thermostat-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Periodic uplink",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          1,
+          2,
+          103,
+          152,
+          12,
+          48,
+          27,
+          0,
+          2,
+          145,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "sensorTemperature": 21.5,
+          "relativeHumidity": 59.38,
+          "batteryVoltage": 3.12,
+          "targetTemperature": 27,
+          "powerSourceStatus": 0,
+          "lux": 657,
+          "pir": false
+        }
+      }
+    }
+  ]
+}

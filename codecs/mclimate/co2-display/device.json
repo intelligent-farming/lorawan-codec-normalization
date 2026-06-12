@@ -1,0 +1,32 @@
+{
+  "vendor": "mclimate",
+  "device": "co2-display",
+  "name": "CO2 Display",
+  "categories": [
+    "climate",
+    "air-quality",
+    "light",
+    "motion"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "pir",
+    "light",
+    "co2"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "mclimate",
+    "device": "co2-display",
+    "codecId": "co2-display-codec",
+    "codecFile": "co2-display.js",
+    "codecSha256": "0eafb57587b7a1b9fd49aa75c847aa192f5eafd66735309574e78cf58bdf1122",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

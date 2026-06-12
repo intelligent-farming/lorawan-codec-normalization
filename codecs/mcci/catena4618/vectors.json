@@ -1,0 +1,37 @@
+{
+  "uplink": [
+    {
+      "description": "Sensor report for catena 4618, no pulse/power input",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          29,
+          40,
+          24,
+          17,
+          25,
+          32,
+          159,
+          151,
+          71,
+          158,
+          208
+        ]
+      },
+      "source": "ttn-example",
+      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
+      "_upstreamHint": {
+        "output": {
+          "Vbat": 2.505859375,
+          "boot": 17,
+          "lux": 414.8125,
+          "rh": 62.34073395895323,
+          "tDew": 17.41972264670249,
+          "t": 25.125,
+          "tHeatIndexC": null
+        }
+      }
+    }
+  ],
+  "downlink": []
+}

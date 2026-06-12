@@ -1,0 +1,36 @@
+{
+  "uplink": [
+    {
+      "description": "Periodic uplink",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          3,
+          103,
+          0,
+          10,
+          4,
+          104,
+          40
+        ]
+      },
+      "source": "ttn-example",
+      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
+      "_upstreamHint": {
+        "output": {
+          "ambient_temperature": 1,
+          "relative_humidity": 20
+        },
+        "normalizedOutput": [
+          {
+            "air": {
+              "temperature": 1,
+              "relativeHumidity": 20
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "downlink": []
+}

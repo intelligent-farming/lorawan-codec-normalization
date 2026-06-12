@@ -1,0 +1,25 @@
+{
+  "vendor": "sensecap",
+  "device": "sensecaps2102-light",
+  "name": "S2102 - LoRaWAN® Light Intensity Sensor",
+  "categories": [
+    "light"
+  ],
+  "sensors": [
+    "light"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "sensecap",
+    "device": "sensecaps2102-light",
+    "codecId": "sensecap210x-codec",
+    "codecFile": "sensecap210x-common-decoder.js",
+    "codecSha256": "a6fa30d76ae387841a7a64cae3845d171984565c6a57de1bb2e189466f02b251",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

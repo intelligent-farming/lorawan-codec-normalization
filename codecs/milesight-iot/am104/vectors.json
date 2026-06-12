@@ -1,0 +1,62 @@
+{
+  "uplink": [
+    {
+      "description": "Ambience Monitoring Sensors (example 1) - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          1,
+          117,
+          92,
+          3,
+          103,
+          52,
+          1,
+          4,
+          104,
+          101,
+          5,
+          106,
+          73,
+          0
+        ]
+      },
+      "source": "ttn-example",
+      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
+      "_upstreamHint": {
+        "output": {
+          "battery": 92,
+          "temperature": 30.8,
+          "humidity": 50.5,
+          "activity": 73
+        }
+      }
+    },
+    {
+      "description": "Ambience Monitoring Sensors (example 2) - Milesgiht IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          6,
+          101,
+          28,
+          0,
+          121,
+          0,
+          20,
+          0
+        ]
+      },
+      "source": "ttn-example",
+      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
+      "_upstreamHint": {
+        "output": {
+          "illumination": 28,
+          "infrared": 20,
+          "infrared_and_visible": 121
+        }
+      }
+    }
+  ],
+  "downlink": []
+}

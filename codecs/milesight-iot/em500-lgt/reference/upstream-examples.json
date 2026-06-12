@@ -1,0 +1,51 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/milesight-iot/em500-lgt-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Light Sensors (example 1) - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          1,
+          117,
+          92,
+          3,
+          148,
+          80,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "battery": 92,
+          "light": 80
+        }
+      }
+    },
+    {
+      "description": "Light Sensors (example 2) - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          1,
+          117,
+          100,
+          3,
+          148,
+          80,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "battery": 100,
+          "light": 80
+        }
+      }
+    }
+  ]
+}

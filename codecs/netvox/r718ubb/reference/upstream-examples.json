@@ -1,0 +1,247 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/netvox/r718ubb-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Startup version report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          187,
+          0,
+          100,
+          2,
+          32,
+          32,
+          8,
+          17,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R718UB Seriers",
+          "SWver": 10,
+          "HWver": 2,
+          "Datecode": "20200811"
+        }
+      }
+    },
+    {
+      "description": "Status report - 1",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          187,
+          1,
+          36,
+          9,
+          234,
+          26,
+          144,
+          1,
+          144,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R718UB Seriers",
+          "Volt": 3.6,
+          "Temp": 25.38,
+          "Humi": 68,
+          "CO2": 400,
+          "ShockEvent": 0
+        }
+      }
+    },
+    {
+      "description": "Status report - 2",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          187,
+          2,
+          36,
+          0,
+          1,
+          139,
+          205,
+          0,
+          15,
+          160
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R718UB Seriers",
+          "Volt": 3.6,
+          "AirPressure": 1013.25,
+          "Illuminance": 4000
+        }
+      }
+    },
+    {
+      "description": "Status report - 3",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          187,
+          3,
+          36,
+          1,
+          17,
+          1,
+          35,
+          1,
+          244,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R718UB Seriers",
+          "Volt": 3.6,
+          "PM2_5": 273,
+          "PM10": 291,
+          "TVOC": 500
+        }
+      }
+    },
+    {
+      "description": "Configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          129,
+          187,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ConfigReportRsp",
+          "Device": "R718UB Seriers",
+          "Status": "Success"
+        }
+      }
+    },
+    {
+      "description": "Read configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          130,
+          187,
+          3,
+          132,
+          7,
+          8,
+          1,
+          0,
+          50,
+          0,
+          50
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ReadConfigReportRsp",
+          "Device": "R718UB Seriers",
+          "MinTime": 900,
+          "MaxTime": 1800
+        }
+      }
+    },
+    {
+      "description": "Calibrate CO2 response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          131,
+          187,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "CalibrateCO2Rsp",
+          "Device": "R718UB Seriers",
+          "Status": "Success"
+        }
+      }
+    },
+    {
+      "description": "Set shock sensor sensitivity response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          132,
+          187,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "SetShockSensorSensitivityRsp",
+          "Device": "R718UB Seriers",
+          "Status": "Success"
+        }
+      }
+    },
+    {
+      "description": "Get shock sensor sensitivity response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          133,
+          187,
+          100,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "GetShockSensorSensitivityRsp",
+          "Device": "R718UB Seriers",
+          "ShockSensorSensitivity": 100
+        }
+      }
+    }
+  ]
+}

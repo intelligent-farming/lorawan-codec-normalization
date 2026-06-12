@@ -1,0 +1,41 @@
+{
+  "uplink": [
+    {
+      "description": "PIR Sensors (example 1) - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          3,
+          0,
+          1
+        ]
+      },
+      "source": "ttn-example",
+      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
+      "_upstreamHint": {
+        "output": {
+          "pir": "trigger"
+        }
+      }
+    },
+    {
+      "description": "PIR Sensors (example 2) - Milesgiht IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          4,
+          0,
+          0
+        ]
+      },
+      "source": "ttn-example",
+      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
+      "_upstreamHint": {
+        "output": {
+          "light": "dark"
+        }
+      }
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,30 @@
+{
+  "vendor": "lansitec",
+  "device": "contact-tracing-badge",
+  "name": "Contact Tracing Badge",
+  "categories": [
+    "light",
+    "motion"
+  ],
+  "sensors": [
+    "accelerometer",
+    "light",
+    "battery",
+    "button",
+    "rssi"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "lansitec",
+    "device": "contact-tracing-badge",
+    "codecId": "contact-tracing-badge-codec",
+    "codecFile": "contact-tracing-badge.js",
+    "codecSha256": "31d56a247eb5849034fe2fcf4fc389c5529e7a5e9269fdf52955c50f5b654084",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

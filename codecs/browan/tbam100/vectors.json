@@ -1,0 +1,43 @@
+{
+  "uplink": [
+    {
+      "description": "Light reading with status flags (TTN example bytes)",
+      "input": { "fPort": 104, "bytes": [18, 251, 54, 12, 98, 0] },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "air": { "lightIntensity": 251 },
+          "boardTemperature": 22,
+          "darker": false,
+          "lighter": true,
+          "statusChange": true,
+          "keepAlive": false
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Keep-alive with fractional lux (synthetic, exercises 24-bit LE /100)",
+      "input": { "fPort": 104, "bytes": [32, 250, 52, 57, 48, 1] },
+      "expected": {
+        "data": {
+          "battery": 3.5,
+          "air": { "lightIntensity": 778.81 },
+          "boardTemperature": 20,
+          "darker": false,
+          "lighter": false,
+          "statusChange": false,
+          "keepAlive": true
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unsupported fPort returns an error",
+      "input": { "fPort": 42, "bytes": [1] },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

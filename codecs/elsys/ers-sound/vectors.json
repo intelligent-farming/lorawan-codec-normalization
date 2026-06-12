@@ -1,0 +1,38 @@
+{
+  "uplink": [
+    {
+      "description": "ERS Sound Lite temperature, humidity, light, motion and sound",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          1,
+          0,
+          226,
+          2,
+          41,
+          4,
+          0,
+          39,
+          5,
+          6,
+          21,
+          1,
+          1
+        ]
+      },
+      "source": "ttn-example",
+      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
+      "_upstreamHint": {
+        "output": {
+          "temperature": 22.6,
+          "humidity": 41,
+          "light": 39,
+          "motion": 6,
+          "soundPeak": 1,
+          "soundAvg": 1
+        }
+      }
+    }
+  ],
+  "downlink": []
+}

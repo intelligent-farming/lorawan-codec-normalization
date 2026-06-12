@@ -1,0 +1,71 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/stmicroelectronics/nucleo-wl55jc-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "concatenated data format",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          1,
+          39,
+          16,
+          25,
+          1,
+          244,
+          254,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3
+          },
+          "humidity": {
+            "displayName": "Relative humidity",
+            "unit": "%",
+            "value": 50
+          },
+          "light": {
+            "displayName": "Red led status",
+            "value": "ON"
+          },
+          "pressure": {
+            "displayName": "Barometric pressure",
+            "unit": "hPa",
+            "value": 1000
+          },
+          "temperature": {
+            "displayName": "Internal temperature",
+            "unit": "°C",
+            "value": 25
+          }
+        }
+      }
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [
+          1,
+          42
+        ]
+      },
+      "output": {
+        "errors": [
+          "unknown FPort"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "vendor": "greenme",
+  "device": "cube",
+  "name": "Cube - Environment Sensor",
+  "categories": [
+    "climate",
+    "air-quality",
+    "light"
+  ],
+  "sensors": [
+    "co2",
+    "humidity",
+    "light",
+    "sound",
+    "temperature",
+    "tilt",
+    "tvoc"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "greenme",
+    "device": "cube",
+    "codecId": "cube-codec",
+    "codecFile": "cube.js",
+    "codecSha256": "0914bc7413109cd09e4d3279efb1adfb19a789b6454496675663aa613675ddb5",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

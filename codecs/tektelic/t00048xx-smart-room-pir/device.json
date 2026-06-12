@@ -1,0 +1,33 @@
+{
+  "vendor": "tektelic",
+  "device": "t00048xx-smart-room-pir",
+  "name": "Smart Room Sensor - PIR",
+  "categories": [
+    "climate",
+    "light",
+    "motion",
+    "contact"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "magnetometer",
+    "accelerometer",
+    "light",
+    "pir"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "tektelic",
+    "device": "t00048xx-smart-room-pir",
+    "codecId": "t00048xx-codec",
+    "codecFile": "decoder_smart_room_sensor_pir_base.js",
+    "codecSha256": "ecd395529f517202df4dc46b36212945736be44030de8c38e895654187e24ff3",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

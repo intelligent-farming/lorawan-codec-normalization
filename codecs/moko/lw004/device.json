@@ -1,0 +1,33 @@
+{
+  "vendor": "moko",
+  "device": "lw004",
+  "name": "LW004 - Panic Button",
+  "categories": [
+    "light",
+    "motion",
+    "gps-tracker"
+  ],
+  "sensors": [
+    "accelerometer",
+    "auxiliary",
+    "battery",
+    "button",
+    "gps",
+    "light",
+    "vibration"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "moko",
+    "device": "lw004",
+    "codecId": "lw004-codec",
+    "codecFile": "lw004.js",
+    "codecSha256": "0e413fa2860fb74209cdadd0438255f5def0777bbe7d59fcffd02e17ed22582f",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

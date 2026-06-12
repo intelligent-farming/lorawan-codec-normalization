@@ -1,0 +1,58 @@
+{
+  "uplink": [
+    {
+      "description": "Light Detection Uplink",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          2,
+          0,
+          1
+        ]
+      },
+      "expected": {
+        "errors": []
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Temperature & Humidity Uplink",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          3,
+          103,
+          1,
+          38,
+          4,
+          104,
+          51,
+          0,
+          186,
+          11,
+          209
+        ]
+      },
+      "expected": {
+        "errors": []
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Motion Event Uplink",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          10,
+          0,
+          255
+        ]
+      },
+      "expected": {
+        "errors": []
+      },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

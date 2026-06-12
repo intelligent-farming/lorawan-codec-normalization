@@ -1,0 +1,25 @@
+{
+  "vendor": "sensecap",
+  "device": "sensecap-light",
+  "name": "Wireless Light Intensity Sensor - LoRaWAN®",
+  "categories": [
+    "light"
+  ],
+  "sensors": [
+    "light"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "sensecap",
+    "device": "sensecap-light",
+    "codecId": "sensecap-codec",
+    "codecFile": "sensecap-common-decoder.js",
+    "codecSha256": "af330ea08419726de151473cd9bb670c97006e67ace1f19e3491427f93b60848",
+    "referencedAt": "2026-06-12"
+  },
+  "draft": true
+}

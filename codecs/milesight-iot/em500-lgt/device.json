@@ -1,0 +1,25 @@
+{
+  "vendor": "milesight-iot",
+  "device": "em500-lgt",
+  "name": "Milesight EM500-LGT Light Sensor",
+  "categories": [
+    "light"
+  ],
+  "sensors": [
+    "battery",
+    "light"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "em500-lgt",
+    "codecId": "em500-lgt-codec",
+    "codecFile": "em500-lgt.js",
+    "codecSha256": "1b4c8694d2881ca0e5b3cdb35c7c935c9fdfb6b5a562a1154380f7498291e58d",
+    "referencedAt": "2026-06-12"
+  }
+}

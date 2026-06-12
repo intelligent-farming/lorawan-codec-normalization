@@ -174,6 +174,20 @@ test('devices() and device() enumerate the registry', () => {
   assert.throws(() => lib.device('nope', 'nope'), /unknown device/);
 });
 
+test('drafts are hidden from devices() and codecScript() refuses them', () => {
+  const authored = lib.devices();
+  const withDrafts = lib.devices({ includeDrafts: true });
+  assert.ok(withDrafts.length > authored.length, 'drafts exist beyond authored devices');
+  assert.ok(authored.every((d) => !d.draft), 'devices() must not return drafts');
+  // a draft device (decentlab/dl-atm41 was scaffolded) refuses codecScript
+  const draft = withDrafts.find((d) => d.draft);
+  assert.ok(draft, 'expected at least one draft');
+  assert.throws(
+    () => lib.codecScript(draft.vendor, draft.device),
+    /draft|not yet authored/,
+  );
+});
+
 test('device lookups are case-insensitive', () => {
   // codecScript, device, and friends accept any case for vendor/device.
   assert.equal(lib.codecScript('dragino', 'LSE01'), lib.codecScript('dragino', 'lse01'));
