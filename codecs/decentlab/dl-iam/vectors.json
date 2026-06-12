@@ -1,209 +1,88 @@
 {
   "uplink": [
     {
-      "description": "Example 1",
+      "description": "Example 1 - all sensors present (battery, temp/humidity, pressure, light, CO2, activity, VOC)",
       "input": {
         "fPort": 1,
-        "bytes": [
-          2,
-          11,
-          189,
-          0,
-          127,
-          11,
-          146,
-          106,
-          81,
-          93,
-          72,
-          188,
-          78,
-          2,
-          98,
-          0,
-          105,
-          129,
-          199,
-          0,
-          0,
-          147,
-          212,
-          0,
-          11,
-          1,
-          17
-        ]
+        "bytes": [2, 11, 189, 0, 127, 11, 146, 106, 81, 93, 72, 188, 78, 2, 98, 0, 105, 129, 199, 0, 0, 147, 212, 0, 11, 1, 17]
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "activity_counter": {
-            "displayName": "Activity counter",
-            "value": 11
-          },
-          "air_humidity": {
-            "displayName": "Air humidity",
-            "unit": "%",
-            "value": 36.438544289311054
-          },
-          "air_temperature": {
-            "displayName": "Air temperature",
-            "unit": "°C",
-            "value": 27.67833981841764
-          },
-          "ambient_light_infrared": {
-            "displayName": "Ambient light (infrared)",
-            "value": 105
-          },
-          "ambient_light_visible_infrared": {
-            "displayName": "Ambient light (visible + infrared)",
-            "value": 610
-          },
-          "barometric_pressure": {
-            "displayName": "Barometric pressure",
-            "unit": "Pa",
-            "value": 96412
-          },
-          "battery_voltage": {
-            "displayName": "Battery voltage",
-            "unit": "V",
-            "value": 2.962
-          },
-          "co2_concentration": {
-            "displayName": "CO2 concentration",
-            "unit": "ppm",
-            "value": 455
-          },
-          "co2_sensor_status": {
-            "displayName": "CO2 sensor status",
-            "value": 0
-          },
-          "device_id": 3005,
-          "illuminance": {
-            "displayName": "Illuminance",
-            "unit": "lx",
-            "value": 678.76512
-          },
-          "protocol_version": 2,
-          "raw_ir_reading": {
-            "displayName": "Raw IR reading",
-            "value": 37844
-          },
-          "total_voc": {
-            "displayName": "Total VOC",
-            "unit": "ppb",
-            "value": 273
+      "expected": {
+        "data": {
+          "battery": 2.962,
+          "ambientLightVisibleInfrared": 610,
+          "ambientLightInfrared": 105,
+          "co2SensorStatus": 0,
+          "rawIrReading": 37844,
+          "action": { "motion": { "count": 11, "detected": true } },
+          "totalVoc": 273,
+          "air": {
+            "temperature": 27.68,
+            "relativeHumidity": 36.44,
+            "pressure": 964.12,
+            "lightIntensity": 678.77,
+            "co2": 455
           }
         }
-      }
+      },
+      "source": "ttn-example"
     },
     {
-      "description": "Example 2",
+      "description": "Example 2 - CO2 sensor block absent (flags clear bit 4)",
       "input": {
         "fPort": 1,
-        "bytes": [
-          2,
-          11,
-          189,
-          0,
-          111,
-          11,
-          146,
-          106,
-          81,
-          93,
-          72,
-          188,
-          78,
-          2,
-          98,
-          0,
-          105,
-          0,
-          11,
-          1,
-          17
-        ]
+        "bytes": [2, 11, 189, 0, 111, 11, 146, 106, 81, 93, 72, 188, 78, 2, 98, 0, 105, 0, 11, 1, 17]
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "activity_counter": {
-            "displayName": "Activity counter",
-            "value": 11
-          },
-          "air_humidity": {
-            "displayName": "Air humidity",
-            "unit": "%",
-            "value": 36.438544289311054
-          },
-          "air_temperature": {
-            "displayName": "Air temperature",
-            "unit": "°C",
-            "value": 27.67833981841764
-          },
-          "ambient_light_infrared": {
-            "displayName": "Ambient light (infrared)",
-            "value": 105
-          },
-          "ambient_light_visible_infrared": {
-            "displayName": "Ambient light (visible + infrared)",
-            "value": 610
-          },
-          "barometric_pressure": {
-            "displayName": "Barometric pressure",
-            "unit": "Pa",
-            "value": 96412
-          },
-          "battery_voltage": {
-            "displayName": "Battery voltage",
-            "unit": "V",
-            "value": 2.962
-          },
-          "device_id": 3005,
-          "illuminance": {
-            "displayName": "Illuminance",
-            "unit": "lx",
-            "value": 678.76512
-          },
-          "protocol_version": 2,
-          "total_voc": {
-            "displayName": "Total VOC",
-            "unit": "ppb",
-            "value": 273
+      "expected": {
+        "data": {
+          "battery": 2.962,
+          "ambientLightVisibleInfrared": 610,
+          "ambientLightInfrared": 105,
+          "action": { "motion": { "count": 11, "detected": true } },
+          "totalVoc": 273,
+          "air": {
+            "temperature": 27.68,
+            "relativeHumidity": 36.44,
+            "pressure": 964.12,
+            "lightIntensity": 678.77
           }
         }
-      }
+      },
+      "source": "ttn-example"
     },
     {
-      "description": "Example 3",
+      "description": "Example 3 - battery only",
       "input": {
         "fPort": 1,
-        "bytes": [
-          2,
-          11,
-          189,
-          0,
-          1,
-          11,
-          146
-        ]
+        "bytes": [2, 11, 189, 0, 1, 11, 146]
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "battery_voltage": {
-            "displayName": "Battery voltage",
-            "unit": "V",
-            "value": 2.962
-          },
-          "device_id": 3005,
-          "protocol_version": 2
+      "expected": {
+        "data": {
+          "battery": 2.962
         }
-      }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Protocol version mismatch - first byte is not 2",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 11, 189, 0, 1, 11, 146]
+      },
+      "expected": {
+        "errors": ["protocol version 1 doesn't match v2"]
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Short payload - fewer than 5 header bytes",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 11, 189]
+      },
+      "expected": {
+        "errors": ["payload too short"]
+      },
+      "source": "synthetic"
     }
   ],
   "downlink": []

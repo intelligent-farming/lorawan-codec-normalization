@@ -22,36 +22,53 @@
           0
         ]
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "battery_voltage": {
-            "displayName": "Battery voltage",
-            "unit": "V",
-            "value": 3
+      "expected": {
+        "data": {
+          "air": {
+            "pressure": 1000,
+            "temperature": 25,
+            "relativeHumidity": 50
           },
-          "humidity": {
-            "displayName": "Relative humidity",
-            "unit": "%",
-            "value": 50
-          },
-          "light": {
-            "displayName": "Red led status",
-            "value": "ON"
-          },
-          "pressure": {
-            "displayName": "Barometric pressure",
-            "unit": "hPa",
-            "value": 1000
-          },
-          "temperature": {
-            "displayName": "Internal temperature",
-            "unit": "°C",
-            "value": 25
-          }
+          "battery": 3,
+          "redLedStatus": "ON"
         }
-      }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "negative internal temperature, LED off",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          0,
+          39,
+          146,
+          251,
+          1,
+          110,
+          200,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "pressure": 1013,
+            "temperature": -5,
+            "relativeHumidity": 36.6
+          },
+          "battery": 2.745,
+          "redLedStatus": "OFF"
+        }
+      },
+      "source": "synthetic"
     },
     {
       "description": "Unknown FPort",
@@ -68,6 +85,23 @@
         ]
       },
       "source": "ttn-example"
+    },
+    {
+      "description": "payload too short on fPort 2",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          1,
+          39,
+          16
+        ]
+      },
+      "expected": {
+        "errors": [
+          "payload too short"
+        ]
+      },
+      "source": "synthetic"
     }
   ],
   "downlink": []

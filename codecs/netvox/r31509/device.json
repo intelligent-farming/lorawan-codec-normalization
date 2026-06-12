@@ -1,21 +1,15 @@
 {
   "vendor": "netvox",
   "device": "r31509",
-  "name": "R31509 - Wireless Temperature / Humidity / Light / Water Leak / Reed Switch / Dry Contact Input Sensor",
+  "name": "R31509 - Wireless Temperature / Humidity / Light Sensor",
   "categories": [
     "climate",
-    "light",
-    "water-leak",
-    "water-meter",
-    "contact"
+    "light"
   ],
   "sensors": [
     "temperature",
     "humidity",
-    "light",
-    "water",
-    "reed switch",
-    "digital input"
+    "light"
   ],
   "variantOf": null,
   "downlink": {
@@ -29,6 +23,5 @@
     "codecFile": "payload/r315.js",
     "codecSha256": "f72c534f51a6013134a63e9be777e31bcc9045767c80546f8e01bb8a5a91481c",
     "referencedAt": "2026-06-12"
-  },
-  "draft": true
+  }
 }

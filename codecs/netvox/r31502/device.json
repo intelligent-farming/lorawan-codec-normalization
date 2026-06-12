@@ -4,9 +4,7 @@
   "name": "R31502 - Wireless Temperature / Humidity / Light / Tilt / Reed Switch / External Vibration Sensor",
   "categories": [
     "climate",
-    "light",
-    "motion",
-    "contact"
+    "light"
   ],
   "sensors": [
     "temperature",
@@ -28,6 +26,5 @@
     "codecFile": "payload/r315.js",
     "codecSha256": "f72c534f51a6013134a63e9be777e31bcc9045767c80546f8e01bb8a5a91481c",
     "referencedAt": "2026-06-12"
-  },
-  "draft": true
+  }
 }

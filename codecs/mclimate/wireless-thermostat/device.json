@@ -8,6 +8,7 @@
     "motion"
   ],
   "sensors": [
+    "battery",
     "temperature",
     "humidity",
     "pir",
@@ -25,6 +26,5 @@
     "codecFile": "wireless-thermostat.js",
     "codecSha256": "10727a6e26c3d5f7c107b46c0b4a37cbb921c99dbbc3f3a31534660d5637a6e9",
     "referencedAt": "2026-06-12"
-  },
-  "draft": true
+  }
 }

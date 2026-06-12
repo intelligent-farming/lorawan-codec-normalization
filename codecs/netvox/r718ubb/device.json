@@ -5,17 +5,15 @@
   "categories": [
     "climate",
     "air-quality",
-    "light",
-    "weather-station",
-    "motion"
+    "light"
   ],
   "sensors": [
     "temperature",
     "humidity",
     "co2",
-    "vibration",
     "pressure",
-    "light"
+    "light",
+    "vibration"
   ],
   "variantOf": null,
   "downlink": {
@@ -29,6 +27,5 @@
     "codecFile": "payload/r718ub.js",
     "codecSha256": "ec189c2254413a5c27011a3da2021bb41b509e6f34b93ea156e761483ed580d9",
     "referencedAt": "2026-06-12"
-  },
-  "draft": true
+  }
 }

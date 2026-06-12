@@ -6,8 +6,8 @@
     "climate",
     "light",
     "water-leak",
-    "water-meter",
-    "contact"
+    "contact",
+    "motion"
   ],
   "sensors": [
     "magnetometer",
@@ -29,6 +29,5 @@
     "codecFile": "strips.js",
     "codecSha256": "1b65650175a6850b62f919d4cbadfcdf668000df8c7a6d3c1d76850d04f78721",
     "referencedAt": "2026-06-12"
-  },
-  "draft": true
+  }
 }

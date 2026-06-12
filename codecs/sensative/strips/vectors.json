@@ -1,60 +1,125 @@
 {
   "uplink": [
     {
-      "description": "payload",
+      "description": "fPort 1 current report (upstream example): battery 80%, temp 23.4C, temp alarm clear, flood 0%, flood alarm clear, user switch clear",
       "input": {
         "fPort": 1,
-        "bytes": [
-          255,
-          255,
-          1,
-          80,
-          2,
-          0,
-          234,
-          3,
-          0,
-          13,
-          0,
-          14,
-          0,
-          16,
-          0
-        ]
+        "bytes": [255, 255, 1, 80, 2, 0, 234, 3, 0, 13, 0, 14, 0, 16, 0]
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "battery": 80,
-          "flood": {
-            "value": 0
-          },
-          "floodAlarm": {
-            "value": false
-          },
-          "historySeqNr": 65535,
-          "prevHistSeqNr": 65535,
-          "tempAlarm": {
-            "highAlarm": false,
-            "lowAlarm": false
-          },
-          "temperature": {
-            "value": 23.4
-          },
-          "userSwitch1Alarm": {
-            "value": false
-          }
-        },
-        "normalizedOutput": [
-          {
-            "air": {
-              "temperature": 23.4
-            },
-            "battery": 80
-          }
-        ]
-      }
+      "expected": {
+        "data": {
+          "batteryPercent": 80,
+          "temperatureAlarm": { "high": false, "low": false },
+          "floodPercent": 0,
+          "water": { "leak": false },
+          "userSwitch1Alarm": false,
+          "air": { "temperature": 23.4 }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "fPort 1: temperature 21.5C + humidity 55% (climate coverage)",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 2, 0, 215, 6, 110]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 21.5, "relativeHumidity": 55 }
+        }
+      },
+      "source": "datasheet"
+    },
+    {
+      "description": "fPort 1: negative temperature -5.0C (two's-complement)",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 2, 255, 206]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": -5 }
+        }
+      },
+      "source": "datasheet"
+    },
+    {
+      "description": "fPort 1: ambient light 1234 lux + battery 90% (light coverage)",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 7, 4, 210, 1, 90]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 90,
+          "air": { "lightIntensity": 1234 }
+        }
+      },
+      "source": "datasheet"
+    },
+    {
+      "description": "fPort 1: door/reed open (channel 9 = 0) + battery 77% (contact coverage)",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 9, 0, 1, 77]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 77,
+          "action": { "contactState": "open" }
+        }
+      },
+      "source": "datasheet"
+    },
+    {
+      "description": "fPort 1: door/reed closed (channel 9 = 1)",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 9, 1]
+      },
+      "expected": {
+        "data": {
+          "action": { "contactState": "closed" }
+        }
+      },
+      "source": "datasheet"
+    },
+    {
+      "description": "fPort 1: presence/PIR motion detected + battery 60% (motion coverage)",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 18, 1, 1, 60]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 60,
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "datasheet"
+    },
+    {
+      "description": "fPort 2 history report is not resolvable to a deterministic timestamp",
+      "input": {
+        "fPort": 2,
+        "bytes": [0, 0, 0, 0, 0, 5, 2, 0, 234]
+      },
+      "expected": {
+        "errors": ["unsupported fPort: 2"]
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "fPort 1 with only an unknown channel id yields no recognized channels",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 22, 3]
+      },
+      "expected": {
+        "errors": ["no recognized Sensative channels"]
+      },
+      "source": "synthetic"
     }
   ],
   "downlink": []

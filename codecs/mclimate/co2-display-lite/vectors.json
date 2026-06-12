@@ -1,7 +1,7 @@
 {
   "uplink": [
     {
-      "description": "Periodic uplink",
+      "description": "Periodic keepalive uplink (temperature, humidity, battery, CO2, light)",
       "input": {
         "fPort": 2,
         "bytes": [
@@ -17,18 +17,65 @@
           23
         ]
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "sensorTemperature": 21.1,
-          "relativeHumidity": 52.73,
-          "batteryVoltage": 2.73,
-          "CO2": 569,
-          "powerSourceStatus": 0,
-          "lux": 279
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 21.1,
+            "relativeHumidity": 52.73,
+            "co2": 569,
+            "lightIntensity": 279
+          },
+          "battery": 2.732,
+          "powerSourceStatus": 0
         }
-      }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Unsupported packet type (leading byte not 0x01)",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          4,
+          1,
+          2,
+          1,
+          2,
+          99,
+          135,
+          10,
+          172,
+          57,
+          16,
+          1,
+          23
+        ]
+      },
+      "expected": {
+        "errors": [
+          "unsupported packet type"
+        ]
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Truncated keepalive payload (fewer than 10 bytes)",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          1,
+          2,
+          99,
+          135,
+          10
+        ]
+      },
+      "expected": {
+        "errors": [
+          "too short"
+        ]
+      },
+      "source": "synthetic"
     }
   ],
   "downlink": []
