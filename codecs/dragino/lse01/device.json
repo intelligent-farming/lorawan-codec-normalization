@@ -1,0 +1,17 @@
+{
+  "vendor": "dragino",
+  "device": "lse01",
+  "name": "LSE01 - Soil Moisture & EC Sensor",
+  "categories": ["soil-monitor"],
+  "sensors": ["battery", "conductivity", "moisture", "temperature"],
+  "variantOf": null,
+  "downlink": { "encode": false, "decode": false },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "lse01",
+    "codecId": "lse01-codec",
+    "codecFile": "lse01.js",
+    "codecSha256": "cbe6b0337dad3c002e53a2176f7c4f7fe5894eb6e80ae7b0cbfe37bd86fdc099",
+    "referencedAt": "2026-06-12"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "id": "air-quality",
+  "name": "Air quality",
+  "description": "Indoor/greenhouse air-quality nodes built around a CO2 measurement.",
+  "requires": ["air.co2"],
+  "provides": ["air.temperature", "air.relativeHumidity", "air.pressure", "battery"],
+  "notes": "The vocabulary only models air.co2; TVOC/PM/IAQ values, if a device reports them, are camelCase extras (e.g. tvoc, pm2_5) — not vocabulary keys."
+}

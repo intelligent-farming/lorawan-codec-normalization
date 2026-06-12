@@ -1,0 +1,44 @@
+{
+  "uplink": [
+    {
+      "description": "Moisture & EC sensor reading (TTN example bytes)",
+      "input": {
+        "fPort": 2,
+        "bytes": [206, 41, 0, 241, 7, 165, 9, 155, 110, 40, 144]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.625,
+          "air": { "temperature": 24.1 },
+          "soil": { "moisture": 19.57, "temperature": 24.59, "ec": 28.2 }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Negative soil & probe temperatures (synthetic, exercises sign extension)",
+      "input": {
+        "fPort": 2,
+        "bytes": [14, 41, 255, 241, 7, 165, 255, 157, 0, 100, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.625,
+          "air": { "temperature": -1.5 },
+          "soil": { "moisture": 19.57, "temperature": -0.99, "ec": 0.1 }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unsupported fPort returns an error",
+      "input": {
+        "fPort": 42,
+        "bytes": [206, 41, 0, 241, 7, 165, 9, 155, 110, 40, 144]
+      },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

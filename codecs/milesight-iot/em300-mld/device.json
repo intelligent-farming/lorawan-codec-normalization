@@ -1,0 +1,25 @@
+{
+  "vendor": "milesight-iot",
+  "device": "em300-mld",
+  "name": "EM300-MLD - Leak Sensor",
+  "categories": [
+    "water-leak"
+  ],
+  "sensors": [
+    "battery",
+    "water"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "em300-mld",
+    "codecId": "em300-mld-codec",
+    "codecFile": "em300-mld.js",
+    "codecSha256": "bbe1e49c7b44ff280c9d588e32de04de275018cb071519f1ae47cfa07b721aa1",
+    "referencedAt": "2026-06-12"
+  }
+}

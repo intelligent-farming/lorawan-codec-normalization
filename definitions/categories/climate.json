@@ -1,0 +1,8 @@
+{
+  "id": "climate",
+  "name": "Climate",
+  "description": "Ambient temperature + humidity sensors (indoor or field micro-climate).",
+  "requires": ["air.temperature", "air.relativeHumidity"],
+  "provides": ["air.pressure", "air.co2", "battery"],
+  "notes": "relativeHumidity is a percentage 0-100. Pressure, when present, is hPa."
+}

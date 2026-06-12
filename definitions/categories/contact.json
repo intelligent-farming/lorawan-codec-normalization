@@ -1,0 +1,8 @@
+{
+  "id": "contact",
+  "name": "Contact",
+  "description": "Door/window reed or hall-effect sensors reporting open/closed state.",
+  "requires": ["action.contactState"],
+  "provides": ["action.motion.count", "battery"],
+  "notes": "action.contactState is the enum 'open' | 'closed'. Do NOT emit action.motion for a contact sensor (a known upstream copy-paste bug)."
+}

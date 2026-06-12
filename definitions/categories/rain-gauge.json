@@ -1,0 +1,8 @@
+{
+  "id": "rain-gauge",
+  "name": "Rain gauge",
+  "description": "Tipping-bucket or equivalent gauges reporting cumulative rainfall.",
+  "requires": ["rain.cumulative"],
+  "provides": ["rain.intensity", "battery"],
+  "notes": "cumulative is mm since reset; intensity is mm/hour."
+}

@@ -1,0 +1,10 @@
+{
+  "_note": "Snapshot of examples from TheThingsNetwork/lorawan-devices vendor/milesight-iot/em500-smtc-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball. The upstream example `output` is MISSING conductivity even though the wire (bytes 10-13: channel 0x05/0x7F) carries it — a documented upstream index-advance bug that our codec fixes.",
+  "examples": [
+    {
+      "description": "Soil Moisture, Temperature, Electrical Conductivity Sensor (example 1) - Milesight IoT",
+      "input": { "fPort": 85, "bytes": [1, 117, 92, 3, 103, 52, 1, 4, 104, 101, 5, 127, 240, 0] },
+      "output": { "data": { "battery": 92, "temperature": 30.8, "humidity": 50.5 } }
+    }
+  ]
+}

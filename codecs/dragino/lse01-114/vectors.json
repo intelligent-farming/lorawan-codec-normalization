@@ -1,0 +1,47 @@
+{
+  "uplink": [
+    {
+      "description": "Soil reading with status flags (synthetic, realistic soil values)",
+      "input": {
+        "fPort": 2,
+        "bytes": [14, 41, 0, 241, 7, 165, 9, 155, 0, 100, 53]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.625,
+          "air": { "temperature": 24.1 },
+          "soil": { "moisture": 19.57, "temperature": 24.59, "ec": 0.1 },
+          "sensorFlag": 3,
+          "interruptFlag": 5,
+          "hardwareFlag": 1
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Zeroed soil values with probe over-range (TTN example bytes)",
+      "input": {
+        "fPort": 2,
+        "bytes": [13, 59, 10, 239, 0, 0, 0, 0, 0, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.387,
+          "air": { "temperature": 279.9 },
+          "soil": { "moisture": 0, "temperature": 0, "ec": 0 },
+          "sensorFlag": 0,
+          "interruptFlag": 1,
+          "hardwareFlag": 0
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Unsupported fPort returns an error",
+      "input": { "fPort": 42, "bytes": [13, 59, 10, 239, 0, 0, 0, 0, 0, 0, 1] },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

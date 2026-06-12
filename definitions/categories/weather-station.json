@@ -1,0 +1,8 @@
+{
+  "id": "weather-station",
+  "name": "Weather station",
+  "description": "Multi-sensor outdoor stations reporting at least air temperature and barometric pressure.",
+  "requires": ["air.temperature", "air.pressure"],
+  "provides": ["air.relativeHumidity", "air.lightIntensity", "wind.speed", "wind.direction", "rain.intensity", "rain.cumulative", "battery"],
+  "notes": "A station may also satisfy the wind and rain-gauge categories; declare each it qualifies for."
+}

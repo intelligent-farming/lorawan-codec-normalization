@@ -1,0 +1,124 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+// Copyright (C) 2026 Intelligent Farming Foundation
+
+/**
+ * Lazy enumeration of the device registry under `codecs/<vendor>/<device>/`.
+ *
+ * A device folder is "real" when it contains a `device.json`. Folder names must
+ * match the `vendor`/`device` fields inside that file (enforced by the
+ * conformance suite). Nothing here imports the optional
+ * `@intelligent-farming/ttn-to-chirpstack` peer.
+ *
+ * @packageDocumentation
+ */
+
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+import type { DeviceInfo } from './types';
+
+/** Root of the device registry. */
+export const CODECS_DIR = path.join(__dirname, '..', 'codecs');
+
+interface DeviceLocation {
+  vendor: string;
+  device: string;
+  dir: string;
+}
+
+let locationCache: DeviceLocation[] | null = null;
+const infoCache = new Map<string, DeviceInfo>();
+
+function isDir(p: string): boolean {
+  try {
+    return fs.statSync(p).isDirectory();
+  } catch {
+    return false;
+  }
+}
+
+/** Enumerate every `<vendor>/<device>/` folder that has a `device.json`. */
+function locations(): DeviceLocation[] {
+  if (locationCache) return locationCache;
+  const out: DeviceLocation[] = [];
+  if (isDir(CODECS_DIR)) {
+    for (const vendor of fs.readdirSync(CODECS_DIR).sort()) {
+      const vendorDir = path.join(CODECS_DIR, vendor);
+      if (!isDir(vendorDir)) continue;
+      for (const device of fs.readdirSync(vendorDir).sort()) {
+        const dir = path.join(vendorDir, device);
+        if (isDir(dir) && fs.existsSync(path.join(dir, 'device.json'))) {
+          out.push({ vendor, device, dir });
+        }
+      }
+    }
+  }
+  locationCache = out;
+  return out;
+}
+
+function key(vendor: string, device: string): string {
+  return `${vendor}/${device}`;
+}
+
+function locate(vendor: string, device: string): DeviceLocation | undefined {
+  return locations().find((l) => l.vendor === vendor && l.device === device);
+}
+
+/** Absolute path to a device folder. Throws if the device is unknown. */
+export function deviceDir(vendor: string, device: string): string {
+  const loc = locate(vendor, device);
+  if (!loc) throw new Error(`unknown device ${key(vendor, device)}`);
+  return loc.dir;
+}
+
+/** Parsed `device.json` for one device. Throws if unknown. */
+export function device(vendor: string, deviceId: string): DeviceInfo {
+  const k = key(vendor, deviceId);
+  const cached = infoCache.get(k);
+  if (cached) return cached;
+  const loc = locate(vendor, deviceId);
+  if (!loc) throw new Error(`unknown device ${k}`);
+  const info = JSON.parse(
+    fs.readFileSync(path.join(loc.dir, 'device.json'), 'utf8'),
+  ) as DeviceInfo;
+  infoCache.set(k, info);
+  return info;
+}
+
+/** List every registry device, optionally filtered to one category. */
+export function devices(opts?: { category?: string }): DeviceInfo[] {
+  const all = locations().map((l) => device(l.vendor, l.device));
+  if (opts?.category) {
+    return all.filter((d) => d.categories.includes(opts.category as string));
+  }
+  return all;
+}
+
+/** Raw `codec.js` text for a device (console-ready). Throws if unknown. */
+export function codecScript(vendor: string, deviceId: string): string {
+  return fs.readFileSync(path.join(deviceDir(vendor, deviceId), 'codec.js'), 'utf8');
+}
+
+/** Parsed `vectors.json` for a device (or `{ uplink: [], downlink: [] }`). */
+export function vectors(
+  vendor: string,
+  deviceId: string,
+): { uplink: unknown[]; downlink: unknown[] } {
+  const file = path.join(deviceDir(vendor, deviceId), 'vectors.json');
+  if (!fs.existsSync(file)) return { uplink: [], downlink: [] };
+  const parsed = JSON.parse(fs.readFileSync(file, 'utf8')) as {
+    uplink?: unknown[];
+    downlink?: unknown[];
+  };
+  return { uplink: parsed.uplink ?? [], downlink: parsed.downlink ?? [] };
+}
+
+/**
+ * Reset the registry caches. Test-only.
+ *
+ * @internal
+ */
+export function _resetCaches(): void {
+  locationCache = null;
+  infoCache.clear();
+}

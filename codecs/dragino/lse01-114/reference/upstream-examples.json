@@ -1,0 +1,17 @@
+{
+  "_note": "Snapshot of examples from TheThingsNetwork/lorawan-devices vendor/dragino/lse01-114-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball. `output` is the upstream (non-normalized) decode. This variant has no upstream normalizeUplink; our codec.js is authored independently.",
+  "examples": [
+    {
+      "description": "Liquid height",
+      "input": { "fPort": 2, "bytes": [13, 59, 10, 239, 0, 0, 0, 0, 0, 0, 1] },
+      "output": {
+        "data": { "Bat": 3.387, "Hardware_flag": 0, "Interrupt_flag": 1, "Sensor_flag": 0, "TempC_DS18B20": "279.90", "conduct_SOIL": 0, "temp_SOIL": "0.00", "water_SOIL": "0.00" }
+      }
+    },
+    {
+      "description": "Unknown FPort",
+      "input": { "fPort": 42, "bytes": [13, 59, 10, 239, 0, 0, 0, 0, 0, 0, 1] },
+      "output": { "errors": ["unknown FPort"] }
+    }
+  ]
+}

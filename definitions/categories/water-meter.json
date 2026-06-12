@@ -1,0 +1,8 @@
+{
+  "id": "water-meter",
+  "name": "Water meter",
+  "description": "Volumetric water meters reporting a cumulative total volume.",
+  "requires": ["metering.water.total"],
+  "provides": ["water.temperature.current", "battery"],
+  "notes": "metering.water.total is litres (multiply m^3 readings by 1000)."
+}

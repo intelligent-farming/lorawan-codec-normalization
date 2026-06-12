@@ -1,0 +1,8 @@
+{
+  "id": "water-leak",
+  "name": "Water leak",
+  "description": "Spot/rope leak detectors reporting a boolean leak state.",
+  "requires": ["water.leak"],
+  "provides": ["water.temperature.current", "battery"],
+  "notes": "water.leak is boolean (true = leak detected)."
+}

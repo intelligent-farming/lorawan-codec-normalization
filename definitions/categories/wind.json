@@ -1,0 +1,8 @@
+{
+  "id": "wind",
+  "name": "Wind",
+  "description": "Anemometers reporting wind speed (and usually direction).",
+  "requires": ["wind.speed"],
+  "provides": ["wind.direction", "battery"],
+  "notes": "speed is m/s (knots x 0.514444); direction is degrees 0 to <360."
+}

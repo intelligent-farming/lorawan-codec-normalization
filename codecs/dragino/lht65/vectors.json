@@ -1,0 +1,40 @@
+{
+  "uplink": [
+    {
+      "description": "Built-in SHT temp/humidity + external probe (TTN example bytes)",
+      "input": {
+        "fPort": 2,
+        "bytes": [203, 246, 11, 13, 3, 118, 1, 10, 221, 127, 255]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.062,
+          "air": { "location": "indoor", "temperature": 28.29, "relativeHumidity": 88.6 },
+          "externalTemperature": 27.81
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Negative indoor temperature, no external sensor (synthetic)",
+      "input": {
+        "fPort": 2,
+        "bytes": [10, 40, 255, 156, 2, 76, 0, 0, 0, 127, 255]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.6,
+          "air": { "location": "indoor", "temperature": -1, "relativeHumidity": 58.8 }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unsupported fPort returns an error",
+      "input": { "fPort": 42, "bytes": [203, 246, 11, 13, 3, 118, 1, 10, 221, 127, 255] },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

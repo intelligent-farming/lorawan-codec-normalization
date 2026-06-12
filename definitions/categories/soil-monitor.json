@@ -1,0 +1,8 @@
+{
+  "id": "soil-monitor",
+  "name": "Soil monitor",
+  "description": "In-ground probes. Every member reports soil moisture and temperature.",
+  "requires": ["soil.moisture", "soil.temperature"],
+  "provides": ["soil.ec", "soil.pH", "soil.n", "soil.p", "soil.k", "soil.depth", "battery", "air.temperature"],
+  "notes": "soil.ec is dS/m (upstream codecs often emit uS/cm — divide by 1000)."
+}

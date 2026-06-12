@@ -1,0 +1,44 @@
+{
+  "uplink": [
+    {
+      "description": "Leak detected with RTC timestamp (TTN example bytes)",
+      "input": {
+        "fPort": 2,
+        "bytes": [1, 0, 0, 10, 0, 0, 10, 99, 92, 210, 242]
+      },
+      "expected": {
+        "data": {
+          "water": { "leak": true },
+          "alarm": false,
+          "leakEvents": 10,
+          "lastLeakDuration": 10,
+          "time": "2022-10-29T07:14:58.000Z"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "No leak, unconfigured clock (synthetic; time omitted)",
+      "input": {
+        "fPort": 2,
+        "bytes": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "water": { "leak": false },
+          "alarm": false,
+          "leakEvents": 0,
+          "lastLeakDuration": 0
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unsupported fPort returns an error",
+      "input": { "fPort": 3, "bytes": [1, 0, 0, 10, 0, 0, 10, 99, 92, 210, 242] },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,8 @@
+{
+  "id": "light",
+  "name": "Light",
+  "description": "Ambient light / illuminance sensors.",
+  "requires": ["air.lightIntensity"],
+  "provides": ["battery"],
+  "notes": "lightIntensity is lux. Lux-to-PAR conversion is application-specific and out of scope."
+}

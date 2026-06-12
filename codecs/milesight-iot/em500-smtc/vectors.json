@@ -1,0 +1,39 @@
+{
+  "uplink": [
+    {
+      "description": "Soil moisture, temperature & EC (TTN example bytes; recovers the EC the upstream codec drops)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 92, 3, 103, 52, 1, 4, 104, 101, 5, 127, 240, 0]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 92,
+          "soil": { "temperature": 30.8, "moisture": 50.5, "ec": 0.24 }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Negative soil temperature, no EC channel (synthetic)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 80, 3, 103, 241, 255, 4, 104, 40]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 80,
+          "soil": { "temperature": -1.5, "moisture": 20 }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unrecognized channel returns an error",
+      "input": { "fPort": 85, "bytes": [255, 1] },
+      "expected": { "errors": ["no recognized Milesight channels"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,8 @@
+{
+  "id": "gps-tracker",
+  "name": "GPS tracker",
+  "description": "Asset/livestock trackers reporting a GNSS position fix.",
+  "requires": ["position.latitude", "position.longitude"],
+  "provides": ["battery"],
+  "notes": "latitude/longitude in decimal degrees (WGS84). Altitude is not modelled by the vocabulary."
+}

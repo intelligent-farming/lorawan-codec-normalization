@@ -1,0 +1,22 @@
+{
+  "_note": "Snapshot of examples from TheThingsNetwork/lorawan-devices vendor/dragino/lse01-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball. `output` is the upstream (non-normalized) decode; `normalizedOutput` is upstream's normalizeUplink result, retained for cross-checking only — our codec.js is authored independently.",
+  "examples": [
+    {
+      "description": "Moisture & EC Sensor",
+      "input": { "fPort": 2, "bytes": [206, 41, 0, 241, 7, 165, 9, 155, 110, 40, 144] },
+      "output": {
+        "data": { "Bat": 3.625, "TempC_DS18B20": "24.1", "conduct_SOIL": 28200, "temp_SOIL": "24.59", "water_SOIL": "19.57" }
+      },
+      "normalizedOutput": {
+        "data": [
+          { "air": { "temperature": 24.1 }, "soil": { "temperature": 24.59, "moisture": 19.57, "ec": 28.2 }, "battery": 3.625 }
+        ]
+      }
+    },
+    {
+      "description": "Unknown FPort",
+      "input": { "fPort": 42, "bytes": [206, 41, 0, 241, 7, 165, 9, 155, 110, 40, 144] },
+      "output": { "errors": ["unknown FPort"] }
+    }
+  ]
+}

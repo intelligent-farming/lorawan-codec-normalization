@@ -1,0 +1,17 @@
+{
+  "vendor": "milesight-iot",
+  "device": "em500-smtc",
+  "name": "EM500-SMTC - Soil Moisture, Temperature & EC Sensor",
+  "categories": ["soil-monitor"],
+  "sensors": ["battery", "moisture", "temperature", "conductivity"],
+  "variantOf": null,
+  "downlink": { "encode": false, "decode": false },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "em500-smtc",
+    "codecId": "em500-smtc-codec",
+    "codecFile": "em500-smtc.js",
+    "codecSha256": "26024d83a406ec1f4c97c08db0ae725ea97e889e4b4871e1048a9e7e0778204b",
+    "referencedAt": "2026-06-12"
+  }
+}

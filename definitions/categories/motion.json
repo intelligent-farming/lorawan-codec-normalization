@@ -1,0 +1,8 @@
+{
+  "id": "motion",
+  "name": "Motion",
+  "description": "PIR/occupancy/accelerometer nodes reporting motion events.",
+  "requires": ["action.motion"],
+  "provides": ["action.motion.detected", "action.motion.count", "battery"],
+  "notes": "action.motion is an object with boolean `detected` and/or numeric `count`."
+}

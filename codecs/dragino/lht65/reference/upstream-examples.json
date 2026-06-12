@@ -1,0 +1,23 @@
+{
+  "_note": "Snapshot of examples from TheThingsNetwork/lorawan-devices vendor/dragino/lht65-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball. `output` is the upstream (non-normalized) decode; `normalizedOutput` is upstream's normalizeUplink (a two-element array) retained only for cross-checking — our codec.js produces a single measurement.",
+  "examples": [
+    {
+      "description": "Temperature",
+      "input": { "fPort": 2, "bytes": [203, 246, 11, 13, 3, 118, 1, 10, 221, 127, 255] },
+      "output": {
+        "data": { "BatV": 3.062, "Bat_status": 3, "Ext_sensor": "Temperature Sensor", "Hum_SHT": 88.6, "TempC_DS": 27.81, "TempC_SHT": 28.29 }
+      },
+      "normalizedOutput": {
+        "data": [
+          { "air": { "location": "indoor", "temperature": 28.29, "relativeHumidity": 88.6 } },
+          { "air": { "location": "outdoor", "temperature": 27.81 }, "battery": 3.062 }
+        ]
+      }
+    },
+    {
+      "description": "Unknown FPort",
+      "input": { "fPort": 42, "bytes": [203, 246, 11, 13, 3, 118, 1, 10, 221, 127, 255] },
+      "output": { "errors": ["unknown FPort"] }
+    }
+  ]
+}

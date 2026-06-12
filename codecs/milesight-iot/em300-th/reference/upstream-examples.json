@@ -1,0 +1,13 @@
+{
+  "_note": "Snapshot of examples from TheThingsNetwork/lorawan-devices vendor/milesight-iot/em300-th-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball. Note upstream's normalizedOutput puts the percentage battery into `battery` (volts) — we deliberately diverge to `batteryPercent`.",
+  "examples": [
+    {
+      "description": "Example with battery, temperature, and humidity",
+      "input": { "fPort": 1, "bytes": [1, 117, 50, 3, 103, 200, 0, 4, 104, 60] },
+      "output": { "data": { "battery": 50, "temperature": 20.0, "humidity": 30.0 } },
+      "normalizedOutput": {
+        "data": [{ "air": { "temperature": 20.0, "relativeHumidity": 30.0 }, "battery": 50 }]
+      }
+    }
+  ]
+}

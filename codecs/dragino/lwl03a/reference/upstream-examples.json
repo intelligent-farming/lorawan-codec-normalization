@@ -1,0 +1,15 @@
+{
+  "_note": "Snapshot of examples from TheThingsNetwork/lorawan-devices vendor/dragino/lwl03a-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball. `output` is the upstream (non-normalized) decode; `normalizedOutput` is upstream's normalizeUplink result, retained for cross-checking only.",
+  "examples": [
+    {
+      "description": "Distance Detection",
+      "input": { "fPort": 2, "bytes": [1, 0, 0, 10, 0, 0, 10, 99, 92, 210, 242] },
+      "output": {
+        "data": { "TDC": "NO", "ALARM": "FALSE", "WATER_LEAK_STATUS": "LEAK", "WATER_LEAK_TIMES": 10, "LAST_WATER_LEAK_DURATION": 10, "TIME": "2022-10-29 07:14:58" }
+      },
+      "normalizedOutput": {
+        "data": [{ "water": { "leak": true } }]
+      }
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/milesight-iot/em300-mld-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "LoRaWAN leak sensor that incorporatesaflexible printed membrane - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          1,
+          117,
+          92,
+          5,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "battery": 92,
+          "leakage_status": "normal"
+        }
+      }
+    },
+    {
+      "description": "LoRaWAN leak sensor that incorporatesaflexible printed membrane - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          1,
+          117,
+          92,
+          5,
+          0,
+          1
+        ]
+      },
+      "output": {
+        "data": {
+          "battery": 92,
+          "leakage_status": "leak"
+        }
+      }
+    }
+  ]
+}

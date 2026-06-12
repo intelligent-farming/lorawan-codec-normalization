@@ -1,0 +1,39 @@
+{
+  "uplink": [
+    {
+      "description": "Battery, temperature, and humidity (TTN example bytes)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 117, 50, 3, 103, 200, 0, 4, 104, 60]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 50,
+          "air": { "temperature": 20, "relativeHumidity": 30 }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Negative temperature (synthetic, exercises signed LE decode)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 117, 100, 3, 103, 246, 255, 4, 104, 91]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 100,
+          "air": { "temperature": -1, "relativeHumidity": 45.5 }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unrecognized channel returns an error",
+      "input": { "fPort": 1, "bytes": [255, 1, 0] },
+      "expected": { "errors": ["no recognized Milesight channels"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

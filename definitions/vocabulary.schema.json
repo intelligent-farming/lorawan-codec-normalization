@@ -1,0 +1,274 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.intlfarming.com/lorawan-codec-normalization/vocabulary/1",
+  "title": "Normalized LoRaWAN Payload Vocabulary",
+  "description": "The fixed vocabulary of normalized measurement keys, units, and value bounds shared by every codec in this module.",
+  "$comment": "Adapted from TheThingsNetwork/lorawan-devices lib/payload.json (Apache-2.0; attributed in NOTICE). Local checkout snapshot referenced 2026-06-12 (upstream commit unavailable from this checkout). Deliberate forks from upstream: (1) additionalProperties is `true` at every object level so codecs may emit device-specific extras — conflicts/case-collisions are enforced in code (src/validate.ts), not by this schema; (2) the root validates a SINGLE measurement object rather than upstream's array, matching this module's single-object decode shape; (3) a reserved `history` array key (datalog uplinks) is handled in code, not declared here, so a non-array `history` is reported as a `reserved-key` issue. All $defs value bounds are kept verbatim from upstream. Never blind-copy upstream over these forks.",
+  "$defs": {
+    "temperature": {
+      "type": "number",
+      "description": "Temperature (°C)",
+      "minimum": -273.15
+    },
+    "direction": {
+      "type": "number",
+      "description": "Direction (°)",
+      "minimum": 0,
+      "exclusiveMaximum": 360
+    },
+    "speed": {
+      "type": "number",
+      "description": "Speed (m/s)",
+      "minimum": 0
+    },
+    "depth": {
+      "type": "number",
+      "description": "Depth from the surface (cm)",
+      "minimum": 0
+    },
+    "pH": {
+      "type": "number",
+      "description": "pH level",
+      "minimum": 0,
+      "maximum": 14
+    },
+    "concentration": {
+      "type": "number",
+      "description": "Concentration (ppm)",
+      "minimum": 0,
+      "maximum": 1000000
+    },
+    "illuminance": {
+      "type": "number",
+      "description": "Illuminance (lux)",
+      "minimum": 0
+    },
+    "percentage": {
+      "type": "number",
+      "description": "Percentage (%)",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "rainfallIntensity": {
+      "type": "number",
+      "description": "Rainfall intensity (mm/hour)",
+      "minimum": 0
+    },
+    "cumulativeRainfall": {
+      "type": "number",
+      "description": "Cumulative rainfall (mm)",
+      "minimum": 0
+    },
+    "measurement": {
+      "type": "object",
+      "properties": {
+        "time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date and time of the measurement (RFC3339)"
+        },
+        "battery": {
+          "type": "number",
+          "description": "Voltage (V)",
+          "minimum": 0
+        },
+        "soil": {
+          "type": "object",
+          "properties": {
+            "depth": {
+              "description": "Depth of the soil measurement (cm)",
+              "$ref": "#/$defs/depth"
+            },
+            "moisture": {
+              "description": "Soil moisture (%)",
+              "$ref": "#/$defs/percentage"
+            },
+            "temperature": {
+              "description": "Soil temperature (°C)",
+              "$ref": "#/$defs/temperature"
+            },
+            "ec": {
+              "description": "Soil electrical conductivity (dS/m)",
+              "type": "number",
+              "minimum": 0,
+              "maximum": 621
+            },
+            "pH": {
+              "description": "Soil pH level",
+              "$ref": "#/$defs/pH"
+            },
+            "n": {
+              "description": "Concentration of Nitrogen in the soil (ppm)",
+              "$ref": "#/$defs/concentration"
+            },
+            "p": {
+              "description": "Concentration of Phosphorus in the soil (ppm)",
+              "$ref": "#/$defs/concentration"
+            },
+            "k": {
+              "description": "Concentration of Potassium in the soil (ppm)",
+              "$ref": "#/$defs/concentration"
+            }
+          },
+          "additionalProperties": true
+        },
+        "air": {
+          "type": "object",
+          "properties": {
+            "location": {
+              "type": "string",
+              "enum": ["indoor", "outdoor"],
+              "description": "Specifies whether the measurement was taken indoors or outdoors."
+            },
+            "temperature": {
+              "description": "Air temperature (°C)",
+              "$ref": "#/$defs/temperature"
+            },
+            "relativeHumidity": {
+              "description": "Relative humidity (%)",
+              "$ref": "#/$defs/percentage"
+            },
+            "pressure": {
+              "type": "number",
+              "description": "Atmospheric pressure (hPa)",
+              "minimum": 900,
+              "maximum": 1100
+            },
+            "co2": {
+              "description": "Concentration of CO2 in the air (ppm)",
+              "$ref": "#/$defs/concentration"
+            },
+            "lightIntensity": {
+              "description": "Light intensity (lux)",
+              "$ref": "#/$defs/illuminance"
+            }
+          },
+          "additionalProperties": true
+        },
+        "wind": {
+          "type": "object",
+          "properties": {
+            "speed": {
+              "description": "Wind speed (m/s)",
+              "$ref": "#/$defs/speed"
+            },
+            "direction": {
+              "description": "Wind direction (°)",
+              "$ref": "#/$defs/direction"
+            }
+          },
+          "additionalProperties": true
+        },
+        "rain": {
+          "type": "object",
+          "properties": {
+            "intensity": {
+              "description": "Rainfall intensity (mm/hour)",
+              "$ref": "#/$defs/rainfallIntensity"
+            },
+            "cumulative": {
+              "description": "Cumulative rainfall (mm)",
+              "$ref": "#/$defs/cumulativeRainfall"
+            }
+          },
+          "additionalProperties": true
+        },
+        "water": {
+          "type": "object",
+          "properties": {
+            "leak": {
+              "type": "boolean",
+              "description": "Leak detected"
+            },
+            "temperature": {
+              "type": "object",
+              "properties": {
+                "min": {
+                  "description": "Minimum temperature (°C)",
+                  "$ref": "#/$defs/temperature"
+                },
+                "max": {
+                  "description": "Maximum temperature (°C)",
+                  "$ref": "#/$defs/temperature"
+                },
+                "avg": {
+                  "description": "Average temperature (°C)",
+                  "$ref": "#/$defs/temperature"
+                },
+                "current": {
+                  "description": "Current temperature (°C)",
+                  "$ref": "#/$defs/temperature"
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": true
+        },
+        "metering": {
+          "type": "object",
+          "properties": {
+            "water": {
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "number",
+                  "minimum": 0,
+                  "description": "Total volume (L)"
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": true
+        },
+        "action": {
+          "type": "object",
+          "properties": {
+            "motion": {
+              "type": "object",
+              "properties": {
+                "detected": {
+                  "type": "boolean",
+                  "description": "Motion detected"
+                },
+                "count": {
+                  "type": "number",
+                  "minimum": 0,
+                  "description": "Number of motion events (count)"
+                }
+              },
+              "additionalProperties": true
+            },
+            "contactState": {
+              "type": "string",
+              "description": "State of a contact sensor",
+              "enum": ["open", "closed"]
+            }
+          },
+          "additionalProperties": true
+        },
+        "position": {
+          "type": "object",
+          "properties": {
+            "latitude": {
+              "type": "number",
+              "minimum": -90,
+              "maximum": 90,
+              "description": "Horizontal distance from equator (°)"
+            },
+            "longitude": {
+              "type": "number",
+              "minimum": -180,
+              "maximum": 180,
+              "description": "Vertical distance from prime meridian (°)"
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "$ref": "#/$defs/measurement"
+}
