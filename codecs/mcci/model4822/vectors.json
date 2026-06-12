@@ -1,38 +1,46 @@
 {
   "uplink": [
     {
-      "description": "Sensor report format 0x14, no pulse/power input",
+      "description": "Sensor report format 0x14: battery, boot, temp/pressure/RH, lux",
       "input": {
         "fPort": 1,
-        "bytes": [
-          20,
-          29,
-          67,
-          35,
-          17,
-          25,
-          82,
-          95,
-          151,
-          174,
-          1,
-          2
-        ]
+        "bytes": [20, 29, 67, 35, 17, 25, 82, 95, 151, 174, 1, 2]
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
+      "expected": {
+        "data": {
+          "battery": 4.196,
           "boot": 17,
-          "error": "none",
-          "lux": 258,
-          "p": 978.84,
-          "rh": 67.96875,
-          "tDewC": 18.981996766825645,
-          "tempC": 25.3203125,
-          "vBat": 4.196044921875
+          "air": {
+            "temperature": 25.3203,
+            "pressure": 978.84,
+            "relativeHumidity": 67.96875,
+            "lightIntensity": 258
+          }
         }
-      }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Unsupported fPort is rejected",
+      "input": {
+        "fPort": 2,
+        "bytes": [1, 67, 35]
+      },
+      "expected": {
+        "errors": ["unsupported fPort"]
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unsupported sensor report format byte is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [21, 1, 67, 35]
+      },
+      "expected": {
+        "errors": ["unsupported sensor report format"]
+      },
+      "source": "synthetic"
     }
   ],
   "downlink": []

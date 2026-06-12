@@ -5,14 +5,12 @@
   "categories": [
     "climate",
     "light",
-    "weather-station",
-    "motion"
+    "weather-station"
   ],
   "sensors": [
     "temperature",
     "humidity",
     "light",
-    "pir",
     "digital input",
     "analog input",
     "battery",
@@ -31,6 +29,5 @@
     "codecFile": "codec-port2-fmt2.js",
     "codecSha256": "0b6d05a9ef9afc34d8eb334cbecef27c3b0a915df1a3aa7361d6027801a3a2ad",
     "referencedAt": "2026-06-12"
-  },
-  "draft": true
+  }
 }

@@ -1,38 +1,70 @@
 {
   "uplink": [
     {
-      "description": "Sensor report format 0x14, no pulse/power input",
+      "description": "Port 1 format 0x14 (4450 base): battery, boot, temp/pressure/RH, lux",
       "input": {
         "fPort": 1,
-        "bytes": [
-          20,
-          29,
-          67,
-          35,
-          17,
-          25,
-          82,
-          95,
-          151,
-          174,
-          1,
-          2
-        ]
+        "bytes": [20, 29, 67, 35, 17, 25, 82, 95, 151, 174, 1, 2]
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
+      "expected": {
+        "data": {
+          "battery": 4.196,
           "boot": 17,
-          "error": "none",
-          "lux": 258,
-          "p": 978.84,
-          "rh": 67.96875,
-          "tDewC": 18.981996766825645,
-          "tempC": 25.3203125,
-          "vBat": 4.196044921875
+          "air": {
+            "temperature": 25.3203,
+            "pressure": 978.84,
+            "relativeHumidity": 67.9688,
+            "lightIntensity": 258
+          }
         }
-      }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Port 1 format 0x17 (4460 AQI): adds indoor air quality, VOC gas resistance and quality flag",
+      "input": {
+        "fPort": 1,
+        "bytes": [23, 253, 60, 5, 83, 22, 238, 97, 241, 148, 0, 167, 219, 145, 235, 247, 3]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.7512,
+          "boot": 83,
+          "iaq": 92.5313,
+          "logRGas": 5.982422,
+          "rGas": 960333.0491,
+          "iaqQuality": 3,
+          "air": {
+            "temperature": 22.9297,
+            "pressure": 1002.92,
+            "relativeHumidity": 57.8125,
+            "lightIntensity": 167
+          }
+        }
+      },
+      "source": "datasheet"
+    },
+    {
+      "description": "Unsupported fPort is rejected",
+      "input": {
+        "fPort": 42,
+        "bytes": [1, 24, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 42"]
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unsupported port 1 format discriminator is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [153, 1]
+      },
+      "expected": {
+        "errors": ["unsupported port 1 format"]
+      },
+      "source": "synthetic"
     }
   ],
   "downlink": []
