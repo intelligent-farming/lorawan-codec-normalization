@@ -174,6 +174,19 @@ test('devices() and device() enumerate the registry', () => {
   assert.throws(() => lib.device('nope', 'nope'), /unknown device/);
 });
 
+test('device lookups are case-insensitive', () => {
+  // codecScript, device, and friends accept any case for vendor/device.
+  assert.equal(lib.codecScript('dragino', 'LSE01'), lib.codecScript('dragino', 'lse01'));
+  assert.equal(lib.codecScript('DRAGINO', 'lse01'), lib.codecScript('dragino', 'lse01'));
+  const info = lib.device('Dragino', 'Lse01');
+  assert.equal(info.vendor, 'dragino'); // canonical case from device.json
+  assert.equal(info.device, 'lse01');
+  assert.equal(
+    lib.codecScript('milesight-iot', 'EM500-SMTC'),
+    lib.codecScript('milesight-iot', 'em500-smtc'),
+  );
+});
+
 test('codecScript() returns the exact console-ready file text (the deliverable)', () => {
   const fs = require('node:fs');
   const path = require('node:path');

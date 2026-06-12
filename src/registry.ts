@@ -56,12 +56,22 @@ function locations(): DeviceLocation[] {
   return out;
 }
 
+/**
+ * Cache key for a device lookup. Lowercased so that lookups are
+ * case-insensitive (folder names are guaranteed collision-free at a given case
+ * by the conformance suite).
+ */
 function key(vendor: string, device: string): string {
-  return `${vendor}/${device}`;
+  return `${vendor}/${device}`.toLowerCase();
 }
 
+/** Locate a device folder case-insensitively (e.g. `LSE01` matches `lse01`). */
 function locate(vendor: string, device: string): DeviceLocation | undefined {
-  return locations().find((l) => l.vendor === vendor && l.device === device);
+  const v = vendor.toLowerCase();
+  const d = device.toLowerCase();
+  return locations().find(
+    (l) => l.vendor.toLowerCase() === v && l.device.toLowerCase() === d,
+  );
 }
 
 /** Absolute path to a device folder. Throws if the device is unknown. */
