@@ -1,65 +1,66 @@
 {
   "uplink": [
     {
-      "description": "Ambience Monitoring Sensors (example 1) - Milesight IoT",
+      "description": "Ambience Monitoring Sensors (example 1) - temperature, humidity, PIR, light level, CO2, TVOC, pressure, HCHO, PM2.5, PM10",
       "input": {
         "fPort": 85,
         "bytes": [
-          3,
-          103,
-          52,
-          1,
-          4,
-          104,
-          101,
-          5,
-          0,
-          1,
-          6,
-          203,
-          2,
-          7,
-          125,
-          168,
-          3,
-          8,
-          125,
-          37,
-          0,
-          9,
-          115,
-          102,
-          39,
-          10,
-          125,
-          4,
-          0,
-          11,
-          125,
-          32,
-          0,
-          12,
-          125,
-          48,
-          0
+          3, 103, 52, 1,
+          4, 104, 101,
+          5, 0, 1,
+          6, 203, 2,
+          7, 125, 168, 3,
+          8, 125, 37, 0,
+          9, 115, 102, 39,
+          10, 125, 4, 0,
+          11, 125, 32, 0,
+          12, 125, 48, 0
         ]
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "temperature": 30.8,
-          "humidity": 50.5,
-          "pir": "trigger",
-          "light_level": 2,
-          "co2": 936,
-          "tvoc": 0.37,
-          "pressure": 1008.6,
-          "hcho": 0.04,
-          "pm2_5": 32,
-          "pm10": 48
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 30.8,
+            "relativeHumidity": 50.5,
+            "lightLevel": 2,
+            "co2": 936,
+            "tvoc": 0.37,
+            "pressure": 1008.6,
+            "hcho": 0.04,
+            "pm25": 32,
+            "pm10": 48
+          },
+          "action": {
+            "motion": {
+              "detected": true,
+              "count": 1
+            }
+          }
         }
-      }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Unrecognized channel/type yields an error",
+      "input": {
+        "fPort": 85,
+        "bytes": [255, 255, 0, 0]
+      },
+      "expected": {
+        "errors": ["no recognized Milesight channels"]
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Empty payload",
+      "input": {
+        "fPort": 85,
+        "bytes": []
+      },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic"
     }
   ],
   "downlink": []

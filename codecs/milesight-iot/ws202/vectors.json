@@ -1,40 +1,94 @@
 {
   "uplink": [
     {
-      "description": "PIR Sensors (example 1) - Milesight IoT",
+      "description": "PIR Sensors (example 1) - Milesight IoT: PIR trigger",
       "input": {
         "fPort": 85,
-        "bytes": [
-          3,
-          0,
-          1
-        ]
+        "bytes": [3, 0, 1]
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "pir": "trigger"
+      "expected": {
+        "data": {
+          "action": {
+            "motion": {
+              "detected": true
+            }
+          }
         }
-      }
+      },
+      "source": "ttn-example"
     },
     {
-      "description": "PIR Sensors (example 2) - Milesgiht IoT",
+      "description": "PIR Sensors (example 2) - Milesight IoT: light state dark",
       "input": {
         "fPort": 85,
-        "bytes": [
-          4,
-          0,
-          0
-        ]
+        "bytes": [4, 0, 0]
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "light": "dark"
+      "expected": {
+        "data": {
+          "lightLevel": "dark"
         }
-      }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "PIR idle (normal) maps to motion.detected false",
+      "input": {
+        "fPort": 85,
+        "bytes": [3, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "action": {
+            "motion": {
+              "detected": false
+            }
+          }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Light state light (non-zero) maps to lightLevel light",
+      "input": {
+        "fPort": 85,
+        "bytes": [4, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "lightLevel": "light"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Battery + PIR trigger + light state in one frame",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 90, 3, 0, 1, 4, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 90,
+          "action": {
+            "motion": {
+              "detected": true
+            }
+          },
+          "lightLevel": "light"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unrecognized channel yields an error",
+      "input": {
+        "fPort": 85,
+        "bytes": [255, 255, 0]
+      },
+      "expected": {
+        "errors": ["no recognized Milesight channels"]
+      },
+      "source": "synthetic"
     }
   ],
   "downlink": []

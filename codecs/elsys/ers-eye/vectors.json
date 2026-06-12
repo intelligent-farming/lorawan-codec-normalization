@@ -4,32 +4,81 @@
       "description": "ERS EYE temperature, humidity, light, motion and occupancy",
       "input": {
         "fPort": 1,
-        "bytes": [
-          1,
-          0,
-          226,
-          2,
-          41,
-          4,
-          0,
-          39,
-          5,
-          6,
-          17,
-          1
-        ]
+        "bytes": [1, 0, 226, 2, 41, 4, 0, 39, 5, 6, 17, 1]
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "temperature": 22.6,
-          "humidity": 41,
-          "light": 39,
-          "motion": 6,
-          "occupancy": 1
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 22.6,
+            "relativeHumidity": 41,
+            "lightIntensity": 39
+          },
+          "action": {
+            "motion": {
+              "count": 6,
+              "detected": true
+            }
+          }
         }
-      }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "ERS EYE with occupancy indicating no presence and zero motion count",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 0, 215, 2, 55, 4, 0, 120, 5, 0, 17, 0]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 21.5,
+            "relativeHumidity": 55,
+            "lightIntensity": 120
+          },
+          "action": {
+            "motion": {
+              "count": 0,
+              "detected": false
+            }
+          }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "ERS EYE with battery voltage (VDD) reported in mV, normalized to volts",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 0, 226, 2, 41, 4, 0, 39, 7, 14, 16, 17, 1]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "air": {
+            "temperature": 22.6,
+            "relativeHumidity": 41,
+            "lightIntensity": 39
+          },
+          "action": {
+            "motion": {
+              "detected": true
+            }
+          }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "empty payload yields an error",
+      "input": {
+        "fPort": 1,
+        "bytes": []
+      },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic"
     }
   ],
   "downlink": []

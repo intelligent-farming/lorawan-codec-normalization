@@ -1,64 +1,94 @@
 {
   "uplink": [
     {
-      "description": "Ambience Monitoring Sensors (example 1) - Milesight IoT",
+      "description": "Ambience Monitoring Sensors (example 1) - battery, temperature, humidity",
       "input": {
         "fPort": 85,
-        "bytes": [
-          1,
-          117,
-          92,
-          3,
-          103,
-          52,
-          1,
-          4,
-          104,
-          101,
-          5,
-          106,
-          73,
-          0
-        ]
+        "bytes": [1, 117, 92, 3, 103, 52, 1, 4, 104, 101, 5, 106, 73, 0]
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "battery": 92,
-          "temperature": 30.8,
-          "humidity": 50.5
+      "expected": {
+        "data": {
+          "batteryPercent": 92,
+          "air": {
+            "temperature": 30.8,
+            "relativeHumidity": 50.5
+          }
         }
-      }
+      },
+      "source": "ttn-example"
     },
     {
-      "description": "Ambience Monitoring Sensors (example 2) - Milesgiht IoT",
+      "description": "Ambience Monitoring Sensors (example 2) - CO2, TVOC, pressure",
+      "input": {
+        "fPort": 85,
+        "bytes": [7, 125, 231, 4, 8, 125, 7, 0, 9, 115, 63, 39]
+      },
+      "expected": {
+        "data": {
+          "tvoc": 7,
+          "air": {
+            "co2": 1255,
+            "pressure": 1004.7
+          }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Full AM307L frame - PIR occupancy, light level, CO2/pressure and air-quality extras",
       "input": {
         "fPort": 85,
         "bytes": [
-          7,
-          125,
-          231,
-          4,
-          8,
-          125,
-          7,
-          0,
-          9,
-          115,
-          63,
-          39
+          1, 117, 100,
+          3, 103, 25, 1,
+          4, 104, 90,
+          5, 0, 1,
+          6, 203, 3,
+          7, 125, 144, 1,
+          8, 125, 10, 0,
+          9, 115, 48, 39,
+          10, 125, 5, 0,
+          11, 125, 12, 0,
+          12, 125, 15, 0,
+          13, 125, 2, 0,
+          14, 1, 0
         ]
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "co2": 1255,
-          "tvoc": 7,
-          "pressure": 1004.7
+      "expected": {
+        "data": {
+          "batteryPercent": 100,
+          "lightLevel": 3,
+          "tvoc": 10,
+          "hcho": 0.05,
+          "pm2_5": 12,
+          "pm10": 15,
+          "o3": 0.02,
+          "beep": false,
+          "air": {
+            "temperature": 28.1,
+            "relativeHumidity": 45,
+            "co2": 400,
+            "pressure": 1003.2
+          },
+          "action": {
+            "motion": {
+              "detected": true
+            }
+          }
         }
-      }
+      },
+      "source": "datasheet"
+    },
+    {
+      "description": "Unrecognized channel/type yields an error",
+      "input": {
+        "fPort": 85,
+        "bytes": [2, 2]
+      },
+      "expected": {
+        "errors": ["no recognized Milesight channels"]
+      },
+      "source": "synthetic"
     }
   ],
   "downlink": []

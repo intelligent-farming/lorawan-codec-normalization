@@ -5,7 +5,6 @@
   "categories": [
     "climate",
     "air-quality",
-    "light",
     "weather-station",
     "motion"
   ],
@@ -33,6 +32,5 @@
     "codecFile": "am308.js",
     "codecSha256": "6ad647b50972fc1ef7ec84bb6f3e40ecaf9836480fd4851e1446b4462438316e",
     "referencedAt": "2026-06-12"
-  },
-  "draft": true
+  }
 }

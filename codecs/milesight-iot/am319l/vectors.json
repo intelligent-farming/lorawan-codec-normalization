@@ -44,22 +44,42 @@
           0
         ]
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "temperature": 30.8,
-          "humidity": 50.5,
-          "pir": "trigger",
-          "light_level": 2,
-          "co2": 936,
+      "expected": {
+        "data": {
+          "lightLevel": 2,
           "tvoc": 0.37,
-          "pressure": 1008.6,
           "hcho": 0.04,
           "pm2_5": 32,
-          "pm10": 48
+          "pm10": 48,
+          "air": {
+            "temperature": 30.8,
+            "relativeHumidity": 50.5,
+            "co2": 936,
+            "pressure": 1008.6
+          },
+          "action": {
+            "motion": {
+              "count": 1,
+              "detected": true
+            }
+          }
         }
-      }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Unrecognized channel/type yields an error",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          255,
+          255
+        ]
+      },
+      "expected": {
+        "errors": ["no recognized Milesight channels"]
+      },
+      "source": "synthetic"
     }
   ],
   "downlink": []

@@ -4,48 +4,36 @@
       "description": "ERS CO2 temperature, humidity, light, motion and co2",
       "input": {
         "fPort": 1,
-        "bytes": [
-          1,
-          0,
-          226,
-          2,
-          41,
-          4,
-          0,
-          39,
-          5,
-          6,
-          6,
-          3,
-          8
-        ]
+        "bytes": [1, 0, 226, 2, 41, 4, 0, 39, 5, 6, 6, 3, 8]
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "temperature": 22.6,
-          "humidity": 41,
-          "light": 39,
-          "motion": 6,
-          "co2": 776
-        },
-        "normalizedOutput": [
-          {
-            "air": {
-              "temperature": 22.6,
-              "relativeHumidity": 41,
-              "lightIntensity": 39
-            },
-            "action": {
-              "motion": {
-                "detected": true,
-                "count": 6
-              }
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 22.6,
+            "relativeHumidity": 41,
+            "lightIntensity": 39,
+            "co2": 776
+          },
+          "action": {
+            "motion": {
+              "detected": true,
+              "count": 6
             }
           }
-        ]
-      }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "empty payload yields an error",
+      "input": {
+        "fPort": 1,
+        "bytes": []
+      },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic"
     }
   ],
   "downlink": []

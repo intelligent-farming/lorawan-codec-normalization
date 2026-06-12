@@ -1,74 +1,68 @@
 {
   "uplink": [
     {
-      "description": "Ambience Monitoring Sensors (example 1) - Milesight IoT",
+      "description": "Ambience Monitoring Sensors (example 1) - battery, temperature, humidity, PIR activity",
       "input": {
         "fPort": 85,
-        "bytes": [
-          1,
-          117,
-          92,
-          3,
-          103,
-          52,
-          1,
-          4,
-          104,
-          101,
-          5,
-          106,
-          73,
-          0
-        ]
+        "bytes": [1, 117, 92, 3, 103, 52, 1, 4, 104, 101, 5, 106, 73, 0]
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "battery": 92,
-          "temperature": 30.8,
-          "humidity": 50.5
+      "expected": {
+        "data": {
+          "batteryPercent": 92,
+          "air": {
+            "temperature": 30.8,
+            "relativeHumidity": 50.5
+          },
+          "action": {
+            "motion": {
+              "count": 73,
+              "detected": true
+            }
+          }
         }
-      }
+      },
+      "source": "ttn-example"
     },
     {
-      "description": "Ambience Monitoring Sensors (example 2) - Milesgiht IoT",
+      "description": "Ambience Monitoring Sensors (example 2) - CO2, TVOC, pressure, PM2.5, PM10",
       "input": {
         "fPort": 85,
-        "bytes": [
-          7,
-          125,
-          231,
-          4,
-          8,
-          125,
-          7,
-          0,
-          9,
-          115,
-          63,
-          39,
-          11,
-          125,
-          32,
-          0,
-          12,
-          125,
-          48,
-          0
-        ]
+        "bytes": [7, 125, 231, 4, 8, 125, 7, 0, 9, 115, 63, 39, 11, 125, 32, 0, 12, 125, 48, 0]
       },
-      "source": "ttn-example",
-      "_todo": "replace this with expected.data after authoring codec.js; verify against the datasheet",
-      "_upstreamHint": {
-        "output": {
-          "co2": 1255,
+      "expected": {
+        "data": {
+          "air": {
+            "co2": 1255,
+            "pressure": 1004.7
+          },
           "tvoc": 0.07,
-          "pressure": 1004.7,
           "pm2_5": 32,
           "pm10": 48
         }
-      }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Unrecognized channel - no decodable Milesight TLV",
+      "input": {
+        "fPort": 85,
+        "bytes": [255, 255, 0, 0]
+      },
+      "expected": {
+        "errors": ["no recognized Milesight channels"]
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Empty payload",
+      "input": {
+        "fPort": 85,
+        "bytes": []
+      },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic"
     }
   ],
   "downlink": []
