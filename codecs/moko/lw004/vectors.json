@@ -1,4 +1,68 @@
 {
-  "uplink": [],
+  "uplink": [
+    {
+      "description": "GPS fix uplink — manual V1.2 section 7 worked example (battery 47%, alarm on, lat 30.458, lon 114.469)",
+      "input": {
+        "fPort": 5,
+        "bytes": [
+          47, 1, 121, 81, 43, 0, 119, 102, 81, 0, 217, 25, 77, 117, 11, 51,
+          191, 0, 208, 0, 108, 3, 162, 0, 14
+        ]
+      },
+      "expected": {
+        "data": {
+          "position": {
+            "latitude": 30.45815,
+            "longitude": 114.4691198
+          },
+          "batteryPercent": 47,
+          "alarm": true
+        }
+      },
+      "source": "datasheet",
+      "sourceUrl": "https://www.mokolora.com/wp-content/uploads/2021/11/LW004-PB-User-Manual-V1.2-.pdf"
+    },
+    {
+      "description": "GPS fix uplink — southern/western hemisphere fix (negative lat/lon), battery 88%, alarm off",
+      "input": {
+        "fPort": 5,
+        "bytes": [88, 0, 135, 174, 212, 255, 137, 153, 174, 255, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "position": {
+            "latitude": -30.45815,
+            "longitude": -114.4691198
+          },
+          "batteryPercent": 88,
+          "alarm": false
+        }
+      },
+      "source": "synthetic",
+      "sourceUrl": "https://www.mokolora.com/wp-content/uploads/2021/11/LW004-PB-User-Manual-V1.2-.pdf"
+    },
+    {
+      "description": "truncated frame (no room for a GPS fix) -> error",
+      "input": {
+        "fPort": 5,
+        "bytes": [47, 1, 121, 81]
+      },
+      "expected": {
+        "errors": ["too short"]
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "latitude out of WGS84 range -> error",
+      "input": {
+        "fPort": 5,
+        "bytes": [50, 0, 64, 84, 137, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["out of range"]
+      },
+      "source": "synthetic"
+    }
+  ],
   "downlink": []
 }

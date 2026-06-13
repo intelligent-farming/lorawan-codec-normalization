@@ -1,4 +1,45 @@
 {
-  "uplink": [],
+  "uplink": [
+    {
+      "description": "Interface-description example uplink: temperature, CO2, VOC (Thermokon LoRaWAN Schnittstellenbeschreibung, data point table example 0x 10 00A6 12 1688 13 000B)",
+      "input": {
+        "fPort": 1,
+        "bytes": [16, 0, 166, 18, 22, 136, 19, 0, 11]
+      },
+      "expected": {
+        "data": {
+          "voc": 11,
+          "air": {
+            "temperature": 16.6,
+            "co2": 5768
+          }
+        }
+      },
+      "source": "datasheet",
+      "sourceUrl": "https://www.thermokon.de/direct/alterra-base/mimes/get/8995622604facf745"
+    },
+    {
+      "description": "Unrecognized Thermokon identifier returns an error",
+      "input": {
+        "fPort": 1,
+        "bytes": [127, 0]
+      },
+      "expected": {
+        "errors": ["unrecognized Thermokon identifier"]
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Truncated temperature value returns an error",
+      "input": {
+        "fPort": 1,
+        "bytes": [16, 0]
+      },
+      "expected": {
+        "errors": ["truncated temperature value"]
+      },
+      "source": "synthetic"
+    }
+  ],
   "downlink": []
 }

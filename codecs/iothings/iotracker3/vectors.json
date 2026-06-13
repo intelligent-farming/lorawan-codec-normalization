@@ -1,4 +1,43 @@
 {
-  "uplink": [],
+  "uplink": [
+    {
+      "description": "Official docs complete example: button+movement uplink with onboard sensors (temp, light, accel current/max, empty WiFi scan) and a GPS fix near Bottrop, DE",
+      "input": {
+        "fPort": 1,
+        "bytes": [27, 221, 100, 31, 7, 95, 68, 160, 0, 0, 4, 0, 0, 32, 0, 96, 12, 128, 0, 3, 30, 171, 16, 176, 3, 156, 114, 117, 3, 31, 19, 21, 0, 4, 0, 0, 39, 5]
+      },
+      "expected": {
+        "data": {
+          "crc": 221,
+          "batteryPercent": 39.4,
+          "action": { "motion": { "detected": true } },
+          "uplinkReasonButton": true,
+          "uplinkReasonGpio": false,
+          "accelerationMg": { "x": 0, "y": 1024, "z": 32 },
+          "maxAccelerationMg": 96,
+          "maxAccelerationHistoryMg": 3200,
+          "wifiAccessPoints": [],
+          "position": { "latitude": 51.4527408, "longitude": 6.0584565 },
+          "gpsNavStatus": 3,
+          "gpsAltitude": 79.9,
+          "gpsHorizontalAccuracy": 19,
+          "gpsVerticalAccuracy": 21,
+          "gpsSpeedKmh": 0.4,
+          "gpsCourse": 0,
+          "gpsHdop": 3.9,
+          "gpsSatellites": 5,
+          "air": { "temperature": 18.87, "lightIntensity": 189.44 }
+        }
+      },
+      "source": "datasheet",
+      "sourceUrl": "https://docs.iotracker.eu/decoding/uplinks/"
+    },
+    {
+      "description": "Empty payload is rejected (header requires at least 3 bytes)",
+      "input": { "fPort": 1, "bytes": [] },
+      "expected": { "errors": ["payload too short"] },
+      "source": "synthetic"
+    }
+  ],
   "downlink": []
 }

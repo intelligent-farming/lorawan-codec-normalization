@@ -3,9 +3,7 @@
   "device": "iotracker3",
   "name": "ioTracker 3",
   "categories": [
-    "climate",
     "light",
-    "weather-station",
     "motion",
     "gps-tracker"
   ],
@@ -15,9 +13,6 @@
     "accelerometer",
     "gps",
     "wifi ssid",
-    "gps",
-    "barometer",
-    "humidity",
     "button"
   ],
   "variantOf": null,
@@ -32,6 +27,5 @@
     "codecFile": "iotracker3.js",
     "codecSha256": "ab14e0384dfdfb5b919e574f8e5c28575b97edf6cc33aa982ace51529914454f",
     "referencedAt": "2026-06-12"
-  },
-  "draft": true
+  }
 }

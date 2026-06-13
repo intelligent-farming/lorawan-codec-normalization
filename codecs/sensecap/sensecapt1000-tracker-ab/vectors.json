@@ -1,4 +1,49 @@
 {
-  "uplink": [],
+  "uplink": [
+    {
+      "description": "GNSS Location and Sensor packet (0x06): position fix + air temperature + light + battery",
+      "input": { "fPort": 5, "bytes": [6, 0, 0, 8, 0, 100, 98, 36, 141, 6, 202, 80, 40, 1, 88, 126, 198, 0, 254, 0, 0, 87] },
+      "expected": {
+        "data": {
+          "time": "2023-05-15T12:24:45.000Z",
+          "eventStatus": ["shock"],
+          "batteryPercent": 87,
+          "position": {
+            "longitude": 113.922088,
+            "latitude": 22.576838
+          },
+          "air": {
+            "temperature": 25.4,
+            "lightIntensity": 0
+          }
+        }
+      },
+      "source": "datasheet",
+      "sourceUrl": "https://files.seeedstudio.com/products/SenseCAP/SenseCAP_Tracker/SenseCAP_Tracker_T1000-AB_User_Guide.pdf"
+    },
+    {
+      "description": "GNSS Location Only packet (0x09): position fix + battery, sensors disabled",
+      "input": { "fPort": 5, "bytes": [9, 0, 0, 0, 0, 100, 99, 24, 104, 6, 202, 80, 104, 1, 88, 126, 76, 86] },
+      "expected": {
+        "data": {
+          "time": "2023-05-16T05:45:12.000Z",
+          "batteryPercent": 86,
+          "position": {
+            "longitude": 113.922152,
+            "latitude": 22.576716
+          }
+        }
+      },
+      "source": "datasheet",
+      "sourceUrl": "https://files.seeedstudio.com/products/SenseCAP/SenseCAP_Tracker/SenseCAP_Tracker_T1000-AB_User_Guide.pdf"
+    },
+    {
+      "description": "Non-measurement fPort (199 positioning-request echo) yields an error",
+      "input": { "fPort": 199, "bytes": [6, 0, 0, 8, 0, 100, 98, 36, 141, 6, 202, 80, 40, 1, 88, 126, 198, 0, 254, 0, 0, 87] },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "datasheet",
+      "sourceUrl": "https://files.seeedstudio.com/products/SenseCAP/SenseCAP_Tracker/SenseCAP_Tracker_T1000-AB_User_Guide.pdf"
+    }
+  ],
   "downlink": []
 }
