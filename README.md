@@ -96,22 +96,23 @@ fPort-variant, config, and partial uplinks legal.
 ## Categories
 
 `categories()` lists all 12; `categorySchema(id)` returns the JSON Schema for a
-category. Coverage grows over time — devices are added incrementally.
+category. Coverage grows over time — devices are added incrementally. Use
+`devices({ category })` for the live member list; the counts below are a snapshot.
 
-| Category | `requires` | Members in 0.1.0 |
+| Category | `requires` | Authored members |
 |---|---|---|
-| `soil-monitor` | `soil.moisture`, `soil.temperature` | dragino/lse01, dragino/lse01-114, milesight-iot/em500-smtc |
-| `climate` | `air.temperature`, `air.relativeHumidity` | dragino/lht65, milesight-iot/em300-th |
-| `water-leak` | `water.leak` | dragino/lwl03a, milesight-iot/em300-mld |
-| `air-quality` | `air.co2` | — |
-| `light` | `air.lightIntensity` | — |
-| `weather-station` | `air.temperature`, `air.pressure` | — |
-| `wind` | `wind.speed` | — |
-| `rain-gauge` | `rain.cumulative` | — |
-| `water-meter` | `metering.water.total` | — |
-| `motion` | `action.motion` | — |
-| `contact` | `action.contactState` | — |
-| `gps-tracker` | `position.latitude`, `position.longitude` | — |
+| `soil-monitor` | `soil.moisture`, `soil.temperature` | 3 |
+| `climate` | `air.temperature`, `air.relativeHumidity` | 59 |
+| `air-quality` | `air.co2` | 19 |
+| `light` | `air.lightIntensity` | 50 |
+| `weather-station` | `air.temperature`, `air.pressure` | 25 |
+| `wind` | `wind.speed` | 3 |
+| `rain-gauge` | `rain.cumulative` | 3 |
+| `water-meter` | `metering.water.total` | 0 |
+| `motion` | `action.motion` | 30 |
+| `contact` | `action.contactState` | 3 |
+| `gps-tracker` | `position.latitude`, `position.longitude` | 4 |
+| `water-leak` | `water.leak` | 3 |
 
 `devices()` / `devices({ category })` enumerate registered devices;
 `device(vendor, device)` returns one device's metadata.
