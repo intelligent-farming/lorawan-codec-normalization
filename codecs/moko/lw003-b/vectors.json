@@ -1,4 +1,39 @@
 {
-  "uplink": [],
+  "uplink": [
+    {
+      "description": "Port 1 Device Information Payload (vendor worked example 4D 0F 42 86 64 00 0A 2B 11 7E 05): 26.03C, 44.78% RH, 3.906V, region EU868. Note: byte0 0x4D decodes to 77% per the byte layout and the official MOKO decoder (bytes[0]+'%'); the manual's annotation '100%' is a copy error in the document.",
+      "input": { "fPort": 1, "bytes": [77, 15, 66, 134, 100, 0, 10, 43, 17, 126, 5] },
+      "expected": {
+        "data": {
+          "air": {
+            "location": "indoor",
+            "temperature": 26.03,
+            "relativeHumidity": 44.78
+          },
+          "battery": 3.906,
+          "batteryPercent": 77,
+          "firmwareVersion": "V2.0.6",
+          "accelerometerSensitivity": 100,
+          "tamperAlarm": false,
+          "region": "EU868"
+        }
+      },
+      "source": "datasheet",
+      "sourceUrl": "https://www.mokolora.com/wp-content/uploads/2021/11/LW003-B-User-Manual-V2.1.pdf"
+    },
+    {
+      "description": "Port 2 Beacon Payload: BLE scan list (header 0x20, 1 beacon, MAC B1 FA 1E 36 EF 03 per vendor MAC example) carries proximity data, not a vocabulary-mappable coordinate fix; expect an error.",
+      "input": { "fPort": 2, "bytes": [32, 1, 6, 0, 0, 0, 0, 0, 0, 0, 177, 250, 30, 54, 239, 3, 200] },
+      "expected": { "errors": ["beacon scan carries no vocabulary-mappable measurement"] },
+      "source": "datasheet",
+      "sourceUrl": "https://www.mokolora.com/wp-content/uploads/2021/11/LW003-B-User-Manual-V2.1.pdf"
+    },
+    {
+      "description": "Unsupported fPort 5 yields an error result.",
+      "input": { "fPort": 5, "bytes": [0, 1, 2] },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "synthetic"
+    }
+  ],
   "downlink": []
 }

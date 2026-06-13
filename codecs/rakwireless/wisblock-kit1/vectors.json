@@ -1,4 +1,50 @@
 {
-  "uplink": [],
+  "uplink": [
+    {
+      "description": "Vendor-documented RAK1906 environment example: 25.10 degC, 41.73 %RH, 1009.45 hPa, 63560 Ohm gas",
+      "input": { "fPort": 2, "bytes": [1, 9, 206, 16, 77, 0, 1, 138, 81, 0, 0, 248, 72] },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 25.1,
+            "relativeHumidity": 41.73,
+            "pressure": 1009.45
+          },
+          "gasResistance": 63560
+        }
+      },
+      "source": "datasheet",
+      "sourceUrl": "https://docs.rakwireless.com/product-categories/wisblock/rak1906/quickstart/"
+    },
+    {
+      "description": "Same environment payload with optional RAK1904 accelerometer appended (x=0.123, y=-0.045, z=1.0 g)",
+      "input": { "fPort": 2, "bytes": [1, 9, 206, 16, 77, 0, 1, 138, 81, 0, 0, 248, 72, 0, 123, 255, 211, 3, 232] },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 25.1,
+            "relativeHumidity": 41.73,
+            "pressure": 1009.45
+          },
+          "gasResistance": 63560,
+          "acceleration": { "x": 0.123, "y": -0.045, "z": 1 }
+        }
+      },
+      "source": "synthetic",
+      "sourceUrl": "https://docs.rakwireless.com/product-categories/wisblock/rak1906/quickstart/"
+    },
+    {
+      "description": "Empty payload is rejected as too short",
+      "input": { "fPort": 2, "bytes": [] },
+      "expected": { "errors": ["payload too short"] },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unknown data-type marker is rejected",
+      "input": { "fPort": 2, "bytes": [9, 9, 206, 16, 77, 0, 1, 138, 81, 0, 0, 248, 72] },
+      "expected": { "errors": ["unrecognized data-type marker"] },
+      "source": "synthetic"
+    }
+  ],
   "downlink": []
 }

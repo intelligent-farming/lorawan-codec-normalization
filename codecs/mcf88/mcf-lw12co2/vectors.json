@@ -1,4 +1,53 @@
 {
-  "uplink": [],
+  "uplink": [
+    {
+      "description": "TER (0x04) datalog frame, 3 measurements, from the Enginko MCF88 data-frame-format worked example. Measurement 1 (oldest) is documented as 23/09/2016 15:54:56, +27.40 C, 35.5 %RH, 1004.48 hPa; the newest measurement is at the top level and the two older ones are in history (newest-first).",
+      "input": {
+        "fPort": 2,
+        "bytes": [4, 220, 126, 55, 33, 180, 10, 71, 96, 136, 1, 221, 126, 55, 33, 177, 10, 67, 96, 136, 1, 224, 126, 55, 33, 178, 10, 66, 93, 136, 1]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 27.38,
+            "relativeHumidity": 33,
+            "pressure": 1004.45
+          },
+          "time": "2016-09-23T15:55:00Z",
+          "history": [
+            {
+              "air": {
+                "temperature": 27.37,
+                "relativeHumidity": 33.5,
+                "pressure": 1004.48
+              },
+              "time": "2016-09-23T15:54:58Z"
+            },
+            {
+              "air": {
+                "temperature": 27.4,
+                "relativeHumidity": 35.5,
+                "pressure": 1004.48
+              },
+              "time": "2016-09-23T15:54:56Z"
+            }
+          ]
+        }
+      },
+      "source": "datasheet",
+      "sourceUrl": "https://www.enginko.com/support/doku.php?id=data_frame_format"
+    },
+    {
+      "description": "Unsupported frame id (0x09 metering) is rejected.",
+      "input": {
+        "fPort": 2,
+        "bytes": [9, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported frame id"]
+      },
+      "source": "synthetic"
+    }
+  ],
   "downlink": []
 }

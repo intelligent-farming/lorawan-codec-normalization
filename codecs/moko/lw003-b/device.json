@@ -3,16 +3,12 @@
   "device": "lw003-b",
   "name": "LW003-B - Bluetooth Probe",
   "categories": [
-    "climate",
-    "light"
+    "climate"
   ],
   "sensors": [
     "battery",
-    "button",
     "humidity",
-    "light",
-    "temperature",
-    "time"
+    "temperature"
   ],
   "variantOf": null,
   "downlink": {
@@ -26,6 +22,5 @@
     "codecFile": "lw003-b.js",
     "codecSha256": "ed559d51966e6583c11703d7f9754d2066abc3faf3be42ad1a27290d36c4a5ae",
     "referencedAt": "2026-06-12"
-  },
-  "draft": true
+  }
 }
