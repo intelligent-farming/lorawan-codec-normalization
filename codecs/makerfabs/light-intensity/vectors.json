@@ -1,4 +1,37 @@
 {
-  "uplink": [],
+  "uplink": [
+    {
+      "description": "Manual V1.2 worked example: battery 2.9 V, light 89.16 lux",
+      "input": { "fPort": 2, "bytes": [0, 3, 29, 0, 0, 34, 212, 0, 0] },
+      "expected": {
+        "data": {
+          "seqNo": 3,
+          "battery": 2.9,
+          "air": { "lightIntensity": 89.16 }
+        }
+      },
+      "source": "datasheet",
+      "sourceUrl": "https://github.com/Makerfabs/Agrosense-Decoder/blob/main/Agrosense_Light_Intensity_Sensor/AgroSense_Light%20Intensity%20Sensor%20LoRaWAN%C2%AE%20Manual%20V1.2.pdf"
+    },
+    {
+      "description": "TTN live-data capture (manual V1.2 3.1.2): battery 3.1 V, light 36.66 lux",
+      "input": { "fPort": 2, "bytes": [0, 3, 31, 0, 0, 14, 82, 0, 0] },
+      "expected": {
+        "data": {
+          "seqNo": 3,
+          "battery": 3.1,
+          "air": { "lightIntensity": 36.66 }
+        }
+      },
+      "source": "captured",
+      "sourceUrl": "https://github.com/Makerfabs/Agrosense-Decoder/blob/main/Agrosense_Light_Intensity_Sensor/AgroSense_Light%20Intensity%20Sensor%20LoRaWAN%C2%AE%20Manual%20V1.2.pdf"
+    },
+    {
+      "description": "Too-short payload (missing light sensor bytes) -> error",
+      "input": { "fPort": 2, "bytes": [0, 3, 29, 0] },
+      "expected": { "errors": ["payload too short"] },
+      "source": "synthetic"
+    }
+  ],
   "downlink": []
 }

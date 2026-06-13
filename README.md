@@ -56,11 +56,12 @@ A provisioner (e.g. Leftenant) resolves a device's codec in priority order:
    in TTN either. `lintCodec(source)` vets that text for console-safety before
    it is installed.
 
-Some devices are **drafts**: scaffolded with reference snapshot, provenance, and
-seeded vectors, but not yet authored. `devices()` hides them by default (use
-`devices({ includeDrafts: true })` to list them), and `codecScript` **throws**
-for a draft so step 1 cleanly falls through to step 2. Check `device(v, d).draft`
-to detect one.
+The registry supports a `draft` flag for scaffolded-but-unauthored devices, but
+the published package ships **none** — every codec here is authored and verified
+against a real device payload. If a draft is ever present, `devices()` hides it
+by default (`devices({ includeDrafts: true })` lists them), `codecScript`
+**throws** for it so the fallback proceeds to step 2, and `device(v, d).draft`
+detects it.
 
 ## Lint a codec
 
