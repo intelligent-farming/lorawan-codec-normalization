@@ -1,0 +1,126 @@
+{
+  "uplink": [
+    {
+      "description": "CO2 (0x13) newer-sensor frame: two measurements (oldest-first, newest-last) + battery%. Each record carries temperature, humidity, pressure, light/lux, 3-byte bVOC and signed CO2. The newest reading is at the top level; the older one is in history. Values cross-checked by running reference/upstream-codec.js parseCo2Measurement (temp 22.50/21.00 C, RH 45.0/50.0 %, pressure 1013.25/1009.00 hPa, lux 850/300, bVOC 120/75, CO2 615/580 ppm, battery 78%).",
+      "input": {
+        "fPort": 2,
+        "bytes": [19, 0, 96, 161, 48, 52, 8, 100, 36, 138, 1, 44, 1, 75, 0, 0, 68, 2, 192, 99, 161, 48, 202, 8, 90, 205, 139, 1, 82, 3, 120, 0, 0, 103, 2, 78]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 22.5,
+            "relativeHumidity": 45,
+            "pressure": 1013.25,
+            "lightIntensity": 850,
+            "bvoc": 120,
+            "co2": 615
+          },
+          "time": "2024-05-01T12:30:00Z",
+          "batteryPercent": 78,
+          "history": [
+            {
+              "air": {
+                "temperature": 21,
+                "relativeHumidity": 50,
+                "pressure": 1009,
+                "lightIntensity": 300,
+                "bvoc": 75,
+                "co2": 580
+              },
+              "time": "2024-05-01T12:00:00Z"
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds CO2 frame; expected.data derived by running reference/upstream-codec.js (TTN decoder = source of truth) and mapping its fields to the normalized vocabulary (temperature->air.temperature, humidity->air.relativeHumidity, pressure->air.pressure hPa, lux->air.lightIntensity, voc->air.bvoc extra, co2->air.co2, battery%->batteryPercent extra)."
+    },
+    {
+      "description": "CO2 (0x0E) older-sensor frame: two measurements (oldest-first, newest-last) + battery%. Same layout as 0x13 but with a 2-byte bVOC field. Values cross-checked against reference/upstream-codec.js parseCo2Measurement (temp 19.25/18.50 C, RH 35.0/40.0 %, pressure 998.50/995.00 hPa, lux 410/120, bVOC 88/60, CO2 562/540 ppm, battery 64%).",
+      "input": {
+        "fPort": 2,
+        "bytes": [14, 0, 72, 161, 48, 58, 7, 80, 172, 132, 1, 120, 0, 60, 0, 28, 2, 192, 75, 161, 48, 133, 7, 70, 10, 134, 1, 154, 1, 88, 0, 50, 2, 64]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 19.25,
+            "relativeHumidity": 35,
+            "pressure": 998.5,
+            "lightIntensity": 410,
+            "bvoc": 88,
+            "co2": 562
+          },
+          "time": "2024-05-01T09:30:00Z",
+          "batteryPercent": 64,
+          "history": [
+            {
+              "air": {
+                "temperature": 18.5,
+                "relativeHumidity": 40,
+                "pressure": 995,
+                "lightIntensity": 120,
+                "bvoc": 60,
+                "co2": 540
+              },
+              "time": "2024-05-01T09:00:00Z"
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds CO2 frame (older-sensor 0x0E, 2-byte bVOC); expected.data derived by running reference/upstream-codec.js and mapping to the normalized vocabulary."
+    },
+    {
+      "description": "TER (0x04) datalog frame: three temperature/humidity/pressure measurements (oldest-first) + battery%. Newest at top level, two older in history (newest-first). Cross-checked against reference/upstream-codec.js parseTER (temp 20.30/20.10/20.00 C, RH 40.0/41.0/42.0 %, pressure 1010.20/1010.10/1010.00 hPa, battery 91%).",
+      "input": {
+        "fPort": 2,
+        "bytes": [4, 0, 64, 161, 48, 208, 7, 84, 136, 138, 1, 64, 65, 161, 48, 218, 7, 82, 146, 138, 1, 128, 66, 161, 48, 238, 7, 80, 156, 138, 1, 91]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 20.3,
+            "relativeHumidity": 40,
+            "pressure": 1010.2
+          },
+          "time": "2024-05-01T08:20:00Z",
+          "batteryPercent": 91,
+          "history": [
+            {
+              "air": {
+                "temperature": 20.1,
+                "relativeHumidity": 41,
+                "pressure": 1010.1
+              },
+              "time": "2024-05-01T08:10:00Z"
+            },
+            {
+              "air": {
+                "temperature": 20,
+                "relativeHumidity": 42,
+                "pressure": 1010
+              },
+              "time": "2024-05-01T08:00:00Z"
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds TER frame; expected.data derived by running reference/upstream-codec.js parseTER and mapping its measurement fields to the normalized vocabulary (temperature->air.temperature, humidity->air.relativeHumidity, pressure->air.pressure hPa, battery%->batteryPercent extra)."
+    },
+    {
+      "description": "Unsupported frame id (0x09 metering) is rejected.",
+      "input": {
+        "fPort": 2,
+        "bytes": [9, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported frame id"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,48 @@
+{
+  "uplink": [
+    {
+      "description": "full SL frame: temperature, humidity, pressure, illuminance, presence, IAQ",
+      "input": { "fPort": 2, "bytes": [1, 103, 0, 235, 2, 104, 130, 3, 115, 39, 148, 4, 101, 2, 31, 5, 102, 1, 6, 206, 0, 87] },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 23.5,
+            "relativeHumidity": 65,
+            "pressure": 1013.2,
+            "lightIntensity": 543,
+            "iaq": 87
+          },
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "synthetic in-bounds input; expected.data derived from running reference/upstream-codec.js (TTN decoder = source of truth) and mapping its fields onto the vocabulary"
+    },
+    {
+      "description": "cold/dry/low-pressure frame with no motion and battery",
+      "input": { "fPort": 2, "bytes": [1, 103, 255, 206, 2, 104, 160, 3, 115, 38, 172, 4, 101, 0, 200, 5, 102, 0, 200, 200, 1, 61] },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": -5,
+            "relativeHumidity": 80,
+            "pressure": 990,
+            "lightIntensity": 200
+          },
+          "action": { "motion": { "detected": false } },
+          "battery": 3.17
+        }
+      },
+      "source": "synthetic",
+      "_note": "synthetic in-bounds input; expected.data derived from running reference/upstream-codec.js (TTN decoder = source of truth) and mapping its fields onto the vocabulary"
+    },
+    {
+      "description": "unknown sensor type byte triggers a decode error (matches upstream throw)",
+      "input": { "fPort": 2, "bytes": [1, 250, 0] },
+      "expected": { "errors": ["Sensor type error!: 250"] },
+      "source": "synthetic",
+      "_note": "synthetic input; upstream throws 'Sensor type error!: <t>' for an unmodelled sensor type — our codec reports the same string as an error"
+    }
+  ],
+  "downlink": []
+}

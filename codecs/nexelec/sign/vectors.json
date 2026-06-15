@@ -1,0 +1,74 @@
+{
+  "uplink": [
+    {
+      "description": "Periodic frame: full indoor air quality — CO2, climate, VOC, light, occupancy (motion detected), noise, button pressed, IAQ good (CO2 source)",
+      "input": {
+        "fPort": 1,
+        "bytes": [173, 1, 131, 94, 48, 162, 128, 120, 17, 170, 157, 35, 10, 0]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 22.5, "relativeHumidity": 48.3, "co2": 650, "lightIntensity": 350 },
+          "tvocUgM3": 120,
+          "action": { "motion": { "detected": true } },
+          "occupancyPercent": 35,
+          "averageNoiseDb": 42,
+          "peakNoiseDb": 58,
+          "buttonPressed": true,
+          "iaqGlobal": "Excellent",
+          "iaqSource": "CO2"
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder (0xAD periodic frame); covt(120 ug/m3)->tvocUgM3 extra, IziAir global/source->iaqGlobal/iaqSource extras"
+    },
+    {
+      "description": "Periodic frame: sub-zero temperature, dark room, no occupancy (motion false), button not pressed, IAQ source none",
+      "input": {
+        "fPort": 1,
+        "bytes": [173, 1, 50, 40, 160, 103, 0, 33, 0, 7, 150, 128, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": -10, "relativeHumidity": 65, "co2": 412, "lightIntensity": 0 },
+          "tvocUgM3": 33,
+          "action": { "motion": { "detected": false } },
+          "occupancyPercent": 0,
+          "averageNoiseDb": 30,
+          "peakNoiseDb": 45,
+          "buttonPressed": false,
+          "iaqGlobal": "Excellent",
+          "iaqSource": "None"
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder (0xAD periodic frame)"
+    },
+    {
+      "description": "Periodic frame: CO2 error (16383)/VOC disconnected (16382), light deactivated (1021), noise error (127)/disconnected (126), occupancy disconnected (126), IAQ error — sentinel fields suppressed, climate retained",
+      "input": {
+        "fPort": 1,
+        "bytes": [173, 1, 75, 34, 111, 255, 255, 254, 255, 95, 255, 126, 254, 0]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 0, "relativeHumidity": 55 },
+          "buttonPressed": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder; sentinel co2/covt/lux/noise/occupancy/IAQ values suppressed per upstream sensor-absent and Error codes"
+    },
+    {
+      "description": "Wrong product byte (0xAB = Move, not SIGN) returns an error",
+      "input": {
+        "fPort": 1,
+        "bytes": [171, 1, 131, 94, 48, 162, 128, 120, 17, 170, 157, 35, 10, 0]
+      },
+      "expected": { "errors": ["unexpected product byte"] },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder; the shared upstream decoder happily decodes 0xAB as 'Move LoRa' (no product gating), but this is the SIGN codec so the non-0xAD product byte is rejected"
+    }
+  ],
+  "downlink": []
+}

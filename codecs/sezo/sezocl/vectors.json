@@ -1,0 +1,58 @@
+{
+  "uplink": [
+    {
+      "description": "full CL frame: temperature, humidity, pressure, illuminance, IAQ",
+      "input": { "fPort": 2, "bytes": [1, 103, 0, 235, 2, 104, 130, 3, 115, 39, 148, 4, 101, 2, 31, 5, 206, 0, 87] },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 23.5,
+            "relativeHumidity": 65,
+            "pressure": 1013.2,
+            "lightIntensity": 543,
+            "iaq": 87
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder (source of truth)"
+    },
+    {
+      "description": "cold/dry/low-pressure frame with battery, no illuminance or IAQ",
+      "input": { "fPort": 2, "bytes": [1, 103, 255, 206, 2, 104, 160, 3, 115, 38, 172, 6, 200, 1, 61] },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": -5,
+            "relativeHumidity": 80,
+            "pressure": 990
+          },
+          "battery": 3.17
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder (source of truth)"
+    },
+    {
+      "description": "illuminance-only frame (light category)",
+      "input": { "fPort": 2, "bytes": [4, 101, 0, 200] },
+      "expected": {
+        "data": {
+          "air": {
+            "lightIntensity": 200
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder (source of truth)"
+    },
+    {
+      "description": "unknown sensor type byte triggers a decode error (matches upstream throw)",
+      "input": { "fPort": 2, "bytes": [1, 250, 0] },
+      "expected": { "errors": ["Sensor type error!: 250"] },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder (source of truth)"
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,123 @@
+{
+  "uplink": [
+    {
+      "description": "CO2 frame (0x13, 'new' sensor): two 17-byte measurement records (newest last) + trailing battery%. Each record carries temperature(/100), humidity(/2), pressure(Pascal/100 -> hPa), illuminance(lux), bVOC(3-byte ppb) and CO2(signed ppm). Newest is at the top level; the older record is in history (newest-first). expected.data authored by running the codec; per-measurement values cross-checked against reference/upstream-codec.js parseCo2 (temp 23.5/24.12, hum 45/44, pressure 1013.25/998.5, lux 450/1320, voc 560/610, co2 812/905, battery 91); timestamps emitted as deterministic RFC3339 (upstream uses locale strings) and battery-% as the camelCase extra batteryPercent (vocabulary battery is volts).",
+      "input": {
+        "fPort": 2,
+        "bytes": [19, 220, 126, 55, 33, 46, 9, 90, 205, 139, 1, 194, 1, 48, 2, 0, 44, 3, 224, 126, 55, 33, 108, 9, 88, 10, 134, 1, 40, 5, 98, 2, 0, 137, 3, 91]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 24.12,
+            "relativeHumidity": 44,
+            "pressure": 998.5,
+            "lightIntensity": 1320,
+            "bvoc": 610,
+            "co2": 905
+          },
+          "time": "2016-09-23T15:55:00Z",
+          "batteryPercent": 91,
+          "history": [
+            {
+              "air": {
+                "temperature": 23.5,
+                "relativeHumidity": 45,
+                "pressure": 1013.25,
+                "lightIntensity": 450,
+                "bvoc": 560,
+                "co2": 812
+              },
+              "time": "2016-09-23T15:54:56Z"
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds CO2 (0x13) frame; expected.data is the output of this folder's codec.js, with each measurement field independently verified against reference/upstream-codec.js (parseCo2 path)."
+    },
+    {
+      "description": "CO2 frame (0x13) with a single measurement record + trailing battery% (no history). Confirms the newest reading sits at the top level and batteryPercent is captured when only one record is present.",
+      "input": {
+        "fPort": 2,
+        "bytes": [19, 224, 126, 55, 33, 108, 9, 88, 10, 134, 1, 40, 5, 98, 2, 0, 137, 3, 77]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 24.12,
+            "relativeHumidity": 44,
+            "pressure": 998.5,
+            "lightIntensity": 1320,
+            "bvoc": 610,
+            "co2": 905
+          },
+          "time": "2016-09-23T15:55:00Z",
+          "batteryPercent": 77
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic single-record 0x13 frame; expected.data is this codec's output, fields cross-checked against reference/upstream-codec.js."
+    },
+    {
+      "description": "TER frame (0x04): three temperature/humidity/pressure records (no light/VOC/CO2), no trailing battery byte. Mirrors the Enginko data-frame-format TER worked example reused from the mcf-lw12co2 sibling; the CO2E firmware also emits this base frame. Newest record at top level, the two older ones in history (newest-first). Per-record values cross-checked against reference/upstream-codec.js parseTER.",
+      "input": {
+        "fPort": 2,
+        "bytes": [4, 220, 126, 55, 33, 180, 10, 71, 96, 136, 1, 221, 126, 55, 33, 177, 10, 67, 96, 136, 1, 224, 126, 55, 33, 178, 10, 66, 93, 136, 1]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 27.38,
+            "relativeHumidity": 33,
+            "pressure": 1004.45
+          },
+          "time": "2016-09-23T15:55:00Z",
+          "history": [
+            {
+              "air": {
+                "temperature": 27.37,
+                "relativeHumidity": 33.5,
+                "pressure": 1004.48
+              },
+              "time": "2016-09-23T15:54:58Z"
+            },
+            {
+              "air": {
+                "temperature": 27.4,
+                "relativeHumidity": 35.5,
+                "pressure": 1004.48
+              },
+              "time": "2016-09-23T15:54:56Z"
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "TER (0x04) base frame; bytes match the Enginko data-frame-format example, expected.data is this codec's output (per-record values verified against reference/upstream-codec.js parseTER)."
+    },
+    {
+      "description": "Unsupported frame id (0x09 metering) is rejected.",
+      "input": {
+        "fPort": 2,
+        "bytes": [9, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported frame id"]
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Empty payload is rejected.",
+      "input": {
+        "fPort": 2,
+        "bytes": []
+      },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

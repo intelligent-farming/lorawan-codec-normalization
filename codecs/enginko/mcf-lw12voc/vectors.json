@@ -1,0 +1,121 @@
+{
+  "uplink": [
+    {
+      "description": "New-sensor VOC frame (0x12): lux + 3-byte bVOC (ppb). Two measurements (newest last) plus trailing battery-percentage byte. Synthetic in-bounds input; wire values cross-checked against the upstream TTN decoder (reference/upstream-codec.js parseVOC isNew=true): temp 27.40/27.38 C, humidity 35.5/33 %, pressure 1004.48/1004.45 hPa, lux 120/130, voc(bVOC) 12345/23456 ppb, battery 88 %. Newest reading at top level, older in history.",
+      "input": {
+        "fPort": 2,
+        "bytes": [18, 220, 126, 55, 33, 180, 10, 71, 96, 136, 1, 120, 0, 57, 48, 0, 224, 126, 55, 33, 178, 10, 66, 93, 136, 1, 130, 0, 160, 91, 0, 88]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 27.38,
+            "relativeHumidity": 33,
+            "pressure": 1004.45,
+            "lightIntensity": 130,
+            "tvoc": 23456
+          },
+          "time": "2016-09-23T15:55:00Z",
+          "batteryPercent": 88,
+          "history": [
+            {
+              "air": {
+                "temperature": 27.4,
+                "relativeHumidity": 35.5,
+                "pressure": 1004.48,
+                "lightIntensity": 120,
+                "tvoc": 12345
+              },
+              "time": "2016-09-23T15:54:56Z"
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic frame hand-encoded per the Enginko data_frame_format (date 4 LSB, temp 2 LSB signed x100, humidity x2, pressure 3 LSB x100, lux 2 LSB, bVOC 3 LSB) and confirmed by running reference/upstream-codec.js as the wire-value oracle. expected.data is our own normalization (bVOC -> air.tvoc; lux -> air.lightIntensity; battery % -> batteryPercent)."
+    },
+    {
+      "description": "Old-sensor VOC frame (0x0C): lux + 2-byte IAQ index. Two measurements (newest last) plus trailing battery-percentage byte. Synthetic in-bounds input; wire values cross-checked against the upstream TTN decoder (reference/upstream-codec.js parseVOC isNew=false): temp 27.40/27.38 C, humidity 35.5/33 %, pressure 1004.48/1004.45 hPa, lux 200/210, voc(IAQ) 150/160, battery 77 %.",
+      "input": {
+        "fPort": 2,
+        "bytes": [12, 220, 126, 55, 33, 180, 10, 71, 96, 136, 1, 200, 0, 150, 0, 224, 126, 55, 33, 178, 10, 66, 93, 136, 1, 210, 0, 160, 0, 77]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 27.38,
+            "relativeHumidity": 33,
+            "pressure": 1004.45,
+            "lightIntensity": 210,
+            "iaq": 160
+          },
+          "time": "2016-09-23T15:55:00Z",
+          "batteryPercent": 77,
+          "history": [
+            {
+              "air": {
+                "temperature": 27.4,
+                "relativeHumidity": 35.5,
+                "pressure": 1004.48,
+                "lightIntensity": 200,
+                "iaq": 150
+              },
+              "time": "2016-09-23T15:54:56Z"
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic frame hand-encoded per the Enginko data_frame_format (2-byte IAQ width for the old sensor). Wire values confirmed via reference/upstream-codec.js; expected.data is our own normalization (IAQ -> air.iaq; lux -> air.lightIntensity; battery % -> batteryPercent)."
+    },
+    {
+      "description": "TER frame (0x04): temperature/humidity/pressure only, no lux/VOC. Three measurements (newest last), no trailing battery byte. Input reused from the Enginko data-frame-format worked example (also used by the mcf-lw12co2 sibling). Newest reading at top level, two older in history (newest-first).",
+      "input": {
+        "fPort": 2,
+        "bytes": [4, 220, 126, 55, 33, 180, 10, 71, 96, 136, 1, 221, 126, 55, 33, 177, 10, 67, 96, 136, 1, 224, 126, 55, 33, 178, 10, 66, 93, 136, 1]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 27.38,
+            "relativeHumidity": 33,
+            "pressure": 1004.45
+          },
+          "time": "2016-09-23T15:55:00Z",
+          "history": [
+            {
+              "air": {
+                "temperature": 27.37,
+                "relativeHumidity": 33.5,
+                "pressure": 1004.48
+              },
+              "time": "2016-09-23T15:54:58Z"
+            },
+            {
+              "air": {
+                "temperature": 27.4,
+                "relativeHumidity": 35.5,
+                "pressure": 1004.48
+              },
+              "time": "2016-09-23T15:54:56Z"
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "TER input from the Enginko data_frame_format worked example. Upstream parseTER assumes exactly three measurements + battery and reads past short buffers (producing null temperatures); we read only the complete records present, so this exact-length 3-measurement frame is the apples-to-apples oracle. expected.data is our own normalization."
+    },
+    {
+      "description": "Unsupported frame id (0x09 metering) is rejected.",
+      "input": {
+        "fPort": 2,
+        "bytes": [9, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported frame id"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,53 @@
+{
+  "uplink": [
+    {
+      "description": "full frame: temperature, humidity, pressure, illuminance, presence, IAQ, loudness, accelerometer, magnetometer, battery",
+      "input": { "fPort": 2, "bytes": [1, 103, 0, 235, 2, 104, 130, 3, 115, 39, 148, 4, 101, 2, 31, 5, 102, 1, 6, 206, 0, 87, 7, 201, 9, 196, 8, 113, 0, 12, 255, 206, 3, 230, 9, 114, 0, 100, 0, 200, 1, 44, 10, 200, 1, 61] },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 23.5,
+            "relativeHumidity": 65,
+            "pressure": 1013.2,
+            "lightIntensity": 543,
+            "iaq": 87,
+            "loudness": 25,
+            "accelerometer": { "x": 0.012, "y": -0.05, "z": 0.998 },
+            "magnetometer": { "x": 0.1, "y": 0.2, "z": 0.3 }
+          },
+          "action": { "motion": { "detected": true } },
+          "battery": 3.17
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder (source of truth) run over synthetic in-bounds bytes"
+    },
+    {
+      "description": "cold/dry/low-pressure frame, no motion, negative-axis magnetometer, battery",
+      "input": { "fPort": 2, "bytes": [1, 103, 255, 206, 2, 104, 160, 3, 115, 38, 172, 4, 101, 0, 200, 5, 102, 0, 6, 114, 251, 46, 7, 208, 254, 12, 7, 200, 1, 61] },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": -5,
+            "relativeHumidity": 80,
+            "pressure": 990,
+            "lightIntensity": 200,
+            "magnetometer": { "x": -1.234, "y": 2, "z": -0.5 }
+          },
+          "action": { "motion": { "detected": false } },
+          "battery": 3.17
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder (source of truth) run over synthetic in-bounds bytes"
+    },
+    {
+      "description": "unknown sensor type byte triggers a decode error (matches upstream throw)",
+      "input": { "fPort": 2, "bytes": [1, 250, 0] },
+      "expected": { "errors": ["Sensor type error!: 250"] },
+      "source": "synthetic",
+      "_note": "upstream throws 'Sensor type error!: 250'; our codec returns it as an error string"
+    }
+  ],
+  "downlink": []
+}

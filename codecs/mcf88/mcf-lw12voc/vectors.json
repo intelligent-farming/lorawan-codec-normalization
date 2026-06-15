@@ -1,0 +1,122 @@
+{
+  "uplink": [
+    {
+      "description": "VOC (0x0C) legacy-sensor datalog frame: 2 measurements (date temperature humidity pressure lux voc, 2-byte VOC) + battery-percentage byte. Newest measurement at top level; the older one (35.50 %RH, 1234 lx, 850 VOC) in history. Inputs synthetic; expected values produced by running reference/upstream-codec.js parseVOC as the oracle.",
+      "input": {
+        "fPort": 2,
+        "bytes": [12, 220, 126, 55, 33, 180, 10, 71, 96, 136, 1, 210, 4, 82, 3, 224, 126, 55, 33, 178, 10, 66, 93, 136, 1, 55, 2, 0, 2, 88]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 27.38,
+            "relativeHumidity": 33,
+            "pressure": 1004.45,
+            "lightIntensity": 567
+          },
+          "tvoc": 512,
+          "time": "2016-09-23T15:55:00Z",
+          "batteryPercent": 88,
+          "history": [
+            {
+              "air": {
+                "temperature": 27.4,
+                "relativeHumidity": 35.5,
+                "pressure": 1004.48,
+                "lightIntensity": 1234
+              },
+              "tvoc": 850,
+              "time": "2016-09-23T15:54:56Z"
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "TTN codec is the oracle. Input bytes are synthetic in-bounds values; expected.data was produced by decoding the same bytes through reference/upstream-codec.js (uplink id 0x0C parseVOC, isNew=false) and re-keying its flat output to the normalized vocabulary (temperature->air.temperature, humidity->air.relativeHumidity, pressure->air.pressure hPa, lux->air.lightIntensity lux, voc->tvoc, battery%->batteryPercent). Upstream flattens the two records to one object keeping the newest values; we keep the older record in history."
+    },
+    {
+      "description": "VOC (0x12) new-sensor datalog frame: 2 measurements with a 3-byte VOC field (date temperature humidity pressure lux voc) + battery-percentage byte. Same as 0x0C except VOC is 24-bit (newest VOC 66048). Inputs synthetic; expected values produced from reference/upstream-codec.js parseVOC (isNew=true) as the oracle.",
+      "input": {
+        "fPort": 2,
+        "bytes": [18, 220, 126, 55, 33, 180, 10, 71, 96, 136, 1, 210, 4, 82, 3, 0, 224, 126, 55, 33, 178, 10, 66, 93, 136, 1, 55, 2, 0, 2, 1, 88]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 27.38,
+            "relativeHumidity": 33,
+            "pressure": 1004.45,
+            "lightIntensity": 567
+          },
+          "tvoc": 66048,
+          "time": "2016-09-23T15:55:00Z",
+          "batteryPercent": 88,
+          "history": [
+            {
+              "air": {
+                "temperature": 27.4,
+                "relativeHumidity": 35.5,
+                "pressure": 1004.48,
+                "lightIntensity": 1234
+              },
+              "tvoc": 850,
+              "time": "2016-09-23T15:54:56Z"
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "TTN codec is the oracle. Input bytes synthetic; expected.data produced by decoding the same bytes through reference/upstream-codec.js (uplink id 0x12 parseVOC, isNew=true), which reads VOC as a 24-bit little-endian value (here bytes 0,2,1 -> 66048). Re-keyed to the normalized vocabulary as for the 0x0C vector."
+    },
+    {
+      "description": "TER (0x04) datalog frame, 3 measurements (no lux/VOC): temperature + humidity + pressure. Shares the MCF88 base record with the CO2/VOC variants. Inputs from the Enginko data-frame-format worked example; expected values produced via reference/upstream-codec.js parseTER as the oracle.",
+      "input": {
+        "fPort": 2,
+        "bytes": [4, 220, 126, 55, 33, 180, 10, 71, 96, 136, 1, 221, 126, 55, 33, 177, 10, 67, 96, 136, 1, 224, 126, 55, 33, 178, 10, 66, 93, 136, 1]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 27.38,
+            "relativeHumidity": 33,
+            "pressure": 1004.45
+          },
+          "time": "2016-09-23T15:55:00Z",
+          "history": [
+            {
+              "air": {
+                "temperature": 27.37,
+                "relativeHumidity": 33.5,
+                "pressure": 1004.48
+              },
+              "time": "2016-09-23T15:54:58Z"
+            },
+            {
+              "air": {
+                "temperature": 27.4,
+                "relativeHumidity": 35.5,
+                "pressure": 1004.48
+              },
+              "time": "2016-09-23T15:54:56Z"
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "TTN codec is the oracle. Bytes taken from the Enginko data_frame_format TER worked example (also used by the sibling mcf-lw12co2). Expected.data produced by decoding through reference/upstream-codec.js (uplink id 0x04 parseTER) and re-keying to the normalized vocabulary; the trailing battery/rfu bytes are absent in this 31-byte example so no batteryPercent is emitted."
+    },
+    {
+      "description": "Unsupported frame id (0x09 metering) is rejected.",
+      "input": {
+        "fPort": 2,
+        "bytes": [9, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported frame id"]
+      },
+      "source": "synthetic",
+      "_note": "0x09 (metering) is outside this codec's supported frame set; the codec rejects unknown ids before any record parsing."
+    }
+  ],
+  "downlink": []
+}
