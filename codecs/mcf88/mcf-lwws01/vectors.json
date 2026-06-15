@@ -1,0 +1,76 @@
+{
+  "uplink": [
+    {
+      "description": "weather report: temperate clear day (0x0B type 2 sub 0x00)",
+      "input": { "fPort": 2, "bytes": [11, 32, 0, 0, 0, 225, 116, 2, 3, 10, 8, 180, 0, 55, 15, 0, 5, 88, 2, 40, 0, 100, 0, 10, 20, 30, 40, 1, 2, 3, 4, 8, 2] },
+      "expected": {
+        "data": {
+          "air": { "pressure": 1013.24, "temperature": 25, "relativeHumidity": 55 },
+          "wind": { "speed": 4.47, "direction": 180 },
+          "rain": { "intensity": 3, "cumulative": 8 },
+          "uvIndex": 5,
+          "solarRadiation": 600,
+          "windSpeedAvg10min": 3.58,
+          "dayEvapotranspiration": 2.54,
+          "forecastIcons": 8,
+          "barTrend": 2
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "weather report: hot dry windy high-pressure (wind direction 359)",
+      "input": { "fPort": 2, "bytes": [11, 32, 0, 0, 0, 22, 121, 218, 3, 42, 38, 103, 1, 18, 0, 0, 11, 156, 4, 0, 0, 8, 2, 10, 20, 30, 40, 1, 2, 3, 4, 0, 1] },
+      "expected": {
+        "data": {
+          "air": { "pressure": 1049.71, "temperature": 37, "relativeHumidity": 18 },
+          "wind": { "speed": 18.78, "direction": 359 },
+          "rain": { "intensity": 0, "cumulative": 0 },
+          "uvIndex": 11,
+          "solarRadiation": 1180,
+          "windSpeedAvg10min": 16.99,
+          "dayEvapotranspiration": 13.21,
+          "forecastIcons": 0,
+          "barTrend": 1
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "weather report: cool wet low-pressure stormy (calm/north wind)",
+      "input": { "fPort": 2, "bytes": [11, 32, 0, 0, 0, 120, 112, 199, 1, 25, 22, 0, 0, 97, 120, 0, 0, 35, 0, 215, 0, 5, 0, 10, 20, 30, 40, 1, 2, 3, 4, 6, 255] },
+      "expected": {
+        "data": {
+          "air": { "pressure": 975.01, "temperature": 7.5, "relativeHumidity": 97 },
+          "wind": { "speed": 11.18, "direction": 0 },
+          "rain": { "intensity": 24, "cumulative": 43 },
+          "uvIndex": 0,
+          "solarRadiation": 35,
+          "windSpeedAvg10min": 9.83,
+          "dayEvapotranspiration": 0.13,
+          "forecastIcons": 6,
+          "barTrend": 255
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "unsupported uplink id is rejected",
+      "input": { "fPort": 2, "bytes": [255, 0] },
+      "expected": { "errors": ["Error on decoding payload"] },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "0x0B report-data frame that is not the weather sub-type is rejected",
+      "input": { "fPort": 2, "bytes": [11, 34, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+      "expected": { "errors": ["Error on decoding payload"] },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    }
+  ],
+  "downlink": []
+}

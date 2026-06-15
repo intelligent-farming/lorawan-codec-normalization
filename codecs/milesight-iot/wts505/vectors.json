@@ -1,0 +1,79 @@
+{
+  "uplink": [
+    {
+      "description": "Weather Station full uplink (battery, temperature, humidity, wind direction, pressure, wind speed) - upstream TTN example input",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 100, 3, 103, 16, 1, 4, 104, 113, 5, 132, 0, 1, 6, 115, 170, 39, 7, 146, 146, 1]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 100,
+          "air": {
+            "temperature": 27.2,
+            "relativeHumidity": 56.5,
+            "pressure": 1015.4
+          },
+          "wind": {
+            "direction": 25.6,
+            "speed": 40.2
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Input is the upstream TTN codec example; expected.data authored here by running reference/upstream-codec.js (oracle: battery 100, temperature 27.2, humidity 56.5, wind_direction 25.6, pressure 1015.4, wind_speed 40.2) and mapping to normalized keys (battery%->batteryPercent extra; temperature/humidity/pressure->air.*; wind_direction/wind_speed->wind.*). Pressure is atmospheric hPa, in the 900-1100 bound."
+    },
+    {
+      "description": "Weather Station uplink including cumulative rainfall + frame counter",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 85, 3, 103, 225, 0, 4, 104, 120, 5, 132, 8, 7, 6, 115, 148, 39, 7, 146, 35, 0, 8, 119, 210, 4, 7]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 85,
+          "rainfallCounter": 7,
+          "air": {
+            "temperature": 22.5,
+            "relativeHumidity": 60,
+            "pressure": 1013.2
+          },
+          "wind": {
+            "direction": 180,
+            "speed": 3.5
+          },
+          "rain": {
+            "cumulative": 12.34
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected.data authored by running reference/upstream-codec.js (oracle: battery 85, temperature 22.5, humidity 60, wind_direction 180, pressure 1013.2, wind_speed 3.5, rainfall_total 12.34, rainfall_counter 7) and mapping to normalized keys. rainfall_total->rain.cumulative (mm); rainfall_counter->rainfallCounter extra. Pressure 1013.2 hPa is atmospheric, in the 900-1100 bound."
+    },
+    {
+      "description": "Unrecognized channel/type yields an error",
+      "input": {
+        "fPort": 85,
+        "bytes": [255, 255, 0, 0]
+      },
+      "expected": {
+        "errors": ["no recognized Milesight channels"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic input with a channel/type pair the decoder does not handle; first iteration breaks before recognizing anything."
+    },
+    {
+      "description": "Empty payload yields an error",
+      "input": {
+        "fPort": 85,
+        "bytes": []
+      },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic empty input guards the no-data case."
+    }
+  ],
+  "downlink": []
+}

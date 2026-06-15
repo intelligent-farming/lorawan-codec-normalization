@@ -1,0 +1,61 @@
+{
+  "uplink": [
+    {
+      "description": "weather report frame: mid-range conditions (1013 hPa, 25 C, 55% RH, 4.47 m/s wind @ 180 deg, 2 mm/h rain, 5 mm day rain, UV 3, 650 W/m2 solar)",
+      "input": { "fPort": 2, "bytes": [11, 32, 0, 0, 0, 218, 116, 2, 3, 10, 8, 180, 0, 55, 10, 0, 3, 138, 2, 25, 0, 79, 0, 10, 12, 14, 16, 1, 2, 3, 4, 8, 20] },
+      "expected": {
+        "data": {
+          "air": { "temperature": 25, "relativeHumidity": 55, "pressure": 1013 },
+          "wind": { "speed": 4.47, "direction": 180 },
+          "rain": { "intensity": 2, "cumulative": 5 },
+          "solarRadiation": 650,
+          "uvIndex": 3,
+          "windSpeed10mAvg": 3.58,
+          "dayET": 2.01,
+          "soilMoisture": [10, 12, 14, 16],
+          "leafWetness": [1, 2, 3, 4],
+          "forecastIcons": 8,
+          "barTrend": 20
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected.data derived via the ORACLE method by running reference/upstream-codec.js parseWeather over these bytes and mapping its variables onto the normalized vocabulary (pressure->air.pressure, outsideTemperature->air.temperature, outsideHumidity->air.relativeHumidity, windSpeed/windDirection->wind.*, rainRate->rain.intensity, dayRain->rain.cumulative). Header bytes: 0x0B uplinkId, 0x20 subtype nibble 0x2, 0x00 weather report type."
+    },
+    {
+      "description": "weather report frame: cold calm edge case (1019.3 hPa, 0 C, 88% RH, 0 m/s wind @ 359 deg, 0 mm/h rain, 0.2 mm day rain, UV 0, 5 W/m2 solar)",
+      "input": { "fPort": 2, "bytes": [11, 32, 0, 0, 0, 148, 117, 64, 1, 0, 2, 103, 1, 88, 0, 0, 0, 5, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0] },
+      "expected": {
+        "data": {
+          "air": { "temperature": 0, "relativeHumidity": 88, "pressure": 1019.3 },
+          "wind": { "speed": 0, "direction": 359 },
+          "rain": { "intensity": 0, "cumulative": 0.2 },
+          "solarRadiation": 5,
+          "uvIndex": 0,
+          "windSpeed10mAvg": 0.89,
+          "dayET": 0,
+          "soilMoisture": [0, 0, 0, 0],
+          "leafWetness": [0, 0, 0, 0],
+          "forecastIcons": 6,
+          "barTrend": 0
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected.data derived via the ORACLE method from reference/upstream-codec.js parseWeather. Wind direction 359 deg exercises the <360 bound; pressure 1019.3 hPa stays within the 900-1100 atmospheric range."
+    },
+    {
+      "description": "unsupported uplink id (not 0x0B report frame)",
+      "input": { "fPort": 2, "bytes": [1, 0, 0, 0] },
+      "expected": { "errors": ["unsupported uplink id"] },
+      "source": "synthetic",
+      "_note": "Synthetic: uplinkId 0x01 (time-sync) is not the 0x0B weather report frame this codec handles."
+    },
+    {
+      "description": "truncated weather frame (correct header, fewer than 33 bytes)",
+      "input": { "fPort": 2, "bytes": [11, 32, 0, 0, 0, 218, 116] },
+      "expected": { "errors": ["payload too short"] },
+      "source": "synthetic",
+      "_note": "Synthetic: valid 0x0B/0x2/0x00 header but the fixed weather block is incomplete."
+    }
+  ],
+  "downlink": []
+}

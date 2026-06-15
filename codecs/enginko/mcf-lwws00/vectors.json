@@ -1,0 +1,64 @@
+{
+  "uplink": [
+    {
+      "description": "Weather report (0x0B type 2 sub 00): mild conditions, SW wind 270 deg",
+      "input": { "fPort": 2, "bytes": [11, 32, 0, 0, 0, 148, 117, 168, 2, 12, 9, 14, 1, 60, 5, 0, 3, 164, 1, 33, 0, 60, 0, 5, 6, 7, 8, 0, 1, 0, 1, 6, 30] },
+      "expected": {
+        "data": {
+          "air": { "pressure": 1019.3, "temperature": 20, "relativeHumidity": 60 },
+          "wind": { "speed": 5.36, "direction": 270 },
+          "rain": { "intensity": 1, "cumulative": 6.6 },
+          "solarRadiation": 420,
+          "uvIndex": 3
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds weather frame; expected.data derived by running reference/upstream-codec.js (parseWeather) and normalizing to the vocabulary (inHg->hPa, degF->degC, mph->m/s, rain counts x0.2)."
+    },
+    {
+      "description": "Weather report: calm, low pressure, north wind (dir 0), no rain",
+      "input": { "fPort": 2, "bytes": [11, 32, 0, 0, 0, 16, 114, 2, 3, 0, 0, 0, 0, 82, 0, 0, 0, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+      "expected": {
+        "data": {
+          "air": { "pressure": 988.83, "temperature": 25, "relativeHumidity": 82 },
+          "wind": { "speed": 0, "direction": 0 },
+          "rain": { "intensity": 0, "cumulative": 0 },
+          "solarRadiation": 150,
+          "uvIndex": 0
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds weather frame; expected.data derived from reference/upstream-codec.js and normalized to the vocabulary."
+    },
+    {
+      "description": "Weather report: hot, strong wind dir 359, heavy rain, high UV/solar",
+      "input": { "fPort": 2, "bytes": [11, 32, 0, 0, 0, 254, 116, 182, 3, 40, 35, 103, 1, 25, 120, 0, 11, 76, 4, 250, 0, 120, 0, 10, 11, 12, 13, 2, 2, 2, 2, 3, 25] },
+      "expected": {
+        "data": {
+          "air": { "pressure": 1014.22, "temperature": 35, "relativeHumidity": 25 },
+          "wind": { "speed": 17.88, "direction": 359 },
+          "rain": { "intensity": 24, "cumulative": 50 },
+          "solarRadiation": 1100,
+          "uvIndex": 11
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds weather frame; expected.data derived from reference/upstream-codec.js and normalized to the vocabulary."
+    },
+    {
+      "description": "Unsupported uplink id (0x09 metering, not a weather frame)",
+      "input": { "fPort": 2, "bytes": [9, 0, 0, 0, 0] },
+      "expected": { "errors": ["unsupported uplink id"] },
+      "source": "synthetic",
+      "_note": "Synthetic: this codec only handles the 0x0B weather report frame."
+    },
+    {
+      "description": "Truncated weather frame (header present, body too short)",
+      "input": { "fPort": 2, "bytes": [11, 32, 0, 0, 0, 148, 117, 168, 2] },
+      "expected": { "errors": ["payload too short"] },
+      "source": "synthetic",
+      "_note": "Synthetic: weather frame requires fields through barTrend (30 data bytes)."
+    }
+  ],
+  "downlink": []
+}

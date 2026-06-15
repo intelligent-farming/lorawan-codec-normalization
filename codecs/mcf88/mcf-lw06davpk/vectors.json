@@ -1,0 +1,86 @@
+{
+  "uplink": [
+    {
+      "description": "Davis weather report (ReportData 0x0B, sub 2, selector 0x00). Synthetic in-bounds frame; expected physical values cross-checked against reference/upstream-codec.js (decoder-weather.js parseWeather): barometric pressure 29.915 inHg -> 1013.0 hPa, outside temperature 77.0 degF -> 25.00 degC, wind speed 10 mph -> 4.47 m/s, 10-min avg 8 mph -> 3.58 m/s, wind direction 245 deg, humidity 55 %, rain rate 5 tips -> 1.0 mm/h, UV index 3, solar radiation 650 W/m2, day rain 23 tips -> 4.6 mm.",
+      "input": {
+        "fPort": 2,
+        "bytes": [11, 32, 0, 0, 0, 219, 116, 2, 3, 10, 8, 245, 0, 55, 5, 0, 3, 138, 2, 23, 0]
+      },
+      "expected": {
+        "data": {
+          "windSpeedAvg10m": 3.58,
+          "uvIndex": 3,
+          "solarRadiation": 650,
+          "air": {
+            "pressure": 1013,
+            "temperature": 25,
+            "relativeHumidity": 55
+          },
+          "wind": {
+            "speed": 4.47,
+            "direction": 245
+          },
+          "rain": {
+            "intensity": 1,
+            "cumulative": 4.6
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected.data derived by running reference/upstream-codec.js (parseWeather) and normalizing to vocabulary units (inHg->hPa, degF->degC, mph->m/s, 0.2mm tips->mm). Upstream emits stringified, locale/unit-mixed values; we emit numbers in vocabulary units."
+    },
+    {
+      "description": "Particulate-only report (ReportData 0x0B, sub 2, selector 0x01). Synthetic frame with a timestamp and PM1/PM2.5/PM10 (ug/m3); cross-checked against reference/upstream-codec.js parsePM (pm1=12, pm25=8, pm10=20). Timestamp 2026-06-15T09:42:30Z.",
+      "input": {
+        "fPort": 2,
+        "bytes": [11, 32, 1, 79, 77, 207, 52, 12, 0, 8, 0, 20, 0]
+      },
+      "expected": {
+        "data": {
+          "pm1": 12,
+          "pm2_5": 8,
+          "pm10": 20,
+          "time": "2026-06-15T09:42:30Z"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; PM values match reference/upstream-codec.js parsePM. PM1 has no vocabulary key so dust is emitted as camelCase extras pm1/pm2_5/pm10. Upstream formats the timestamp with new Date().toLocaleString() (locale-dependent); we emit a deterministic UTC RFC3339 time from the same packed-timestamp bits."
+    },
+    {
+      "description": "Combined T/RH/pressure + particulate report with battery (ReportData 0x0B, sub 3, selector 0x00). Synthetic frame; cross-checked against reference/upstream-codec.js parseTERPM: temperature 25.45 degC, humidity 55.0 %, pressure 1013.00 hPa, PM1/PM2.5/PM10 = 12/8/20 ug/m3, battery 88 %. Timestamp 2026-06-15T09:42:30Z.",
+      "input": {
+        "fPort": 2,
+        "bytes": [11, 48, 0, 79, 77, 207, 52, 241, 9, 110, 180, 139, 1, 12, 0, 8, 0, 20, 0, 88]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 25.45,
+            "relativeHumidity": 55,
+            "pressure": 1013
+          },
+          "pm1": 12,
+          "pm2_5": 8,
+          "pm10": 20,
+          "time": "2026-06-15T09:42:30Z",
+          "batteryPercent": 88
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; T/RH/pressure/PM/battery match reference/upstream-codec.js parseTERPM. Battery is a percentage so it maps to the camelCase extra batteryPercent (vocabulary battery is volts). Time is emitted as deterministic UTC RFC3339."
+    },
+    {
+      "description": "Unsupported ReportData frame (0x0B with an unknown sub-type/selector combination) is rejected with an error.",
+      "input": {
+        "fPort": 2,
+        "bytes": [11, 16, 255, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported report-data frame"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error case: sub-type nibble 1 with selector 0xff is not a frame this device emits. Chosen instead of a foreign uplink id (e.g. 0x09 metering) because that path lives in a separate upstream decoder file not present in this snapshot."
+    }
+  ],
+  "downlink": []
+}

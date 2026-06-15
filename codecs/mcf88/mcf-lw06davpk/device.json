@@ -1,0 +1,32 @@
+{
+  "vendor": "mcf88",
+  "device": "mcf-lw06davpk",
+  "name": "MCF-LW06DAVPK - Davis Vantage Pro2 Weather Station with Dust",
+  "categories": [
+    "weather-station"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "barometer",
+    "wind speed",
+    "wind direction",
+    "rainfall",
+    "solar radiation",
+    "uv",
+    "dust"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "mcf88",
+    "device": "mcf-lw06davpk",
+    "codecId": "mcf-lwws0x-codec",
+    "codecFile": "decoder-weather.js",
+    "codecSha256": "9be1ee5bbf803023d660c6acbd4f0a3f226b3b6f1ef7db035f72af35cb1a072a",
+    "referencedAt": "2026-06-15"
+  }
+}

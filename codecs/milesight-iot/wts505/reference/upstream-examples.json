@@ -1,0 +1,45 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/milesight-iot/wts505-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Weather Station - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          1,
+          117,
+          100,
+          3,
+          103,
+          16,
+          1,
+          4,
+          104,
+          113,
+          5,
+          132,
+          0,
+          1,
+          6,
+          115,
+          170,
+          39,
+          7,
+          146,
+          146,
+          1
+        ]
+      },
+      "output": {
+        "data": {
+          "battery": 100,
+          "humidity": 56.5,
+          "pressure": 1015.4,
+          "temperature": 27.2,
+          "wind_direction": 25.6,
+          "wind_speed": 40.2
+        }
+      }
+    }
+  ]
+}

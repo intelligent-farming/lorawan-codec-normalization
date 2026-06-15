@@ -1,0 +1,93 @@
+{
+  "uplink": [
+    {
+      "description": "Full Davis weather record: mild conditions, light wind from south, light rain",
+      "input": {
+        "fPort": 2,
+        "bytes": [11, 32, 0, 0, 0, 224, 116, 188, 2, 10, 8, 180, 0, 55, 5, 0, 3, 138, 2, 12, 0, 100, 0, 10, 11, 12, 13, 1, 2, 3, 4, 7, 200]
+      },
+      "expected": {
+        "data": {
+          "air": { "pressure": 1013.21, "temperature": 21.11, "relativeHumidity": 55 },
+          "wind": { "speed": 4.47, "direction": 180 },
+          "rain": { "intensity": 1, "cumulative": 2.4 },
+          "windSpeedAvg10Min": 3.58,
+          "uvIndex": 3,
+          "solarRadiation": 650,
+          "dayET": 2.54,
+          "soilMoistureCentibar": [10, 11, 12, 13],
+          "leafWetness": [1, 2, 3, 4],
+          "forecastIcons": 7,
+          "barometricTrend": 200
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input. expected.data authored from this module's normalization; wire decode cross-checked against reference/upstream-codec.js (pressure 1013.21 hPa, temp 21.11 C, wind 4.47 m/s @180 deg, rain rate 1.0 mm/h, day rain 2.4 mm)."
+    },
+    {
+      "description": "Full Davis weather record: cold, strong wind near north, heavy rain",
+      "input": {
+        "fPort": 2,
+        "bytes": [11, 32, 0, 0, 0, 148, 117, 24, 1, 25, 20, 99, 1, 88, 40, 0, 0, 120, 0, 200, 0, 50, 0, 50, 60, 70, 80, 5, 6, 7, 8, 3, 60]
+      },
+      "expected": {
+        "data": {
+          "air": { "pressure": 1019.3, "temperature": -2.22, "relativeHumidity": 88 },
+          "wind": { "speed": 11.18, "direction": 355 },
+          "rain": { "intensity": 8, "cumulative": 40 },
+          "windSpeedAvg10Min": 8.94,
+          "uvIndex": 0,
+          "solarRadiation": 120,
+          "dayET": 1.27,
+          "soilMoistureCentibar": [50, 60, 70, 80],
+          "leafWetness": [5, 6, 7, 8],
+          "forecastIcons": 3,
+          "barometricTrend": 60
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input exercising sub-zero temperature (28.0 F -> -2.22 C via sign extension) and direction near 360. Wire decode cross-checked against reference/upstream-codec.js."
+    },
+    {
+      "description": "Minimal Davis weather frame (truncated after day-rain): calm, dry, high UV",
+      "input": {
+        "fPort": 2,
+        "bytes": [11, 32, 0, 0, 0, 90, 115, 16, 4, 0, 0, 0, 0, 50, 0, 0, 9, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "air": { "pressure": 1000, "temperature": 40, "relativeHumidity": 50 },
+          "wind": { "speed": 0, "direction": 0 },
+          "rain": { "intensity": 0, "cumulative": 0 },
+          "windSpeedAvg10Min": 0,
+          "uvIndex": 9,
+          "solarRadiation": 0
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic shortest valid frame (21 bytes, through the day-rain high byte). dayET/soil/leaf/forecast/bar fields are absent so the codec omits those extras; upstream reads them out of bounds and emits 0/NaN, which we deliberately do not. Wire decode of the present fields cross-checked against reference/upstream-codec.js."
+    },
+    {
+      "description": "Unsupported frame id (not 0x0b report-data)",
+      "input": { "fPort": 2, "bytes": [153, 0, 0] },
+      "expected": { "errors": ["unsupported frame id"] },
+      "source": "synthetic",
+      "_note": "Synthetic. 0x99 is not a recognized MCF88 uplink id; upstream returns null -> 'Error on decoding payload'."
+    },
+    {
+      "description": "0x0b report-data but PM sub-type (0x2/0x01), not the Davis weather frame",
+      "input": { "fPort": 2, "bytes": [11, 32, 1, 0, 0, 0, 0] },
+      "expected": { "errors": ["not a Davis weather frame"] },
+      "source": "synthetic",
+      "_note": "Synthetic. report-type 0x2 sub-type 0x01 routes to particulate-matter parsing upstream, not weather."
+    },
+    {
+      "description": "0x0b/0x2/0x00 weather frame truncated before the wind/rain block",
+      "input": { "fPort": 2, "bytes": [11, 32, 0, 0, 0, 0, 0] },
+      "expected": { "errors": ["truncated Davis weather frame"] },
+      "source": "synthetic",
+      "_note": "Synthetic. Correct frame routing but too few bytes to read through day-rain; upstream reads out of bounds instead of erroring."
+    }
+  ],
+  "downlink": []
+}

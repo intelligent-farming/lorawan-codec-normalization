@@ -1,0 +1,40 @@
+{
+  "uplink": [
+    {
+      "description": "Davis weather block (0B 20 00): barometric pressure 1013.21 hPa (29.92 inHg), air temp 23.89 C (75.0 F), 55% RH, wind 4.47 m/s @ 180 deg, rain rate 1.0 mm/h, day rain 2.4 mm, UV 3, solar 600 W/m2",
+      "input": { "fPort": 1, "bytes": [11, 32, 0, 0, 0, 224, 116, 238, 2, 10, 8, 180, 0, 55, 5, 0, 3, 88, 2, 12, 0, 50, 0, 10, 11, 12, 13, 1, 2, 3, 4, 8, 20] },
+      "expected": { "data": { "air": { "temperature": 23.89, "relativeHumidity": 55, "pressure": 1013.21 }, "wind": { "speed": 4.47, "direction": 180 }, "rain": { "intensity": 1, "cumulative": 2.4 }, "tenMinutesAvgWindSpeed": 3.58, "uvIndex": 3, "solarRadiation": 600, "evapotranspiration": 1.27 } },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds Davis weather frame; expected.data derived by running reference/upstream-codec.js parseWeather over the same bytes (pressure 1013.21, temp 23.89, wind 4.47/180, humidity 55, rainRate 1, dayRain 2.4, uv 3, solar 600, dayET 1.27) and mapping to vocabulary units."
+    },
+    {
+      "description": "Davis weather block (0B 20 00) at 32.0 F / 0 C, 1019.30 hPa (30.10 inHg), calm wind @ 0 deg, 80% RH, no rain/UV/solar",
+      "input": { "fPort": 1, "bytes": [11, 32, 0, 0, 0, 148, 117, 64, 1, 0, 0, 0, 0, 80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+      "expected": { "data": { "air": { "temperature": 0, "relativeHumidity": 80, "pressure": 1019.3 }, "wind": { "speed": 0, "direction": 0 }, "rain": { "intensity": 0, "cumulative": 0 }, "tenMinutesAvgWindSpeed": 0, "uvIndex": 0, "solarRadiation": 0, "evapotranspiration": 0 } },
+      "source": "synthetic",
+      "_note": "Synthetic boundary weather frame; expected.data derived from reference/upstream-codec.js parseWeather (pressure 1019.30, temp 0, wind 0/0, humidity 80). Confirms wind.direction 0 is valid (vocabulary direction is [0,360))."
+    },
+    {
+      "description": "Combined T/RH/P + PM block (0B 30 00): temp 23.45 C, 55% RH, 1013.25 hPa, PM1 10 / PM2.5 25 / PM10 40 ug/m3, battery 95%, ts 2026-06-15T09:00:00Z",
+      "input": { "fPort": 1, "bytes": [11, 48, 0, 0, 72, 207, 52, 41, 9, 110, 205, 139, 1, 10, 0, 25, 0, 40, 0, 95] },
+      "expected": { "data": { "air": { "temperature": 23.45, "relativeHumidity": 55, "pressure": 1013.25 }, "time": "2026-06-15T09:00:00Z", "pm1": 10, "pm2_5": 25, "pm10": 40, "batteryPercent": 95 } },
+      "source": "synthetic",
+      "_note": "Synthetic combined frame; air values derived from reference/upstream-codec.js parseTERPM (temp 23.45, humidity 55, pressure 1013.25, pm 10/25/40, battery 95%). time is the RFC3339 UTC rendering of the same packed timestamp the upstream parseDate decodes."
+    },
+    {
+      "description": "Particulate-matter block (0B 20 01): PM1 10 / PM2.5 25 / PM10 40 ug/m3, ts 2026-06-15T12:30:00Z",
+      "input": { "fPort": 1, "bytes": [11, 32, 1, 192, 99, 207, 52, 10, 0, 25, 0, 40, 0] },
+      "expected": { "data": { "time": "2026-06-15T12:30:00Z", "pm1": 10, "pm2_5": 25, "pm10": 40 } },
+      "source": "synthetic",
+      "_note": "Synthetic PM frame; PM values derived from reference/upstream-codec.js parsePM (pm1 10, pm25 25, pm10 40). time is the RFC3339 UTC rendering of the upstream packed timestamp."
+    },
+    {
+      "description": "Unsupported uplink id (not 0x0B) is rejected",
+      "input": { "fPort": 1, "bytes": [255, 0, 0] },
+      "expected": { "errors": ["unsupported uplink id"] },
+      "source": "synthetic",
+      "_note": "Synthetic error case; upstream returns {errors:['Error on decoding payload']} for an unrecognized uplink id. Our codec reports the specific id."
+    }
+  ],
+  "downlink": []
+}

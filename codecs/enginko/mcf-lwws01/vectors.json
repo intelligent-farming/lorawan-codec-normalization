@@ -1,0 +1,115 @@
+{
+  "uplink": [
+    {
+      "description": "weather report (0B 2 00): temp/humidity/pressure + wind + rain + solar/uv extras",
+      "input": {
+        "fPort": 1,
+        "bytes": [11, 32, 0, 0, 0, 218, 116, 168, 2, 5, 4, 180, 0, 55, 10, 0, 3, 194, 1, 25, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 60]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 20, "relativeHumidity": 55, "pressure": 1013 },
+          "wind": { "speed": 2.24, "direction": 180 },
+          "rain": { "intensity": 2, "cumulative": 5 },
+          "windSpeedAvgTenMinutes": 1.79,
+          "uv": 3,
+          "solarRadiation": 450,
+          "evapotranspirationDay": 2.54,
+          "forecastIcons": 6,
+          "barometricTrend": 60
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds weather frame. Bytes hand-built to the upstream decoder-weather.js parseWeather layout (Davis Vantage Pro2: pressure 0.001 inHg, temp 0.1 degF, wind mph, rain 0.2 mm counts); expected.data produced by running reference/upstream-codec.js (ORACLE) and remapping its keys to the normalized vocabulary."
+    },
+    {
+      "description": "weather report (0B 2 00): wind direction 360 folds to 0 (vocab requires <360)",
+      "input": {
+        "fPort": 1,
+        "bytes": [11, 32, 0, 0, 0, 48, 117, 16, 4, 0, 0, 104, 1, 90, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 40, "relativeHumidity": 90, "pressure": 1015.92 },
+          "wind": { "speed": 0, "direction": 0 },
+          "rain": { "intensity": 0, "cumulative": 0 },
+          "windSpeedAvgTenMinutes": 0,
+          "uv": 0,
+          "solarRadiation": 0,
+          "evapotranspirationDay": 0,
+          "forecastIcons": 8,
+          "barometricTrend": 0
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic. Upstream reports wind direction 360 (due north); our codec folds 360 to 0 to satisfy the vocabulary bound 0 <= direction < 360. Every other value matches the upstream ORACLE run of reference/upstream-codec.js."
+    },
+    {
+      "description": "PM report (0B 2 01): particulate matter pm1/pm2.5/pm10 with timestamp",
+      "input": {
+        "fPort": 1,
+        "bytes": [11, 32, 1, 175, 109, 207, 48, 12, 0, 8, 0, 15, 0]
+      },
+      "expected": {
+        "data": {
+          "pm1": 12,
+          "pm25": 8,
+          "pm10": 15,
+          "time": "2024-06-15T13:45:30Z"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic PM frame. pm1/pm25/pm10 values produced by the upstream ORACLE (reference/upstream-codec.js parsePM). Upstream emits the timestamp as a non-deterministic locale string; we emit RFC3339 UTC (decoded from the same packed 4-byte date), a deliberate fork for the `time` vocabulary key."
+    },
+    {
+      "description": "TER+PM report (0B 3 00) with battery: temp/humidity/pressure + PM + batteryPercent",
+      "input": {
+        "fPort": 1,
+        "bytes": [11, 48, 0, 164, 56, 98, 47, 208, 7, 110, 180, 139, 1, 5, 0, 7, 0, 9, 0, 88]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 20, "relativeHumidity": 55, "pressure": 1013 },
+          "pm1": 5,
+          "pm25": 7,
+          "pm10": 9,
+          "batteryPercent": 88,
+          "time": "2023-11-02T07:05:08Z"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic TER+PM frame (MCF integer-hundredths temp/pressure, half-percent humidity). Numeric values produced by the upstream ORACLE (reference/upstream-codec.js parseTERPM); battery is a PERCENTAGE so it is emitted as batteryPercent (vocabulary `battery` is volts), and the date is re-emitted as RFC3339 UTC."
+    },
+    {
+      "description": "TER+PM report (0B 3 00) without trailing battery byte; negative temperature",
+      "input": {
+        "fPort": 1,
+        "bytes": [11, 48, 0, 125, 191, 52, 50, 162, 254, 130, 10, 134, 1, 0, 0, 1, 0, 2, 0]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": -3.5, "relativeHumidity": 65, "pressure": 998.5 },
+          "pm1": 0,
+          "pm25": 1,
+          "pm10": 2,
+          "time": "2025-01-20T23:59:58Z"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic TER+PM frame with no battery byte (length 19) and a negative temperature (MCF signed 16-bit). Values produced by the upstream ORACLE (reference/upstream-codec.js parseTERPM)."
+    },
+    {
+      "description": "unsupported uplink id (not 0x0B report-data) -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 2, 3, 4]
+      },
+      "expected": {
+        "errors": ["unsupported uplink id"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error case. Uplink id 0x01 (time sync) is a non-measurement housekeeping frame; this normalized codec only decodes the 0x0B report-data weather frames and rejects others rather than emitting a bare {}."
+    }
+  ],
+  "downlink": []
+}

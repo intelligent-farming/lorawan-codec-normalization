@@ -1,0 +1,32 @@
+{
+  "vendor": "milesight-iot",
+  "device": "wts305",
+  "name": "WTS305 - Weather Station",
+  "categories": [
+    "weather-station",
+    "climate",
+    "wind"
+  ],
+  "sensors": [
+    "battery",
+    "temperature",
+    "humidity",
+    "wind direction",
+    "wind speed",
+    "pressure",
+    "rainfall"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "wts305",
+    "codecId": "wts305-codec",
+    "codecFile": "wts305.js",
+    "codecSha256": "1e05252a13b4e2de9bc5de8bdb437ffcff0afc4306a2a0b21dad9e0d30b0d765",
+    "referencedAt": "2026-06-15"
+  }
+}

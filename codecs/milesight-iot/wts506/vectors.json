@@ -1,0 +1,88 @@
+{
+  "uplink": [
+    {
+      "description": "Full reading: battery, temperature, humidity, wind direction, pressure, wind speed, rainfall",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 87, 3, 103, 215, 0, 4, 104, 128, 5, 132, 95, 5, 6, 115, 103, 39, 7, 146, 53, 0, 8, 119, 210, 4, 5]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 87,
+          "air": {
+            "temperature": 21.5,
+            "relativeHumidity": 64,
+            "pressure": 1008.7
+          },
+          "wind": {
+            "direction": 137.5,
+            "speed": 5.3
+          },
+          "rainfallCounter": 5,
+          "rain": {
+            "cumulative": 12.34
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload built from the WTS506 channel/type TLV wire format; expected.data derived by running reference/upstream-codec.js (the oracle) and mapping its raw keys into the normalized vocabulary (temperature/humidity/pressure -> air, wind_direction/wind_speed -> wind, rainfall_total -> rain.cumulative, battery % -> batteryPercent, rainfall_counter -> rainfallCounter)."
+    },
+    {
+      "description": "Edge values: negative temperature, full humidity, low-end pressure, zero wind/rain",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 100, 3, 103, 214, 255, 4, 104, 200, 5, 132, 0, 0, 6, 115, 234, 36, 7, 146, 0, 0, 8, 119, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 100,
+          "air": {
+            "temperature": -4.2,
+            "relativeHumidity": 100,
+            "pressure": 945
+          },
+          "wind": {
+            "direction": 0,
+            "speed": 0
+          },
+          "rainfallCounter": 0,
+          "rain": {
+            "cumulative": 0
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic edge-case payload (int16 two's-complement negative temperature 0xFFD6 = -4.2 °C, humidity 200/2 = 100 %, pressure 9450/10 = 945 hPa within the 900-1100 atmospheric bound, zero wind and rainfall). expected.data derived from reference/upstream-codec.js (oracle) mapped into the normalized vocabulary."
+    },
+    {
+      "description": "Minimal weather-station reading: temperature + barometric pressure only",
+      "input": {
+        "fPort": 85,
+        "bytes": [3, 103, 102, 1, 6, 115, 203, 42]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 35.8,
+            "pressure": 1095.5
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic payload carrying only the two weather-station required channels (temperature 358/10 = 35.8 °C, pressure 10955/10 = 1095.5 hPa near the upper 1100 atmospheric bound). expected.data derived from reference/upstream-codec.js (oracle) mapped into air.temperature and air.pressure."
+    },
+    {
+      "description": "Unrecognized channels only -> error",
+      "input": {
+        "fPort": 85,
+        "bytes": [255, 255, 0, 0]
+      },
+      "expected": {
+        "errors": ["no recognized Milesight channels"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error payload: channel/type pair 0xFF/0xFF matches no WTS506 channel, so decoding recognizes nothing and returns an error (the upstream oracle returns an empty {} for the same input; our codec surfaces it as an explicit error per the output contract)."
+    }
+  ],
+  "downlink": []
+}

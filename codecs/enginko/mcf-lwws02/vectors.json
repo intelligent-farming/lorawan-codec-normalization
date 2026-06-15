@@ -1,0 +1,99 @@
+{
+  "uplink": [
+    {
+      "description": "Weather report (frame 0x0B/2/00) - mild day, all channels populated",
+      "input": {
+        "fPort": 2,
+        "bytes": [11, 32, 0, 0, 0, 218, 116, 204, 2, 10, 8, 180, 0, 55, 15, 0, 4, 108, 2, 120, 0, 50, 0, 3, 4, 5, 6, 1, 2, 3, 4, 6, 2]
+      },
+      "expected": {
+        "data": {
+          "air": { "pressure": 1013, "temperature": 22, "relativeHumidity": 55 },
+          "wind": { "speed": 4.47, "direction": 180 },
+          "rain": { "intensity": 3, "cumulative": 24 },
+          "windSpeedTenMinAvg": 3.58,
+          "uv": 4,
+          "solarRadiation": 620,
+          "dayEvapotranspiration": 1.27,
+          "soilMoisture": [3, 4, 5, 6],
+          "leafWetness": [1, 2, 3, 4],
+          "forecastIcons": 6,
+          "barometerTrend": 2
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected.data values cross-checked against reference/upstream-codec.js parseWeather (pressure 1013 hPa, temp 22 C from 71.6 F, wind 4.47 m/s from 10 mph, rain 3 mm/h and 24 mm from 0.2 mm clicks)."
+    },
+    {
+      "description": "Weather report - calm dry afternoon, rain/wind/uv all zero",
+      "input": {
+        "fPort": 2,
+        "bytes": [11, 32, 0, 0, 0, 148, 117, 64, 1, 0, 0, 0, 0, 80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0]
+      },
+      "expected": {
+        "data": {
+          "air": { "pressure": 1019.3, "temperature": 0, "relativeHumidity": 80 },
+          "wind": { "speed": 0, "direction": 0 },
+          "rain": { "intensity": 0, "cumulative": 0 },
+          "windSpeedTenMinAvg": 0,
+          "uv": 0,
+          "solarRadiation": 0,
+          "dayEvapotranspiration": 0,
+          "soilMoisture": [0, 0, 0, 0],
+          "leafWetness": [0, 0, 0, 0],
+          "forecastIcons": 8,
+          "barometerTrend": 0
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected.data values cross-checked against reference/upstream-codec.js parseWeather (pressure 1019.3 hPa, temp 0 C from 32.0 F)."
+    },
+    {
+      "description": "Weather report - storm, high wind, heavy rain, near-saturation humidity",
+      "input": {
+        "fPort": 2,
+        "bytes": [11, 32, 0, 0, 0, 16, 114, 78, 2, 35, 28, 103, 1, 98, 60, 0, 1, 90, 0, 28, 2, 120, 0, 10, 20, 30, 40, 5, 6, 7, 8, 2, 255]
+      },
+      "expected": {
+        "data": {
+          "air": { "pressure": 988.83, "temperature": 15, "relativeHumidity": 98 },
+          "wind": { "speed": 15.65, "direction": 359 },
+          "rain": { "intensity": 12, "cumulative": 108 },
+          "windSpeedTenMinAvg": 12.52,
+          "uv": 1,
+          "solarRadiation": 90,
+          "dayEvapotranspiration": 3.05,
+          "soilMoisture": [10, 20, 30, 40],
+          "leafWetness": [5, 6, 7, 8],
+          "forecastIcons": 2,
+          "barometerTrend": 255
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected.data values cross-checked against reference/upstream-codec.js parseWeather (pressure 988.83 hPa, temp 15 C from 59.0 F, wind 15.65 m/s from 35 mph, direction 359 deg stays < 360)."
+    },
+    {
+      "description": "Unsupported uplink id (0x04 TER frame, not the weather frame)",
+      "input": {
+        "fPort": 2,
+        "bytes": [4, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported uplink id"]
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Weather frame but truncated record (fewer than 33 bytes)",
+      "input": {
+        "fPort": 2,
+        "bytes": [11, 32, 0, 0, 0, 218, 116, 204, 2]
+      },
+      "expected": {
+        "errors": ["payload too short: truncated weather record"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}
