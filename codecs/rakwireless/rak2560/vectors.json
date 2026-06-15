@@ -1,0 +1,71 @@
+{
+  "uplink": [
+    {
+      "description": "full environmental frame: temp 23.5C, humidity 60%, pressure 1013.2 hPa, presence, 350 lux, battery 3.65V",
+      "input": { "fPort": 1, "bytes": [1, 103, 0, 235, 2, 104, 120, 3, 115, 39, 148, 4, 102, 1, 5, 101, 1, 94, 6, 116, 1, 109] },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 23.5,
+            "relativeHumidity": 60,
+            "pressure": 1013.2,
+            "lightIntensity": 350
+          },
+          "action": { "motion": { "detected": true } },
+          "battery": 3.65
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds LPP frame; raw channel values cross-checked against reference/upstream-codec.js (temperature_1=23.5, humidity_2=60, barometer_3=1013.2, presence_4=1, illuminance_5=350, voltage_6=3.65). Pressure is atmospheric (within 900-1100 hPa)."
+    },
+    {
+      "description": "minimal weather-station frame: negative temp -5.2C and pressure 998.7 hPa",
+      "input": { "fPort": 1, "bytes": [1, 103, 255, 204, 3, 115, 39, 3] },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": -5.2,
+            "pressure": 998.7
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; exercises two's-complement negative temperature. Upstream oracle: temperature_1=-5.2, barometer_3=998.7. Covers weather-station required keys air.temperature + air.pressure."
+    },
+    {
+      "description": "frame with CO2 concentration and GPS: temp 25C, pressure 1013.2 hPa, 412 ppm, position 40,-105",
+      "input": { "fPort": 1, "bytes": [1, 103, 0, 250, 3, 115, 39, 148, 7, 125, 1, 156, 9, 136, 6, 26, 128, 239, 250, 112, 2, 73, 240] },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 25,
+            "pressure": 1013.2,
+            "co2": 412
+          },
+          "position": {
+            "latitude": 40,
+            "longitude": -105
+          },
+          "gpsAltitude9": 1500
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; concentration (type 125) -> air.co2, GPS (type 136) -> position.latitude/longitude with altitude as a camelCase extra. Upstream oracle: temperature_1=25, barometer_3=1013.2, concentration_7=412, gps_9={latitude:40, longitude:-105, altitude:1500}."
+    },
+    {
+      "description": "unrecognized LPP sensor type",
+      "input": { "fPort": 1, "bytes": [1, 250, 0, 0] },
+      "expected": { "errors": ["unrecognized LPP sensor type: 250"] },
+      "source": "synthetic",
+      "_note": "Synthetic; type 250 is not in the LPP table. Upstream throws 'Sensor type error!: 250' on the same input."
+    },
+    {
+      "description": "truncated payload: barometer value missing a byte",
+      "input": { "fPort": 1, "bytes": [3, 115, 39] },
+      "expected": { "errors": ["truncated payload"] },
+      "source": "synthetic",
+      "_note": "Synthetic; type 115 (barometer) declares 2 value bytes but only 1 is present."
+    }
+  ],
+  "downlink": []
+}

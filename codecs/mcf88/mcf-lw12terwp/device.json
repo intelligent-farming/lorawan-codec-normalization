@@ -1,0 +1,28 @@
+{
+  "vendor": "mcf88",
+  "device": "mcf-lw12terwp",
+  "name": "MCF-LW12TERWP - Outdoor Environmental Sensor",
+  "categories": [
+    "climate",
+    "weather-station"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "barometer",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "mcf88",
+    "device": "mcf-lw12terwp",
+    "codecId": "mcf-environmental-codec",
+    "codecFile": "decoder-environmental.js",
+    "codecSha256": "9be1ee5bbf803023d660c6acbd4f0a3f226b3b6f1ef7db035f72af35cb1a072a",
+    "referencedAt": "2026-06-15"
+  }
+}

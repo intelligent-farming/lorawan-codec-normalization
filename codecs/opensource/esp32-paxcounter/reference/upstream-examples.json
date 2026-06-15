@@ -1,0 +1,360 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/opensource/esp32-paxcounter-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Paxcount data",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          7,
+          0,
+          3,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "bytes": [
+            7,
+            0,
+            3,
+            0
+          ],
+          "port": 1,
+          "wifi": 7,
+          "ble": 3,
+          "pax": 10
+        },
+        "errors": [],
+        "warnings": []
+      }
+    },
+    {
+      "description": "Device status query result",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          47,
+          1,
+          0,
+          0,
+          0,
+          0,
+          192,
+          75,
+          3,
+          0,
+          45,
+          192,
+          75,
+          3,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "bytes": [
+            47,
+            1,
+            0,
+            0,
+            0,
+            0,
+            192,
+            75,
+            3,
+            0,
+            45,
+            192,
+            75,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "port": 2,
+          "voltage": 303,
+          "uptime": 216000,
+          "cputemp": 45,
+          "memory": 216000,
+          "reset0": 0,
+          "restarts": 0
+        },
+        "errors": [],
+        "warnings": []
+      }
+    },
+    {
+      "description": "Device config data",
+      "input": {
+        "fPort": 3,
+        "bytes": [
+          9,
+          15,
+          0,
+          0,
+          120,
+          50,
+          10,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "bytes": [
+            9,
+            15,
+            0,
+            0,
+            120,
+            50,
+            10,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "port": 3,
+          "loradr": 9,
+          "txpower": 15,
+          "rssilimit": 0,
+          "sendcycle": 120,
+          "wifichancycle": 50,
+          "blescantime": 10,
+          "sleepcycle": 0,
+          "flags": {
+            "adr": 0,
+            "antenna": 0,
+            "blescan": 0,
+            "countermode": 0,
+            "reserved": 0,
+            "screen": 0,
+            "screensaver": 0
+          },
+          "payloadmask": {
+            "battery": 0,
+            "bme": 0,
+            "counter": 0,
+            "gps": 0,
+            "reserved": 0,
+            "sensor1": 0,
+            "sensor2": 0,
+            "sensor3": 0
+          },
+          "version": ""
+        },
+        "errors": [],
+        "warnings": []
+      }
+    },
+    {
+      "description": "GPS data",
+      "input": {
+        "fPort": 4,
+        "bytes": [
+          101,
+          202,
+          6,
+          3,
+          5,
+          25,
+          111,
+          0,
+          5,
+          198,
+          0,
+          66,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "bytes": [
+            101,
+            202,
+            6,
+            3,
+            5,
+            25,
+            111,
+            0,
+            5,
+            198,
+            0,
+            66,
+            0
+          ],
+          "port": 4,
+          "latitude": 50.776677,
+          "longitude": 7.280901,
+          "sats": 5,
+          "hdop": 1.98,
+          "altitude": 66
+        },
+        "errors": [],
+        "warnings": []
+      }
+    },
+    {
+      "description": "Button data",
+      "input": {
+        "fPort": 5,
+        "bytes": [
+          1
+        ]
+      },
+      "output": {
+        "data": {
+          "bytes": [
+            1
+          ],
+          "port": 5,
+          "button": 1
+        },
+        "errors": [],
+        "warnings": []
+      }
+    },
+    {
+      "description": "Environmental sensor data",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          8,
+          52,
+          16,
+          39,
+          64,
+          31,
+          16,
+          39
+        ]
+      },
+      "output": {
+        "data": {
+          "bytes": [
+            8,
+            52,
+            16,
+            39,
+            64,
+            31,
+            16,
+            39
+          ],
+          "port": 7,
+          "temperature": 21,
+          "pressure": 1000,
+          "humidity": 80,
+          "air": 100
+        },
+        "errors": [],
+        "warnings": []
+      }
+    },
+    {
+      "description": "Battery voltage data",
+      "input": {
+        "fPort": 8,
+        "bytes": [
+          47,
+          1
+        ]
+      },
+      "output": {
+        "data": {
+          "bytes": [
+            47,
+            1
+          ],
+          "port": 8,
+          "voltage": 303
+        },
+        "errors": [],
+        "warnings": []
+      }
+    },
+    {
+      "description": "Time/Date",
+      "input": {
+        "fPort": 9,
+        "bytes": [
+          144,
+          134,
+          200,
+          96,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "bytes": [
+            144,
+            134,
+            200,
+            96,
+            0
+          ],
+          "port": 9,
+          "time": 1623754384,
+          "timestatus": 0
+        },
+        "errors": [],
+        "warnings": []
+      }
+    },
+    {
+      "description": "User sensor data",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "bytes": [
+            0,
+            0
+          ],
+          "port": 10,
+          "ens": 0
+        },
+        "errors": [],
+        "warnings": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "vendor": "mcci",
+  "device": "model4841",
+  "name": "MCCI Catena Model 4841 Outdoor Air-Quality / Environmental Sensor",
+  "categories": [
+    "weather-station",
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "barometer",
+    "particulate-matter",
+    "tvoc",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "mcci",
+    "device": "model4841",
+    "codecId": "codec-model4841",
+    "codecFile": "codec-model4841.js",
+    "codecSha256": "aeff3a1c6137f7650803c8978f909a20ccca38727e3243db7b24b33e9d6cf189",
+    "referencedAt": "2026-06-15"
+  }
+}

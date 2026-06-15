@@ -1,0 +1,74 @@
+{
+  "uplink": [
+    {
+      "description": "TER (0x04) datalog frame: 3 measurements (newest last) followed by a battery-percentage byte. Newest reading is at the top level; the two older readings are in history (newest-first), each with an RFC3339 time. Oldest record carries a negative temperature.",
+      "input": {
+        "fPort": 2,
+        "bytes": [4, 0, 64, 207, 52, 243, 253, 161, 232, 137, 1, 192, 67, 207, 52, 54, 1, 130, 136, 138, 1, 0, 72, 207, 52, 251, 4, 111, 0, 139, 1, 72]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 12.75,
+            "relativeHumidity": 55.5,
+            "pressure": 1011.2
+          },
+          "time": "2026-06-15T09:00:00Z",
+          "batteryPercent": 72,
+          "history": [
+            {
+              "air": {
+                "temperature": 3.1,
+                "relativeHumidity": 65,
+                "pressure": 1010
+              },
+              "time": "2026-06-15T08:30:00Z"
+            },
+            {
+              "air": {
+                "temperature": -5.25,
+                "relativeHumidity": 80.5,
+                "pressure": 1008.4
+              },
+              "time": "2026-06-15T08:00:00Z"
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder (vendor/mcf88/decoder-environmental.js parseTER) and mapped to the normalized vocabulary; pressure is atmospheric (hPa, within 900-1100)"
+    },
+    {
+      "description": "TER (0x04) frame with a single measurement followed by a battery-percentage byte. No history is emitted.",
+      "input": {
+        "fPort": 2,
+        "bytes": [4, 192, 99, 207, 52, 102, 8, 94, 205, 139, 1, 88]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 21.5,
+            "relativeHumidity": 47,
+            "pressure": 1013.25
+          },
+          "time": "2026-06-15T12:30:00Z",
+          "batteryPercent": 88
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder (vendor/mcf88/decoder-environmental.js getTemperature/getHumidity/getPressure) and mapped to the normalized vocabulary"
+    },
+    {
+      "description": "Unsupported frame id (0x09 metering) is rejected; this product only emits the TER (0x04) frame.",
+      "input": {
+        "fPort": 2,
+        "bytes": [9, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported frame id"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

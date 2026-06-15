@@ -1,0 +1,72 @@
+{
+  "uplink": [
+    {
+      "description": "TERPM report-data frame (0x0B, subtype 0x3, type 0x00) with trailing battery byte. Synthetic in-bounds frame; expected values produced by running the upstream Apache-2.0 reference decoder (decoder-environmental.js parseTERPM) on this input and normalizing: +27.40 C, 35.5 %RH, 1004.48 hPa, PM1 10, PM2.5 25, PM10 42 ug/m3, battery 88 %, timestamp 2016-09-23 15:54:56.",
+      "input": {
+        "fPort": 2,
+        "bytes": [11, 48, 0, 220, 126, 55, 33, 180, 10, 71, 96, 136, 1, 10, 0, 25, 0, 42, 0, 88]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 27.4,
+            "relativeHumidity": 35.5,
+            "pressure": 1004.48
+          },
+          "pm1": 10,
+          "pm2_5": 25,
+          "pm10": 42,
+          "time": "2016-09-23T15:54:56Z",
+          "batteryPercent": 88
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected.data computed via the ORACLE method (ran reference/upstream-codec.js parseTERPM, then mapped to normalized keys: temperature->air.temperature, humidity->air.relativeHumidity, pressure->air.pressure(hPa, atmospheric), pm1/pm25/pm10->extras pm1/pm2_5/pm10, battery%->batteryPercent)."
+    },
+    {
+      "description": "TERPM frame with no trailing battery byte (19 bytes), negative temperature and a low-but-atmospheric pressure. Synthetic in-bounds frame; expected values produced by the upstream reference decoder: -5.00 C, 80 %RH, 980.00 hPa, PM1 500, PM2.5 600, PM10 700 ug/m3, no battery.",
+      "input": {
+        "fPort": 2,
+        "bytes": [11, 48, 0, 220, 126, 55, 33, 12, 254, 160, 208, 126, 1, 244, 1, 88, 2, 188, 2]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": -5,
+            "relativeHumidity": 80,
+            "pressure": 980
+          },
+          "pm1": 500,
+          "pm2_5": 600,
+          "pm10": 700,
+          "time": "2016-09-23T15:54:56Z"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected.data computed via the ORACLE method (ran reference/upstream-codec.js parseTERPM). Exercises the optional-battery omission and two's-complement negative temperature."
+    },
+    {
+      "description": "Unsupported frame id (0xFF) is rejected. Upstream returns its generic 'Error on decoding payload'; we author a specific message.",
+      "input": {
+        "fPort": 2,
+        "bytes": [255, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported frame id"]
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "0x0B report-data frame with a non-TERPM subtype (0x2 weather/PM) is rejected by this device's codec.",
+      "input": {
+        "fPort": 2,
+        "bytes": [11, 32, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+      },
+      "expected": {
+        "errors": ["unsupported report-data frame"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

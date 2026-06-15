@@ -1,0 +1,65 @@
+{
+  "uplink": [
+    {
+      "description": "standard report: air temperature 21.37 C (cluster 0x0402)",
+      "input": {
+        "bytes": [17, 10, 4, 2, 0, 0, 41, 8, 89],
+        "fPort": 125
+      },
+      "expected": { "data": { "air": { "temperature": 21.37 } } },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds standard-report input; expected value produced by running reference/upstream-codec.js (variable 'temperature' = 21.37) and mapping to air.temperature. Payload: 110A04020000290859."
+    },
+    {
+      "description": "standard report: relative humidity 48.29% (cluster 0x0405)",
+      "input": {
+        "bytes": [17, 10, 4, 5, 0, 0, 33, 18, 221],
+        "fPort": 125
+      },
+      "expected": { "data": { "air": { "relativeHumidity": 48.29 } } },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds standard-report input; expected value produced by running reference/upstream-codec.js (variable 'humidity' = 48.29) and mapping to air.relativeHumidity. Payload: 110A04050000211 2DD."
+    },
+    {
+      "description": "standard report: barometric pressure 1013 hPa, atmospheric (cluster 0x0403)",
+      "input": {
+        "bytes": [17, 10, 4, 3, 0, 0, 41, 3, 245],
+        "fPort": 125
+      },
+      "expected": { "data": { "air": { "pressure": 1013 } } },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds standard-report input; expected value produced by running reference/upstream-codec.js (variable 'pressure' = 1013) and mapping to air.pressure (hPa, within atmospheric bound 900-1100). Payload: 110A04030000290 3F5."
+    },
+    {
+      "description": "standard report: CO2 concentration 612 ppm (cluster 0x800C)",
+      "input": {
+        "bytes": [17, 10, 128, 12, 0, 0, 41, 2, 100],
+        "fPort": 125
+      },
+      "expected": { "data": { "air": { "co2": 612 } } },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds standard-report input; expected value produced by running reference/upstream-codec.js (variable 'concentration' = 612) and mapping to air.co2 (ppm). Payload: 110A800C00002902 64."
+    },
+    {
+      "description": "standard report: disposable battery 3.642 V (cluster 0x0050 attr 6)",
+      "input": {
+        "bytes": [17, 10, 0, 80, 0, 6, 65, 5, 3, 4, 14, 58],
+        "fPort": 125
+      },
+      "expected": { "data": { "battery": 3.642 } },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds standard-report input; expected value produced by running reference/upstream-codec.js (variable 'disposable_battery_voltage' = 3.642) and mapping to battery (V). Flags byte 0x04 selects the disposable-battery 2-byte mV source. Payload: 110A005000064105 03040E3A."
+    },
+    {
+      "description": "proprietary Huffman batch frame is out of scope -> error",
+      "input": {
+        "bytes": [32, 34, 0, 128, 3, 146, 129, 242, 104, 211, 33, 45, 84, 160, 195, 225, 112, 56, 10, 176, 0],
+        "fPort": 125
+      },
+      "expected": { "errors": ["batch frame not supported"] },
+      "source": "ttn-example",
+      "_note": "Upstream example input (batch report carrying pressures + battery, payload 20220080039281F268D3212D54A0C3E170380AB000). Our codec rejects batch frames (frame-control bit0 clear); batch decoding is out of scope."
+    }
+  ],
+  "downlink": []
+}

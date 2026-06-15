@@ -1,0 +1,99 @@
+{
+  "uplink": [
+    {
+      "description": "All sensors present (temp/humidity, barometer, CO2, battery) - synthetic in-bounds payload",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 18, 52, 0, 15, 82, 213, 176, 29, 24, 90, 197, 218, 131, 32, 131, 22, 132, 87, 9, 196, 9, 96, 0, 0, 156, 64, 155, 220, 12, 228]
+      },
+      "expected": {
+        "data": {
+          "barometerTemperature": 12.34,
+          "co2ConcentrationLpf": 790,
+          "co2SensorTemperature": 11.11,
+          "capacitorVoltage1": 2.5,
+          "capacitorVoltage2": 2.4,
+          "co2SensorStatus": 0,
+          "rawIrReading": 40000,
+          "rawIrReadingLpf": 39900,
+          "battery": 3.3,
+          "air": {
+            "temperature": 10.01,
+            "relativeHumidity": 79.99,
+            "pressure": 1013,
+            "co2": 800
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic Decentlab v2 payload (device id 0x1234, flags 0b1111) hand-built to exercise every sensor block with distinct in-bounds values; expected.data derived from running reference/upstream-codec.js through this module's normalization (pressure 101300 Pa -> 1013 hPa atmospheric, co2 800 ppm, battery 3.3 V)."
+    },
+    {
+      "description": "All sensors present - upstream example 1 input, normalized",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 5, 120, 0, 15, 103, 189, 97, 141, 28, 237, 189, 16, 129, 217, 129, 244, 137, 91, 11, 216, 11, 181, 0, 0, 149, 152, 149, 57, 12, 37]
+      },
+      "expected": {
+        "data": {
+          "barometerTemperature": 24.05,
+          "co2ConcentrationLpf": 500,
+          "co2SensorTemperature": 23.95,
+          "capacitorVoltage1": 3.032,
+          "capacitorVoltage2": 2.997,
+          "co2SensorStatus": 0,
+          "rawIrReading": 38296,
+          "rawIrReadingLpf": 38201,
+          "battery": 3.109,
+          "air": {
+            "temperature": 24.36,
+            "relativeHumidity": 41.63,
+            "pressure": 968,
+            "co2": 473
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Input bytes are the upstream Apache-2.0 dl-lp8p example 1 (in-bounds); expected.data authored here by running reference/upstream-codec.js and mapping its raw per-sensor values onto the vocabulary (barometric_pressure 96800 Pa -> 968 hPa atmospheric)."
+    },
+    {
+      "description": "Battery only (flags clear all sensor bits except battery)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 5, 120, 0, 8, 12, 37]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.109
+        }
+      },
+      "source": "synthetic",
+      "_note": "Input bytes are the upstream Apache-2.0 dl-lp8p example 3 (flags 0b1000); expected.data authored here from reference/upstream-codec.js (battery_voltage 3109 mV -> 3.109 V)."
+    },
+    {
+      "description": "Protocol version mismatch - first byte is not 2",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 5, 120, 0, 8, 12, 37]
+      },
+      "expected": {
+        "errors": ["protocol version 1 doesn't match v2"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: version byte set to 1; the Decentlab decoder rejects any version other than 2 (matches upstream PROTOCOL_VERSION guard)."
+    },
+    {
+      "description": "Short payload - fewer than 5 header bytes",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 5, 120]
+      },
+      "expected": {
+        "errors": ["payload too short"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: truncated header (3 bytes); decoder requires at least the 5-byte version/device-id/flags header."
+    }
+  ],
+  "downlink": []
+}

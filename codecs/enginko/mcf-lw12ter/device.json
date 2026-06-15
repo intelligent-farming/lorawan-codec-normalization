@@ -1,0 +1,28 @@
+{
+  "vendor": "enginko",
+  "device": "mcf-lw12ter",
+  "name": "MCF-LW12TER - Indoor Environmental Sensor",
+  "categories": [
+    "climate",
+    "weather-station"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "barometer",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "enginko",
+    "device": "mcf-lw12ter",
+    "codecId": "mcf-environmental-codec",
+    "codecFile": "decoder-environmental.js",
+    "codecSha256": "72ec3f7022ae4b629a9e1c55a075db3fd4fbb9452686768855fcc4c16184f2a3",
+    "referencedAt": "2026-06-15"
+  }
+}

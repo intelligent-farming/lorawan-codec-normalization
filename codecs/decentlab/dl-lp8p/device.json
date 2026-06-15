@@ -1,0 +1,30 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-lp8p",
+  "name": "DL-LP8P - CO₂, Temperature, Humidity and Barometric Pressure Sensor",
+  "categories": [
+    "climate",
+    "air-quality",
+    "weather-station"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "barometer",
+    "co2",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-lp8p",
+    "codecId": "dl-lp8p-codec",
+    "codecFile": "dl-lp8p.js",
+    "codecSha256": "c0f3df7eae2efcb487203547fb437b9d3a7b8ca29b0e05536279d53df7a1f431",
+    "referencedAt": "2026-06-15"
+  }
+}

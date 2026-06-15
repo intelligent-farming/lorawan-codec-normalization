@@ -1,0 +1,192 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/decentlab/dl-lp8p-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Example 1",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          5,
+          120,
+          0,
+          15,
+          103,
+          189,
+          97,
+          141,
+          28,
+          237,
+          189,
+          16,
+          129,
+          217,
+          129,
+          244,
+          137,
+          91,
+          11,
+          216,
+          11,
+          181,
+          0,
+          0,
+          149,
+          152,
+          149,
+          57,
+          12,
+          37
+        ]
+      },
+      "output": {
+        "data": {
+          "air_humidity": {
+            "displayName": "Air humidity",
+            "unit": "%",
+            "value": 41.63221740722656
+          },
+          "air_temperature": {
+            "displayName": "Air temperature",
+            "unit": "°C",
+            "value": 24.35660461425781
+          },
+          "barometer_temperature": {
+            "displayName": "Barometer temperature",
+            "unit": "°C",
+            "value": 24.05
+          },
+          "barometric_pressure": {
+            "displayName": "Barometric pressure",
+            "unit": "Pa",
+            "value": 96800
+          },
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.109
+          },
+          "capacitor_voltage_1": {
+            "displayName": "Capacitor voltage 1",
+            "unit": "V",
+            "value": 3.032
+          },
+          "capacitor_voltage_2": {
+            "displayName": "Capacitor voltage 2",
+            "unit": "V",
+            "value": 2.997
+          },
+          "co2_concentration": {
+            "displayName": "CO2 concentration",
+            "unit": "ppm",
+            "value": 473
+          },
+          "co2_concentration_lpf": {
+            "displayName": "CO2 concentration LPF",
+            "unit": "ppm",
+            "value": 500
+          },
+          "co2_sensor_status": {
+            "displayName": "CO2 sensor status",
+            "value": 0
+          },
+          "co2_sensor_temperature": {
+            "displayName": "CO2 sensor temperature",
+            "unit": "°C",
+            "value": 23.95
+          },
+          "device_id": 1400,
+          "protocol_version": 2,
+          "raw_ir_reading": {
+            "displayName": "Raw IR reading",
+            "value": 38296
+          },
+          "raw_ir_reading_lpf": {
+            "displayName": "Raw IR reading LPF",
+            "value": 38201
+          }
+        }
+      }
+    },
+    {
+      "description": "Example 2",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          5,
+          120,
+          0,
+          11,
+          103,
+          189,
+          97,
+          141,
+          28,
+          237,
+          189,
+          16,
+          12,
+          37
+        ]
+      },
+      "output": {
+        "data": {
+          "air_humidity": {
+            "displayName": "Air humidity",
+            "unit": "%",
+            "value": 41.63221740722656
+          },
+          "air_temperature": {
+            "displayName": "Air temperature",
+            "unit": "°C",
+            "value": 24.35660461425781
+          },
+          "barometer_temperature": {
+            "displayName": "Barometer temperature",
+            "unit": "°C",
+            "value": 24.05
+          },
+          "barometric_pressure": {
+            "displayName": "Barometric pressure",
+            "unit": "Pa",
+            "value": 96800
+          },
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.109
+          },
+          "device_id": 1400,
+          "protocol_version": 2
+        }
+      }
+    },
+    {
+      "description": "Example 3",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          5,
+          120,
+          0,
+          8,
+          12,
+          37
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.109
+          },
+          "device_id": 1400,
+          "protocol_version": 2
+        }
+      }
+    }
+  ]
+}

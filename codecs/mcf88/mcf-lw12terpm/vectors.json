@@ -1,0 +1,62 @@
+{
+  "uplink": [
+    {
+      "description": "TERPM report frame (0B/3/00) with trailing battery-percent byte",
+      "input": {
+        "fPort": 1,
+        "bytes": [11, 48, 0, 202, 115, 207, 52, 197, 8, 107, 205, 139, 1, 5, 0, 12, 0, 18, 0, 88]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 22.45,
+            "relativeHumidity": 53.5,
+            "pressure": 1013.25
+          },
+          "time": "2026-06-15T14:30:20Z",
+          "pm1": 5,
+          "pm2_5": 12,
+          "pm10": 18,
+          "batteryPercent": 88
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame. expected.data authored by running reference/upstream-codec.js (parseTERPM) on this input; upstream emits string values + a locale-dependent date (6/15/2026, 2:30:20 PM) which we normalize to numbers + RFC3339 UTC. Sensor math (temp x100 signed, hum /2, pressure x100, PM u16-LE, battery %) confirmed bit-for-bit against upstream."
+    },
+    {
+      "description": "TERPM report frame (0B/3/00) without battery byte, negative temperature",
+      "input": {
+        "fPort": 1,
+        "bytes": [11, 48, 0, 202, 115, 207, 52, 202, 254, 160, 0, 134, 1, 0, 0, 7, 0, 9, 0]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": -3.1,
+            "relativeHumidity": 80,
+            "pressure": 998.4
+          },
+          "time": "2026-06-15T14:30:20Z",
+          "pm1": 0,
+          "pm2_5": 7,
+          "pm10": 9
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame, no trailing battery byte (19 bytes). expected.data authored from reference/upstream-codec.js (parseTERPM): temperature -3.10 C (signed two's-complement x100), humidity 80%, pressure 998.40 hPa, PM1=0 PM2.5=7 PM10=9."
+    },
+    {
+      "description": "unsupported frame id (not a 0x0B report-data frame)",
+      "input": {
+        "fPort": 1,
+        "bytes": [153, 1, 2]
+      },
+      "expected": {
+        "errors": ["unsupported frame id"]
+      },
+      "source": "synthetic",
+      "_note": "Upstream returns {errors:['Error on decoding payload']} for any unhandled uplink id; we report the specific unsupported id 0x99."
+    }
+  ],
+  "downlink": []
+}

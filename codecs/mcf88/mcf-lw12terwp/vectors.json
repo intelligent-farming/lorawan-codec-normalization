@@ -1,0 +1,93 @@
+{
+  "uplink": [
+    {
+      "description": "TER frame (0x04): 3 records (temp/humidity/pressure) + battery%, newest at top level, older two in history",
+      "input": {
+        "fPort": 2,
+        "bytes": [4, 0, 80, 207, 52, 102, 8, 90, 205, 139, 1, 64, 81, 207, 52, 152, 8, 93, 160, 139, 1, 128, 82, 207, 52, 227, 8, 88, 40, 139, 1, 87]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 22.75,
+            "relativeHumidity": 44,
+            "pressure": 1011.6
+          },
+          "time": "2026-06-15T10:20:00Z",
+          "batteryPercent": 87,
+          "history": [
+            {
+              "air": {
+                "temperature": 22,
+                "relativeHumidity": 46.5,
+                "pressure": 1012.8
+              },
+              "time": "2026-06-15T10:10:00Z"
+            },
+            {
+              "air": {
+                "temperature": 21.5,
+                "relativeHumidity": 45,
+                "pressure": 1013.25
+              },
+              "time": "2026-06-15T10:00:00Z"
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds TER frame. Inputs hand-built to the MCF88 TER wire format (date/temp x100 signed/humidity x2/pressure x100 hPa); expected.data authored here. Wire values cross-checked by running reference/upstream-codec.js, whose flat output reports the newest record as temperature=22.75 humidity=44.00 pressure=1011.60 battery=87."
+    },
+    {
+      "description": "TER frame (0x04) with sub-zero outdoor temperatures (two's-complement) + low battery",
+      "input": {
+        "fPort": 2,
+        "bytes": [4, 128, 24, 34, 52, 243, 253, 160, 0, 134, 1, 192, 25, 34, 52, 212, 254, 157, 70, 134, 1, 0, 27, 34, 52, 106, 255, 154, 160, 134, 1, 12]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": -1.5,
+            "relativeHumidity": 77,
+            "pressure": 1000
+          },
+          "time": "2026-01-02T03:24:00Z",
+          "batteryPercent": 12,
+          "history": [
+            {
+              "air": {
+                "temperature": -3,
+                "relativeHumidity": 78.5,
+                "pressure": 999.1
+              },
+              "time": "2026-01-02T03:14:00Z"
+            },
+            {
+              "air": {
+                "temperature": -5.25,
+                "relativeHumidity": 80,
+                "pressure": 998.4
+              },
+              "time": "2026-01-02T03:04:00Z"
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds TER frame exercising negative temperatures. Wire values cross-checked by running reference/upstream-codec.js: newest record temperature=-1.50 humidity=77.00 pressure=1000.00 battery=12."
+    },
+    {
+      "description": "Unsupported frame id (not the 0x04 TER frame) -> error",
+      "input": {
+        "fPort": 2,
+        "bytes": [255, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported frame id 0xff"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic. Upstream returns the generic 'Error on decoding payload' for any non-handled id; we author a specific message naming the id. This device only emits the 0x04 TER frame."
+    }
+  ],
+  "downlink": []
+}

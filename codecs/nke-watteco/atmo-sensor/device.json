@@ -1,0 +1,28 @@
+{
+  "vendor": "nke-watteco",
+  "device": "atmo-sensor",
+  "name": "Atm'O - Temperature/Humidity/Atmospheric Pressure",
+  "categories": [
+    "weather-station",
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "barometer",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "nke-watteco",
+    "device": "atmo-sensor",
+    "codecId": "atmo-sensor-codec",
+    "codecFile": "atmo-sensor.js",
+    "codecSha256": "4cc3c7a928fa84902351f6ef26d572924d89be0b6c5b7162b35dc9cda1cd20e3",
+    "referencedAt": "2026-06-15"
+  }
+}

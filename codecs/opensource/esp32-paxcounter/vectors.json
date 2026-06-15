@@ -1,0 +1,126 @@
+{
+  "uplink": [
+    {
+      "description": "fPort 7 BME680 environment: temp 22.50 C, pressure 1013.2 hPa, humidity 55.20 %, gas/VOC 120.00",
+      "input": { "fPort": 7, "bytes": [8, 202, 148, 39, 144, 21, 224, 46] },
+      "expected": {
+        "data": {
+          "airQuality": 120,
+          "air": {
+            "temperature": 22.5,
+            "pressure": 1013.2,
+            "relativeHumidity": 55.2
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds BME680 frame; values confirmed by running reference/upstream-codec.js (PACKED float/pressure/ufloat). pressure is atmospheric hPa (uint16/10). Covers weather-station (air.temperature+air.pressure) and climate (air.temperature+air.relativeHumidity)."
+    },
+    {
+      "description": "fPort 7 BME680 with negative temperature -10.00 C",
+      "input": { "fPort": 7, "bytes": [252, 24, 146, 39, 144, 21, 224, 46] },
+      "expected": {
+        "data": {
+          "airQuality": 120,
+          "air": {
+            "temperature": -10,
+            "pressure": 1013,
+            "relativeHumidity": 55.2
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Exercises the lora-serialization big-endian two's-complement float path for sub-zero air temperature; confirmed against reference/upstream-codec.js."
+    },
+    {
+      "description": "fPort 4 GPS fix with sats/hdop/altitude (Berlin 52.520008, 13.404954)",
+      "input": { "fPort": 4, "bytes": [72, 100, 33, 3, 26, 139, 204, 0, 7, 120, 0, 44, 0] },
+      "expected": {
+        "data": {
+          "sats": 7,
+          "hdop": 1.2,
+          "altitude": 44,
+          "position": {
+            "latitude": 52.520008,
+            "longitude": 13.404954
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds GPS frame (int32 LE / 1e6); confirmed against reference/upstream-codec.js. Covers gps-tracker (position.latitude+position.longitude). sats/hdop/altitude are camelCase extras (altitude not modelled by the vocabulary)."
+    },
+    {
+      "description": "fPort 4 GPS fix without quality fields (8-byte lat/lon only)",
+      "input": { "fPort": 4, "bytes": [72, 100, 33, 3, 26, 139, 204, 0] },
+      "expected": {
+        "data": {
+          "position": {
+            "latitude": 52.520008,
+            "longitude": 13.404954
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Minimal 8-byte GPS variant; confirmed against reference/upstream-codec.js."
+    },
+    {
+      "description": "fPort 8 battery voltage 3310 mV -> 3.31 V",
+      "input": { "fPort": 8, "bytes": [238, 12] },
+      "expected": { "data": { "battery": 3.31 } },
+      "source": "synthetic",
+      "_note": "uint16 LE millivolts / 1000 -> battery (V). Confirmed against reference/upstream-codec.js (raw voltage 3310)."
+    },
+    {
+      "description": "fPort 1 pax counts: wifi 7 + ble 3 -> pax 10",
+      "input": { "fPort": 1, "bytes": [7, 0, 3, 0] },
+      "expected": { "data": { "wifi": 7, "ble": 3, "pax": 10 } },
+      "source": "synthetic",
+      "_note": "People counts have no vocabulary key, so wifi/ble/pax are camelCase extras. Confirmed against reference/upstream-codec.js (pax = wifi + ble)."
+    },
+    {
+      "description": "fPort 1 GPS + wifi + ble (12-byte opensensemap variant)",
+      "input": { "fPort": 1, "bytes": [72, 100, 33, 3, 26, 139, 204, 0, 7, 0, 3, 0] },
+      "expected": {
+        "data": {
+          "wifi": 7,
+          "ble": 3,
+          "pax": 10,
+          "position": { "latitude": 52.520008, "longitude": 13.404954 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Combined pax + GPS frame; lat/lon -> position, counts -> extras. Confirmed against reference/upstream-codec.js."
+    },
+    {
+      "description": "fPort 2 device status: voltage 3310 mV, uptime 100, cputemp 45, memory 229376, restarts 5",
+      "input": { "fPort": 2, "bytes": [238, 12, 100, 0, 0, 0, 0, 0, 0, 0, 45, 0, 128, 3, 0, 0, 5, 0, 0, 0] },
+      "expected": {
+        "data": {
+          "battery": 3.31,
+          "uptime": 100,
+          "cpuTemperature": 45,
+          "freeMemory": 229376,
+          "lastResetCause": 0,
+          "restarts": 5
+        }
+      },
+      "source": "synthetic",
+      "_note": "Status frame -> battery (V) plus diagnostic extras. Confirmed against reference/upstream-codec.js (raw voltage 3310, memory 229376)."
+    },
+    {
+      "description": "fPort 7 with wrong length is rejected",
+      "input": { "fPort": 7, "bytes": [1, 2, 3] },
+      "expected": { "errors": ["fPort 7: expected 8 bytes"] },
+      "source": "synthetic",
+      "_note": "Negative case: malformed BME frame must return an error, not partial data."
+    },
+    {
+      "description": "Unsupported fPort is rejected",
+      "input": { "fPort": 99, "bytes": [1] },
+      "expected": { "errors": ["unsupported fPort 99"] },
+      "source": "synthetic",
+      "_note": "Negative case: fPorts outside 1-10 are not part of the PACKED format."
+    }
+  ],
+  "downlink": []
+}

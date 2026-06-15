@@ -1,0 +1,29 @@
+{
+  "vendor": "watteco",
+  "device": "atmo",
+  "name": "Atm'O - Temperature/Humidity/Atmospheric Pressure",
+  "categories": [
+    "climate",
+    "weather-station",
+    "air-quality"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "barometer",
+    "co2"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "watteco",
+    "device": "atmo",
+    "codecId": "atmo-codec",
+    "codecFile": "atmo.js",
+    "codecSha256": "f5ebf1a2e49c3210c5f6a6994c6ff4f7b8133e10fe3c8ca37ae3831345a41382",
+    "referencedAt": "2026-06-15"
+  }
+}

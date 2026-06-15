@@ -1,0 +1,33 @@
+{
+  "vendor": "opensource",
+  "device": "esp32-paxcounter",
+  "name": "ESP32-Paxcounter",
+  "categories": [
+    "weather-station",
+    "climate",
+    "gps-tracker"
+  ],
+  "sensors": [
+    "battery",
+    "gps",
+    "altitude",
+    "temperature",
+    "humidity",
+    "barometer",
+    "pm2.5",
+    "pm10"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "opensource",
+    "device": "esp32-paxcounter",
+    "codecId": "esp32-paxcounter-codec",
+    "codecFile": "esp32-paxcounter-packed.js",
+    "codecSha256": "8718ca6f19c500e23d627334522e5b25b7d56bc2cc1f0daa6d7bc5ffee1783bf",
+    "referencedAt": "2026-06-15"
+  }
+}

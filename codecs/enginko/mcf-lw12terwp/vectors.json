@@ -1,0 +1,93 @@
+{
+  "uplink": [
+    {
+      "description": "TER (0x04) datalog frame: 3 measurements (newest last) + trailing battery-percentage byte. Synthetic in-bounds frame; expected temperature/humidity/pressure values produced by running the upstream reference decoder (reference/upstream-codec.js parseTER) as the oracle. Newest measurement at the top level, the two older ones in history (newest-first). Pressure is atmospheric hPa (900-1100). Battery is a percentage -> batteryPercent extra.",
+      "input": {
+        "fPort": 2,
+        "bytes": [4, 0, 72, 207, 52, 33, 7, 110, 205, 139, 1, 224, 73, 207, 52, 148, 7, 107, 160, 139, 1, 192, 75, 207, 52, 57, 8, 100, 246, 138, 1, 87]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 21.05,
+            "relativeHumidity": 50,
+            "pressure": 1011.1
+          },
+          "time": "2026-06-15T09:30:00Z",
+          "batteryPercent": 87,
+          "history": [
+            {
+              "air": {
+                "temperature": 19.4,
+                "relativeHumidity": 53.5,
+                "pressure": 1012.8
+              },
+              "time": "2026-06-15T09:15:00Z"
+            },
+            {
+              "air": {
+                "temperature": 18.25,
+                "relativeHumidity": 55,
+                "pressure": 1013.25
+              },
+              "time": "2026-06-15T09:00:00Z"
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Oracle-derived: temperature/humidity/pressure verified against reference/upstream-codec.js. Timestamps normalized to RFC3339 UTC (upstream emits a local-time toLocaleString string); the numeric date fields match the oracle."
+    },
+    {
+      "description": "TER (0x04) datalog frame with negative temperatures and pressures at the atmospheric bounds (900.00 and 1100.00 hPa). Synthetic in-bounds frame; measurement values produced by the upstream reference decoder as the oracle.",
+      "input": {
+        "fPort": 2,
+        "bytes": [4, 131, 24, 34, 52, 30, 251, 160, 144, 95, 1, 99, 26, 34, 52, 180, 251, 157, 90, 154, 1, 67, 28, 34, 52, 49, 252, 154, 176, 173, 1, 42]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": -9.75,
+            "relativeHumidity": 77,
+            "pressure": 1100
+          },
+          "time": "2026-01-02T03:34:06Z",
+          "batteryPercent": 42,
+          "history": [
+            {
+              "air": {
+                "temperature": -11,
+                "relativeHumidity": 78.5,
+                "pressure": 1050.5
+              },
+              "time": "2026-01-02T03:19:06Z"
+            },
+            {
+              "air": {
+                "temperature": -12.5,
+                "relativeHumidity": 80,
+                "pressure": 900
+              },
+              "time": "2026-01-02T03:04:06Z"
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Oracle-derived: measurement values verified against reference/upstream-codec.js. Exercises signed-negative temperature and the air.pressure atmospheric range edges."
+    },
+    {
+      "description": "Unsupported frame id (0x09 metering, not emitted by this temperature/humidity/pressure device) is rejected. Upstream routes non-environmental ids to its default-null error path; this codec reports the id explicitly.",
+      "input": {
+        "fPort": 2,
+        "bytes": [9, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported frame id"]
+      },
+      "source": "synthetic",
+      "_note": "Error vector: the MCF-LW12TERWP application only emits the 0x04 TER frame; any other frame id is an error."
+    }
+  ],
+  "downlink": []
+}

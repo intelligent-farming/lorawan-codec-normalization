@@ -1,0 +1,28 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-pm",
+  "name": "DL-PM - Particulate Matter, Temperature, Humidity and Barometric Pressure Sensor",
+  "categories": [
+    "weather-station"
+  ],
+  "sensors": [
+    "particulate matter",
+    "temperature",
+    "humidity",
+    "barometer",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-pm",
+    "codecId": "dl-pm-codec",
+    "codecFile": "dl-pm.js",
+    "codecSha256": "a012b30964cf5e8c0e16ac1320d7838d13c38a717bc937441aea1400fc81b6fb",
+    "referencedAt": "2026-06-15"
+  }
+}

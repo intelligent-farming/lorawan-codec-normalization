@@ -1,0 +1,66 @@
+{
+  "uplink": [
+    {
+      "description": "port 1, format 0x20, all fields: env block with atmospheric pressure, PM/AQI, dust bins, TVOC, battery + diagnostics",
+      "input": {
+        "fPort": 1,
+        "bytes": [32, 255, 59, 51, 52, 205, 80, 0, 7, 22, 128, 98, 243, 140, 204, 60, 0, 73, 0, 76, 128, 156, 128, 140, 128, 111, 0, 90, 0, 56, 0, 24, 0, 5, 220]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.7,
+          "vsys": 3.3,
+          "vbus": 5,
+          "boot": 7,
+          "pm": { "10": 25, "1.0": 12, "2.5": 18 },
+          "aqiPartial": { "10": 23, "1.0": 51, "2.5": 64 },
+          "aqi": 64,
+          "dust": { "5": 8, "10": 2, "0.3": 800, "0.5": 400, "1.0": 120, "2.5": 40 },
+          "tvoc": 1500,
+          "air": { "temperature": 22.5, "pressure": 1013.24, "relativeHumidity": 54.9996 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload (vbat 3.7 V, vsys 3.3 V, vbus 5.0 V, boot 7, t 22.5 degC, p 1013.24 hPa atmospheric, rh 55%, PM1.0/2.5/10 = 12/18/25 ug/m3, full dust bins, TVOC 1500). expected.data authored here; cross-checked against reference/upstream-codec.js (Decoder), which yields the same vbat/vsys/vbus/boot/t/p/rh/pm/dust/aqi/aqi_partial/tvoc values."
+    },
+    {
+      "description": "port 1, format 0x21 (no barometer): battery + env (temp/RH, no pressure) + PM/AQI only",
+      "input": {
+        "fPort": 1,
+        "bytes": [33, 49, 58, 102, 18, 64, 122, 225, 56, 0, 59, 0, 63, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6499,
+          "pm": { "10": 15, "1.0": 8, "2.5": 11 },
+          "aqiPartial": { "10": 14, "1.0": 34, "2.5": 46 },
+          "aqi": 46,
+          "air": { "temperature": 18.25, "relativeHumidity": 48.0003 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload, format 0x21 omits barometric pressure (PMS7003 without BME280). flags = 0x31 (vbat | env | particulate). expected.data authored here; cross-checked against reference/upstream-codec.js, which yields the same vbat/t/rh/pm/aqi/aqi_partial (and the derived tDew that we drop)."
+    },
+    {
+      "description": "unsupported fPort -> error",
+      "input": {
+        "fPort": 2,
+        "bytes": [32, 255, 59, 51]
+      },
+      "expected": { "errors": ["unsupported fPort 2"] },
+      "source": "synthetic",
+      "_note": "Upstream Decoder returns null for any port other than 1 or 5; we surface an explicit error."
+    },
+    {
+      "description": "supported port but truncated environment block -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [32, 16, 18]
+      },
+      "expected": { "errors": ["payload truncated reading environment block"] },
+      "source": "synthetic",
+      "_note": "flags = 0x10 (env present) on format 0x20 needs 6 trailing bytes; only 1 is present. Upstream reads past the buffer (NaN); we report truncation."
+    }
+  ],
+  "downlink": []
+}

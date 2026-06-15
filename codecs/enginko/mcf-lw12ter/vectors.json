@@ -1,0 +1,74 @@
+{
+  "uplink": [
+    {
+      "description": "TER (0x04) datalog frame: 3 measurements (newest last) + trailing battery-percentage byte (32 bytes). Synthetic in-bounds outdoor reading; the first record uses a sub-zero temperature to exercise signed two's-complement decode. Newest record (08:30:00, +5.75 C, 72.5 %RH, 1013.25 hPa, atmospheric) is at the top level; the two older records are in history (newest-first). batteryPercent 87. Expected values produced by the ORACLE method: temperature/humidity/pressure cross-checked against reference/upstream-codec.js parseTER output.",
+      "input": {
+        "fPort": 2,
+        "bytes": [4, 0, 64, 207, 52, 187, 254, 177, 0, 134, 1, 224, 65, 207, 52, 110, 0, 160, 24, 135, 1, 192, 67, 207, 52, 63, 2, 145, 205, 139, 1, 87]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 5.75,
+            "relativeHumidity": 72.5,
+            "pressure": 1013.25
+          },
+          "time": "2026-06-15T08:30:00Z",
+          "batteryPercent": 87,
+          "history": [
+            {
+              "air": {
+                "temperature": 1.1,
+                "relativeHumidity": 80,
+                "pressure": 1001.2
+              },
+              "time": "2026-06-15T08:15:00Z"
+            },
+            {
+              "air": {
+                "temperature": -3.25,
+                "relativeHumidity": 88.5,
+                "pressure": 998.4
+              },
+              "time": "2026-06-15T08:00:00Z"
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame. Expected temperature/humidity/pressure values confirmed against reference/upstream-codec.js (parseTER): upstream emits temperature_2/humidity_2/pressure_2 = 5.75/72.5/1013.25 for the newest record and the matching older values. Date bytes are encoded as the documented year-2000(7)/month(4)/day(5)/hour(5)/minute(6)/sec-div2(5) bitfield; upstream parseDate is locale-dependent (toLocaleString) so its formatted string is not used verbatim, only its decoded field values."
+    },
+    {
+      "description": "TER (0x04) frame with a single measurement + trailing battery byte (12 bytes). Synthetic in-bounds reading (+21.00 C, 45.0 %RH, 1009.00 hPa atmospheric, batteryPercent 95). Exercises the dynamic record reader: our codec recovers the single measurement and the battery byte, whereas rigid upstream parseTER misaligns and reports null for the absent 2nd/3rd records. No history (only one measurement).",
+      "input": {
+        "fPort": 2,
+        "bytes": [4, 197, 99, 34, 52, 52, 8, 90, 36, 138, 1, 95]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 21,
+            "relativeHumidity": 45,
+            "pressure": 1009
+          },
+          "time": "2026-01-02T12:30:10Z",
+          "batteryPercent": 95
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame. Expected temperature/humidity/pressure (21/45/1009) confirmed against reference/upstream-codec.js parseTER first-record output. Battery recovery is an authored improvement over the rigid upstream parser; field decode is unchanged."
+    },
+    {
+      "description": "Unsupported frame id (0x09 metering) is rejected. The MCF-LW12TER device only emits the TER (0x04) frame, so any other frame id is an error.",
+      "input": {
+        "fPort": 2,
+        "bytes": [9, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported frame id"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

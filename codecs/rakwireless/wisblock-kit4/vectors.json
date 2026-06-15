@@ -1,0 +1,77 @@
+{
+  "uplink": [
+    {
+      "description": "Typical RAK1906 BME680 indoor reading: 22.5 degC, 45 %RH, 1013.2 hPa, IAQ index 75, 3.65 V battery (LPP channel 1)",
+      "input": { "fPort": 2, "bytes": [1, 103, 0, 225, 1, 104, 90, 1, 115, 39, 148, 1, 138, 0, 75, 1, 116, 1, 109] },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 22.5,
+            "relativeHumidity": 45,
+            "pressure": 1013.2
+          },
+          "iaq": 75,
+          "battery": 3.65
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds LPP channel-1 payload (temperature type 103, humidity 104, barometer 115, voc/IAQ 138, voltage 116). Raw values confirmed by running reference/upstream-codec.js (temperature_1=22.5, humidity_1=45, barometer_1=1013.2, voc_1=75, voltage_1=3.65); expected.data is the authored normalization."
+    },
+    {
+      "description": "Air-quality variant with estimated CO2, ambient light and battery percent: 19.8 degC, 60 %RH, 998 hPa, 800 ppm CO2, 350 lux, 88% battery",
+      "input": { "fPort": 2, "bytes": [1, 103, 0, 198, 1, 104, 120, 1, 115, 38, 252, 1, 125, 3, 32, 1, 101, 1, 94, 1, 120, 88] },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 19.8,
+            "relativeHumidity": 60,
+            "pressure": 998,
+            "co2": 800,
+            "lightIntensity": 350
+          },
+          "batteryPercent": 88
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds LPP payload exercising concentration->air.co2 (type 125), illuminance->air.lightIntensity (101) and percentage->batteryPercent (120). Raw values confirmed by reference/upstream-codec.js (temperature_1=19.8, humidity_1=60, barometer_1=998, concentration_1=800, illuminance_1=350, percentage_1=88); expected.data is the authored normalization."
+    },
+    {
+      "description": "Cold/low-pressure edge: 5.0 degC, 10 %RH, 900 hPa (atmospheric lower bound), IAQ index 400",
+      "input": { "fPort": 2, "bytes": [1, 103, 0, 50, 1, 104, 20, 1, 115, 35, 40, 1, 138, 1, 144] },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 5,
+            "relativeHumidity": 10,
+            "pressure": 900
+          },
+          "iaq": 400
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic edge-of-bounds LPP payload (pressure at the 900 hPa atmospheric lower bound). Raw values confirmed by reference/upstream-codec.js (temperature_1=5, humidity_1=10, barometer_1=900, voc_1=400); expected.data is the authored normalization."
+    },
+    {
+      "description": "Empty payload is rejected",
+      "input": { "fPort": 2, "bytes": [] },
+      "expected": { "errors": ["empty payload"] },
+      "source": "synthetic",
+      "_note": "Upstream returns empty data on a zero-length payload; our codec reports an explicit error rather than a bare {}."
+    },
+    {
+      "description": "Unrecognized LPP sensor type is rejected",
+      "input": { "fPort": 2, "bytes": [1, 250, 0, 0] },
+      "expected": { "errors": ["unrecognized LPP sensor type"] },
+      "source": "synthetic",
+      "_note": "Upstream throws 'Sensor type error!: 250' for an unknown type; our codec converts that into an { errors: [...] } return per the output contract."
+    },
+    {
+      "description": "Truncated record (barometer type 115 needs 2 bytes, only 1 present) is rejected",
+      "input": { "fPort": 2, "bytes": [1, 115, 39] },
+      "expected": { "errors": ["truncated payload"] },
+      "source": "synthetic",
+      "_note": "Defensive bound check: a record whose declared LPP size runs past the end of the buffer is reported as an error."
+    }
+  ],
+  "downlink": []
+}

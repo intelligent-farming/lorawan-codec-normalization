@@ -1,0 +1,78 @@
+{
+  "uplink": [
+    {
+      "description": "All sensors: battery, PM mass + number concentrations, air temperature/humidity, barometric pressure",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 27, 80, 0, 15, 12, 228, 0, 123, 0, 200, 0, 210, 0, 250, 1, 224, 1, 7, 1, 44, 1, 49, 1, 54, 1, 64, 97, 97, 114, 176, 197, 231]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "pm1": 12.3,
+          "pm2_5": 20,
+          "pm4": 21,
+          "pm10": 25,
+          "typicalParticleSize": 480,
+          "pm0_5NumberConcentration": 26.3,
+          "pm1NumberConcentration": 30,
+          "pm2_5NumberConcentration": 30.5,
+          "pm4NumberConcentration": 31,
+          "pm10NumberConcentration": 32,
+          "air": {
+            "temperature": 19.99,
+            "relativeHumidity": 50,
+            "pressure": 1013.26
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload (Decentlab protocol v2, flags=0b1111). Expected values derived by running reference/upstream-codec.js, then applying this codec's unit conversions (Pa->hPa, /1000 V) and sensor-resolution rounding. Pressure 1013.26 hPa is atmospheric."
+    },
+    {
+      "description": "Air temperature, humidity and barometric pressure only (weather-station requires)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 27, 80, 0, 12, 97, 97, 114, 176, 191, 104]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 19.99,
+            "relativeHumidity": 50,
+            "pressure": 980
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload (flags=0b1100, only temp/humidity + pressure blocks). Expected derived via reference/upstream-codec.js + this codec's Pa->hPa conversion. Pressure 980 hPa is atmospheric."
+    },
+    {
+      "description": "Battery voltage only",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 27, 80, 0, 1, 12, 33]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.105
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload (flags=0b0001, battery block only). Expected derived via reference/upstream-codec.js: battery word 3105 / 1000 = 3.105 V."
+    },
+    {
+      "description": "Wrong protocol version is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [3, 27, 80, 0, 1, 12, 33]
+      },
+      "expected": {
+        "errors": ["protocol version 3 doesn't match v2"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error case: version byte 3 instead of 2. Matches reference/upstream-codec.js error string."
+    }
+  ],
+  "downlink": []
+}
