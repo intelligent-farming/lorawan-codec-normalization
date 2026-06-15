@@ -102,14 +102,14 @@ category. Coverage grows over time — devices are added incrementally. Use
 | Category | `requires` | Authored members |
 |---|---|---|
 | `soil-monitor` | `soil.moisture`, `soil.temperature` | 3 |
-| `climate` | `air.temperature`, `air.relativeHumidity` | 59 |
-| `air-quality` | `air.co2` | 19 |
-| `light` | `air.lightIntensity` | 50 |
-| `weather-station` | `air.temperature`, `air.pressure` | 25 |
+| `climate` | `air.temperature`, `air.relativeHumidity` | 72 |
+| `air-quality` | `air.co2` | 24 |
+| `light` | `air.lightIntensity` | 63 |
+| `weather-station` | `air.temperature`, `air.pressure` | 33 |
 | `wind` | `wind.speed` | 3 |
 | `rain-gauge` | `rain.cumulative` | 3 |
 | `water-meter` | `metering.water.total` | 0 |
-| `motion` | `action.motion` | 30 |
+| `motion` | `action.motion` | 36 |
 | `contact` | `action.contactState` | 3 |
 | `gps-tracker` | `position.latitude`, `position.longitude` | 4 |
 | `water-leak` | `water.leak` | 3 |
