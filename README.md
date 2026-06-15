@@ -102,16 +102,16 @@ category. Coverage grows over time — devices are added incrementally. Use
 | Category | `requires` | Authored members |
 |---|---|---|
 | `soil-monitor` | `soil.moisture`, `soil.temperature` | 3 |
-| `climate` | `air.temperature`, `air.relativeHumidity` | 72 |
-| `air-quality` | `air.co2` | 24 |
+| `climate` | `air.temperature`, `air.relativeHumidity` | 91 |
+| `air-quality` | `air.co2` | 27 |
 | `light` | `air.lightIntensity` | 63 |
-| `weather-station` | `air.temperature`, `air.pressure` | 33 |
-| `wind` | `wind.speed` | 3 |
-| `rain-gauge` | `rain.cumulative` | 3 |
+| `weather-station` | `air.temperature`, `air.pressure` | 62 |
+| `wind` | `wind.speed` | 11 |
+| `rain-gauge` | `rain.cumulative` | 9 |
 | `water-meter` | `metering.water.total` | 0 |
 | `motion` | `action.motion` | 36 |
 | `contact` | `action.contactState` | 3 |
-| `gps-tracker` | `position.latitude`, `position.longitude` | 4 |
+| `gps-tracker` | `position.latitude`, `position.longitude` | 5 |
 | `water-leak` | `water.leak` | 3 |
 
 `devices()` / `devices({ category })` enumerate registered devices;
