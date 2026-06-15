@@ -1,0 +1,95 @@
+{
+  "uplink": [
+    {
+      "description": "Full 5-in-1 measurement frame: temperature, humidity, CO2, luminosity, motion timer and battery level",
+      "input": {
+        "fPort": 2,
+        "bytes": [0, 16, 0, 125, 8, 4, 91, 8, 230, 2, 16, 156, 1, 20, 3, 0, 116, 88]
+      },
+      "expected": {
+        "data": {
+          "secondsSinceMotion": 30,
+          "batteryPercent": 88,
+          "air": {
+            "temperature": 21.73,
+            "relativeHumidity": 45.5,
+            "co2": 742,
+            "lightIntensity": 412
+          },
+          "action": {
+            "motion": {
+              "detected": true
+            }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "Negative temperature with humidity and luminosity (no CO2 or motion)",
+      "input": {
+        "fPort": 2,
+        "bytes": [0, 8, 0, 200, 254, 4, 130, 16, 5, 0]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": -3.12,
+            "relativeHumidity": 65,
+            "lightIntensity": 5
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "Luminosity and motion only, motion timer at 0 seconds (most recent)",
+      "input": {
+        "fPort": 2,
+        "bytes": [0, 6, 16, 32, 78, 20, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "secondsSinceMotion": 0,
+          "air": {
+            "lightIntensity": 20000
+          },
+          "action": {
+            "motion": {
+              "detected": true
+            }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "Declared payload size does not match the actual payload length",
+      "input": {
+        "fPort": 2,
+        "bytes": [0, 99, 0, 125, 8]
+      },
+      "expected": {
+        "errors": ["Payload size indicated does not match payload size given"]
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder (same size-check error)"
+    },
+    {
+      "description": "Non-measurement frame type byte (0x02) is rejected rather than mis-parsed as config",
+      "input": {
+        "fPort": 2,
+        "bytes": [2, 16, 0, 125, 8, 4, 91, 8, 230, 2, 16, 156, 1, 20, 3, 0, 116, 88]
+      },
+      "expected": {
+        "errors": ["unsupported frame type"]
+      },
+      "source": "synthetic",
+      "_note": "wrong leading frame byte; upstream silently routes 0x02 to the config table and mis-decodes, this codec rejects non-0x00 measurement frames"
+    }
+  ],
+  "downlink": []
+}

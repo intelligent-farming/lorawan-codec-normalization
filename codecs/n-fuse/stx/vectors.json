@@ -1,0 +1,51 @@
+{
+  "uplink": [
+    {
+      "description": "fPort 1, format v01, RTC scheduled uplink: all sensors populated, in-range climate + light + accelerometer",
+      "input": { "fPort": 1, "bytes": [64, 95, 90, 12, 250, 88, 10, 248, 194, 55, 208, 7] },
+      "expected": {
+        "data": {
+          "air": { "temperature": 22.52, "relativeHumidity": 55, "lightIntensity": 2000 },
+          "battery": 2.95,
+          "formatVersion": 1,
+          "txPower": 0,
+          "triggerReason": "Scheduled time interval",
+          "acceleration": { "x": 13.7906, "y": 1.8387, "z": 38.3072, "xReference": 13.4841, "yReference": 1.5323, "zReference": 38.0008 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder (vendor/n-fuse/stx.js) then mapped to vocabulary: hdc2080.temperature->air.temperature, hdc2080.humidity->air.relativeHumidity, sfh7776.luminance(lux)->air.lightIntensity, info.battery(V)->battery; bma400 axes/txpower/version/trigger->camelCase extras"
+    },
+    {
+      "description": "fPort 1, format v01, light-above-threshold trigger: max luminance (14-bit), txpower index 1, different climate/accelerometer",
+      "input": { "fPort": 1, "bytes": [70, 58, 0, 0, 128, 5, 5, 130, 217, 70, 255, 63] },
+      "expected": {
+        "data": {
+          "air": { "temperature": 29.93, "relativeHumidity": 70, "lightIntensity": 16383 },
+          "battery": 2.58,
+          "formatVersion": 1,
+          "txPower": 1,
+          "triggerReason": "Light intensity above threshold",
+          "acceleration": { "x": 0, "y": 0, "z": 19.6133, "xReference": 0.7661, "yReference": 0.7661, "zReference": 19.9198 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder (vendor/n-fuse/stx.js); luminance 0x3fff=16383 lux confirms the SFH7776 lux range maps to air.lightIntensity"
+    },
+    {
+      "description": "wrong FPort (2) is rejected",
+      "input": { "fPort": 2, "bytes": [64, 95, 90, 12, 250, 88, 10, 248, 194, 55, 208, 7] },
+      "expected": { "errors": ["unknown FPort"] },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder: decodeUplink asserts fPort == 1"
+    },
+    {
+      "description": "format-version guard: odd bytes[0] is rejected (upstream precedence quirk bytes[0] & 0xc0 != 0x40)",
+      "input": { "fPort": 1, "bytes": [65, 95, 90, 12, 250, 88, 10, 248, 194, 55, 208, 7] },
+      "expected": { "errors": ["unknown format version"] },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder: the version guard evaluates as (bytes[0] & 1) due to JS operator precedence, ported verbatim"
+    }
+  ],
+  "downlink": []
+}

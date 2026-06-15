@@ -1,0 +1,29 @@
+{
+  "vendor": "n-fuse",
+  "device": "stx",
+  "name": "Multisensor",
+  "categories": [
+    "climate",
+    "light"
+  ],
+  "sensors": [
+    "battery",
+    "temperature",
+    "humidity",
+    "accelerometer",
+    "light"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "n-fuse",
+    "device": "stx",
+    "codecId": "stx-codec",
+    "codecFile": "stx.js",
+    "codecSha256": "387f9da49f328f0a73a092d3a99e081983aedc564b0d14e2739727208419d9ca",
+    "referencedAt": "2026-06-15"
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "uplink": [
+    {
+      "description": "Periodic frame: indoor climate + light + occupancy (motion detected), button pressed",
+      "input": {
+        "fPort": 1,
+        "bytes": [171, 1, 131, 94, 48, 0, 0, 0, 17, 170, 157, 35]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 22.5, "relativeHumidity": 48.3, "lightIntensity": 350 },
+          "action": { "motion": { "detected": true } },
+          "occupancyPercent": 35,
+          "averageNoiseDb": 42,
+          "peakNoiseDb": 58,
+          "buttonPressed": true
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "Periodic frame: sub-zero temperature, dark room, no occupancy (motion false), button not pressed",
+      "input": {
+        "fPort": 1,
+        "bytes": [171, 1, 50, 40, 160, 0, 0, 0, 0, 7, 150, 128]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": -10, "relativeHumidity": 65, "lightIntensity": 0 },
+          "action": { "motion": { "detected": false } },
+          "occupancyPercent": 0,
+          "averageNoiseDb": 30,
+          "peakNoiseDb": 45,
+          "buttonPressed": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "Periodic frame: light sensor deactivated (1021), noise error (127)/disconnected (126), occupancy disconnected (126) — sentinel fields suppressed, climate retained",
+      "input": {
+        "fPort": 1,
+        "bytes": [171, 1, 75, 34, 96, 0, 0, 0, 255, 95, 255, 126]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 0, "relativeHumidity": 55 },
+          "buttonPressed": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder; sentinel lux/noise/occupancy values suppressed per upstream sensor-absent codes"
+    },
+    {
+      "description": "Wrong product byte (0xAC = Wave, not MOVE) returns an error",
+      "input": {
+        "fPort": 1,
+        "bytes": [172, 1, 131, 94, 48, 0, 0, 0, 17, 170, 157, 35]
+      },
+      "expected": { "errors": ["unexpected product byte"] },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder (upstream typeOfProduct is undefined for non-MOVE product bytes)"
+    }
+  ],
+  "downlink": []
+}
