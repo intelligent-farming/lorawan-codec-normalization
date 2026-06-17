@@ -1,0 +1,118 @@
+{
+  "uplink": [
+    {
+      "description": "Port 1 format 0x14: battery, boot, temp/pressure/RH, lux (TTN catalog example input)",
+      "input": {
+        "fPort": 1,
+        "bytes": [20, 29, 67, 35, 17, 25, 82, 95, 151, 174, 1, 2]
+      },
+      "expected": {
+        "data": {
+          "battery": 4.196,
+          "boot": 17,
+          "air": {
+            "temperature": 25.3203,
+            "pressure": 978.84,
+            "relativeHumidity": 67.96875,
+            "lightIntensity": 258
+          }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Port 1 format 0x14: synthetic in-bounds battery/boot/env/lux",
+      "input": {
+        "fPort": 1,
+        "bytes": [20, 29, 65, 154, 7, 22, 128, 98, 243, 141, 1, 49]
+      },
+      "expected": {
+        "data": {
+          "battery": 4.1001,
+          "boot": 7,
+          "air": {
+            "temperature": 22.5,
+            "pressure": 1013.24,
+            "relativeHumidity": 55.07813,
+            "lightIntensity": 305
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected.data authored from running reference/upstream-codec.js (codec-catena-generic.js) then normalizing per the mapping notes. Raw: vBat 16794/4096, boot 7, tempC 5760/256, pRaw 25331 (1013.24 hPa, atmospheric), rh8 141/256*100, lux 305."
+    },
+    {
+      "description": "Port 1 format 0x17 (AQI): adds air-quality index mapped to air.co2",
+      "input": {
+        "fPort": 1,
+        "bytes": [23, 61, 65, 154, 9, 22, 128, 98, 243, 141, 1, 49, 252, 128]
+      },
+      "expected": {
+        "data": {
+          "battery": 4.1001,
+          "boot": 9,
+          "air": {
+            "temperature": 22.5,
+            "pressure": 1013.24,
+            "relativeHumidity": 55.07813,
+            "lightIntensity": 305,
+            "co2": 400
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected.data authored from running reference/upstream-codec.js then normalizing. Format 0x17 flag 0x20 carries a UFLT16 air-quality index; raw 0xFC80 scales to 400 ppm-equivalent -> air.co2."
+    },
+    {
+      "description": "Port 3 (no barometer, 16-bit RH): battery + temp/RH",
+      "input": {
+        "fPort": 3,
+        "bytes": [9, 65, 154, 22, 128, 153, 153]
+      },
+      "expected": {
+        "data": {
+          "battery": 4.1001,
+          "air": {
+            "temperature": 22.5,
+            "relativeHumidity": 60
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected.data authored from running reference/upstream-codec.js then normalizing. Port 3 has no discriminator and uses a 16-bit humidity field: rhRaw 39321/65535*100 = 60%."
+    },
+    {
+      "description": "Port 2 (discriminator-less): battery + temp/pressure/RH + secondary rail (vBus extra)",
+      "input": {
+        "fPort": 2,
+        "bytes": [41, 65, 154, 22, 128, 98, 243, 141, 31, 64]
+      },
+      "expected": {
+        "data": {
+          "battery": 4.1001,
+          "vBus": 1.9531,
+          "air": {
+            "temperature": 22.5,
+            "pressure": 1013.24,
+            "relativeHumidity": 55.07813
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected.data authored from running reference/upstream-codec.js then normalizing. Port 2 carries pressure (atmospheric) and an 8-bit RH; flag 0x20 is the secondary supply rail -> vBus extra (vRaw 8000/4096)."
+    },
+    {
+      "description": "Unsupported fPort 4 (the 4802's legacy Modbus port is not handled by the generic-codec mapping)",
+      "input": {
+        "fPort": 4,
+        "bytes": [9, 65, 154, 22, 128, 153, 153]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 4"]
+      },
+      "source": "synthetic",
+      "_note": "Error vector. The TTN catalog maps current-firmware 4802 uplinks to codec-catena-generic on ports 1/2/3; the legacy codec-catena4802.js used fPort 4 (flag bitmap + trailing Modbus registers), which this normalized codec does not decode."
+    }
+  ],
+  "downlink": []
+}

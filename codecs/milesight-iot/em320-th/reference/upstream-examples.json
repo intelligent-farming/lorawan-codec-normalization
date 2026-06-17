@@ -1,0 +1,30 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/milesight-iot/em320-th-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Temperature & Humidity Sensor - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          1,
+          117,
+          92,
+          3,
+          103,
+          52,
+          1,
+          4,
+          104,
+          101
+        ]
+      },
+      "output": {
+        "data": {
+          "battery": 92,
+          "humidity": 50.5,
+          "temperature": 30.8
+        }
+      }
+    }
+  ]
+}

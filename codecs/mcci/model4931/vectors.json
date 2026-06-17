@@ -1,0 +1,83 @@
+{
+  "uplink": [
+    {
+      "description": "port 1, format 0x37, full payload: sd-card present+write-ok, vBat, vBus, boot, env (temp/RH), atmospheric pressure, two one-wire probe temps, two soil channels, two tree-pressure sensors, sap-flow + rain pulse counters, network timestamp",
+      "input": {
+        "fPort": 1,
+        "bytes": [55, 3, 255, 59, 51, 80, 0, 25, 22, 128, 153, 153, 98, 243, 23, 205, 24, 154, 7, 58, 12, 178, 0, 0, 63, 6, 184, 10, 240, 0, 1, 40, 0, 44, 205, 6, 206, 1, 136, 1, 138, 7, 103, 50, 216, 7, 51]
+      },
+      "expected": {
+        "data": {
+          "sdCardPresent": true,
+          "sdCardWriteOk": true,
+          "battery": 3.7,
+          "vBus": 5,
+          "boot": 25,
+          "tProbeOne": 23.8008,
+          "tProbeTwo": 24.6016,
+          "soilOne": { "temperature": 18.5, "moisture": 32.5, "type": 0 },
+          "soilTwo": { "temperature": 17.2, "moisture": 28, "type": 1 },
+          "treePressureTwo": { "mV": 2.5, "value": 500 },
+          "treePressureOne": { "mV": 2.8, "value": 725 },
+          "sapPulseCount": 1742,
+          "sapPerHour": 0.0421,
+          "rainPulseCount": 394,
+          "rainPerHour": 0.2033,
+          "timeType": "network",
+          "time": "2007-01-16T21:33:21.000Z",
+          "air": { "temperature": 22.5, "relativeHumidity": 60, "pressure": 1013.24 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload, format 0x37, flags1 = 0xFF (vBat 3.7 V, vBus 5.0 V, boot 25, t 22.5 degC, rh 60%, p 1013.24 hPa atmospheric, tProbeOne 23.8 degC, tProbeTwo 24.6 degC, soil#1 18.5 degC / 32.5% / type 0) and flags2 = 0x3F (soil#2 17.2 degC / 28% / type 1, tree-pressure#2 2.5 V, tree-pressure#1 2.8 V, sap pulse 1742 + rate, rain pulse 394 + rate, network timestamp). expected.data authored here; cross-checked against reference/upstream-codec.js (Decoder), which yields the same sdCardStatus/vBat/vBus/boot/t/rh/p/tProbeOne/tProbeTwo/soil#1/soil#2/sap/rain/timestamp values (plus the derived tDew/tHeatIndexC that we drop). tree-pressure values are derived here from the rounded rail volts (per sensor resolution), so they read 500 / 725 vs upstream's 500 / 725.0366."
+    },
+    {
+      "description": "port 4, format 0x37, minimal climate payload: sd-card present (write failed), battery, env (temp/RH), atmospheric pressure; flags2 empty",
+      "input": {
+        "fPort": 4,
+        "bytes": [55, 1, 25, 58, 102, 18, 64, 122, 225, 97, 133, 0]
+      },
+      "expected": {
+        "data": {
+          "sdCardPresent": true,
+          "sdCardWriteOk": false,
+          "battery": 3.6499,
+          "air": { "temperature": 18.25, "relativeHumidity": 48.0003, "pressure": 998.6 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload on port 4 (also a telemetry port), flags1 = 0x19 (vBat 3.65 V | env | pressure), flags2 = 0x00. sdCardStatus = 1 -> present, last write failed. expected.data authored here; cross-checked against reference/upstream-codec.js, which yields the same vBat (3.6499)/t (18.25)/rh (48.0003)/p (998.6) values (and the derived tDew we drop)."
+    },
+    {
+      "description": "unsupported fPort -> error",
+      "input": {
+        "fPort": 3,
+        "bytes": [55, 1, 25]
+      },
+      "expected": { "errors": ["unsupported fPort 3"] },
+      "source": "synthetic",
+      "_note": "Port 3 carries downlink command responses (DecodeDownlinkResponse upstream), not sensor telemetry, so it is reported as an unsupported uplink port here."
+    },
+    {
+      "description": "supported port but unknown format byte -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [32, 1, 1]
+      },
+      "expected": { "errors": ["unsupported uplink format 0x20"] },
+      "source": "synthetic",
+      "_note": "Upstream Decoder returns null for any leading byte other than 0x37; we surface an explicit error."
+    },
+    {
+      "description": "supported port and format but truncated environment block -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [55, 1, 8, 22]
+      },
+      "expected": { "errors": ["payload truncated reading environment block"] },
+      "source": "synthetic",
+      "_note": "flags1 = 0x08 (env present) needs 4 trailing bytes; only 1 is present. Upstream reads past the buffer (NaN); we report truncation."
+    }
+  ],
+  "downlink": []
+}

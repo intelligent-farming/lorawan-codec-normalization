@@ -1,0 +1,25 @@
+{
+  "vendor": "milesight-iot",
+  "device": "am102",
+  "name": "Milesight 2-in-1 IAQ Sensor - AM102",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "am102",
+    "codecId": "am102-codec",
+    "codecFile": "am102.js",
+    "codecSha256": "b2aa99f32032801e402e9181dc075091b51c48d129ee082b0760ec15e072273d",
+    "referencedAt": "2026-06-15"
+  }
+}

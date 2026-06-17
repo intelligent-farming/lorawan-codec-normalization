@@ -1,0 +1,68 @@
+{
+  "uplink": [
+    {
+      "description": "Battery + temperature + humidity + CO2 (nominal indoor reading)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 80, 3, 103, 215, 0, 4, 104, 90, 7, 125, 32, 3]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 80,
+          "air": {
+            "temperature": 21.5,
+            "relativeHumidity": 45,
+            "co2": 800
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected values produced by running reference/upstream-codec.js as the oracle and mapping its fields to the normalized vocabulary (battery%->batteryPercent, temperature->air.temperature, humidity->air.relativeHumidity, co2->air.co2). Covers climate (air.temperature, air.relativeHumidity) and air-quality (air.co2) required keys."
+    },
+    {
+      "description": "Negative temperature + high humidity + CO2 + pressure",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 100, 3, 103, 206, 255, 4, 104, 177, 7, 125, 176, 4, 9, 115, 148, 39]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 100,
+          "air": {
+            "temperature": -5,
+            "relativeHumidity": 88.5,
+            "co2": 1200,
+            "pressure": 1013.2
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload exercising two's-complement negative temperature (0xFFCE) and the optional pressure channel (0x09/0x73, 0.1 hPa). Expected values produced via the reference/upstream-codec.js oracle and mapped to the normalized vocabulary."
+    },
+    {
+      "description": "Unrecognized channel/type yields an error",
+      "input": {
+        "fPort": 85,
+        "bytes": [255, 255, 0, 0]
+      },
+      "expected": {
+        "errors": ["no recognized Milesight channels"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic negative case: no Milesight channel/type pair matches, so decode reports an error rather than emitting a bare object."
+    },
+    {
+      "description": "Empty payload",
+      "input": {
+        "fPort": 85,
+        "bytes": []
+      },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic negative case: zero-length payload is rejected up front."
+    }
+  ],
+  "downlink": []
+}

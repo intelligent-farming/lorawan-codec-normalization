@@ -1,0 +1,29 @@
+{
+  "vendor": "mcci",
+  "device": "catena4802",
+  "name": "Catena® 4802 Modbus/Sensor Node",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "auxiliary",
+    "temperature",
+    "humidity",
+    "digital input",
+    "analog input",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "mcci",
+    "device": "catena4802",
+    "codecId": "codec-catena-generic",
+    "codecFile": "codec-catena-generic.js",
+    "codecSha256": "df34bafdb00a6502fbc5d241be7c82e1a48b8f923fa161e9c7d01a04dbb6f20c",
+    "referencedAt": "2026-06-15"
+  }
+}

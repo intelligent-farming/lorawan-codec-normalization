@@ -1,0 +1,30 @@
+{
+  "vendor": "milesight-iot",
+  "device": "em500-co2",
+  "name": "EM500-CO2 - Temperature, Humidity, CO2 & Barometric Pressure Sensor",
+  "categories": [
+    "climate",
+    "air-quality",
+    "weather-station"
+  ],
+  "sensors": [
+    "battery",
+    "temperature",
+    "humidity",
+    "co2",
+    "pressure"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "em500-co2",
+    "codecId": "em500-co2-codec",
+    "codecFile": "em500-co2.js",
+    "codecSha256": "b5af860665b197e0391654631520852dad0e677e46fa43f8a43a278e2d5b7f91",
+    "referencedAt": "2026-06-15"
+  }
+}

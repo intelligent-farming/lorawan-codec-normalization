@@ -1,0 +1,81 @@
+{
+  "uplink": [
+    {
+      "description": "Battery, temperature, and humidity (TTN example bytes)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 92, 3, 103, 52, 1, 4, 104, 101]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 92,
+          "air": { "temperature": 30.8, "relativeHumidity": 50.5 }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Negative temperature (synthetic, exercises signed LE decode)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 100, 3, 103, 246, 255, 4, 104, 91]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 100,
+          "air": { "temperature": -1, "relativeHumidity": 45.5 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected.data authored from the upstream reference decoder (battery 100, temperature -1 C, humidity 45.5 %), normalized to vocabulary keys."
+    },
+    {
+      "description": "Temperature & humidity history datalog uplink (synthetic, one prior reading)",
+      "input": {
+        "fPort": 85,
+        "bytes": [32, 206, 0, 241, 83, 101, 235, 0, 120]
+      },
+      "expected": {
+        "data": {
+          "history": [
+            {
+              "time": "2023-11-14T22:13:20.000Z",
+              "air": { "temperature": 23.5, "relativeHumidity": 60 }
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected values from the upstream reference decoder (0x20/0xCE history: epoch 1700000000, temperature 23.5 C, humidity 60 %). Upstream emits a raw `timestamp` (epoch seconds); per AUTHORING.md we normalize it to an RFC3339 `time` and put the prior reading under `history[].air`."
+    },
+    {
+      "description": "Current reading plus one history point (synthetic, exercises top-level + history coexistence)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 80, 3, 103, 210, 0, 4, 104, 110, 32, 206, 0, 241, 83, 101, 200, 0, 100]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 80,
+          "air": { "temperature": 21, "relativeHumidity": 55 },
+          "history": [
+            {
+              "time": "2023-11-14T22:13:20.000Z",
+              "air": { "temperature": 20, "relativeHumidity": 50 }
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected values from the upstream reference decoder (battery 80, temperature 21 C, humidity 55 %, history epoch 1700000000 / temperature 20 C / humidity 50 %), normalized to vocabulary keys with the prior reading in `history`."
+    },
+    {
+      "description": "Unrecognized channel returns an error",
+      "input": { "fPort": 85, "bytes": [255, 1, 0] },
+      "expected": { "errors": ["no recognized Milesight channels"] },
+      "source": "synthetic",
+      "_note": "Synthetic input. The upstream reference decoder has no error path for unknown channels (it returns an empty object); our codec reports an explicit error per the repo's standard, so expected.errors is authored here rather than taken from upstream."
+    }
+  ],
+  "downlink": []
+}

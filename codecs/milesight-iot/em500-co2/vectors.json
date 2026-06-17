@@ -1,0 +1,45 @@
+{
+  "uplink": [
+    {
+      "description": "Full uplink: battery, temperature, humidity, CO2, pressure",
+      "input": { "fPort": 85, "bytes": [1, 117, 90, 3, 103, 235, 0, 4, 104, 110, 5, 125, 32, 3, 6, 115, 148, 39] },
+      "expected": {
+        "data": {
+          "batteryPercent": 90,
+          "air": {
+            "temperature": 23.5,
+            "relativeHumidity": 55,
+            "co2": 800,
+            "pressure": 1013.2
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected values produced by running reference/upstream-codec.js Decoder() (oracle) and applying the normalization mapping. battery 0x5A=90%; temp 0x00EB=235/10=23.5; humidity 0x6E=110/2=55; CO2 0x0320=800ppm; pressure 0x2794=10132/10=1013.2 hPa (atmospheric)."
+    },
+    {
+      "description": "Negative temperature with low atmospheric pressure",
+      "input": { "fPort": 85, "bytes": [3, 103, 201, 255, 4, 104, 80, 5, 125, 244, 1, 6, 115, 132, 35] },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": -5.5,
+            "relativeHumidity": 40,
+            "co2": 500,
+            "pressure": 909.2
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected from reference/upstream-codec.js oracle. temp 0xFFC9=-55/10=-5.5 (two's complement); humidity 0x50=80/2=40; CO2 0x01F4=500ppm; pressure 0x2384=9092/10=909.2 hPa (atmospheric)."
+    },
+    {
+      "description": "Unrecognized channel/type yields error",
+      "input": { "fPort": 85, "bytes": [255, 255, 0] },
+      "expected": { "errors": ["no recognized Milesight channels"] },
+      "source": "synthetic",
+      "_note": "Synthetic: channel 0xFF/type 0xFF is not a known EM500-CO2 channel, so no channels are recognized."
+    }
+  ],
+  "downlink": []
+}

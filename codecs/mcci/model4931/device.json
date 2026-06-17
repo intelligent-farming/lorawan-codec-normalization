@@ -1,0 +1,30 @@
+{
+  "vendor": "mcci",
+  "device": "model4931",
+  "name": "Model 4931 Outdoor Sensor",
+  "categories": [
+    "climate",
+    "weather-station"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "pressure",
+    "rainfall",
+    "pulse count",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "mcci",
+    "device": "model4931",
+    "codecId": "codec-model4931",
+    "codecFile": "codec-model4931.js",
+    "codecSha256": "5f694a06cd5ef5a069fc4073925825d4d64db745b195009e7ead6fd409d31c09",
+    "referencedAt": "2026-06-15"
+  }
+}

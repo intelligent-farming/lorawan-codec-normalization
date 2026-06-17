@@ -1,0 +1,126 @@
+{
+  "uplink": [
+    {
+      "description": "Full environment record: Vbat 3.3 V, Vbus 4.7 V, boot 12, four gas-electrode rails 0.5 V, then temperature 21.5 C, RH ~55%, barometric pressure 1013.2 hPa. Covers air.temperature + air.relativeHumidity + air.pressure + battery.",
+      "input": {
+        "fPort": 1,
+        "bytes": [56, 7, 52, 205, 75, 51, 12, 8, 0, 8, 0, 8, 0, 8, 0, 3, 21, 128, 140, 204, 98, 242]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "vBus": 4.7,
+          "boot": 12,
+          "vCO": 0.5,
+          "vNO2": 0.5,
+          "vO3": 0.5,
+          "vSO2": 0.5,
+          "air": {
+            "temperature": 21.5,
+            "relativeHumidity": 54.9996,
+            "pressure": 1013.2
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected.data produced by running reference/upstream-codec.js (Decoder, port 1 format 0x38) on these bytes and normalizing per codec.js (t->air.temperature, rh->air.relativeHumidity, p->air.pressure, Vbat->battery; Vbus/boot/vGas->camelCase extras; dewpoint/heat-index dropped). RH raw 54.99961852445258 rounded to 4 decimals. Pressure 1013.2 hPa is atmospheric (vocabulary air.pressure 900-1100)."
+    },
+    {
+      "description": "Sub-zero environment with network timestamp: Vbat 3.0 V, four gas-electrode rails 0.5 V, temperature -5.25 C, RH 80%, pressure 990.0 hPa, boot-time timestamp 2025-03-24T09:18:19Z.",
+      "input": {
+        "fPort": 1,
+        "bytes": [56, 1, 48, 0, 8, 0, 8, 0, 8, 0, 8, 0, 7, 250, 192, 204, 204, 96, 174, 103, 225, 35, 74]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "vCO": 0.5,
+          "vNO2": 0.5,
+          "vO3": 0.5,
+          "vSO2": 0.5,
+          "timeType": "boot time",
+          "time": "2025-03-24T09:18:19.000Z",
+          "air": {
+            "temperature": -5.25,
+            "relativeHumidity": 80,
+            "pressure": 990
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload exercising the second-bitmap timestamp block (flags2 0x04). Expected.data from reference/upstream-codec.js then normalized: timestamp -> time (RFC3339), timeType kept as extra; negative i16 temperature -5.25 C. Pressure 990.0 hPa is atmospheric."
+    },
+    {
+      "description": "Gas-only record (flags 0xF0): CO/NO2/O3/SO2 ppm concentrations plus the four electrode rails at 0.5 V, no environment block.",
+      "input": {
+        "fPort": 1,
+        "bytes": [56, 240, 92, 0, 80, 0, 88, 0, 84, 0, 8, 0, 8, 0, 8, 0, 8, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "coPpm": 0.7324,
+          "no2Ppm": 0,
+          "o3Ppm": 0.0146,
+          "so2Ppm": 0.0073,
+          "vCO": 0.5,
+          "vNO2": 0.5,
+          "vO3": 0.5,
+          "vSO2": 0.5
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic payload; expected.data from reference/upstream-codec.js. Gas concentrations have no vocabulary home (air.co2 models CO2, not CO/NO2/O3/SO2) so they are camelCase extras coPpm/no2Ppm/o3Ppm/so2Ppm. UFLT16 scaling (CO x1000, NO2 x10, O3/SO2 x30) rounded to 4 decimals. flags2 byte 0x00 = no environment block."
+    },
+    {
+      "description": "Upstream TTN example input: full multigas + particulate record (flags 0xFF), flags2 0x00 (no environment block). Exercises PM mass-concentration and particle-count extras.",
+      "input": {
+        "fPort": 1,
+        "bytes": [56, 255, 32, 0, 59, 51, 45, 204, 195, 204, 3, 154, 40, 152, 21, 137, 227, 120, 96, 120, 96, 0, 84, 201, 217, 0, 29, 115, 140, 0, 0, 0, 1, 207, 92, 233, 154, 236, 205, 222, 239, 10, 205, 7, 195, 4, 246, 11, 154, 0, 30, 0, 153, 153, 100, 95, 103, 227, 205, 9]
+      },
+      "expected": {
+        "data": {
+          "battery": 2,
+          "vBus": 3.7,
+          "boot": 45,
+          "pm": {
+            "0.1": 51.0469,
+            "0.3": 48.0469,
+            "0.5": 5.0781,
+            "1.0": 4.041,
+            "2.5": 2.4717,
+            "5.0": 1.0469,
+            "10": 1.0469
+          },
+          "pc": {
+            "1.0": 5556697,
+            "2.5": 1930124,
+            "10": 1
+          },
+          "coPpm": 119.9951,
+          "no2Ppm": 3.0005,
+          "o3Ppm": 12.0007,
+          "so2Ppm": 7.0001,
+          "vCO": 0.675,
+          "vNO2": 0.4851,
+          "vO3": 0.3101,
+          "vSO2": 0.7251
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Input bytes are the upstream codec-model4933 example (Apache-2.0). expected.data authored here by running reference/upstream-codec.js then normalizing (Vbat->battery, Vbus/boot/pm/pc/gas voltages and concentrations -> camelCase extras; dewpoint/heat-index dropped). The example's flags2 byte is 0x00, so no temperature/RH/pressure/timestamp are present, matching upstream."
+    },
+    {
+      "description": "Unsupported fPort (only port 1 / format 0x38 is an uplink record).",
+      "input": {
+        "fPort": 3,
+        "bytes": [2, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 3"]
+      },
+      "source": "synthetic",
+      "_note": "Port 3 carries downlink responses upstream (DecodeDownlinkResponse), not normalized measurements, so this codec rejects it."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,30 @@
+{
+  "vendor": "mcci",
+  "device": "model4933",
+  "name": "Model 4933 Air Quality Gas Sensor",
+  "categories": [
+    "climate",
+    "weather-station"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "pressure",
+    "co2",
+    "dust",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "mcci",
+    "device": "model4933",
+    "codecId": "codec-model4933",
+    "codecFile": "codec-model4933.js",
+    "codecSha256": "243489cb5132b28d31db0d6e3fd5937e93e0c6e01a631f6533b6ec7118b7b05c",
+    "referencedAt": "2026-06-15"
+  }
+}

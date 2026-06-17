@@ -1,0 +1,77 @@
+{
+  "uplink": [
+    {
+      "description": "Battery, temperature, and humidity (TTN example bytes)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 100, 3, 103, 24, 1, 4, 104, 109]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 100,
+          "air": { "temperature": 28, "relativeHumidity": 54.5 }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Negative temperature (synthetic, exercises signed LE decode)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 80, 3, 103, 246, 255, 4, 104, 90]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 80,
+          "air": { "temperature": -1, "relativeHumidity": 45 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected derived via the oracle method (reference/upstream-codec.js): battery 80%, temp 0xFFF6 LE = -10/10 = -1.0 C, humidity 90/2 = 45%."
+    },
+    {
+      "description": "Mid-range battery, temperature, humidity (synthetic)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 72, 3, 103, 221, 0, 4, 104, 84]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 72,
+          "air": { "temperature": 22.1, "relativeHumidity": 42 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected derived via the oracle method (reference/upstream-codec.js): battery 72%, temp 0x00DD LE = 221/10 = 22.1 C, humidity 84/2 = 42%."
+    },
+    {
+      "description": "Current reading plus one datalog history point (synthetic)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 90, 3, 103, 250, 0, 4, 104, 100, 32, 206, 128, 32, 73, 101, 40, 1, 90]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 90,
+          "air": { "temperature": 25, "relativeHumidity": 50 },
+          "history": [
+            {
+              "air": { "temperature": 29.6, "relativeHumidity": 45 },
+              "time": "2023-11-06T17:21:04.000Z"
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input exercising the 0x20/0xce datalog channel; expected derived via the oracle method (reference/upstream-codec.js), which yields current temp 25.0/hum 50 and a history point timestamp 1699291264 (-> 2023-11-06T17:21:04.000Z), temp 0x0128 LE = 296/10 = 29.6 C, humidity 90/2 = 45%. Upstream emits the prior reading in a flat `history` array with a raw `timestamp`; we normalize each entry to vocabulary keys with an RFC3339 `time` per AUTHORING.md."
+    },
+    {
+      "description": "Unrecognized channel returns an error",
+      "input": { "fPort": 85, "bytes": [9, 103, 0, 0] },
+      "expected": { "errors": ["no recognized Milesight channels"] },
+      "source": "synthetic",
+      "_note": "Synthetic input with an unrecognized channel id (0x09); the reference/upstream-codec.js recognizes nothing and returns an empty object, so our codec reports an error."
+    }
+  ],
+  "downlink": []
+}

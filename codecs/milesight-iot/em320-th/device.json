@@ -1,0 +1,26 @@
+{
+  "vendor": "milesight-iot",
+  "device": "em320-th",
+  "name": "EM320-TH - Temperature & Humidity Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "battery",
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "em320-th",
+    "codecId": "em320-th-codec",
+    "codecFile": "em320-th.js",
+    "codecSha256": "afdf9a3a20aaf5ec807b69b661ae781740b96f32a4e8d0de38e9515da4ebd2de",
+    "referencedAt": "2026-06-15"
+  }
+}
