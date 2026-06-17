@@ -1,0 +1,107 @@
+{
+  "uplink": [
+    {
+      "description": "Temperature/humidity status report, report type 0x01 (synthetic in-bounds input; expected from upstream r315.js oracle)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 210, 1, 28, 8, 73, 0, 18, 10, 220, 106]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.8,
+          "air": { "temperature": 27.8, "relativeHumidity": 53 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "fPort 6, reportType 0x01. Upstream oracle: Volt 2.8, Temp 27.8, Humi 53. Humidity 53% in-bounds (0-100). battery <- bytes[3]/10; air.temperature <- bytes[8..9] two's-complement /100; air.relativeHumidity <- bytes[10]*0.5."
+    },
+    {
+      "description": "Temperature/humidity report with negative temperature and low battery flag, report type 0x01 (synthetic in-bounds; oracle-derived)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 210, 1, 156, 8, 73, 0, 18, 254, 12, 80]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 2.8,
+          "air": { "temperature": -5, "relativeHumidity": 40 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "fPort 6, reportType 0x01. bytes[3]=156 sets high-bit low-battery flag, residual 28 -> 2.8 V. Upstream oracle: Temp -5 (0xFE0C two's-complement), Humi 40 (bytes[10]=80*0.5). lowBattery surfaced as camelCase extra."
+    },
+    {
+      "description": "Combined temperature/humidity/illuminance report with alarm flags, report type 0x12 (synthetic in-bounds; oracle-derived)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 210, 18, 28, 8, 202, 19, 136, 3, 57, 18]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.8,
+          "lowTemperatureAlarm": false,
+          "highTemperatureAlarm": true,
+          "lowHumidityAlarm": false,
+          "highHumidityAlarm": false,
+          "lowIlluminanceAlarm": true,
+          "highIlluminanceAlarm": false,
+          "air": { "temperature": 22.5, "relativeHumidity": 50, "lightIntensity": 825 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "fPort 6, reportType 0x12. Humidity raw 5000 (0x1388)*0.01 -> 50.00% in-bounds (0-100). Upstream oracle: Temp 22.5, Humidity 50%, Illuminance 825Lux, alarm byte 0x12 (bits: HighTemp, LowIllum set). air.temperature <- bytes[4..5] two's-complement /100; air.relativeHumidity <- bytes[6..7]*0.01; air.lightIntensity <- bytes[8..9]; alarm flags -> camelCase extras."
+    },
+    {
+      "description": "Startup/device-info report carries no measurement, report type 0x00 (TTN example bytes)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 210, 0, 100, 2, 32, 32, 8, 17, 0, 0]
+      },
+      "expected": { "errors": ["no measurement"] },
+      "source": "synthetic",
+      "_note": "fPort 6, reportType 0x00. Upstream oracle decodes Device/SWver/HWver/Datecode only (no climate measurement). Normalized codec reports an error."
+    },
+    {
+      "description": "Temperature/humidity report flagged invalid carries no measurement, report type 0x01 (synthetic; oracle-derived)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 210, 1, 28, 8, 8, 0, 18, 10, 220, 106]
+      },
+      "expected": { "errors": ["no measurement"] },
+      "source": "synthetic",
+      "_note": "fPort 6, reportType 0x01 with bytes[5] bit0 cleared (8 = even). Upstream oracle sets Temp 0xFFFF / Humi 0xFF (sensor reported no reading); normalized codec reports an error."
+    },
+    {
+      "description": "Illuminance-only report carries no climate measurement, report type 0x02 (synthetic; this device has no light sensor)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 210, 2, 28, 8, 3, 57, 18, 0, 0, 0]
+      },
+      "expected": { "errors": ["no measurement"] },
+      "source": "synthetic",
+      "_note": "fPort 6, reportType 0x02. Shared R315 decoder emits illuminance + alarm flags only; R31505 has no light sensor and declares only the climate category, so this frame carries no climate measurement."
+    },
+    {
+      "description": "Sensor enable/state snapshot carries no measurement, report type 0x11 (TTN example bytes)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 210, 17, 28, 1, 3, 57, 18, 128, 0, 0]
+      },
+      "expected": { "errors": ["no measurement"] },
+      "source": "synthetic",
+      "_note": "fPort 6, reportType 0x11. Upstream oracle decodes the function-enable/binary-sensor-state bitmaps only (no measurement). Normalized codec reports an error."
+    },
+    {
+      "description": "Config response on fPort 7 is unsupported (TTN example bytes)",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 210, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "synthetic",
+      "_note": "fPort 7 carries ConfigReportRsp (config response, no measurement). Normalized codec rejects all non-6 fPorts."
+    }
+  ],
+  "downlink": []
+}

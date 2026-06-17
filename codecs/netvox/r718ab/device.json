@@ -1,0 +1,25 @@
+{
+  "vendor": "netvox",
+  "device": "r718ab",
+  "name": "R718AB - Wireless Temperature and Humidity Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r718ab",
+    "codecId": "r718ab-codec",
+    "codecFile": "payload/r711_r718a_r718ab_r720a.js",
+    "codecSha256": "db048b5f5dc3620bbbf25cdfd817b4e2e83b851b29b0af6544145d2b9c6c8489",
+    "referencedAt": "2026-06-17"
+  }
+}

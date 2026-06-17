@@ -1,0 +1,27 @@
+{
+  "vendor": "netvox",
+  "device": "r718wba",
+  "name": "R718WBA - Wireless Temperature and Humidity Sensor & Water Leakage",
+  "categories": [
+    "climate",
+    "water-leak"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "water"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r718wba",
+    "codecId": "r718wba-codec",
+    "codecFile": "payload/r718wba.js",
+    "codecSha256": "adba198fbb2c49c4c25aa6b5a9135893cd6643fa01d9b2da58e9f0b94a12dcf8",
+    "referencedAt": "2026-06-17"
+  }
+}

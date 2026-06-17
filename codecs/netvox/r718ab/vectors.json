@@ -1,0 +1,84 @@
+{
+  "uplink": [
+    {
+      "description": "Status report: 3.6 V, 25.38 C, 68 % RH",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 19, 1, 36, 9, 234, 26, 144, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "air": {
+            "temperature": 25.38,
+            "relativeHumidity": 68
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Inputs are the upstream r718ab-codec.yaml status example; expected.data authored here and cross-checked against reference/upstream-codec.js (Volt 3.6, Temp 25.38, Humi 68). Within bounds: humidity 0-100."
+    },
+    {
+      "description": "Low battery flag, sub-zero temperature, 30 % RH",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 19, 1, 156, 255, 156, 11, 184, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 2.8,
+          "air": {
+            "temperature": -1,
+            "relativeHumidity": 30
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds: byte3=0x9C high bit set -> lowBattery, 2.8 V; temp 0xFF9C two's-complement -> -1.00 C; humidity 0x0BB8=3000 -> 30.00 %. Oracle from reference/upstream-codec.js: Volt '2.8(low battery)', Temp -1, Humi 30."
+    },
+    {
+      "description": "Boundary: 0.00 C and 100 % RH",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 19, 1, 30, 0, 0, 39, 16, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "air": {
+            "temperature": 0,
+            "relativeHumidity": 100
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds boundary: 3.0 V; temp 0x0000 -> 0.00 C; humidity 0x2710=10000 -> 100.00 % (upper vocabulary bound). Oracle from reference/upstream-codec.js: Volt 3, Temp 0, Humi 100."
+    },
+    {
+      "description": "Device-info frame (reportType 0x00, no measurement)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 19, 0, 100, 2, 32, 33, 1, 38, 0, 0]
+      },
+      "expected": {
+        "errors": ["no measurement"]
+      },
+      "source": "synthetic",
+      "_note": "Inputs are the upstream startup version example (reportType 0x00). Upstream returns SWver/HWver/Datecode device-info, which is not a normalized measurement; we surface an error."
+    },
+    {
+      "description": "Config response on fPort 7 (unsupported)",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 19, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort"]
+      },
+      "source": "synthetic",
+      "_note": "Inputs are the upstream ConfigReportRsp example on fPort 7. Config frames carry no measurement; we reject any non-6 fPort."
+    }
+  ],
+  "downlink": []
+}

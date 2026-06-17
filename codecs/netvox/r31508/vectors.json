@@ -1,0 +1,99 @@
+{
+  "uplink": [
+    {
+      "description": "fPort 6 report 0x01 temperature/humidity, positive temp, normal battery",
+      "input": { "fPort": 6, "bytes": [1, 210, 1, 28, 8, 73, 0, 18, 10, 220, 106] },
+      "expected": {
+        "data": {
+          "battery": 2.8,
+          "air": { "temperature": 27.8, "relativeHumidity": 53 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic input; expected.data authored from upstream-codec.js decode (Temp 27.8, Humi 53, Volt 2.8) normalized to vocabulary keys."
+    },
+    {
+      "description": "fPort 6 report 0x01 temperature/humidity, negative temp (two's complement)",
+      "input": { "fPort": 6, "bytes": [1, 210, 1, 28, 8, 9, 0, 18, 255, 160, 80] },
+      "expected": {
+        "data": {
+          "battery": 2.8,
+          "air": { "temperature": -0.96, "relativeHumidity": 40 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic input; bytes[8,9]=0xFFA0 decodes to -0.96 C, humidity 80*0.5=40%. Matches upstream-codec.js."
+    },
+    {
+      "description": "fPort 6 report 0x01 with low-battery flag set (bytes[3] high bit)",
+      "input": { "fPort": 6, "bytes": [1, 210, 1, 156, 8, 73, 0, 18, 10, 220, 106] },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 2.8,
+          "air": { "temperature": 27.8, "relativeHumidity": 53 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic input; bytes[3]=0x9C => low-battery flag + 2.8 V. Upstream emits Volt '2.8(low battery)'; normalized as battery 2.8 + lowBattery extra."
+    },
+    {
+      "description": "fPort 6 report 0x12 combined temp/humidity/illuminance, no alarms",
+      "input": { "fPort": 6, "bytes": [1, 210, 18, 28, 10, 220, 20, 80, 0, 100, 0] },
+      "expected": {
+        "data": {
+          "battery": 2.8,
+          "lowTemperatureAlarm": false,
+          "highTemperatureAlarm": false,
+          "lowHumidityAlarm": false,
+          "highHumidityAlarm": false,
+          "lowIlluminanceAlarm": false,
+          "highIlluminanceAlarm": false,
+          "air": { "temperature": 27.8, "relativeHumidity": 52, "lightIntensity": 100 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic input; bytes[6,7]=0x1450=5200*0.01=52% humidity, temp 27.8, illuminance 100 lux. Matches upstream-codec.js (alarms byte10=0)."
+    },
+    {
+      "description": "fPort 6 report 0x12 negative temp with alarm flags set",
+      "input": { "fPort": 6, "bytes": [1, 210, 18, 28, 255, 160, 11, 184, 1, 44, 42] },
+      "expected": {
+        "data": {
+          "battery": 2.8,
+          "lowTemperatureAlarm": false,
+          "highTemperatureAlarm": true,
+          "lowHumidityAlarm": false,
+          "highHumidityAlarm": true,
+          "lowIlluminanceAlarm": false,
+          "highIlluminanceAlarm": true,
+          "air": { "temperature": -0.96, "relativeHumidity": 30, "lightIntensity": 300 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic input; bytes[6,7]=0x0BB8=3000*0.01=30% humidity, temp -0.96 C, illuminance 300 lux, alarm byte10=0x2A (high temp/humi/illum). Matches upstream-codec.js."
+    },
+    {
+      "description": "fPort 6 report 0x00 device-info frame carries no measurement",
+      "input": { "fPort": 6, "bytes": [1, 210, 0, 100, 2, 32, 32, 8, 17, 0, 0] },
+      "expected": { "errors": ["device info frame"] },
+      "source": "synthetic",
+      "_note": "reportType 0x00 (startup version report) carries no measurement; upstream emits Device/SWver/HWver/Datecode, not a normalized reading."
+    },
+    {
+      "description": "fPort 6 report 0x01 with T/H sensor reporting no valid measurement",
+      "input": { "fPort": 6, "bytes": [1, 210, 1, 28, 8, 8, 0, 18, 10, 220, 106] },
+      "expected": { "errors": ["no measurement"] },
+      "source": "synthetic",
+      "_note": "bytes[5] bit0 clear => T/H invalid; upstream emits Temp '0xFFFF', Humi '0xFF'. Normalized as an error (no measurement)."
+    },
+    {
+      "description": "fPort 7 config response is not a data report",
+      "input": { "fPort": 7, "bytes": [129, 210, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "synthetic",
+      "_note": "fPort 7 carries config command responses (ConfigReportRsp), not measurements."
+    }
+  ],
+  "downlink": []
+}

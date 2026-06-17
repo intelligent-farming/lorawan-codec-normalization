@@ -1,0 +1,115 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/netvox/r718ab-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Startup version report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          19,
+          0,
+          100,
+          2,
+          32,
+          33,
+          1,
+          38,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R718AB",
+          "SWver": 10,
+          "HWver": 2,
+          "Datecode": "20210126"
+        }
+      }
+    },
+    {
+      "description": "Status report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          19,
+          1,
+          36,
+          9,
+          234,
+          26,
+          144,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R718AB",
+          "Volt": 3.6,
+          "Temp": 25.38,
+          "Humi": 68
+        }
+      }
+    },
+    {
+      "description": "Configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          129,
+          19,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ConfigReportRsp",
+          "Device": "R718AB",
+          "Status": "Success"
+        }
+      }
+    },
+    {
+      "description": "Read configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          130,
+          19,
+          3,
+          132,
+          7,
+          8,
+          1,
+          0,
+          50,
+          0,
+          50
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ReadConfigReportRsp",
+          "Device": "R718AB",
+          "MinTime": 900,
+          "MaxTime": 1800,
+          "BatteryChange": 0.1,
+          "TempChange": 0.5,
+          "HumiChange": 0.5
+        }
+      }
+    }
+  ]
+}

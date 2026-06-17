@@ -1,0 +1,148 @@
+{
+  "uplink": [
+    {
+      "description": "Temperature/humidity report, positive temp (report type 0x01)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 210, 1, 28, 8, 73, 0, 18, 10, 220, 106]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.8,
+          "air": { "temperature": 27.8, "relativeHumidity": 53 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic input; expected.data authored from the normalized decode and cross-checked against reference/upstream-codec.js (Temp 27.8, Humi 53, Volt 2.8)."
+    },
+    {
+      "description": "Temperature/humidity report, negative temp and 0% humidity (report type 0x01)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 210, 1, 28, 8, 1, 0, 0, 255, 56, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.8,
+          "air": { "temperature": -2, "relativeHumidity": 0 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic input exercising two's-complement negative temperature (0xff38) and humidity lower bound 0; cross-checked against upstream (Temp -2, Humi 0)."
+    },
+    {
+      "description": "Temperature/humidity report, humidity at 100% upper bound (report type 0x01)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 210, 1, 28, 8, 73, 0, 0, 0, 250, 200]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.8,
+          "air": { "temperature": 2.5, "relativeHumidity": 100 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic input with humidity byte 200 -> 100% (vocabulary percentage upper bound); cross-checked against upstream (Temp 2.5, Humi 100)."
+    },
+    {
+      "description": "Temperature/humidity report with low-battery flag set (report type 0x01)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 210, 1, 156, 8, 73, 0, 0, 11, 184, 50]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 2.8,
+          "air": { "temperature": 30, "relativeHumidity": 25 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic input with battery byte high bit set; cross-checked against upstream (Volt '2.8(low battery)', Temp 30, Humi 25). Upstream conflates the flag into a string; we surface volts plus the camelCase extra lowBattery."
+    },
+    {
+      "description": "Combined temperature/humidity/illuminance report with alarm flags (report type 0x12)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 210, 18, 28, 11, 184, 19, 136, 0, 200, 57]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.8,
+          "lowTemperatureAlarm": true,
+          "highTemperatureAlarm": false,
+          "lowHumidityAlarm": false,
+          "highHumidityAlarm": true,
+          "lowIlluminanceAlarm": true,
+          "highIlluminanceAlarm": true,
+          "air": { "temperature": 30, "relativeHumidity": 50, "lightIntensity": 200 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic input; humidity is the 16-bit 0.01% field (0x1388 -> 50%, within 0-100 bound); cross-checked against upstream (Temp 30, Humidity '50%', Illuminance '200Lux', alarm bitmap 0x39)."
+    },
+    {
+      "description": "Illuminance report with threshold-alarm flags, no temp/humidity (report type 0x02)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 210, 2, 28, 8, 3, 57, 18, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.8,
+          "lowTemperatureAlarm": true,
+          "highTemperatureAlarm": false,
+          "lowHumidityAlarm": false,
+          "highHumidityAlarm": true,
+          "lowIlluminanceAlarm": true,
+          "highIlluminanceAlarm": true,
+          "air": { "lightIntensity": 2051 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic input; cross-checked against upstream (Illuminance '2051Lux', alarm bitmap 0x39, Volt 2.8)."
+    },
+    {
+      "description": "Startup/device-info frame carries no measurement (report type 0x00)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 210, 0, 100, 2, 32, 32, 8, 17, 0, 0]
+      },
+      "expected": { "errors": ["no measurement"] },
+      "source": "synthetic",
+      "_note": "Report type 0x00 is a device-info frame; upstream emits Device/SWver/HWver/Datecode (no measurement), so we report an error."
+    },
+    {
+      "description": "Sensor enable/state snapshot carries no measurement (report type 0x11)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 210, 17, 28, 1, 3, 57, 18, 128, 0, 0]
+      },
+      "expected": { "errors": ["no measurement"] },
+      "source": "synthetic",
+      "_note": "Report type 0x11 is a categorical sensor enable/state bitmap; upstream emits only boolean flags (no measurement)."
+    },
+    {
+      "description": "Temperature/humidity report flagged as invalid reading (report type 0x01, bytes[5] bit0 clear)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 210, 1, 28, 8, 72, 0, 0, 0, 0, 0]
+      },
+      "expected": { "errors": ["no measurement"] },
+      "source": "synthetic",
+      "_note": "bytes[5] bit0 is clear; upstream returns sentinel Temp '0xFFFF'/Humi '0xFF', so we report no measurement."
+    },
+    {
+      "description": "Config response on fPort 7 is unsupported",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 210, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "synthetic",
+      "_note": "fPort 7 carries config command responses, not measurements; cross-checked against upstream (ConfigReportRsp)."
+    }
+  ],
+  "downlink": []
+}

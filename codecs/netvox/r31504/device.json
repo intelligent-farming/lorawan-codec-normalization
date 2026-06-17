@@ -1,0 +1,29 @@
+{
+  "vendor": "netvox",
+  "device": "r31504",
+  "name": "R31504 - Wireless Temperature / Humidity / PIR / Emergency Button / Reed Switch / Seat Occupancy Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "pir",
+    "button",
+    "reed switch",
+    "occupancy"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r31504",
+    "codecId": "r315-codec",
+    "codecFile": "payload/r315.js",
+    "codecSha256": "f72c534f51a6013134a63e9be777e31bcc9045767c80546f8e01bb8a5a91481c",
+    "referencedAt": "2026-06-17"
+  }
+}

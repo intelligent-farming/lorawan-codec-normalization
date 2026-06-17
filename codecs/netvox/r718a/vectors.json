@@ -1,0 +1,103 @@
+{
+  "uplink": [
+    {
+      "description": "Status report: 3.6 V battery, 25.38 C, 68.00 % RH",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 11, 1, 36, 9, 234, 26, 144, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "air": {
+            "temperature": 25.38,
+            "relativeHumidity": 68
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Input is the upstream ttn example status report; expected.data authored here and cross-checked by running reference/upstream-codec.js (Volt 3.6 -> battery, Temp 25.38 -> air.temperature, Humi 68 -> air.relativeHumidity)."
+    },
+    {
+      "description": "Low-battery flag: byte3 high bit set (3.6 V), 3.00 C, 55.00 % RH",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 11, 1, 164, 1, 44, 21, 124, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3.6,
+          "air": {
+            "temperature": 3,
+            "relativeHumidity": 55
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input (byte3 = 0x80 | 36). Upstream reports Volt '3.6(low battery)'; we normalize to battery 3.6 + extra lowBattery true. Verified against reference/upstream-codec.js (Temp 3.00, Humi 55.00)."
+    },
+    {
+      "description": "Negative temperature: 3.2 V battery, -5.50 C, 2.00 % RH",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 11, 1, 32, 253, 218, 0, 200, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.2,
+          "air": {
+            "temperature": -5.5,
+            "relativeHumidity": 2
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input exercising two's-complement negative temperature (bytes[4..5] = 0xFDDA = -550 -> -5.50 C). Verified against reference/upstream-codec.js."
+    },
+    {
+      "description": "Full-scale humidity: 12.2 V battery (low), 31.00 C, 100.00 % RH",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 11, 1, 250, 12, 28, 39, 16, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 12.2,
+          "air": {
+            "temperature": 31,
+            "relativeHumidity": 100
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input at humidity upper bound (bytes[6..7] = 0x2710 = 10000 -> 100.00 %). byte3 = 0x80 | 122 -> 12.2 V + lowBattery. Verified against reference/upstream-codec.js."
+    },
+    {
+      "description": "Device-info frame (reportType 0x00) carries no measurement",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 11, 0, 100, 2, 32, 32, 8, 17, 0, 0]
+      },
+      "expected": {
+        "errors": ["no measurement"]
+      },
+      "source": "synthetic",
+      "_note": "Input is the upstream ttn example startup version report (reportType byte2 == 0x00). Upstream returns device metadata (Device/SWver/HWver/Datecode); we carry no measurement here and report an error."
+    },
+    {
+      "description": "Config response on fPort 7 carries no measurement",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 7"]
+      },
+      "source": "synthetic",
+      "_note": "Input is the upstream ttn example ConfigReportRsp on fPort 7. Config frames carry no measurement; reported as an unsupported fPort error."
+    }
+  ],
+  "downlink": []
+}

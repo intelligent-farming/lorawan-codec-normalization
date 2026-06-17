@@ -1,0 +1,133 @@
+{
+  "uplink": [
+    {
+      "description": "Temperature/humidity report (report type 0x01): 23.50 C, 55%, battery 2.8 V",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 210, 1, 28, 0, 1, 0, 0, 9, 46, 110]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.8,
+          "air": { "temperature": 23.5, "relativeHumidity": 55 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "Temperature/humidity report (report type 0x01) with negative temperature: -5.00 C, 40%",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 210, 1, 28, 0, 1, 0, 0, 254, 12, 80]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.8,
+          "air": { "temperature": -5, "relativeHumidity": 40 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "Temperature/humidity report (report type 0x01) with low-battery flag set: 23.50 C, 55%",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 210, 1, 156, 0, 1, 0, 0, 9, 46, 110]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 2.8,
+          "air": { "temperature": 23.5, "relativeHumidity": 55 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder (upstream renders Volt as '2.8(low battery)'; we surface battery 2.8 V plus the lowBattery flag)"
+    },
+    {
+      "description": "Combined temperature/humidity/illuminance report (report type 0x12): 22.50 C, 60%, 350 lux, no alarms",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 210, 18, 28, 8, 202, 23, 112, 1, 94, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.8,
+          "lowTemperatureAlarm": false,
+          "highTemperatureAlarm": false,
+          "lowHumidityAlarm": false,
+          "highHumidityAlarm": false,
+          "lowIlluminanceAlarm": false,
+          "highIlluminanceAlarm": false,
+          "air": { "temperature": 22.5, "relativeHumidity": 60, "lightIntensity": 350 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "Combined temperature/humidity/illuminance report (report type 0x12) with alarm flags: 18.00 C, 75%, 1200 lux",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 210, 18, 28, 7, 8, 29, 76, 4, 176, 42]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.8,
+          "lowTemperatureAlarm": false,
+          "highTemperatureAlarm": true,
+          "lowHumidityAlarm": false,
+          "highHumidityAlarm": true,
+          "lowIlluminanceAlarm": false,
+          "highIlluminanceAlarm": true,
+          "air": { "temperature": 18, "relativeHumidity": 75, "lightIntensity": 1200 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder; flags byte 42 = 0b00101010 (highTemp/highHumi/highIllum set)"
+    },
+    {
+      "description": "Temperature/humidity report (report type 0x01) with sensor-invalid bit clear carries no measurement",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 210, 1, 28, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": { "errors": ["no measurement"] },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder (upstream returns Temp '0xFFFF'/Humi '0xFF' sentinel)"
+    },
+    {
+      "description": "Startup version report carries no measurement (report type 0x00)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 210, 0, 100, 2, 32, 32, 8, 17, 0, 0]
+      },
+      "expected": { "errors": ["no measurement"] },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder (upstream returns device-info fields)"
+    },
+    {
+      "description": "Sensor enable/state snapshot carries no measurement (report type 0x11)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 210, 17, 28, 1, 3, 57, 18, 128, 0, 0]
+      },
+      "expected": { "errors": ["no measurement"] },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder (upstream returns categorical sensor-state bitmaps only)"
+    },
+    {
+      "description": "Config response on fPort 7 is unsupported",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 210, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder (upstream returns ConfigReportRsp on fPort 7)"
+    }
+  ],
+  "downlink": []
+}

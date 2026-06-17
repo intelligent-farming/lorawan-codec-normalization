@@ -1,0 +1,106 @@
+{
+  "uplink": [
+    {
+      "description": "Status report, dry (no leak): temperature, humidity, water.leak false (report type 0x01)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 190, 1, 36, 9, 234, 26, 144, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "air": { "temperature": 25.38, "relativeHumidity": 68 },
+          "water": { "leak": false }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Upstream input from the TTN example (deviceType 0xBE); expected.data authored by running reference/upstream-codec.js (Volt 3.6, Temp 25.38, Humi 68, Status OFF) and mapping to the normalized vocabulary."
+    },
+    {
+      "description": "Status report, wet (leak detected): water.leak true (report type 0x01)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 190, 1, 36, 9, 234, 26, 144, 1, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "air": { "temperature": 25.38, "relativeHumidity": 68 },
+          "water": { "leak": true }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input (byte8 = 1 -> Status ON). Expected.data from running reference/upstream-codec.js; Status ON maps to water.leak true."
+    },
+    {
+      "description": "Low-battery flag set (high bit of voltage byte) surfaces lowBattery extra",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 190, 1, 164, 9, 234, 26, 144, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3.6,
+          "air": { "temperature": 25.38, "relativeHumidity": 68 },
+          "water": { "leak": false }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic input: byte3 = 0x80 | 36 = 164. Upstream emits Volt '3.6(low battery)'; normalized to battery 3.6 + lowBattery true extra."
+    },
+    {
+      "description": "Negative temperature (two's-complement) decodes correctly",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 190, 1, 36, 254, 12, 19, 136, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "air": { "temperature": -5, "relativeHumidity": 50 },
+          "water": { "leak": false }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic input: bytes[4..5] = 0xFE0C = 65036; (65036 - 0x10000)/100 = -5.00 C, matching upstream's (0x10000 - tmpval)/100 * -1. Humidity 0x1388 = 5000 -> 50.00 %. Verified against reference/upstream-codec.js (Temp -5, Humi 50)."
+    },
+    {
+      "description": "Humidity at upper bound (100%) stays in vocabulary range",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 190, 1, 36, 9, 234, 39, 16, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "air": { "temperature": 25.38, "relativeHumidity": 100 },
+          "water": { "leak": false }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input: bytes[6..7] = 0x2710 = 10000 -> 100.00 %. Verified against reference/upstream-codec.js (Humi 100)."
+    },
+    {
+      "description": "Device-info / startup frame carries no measurement (report type 0x00)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 190, 0, 100, 2, 32, 32, 8, 17, 0, 0]
+      },
+      "expected": { "errors": ["no measurement"] },
+      "source": "synthetic",
+      "_note": "TTN example input (report type 0x00). Upstream returns device/version metadata; we report no measurement."
+    },
+    {
+      "description": "Config response on fPort 7 is unsupported",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 190, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "synthetic",
+      "_note": "TTN example input (ConfigReportRsp on fPort 7). Config frames carry no measurement; we report unsupported fPort."
+    }
+  ],
+  "downlink": []
+}
