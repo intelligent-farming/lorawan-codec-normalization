@@ -1,0 +1,71 @@
+{
+  "uplink": [
+    {
+      "description": "standard report, temperature cluster 0x0402 (cmd 0x0A) | 110a04020000290989",
+      "input": {
+        "bytes": [17, 10, 4, 2, 0, 0, 41, 9, 137],
+        "fPort": 125,
+        "recvTime": "2026-06-12T10:00:00.000Z"
+      },
+      "expected": { "data": { "air": { "temperature": 24.41 } } },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "standard report, negative temperature 0xFB50 -> -12.00C (signed centi-deg) | 110a0402000029fb50",
+      "input": {
+        "bytes": [17, 10, 4, 2, 0, 0, 41, 251, 80],
+        "fPort": 125,
+        "recvTime": "2026-06-12T10:00:00.000Z"
+      },
+      "expected": { "data": { "air": { "temperature": -12 } } },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "standard report, humidity cluster 0x0405 (cmd 0x0A) | 110a04050000211530",
+      "input": {
+        "bytes": [17, 10, 4, 5, 0, 0, 33, 21, 48],
+        "fPort": 125,
+        "recvTime": "2026-06-12T10:00:00.000Z"
+      },
+      "expected": { "data": { "air": { "relativeHumidity": 54.24 } } },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "read-attribute response, temperature cluster 0x0402 (cmd 0x01, value at offset 8) | 110104020000002908ca",
+      "input": {
+        "bytes": [17, 1, 4, 2, 0, 0, 0, 41, 8, 202],
+        "fPort": 125,
+        "recvTime": "2026-06-12T10:00:00.000Z"
+      },
+      "expected": { "data": { "air": { "temperature": 22.5 } } },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "standard report, power cluster 0x0050 attr 6 (cmd 0x0A) disposable battery 3.688V | 110a00500006410503040e6804",
+      "input": {
+        "bytes": [17, 10, 0, 80, 0, 6, 65, 5, 3, 4, 14, 104, 4],
+        "fPort": 125,
+        "recvTime": "2026-06-12T10:00:00.000Z"
+      },
+      "expected": { "data": { "battery": 3.688 } },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder (upstream variable disposable_battery_voltage)"
+    },
+    {
+      "description": "proprietary Huffman batch frame (byte 0 bit0 clear) is out of scope -> error | 362100808098c31ecb824d7b07ba3d",
+      "input": {
+        "bytes": [54, 33, 0, 128, 128, 152, 195, 30, 203, 130, 77, 123, 7, 186, 61],
+        "fPort": 125,
+        "recvTime": "2026-06-12T10:00:00.000Z"
+      },
+      "expected": { "errors": ["batch frame not supported"] },
+      "source": "synthetic",
+      "_note": "batch frames are decoded by the upstream TTN decoder but are intentionally out of scope for this standard-report-only codec; expected derived from upstream TTN decoder behavior (out of scope -> error)"
+    }
+  ],
+  "downlink": []
+}

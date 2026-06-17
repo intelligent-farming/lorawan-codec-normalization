@@ -1,0 +1,73 @@
+{
+  "uplink": [
+    {
+      "description": "standard report, temperature cluster 0x0402 -> air.temperature (29.53 C)",
+      "input": {
+        "bytes": [17, 10, 4, 2, 0, 0, 41, 11, 137],
+        "fPort": 125
+      },
+      "expected": { "data": { "air": { "temperature": 29.53 } } },
+      "source": "ttn-example"
+    },
+    {
+      "description": "standard report, temperature cluster 0x0402 -> air.temperature (21.50 C)",
+      "input": {
+        "bytes": [17, 10, 4, 2, 0, 0, 41, 8, 102],
+        "fPort": 125
+      },
+      "expected": { "data": { "air": { "temperature": 21.5 } } },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds standard report (centi-deg 0x0866=2150). expected.data confirmed by running reference/upstream-codec.js (normalisation_standard) -> temperature 21.5."
+    },
+    {
+      "description": "standard report, humidity cluster 0x0405 -> air.relativeHumidity (37.21 %)",
+      "input": {
+        "bytes": [17, 10, 4, 5, 0, 0, 33, 14, 137],
+        "fPort": 125
+      },
+      "expected": { "data": { "air": { "relativeHumidity": 37.21 } } },
+      "source": "ttn-example"
+    },
+    {
+      "description": "standard report, humidity cluster 0x0405 -> air.relativeHumidity (55.00 %)",
+      "input": {
+        "bytes": [17, 10, 4, 5, 0, 0, 33, 21, 124],
+        "fPort": 125
+      },
+      "expected": { "data": { "air": { "relativeHumidity": 55 } } },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds standard report (centi-% 0x157C=5500). expected.data confirmed by running reference/upstream-codec.js -> humidity 55."
+    },
+    {
+      "description": "standard report, pressure cluster 0x0403 -> air.pressure (1013 hPa)",
+      "input": {
+        "bytes": [17, 10, 4, 3, 0, 0, 41, 3, 245],
+        "fPort": 125
+      },
+      "expected": { "data": { "air": { "pressure": 1013 } } },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds standard report (s16 0x03F5=1013 hPa, within atmospheric 900-1100). expected.data confirmed by running reference/upstream-codec.js -> pressure 1013."
+    },
+    {
+      "description": "standard report, power cluster 0x0050 attr 6 disposable battery -> battery (3.621 V)",
+      "input": {
+        "bytes": [17, 10, 0, 80, 0, 6, 0, 0, 0, 4, 14, 37],
+        "fPort": 125
+      },
+      "expected": { "data": { "battery": 3.621 } },
+      "source": "synthetic",
+      "_note": "Synthetic power-source report: flags byte 0x04 (disposable battery) then 2-byte mV 0x0E25=3621 -> 3.621 V. Upstream normalisation_standard crashes on the power-cluster alarm path (multistate attribute lookup); the volts extraction is verified against the in-repo Watteco reference codec codecs/nke-watteco/atmo-sensor/codec.js (same byte layout) -> battery 3.621."
+    },
+    {
+      "description": "Huffman batch frame (byte0 bit0 clear) -> error, batch decoding out of scope",
+      "input": {
+        "bytes": [54, 33, 0, 128, 128, 152, 195, 30, 203, 130, 77, 123, 7, 186, 61],
+        "fPort": 125
+      },
+      "expected": { "errors": ["batch frame not supported"] },
+      "source": "ttn-example",
+      "_note": "TTN example batch payload (byte0=0x36, bit0 clear). This codec decodes standard reports only and reports batch frames as an error."
+    }
+  ],
+  "downlink": []
+}

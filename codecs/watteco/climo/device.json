@@ -1,0 +1,25 @@
+{
+  "vendor": "watteco",
+  "device": "climo",
+  "name": "Clim'O - Indoor Temperature/Humidity",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "watteco",
+    "device": "climo",
+    "codecId": "climo-codec",
+    "codecFile": "climo.js",
+    "codecSha256": "98ad22d5fc4a0fb0d51fe98c19b256a7c7eb30e6c2ce075754531be0089a0cb1",
+    "referencedAt": "2026-06-17"
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "uplink": [
+    {
+      "description": "standard report, temperature -> air.temperature | payload:110A04020000000929",
+      "input": {
+        "bytes": [17, 10, 4, 2, 0, 0, 0, 9, 41],
+        "fPort": 125
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 23.45
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds standard report; expected value cross-checked by running reference/upstream-codec.js (Temperature cluster 0x0402, 0x0929 = 2345 centi-degC -> 23.45)."
+    },
+    {
+      "description": "standard report, negative temperature -> air.temperature | payload:110A0402000000FE0C",
+      "input": {
+        "bytes": [17, 10, 4, 2, 0, 0, 0, 254, 12],
+        "fPort": 125
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": -5
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic standard report exercising signed two's-complement; expected value from reference/upstream-codec.js (0xFE0C = -500 centi-degC -> -5)."
+    },
+    {
+      "description": "standard report, humidity -> air.relativeHumidity | payload:110A04050000001590",
+      "input": {
+        "bytes": [17, 10, 4, 5, 0, 0, 0, 21, 144],
+        "fPort": 125
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "relativeHumidity": 55.2
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds standard report; expected value from reference/upstream-codec.js (Humidity cluster 0x0405, 0x1590 = 5520 centi-% -> 55.2)."
+    },
+    {
+      "description": "standard report, disposable battery voltage -> battery (V) | payload:110A00500006410503040E68",
+      "input": {
+        "bytes": [17, 10, 0, 80, 0, 6, 65, 5, 3, 4, 14, 104],
+        "fPort": 125
+      },
+      "expected": {
+        "data": {
+          "battery": 3.688
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic power-descriptor report; expected value from reference/upstream-codec.js (cluster 0x0050 attr 6, flags 0x04 -> BatteryVoltage 0x0E68 = 3688 mV -> 3.688 V)."
+    },
+    {
+      "description": "standard report, external power voltage -> battery (V) | payload:110A00500006410503010E10",
+      "input": {
+        "bytes": [17, 10, 0, 80, 0, 6, 65, 5, 3, 1, 14, 16],
+        "fPort": 125
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic power-descriptor report; expected value from reference/upstream-codec.js (cluster 0x0050 attr 6, flags 0x01 -> ExternalPowerVoltage 0x0E10 = 3600 mV -> 3.6 V)."
+    },
+    {
+      "description": "Huffman batch frame (byte0 bit0 clear) is rejected | payload:000A04020000000929",
+      "input": {
+        "bytes": [0, 10, 4, 2, 0, 0, 0, 9, 41],
+        "fPort": 125
+      },
+      "expected": {
+        "errors": ["Huffman batch frames are not supported"]
+      },
+      "source": "synthetic",
+      "_note": "Batch frames use upstream brUncompress (Huffman) and are out of scope for this standard-report codec."
+    },
+    {
+      "description": "wrong fPort is rejected",
+      "input": {
+        "bytes": [17, 10, 4, 2, 0, 0, 0, 9, 41],
+        "fPort": 1
+      },
+      "expected": {
+        "errors": ["unsupported fPort"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

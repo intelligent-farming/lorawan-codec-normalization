@@ -1,0 +1,25 @@
+{
+  "vendor": "watteco",
+  "device": "hygrotempo-remote",
+  "name": "Hygro Temp'O remote - Indoor remote Temperature/Humidity",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "watteco",
+    "device": "hygrotempo-remote",
+    "codecId": "hygrotempo-remote-codec",
+    "codecFile": "hygrotempo-remote.js",
+    "codecSha256": "dc5fda497c4c63ed7155f7a12ede75f28267c1e0c1bead05dabb92670bbef365",
+    "referencedAt": "2026-06-17"
+  }
+}

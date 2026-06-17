@@ -1,0 +1,29 @@
+{
+  "vendor": "nke-watteco",
+  "device": "vaqao-plus-sensor",
+  "name": "Vaqa'O+Plus - Temp/Hum/VOC/CO2/Motion Sensor",
+  "categories": [
+    "climate",
+    "air-quality"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "bvoc",
+    "co2",
+    "pressure"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "nke-watteco",
+    "device": "vaqao-plus-sensor",
+    "codecId": "vaqao-plus-sensor-codec",
+    "codecFile": "vaqao-plus-sensor.js",
+    "codecSha256": "5b399b7c12d6970cef5829a88fedd0ddb6d7b9126b44e73975662156121a930f",
+    "referencedAt": "2026-06-17"
+  }
+}

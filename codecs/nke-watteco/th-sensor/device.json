@@ -1,0 +1,25 @@
+{
+  "vendor": "nke-watteco",
+  "device": "th-sensor",
+  "name": "TH - Temperature & Humidity Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "nke-watteco",
+    "device": "th-sensor",
+    "codecId": "th-sensor-codec",
+    "codecFile": "th-sensor.js",
+    "codecSha256": "59b4f67466aace1bf8420f1c8d4f317854c381be69e7b0189ddfc8487d097910",
+    "referencedAt": "2026-06-17"
+  }
+}

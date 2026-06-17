@@ -1,0 +1,25 @@
+{
+  "vendor": "watteco",
+  "device": "indoor-temperature-humidity",
+  "name": "TH - Temperature & Humidity Indoor Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "watteco",
+    "device": "indoor-temperature-humidity",
+    "codecId": "indoor-temperature-humidity-codec",
+    "codecFile": "indoor-temperature-humidity.js",
+    "codecSha256": "04117a8f65d9c827b835111417ebe1b512443789101423901f986666ee0cb48a",
+    "referencedAt": "2026-06-17"
+  }
+}

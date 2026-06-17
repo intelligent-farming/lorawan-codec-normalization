@@ -1,0 +1,28 @@
+{
+  "vendor": "nke-watteco",
+  "device": "vaqao-sensor",
+  "name": "Vaqa'O - Temperature/Humidity/VOC/CO2 Sensor",
+  "categories": [
+    "climate",
+    "air-quality"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "voc",
+    "co2"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "nke-watteco",
+    "device": "vaqao-sensor",
+    "codecId": "vaqao-sensor-codec",
+    "codecFile": "vaqao-sensor.js",
+    "codecSha256": "67d404eec7b17c848a454be9012a32c0ff80225fbfde612f578f933e3a47a89c",
+    "referencedAt": "2026-06-17"
+  }
+}

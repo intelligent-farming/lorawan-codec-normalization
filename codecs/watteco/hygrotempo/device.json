@@ -1,0 +1,25 @@
+{
+  "vendor": "watteco",
+  "device": "hygrotempo",
+  "name": "Hygro Temp'O - Indoor Temperature/Humidity",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "watteco",
+    "device": "hygrotempo",
+    "codecId": "hygrotempo-codec",
+    "codecFile": "hygrotempo.js",
+    "codecSha256": "f36ba8983f99a342ae1ed344049f73487e4676bd65f94895aaa020bb2c19221c",
+    "referencedAt": "2026-06-17"
+  }
+}

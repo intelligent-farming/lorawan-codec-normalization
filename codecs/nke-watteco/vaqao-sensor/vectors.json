@@ -1,0 +1,65 @@
+{
+  "uplink": [
+    {
+      "description": "standard report: air temperature 21.37 C (cluster 0x0402)",
+      "input": {
+        "bytes": [17, 10, 4, 2, 0, 0, 41, 8, 89],
+        "fPort": 125
+      },
+      "expected": { "data": { "air": { "temperature": 21.37 } } },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds standard-report input; expected value produced by running reference/upstream-codec.js (Temperature = 21.37) and mapping to air.temperature. Payload 110A04020000290859: signed16 centi-degC 0x0859=2137 /100."
+    },
+    {
+      "description": "standard report: relative humidity 48.29% (cluster 0x0405)",
+      "input": {
+        "bytes": [17, 10, 4, 5, 0, 0, 33, 18, 221],
+        "fPort": 125
+      },
+      "expected": { "data": { "air": { "relativeHumidity": 48.29 } } },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds standard-report input; expected value produced by running reference/upstream-codec.js (Humidity = 48.29) and mapping to air.relativeHumidity. Payload 110A0405000021 12DD: unsigned16 centi-% 0x12DD=4829 /100."
+    },
+    {
+      "description": "standard report: CO2 concentration 612 ppm (cluster 0x800C, endpoint 1)",
+      "input": {
+        "bytes": [49, 10, 128, 12, 0, 0, 41, 2, 100],
+        "fPort": 125
+      },
+      "expected": { "data": { "air": { "co2": 612 } } },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds standard-report input; expected value produced by running reference/upstream-codec.js (label CO2 = 612) and mapping to air.co2 (ppm). Frame-control byte 0x31 yields ZCL endpoint 1, so the shared 0x800C cluster is the CO2 channel. Payload 310A800C0000290264."
+    },
+    {
+      "description": "standard report: VOC concentration 400 (cluster 0x800C, endpoint 0 -> extra)",
+      "input": {
+        "bytes": [17, 10, 128, 12, 0, 0, 41, 1, 144],
+        "fPort": 125
+      },
+      "expected": { "data": { "voc": 400 } },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds standard-report input; expected value produced by running reference/upstream-codec.js (label VOC = 400). Frame-control byte 0x11 yields ZCL endpoint 0, so the shared 0x800C cluster is the VOC channel. The vocabulary models only air.co2, so VOC is the camelCase extra `voc` (raw, per air-quality category notes). Payload 110A800C0000290190."
+    },
+    {
+      "description": "standard report: disposable battery 3.642 V (cluster 0x0050 attr 6)",
+      "input": {
+        "bytes": [17, 10, 0, 80, 0, 6, 65, 5, 3, 4, 14, 58],
+        "fPort": 125
+      },
+      "expected": { "data": { "battery": 3.642 } },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds standard-report input; expected value produced by running reference/upstream-codec.js (label BatteryVoltage = 3.642) and mapping to battery (V). Flags byte 0x04 selects the disposable-battery 2-byte mV source (0x0E3A=3642 mV /1000). Payload 110A0050000641050304 0E3A."
+    },
+    {
+      "description": "proprietary Huffman batch frame is out of scope -> error",
+      "input": {
+        "bytes": [32, 34, 0, 128, 3, 146, 129, 242, 104, 211, 33, 45, 84, 160, 195, 225, 112, 56, 10, 176, 0],
+        "fPort": 125
+      },
+      "expected": { "errors": ["batch frame not supported"] },
+      "source": "synthetic",
+      "_note": "Synthetic batch-style frame (frame-control byte 0x20, bit0 clear). Upstream would route this to brUncompress; our codec rejects batch frames as out of scope."
+    }
+  ],
+  "downlink": []
+}

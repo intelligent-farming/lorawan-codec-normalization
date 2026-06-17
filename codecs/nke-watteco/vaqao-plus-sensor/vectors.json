@@ -1,0 +1,96 @@
+{
+  "uplink": [
+    {
+      "description": "Temperature standard report (cluster 0x0402): 26.50 C",
+      "input": { "fPort": 125, "bytes": [17, 10, 4, 2, 0, 0, 33, 10, 90] },
+      "expected": { "data": { "air": { "temperature": 26.5 } } },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds standard report. Raw signed centi-degC 0x0A5A=2650 -> 26.50. Expected from running reference/upstream-codec.js (Decoder port 125, standard path: label Temperature value 26.5)."
+    },
+    {
+      "description": "Temperature standard report (cluster 0x0402): -5.00 C (negative, signed)",
+      "input": { "fPort": 125, "bytes": [17, 10, 4, 2, 0, 0, 33, 254, 12] },
+      "expected": { "data": { "air": { "temperature": -5 } } },
+      "source": "synthetic",
+      "_note": "Synthetic. Raw 0xFE0C=65036 as signed16 = -500 -> -5.00. Expected from reference/upstream-codec.js (label Temperature value -5)."
+    },
+    {
+      "description": "Humidity standard report (cluster 0x0405): 45.00 %",
+      "input": { "fPort": 125, "bytes": [17, 10, 4, 5, 0, 0, 33, 17, 148] },
+      "expected": { "data": { "air": { "relativeHumidity": 45 } } },
+      "source": "synthetic",
+      "_note": "Synthetic. Raw unsigned centi-% 0x1194=4500 -> 45.00. Expected from reference/upstream-codec.js (label Humidity value 45)."
+    },
+    {
+      "description": "Atmospheric pressure standard report (cluster 0x0403): 1011 hPa",
+      "input": { "fPort": 125, "bytes": [17, 10, 4, 3, 0, 0, 33, 3, 243] },
+      "expected": { "data": { "air": { "pressure": 1011 } } },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds atmospheric report. Raw uint16 0x03F3=1011 hPa. DELIBERATE divergence from upstream: reference/upstream-codec.js scales pressure as raw/100 (=> 10.11), a documented upstream bug — a 16-bit value can never reach atmospheric range under /100, and the device's own batch path reports ~1011 hPa. We emit the uint16 directly (vocabulary air.pressure bound 900-1100)."
+    },
+    {
+      "description": "CO2 standard report (cluster 0x800C, endpoint 1): 730 ppm",
+      "input": { "fPort": 125, "bytes": [33, 10, 128, 12, 0, 0, 33, 2, 218] },
+      "expected": { "data": { "air": { "co2": 730 } } },
+      "source": "synthetic",
+      "_note": "Synthetic. Byte0 0x21 -> endpoint 1 -> CO2 branch. Raw uint16 0x02DA=730 ppm. Expected from reference/upstream-codec.js (endpoint != 0 -> label CO2 value 730)."
+    },
+    {
+      "description": "VOC standard report (cluster 0x800C, endpoint 0): 34 ppm -> tvoc extra",
+      "input": { "fPort": 125, "bytes": [17, 10, 128, 12, 0, 0, 33, 0, 34] },
+      "expected": { "data": { "tvoc": 34 } },
+      "source": "synthetic",
+      "_note": "Synthetic; bytes mirror the TTN codec YAML standard-report VOC example. Byte0 0x11 -> endpoint 0 -> VOC. Raw uint16 0x0022=34. Upstream labels this VOC (no vocabulary CO2/PM key for it) so it is the camelCase extra tvoc (per air-quality category notes). Expected from reference/upstream-codec.js (endpoint 0 -> label VOC value 34)."
+    },
+    {
+      "description": "Illuminance standard report (cluster 0x0400): 20 lux",
+      "input": { "fPort": 125, "bytes": [17, 10, 4, 0, 0, 0, 33, 0, 20] },
+      "expected": { "data": { "air": { "lightIntensity": 20 } } },
+      "source": "synthetic",
+      "_note": "Synthetic. Raw uint16 0x0014=20 lux. Expected from reference/upstream-codec.js (label Illuminance value 20)."
+    },
+    {
+      "description": "Occupancy standard report (cluster 0x0406): motion detected",
+      "input": { "fPort": 125, "bytes": [17, 10, 4, 6, 0, 0, 33, 0, 1] },
+      "expected": { "data": { "action": { "motion": { "detected": true } } } },
+      "source": "synthetic",
+      "_note": "Synthetic. Raw uint16 0x0001=1 (presence). Upstream reports raw Occupancy value 1; normalized to action.motion.detected boolean."
+    },
+    {
+      "description": "Power configuration report (cluster 0x0050 attr 0x0006): disposable battery 3.6 V",
+      "input": { "fPort": 125, "bytes": [17, 10, 0, 80, 0, 6, 33, 0, 0, 4, 14, 16] },
+      "expected": { "data": { "battery": 3.6 } },
+      "source": "synthetic",
+      "_note": "Synthetic. Presence flags byte 0x04 (bit2 disposable). mV uint16 0x0E10=3600 -> 3.6 V. Expected from reference/upstream-codec.js (label BatteryVoltage value 3.6)."
+    },
+    {
+      "description": "LoRaWAN configuration report (cluster 0x8004 attr 0): message type confirmed -> extra",
+      "input": { "fPort": 125, "bytes": [17, 10, 128, 4, 0, 0, 33, 1] },
+      "expected": { "data": { "messageType": "confirmed" } },
+      "source": "synthetic",
+      "_note": "Synthetic. Value byte 1 -> confirmed. No vocabulary key; surfaced as camelCase extra messageType. Upstream sets message_type='confirmed'."
+    },
+    {
+      "description": "Batch (Huffman-compressed) frame -> error",
+      "input": { "fPort": 125, "bytes": [16, 0, 0, 0, 0, 0] },
+      "expected": { "errors": ["batch frame not supported"] },
+      "source": "synthetic",
+      "_note": "Byte0 0x10 has bit0 clear -> Watteco proprietary batch frame. This normalized codec decodes only standard reports; batch frames are reported as an error rather than guessed."
+    },
+    {
+      "description": "Truncated payload -> error",
+      "input": { "fPort": 125, "bytes": [17, 10, 4] },
+      "expected": { "errors": ["payload too short"] },
+      "source": "synthetic",
+      "_note": "Fewer than 6 bytes cannot carry a ZCL cluster/attribute header."
+    },
+    {
+      "description": "Unsupported fPort -> error",
+      "input": { "fPort": 1, "bytes": [17, 10, 4, 2, 0, 0, 33, 10, 90] },
+      "expected": { "errors": ["unsupported fPort 1"] },
+      "source": "synthetic",
+      "_note": "Watteco frames arrive on fPort 125; any other port is rejected."
+    }
+  ],
+  "downlink": []
+}
