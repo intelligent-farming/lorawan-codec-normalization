@@ -1,0 +1,54 @@
+{
+  "uplink": [
+    {
+      "description": "TTN example 1: humidity + temperature + battery",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 2, 224, 0, 3, 169, 253, 1, 52, 28, 162, 133, 243, 12, 96]
+      },
+      "expected": {
+        "data": {
+          "sensorId": 20228605,
+          "battery": 3.168,
+          "air": {
+            "relativeHumidity": 73.3,
+            "temperature": 15.23
+          }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Synthetic mid-range: 50% RH, 22.5 C, 3.3 V battery",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 1, 0, 0, 3, 0, 1, 1, 1, 19, 136, 136, 202, 12, 228]
+      },
+      "expected": {
+        "data": {
+          "sensorId": 16842753,
+          "battery": 3.3,
+          "air": {
+            "relativeHumidity": 50,
+            "temperature": 22.5
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Hand-built in-bounds frame (flags=0x0003, both sensor blocks present). sensor_id words 0x0001/0x0101 -> 16842753; humidity 5000/100 = 50%; temperature (35018-32768)/100 = 22.5 C; battery 3300/1000 = 3.3 V. expected.data produced by running reference/upstream-codec.js on this input and normalizing."
+    },
+    {
+      "description": "Wrong protocol version byte rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 2, 224, 0, 3, 169, 253, 1, 52, 28, 162, 133, 243, 12, 96]
+      },
+      "expected": {
+        "errors": ["protocol version 1 doesn't match v2"]
+      },
+      "source": "synthetic",
+      "_note": "TTN example 1 with the version byte changed from 2 to 1; upstream returns the same error string."
+    }
+  ],
+  "downlink": []
+}

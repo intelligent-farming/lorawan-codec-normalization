@@ -1,0 +1,27 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-wrm",
+  "name": "DL-WRM - Winter Road Maintenance Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "surface temperature",
+    "temperature",
+    "humidity",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-wrm",
+    "codecId": "dl-wrm-codec",
+    "codecFile": "dl-wrm.js",
+    "codecSha256": "704a242161e0c552d82b3f0243b4be95cc3178b9b8ef48e82cf13ac315df0361",
+    "referencedAt": "2026-06-15"
+  }
+}

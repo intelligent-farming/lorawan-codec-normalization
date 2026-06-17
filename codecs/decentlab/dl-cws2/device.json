@@ -1,0 +1,29 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-cws2",
+  "name": "DL-CWS2 - High-Precision Winter Road Maintenance Sensor with Radiation Shield",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "surface temperature",
+    "tilt",
+    "temperature",
+    "humidity",
+    "dew point",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-cws2",
+    "codecId": "dl-cws2-codec",
+    "codecFile": "dl-cws2.js",
+    "codecSha256": "4a1635e535e43143e8498113a7900a4d1cde27477eb1c9705ff417394a6b6973",
+    "referencedAt": "2026-06-15"
+  }
+}

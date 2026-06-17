@@ -1,0 +1,26 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-sht35-002",
+  "name": "DL-SHT35-002 - Air Temperature and Humidity Sensor with Radiation Shield",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-sht35-002",
+    "codecId": "dl-sht35-codec",
+    "codecFile": "dl-sht35.js",
+    "codecSha256": "ef2ed8181a2a4be8337cd962c97883a8efaa2f899b4792ee28710d85315a3bd5",
+    "referencedAt": "2026-06-15"
+  }
+}

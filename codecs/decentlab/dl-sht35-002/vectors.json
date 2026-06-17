@@ -1,0 +1,82 @@
+{
+  "uplink": [
+    {
+      "description": "Example 1: full reading (air temperature + humidity + battery)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 3, 14, 0, 3, 100, 160, 121, 177, 12, 96]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 23.79,
+            "relativeHumidity": 47.54
+          },
+          "battery": 3.168
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Example 2: battery-only uplink (flags=0x0002, no air block)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 3, 14, 0, 2, 12, 96]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.168
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Synthetic full reading at mid-range words (flags=0x0003)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 18, 52, 0, 3, 128, 0, 96, 0, 12, 128]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 42.5,
+            "relativeHumidity": 37.5
+          },
+          "battery": 3.2
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload: temp word 0x8000, humidity word 0x6000, battery word 0x0C80 (3.2 V). Expected derived by running reference/upstream-codec.js and normalizing (temperature/humidity rounded to 2 dp, battery to 3 dp)."
+    },
+    {
+      "description": "Synthetic air-only reading, negative temperature (flags=0x0001)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 0, 1, 0, 1, 64, 0, 80, 0]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": -1.25,
+            "relativeHumidity": 31.25
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload exercising air block without battery: temp word 0x4000 (-1.25 C), humidity word 0x5000 (31.25%). Expected derived by running reference/upstream-codec.js and normalizing."
+    },
+    {
+      "description": "Wrong protocol version is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["protocol version 1 doesn't match v2"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error payload: first byte (version) is 1, not the required 2. Upstream rejects with the same message; ported verbatim."
+    }
+  ],
+  "downlink": []
+}

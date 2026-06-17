@@ -1,0 +1,28 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-cws",
+  "name": "DL-CWS - High-Precision Winter Road Maintenance Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "surface temperature",
+    "tilt",
+    "temperature",
+    "humidity",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-cws",
+    "codecId": "dl-cws-codec",
+    "codecFile": "dl-cws.js",
+    "codecSha256": "27566e0cde44ef7903245bddaebcc5709f7e622b8336458e98f39b80350220b3",
+    "referencedAt": "2026-06-15"
+  }
+}

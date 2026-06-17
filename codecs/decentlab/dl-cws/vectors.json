@@ -1,0 +1,73 @@
+{
+  "uplink": [
+    {
+      "description": "Full sensor block (surface/air temp, humidity, dew point, angle, sensor temp) + battery",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 70, 57, 0, 3, 138, 119, 138, 149, 151, 122, 135, 76, 128, 71, 138, 94, 11, 116]
+      },
+      "expected": {
+        "data": {
+          "surfaceTemperature": 26.79,
+          "dewPoint": 18.68,
+          "angle": 71,
+          "sensorTemperature": 26.54,
+          "battery": 2.932,
+          "air": {
+            "temperature": 27.09,
+            "relativeHumidity": 60.1
+          }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Battery-only uplink (flags=2, sensor block omitted)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 70, 57, 0, 2, 11, 116]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.932
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Synthetic in-bounds full uplink (oracle: expected from reference/upstream-codec.js)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 70, 57, 0, 3, 130, 13, 136, 102, 149, 124, 129, 54, 128, 12, 130, 128, 14, 17]
+      },
+      "expected": {
+        "data": {
+          "surfaceTemperature": 5.25,
+          "dewPoint": 3.1,
+          "angle": 12,
+          "sensorTemperature": 6.4,
+          "battery": 3.601,
+          "air": {
+            "temperature": 21.5,
+            "relativeHumidity": 55
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected.data derived by running reference/upstream-codec.js (oracle) and mapping onto the normalized vocabulary."
+    },
+    {
+      "description": "Wrong protocol version is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 70, 57, 0, 2, 11, 116]
+      },
+      "expected": {
+        "errors": ["protocol version 1 doesn't match v2"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error vector: version byte 0x01 != protocol v2."
+    }
+  ],
+  "downlink": []
+}

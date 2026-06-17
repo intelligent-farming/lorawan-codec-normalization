@@ -1,0 +1,26 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-rhc",
+  "name": "DL-RHC - High-Precision Air Temperature and Humidity Sensor with Radiation Shield",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-rhc",
+    "codecId": "dl-rhc-codec",
+    "codecFile": "dl-rhc.js",
+    "codecSha256": "4679917badb33b5ae207f9fc07ba04639a44c782cd72c62876bd8d9d687d7bb2",
+    "referencedAt": "2026-06-15"
+  }
+}

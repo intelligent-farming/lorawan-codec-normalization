@@ -1,0 +1,57 @@
+{
+  "uplink": [
+    {
+      "description": "all sensors present (air temp/humidity, surface/head temp, battery)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 1, 44, 0, 7, 62, 232, 217, 153, 3, 217, 4, 26, 13, 222]
+      },
+      "expected": {
+        "data": {
+          "surfaceTemperature": -1.5,
+          "headTemperature": 5,
+          "battery": 3.55,
+          "air": {
+            "temperature": -2,
+            "relativeHumidity": 85
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds winter payload (device 300, flags 0x0007 = all three sensor blocks). Raw 16-bit words chosen so air temp ~= -2 C and humidity ~= 85% sit well inside vocabulary bounds; surface/head probes at -1.5/5.0 C. expected.data authored from the upstream Apache-2.0 reference decoder (reference/upstream-codec.js) re-mapped onto the normalized vocabulary."
+    },
+    {
+      "description": "TTN upstream example 1 input, normalized",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 26, 16, 0, 7, 100, 160, 121, 177, 4, 249, 4, 196, 12, 96]
+      },
+      "expected": {
+        "data": {
+          "surfaceTemperature": 27.3,
+          "headTemperature": 22,
+          "battery": 3.168,
+          "air": {
+            "temperature": 23.79,
+            "relativeHumidity": 47.54
+          }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Input taken verbatim from upstream dl-wrm-codec.yaml example 1; expected.data authored here by re-mapping the upstream per-sensor values onto the normalized vocabulary (air.temperature/relativeHumidity rounded to 2 dp, battery to 3 dp; surface/head temps as camelCase extras)."
+    },
+    {
+      "description": "wrong protocol version is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [3, 1, 44, 0, 4, 12, 96]
+      },
+      "expected": {
+        "errors": ["protocol version 3 doesn't match v2"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: first byte 3 instead of the protocol v2 marker; mirrors the upstream version guard."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,89 @@
+{
+  "uplink": [
+    {
+      "description": "All sensor blocks present (radiation-shield + surface/air/dew/angle/sensor + battery), synthetic in-bounds",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2, 48, 57, 0, 7,
+          96, 141, 138, 61,
+          135, 33, 136, 102, 149, 124, 132, 176, 128, 5, 136, 162,
+          12, 228
+        ]
+      },
+      "expected": {
+        "data": {
+          "airTemperatureRadiationShield": 21,
+          "airHumidityRadiationShield": 54,
+          "surfaceTemperature": 18.25,
+          "dewPoint": 12,
+          "angle": 5,
+          "sensorTemperature": 22.1,
+          "battery": 3.3,
+          "air": {
+            "temperature": 21.5,
+            "relativeHumidity": 55
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; flags=0x0007 selects all three sensor blocks. Expected values computed by running reference/upstream-codec.js on these bytes, then mapped onto the normalized vocabulary (air_temperature->air.temperature, air_humidity->air.relativeHumidity, battery_voltage->battery) with the secondary radiation-shield/surface/dew/angle/sensor channels as camelCase extras. Covers the climate category requires (air.temperature, air.relativeHumidity)."
+    },
+    {
+      "description": "TTN example 1: all sensor blocks present",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2, 88, 192, 0, 7,
+          70, 118, 250, 10,
+          129, 201, 129, 63, 166, 216, 129, 55, 128, 37, 129, 48,
+          11, 145
+        ]
+      },
+      "expected": {
+        "data": {
+          "airTemperatureRadiationShield": 3.17,
+          "airHumidityRadiationShield": 97.67,
+          "surfaceTemperature": 4.57,
+          "dewPoint": 3.11,
+          "angle": 37,
+          "sensorTemperature": 3.04,
+          "battery": 2.961,
+          "air": {
+            "temperature": 3.19,
+            "relativeHumidity": 99.44
+          }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream example input. expected.data authored here by running reference/upstream-codec.js on these bytes and mapping onto the vocabulary; radiation-shield channels rounded to the sensor's 0.01 resolution (upstream emits unrounded floats)."
+    },
+    {
+      "description": "Battery-only uplink (flags=0x0004), synthetic in-bounds",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 48, 57, 0, 4, 12, 153]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.225
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; flags=0x0004 selects only the battery block. Expected battery computed by running reference/upstream-codec.js (battery_voltage 3225 mV reported as volts -> 3.225)."
+    },
+    {
+      "description": "Wrong protocol version byte is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 88, 192, 0, 4, 11, 145]
+      },
+      "expected": {
+        "errors": ["protocol version 1 doesn't match v2"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error vector: version byte 1 instead of 2. Upstream reference returns the same 'protocol version ... doesn't match v2' message."
+    }
+  ],
+  "downlink": []
+}
