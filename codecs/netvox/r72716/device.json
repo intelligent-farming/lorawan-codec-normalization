@@ -1,0 +1,26 @@
+{
+  "vendor": "netvox",
+  "device": "r72716",
+  "name": "R72716(RA0716Y) - Wireless Outdoor PM2.5 Temperature Humidity Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "pm2.5"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r72716",
+    "codecId": "r72716-codec",
+    "codecFile": "payload/ra0716.js",
+    "codecSha256": "5b68647973131be7e94a742c52eeadb1bb63a46393b83028ad0cf20e5683ea63",
+    "referencedAt": "2026-06-17"
+  }
+}

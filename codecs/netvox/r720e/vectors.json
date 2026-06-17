@@ -1,0 +1,110 @@
+{
+  "uplink": [
+    {
+      "description": "Status report, ppb unit, normal battery",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 165, 1, 36, 0, 100, 10, 70, 23, 112, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "air": {
+            "temperature": 26.3,
+            "relativeHumidity": 60
+          },
+          "tvoc": 100,
+          "tvocUnit": "ppb"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected.data authored here, wire values cross-checked against reference/upstream-codec.js (Volt 3.6, TVOC 100 ppb, Temp 26.3, Humi 60)."
+    },
+    {
+      "description": "Status report, index unit, low battery, negative temperature",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 165, 1, 164, 1, 44, 255, 156, 17, 112, 1]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3.6,
+          "air": {
+            "temperature": -1,
+            "relativeHumidity": 44.64
+          },
+          "tvoc": 300,
+          "tvocUnit": "index"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame exercising the low-battery flag (byte3 high bit), two's-complement negative temperature (0xFF9C) and the index unit; cross-checked against reference/upstream-codec.js (Volt low 3.6, TVOC 300 index, Temp -1, Humi 44.64)."
+    },
+    {
+      "description": "Status report, zero humidity, full-scale TVOC",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 165, 1, 33, 3, 232, 9, 196, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "air": {
+            "temperature": 25,
+            "relativeHumidity": 0
+          },
+          "tvoc": 1000,
+          "tvocUnit": "ppb"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame at the humidity lower bound (0%); cross-checked against reference/upstream-codec.js (Volt 3.3, TVOC 1000 ppb, Temp 25, Humi 0)."
+    },
+    {
+      "description": "Status report, 100% humidity",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 165, 1, 36, 0, 50, 9, 196, 39, 16, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "air": {
+            "temperature": 25,
+            "relativeHumidity": 100
+          },
+          "tvoc": 50,
+          "tvocUnit": "ppb"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame at the humidity upper bound (100%); cross-checked against reference/upstream-codec.js (Volt 3.6, TVOC 50 ppb, Temp 25, Humi 100)."
+    },
+    {
+      "description": "Startup version report carries no measurement",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 165, 0, 100, 1, 32, 32, 8, 17, 0, 0]
+      },
+      "expected": {
+        "errors": ["device info frame"]
+      },
+      "source": "synthetic",
+      "_note": "reportType 0x00 (bytes[2] == 0) is a device-info/startup frame (SW/HW version + datecode) with no measurement; surfaced as an error. Input shape matches the upstream startup example."
+    },
+    {
+      "description": "Configure report response on fPort 7 is unsupported",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 165, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort"]
+      },
+      "source": "synthetic",
+      "_note": "fPort 7 carries config command responses, not measurements; surfaced as an error. Input shape matches the upstream ConfigReportRsp example."
+    }
+  ],
+  "downlink": []
+}

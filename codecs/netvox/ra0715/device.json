@@ -1,0 +1,27 @@
+{
+  "vendor": "netvox",
+  "device": "ra0715",
+  "name": "RA0715 - Wireless CO2/Temperature/Humidity Sensor (RA07 Series)",
+  "categories": [
+    "climate",
+    "air-quality"
+  ],
+  "sensors": [
+    "co2",
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "ra0715",
+    "codecId": "ra0715-codec",
+    "codecFile": "payload/ra0715_r72615_ra0715y_r72615a.js",
+    "codecSha256": "bf2a24a16cf938040132f01e2daca7710f85423f182362eb4f4ef1c03c6eb0f1",
+    "referencedAt": "2026-06-17"
+  }
+}

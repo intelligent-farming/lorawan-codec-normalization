@@ -1,0 +1,131 @@
+{
+  "uplink": [
+    {
+      "description": "0x0C temperature/humidity/wind-speed report (climate)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 5, 12, 100, 9, 46, 21, 124, 1, 64, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 10,
+          "air": { "temperature": 23.5, "relativeHumidity": 55 },
+          "wind": { "speed": 3.2 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame: battery 0x64=10.0V; temp raw 2350=0x092E -> 23.5 C; humidity raw 5500=0x157C -> 55.00 %; wind-speed raw 320=0x0140 -> 3.20 m/s. Raw decode confirmed against reference/upstream-codec.js (Temperature 23.5, Humidity 55, WindSpeed 3.2)."
+    },
+    {
+      "description": "0x0C report, negative temperature, low battery, wind-speed probe absent",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 5, 12, 131, 253, 243, 15, 160, 255, 255, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 0.3,
+          "air": { "temperature": -5.25, "relativeHumidity": 40 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame: byte3 0x83 -> low-battery flag set, battery (0x83 & 0x7F)=3 -> 0.3V; temp raw 0xFDF3 (two's-complement -525) -> -5.25 C; humidity raw 4000=0x0FA0 -> 40.00 %; wind-speed 0xFFFF -> NoSensor, omitted. Raw decode confirmed against reference/upstream-codec.js (Temperature -5.25, Humidity 40, WindSpeed NoSensor)."
+    },
+    {
+      "description": "0x07 CO2 report (air-quality), NH3/Noise probes absent",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 5, 7, 100, 25, 100, 255, 255, 255, 255, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 10,
+          "air": { "co2": 650 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame: battery 0x64=10.0V; CO2 raw 6500=0x1964 -> 650.0 ppm; NH3 and Noise channels 0xFFFF -> NoSensor, dropped (unmodelled). Raw decode confirmed against reference/upstream-codec.js (CO2 650)."
+    },
+    {
+      "description": "0x0D wind-direction/atmospheric-pressure report",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 5, 13, 100, 0, 180, 0, 1, 139, 205, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 10,
+          "air": { "pressure": 1013.25 },
+          "wind": { "direction": 180 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame: battery 0x64=10.0V; wind-direction raw 180=0x00B4 -> 180 deg; atmosphere 32-bit raw 101325=0x00018BCD /100 -> 1013.25 hPa (in 900-1100 bound). Raw decode confirmed against reference/upstream-codec.js (WindDirection 180, Atomsphere 1013.25)."
+    },
+    {
+      "description": "0x0E VOC report (extra)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 5, 14, 100, 0, 125, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 10,
+          "voc": 12.5
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame: battery 0x64=10.0V; VOC raw 125=0x007D /10 -> 12.5 (camelCase extra, no vocabulary key). Raw decode confirmed against reference/upstream-codec.js (VOC 12.5)."
+    },
+    {
+      "description": "startup/device-info frame (reportType 0x00) carries no measurement",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 5, 0, 130, 4, 32, 32, 17, 5, 0, 0]
+      },
+      "expected": {
+        "errors": ["no measurement"]
+      },
+      "source": "synthetic",
+      "_note": "Upstream startup example: version/datecode frame, reportType 0x00. No vocabulary measurement."
+    },
+    {
+      "description": "config response on fPort 7 is not a data report",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort"]
+      },
+      "source": "synthetic",
+      "_note": "Upstream ConfigReportRsp on fPort 7. fPort 7 carries config, not measurements."
+    },
+    {
+      "description": "0x01 PM report has no climate/air-quality channel",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 5, 1, 120, 0, 100, 0, 200, 2, 188, 0]
+      },
+      "expected": {
+        "errors": ["carries no normalizable measurement"]
+      },
+      "source": "synthetic",
+      "_note": "Upstream PM1.0/PM2.5/PM10 example. The vocabulary models none of these (PM would be camelCase extras only); this codec scopes to climate/air-quality/wind/pressure, so the frame is reported as carrying no normalizable measurement."
+    },
+    {
+      "description": "0x07 CO2 report with CO2 probe absent",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 5, 7, 100, 255, 255, 255, 255, 255, 255, 0]
+      },
+      "expected": {
+        "errors": ["no measurement"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: CO2 channel 0xFFFF -> NoSensor; with no CO2 the air-quality frame has no measurement."
+    }
+  ],
+  "downlink": []
+}

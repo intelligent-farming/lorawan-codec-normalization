@@ -1,0 +1,87 @@
+{
+  "uplink": [
+    {
+      "description": "Data report: +22.50 C, 55.00 %RH, PM2.5 42 ug/m3, 3.6 V",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 53, 1, 36, 8, 202, 21, 124, 0, 42, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "air": {
+            "temperature": 22.5,
+            "relativeHumidity": 55
+          },
+          "pm25": 42
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected normalized from the upstream oracle (Temp 22.5, Humi 55, PM25 42, Volt 3.6)."
+    },
+    {
+      "description": "Data report: negative temp -5.25 C, 88.00 %RH, PM2.5 120, 2.7 V low battery",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 53, 1, 155, 253, 243, 34, 96, 0, 120, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 2.7,
+          "air": {
+            "temperature": -5.25,
+            "relativeHumidity": 88
+          },
+          "pm25": 120
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame exercising two's-complement negative temperature and the low-battery high bit (byte3 0x9B). Upstream oracle: Temp -5.25, Humi 88, PM25 120, Volt '2.7(low battery)'."
+    },
+    {
+      "description": "Data report: zero floor (0.00 C, 0 %RH, PM2.5 0, 3.0 V)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 53, 1, 30, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "air": {
+            "temperature": 0,
+            "relativeHumidity": 0
+          },
+          "pm25": 0
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic lower-bound frame; upstream oracle: Temp 0, Humi 0, PM25 0, Volt 3."
+    },
+    {
+      "description": "Startup version report (reportType 0x00, no measurement)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 53, 0, 100, 2, 32, 32, 8, 17, 0, 0]
+      },
+      "expected": {
+        "errors": ["device info frame"]
+      },
+      "source": "ttn-example",
+      "_note": "Upstream example startup frame; bytes[2]==0x00 carries software/hardware version + datecode, not a measurement."
+    },
+    {
+      "description": "Config response on fPort 7 (no measurement)",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 53, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort"]
+      },
+      "source": "ttn-example",
+      "_note": "Upstream example ConfigReportRsp; fPort 7 carries config, not measurement."
+    }
+  ],
+  "downlink": []
+}

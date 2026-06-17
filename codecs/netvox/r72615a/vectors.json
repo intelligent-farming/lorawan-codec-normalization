@@ -1,0 +1,87 @@
+{
+  "uplink": [
+    {
+      "description": "Climate report (type 0x0C): temperature + humidity, wind-speed channel absent",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 9, 12, 30, 9, 41, 21, 124, 255, 255, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "air": { "temperature": 23.45, "relativeHumidity": 55 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected derived by running reference/upstream-codec.js (Volt 3, Temperature 23.45, Humidity 55, WindSpeed NoSensor) and normalizing: Temperature->air.temperature, Humidity->air.relativeHumidity, Volt->battery; NoSensor channel omitted."
+    },
+    {
+      "description": "Climate report (type 0x0C): negative temperature, humidity, and wind speed all present",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 9, 12, 36, 253, 218, 31, 64, 1, 64, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "air": { "temperature": -5.5, "relativeHumidity": 80 },
+          "wind": { "speed": 3.2 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected derived by running reference/upstream-codec.js (Volt 3.6, Temperature -5.5, Humidity 80, WindSpeed 3.2) and normalizing: WindSpeed->wind.speed (m/s). Temperature is 16-bit two's-complement (0xFDDA = -550 -> -5.50 C)."
+    },
+    {
+      "description": "Air-quality report (type 0x07): CO2 only, NH3 and noise channels absent",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 9, 7, 30, 31, 64, 255, 255, 255, 255, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "air": { "co2": 800 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected derived by running reference/upstream-codec.js (Volt 3, CO2 800, NH3 NoSensor, Noise NoSensor) and normalizing: CO2 (channel/10 ppm) -> air.co2; NoSensor channels omitted."
+    },
+    {
+      "description": "Air-quality report (type 0x07): CO2 + NH3 + noise with low-battery flag set",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 9, 7, 158, 17, 148, 0, 125, 2, 88, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3,
+          "nh3": 12.5,
+          "noise": 60,
+          "air": { "co2": 450 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected derived by running reference/upstream-codec.js (Volt '3(low battery)', CO2 450, NH3 12.5, Noise 60). byte3 high bit (0x9E) -> lowBattery extra + battery (0x1E/10 = 3 V); CO2->air.co2; NH3/Noise are camelCase extras the vocabulary does not model."
+    },
+    {
+      "description": "Startup version report carries no measurement (report type 0x00)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 9, 0, 130, 4, 32, 32, 17, 5, 0, 0]
+      },
+      "expected": { "errors": ["no measurement"] },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Config response on fPort 7 is unsupported (no measurement)",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

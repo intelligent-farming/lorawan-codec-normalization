@@ -1,0 +1,26 @@
+{
+  "vendor": "netvox",
+  "device": "r720e",
+  "name": "R720E - Wireless TVOC Detection Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "tvoc"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r720e",
+    "codecId": "r720e-codec",
+    "codecFile": "payload/r720e.js",
+    "codecSha256": "9b3f6a3085620e137cb725627e9d9e76801e02b6a8df2597b14e75abfe0c387f",
+    "referencedAt": "2026-06-17"
+  }
+}

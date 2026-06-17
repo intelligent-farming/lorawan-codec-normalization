@@ -1,0 +1,106 @@
+{
+  "uplink": [
+    {
+      "description": "Typical data report: 3.6 V, 25.38 C, 68 %RH, PM2.5 300",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 55, 1, 36, 9, 234, 26, 144, 1, 44, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "air": {
+            "temperature": 25.38,
+            "relativeHumidity": 68
+          },
+          "pm2_5": 300
+        }
+      },
+      "source": "synthetic",
+      "_note": "Inputs synthesized in-bounds (RH 0-100); reference TTN decoder (reference/upstream-codec.js) yields Volt 3.6, Temp 25.38, Humi 68, PM25 300. Normalized here: battery (V), air.temperature/air.relativeHumidity, pm2_5 extra."
+    },
+    {
+      "description": "Negative temperature with low-battery flag: 3.1 V (low), -1.00 C, 47.5 %RH, PM2.5 200",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 55, 1, 159, 255, 156, 18, 142, 0, 200, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3.1,
+          "air": {
+            "temperature": -1,
+            "relativeHumidity": 47.5
+          },
+          "pm2_5": 200
+        }
+      },
+      "source": "synthetic",
+      "_note": "Inputs synthesized in-bounds; byte3 high bit set -> low battery (0x1F=3.1 V); temp two's-complement (0xFF9C -> -100 -> -1.00 C); reference decoder yields Volt '3.1(low battery)', Temp -1, Humi 47.5, PM25 200."
+    },
+    {
+      "description": "Zero humidity, warm: 3.0 V, 5.00 C, 0 %RH, PM2.5 0",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 55, 1, 30, 1, 244, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "air": {
+            "temperature": 5,
+            "relativeHumidity": 0
+          },
+          "pm2_5": 0
+        }
+      },
+      "source": "synthetic",
+      "_note": "Inputs synthesized in-bounds; reference decoder yields Volt 3, Temp 5, Humi 0, PM25 0."
+    },
+    {
+      "description": "Full-scale humidity: 3.3 V, 0.00 C, 100 %RH, PM2.5 1000",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 55, 1, 33, 0, 0, 39, 16, 3, 232, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "air": {
+            "temperature": 0,
+            "relativeHumidity": 100
+          },
+          "pm2_5": 1000
+        }
+      },
+      "source": "synthetic",
+      "_note": "Inputs synthesized in-bounds (RH at upper bound 100; raw 0x2710=10000 -> 100.00 %); reference decoder yields Volt 3.3, Temp 0, Humi 100, PM25 1000."
+    },
+    {
+      "description": "Startup/device-info frame (reportType 0x00) carries no measurement",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 55, 0, 100, 2, 32, 32, 8, 17, 0, 0]
+      },
+      "expected": {
+        "errors": ["no measurement"]
+      },
+      "source": "ttn-example",
+      "_note": "Upstream returns device/SW/HW/datecode info on reportType 0x00; this is not a measurement, so the normalized codec reports an error."
+    },
+    {
+      "description": "Config response on fPort 7 is unsupported (no measurement)",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 55, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort"]
+      },
+      "source": "ttn-example",
+      "_note": "fPort 7 carries ConfigReport responses (no measurement)."
+    }
+  ],
+  "downlink": []
+}

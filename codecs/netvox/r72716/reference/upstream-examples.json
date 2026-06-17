@@ -1,0 +1,113 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/netvox/r72716-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Startup version report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          55,
+          0,
+          100,
+          2,
+          32,
+          32,
+          8,
+          17,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R72716",
+          "SWver": 10,
+          "HWver": 2,
+          "Datecode": "20200811"
+        }
+      }
+    },
+    {
+      "description": "Status report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          55,
+          1,
+          36,
+          9,
+          234,
+          26,
+          144,
+          1,
+          44,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R72716",
+          "Volt": 3.6,
+          "Temp": 25.38,
+          "Humi": 68,
+          "PM25": 300
+        }
+      }
+    },
+    {
+      "description": "Configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          129,
+          55,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ConfigReportRsp",
+          "Device": "R72716",
+          "Status": "Success"
+        }
+      }
+    },
+    {
+      "description": "Read configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          130,
+          55,
+          3,
+          132,
+          7,
+          8,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ReadConfigReportRsp",
+          "Device": "R72716",
+          "MinTime": 900,
+          "MaxTime": 1800
+        }
+      }
+    }
+  ]
+}
