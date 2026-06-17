@@ -1,0 +1,52 @@
+{
+  "uplink": [
+    {
+      "description": "Telemetry: air temperature 22.5 C, relative humidity 48.6%",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 16, 228, 87, 0, 0, 1, 2, 16, 216, 189, 0, 0, 220, 129]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 22.5,
+            "relativeHumidity": 48.6
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame: 4097 -> 22500/1000 = 22.5 C, 4098 -> 48600/1000 = 48.6 %. Two 7-byte frames + CRC16 trailer (220,129) computed to zero the running CRC. expected.data produced by running reference/upstream-codec.js (messages: 4097=>22.5, 4098=>48.6) and normalizing measurement IDs to vocabulary keys."
+    },
+    {
+      "description": "Telemetry with negative temperature plus battery: -5.25 C, 87.3% RH, battery 95%",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 16, 126, 235, 255, 255, 1, 2, 16, 4, 85, 1, 0, 0, 7, 0, 95, 0, 60, 0, 156, 37]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 95,
+          "air": {
+            "temperature": -5.25,
+            "relativeHumidity": 87.3
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame: 4097 -> two's-complement -5250/1000 = -5.25 C, 4098 -> 87300/1000 = 87.3 %, special dataID 7 battery low-16-bits = 95% (interval high-16 = 60 min, dropped). Three 7-byte frames + CRC16 trailer (156,37). expected.data produced by running reference/upstream-codec.js (upstream reports the negative temperature as the string \"-5.25\"; our codec emits the number -5.25). batteryPercent is a camelCase extra because the vocabulary `battery` is volts, not percent."
+    },
+    {
+      "description": "Corrupted payload: CRC16 trailer does not validate",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 16, 228, 87, 0, 0, 1, 2, 16, 216, 189, 0, 0, 220, 126]
+      },
+      "expected": {
+        "errors": ["crc check fail"]
+      },
+      "source": "synthetic",
+      "_note": "Vector A with the final CRC byte flipped (129 -> 126); the running CRC16 no longer reaches zero. reference/upstream-codec.js reports valid:false, err:-1 (\"crc check fail\")."
+    }
+  ],
+  "downlink": []
+}

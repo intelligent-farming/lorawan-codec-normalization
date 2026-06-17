@@ -1,0 +1,84 @@
+{
+  "uplink": [
+    {
+      "description": "combined telemetry: air temperature, humidity, CO2",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 16, 228, 87, 0, 0, 1, 2, 16, 4, 216, 0, 0, 1, 4, 16, 160, 86, 9, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 22.5,
+            "relativeHumidity": 55.3,
+            "co2": 612
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload built from three 7-byte S210x telemetry frames (ids 4097/4098/4100) + 2 CRC bytes. Expected telemetry produced by running reference/upstream-codec.js: measurementValue 22.5 / 55.3 / 612; normalized by measurement id onto air.temperature/relativeHumidity/co2."
+    },
+    {
+      "description": "negative temperature with high humidity and elevated CO2",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 16, 48, 223, 255, 255, 1, 2, 16, 64, 100, 1, 0, 1, 4, 16, 16, 32, 22, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": -8.4,
+            "relativeHumidity": 91.2,
+            "co2": 1450
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload exercising two's-complement negative air temperature. reference/upstream-codec.js yields measurementValue -8.4 / 91.2 / 1450."
+    },
+    {
+      "description": "CO2-only telemetry frame",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 4, 16, 0, 53, 12, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "co2": 800
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic single S210x telemetry frame (id 4100) + 2 CRC bytes. reference/upstream-codec.js yields measurementValue 800 (raw 800000 / 1000); normalized to air.co2."
+    },
+    {
+      "description": "device properties: version, battery percent, reporting interval, remove-sensor",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 0, 1, 1, 0, 1, 0, 7, 0, 100, 0, 60, 0, 1, 32, 1, 0, 0, 0, 0, 40, 144]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 100,
+          "reportingInterval": 3600
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream example input (TTN sensecap210x-codec.yaml example 1). reference/upstream-codec.js emits upload_battery.battery=100 and upload_interval.interval=3600 (seconds); battery percent -> batteryPercent extra (vocabulary battery is volts), interval seconds -> reportingInterval extra. Version and remove-sensor frames carry no field measurement."
+    },
+    {
+      "description": "malformed payload (length is not N*7 + 2)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 16, 228, 87, 0, 0]
+      },
+      "expected": {
+        "errors": ["length check fail"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic 7-byte payload missing the 2 trailing CRC bytes; (7 - 2) % 7 = 5 != 0. reference/upstream-codec.js sets err=-2 (length check fail); our codec returns an errors array."
+    }
+  ],
+  "downlink": []
+}

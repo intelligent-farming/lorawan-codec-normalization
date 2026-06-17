@@ -1,0 +1,41 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/elsys/elt-ultrasonic-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "ELT Ultrasonic temperature, humidity, accelerometer, distance and pressure",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          1,
+          0,
+          226,
+          2,
+          41,
+          3,
+          1,
+          39,
+          5,
+          20,
+          6,
+          1,
+          1,
+          17,
+          14,
+          35,
+          17
+        ]
+      },
+      "output": {
+        "data": {
+          "temperature": 22.6,
+          "humidity": 41,
+          "x": 1,
+          "y": 39,
+          "z": 5,
+          "pressure": 100729.105,
+          "distance": 8977
+        }
+      }
+    }
+  ]
+}

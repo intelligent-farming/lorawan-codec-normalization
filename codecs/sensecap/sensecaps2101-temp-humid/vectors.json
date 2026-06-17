@@ -1,0 +1,69 @@
+{
+  "uplink": [
+    {
+      "description": "Air temperature (23.5 C) + humidity (55.2 %RH) + battery (87%) and reporting interval",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 16, 204, 91, 0, 0, 1, 2, 16, 160, 215, 0, 0, 1, 7, 0, 87, 0, 60, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 87,
+          "air": {
+            "temperature": 23.5,
+            "relativeHumidity": 55.2
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload (S2101 ranges -40..85 C, 0..100 %RH). Three 7-byte frames + 2-byte CRC trailer: [4097]=23500/1000, [4098]=55200/1000, [dataID 7] battery power 87 in low 16 bits / interval 60 min in high 16 bits. expected.data produced via the ORACLE method by running reference/upstream-codec.js (report_telemetry 4097->23.5, 4098->55.2; upload_battery 87)."
+    },
+    {
+      "description": "Air temperature (21.4 C) + humidity (31.4 %RH), telemetry only",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 16, 152, 83, 0, 0, 1, 2, 16, 168, 122, 0, 0, 175, 81]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 21.4,
+            "relativeHumidity": 31.4
+          }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream codec.yaml telemetry example input (payload 01011098530000010210A87A0000AF51). expected.data authored from the ORACLE (reference/upstream-codec.js: report_telemetry 4097->21.4, 4098->31.4)."
+    },
+    {
+      "description": "Negative air temperature (-12.3 C) + humidity (88.0 %RH), telemetry only",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 16, 244, 207, 255, 255, 1, 2, 16, 192, 87, 1, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": -12.3,
+            "relativeHumidity": 88
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload exercising the 32-bit two's-complement negative path. Two 7-byte frames + CRC: [4097]=-12300/1000, [4098]=88000/1000. expected.data via the ORACLE (reference/upstream-codec.js: report_telemetry 4097->-12.3, 4098->88)."
+    },
+    {
+      "description": "Length check fails (not a whole number of 7-byte frames plus the 2-byte CRC trailer)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 16, 152, 83, 0, 0, 1, 2, 16, 168]
+      },
+      "expected": {
+        "errors": ["length check failed"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic malformed payload: 11 bytes -> (11 - 2) % 7 != 0. Upstream sets valid=false / err=-2 (length check fail) on the same input; we surface it as an errors array per the output contract."
+    }
+  ],
+  "downlink": []
+}

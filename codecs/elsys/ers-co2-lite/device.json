@@ -1,0 +1,27 @@
+{
+  "vendor": "elsys",
+  "device": "ers-co2-lite",
+  "name": "ERS CO2 Lite indoor co2 monitoring",
+  "categories": [
+    "climate",
+    "air-quality"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "co2"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "elsys",
+    "device": "ers-co2-lite",
+    "codecId": "ers-co2-lite-codec",
+    "codecFile": "elsys.js",
+    "codecSha256": "b2ed840ebd22065c17c4401d7675ecb16959e0cb73c5db8a9b481e17c0154282",
+    "referencedAt": "2026-06-17"
+  }
+}

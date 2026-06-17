@@ -1,0 +1,27 @@
+{
+  "vendor": "sensecap",
+  "device": "sensecaps2103-co2-temp-humid",
+  "name": "S2103- LoRaWAN® CO2, Temperature, and Humidity Sensor",
+  "categories": [
+    "climate",
+    "air-quality"
+  ],
+  "sensors": [
+    "co2",
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "sensecap",
+    "device": "sensecaps2103-co2-temp-humid",
+    "codecId": "sensecap210x-codec",
+    "codecFile": "sensecap210x-common-decoder.js",
+    "codecSha256": "a6fa30d76ae387841a7a64cae3845d171984565c6a57de1bb2e189466f02b251",
+    "referencedAt": "2026-06-17"
+  }
+}

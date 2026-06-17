@@ -1,0 +1,144 @@
+{
+  "uplink": [
+    {
+      "description": "TTN example: id=129, t=21.1C, h=35.7%, voc=17.3ppb, co2=60.9ppm, 100% battery, normal, co2-low alarm",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 129, 6, 14, 17, 0, 211, 1, 101, 0, 173, 2, 97, 0, 128, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 21.1, "relativeHumidity": 35.7, "co2": 60.9 },
+          "tvoc": 17.3,
+          "batteryPercent": 100,
+          "deviceId": 129,
+          "sequenceCounter": 14,
+          "firmwareVersion": 17,
+          "messageType": "normal",
+          "alarms": {
+            "temperatureHigh": false,
+            "temperatureLow": false,
+            "humidityHigh": false,
+            "humidityLow": false,
+            "vocHigh": false,
+            "vocLow": false,
+            "co2High": false,
+            "co2Low": true
+          }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Positive temperature 23.5C, humidity 65.5%, voc 50ppb, co2 100ppm, 100% battery, normal, no alarms",
+      "input": {
+        "fPort": 1,
+        "bytes": [18, 52, 86, 6, 42, 17, 0, 235, 2, 143, 1, 244, 3, 232, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 23.5, "relativeHumidity": 65.5, "co2": 100 },
+          "tvoc": 50,
+          "batteryPercent": 100,
+          "deviceId": 1193046,
+          "sequenceCounter": 42,
+          "firmwareVersion": 17,
+          "messageType": "normal",
+          "alarms": {
+            "temperatureHigh": false,
+            "temperatureLow": false,
+            "humidityHigh": false,
+            "humidityLow": false,
+            "vocHigh": false,
+            "vocLow": false,
+            "co2High": false,
+            "co2Low": false
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected values produced by running reference/upstream-codec.js (EN304 branch) over these bytes. Exercises positive signed temperature and the 100%/normal state."
+    },
+    {
+      "description": "Negative temperature -10.5C, humidity 100%, voc 0ppb, co2 200ppm, 50% battery, alarm, co2-high + co2-low alarms",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 1, 6, 0, 5, 255, 151, 3, 232, 0, 0, 7, 208, 0, 192, 0, 9]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": -10.5, "relativeHumidity": 100, "co2": 200 },
+          "tvoc": 0,
+          "batteryPercent": 50,
+          "deviceId": 1,
+          "sequenceCounter": 0,
+          "firmwareVersion": 5,
+          "messageType": "alarm",
+          "alarms": {
+            "temperatureHigh": false,
+            "temperatureLow": false,
+            "humidityHigh": false,
+            "humidityLow": false,
+            "vocHigh": false,
+            "vocLow": false,
+            "co2High": true,
+            "co2Low": true
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected values produced by running reference/upstream-codec.js (EN304 branch) over these bytes. Exercises two's-complement negative temperature, the 50% battery code, the alarm message type, and the co2-high/co2-low alarm bits."
+    },
+    {
+      "description": "Zero temperature/humidity/voc/co2, 25% battery, normal, no alarms",
+      "input": {
+        "fPort": 1,
+        "bytes": [171, 205, 239, 6, 255, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 0, "relativeHumidity": 0, "co2": 0 },
+          "tvoc": 0,
+          "batteryPercent": 25,
+          "deviceId": 11259375,
+          "sequenceCounter": 255,
+          "firmwareVersion": 3,
+          "messageType": "normal",
+          "alarms": {
+            "temperatureHigh": false,
+            "temperatureLow": false,
+            "humidityHigh": false,
+            "humidityLow": false,
+            "vocHigh": false,
+            "vocLow": false,
+            "co2High": false,
+            "co2Low": false
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected values produced by running reference/upstream-codec.js (EN304 branch) over these bytes. Exercises the 25% battery code and zero readings."
+    },
+    {
+      "description": "Wrong device type byte (0x99) is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 1, 153, 1, 1, 0, 100, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": { "errors": ["unsupported Enless device type"] },
+      "source": "synthetic",
+      "_note": "Synthetic; byte[3]=0x99 is not EN304 (0x06). Upstream falls through to its default 'Invalid Type1-' branch; our codec rejects with an explicit error rather than emitting partial data."
+    },
+    {
+      "description": "Truncated payload (3 bytes) is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 129]
+      },
+      "expected": { "errors": ["payload too short"] },
+      "source": "synthetic",
+      "_note": "Synthetic; a 3-byte frame is shorter than the fixed 18-byte EN304 layout. Upstream returns its 'Invalid Type1-' default after reading past the buffer; our codec rejects up front with a length guard."
+    }
+  ],
+  "downlink": []
+}

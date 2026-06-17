@@ -1,0 +1,28 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/elsys/ers-co2-lite-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "ERS CO2 Lite temperature, humidity and co2",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          1,
+          0,
+          226,
+          2,
+          41,
+          6,
+          3,
+          8
+        ]
+      },
+      "output": {
+        "data": {
+          "temperature": 22.6,
+          "humidity": 41,
+          "co2": 776
+        }
+      }
+    }
+  ]
+}

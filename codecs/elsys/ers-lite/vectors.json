@@ -1,0 +1,133 @@
+{
+  "uplink": [
+    {
+      "description": "ERS Lite temperature and humidity (TTN example input)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 0, 226, 2, 41]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 22.6,
+            "relativeHumidity": 41
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "temperature, humidity and battery (VDD mV -> volts)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 0, 226, 2, 41, 7, 13, 130]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.458,
+          "air": {
+            "temperature": 22.6,
+            "relativeHumidity": 41
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "negative temperature with humidity",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 255, 156, 2, 50]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": -10,
+            "relativeHumidity": 50
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "light (lux) and CO2 (ppm)",
+      "input": {
+        "fPort": 1,
+        "bytes": [4, 1, 244, 6, 3, 32]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "lightIntensity": 500,
+            "co2": 800
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "motion count -> action.motion detected + count",
+      "input": {
+        "fPort": 1,
+        "bytes": [5, 7]
+      },
+      "expected": {
+        "data": {
+          "action": {
+            "motion": {
+              "detected": true,
+              "count": 7
+            }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "atmospheric pressure -> air.pressure (hPa)",
+      "input": {
+        "fPort": 1,
+        "bytes": [20, 0, 15, 136, 64]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "pressure": 1017.92
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "unknown ELSYS type byte -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [255, 1, 2]
+      },
+      "expected": {
+        "errors": ["unknown ELSYS type byte"]
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "empty payload -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": []
+      },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    }
+  ],
+  "downlink": []
+}

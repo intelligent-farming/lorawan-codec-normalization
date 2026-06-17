@@ -1,0 +1,83 @@
+{
+  "uplink": [
+    {
+      "description": "Onboard temperature + humidity + atmospheric pressure + battery",
+      "input": { "fPort": 1, "bytes": [1, 0, 234, 2, 55, 20, 0, 15, 118, 2, 7, 14, 16] },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "air": {
+            "temperature": 23.4,
+            "relativeHumidity": 55,
+            "pressure": 1013.25
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds Elsys TLV frame. Raw decode (TEMP 0x01=234->23.4C, RH 0x02=55%, PRESSURE 0x14 raw 1013250/1000=1013.25 hPa atmospheric, VDD 0x07=3600 mV) produced by running reference/upstream-codec.js; expected.data is the authored normalization (battery=mV/1000, pressure in air only when 900-1100 hPa)."
+    },
+    {
+      "description": "Sub-zero temperature + humidity + light + CO2 + motion + battery",
+      "input": { "fPort": 1, "bytes": [1, 255, 206, 2, 80, 4, 4, 176, 6, 1, 194, 5, 4, 7, 12, 228] },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "air": {
+            "temperature": -5,
+            "relativeHumidity": 80,
+            "lightIntensity": 1200,
+            "co2": 450
+          },
+          "action": {
+            "motion": { "detected": true, "count": 4 }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds Elsys TLV frame. Raw decode (TEMP 0x01=-50->-5.0C, RH 0x02=80%, LIGHT 0x04=1200 lux, CO2 0x06=450 ppm, MOTION 0x05=4, VDD 0x07=3300 mV) produced by running reference/upstream-codec.js; expected.data is the authored normalization (motion->action.motion.count with detected=count>0)."
+    },
+    {
+      "description": "External IO frame: external probe temperature, analog/digital inputs, distance, accelerometer (extras only)",
+      "input": { "fPort": 1, "bytes": [12, 0, 187, 8, 9, 196, 13, 1, 14, 3, 82, 3, 2, 253, 63] },
+      "expected": {
+        "data": {
+          "externalTemperature": 18.7,
+          "analog1": 2500,
+          "digital1": 1,
+          "distance": 850,
+          "accelerationX": 2,
+          "accelerationY": -3,
+          "accelerationZ": 63
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds Elsys TLV frame. Raw decode (EXT_TEMP1 0x0C=187->18.7C, ANALOG1 0x08=2500 mV, EXT_DIGITAL 0x0D=1, EXT_DISTANCE 0x0E=850 mm, ACC 0x03 x=2 y=-3 z=63) produced by running reference/upstream-codec.js; expected.data is the authored normalization. External probe temperature is general-purpose (not a clear water probe) -> externalTemperature extra; IO inputs -> camelCase extras."
+    },
+    {
+      "description": "TTN example frame: temperature, humidity, accelerometer, non-atmospheric pressure",
+      "input": { "fPort": 1, "bytes": [1, 0, 226, 2, 41, 3, 1, 39, 5, 20, 6, 1, 1, 17] },
+      "expected": {
+        "data": {
+          "pressureHpa": 100729.105,
+          "air": {
+            "temperature": 22.6,
+            "relativeHumidity": 41
+          },
+          "accelerationX": 1,
+          "accelerationY": 39,
+          "accelerationZ": 5
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream TTN example input (vendor/elsys/elt-2-codec.yaml). Raw decode (TEMP 0x01=226->22.6C, RH 0x02=41%, ACC 0x03 x=1 y=39 z=5, PRESSURE 0x14 raw 100729105/1000=100729.105) produced by running reference/upstream-codec.js. The decoded pressure is far outside the atmospheric vocabulary bound (900-1100 hPa), so it is preserved as the camelCase extra pressureHpa rather than forced into air.pressure."
+    },
+    {
+      "description": "Unrecognized Elsys type byte yields an error",
+      "input": { "fPort": 1, "bytes": [255, 0, 0] },
+      "expected": { "errors": ["no recognized Elsys fields"] },
+      "source": "synthetic",
+      "_note": "Synthetic frame whose leading type byte (0xFF) matches no Elsys data type; the decoder stops on the unknown type having recognized nothing and returns an error."
+    }
+  ],
+  "downlink": []
+}

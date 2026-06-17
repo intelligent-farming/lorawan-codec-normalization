@@ -1,0 +1,76 @@
+{
+  "uplink": [
+    {
+      "description": "ELT Ultrasonic onboard temperature + humidity, accelerometer, pressure and ultrasonic distance (TTN example input)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 0, 226, 2, 41, 3, 1, 39, 5, 20, 6, 1, 1, 17, 14, 35, 17]
+      },
+      "expected": {
+        "data": {
+          "x": 1,
+          "y": 39,
+          "z": 5,
+          "pressure": 100729.105,
+          "distance": 8977,
+          "air": {
+            "temperature": 22.6,
+            "relativeHumidity": 41
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Input bytes are the upstream TTN example for elsys/elt-ultrasonic; expected.data was produced via the ORACLE method by running reference/upstream-codec.js and normalizing per AUTHORING.md (onboard temp+humidity -> air; accelerometer x/y/z, raw pressure value/1000, and ultrasonic distance mm kept as camelCase extras since the vocabulary has no level/distance/out-of-bounds-pressure key)."
+    },
+    {
+      "description": "ELT Ultrasonic with battery (VDD mV -> volts), light (lux) and ultrasonic distance",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 0, 215, 2, 55, 4, 1, 94, 7, 14, 16, 14, 4, 176]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "distance": 1200,
+          "air": {
+            "temperature": 21.5,
+            "relativeHumidity": 55,
+            "lightIntensity": 350
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload (TEMP 21.5 C, RH 55%, LIGHT 350 lux, VDD 3600 mV, EXT_DISTANCE 1200 mm). expected.data confirmed against reference/upstream-codec.js via the ORACLE method: upstream emits {temperature:21.5,humidity:55,light:350,vdd:3600,distance:1200}; normalization maps temp/humidity/light into air, VDD mV -> battery volts (/1000), distance mm -> extra."
+    },
+    {
+      "description": "unknown Elsys type stops decoding; recognized fields kept, remainder warned",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 0, 215, 153, 0]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 21.5
+          }
+        },
+        "warnings": ["stopped at unrecognized Elsys type"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: TEMP 21.5 C followed by unrecognized type 0x99. Upstream skips to end of stream on unknown types; this codec stops at the unknown type, keeps the decoded TEMP, and attaches a warning. The warning is declared in expected.warnings per the conformance contract (data vectors emitting warnings must declare them)."
+    },
+    {
+      "description": "empty payload yields an error",
+      "input": {
+        "fPort": 1,
+        "bytes": []
+      },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error case: no bytes to decode."
+    }
+  ],
+  "downlink": []
+}

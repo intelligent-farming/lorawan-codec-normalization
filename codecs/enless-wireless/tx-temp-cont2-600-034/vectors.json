@@ -1,0 +1,144 @@
+{
+  "uplink": [
+    {
+      "description": "TX T&H 600-034: temperature high alarm, 25% battery (upstream catalog example input)",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 209, 14, 10, 1, 0, 202, 1, 130, 0, 1, 0, 15]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 20.2, "relativeHumidity": 38.6 },
+          "batteryPercent": 25,
+          "deviceId": 209,
+          "sequenceCounter": 10,
+          "firmwareVersion": 1,
+          "messageType": "alarm",
+          "alarmStatus": {
+            "temperature": { "high": true, "low": false },
+            "relativeHumidity": { "high": false, "low": false }
+          }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Input is the upstream catalog example. expected.data authored here by normalizing the upstream EN311 (type 0x0e) decode: temperature/humidity are int16/uint16 big-endian x10; battery class 25% -> batteryPercent; alarm/state flags mapped to camelCase extras."
+    },
+    {
+      "description": "Synthetic: nominal reading 21.5C / 55% RH, full battery, no alarms",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 3, 232, 14, 5, 2, 0, 215, 2, 38, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 21.5, "relativeHumidity": 55 },
+          "batteryPercent": 100,
+          "deviceId": 1000,
+          "sequenceCounter": 5,
+          "firmwareVersion": 2,
+          "messageType": "normal",
+          "alarmStatus": {
+            "temperature": { "high": false, "low": false },
+            "relativeHumidity": { "high": false, "low": false }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected.data computed by running reference/upstream-codec.js (EN311 branch) and normalizing its values/state/alarm fields."
+    },
+    {
+      "description": "Synthetic: negative temperature -12.7C / 88% RH, 50% battery",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 42, 14, 200, 3, 255, 129, 3, 112, 0, 0, 0, 8]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": -12.7, "relativeHumidity": 88 },
+          "batteryPercent": 50,
+          "deviceId": 42,
+          "sequenceCounter": 200,
+          "firmwareVersion": 3,
+          "messageType": "normal",
+          "alarmStatus": {
+            "temperature": { "high": false, "low": false },
+            "relativeHumidity": { "high": false, "low": false }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload exercising two's-complement negative temperature; expected.data computed from reference/upstream-codec.js."
+    },
+    {
+      "description": "Synthetic: humidity low alarm, 75% battery, alarm message",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 255, 255, 14, 0, 1, 0, 50, 0, 120, 0, 8, 0, 5]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 5, "relativeHumidity": 12 },
+          "batteryPercent": 75,
+          "deviceId": 65535,
+          "sequenceCounter": 0,
+          "firmwareVersion": 1,
+          "messageType": "alarm",
+          "alarmStatus": {
+            "temperature": { "high": false, "low": false },
+            "relativeHumidity": { "high": false, "low": true }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload exercising the humidity-low alarm bit; expected.data computed from reference/upstream-codec.js."
+    },
+    {
+      "description": "Synthetic: all alarm flags set, 25% battery, 33C / 99.9% RH",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 7, 14, 255, 1, 1, 74, 3, 231, 0, 15, 0, 13]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 33, "relativeHumidity": 99.9 },
+          "batteryPercent": 25,
+          "deviceId": 7,
+          "sequenceCounter": 255,
+          "firmwareVersion": 1,
+          "messageType": "alarm",
+          "alarmStatus": {
+            "temperature": { "high": true, "low": true },
+            "relativeHumidity": { "high": true, "low": true }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload exercising all four alarm bits; expected.data computed from reference/upstream-codec.js."
+    },
+    {
+      "description": "Error: unsupported device type byte (0x05 EN303, not this device)",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 209, 5, 10, 1, 0, 202, 1, 130, 0, 1, 0, 15]
+      },
+      "expected": {
+        "errors": ["unsupported device type"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: byte 3 holds a different Enless device type; this codec only decodes EN311 (0x0e) and must reject other types rather than misdecode."
+    },
+    {
+      "description": "Error: truncated payload (too short)",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 209, 14, 10, 1, 0]
+      },
+      "expected": {
+        "errors": ["payload too short"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: payload shorter than the fixed 14-byte EN311 frame."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,93 @@
+{
+  "uplink": [
+    {
+      "description": "EMS temperature, humidity, motion, door open and battery voltage",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 0, 226, 2, 41, 5, 3, 13, 1, 7, 14, 22]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.606,
+          "digital": 1,
+          "air": {
+            "temperature": 22.6,
+            "relativeHumidity": 41
+          },
+          "action": {
+            "motion": {
+              "detected": true,
+              "count": 3
+            },
+            "contactState": "open"
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic payload. Raw field values (temperature 22.6, humidity 41, motion 3, digital 1, vdd 3606 mV) confirmed by running reference/upstream-codec.js; expected.data is the authored normalization (vdd 3606 mV -> battery 3.606 V; digital 1 -> contactState 'open'; motion count 3 -> detected true)."
+    },
+    {
+      "description": "EMS temperature, humidity, accelerometer, door closed and water leak",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 0, 215, 2, 55, 3, 1, 39, 5, 13, 0, 18, 17]
+      },
+      "expected": {
+        "data": {
+          "accelerationX": 1,
+          "accelerationY": 39,
+          "accelerationZ": 5,
+          "digital": 0,
+          "waterLeakLevel": 17,
+          "air": {
+            "temperature": 21.5,
+            "relativeHumidity": 55
+          },
+          "water": {
+            "leak": true
+          },
+          "action": {
+            "contactState": "closed"
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic payload. Raw field values (temperature 21.5, humidity 55, x/y/z 1/39/5, digital 0, waterleak 17) confirmed by running reference/upstream-codec.js; expected.data is the authored normalization (digital 0 -> contactState 'closed'; waterleak 17 -> water.leak true with waterLeakLevel 17)."
+    },
+    {
+      "description": "EMS negative temperature, humidity and zero motion count",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 255, 156, 2, 40, 5, 0]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": -10,
+            "relativeHumidity": 40
+          },
+          "action": {
+            "motion": {
+              "detected": false,
+              "count": 0
+            }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic payload exercising the signed temperature decode and a zero motion count. Raw values (temperature -10, humidity 40, motion 0) confirmed by running reference/upstream-codec.js; expected.data is the authored normalization (motion count 0 -> detected false)."
+    },
+    {
+      "description": "empty payload yields an error",
+      "input": {
+        "fPort": 1,
+        "bytes": []
+      },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,80 @@
+{
+  "uplink": [
+    {
+      "description": "ERS CO2 Lite temperature, humidity, CO2 and battery (VDD)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 0, 226, 2, 41, 6, 3, 8, 7, 14, 16]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "air": {
+            "temperature": 22.6,
+            "relativeHumidity": 41,
+            "co2": 776
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload built from the ERS CO2 Lite TTN example (temp 22.6, hum 41, co2 776) plus a VDD field (0x07,0x0E,0x10 = 3600 mV). Raw values confirmed by running reference/upstream-codec.js decodeUplink; normalized expected.data authored here (vdd mV -> battery volts)."
+    },
+    {
+      "description": "ERS CO2 Lite temperature, humidity, CO2 and atmospheric pressure",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 0, 201, 2, 55, 6, 1, 244, 20, 0, 15, 117, 194]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 20.1,
+            "relativeHumidity": 55,
+            "co2": 500,
+            "pressure": 1013.19
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload. Pressure type 0x14 raw u32 1013186 -> 1013.186, rounded to 1013.19 hPa (within atmospheric 900-1100). Raw values confirmed by running reference/upstream-codec.js decodeUplink; normalized expected.data authored here."
+    },
+    {
+      "description": "ERS CO2 Lite negative temperature with light and motion",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 255, 156, 2, 20, 6, 2, 128, 4, 1, 44, 5, 3]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": -10,
+            "relativeHumidity": 20,
+            "co2": 640,
+            "lightIntensity": 300
+          },
+          "action": {
+            "motion": {
+              "detected": true,
+              "count": 3
+            }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload exercising signed-negative temperature (0x01,0xFF,0x9C = -10.0), light (0x04 -> air.lightIntensity 300 lux) and motion (0x05 count 3 -> action.motion). Raw values confirmed by running reference/upstream-codec.js decodeUplink; normalized expected.data authored here."
+    },
+    {
+      "description": "empty payload yields an error",
+      "input": {
+        "fPort": 1,
+        "bytes": []
+      },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic",
+      "_note": "Error vector: an empty byte array has no TLV fields to decode."
+    }
+  ],
+  "downlink": []
+}

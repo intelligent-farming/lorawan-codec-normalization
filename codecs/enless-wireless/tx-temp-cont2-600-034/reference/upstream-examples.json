@@ -1,0 +1,59 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/enless-wireless/tx-temp-cont2-600-034-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "TX T&H 600-034",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          0,
+          0,
+          209,
+          14,
+          10,
+          1,
+          0,
+          202,
+          1,
+          130,
+          0,
+          1,
+          0,
+          15
+        ]
+      },
+      "output": {
+        "data": {
+          "alarm_status": {
+            "humidity": {
+              "high": false,
+              "low": false
+            },
+            "temperature": {
+              "high": true,
+              "low": false
+            }
+          },
+          "fw_version": 1,
+          "id": 209,
+          "seq_counter": 10,
+          "states": {
+            "battery": "25%",
+            "msg_type": "alarm"
+          },
+          "type": 14,
+          "values": {
+            "humidity": {
+              "unit": "%",
+              "value": 38.6
+            },
+            "temperature": {
+              "unit": "°C",
+              "value": 20.2
+            }
+          }
+        }
+      }
+    }
+  ]
+}

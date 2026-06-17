@@ -1,0 +1,41 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/elsys/ems-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "EMS temperature, humidity, accelerometer, water leak and door switch",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          1,
+          0,
+          226,
+          2,
+          41,
+          3,
+          1,
+          39,
+          5,
+          10,
+          17,
+          1,
+          18,
+          17,
+          10,
+          33,
+          17
+        ]
+      },
+      "output": {
+        "data": {
+          "temperature": 22.6,
+          "humidity": 41,
+          "x": 1,
+          "y": 39,
+          "z": 5,
+          "pulse1": 8465,
+          "waterleak": 17
+        }
+      }
+    }
+  ]
+}

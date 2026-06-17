@@ -1,0 +1,37 @@
+{
+  "vendor": "elsys",
+  "device": "elt-2",
+  "name": "ELT-2 LoRaWAN wireless sensor",
+  "categories": [
+    "climate",
+    "air-quality",
+    "light",
+    "motion"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "light",
+    "motion",
+    "co2",
+    "pressure",
+    "accelerometer",
+    "analog-input",
+    "digital-input",
+    "external-temperature",
+    "distance"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "elsys",
+    "device": "elt-2",
+    "codecId": "elt-2-codec",
+    "codecFile": "elsys.js",
+    "codecSha256": "b2ed840ebd22065c17c4401d7675ecb16959e0cb73c5db8a9b481e17c0154282",
+    "referencedAt": "2026-06-17"
+  }
+}

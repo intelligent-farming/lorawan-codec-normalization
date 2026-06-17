@@ -1,0 +1,67 @@
+{
+  "uplink": [
+    {
+      "description": "EMS Desk temperature, humidity, accelerometer, and occupancy (TTN upstream example input)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 0, 226, 2, 41, 3, 1, 39, 5, 17, 2]
+      },
+      "expected": {
+        "data": {
+          "accelerationX": 1,
+          "accelerationY": 39,
+          "accelerationZ": 5,
+          "air": {
+            "temperature": 22.6,
+            "relativeHumidity": 41
+          },
+          "action": {
+            "motion": {
+              "detected": true,
+              "count": 2
+            }
+          }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Wire-format decode (temperature 22.6, humidity 41, acc 1/39/5, occupancy 2) reproduced from reference/upstream-codec.js. Normalization (occupancy -> action.motion, acc -> camelCase extras) authored here."
+    },
+    {
+      "description": "Synthetic: negative temperature, humidity, vacant occupancy, battery voltage",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 255, 203, 2, 55, 17, 0, 7, 14, 16]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "air": {
+            "temperature": -5.3,
+            "relativeHumidity": 55
+          },
+          "action": {
+            "motion": {
+              "detected": false,
+              "count": 0
+            }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic payload. Expected raw values (temp -5.3, humidity 55, occupancy 0, vdd 3600 mV) computed by running reference/upstream-codec.js; battery normalized mV/1000 = 3.6 V."
+    },
+    {
+      "description": "Synthetic error: unrecognized Elsys type byte (0x3D DEBUG)",
+      "input": {
+        "fPort": 1,
+        "bytes": [61, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["no recognized Elsys fields"]
+      },
+      "source": "synthetic",
+      "_note": "Type 0x3D (DEBUG) is unsupported; decode recognizes nothing and returns an error."
+    }
+  ],
+  "downlink": []
+}

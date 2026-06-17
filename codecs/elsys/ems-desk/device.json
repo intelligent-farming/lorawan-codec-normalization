@@ -1,0 +1,28 @@
+{
+  "vendor": "elsys",
+  "device": "ems-desk",
+  "name": "EMS Desk desk-occupancy sensor with temperature and humidity",
+  "categories": [
+    "climate",
+    "motion"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "accelerometer",
+    "occupancy"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "elsys",
+    "device": "ems-desk",
+    "codecId": "ems-desk-codec",
+    "codecFile": "elsys.js",
+    "codecSha256": "b2ed840ebd22065c17c4401d7675ecb16959e0cb73c5db8a9b481e17c0154282",
+    "referencedAt": "2026-06-17"
+  }
+}

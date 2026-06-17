@@ -1,0 +1,114 @@
+{
+  "uplink": [
+    {
+      "description": "TTN example: id=109, t=-2.7C, h=28.8%, 100% battery, normal, humidity-low alarm",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 109, 4, 19, 1, 255, 229, 1, 32, 0, 0, 0, 0, 0, 8, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": -2.7, "relativeHumidity": 28.8 },
+          "batteryPercent": 100,
+          "deviceId": 109,
+          "sequenceCounter": 19,
+          "firmwareVersion": 1,
+          "messageType": "normal",
+          "alarms": {
+            "temperatureHigh": false,
+            "temperatureLow": false,
+            "humidityHigh": false,
+            "humidityLow": true
+          }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Positive temperature 23.5C, humidity 65.5%, 100% battery, normal, no alarms",
+      "input": {
+        "fPort": 1,
+        "bytes": [18, 52, 86, 4, 42, 1, 0, 235, 2, 143, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 23.5, "relativeHumidity": 65.5 },
+          "batteryPercent": 100,
+          "deviceId": 1193046,
+          "sequenceCounter": 42,
+          "firmwareVersion": 1,
+          "messageType": "normal",
+          "alarms": {
+            "temperatureHigh": false,
+            "temperatureLow": false,
+            "humidityHigh": false,
+            "humidityLow": false
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected values produced by running reference/upstream-codec.js (EN302 branch) over these bytes. Exercises positive signed temperature and the 100%/normal state."
+    },
+    {
+      "description": "Negative temperature -10.5C, humidity 100%, 50% battery, alarm, temp-low + humidity-low alarms",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 1, 4, 0, 5, 255, 151, 3, 232, 0, 0, 0, 0, 0, 10, 0, 9]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": -10.5, "relativeHumidity": 100 },
+          "batteryPercent": 50,
+          "deviceId": 1,
+          "sequenceCounter": 0,
+          "firmwareVersion": 5,
+          "messageType": "alarm",
+          "alarms": {
+            "temperatureHigh": false,
+            "temperatureLow": true,
+            "humidityHigh": false,
+            "humidityLow": true
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected values produced by running reference/upstream-codec.js (EN302 branch) over these bytes. Exercises two's-complement negative temperature, the 50% battery code, the alarm message type, and the temp-low/humidity-low alarm bits."
+    },
+    {
+      "description": "Zero temperature/humidity, 25% battery, normal, no alarms",
+      "input": {
+        "fPort": 1,
+        "bytes": [171, 205, 239, 4, 255, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 0, "relativeHumidity": 0 },
+          "batteryPercent": 25,
+          "deviceId": 11259375,
+          "sequenceCounter": 255,
+          "firmwareVersion": 3,
+          "messageType": "normal",
+          "alarms": {
+            "temperatureHigh": false,
+            "temperatureLow": false,
+            "humidityHigh": false,
+            "humidityLow": false
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected values produced by running reference/upstream-codec.js (EN302 branch) over these bytes. Exercises the 25% battery code and zero readings."
+    },
+    {
+      "description": "Wrong device type byte (0x99) is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 1, 153, 1, 1, 0, 100, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": { "errors": ["unsupported Enless device type"] },
+      "source": "synthetic",
+      "_note": "Synthetic; byte[3]=0x99 is not EN302 (0x04). Upstream falls through to its default 'Invalid Type1-' branch; our codec rejects with an explicit error rather than emitting partial data."
+    }
+  ],
+  "downlink": []
+}

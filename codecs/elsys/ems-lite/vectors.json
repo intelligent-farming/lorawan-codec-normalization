@@ -1,0 +1,89 @@
+{
+  "uplink": [
+    {
+      "description": "temperature, humidity, motion and battery voltage (VDD mV -> volts)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 0, 226, 2, 41, 5, 6, 7, 14, 16]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "air": {
+            "temperature": 22.6,
+            "relativeHumidity": 41
+          },
+          "action": {
+            "motion": {
+              "detected": true,
+              "count": 6
+            }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected.data derived from running reference/upstream-codec.js (DecodeElsysPayload) then applying this codec's normalization (vdd 3600 mV -> battery 3.6 V; motion count 6 -> detected true)."
+    },
+    {
+      "description": "no motion (count 0 -> detected false), light, and battery voltage",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 0, 215, 2, 55, 5, 0, 4, 0, 120, 7, 14, 32]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.616,
+          "air": {
+            "temperature": 21.5,
+            "relativeHumidity": 55,
+            "lightIntensity": 120
+          },
+          "action": {
+            "motion": {
+              "detected": false,
+              "count": 0
+            }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected.data derived from reference/upstream-codec.js (temp 21.5, humidity 55, motion 0, light 120, vdd 3616 mV) then normalized (vdd -> battery 3.616 V; motion 0 -> detected false)."
+    },
+    {
+      "description": "negative temperature, humidity, door/reed digital input (closed) and motion",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 255, 150, 2, 38, 13, 1, 5, 3]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": -10.6,
+            "relativeHumidity": 38
+          },
+          "action": {
+            "contactState": "closed",
+            "motion": {
+              "detected": true,
+              "count": 3
+            }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected.data derived from reference/upstream-codec.js (temp -10.6, humidity 38, digital 1, motion 3) then normalized (Elsys EXT_DIGITAL high 1 = reed contact closed -> action.contactState 'closed'; digital channel that upstream normalizeUplink ignores)."
+    },
+    {
+      "description": "empty payload yields an error",
+      "input": {
+        "fPort": 1,
+        "bytes": []
+      },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

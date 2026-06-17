@@ -1,0 +1,29 @@
+{
+  "vendor": "enless-wireless",
+  "device": "tx-amb-600-023",
+  "name": "600-023 - Ambient VOC,CO2,Temperature and Humidity sensor",
+  "categories": [
+    "climate",
+    "air-quality"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "tvoc",
+    "co2",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "enless-wireless",
+    "device": "tx-amb-600-023",
+    "codecId": "tx-amb-600-023-codec",
+    "codecFile": "enlessdecoder.js",
+    "codecSha256": "a476a50a07fa25a8326f561778ad7c7650e53516bd00e0cce41c868402f55a07",
+    "referencedAt": "2026-06-17"
+  }
+}

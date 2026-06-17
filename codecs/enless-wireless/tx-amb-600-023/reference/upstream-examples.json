@@ -1,0 +1,79 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/enless-wireless/tx-amb-600-023-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "TX CO2/VOC/T&H AMB 600-023",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          0,
+          0,
+          129,
+          6,
+          14,
+          17,
+          0,
+          211,
+          1,
+          101,
+          0,
+          173,
+          2,
+          97,
+          0,
+          128,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "alarm_status": {
+            "co2": {
+              "high": false,
+              "low": true
+            },
+            "humidity": {
+              "high": false,
+              "low": false
+            },
+            "temperature": {
+              "high": false,
+              "low": false
+            },
+            "voc": {
+              "high": false,
+              "low": false
+            }
+          },
+          "fw_version": 17,
+          "id": 129,
+          "seq_counter": 14,
+          "states": {
+            "battery": "100%",
+            "msg_type": "normal"
+          },
+          "type": 6,
+          "values": {
+            "Humidity": {
+              "unit": "%",
+              "value": 35.7
+            },
+            "co2": {
+              "unit": "ppm",
+              "value": 60.9
+            },
+            "temperature": {
+              "unit": "°C",
+              "value": 21.1
+            },
+            "voc": {
+              "unit": "ppb",
+              "value": 17.3
+            }
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "vendor": "enless-wireless",
+  "device": "tx-temp-cont2-600-034",
+  "name": "600-034 - Temperature and Humidity sensor - External probe",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "enless-wireless",
+    "device": "tx-temp-cont2-600-034",
+    "codecId": "tx-temp-cont2-600-034-codec",
+    "codecFile": "enlessdecoder.js",
+    "codecSha256": "a476a50a07fa25a8326f561778ad7c7650e53516bd00e0cce41c868402f55a07",
+    "referencedAt": "2026-06-17"
+  }
+}
