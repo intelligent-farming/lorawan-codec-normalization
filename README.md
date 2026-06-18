@@ -101,18 +101,18 @@ category. Coverage grows over time — devices are added incrementally. Use
 
 | Category | `requires` | Authored members |
 |---|---|---|
-| `soil-monitor` | `soil.moisture`, `soil.temperature` | 3 |
-| `climate` | `air.temperature`, `air.relativeHumidity` | 91 |
-| `air-quality` | `air.co2` | 27 |
-| `light` | `air.lightIntensity` | 63 |
-| `weather-station` | `air.temperature`, `air.pressure` | 62 |
+| `soil-monitor` | `soil.moisture`, `soil.temperature` | 5 |
+| `climate` | `air.temperature`, `air.relativeHumidity` | 243 |
+| `air-quality` | `air.co2` | 78 |
+| `light` | `air.lightIntensity` | 72 |
+| `weather-station` | `air.temperature`, `air.pressure` | 69 |
 | `wind` | `wind.speed` | 11 |
 | `rain-gauge` | `rain.cumulative` | 9 |
 | `water-meter` | `metering.water.total` | 0 |
-| `motion` | `action.motion` | 36 |
-| `contact` | `action.contactState` | 3 |
-| `gps-tracker` | `position.latitude`, `position.longitude` | 5 |
-| `water-leak` | `water.leak` | 3 |
+| `motion` | `action.motion` | 48 |
+| `contact` | `action.contactState` | 6 |
+| `gps-tracker` | `position.latitude`, `position.longitude` | 9 |
+| `water-leak` | `water.leak` | 10 |
 
 `devices()` / `devices({ category })` enumerate registered devices;
 `device(vendor, device)` returns one device's metadata.
