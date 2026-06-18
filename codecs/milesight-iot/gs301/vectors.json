@@ -1,0 +1,107 @@
+{
+  "uplink": [
+    {
+      "description": "battery + temperature + humidity + NH3 + H2S (TTN example bytes; normalized expected authored here)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 100, 2, 103, 28, 1, 3, 104, 100, 4, 125, 0, 0, 5, 125, 1, 0]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 100,
+          "air": {
+            "temperature": 28.4,
+            "relativeHumidity": 50,
+            "nh3": 0,
+            "h2s": 0.01
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Byte sequence is the upstream TTN example input; expected.data authored against the normalized vocabulary (battery%->batteryPercent extra, temp/humidity->air.*, NH3/H2S concentrations->air.nh3/air.h2s camelCase extras). Raw values confirmed against reference/upstream-codec.js: battery=100, temperature=28.4, humidity=50, nh3=0, h2s=0.01."
+    },
+    {
+      "description": "negative temperature + battery + humidity + v1.2 H2S channel (0x06/0x7d, /1000)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 80, 2, 103, 210, 255, 3, 104, 90, 6, 125, 232, 3]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 80,
+          "air": {
+            "temperature": -4.6,
+            "relativeHumidity": 45,
+            "h2s": 1
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds. Exercises two's-complement negative temperature (0xFFD2=-46 -> -4.6 C) and the v1.2 H2S channel scaling /1000 (0x03E8=1000 -> 1 ppm). Raw values confirmed against reference/upstream-codec.js: battery=80, temperature=-4.6, humidity=45, h2s=1."
+    },
+    {
+      "description": "temperature + humidity + both gas sensor-status sentinels (polarizing / device error)",
+      "input": {
+        "fPort": 85,
+        "bytes": [2, 103, 200, 0, 3, 104, 80, 4, 125, 254, 255, 5, 125, 255, 255]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 20,
+            "relativeHumidity": 40,
+            "nh3SensorStatus": "polarizing",
+            "h2sSensorStatus": "device error"
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds. Exercises the NH3 (0xfffe -> polarizing) and H2S (0xffff -> device error) sentinel decode, emitted as air.nh3SensorStatus / air.h2sSensorStatus camelCase extras. Raw values confirmed against reference/upstream-codec.js: temperature=20, humidity=40, nh3_sensor_status=polarizing, h2s_sensor_status=device error."
+    },
+    {
+      "description": "diagnostic channels (IPSO version, device status) + battery + temperature + humidity",
+      "input": {
+        "fPort": 85,
+        "bytes": [255, 1, 16, 255, 11, 255, 1, 117, 55, 2, 103, 236, 0, 3, 104, 110]
+      },
+      "expected": {
+        "data": {
+          "ipsoVersion": "v1.0",
+          "deviceStatus": "on",
+          "batteryPercent": 55,
+          "air": {
+            "temperature": 23.6,
+            "relativeHumidity": 55
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds. Exercises the 0xff IPSO-version (0x10 -> v1.0) and device-status (always on) channels, emitted as camelCase diagnostic extras. Raw values confirmed against reference/upstream-codec.js: ipso_version=v1.0, device_status=on, battery=55, temperature=23.6, humidity=55."
+    },
+    {
+      "description": "empty payload -> error",
+      "input": {
+        "fPort": 85,
+        "bytes": []
+      },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error vector: a zero-length payload is rejected before any channel parsing."
+    },
+    {
+      "description": "unrecognized channel -> error",
+      "input": {
+        "fPort": 85,
+        "bytes": [153, 153, 0]
+      },
+      "expected": {
+        "errors": ["no recognized Milesight channels"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error vector: channel 0x99/0x99 is not a GS301 TLV, so no channel is recognized."
+    }
+  ],
+  "downlink": []
+}

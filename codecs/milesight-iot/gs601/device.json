@@ -1,0 +1,34 @@
+{
+  "vendor": "milesight-iot",
+  "device": "gs601",
+  "name": "GS601 - LoRaWAN Vape Detector",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "battery",
+    "temperature",
+    "humidity",
+    "vaping-index",
+    "pm1.0",
+    "pm2.5",
+    "pm10",
+    "tvoc",
+    "tamper",
+    "buzzer",
+    "radar"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "gs601",
+    "codecId": "gs601-codec",
+    "codecFile": "gs601.js",
+    "codecSha256": "3aa4ebb57d917192d739feee46f7da14c1ee869880a340cfde5a23d5eb829b59",
+    "referencedAt": "2026-06-17"
+  }
+}

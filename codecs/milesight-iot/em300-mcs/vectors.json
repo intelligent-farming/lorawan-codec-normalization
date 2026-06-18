@@ -1,0 +1,87 @@
+{
+  "uplink": [
+    {
+      "description": "Battery, temperature, humidity, and magnet open (TTN example bytes)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 92, 3, 103, 52, 1, 4, 104, 101, 6, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 92,
+          "air": { "temperature": 30.8, "relativeHumidity": 50.5 },
+          "action": { "contactState": "open" }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "TTN example input bytes. Upstream reference decoder yields battery 92, temperature 30.8 C, humidity 50.5 %, magnet_status 'open'; normalized here to vocabulary keys (batteryPercent extra, air.temperature, air.relativeHumidity, action.contactState)."
+    },
+    {
+      "description": "Magnet closed with negative temperature (synthetic, exercises signed LE decode and 'closed' state)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 100, 3, 103, 246, 255, 4, 104, 91, 6, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 100,
+          "air": { "temperature": -1, "relativeHumidity": 45.5 },
+          "action": { "contactState": "closed" }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected values from the upstream reference decoder (battery 100, temperature -1 C, humidity 45.5 %, magnet_status 'close'). Upstream's 'close' is normalized to the vocabulary enum 'closed'."
+    },
+    {
+      "description": "History datalog uplink, one prior reading, magnet open (synthetic)",
+      "input": {
+        "fPort": 85,
+        "bytes": [32, 206, 0, 241, 83, 101, 235, 0, 120, 1]
+      },
+      "expected": {
+        "data": {
+          "history": [
+            {
+              "time": "2023-11-14T22:13:20.000Z",
+              "air": { "temperature": 23.5, "relativeHumidity": 60 },
+              "action": { "contactState": "open" }
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected values from the upstream reference decoder (0x20/0xCE history: epoch 1700000000, temperature 23.5 C, humidity 60 %, magnet_status 'open'). Upstream emits a raw `timestamp` (epoch seconds); per AUTHORING.md we normalize it to an RFC3339 `time` and put the prior reading under `history[]`."
+    },
+    {
+      "description": "Current reading plus one history point (synthetic, exercises top-level + history coexistence)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 80, 3, 103, 210, 0, 4, 104, 110, 6, 0, 0, 32, 206, 0, 241, 83, 101, 200, 0, 100, 1]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 80,
+          "air": { "temperature": 21, "relativeHumidity": 55 },
+          "action": { "contactState": "closed" },
+          "history": [
+            {
+              "time": "2023-11-14T22:13:20.000Z",
+              "air": { "temperature": 20, "relativeHumidity": 50 },
+              "action": { "contactState": "open" }
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected values from the upstream reference decoder (battery 80, temperature 21 C, humidity 55 %, magnet 'close'; history epoch 1700000000 / temperature 20 C / humidity 50 % / magnet 'open'), normalized to vocabulary keys with the prior reading in `history`."
+    },
+    {
+      "description": "Unrecognized channel returns an error",
+      "input": { "fPort": 85, "bytes": [2, 200, 0] },
+      "expected": { "errors": ["no recognized Milesight channels"] },
+      "source": "synthetic",
+      "_note": "Synthetic input (channel 0x02 is not a defined EM300-MCS channel). The upstream reference decoder returns an empty object for it; our codec reports an explicit error per the repo's standard, so expected.errors is authored here rather than taken from upstream."
+    }
+  ],
+  "downlink": []
+}

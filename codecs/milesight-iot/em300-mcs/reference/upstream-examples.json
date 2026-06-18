@@ -1,0 +1,34 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/milesight-iot/em300-mcs-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "LoRaWAN® Multi-Channel Sensor - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          1,
+          117,
+          92,
+          3,
+          103,
+          52,
+          1,
+          4,
+          104,
+          101,
+          6,
+          0,
+          1
+        ]
+      },
+      "output": {
+        "data": {
+          "battery": 92,
+          "temperature": 30.8,
+          "humidity": 50.5,
+          "magnet_status": "open"
+        }
+      }
+    }
+  ]
+}

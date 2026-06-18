@@ -1,0 +1,29 @@
+{
+  "vendor": "milesight-iot",
+  "device": "ws203",
+  "name": "Motion&TH Sensor",
+  "categories": [
+    "climate",
+    "motion"
+  ],
+  "sensors": [
+    "battery",
+    "temperature",
+    "humidity",
+    "pir",
+    "motion"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "ws203",
+    "codecId": "ws203-codec",
+    "codecFile": "ws203.js",
+    "codecSha256": "ade33350b2b870b85622003d8a537aacc2600cffd8fd8224260ce57be8a72f20",
+    "referencedAt": "2026-06-17"
+  }
+}

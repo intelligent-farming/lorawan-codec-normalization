@@ -1,0 +1,28 @@
+{
+  "vendor": "milesight-iot",
+  "device": "em300-mcs",
+  "name": "EM300-MCS - Magnet Contact Switch (Temperature & Humidity) Sensor",
+  "categories": [
+    "climate",
+    "contact"
+  ],
+  "sensors": [
+    "battery",
+    "temperature",
+    "humidity",
+    "digital input"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "em300-mcs",
+    "codecId": "em300-mcs-codec",
+    "codecFile": "em300-mcs.js",
+    "codecSha256": "5746f05f111b1eb2404c0ae2b80ff60a0873260105e789598f3090bb62dcbb92",
+    "referencedAt": "2026-06-17"
+  }
+}

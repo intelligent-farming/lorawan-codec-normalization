@@ -1,0 +1,201 @@
+{
+  "uplink": [
+    {
+      "description": "Full uplink: battery, temperature, humidity, people count 300, regions 1-2 occupied, bright (TTN-derived input)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 100, 3, 103, 16, 1, 4, 104, 10, 5, 253, 44, 1, 6, 254, 3, 0, 3, 0, 7, 255, 1]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 100,
+          "peopleTotalCounts": 300,
+          "region1Enable": "enable",
+          "region1": "occupied",
+          "region2Enable": "enable",
+          "region2": "occupied",
+          "region3Enable": "disable",
+          "region3": "vacant",
+          "region4Enable": "disable",
+          "region4": "vacant",
+          "region5Enable": "disable",
+          "region5": "vacant",
+          "region6Enable": "disable",
+          "region6": "vacant",
+          "region7Enable": "disable",
+          "region7": "vacant",
+          "region8Enable": "disable",
+          "region8": "vacant",
+          "region9Enable": "disable",
+          "region9": "vacant",
+          "region10Enable": "disable",
+          "region10": "vacant",
+          "illuminanceStatus": "bright",
+          "air": {
+            "temperature": 27.2,
+            "relativeHumidity": 5
+          },
+          "action": {
+            "motion": {
+              "count": 300,
+              "detected": true
+            }
+          }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Input is the upstream TTN vs321-codec.yaml example; expected.data authored here per the normalized vocabulary. Verified against reference/upstream-codec.js (battery 100%, temperature 27.2 C, humidity 5%, people_total_counts 300, regions 1+2 occupied, illuminance bright). Covers climate requires (air.temperature, air.relativeHumidity) and motion requires (action.motion)."
+    },
+    {
+      "description": "Climate + vacant occupancy: battery, temp 23.0 C, humidity 45%, 0 people, region 1 enabled but vacant",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 80, 3, 103, 230, 0, 4, 104, 90, 5, 253, 0, 0, 6, 254, 1, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 80,
+          "peopleTotalCounts": 0,
+          "region1Enable": "enable",
+          "region1": "vacant",
+          "region2Enable": "disable",
+          "region2": "vacant",
+          "region3Enable": "disable",
+          "region3": "vacant",
+          "region4Enable": "disable",
+          "region4": "vacant",
+          "region5Enable": "disable",
+          "region5": "vacant",
+          "region6Enable": "disable",
+          "region6": "vacant",
+          "region7Enable": "disable",
+          "region7": "vacant",
+          "region8Enable": "disable",
+          "region8": "vacant",
+          "region9Enable": "disable",
+          "region9": "vacant",
+          "region10Enable": "disable",
+          "region10": "vacant",
+          "air": {
+            "temperature": 23,
+            "relativeHumidity": 45
+          },
+          "action": {
+            "motion": {
+              "count": 0,
+              "detected": false
+            }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected.data confirmed by running reference/upstream-codec.js (battery 80%, temperature 23.0 C, humidity 45%, people 0, region 1 enabled+vacant -> motion.detected false)."
+    },
+    {
+      "description": "Negative temperature with timestamp and detection status (no occupancy channels)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 55, 3, 103, 246, 255, 4, 104, 84, 10, 239, 128, 154, 77, 104, 8, 244, 0, 0, 7, 255, 0]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 55,
+          "time": "2025-06-14T15:51:28.000Z",
+          "detectionStatus": "normal",
+          "illuminanceStatus": "dim",
+          "air": {
+            "temperature": -1,
+            "relativeHumidity": 42
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input exercising signed temperature (-1.0 C) and the 0x0A/0xEF epoch timestamp -> RFC3339 time. Confirmed via reference/upstream-codec.js (timestamp 1749916288, detection_status normal, illuminance dim)."
+    },
+    {
+      "description": "Datalog history mode 0 (people counts) with timestamp",
+      "input": {
+        "fPort": 85,
+        "bytes": [32, 206, 128, 154, 77, 104, 0, 7, 0]
+      },
+      "expected": {
+        "data": {
+          "history": [
+            {
+              "time": "2025-06-14T15:51:28.000Z",
+              "peopleTotalCounts": 7
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds datalog uplink (0x20/0xCE mode 0). Confirmed via reference/upstream-codec.js: history entry timestamp 1749916288, people_total_counts 7."
+    },
+    {
+      "description": "Datalog history mode 1 (region occupancy) with timestamp",
+      "input": {
+        "fPort": 85,
+        "bytes": [32, 206, 128, 154, 77, 104, 1, 5, 0, 1, 0]
+      },
+      "expected": {
+        "data": {
+          "history": [
+            {
+              "time": "2025-06-14T15:51:28.000Z",
+              "region1Enable": "enable",
+              "region1": "occupied",
+              "region2Enable": "disable",
+              "region2": "vacant",
+              "region3Enable": "enable",
+              "region3": "vacant",
+              "region4Enable": "disable",
+              "region4": "vacant",
+              "region5Enable": "disable",
+              "region5": "vacant",
+              "region6Enable": "disable",
+              "region6": "vacant",
+              "region7Enable": "disable",
+              "region7": "vacant",
+              "region8Enable": "disable",
+              "region8": "vacant",
+              "region9Enable": "disable",
+              "region9": "vacant",
+              "region10Enable": "disable",
+              "region10": "vacant"
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds datalog uplink (0x20/0xCE mode 1). Confirmed via reference/upstream-codec.js: enable mask 0x0005 (regions 1+3 enabled), occupancy 0x0001 (region 1 occupied)."
+    },
+    {
+      "description": "Sensor fault sentinels: temperature 0xFFFF and humidity 0xFF map to status extras (no air block)",
+      "input": {
+        "fPort": 85,
+        "bytes": [3, 103, 255, 255, 4, 104, 255]
+      },
+      "expected": {
+        "data": {
+          "temperatureSensorStatus": "read_failed",
+          "humiditySensorStatus": "read_failed"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic input exercising the upstream fault sentinels (temperature 0xFFFF, humidity 0xFF). Confirmed via reference/upstream-codec.js (temperature_sensor_status / humidity_sensor_status read_failed)."
+    },
+    {
+      "description": "Unrecognized channel id/type yields an error (not a bare empty object)",
+      "input": {
+        "fPort": 85,
+        "bytes": [171, 205, 1]
+      },
+      "expected": {
+        "errors": ["no recognized Milesight channels"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error vector: leading bytes match no known VS321 channel, so decode produces no recognized channels."
+    }
+  ],
+  "downlink": []
+}

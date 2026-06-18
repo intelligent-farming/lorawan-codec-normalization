@@ -1,0 +1,58 @@
+{
+  "uplink": [
+    {
+      "description": "Full frame: battery 95%, temp 23.5C, humidity 61%, no leak (synthetic in-bounds)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 95, 3, 103, 235, 0, 4, 104, 122, 5, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 95,
+          "air": { "temperature": 23.5, "relativeHumidity": 61 },
+          "water": { "leak": false }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds TLV. Raw values (battery 95, temperature 23.5, humidity 61, water 'normal') confirmed by running reference/upstream-codec.js; normalized here (battery%->batteryPercent, temp->air.temperature, humidity->air.relativeHumidity, leak string->water.leak boolean)."
+    },
+    {
+      "description": "Full frame: battery 88%, temp -3.2C, humidity 80%, leak detected (synthetic in-bounds)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 88, 3, 103, 224, 255, 4, 104, 160, 5, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 88,
+          "air": { "temperature": -3.2, "relativeHumidity": 80 },
+          "water": { "leak": true }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds TLV exercising negative two's-complement temperature and leak=true. Raw values (battery 88, temperature -3.2, humidity 80, water 'leak') confirmed by running reference/upstream-codec.js."
+    },
+    {
+      "description": "Leak-only frame, normal (TTN example 1 bytes)",
+      "input": { "fPort": 85, "bytes": [5, 0, 0] },
+      "expected": { "data": { "water": { "leak": false } } },
+      "source": "ttn-example",
+      "_note": "Upstream example INPUT reused. Upstream emits water 'normal'; normalized to water.leak=false."
+    },
+    {
+      "description": "Leak-only frame, leak detected (TTN example 2 bytes)",
+      "input": { "fPort": 85, "bytes": [5, 0, 1] },
+      "expected": { "data": { "water": { "leak": true } } },
+      "source": "ttn-example",
+      "_note": "Upstream example INPUT reused. Upstream emits water 'leak'; normalized to water.leak=true."
+    },
+    {
+      "description": "Unrecognized channel returns an error",
+      "input": { "fPort": 85, "bytes": [255, 1] },
+      "expected": { "errors": ["no recognized Milesight channels"] },
+      "source": "synthetic",
+      "_note": "Synthetic. Upstream silently returns an empty object for unknown channels; our codec reports an explicit error instead."
+    }
+  ],
+  "downlink": []
+}

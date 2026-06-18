@@ -1,0 +1,35 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/milesight-iot/am103l-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Ambience Monitoring Sensors (example 1) - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          1,
+          117,
+          92,
+          3,
+          103,
+          52,
+          1,
+          4,
+          104,
+          101,
+          7,
+          125,
+          231,
+          4
+        ]
+      },
+      "output": {
+        "data": {
+          "battery": 92,
+          "temperature": 30.8,
+          "humidity": 50.5,
+          "co2": 1255
+        }
+      }
+    }
+  ]
+}

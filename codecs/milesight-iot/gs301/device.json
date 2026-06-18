@@ -1,0 +1,28 @@
+{
+  "vendor": "milesight-iot",
+  "device": "gs301",
+  "name": "GS301 - LoRaWAN Bathroom Odor Detector",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "battery",
+    "temperature",
+    "humidity",
+    "nh3",
+    "h2s"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "gs301",
+    "codecId": "gs301-codec",
+    "codecFile": "gs301.js",
+    "codecSha256": "26048621ddbe313c2197c2894bea39d91e1c930f0f7b76fc639720f6c4073b4b",
+    "referencedAt": "2026-06-17"
+  }
+}

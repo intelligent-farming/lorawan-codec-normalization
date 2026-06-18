@@ -1,0 +1,106 @@
+{
+  "uplink": [
+    {
+      "description": "Full periodic reading: battery, vaping index, PM1.0/PM2.5/PM10, temperature, humidity, TVOC, tamper/buzzer/occupancy status (covers climate requires)",
+      "input": {
+        "fPort": 85,
+        "bytes": [0, 80, 1, 5, 3, 12, 0, 5, 18, 0, 7, 25, 0, 9, 235, 0, 11, 51, 2, 13, 120, 0, 15, 0, 17, 0, 18, 1]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 80,
+          "tamperStatus": "normal",
+          "buzzer": "normal",
+          "occupancyStatus": "occupied",
+          "air": {
+            "vapingIndex": 5,
+            "pm1": 12,
+            "pm25": 18,
+            "pm10": 25,
+            "temperature": 23.5,
+            "relativeHumidity": 56.3,
+            "tvoc": 120
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; bytes hand-built LE per the Milesight command-id TLV, expected values produced by running reference/upstream-codec.js (ORACLE) and re-shaped into the normalized vocabulary. Negative temp & alarm-value frames covered by the next vector."
+    },
+    {
+      "description": "Negative temperature plus alarm-trigger value frames (vaping index alarm and temperature alarm both carry an overriding reading)",
+      "input": {
+        "fPort": 85,
+        "bytes": [0, 67, 9, 204, 255, 11, 113, 3, 2, 17, 80, 10, 17, 156, 1]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 67,
+          "air": {
+            "temperature": 41.2,
+            "relativeHumidity": 88.1,
+            "vapingIndex": 80,
+            "vapingIndexAlarm": {
+              "type": "alarm trigger",
+              "vapingIndex": 80
+            },
+            "temperatureAlarm": {
+              "type": "alarm trigger",
+              "temperature": 41.2
+            }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: 0x09 sets temperature to -5.2C, then a 0x0a alarm-trigger (type 0x11) value frame overrides it to 41.2C exactly as upstream does. Expected produced by running reference/upstream-codec.js (ORACLE) and normalized."
+    },
+    {
+      "description": "TTN upstream example: vaping index, PM, temperature over-range alarm (no value), humidity, TVOC, tamper/buzzer normal",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 0, 3, 2, 0, 5, 2, 0, 7, 2, 0, 10, 2, 11, 67, 2, 13, 48, 0, 15, 0, 17, 0]
+      },
+      "expected": {
+        "data": {
+          "tamperStatus": "normal",
+          "buzzer": "normal",
+          "air": {
+            "vapingIndex": 0,
+            "pm1": 2,
+            "pm25": 2,
+            "pm10": 2,
+            "temperatureAlarm": {
+              "type": "over range error"
+            },
+            "relativeHumidity": 57.9,
+            "tvoc": 48
+          }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Input is the upstream TTN example verbatim; expected.data is the upstream decode (vaping_index 0, pm 2/2/2, temperature_alarm 'over range error' with no value, humidity 57.9, tvoc 48, tamper/buzzer normal) re-shaped into the normalized vocabulary. The over-range alarm carries no temperature reading, so this vector alone does not satisfy the climate temperature requirement (covered by the synthetic vectors)."
+    },
+    {
+      "description": "Unknown command id aborts the walk with an error (mirrors the upstream throw)",
+      "input": {
+        "fPort": 85,
+        "bytes": [153, 0, 0]
+      },
+      "expected": {
+        "errors": ["unknown command: 153"]
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Empty payload",
+      "input": {
+        "fPort": 85,
+        "bytes": []
+      },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

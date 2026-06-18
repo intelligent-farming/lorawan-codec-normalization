@@ -1,0 +1,34 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/milesight-iot/ws203-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Motion&TH Sensor - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          1,
+          117,
+          100,
+          3,
+          103,
+          52,
+          1,
+          4,
+          104,
+          101,
+          5,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "battery": 100,
+          "humidity": 50.5,
+          "occupancy": "vacant",
+          "temperature": 30.8
+        }
+      }
+    }
+  ]
+}

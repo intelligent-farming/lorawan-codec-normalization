@@ -1,0 +1,28 @@
+{
+  "vendor": "milesight-iot",
+  "device": "em300-zld",
+  "name": "Milesight EM300-ZLD Zone Leak Detection",
+  "categories": [
+    "climate",
+    "water-leak"
+  ],
+  "sensors": [
+    "battery",
+    "temperature",
+    "humidity",
+    "water"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "em300-zld",
+    "codecId": "em300-zld-codec",
+    "codecFile": "em300-zld.js",
+    "codecSha256": "a2848a45e2026d7c44170ec0f3ee3d234ab2496162af34bddb93f4529008ebdc",
+    "referencedAt": "2026-06-17"
+  }
+}

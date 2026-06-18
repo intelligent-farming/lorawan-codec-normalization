@@ -1,0 +1,77 @@
+{
+  "uplink": [
+    {
+      "description": "Full uplink: battery, temperature, humidity, water normal (synthetic in-bounds)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 90, 3, 103, 210, 0, 4, 104, 84, 5, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 90,
+          "air": { "temperature": 21, "relativeHumidity": 42 },
+          "water": { "leak": false }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds TLV. Wire values confirmed by running reference/upstream-codec.js: {battery:90, temperature:21, humidity:42, water:'normal'}; normalized here (battery%->batteryPercent, temp->air.temperature, humidity->air.relativeHumidity, water 'normal'->water.leak=false)."
+    },
+    {
+      "description": "Full uplink: negative temperature + water leak (synthetic, exercises signed LE decode)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 40, 3, 103, 38, 255, 4, 104, 131, 5, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 40,
+          "air": { "temperature": -21.8, "relativeHumidity": 65.5 },
+          "water": { "leak": true }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds TLV. Wire values confirmed by running reference/upstream-codec.js: {battery:40, temperature:-21.8, humidity:65.5, water:'leak'}; normalized here (water 'leak'->water.leak=true)."
+    },
+    {
+      "description": "Water leak status only - leak (TTN example input bytes)",
+      "input": {
+        "fPort": 85,
+        "bytes": [5, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "water": { "leak": true }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Input bytes from upstream example. Wire value confirmed by running reference/upstream-codec.js: {water:'leak'}; normalized to water.leak=true."
+    },
+    {
+      "description": "Water leak status only - normal (TTN example input bytes)",
+      "input": {
+        "fPort": 85,
+        "bytes": [5, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "water": { "leak": false }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Input bytes from upstream example. Wire value confirmed by running reference/upstream-codec.js: {water:'normal'}; normalized to water.leak=false."
+    },
+    {
+      "description": "Unrecognized channel returns an error (synthetic)",
+      "input": {
+        "fPort": 85,
+        "bytes": [255, 1, 0]
+      },
+      "expected": {
+        "errors": ["no recognized Milesight channels"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: channel 0xFF/0x01 is not a recognized Milesight TLV, so the codec reports an error."
+    }
+  ],
+  "downlink": []
+}

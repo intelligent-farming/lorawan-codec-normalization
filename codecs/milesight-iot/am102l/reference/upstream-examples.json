@@ -1,0 +1,30 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/milesight-iot/am102l-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Milesight 2-in-1 IAQ Sensor - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          1,
+          117,
+          100,
+          3,
+          103,
+          24,
+          1,
+          4,
+          104,
+          109
+        ]
+      },
+      "output": {
+        "data": {
+          "battery": 100,
+          "temperature": 28,
+          "humidity": 54.5
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/milesight-iot/gs301-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "LoRaWAN Bathroom Odor Detector - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          1,
+          117,
+          100,
+          2,
+          103,
+          28,
+          1,
+          3,
+          104,
+          100,
+          4,
+          125,
+          0,
+          0,
+          5,
+          125,
+          1,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "battery": 100,
+          "temperature": 28.4,
+          "humidity": 50,
+          "nh3": 0,
+          "h2s": 0.01
+        }
+      }
+    }
+  ]
+}

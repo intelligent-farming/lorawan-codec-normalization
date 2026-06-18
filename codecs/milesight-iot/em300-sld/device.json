@@ -1,0 +1,28 @@
+{
+  "vendor": "milesight-iot",
+  "device": "em300-sld",
+  "name": "Milesight EM300-SLD Spot Leakage Detection Sensor",
+  "categories": [
+    "climate",
+    "water-leak"
+  ],
+  "sensors": [
+    "battery",
+    "temperature",
+    "humidity",
+    "water"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "em300-sld",
+    "codecId": "em300-sld-codec",
+    "codecFile": "em300-sld.js",
+    "codecSha256": "a2848a45e2026d7c44170ec0f3ee3d234ab2496162af34bddb93f4529008ebdc",
+    "referencedAt": "2026-06-17"
+  }
+}

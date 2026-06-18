@@ -1,0 +1,28 @@
+{
+  "vendor": "milesight-iot",
+  "device": "vs321",
+  "name": "Wireless AI Occupancy Sensor",
+  "categories": [
+    "climate",
+    "motion"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "occupancy",
+    "people-counting"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "vs321",
+    "codecId": "vs321-codec",
+    "codecFile": "vs321.js",
+    "codecSha256": "83f0bd180dd660b3bb2e6bc65e909401f9bfd8bc5adf851bc2f0cd9c58f2a981",
+    "referencedAt": "2026-06-17"
+  }
+}

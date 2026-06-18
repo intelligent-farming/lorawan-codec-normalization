@@ -1,0 +1,87 @@
+{
+  "uplink": [
+    {
+      "description": "battery + temperature + humidity + CO2 (climate + air-quality requires covered)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 88, 3, 103, 230, 0, 4, 104, 90, 7, 125, 200, 1]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 88,
+          "air": {
+            "temperature": 23,
+            "relativeHumidity": 45,
+            "co2": 456
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected.data derived via the ORACLE method (ran reference/upstream-codec.js on this input, then mapped temperature/humidity/co2 -> air.* and battery % -> batteryPercent). Upstream produced {battery:88,temperature:23,humidity:45,co2:456}."
+    },
+    {
+      "description": "negative temperature + humidity",
+      "input": {
+        "fPort": 85,
+        "bytes": [3, 103, 156, 255, 4, 104, 70]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": -10,
+            "relativeHumidity": 35
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame exercising two's-complement negative temperature; expected.data derived via the ORACLE method (upstream produced {temperature:-10,humidity:35})."
+    },
+    {
+      "description": "PIR activity + light + CO2 + TVOC + pressure (extras + air-quality requires)",
+      "input": {
+        "fPort": 85,
+        "bytes": [5, 106, 5, 0, 6, 101, 16, 0, 32, 0, 8, 0, 7, 125, 244, 1, 8, 125, 100, 0, 9, 115, 134, 39]
+      },
+      "expected": {
+        "data": {
+          "activity": 5,
+          "infraredAndVisible": 32,
+          "infrared": 8,
+          "air": {
+            "lightIntensity": 16,
+            "co2": 500,
+            "tvoc": 100,
+            "pressure": 1011.8
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame exercising the full TLV set; expected.data derived via the ORACLE method (upstream produced {activity:5,illumination:16,infrared_and_visible:32,infrared:8,co2:500,tvoc:100,pressure:1011.8}). illumination -> air.lightIntensity (lux), pressure within vocabulary bounds 900-1100."
+    },
+    {
+      "description": "empty payload -> error",
+      "input": {
+        "fPort": 85,
+        "bytes": []
+      },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error vector: empty byte array yields the empty-payload error guard."
+    },
+    {
+      "description": "unrecognized channel -> error",
+      "input": {
+        "fPort": 85,
+        "bytes": [255, 255, 0]
+      },
+      "expected": {
+        "errors": ["no recognized Milesight channels"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error vector: an unknown channel/type breaks the parse loop before any recognized channel, yielding the no-recognized-channels error."
+    }
+  ],
+  "downlink": []
+}

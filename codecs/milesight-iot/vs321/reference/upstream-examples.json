@@ -1,0 +1,65 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/milesight-iot/vs321-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Wireless AI Occupancy Sensor - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          1,
+          117,
+          100,
+          3,
+          103,
+          16,
+          1,
+          4,
+          104,
+          10,
+          5,
+          253,
+          44,
+          1,
+          6,
+          254,
+          3,
+          0,
+          3,
+          0,
+          7,
+          255,
+          1
+        ]
+      },
+      "output": {
+        "data": {
+          "battery": 100,
+          "temperature": 27.2,
+          "humidity": 5,
+          "people_total_counts": 300,
+          "region_1_enable": "enable",
+          "region_1": "occupied",
+          "region_2_enable": "enable",
+          "region_2": "occupied",
+          "region_3_enable": "disable",
+          "region_3": "vacant",
+          "region_4_enable": "disable",
+          "region_4": "vacant",
+          "region_5_enable": "disable",
+          "region_5": "vacant",
+          "region_6_enable": "disable",
+          "region_6": "vacant",
+          "region_7_enable": "disable",
+          "region_7": "vacant",
+          "region_8_enable": "disable",
+          "region_8": "vacant",
+          "region_9_enable": "disable",
+          "region_9": "vacant",
+          "region_10_enable": "disable",
+          "region_10": "vacant",
+          "illuminance_status": "bright"
+        }
+      }
+    }
+  ]
+}

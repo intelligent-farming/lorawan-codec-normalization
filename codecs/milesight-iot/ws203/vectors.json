@@ -1,0 +1,78 @@
+{
+  "uplink": [
+    {
+      "description": "battery + temperature + humidity + occupancy (occupied)",
+      "input": { "fPort": 85, "bytes": [1, 117, 88, 3, 103, 225, 0, 4, 104, 95, 5, 0, 1] },
+      "expected": {
+        "data": {
+          "batteryPercent": 88,
+          "air": { "temperature": 22.5, "relativeHumidity": 47.5 },
+          "occupancy": "occupied",
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame. Expected normalized from upstream reference (battery 88; temperature 0x00E1=225 ->22.5 C; humidity 95/2=47.5 %; occupancy 0x05/0x00 byte 1 -> occupied/detected true)."
+    },
+    {
+      "description": "negative temperature + vacant occupancy",
+      "input": { "fPort": 85, "bytes": [1, 117, 73, 3, 103, 222, 255, 4, 104, 80, 5, 0, 0] },
+      "expected": {
+        "data": {
+          "batteryPercent": 73,
+          "air": { "temperature": -3.4, "relativeHumidity": 40 },
+          "occupancy": "vacant",
+          "action": { "motion": { "detected": false } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame. Expected from upstream reference (temperature 0xFFDE=-34 ->-3.4 C two's complement; humidity 80/2=40 %; occupancy byte 0 -> vacant/detected false)."
+    },
+    {
+      "description": "temperature-with-abnormal channel (0x83/0x67)",
+      "input": { "fPort": 85, "bytes": [131, 103, 154, 1, 1] },
+      "expected": {
+        "data": {
+          "air": { "temperature": 41 },
+          "temperatureAbnormal": "abnormal"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame. Expected from upstream reference (0x83/0x67: temperature 0x019A=410 ->41.0 C; abnormal flag byte 1 -> abnormal). Upstream key temperature_abnormal normalized to camelCase extra temperatureAbnormal."
+    },
+    {
+      "description": "historical datalog record (0x20/0xCE)",
+      "input": { "fPort": 85, "bytes": [32, 206, 64, 116, 29, 106, 3, 1, 198, 0, 104] },
+      "expected": {
+        "data": {
+          "history": [
+            {
+              "time": "2026-06-01T12:00:00Z",
+              "reportType": "pir occupancy",
+              "occupancy": "occupied",
+              "action": { "motion": { "detected": true } },
+              "air": { "temperature": 19.8, "relativeHumidity": 52 }
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame. Expected from upstream reference (0x20/0xCE: unix ts 1780315200 -> 2026-06-01T12:00:00Z; report_type 3 -> 'pir occupancy'; occupancy byte 1 -> occupied; temperature 0x00C6=198 ->19.8 C; humidity 104/2=52 %). History record placed in the reserved history[] array with an RFC3339 time per the output contract."
+    },
+    {
+      "description": "empty payload -> error",
+      "input": { "fPort": 85, "bytes": [] },
+      "expected": { "errors": ["empty payload"] },
+      "source": "synthetic",
+      "_note": "Synthetic. Upstream returns a bare {} for an empty buffer; the output contract forbids a bare {}, so this codec reports an error instead."
+    },
+    {
+      "description": "unrecognized channel -> error",
+      "input": { "fPort": 85, "bytes": [255, 255, 1] },
+      "expected": { "errors": ["no recognized Milesight channels"] },
+      "source": "synthetic",
+      "_note": "Synthetic. Upstream breaks the TLV walk on an unknown channel and returns {}; this codec reports an error when no channel is recognized."
+    }
+  ],
+  "downlink": []
+}

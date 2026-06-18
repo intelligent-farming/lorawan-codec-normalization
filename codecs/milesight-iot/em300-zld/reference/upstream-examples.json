@@ -1,0 +1,37 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/milesight-iot/em300-zld-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Zone Leakage Detection Sensor (example 1) - Milesgiht IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          5,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "water": "normal"
+        }
+      }
+    },
+    {
+      "description": "Zone Leakage Detection Sensor (example 2) - Milesgiht IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          5,
+          0,
+          1
+        ]
+      },
+      "output": {
+        "data": {
+          "water": "leak"
+        }
+      }
+    }
+  ]
+}
