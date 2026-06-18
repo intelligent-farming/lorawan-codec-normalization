@@ -1,0 +1,115 @@
+{
+  "uplink": [
+    {
+      "description": "Measurements: temperature, relative humidity and CO2 (climate + air-quality)",
+      "input": { "fPort": 2, "bytes": [1, 1, 74, 3, 19, 0, 234, 55, 3, 32] },
+      "expected": {
+        "data": {
+          "payloadVersion": 1,
+          "battery": 3.3,
+          "messageType": "measurements",
+          "air": {
+            "temperature": 23.4,
+            "relativeHumidity": 55,
+            "co2": 800
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload (OpCode 3, mask=0x13 temp|rh|co2). Expected values produced by running reference/upstream-codec.js (keyword mode) on this input: voltage 3.30 V, temp 23.4 C, rh 55 %, CO2 800 ppm."
+    },
+    {
+      "description": "Measurements: full block (temp, rh, pressure, light, CO2, TVOC)",
+      "input": { "fPort": 2, "bytes": [1, 1, 200, 3, 63, 0, 210, 48, 39, 148, 1, 94, 2, 100, 0, 125] },
+      "expected": {
+        "data": {
+          "payloadVersion": 1,
+          "battery": 4.56,
+          "messageType": "measurements",
+          "tvoc": 125,
+          "air": {
+            "temperature": 21,
+            "relativeHumidity": 48,
+            "pressure": 1013.2,
+            "lightIntensity": 350,
+            "co2": 612
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload (OpCode 3, mask=0x3F temp|rh|press|light|co2|tvoc). Expected from reference/upstream-codec.js: voltage 4.56 V, temp 21.0 C, rh 48 %, pressure 1013.2 hPa, light 350 lx, CO2 612 ppm, TVOC 125 ppb (TVOC has no vocabulary key -> extra)."
+    },
+    {
+      "description": "Measurements: negative temperature only (signed 16-bit)",
+      "input": { "fPort": 2, "bytes": [1, 1, 44, 3, 1, 255, 204] },
+      "expected": {
+        "data": {
+          "payloadVersion": 1,
+          "battery": 3,
+          "messageType": "measurements",
+          "air": {
+            "temperature": -5.2
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload (OpCode 3, mask=0x01 temp only). raw 0xFFCC = -52 tenths. Expected from reference/upstream-codec.js: voltage 3.00 V, temp -5.2 C."
+    },
+    {
+      "description": "Measurements: temp + CO2 with extended digital inputs and particulate matter",
+      "input": { "fPort": 2, "bytes": [1, 1, 74, 3, 145, 0, 220, 2, 188, 3, 19, 0, 5, 0, 10, 0, 15] },
+      "expected": {
+        "data": {
+          "payloadVersion": 1,
+          "battery": 3.3,
+          "messageType": "measurements",
+          "digitalInputs": { "input1": true, "input2": false },
+          "pm1_0": 5,
+          "pm2_5": 10,
+          "pm10": 15,
+          "air": {
+            "temperature": 22,
+            "co2": 700
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload (OpCode 3, mask=0x91 temp|co2|extended; ext=0x03 dinputs|PM). Expected from reference/upstream-codec.js: temp 22.0 C, CO2 700 ppm, dinputs {1:true,2:false}, PM1.0/2.5/10 = 5/10/15 ug/m3 (dinputs, PM and TVOC have no vocabulary keys -> camelCase extras)."
+    },
+    {
+      "description": "Heartbeat (OpCode 0): battery only, no measurements",
+      "input": { "fPort": 2, "bytes": [1, 1, 200, 0] },
+      "expected": {
+        "data": {
+          "payloadVersion": 1,
+          "battery": 4.56,
+          "messageType": "heartbeat"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload (OpCode 0 Heartbeat). Expected from reference/upstream-codec.js: voltage 4.56 V, no measurement block."
+    },
+    {
+      "description": "Error: empty payload",
+      "input": { "fPort": 2, "bytes": [] },
+      "expected": { "errors": ["empty payload"] },
+      "source": "synthetic",
+      "_note": "Synthetic. Upstream reports decode error 0 (Empty) for a zero-length payload."
+    },
+    {
+      "description": "Error: measurements OpCode without a measurement bitmask",
+      "input": { "fPort": 2, "bytes": [1, 1, 200, 3] },
+      "expected": { "errors": ["measurement bitmask"] },
+      "source": "synthetic",
+      "_note": "Synthetic. OpCode 3 with no body. Upstream reports decode error 80 (Measurements/Thresholds requires Measurements)."
+    },
+    {
+      "description": "Error: truncated temperature value",
+      "input": { "fPort": 2, "bytes": [1, 1, 200, 3, 1, 0] },
+      "expected": { "errors": ["complete) temperature"] },
+      "source": "synthetic",
+      "_note": "Synthetic. mask requests temperature but only one of two bytes is present. Upstream reports decode error 90 (measurements without (complete) Temperature value)."
+    }
+  ],
+  "downlink": []
+}

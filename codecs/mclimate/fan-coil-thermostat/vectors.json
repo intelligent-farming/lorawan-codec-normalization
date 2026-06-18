@@ -1,0 +1,64 @@
+{
+  "uplink": [
+    {
+      "description": "Periodic keepalive uplink (TTN example bytes)",
+      "input": {
+        "fPort": 2,
+        "bytes": [1, 2, 136, 117, 1, 59, 1, 0, 6, 1, 1]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 24.8,
+            "relativeHumidity": 45.7
+          },
+          "targetTemperature": 31.5,
+          "operationalMode": 1,
+          "displayedFanSpeed": 0,
+          "actualFanSpeed": 6,
+          "valveStatus": 1,
+          "deviceStatus": 1
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Synthetic cooling-mode keepalive (in-bounds; expected from running reference/upstream-codec.js)",
+      "input": {
+        "fPort": 2,
+        "bytes": [1, 3, 32, 128, 0, 210, 0, 2, 2, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 40.0,
+            "relativeHumidity": 50.0
+          },
+          "targetTemperature": 21.0,
+          "operationalMode": 0,
+          "displayedFanSpeed": 2,
+          "actualFanSpeed": 2,
+          "valveStatus": 0,
+          "deviceStatus": 0
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds bytes; expected.data derived by running reference/upstream-codec.js (oracle) and mapping sensorTemperature->air.temperature, relativeHumidity->air.relativeHumidity, rest -> camelCase extras."
+    },
+    {
+      "description": "Non-keepalive packet type returns an error (command/config response not modeled)",
+      "input": { "fPort": 2, "bytes": [4, 1, 1, 1, 2, 136, 117, 1, 59, 1, 0, 6, 1, 1] },
+      "expected": { "errors": ["unsupported packet type"] },
+      "source": "synthetic",
+      "_note": "Synthetic command-response frame (leading byte != 0x01); the keepalive-only decode rejects it."
+    },
+    {
+      "description": "Truncated keepalive payload returns an error",
+      "input": { "fPort": 2, "bytes": [1, 2, 136] },
+      "expected": { "errors": ["too short"] },
+      "source": "synthetic",
+      "_note": "Synthetic short payload; fewer than the 11 bytes the fixed keepalive layout requires."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,25 @@
+{
+  "vendor": "mclimate",
+  "device": "fan-coil-thermostat",
+  "name": "Fan Coil Thermostat",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "mclimate",
+    "device": "fan-coil-thermostat",
+    "codecId": "fan-coil-thermostat-codec",
+    "codecFile": "fan-coil-thermostat.js",
+    "codecSha256": "d33a121e02d88b2504040e4119b6c13e4a5dfc20c61ae15dfd1c615c68851c98",
+    "referencedAt": "2026-06-18"
+  }
+}

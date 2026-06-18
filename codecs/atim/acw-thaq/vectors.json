@@ -1,0 +1,58 @@
+{
+  "uplink": [
+    {
+      "description": "Measurement frame: temperature, humidity, CO2, and VOC index",
+      "input": {
+        "fPort": 1,
+        "bytes": [160, 8, 9, 41, 9, 22, 46, 13, 3, 32, 12, 0, 150]
+      },
+      "expected": {
+        "data": {
+          "tvoc": 150,
+          "air": { "temperature": 23.45, "relativeHumidity": 56.78, "co2": 800 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame (header 0xA0 = ACW measurement, no timestamp). Blocks: 0x08 temp 0x0929=2345 -> 23.45 C; 0x09 hum 0x162E=5678 -> 56.78 %; 0x0d CO2 0x0320=800 ppm; 0x0c VOC 0x0096=150 index. expected.data authored from the upstream reference decoder (decodeur.js), which yields temperature0 23.45, humidity0 56.78, CO2 800, COV 150."
+    },
+    {
+      "description": "Measurement frame with negative temperature (signed decode)",
+      "input": {
+        "fPort": 1,
+        "bytes": [160, 8, 254, 12, 9, 16, 24, 13, 4, 176]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": -5, "relativeHumidity": 41.2, "co2": 1200 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame. 0x08 temp 0xFE0C=-500 -> -5.00 C (two's complement); 0x09 hum 0x1018=4120 -> 41.20 %; 0x0d CO2 0x04B0=1200 ppm. Upstream reference decoder yields temperature0 -5, humidity0 41.2, CO2 1200."
+    },
+    {
+      "description": "Life (keep-alive) frame carrying node battery voltage",
+      "input": {
+        "fPort": 1,
+        "bytes": [129, 14, 16, 12, 128]
+      },
+      "expected": {
+        "data": { "battery": 3.6 }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame (header 0x81 = ACW life frame). tensionv 0x0E10=3600 mV -> 3.6 V (battery); tensionc 0x0C80=3200 mV (capacitor, not normalized). Upstream reference decoder yields tensionv 3.6 V, tensionc 3.2 V."
+    },
+    {
+      "description": "Unsupported legacy (old-product) frame returns an error",
+      "input": {
+        "fPort": 1,
+        "bytes": [66, 1, 0]
+      },
+      "expected": {
+        "errors": ["unsupported legacy ATIM frame"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic frame with byte0 high-nibble bit3 clear (0x42 -> old product). Upstream routes this through its legacy 'Ancien produit' path; we do not support those frames and report an error."
+    }
+  ],
+  "downlink": []
+}

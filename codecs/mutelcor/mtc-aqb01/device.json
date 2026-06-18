@@ -1,0 +1,29 @@
+{
+  "vendor": "mutelcor",
+  "device": "mtc-aqb01",
+  "name": "LoRa Air Quality Button (IP30, IP54)",
+  "categories": [
+    "climate",
+    "air-quality"
+  ],
+  "sensors": [
+    "co2",
+    "button",
+    "humidity",
+    "temperature",
+    "digital input"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "mutelcor",
+    "device": "mtc-aqb01",
+    "codecId": "mutelcor-codec",
+    "codecFile": "mutelcor.js",
+    "codecSha256": "988ab94685a68c414f87b3b9873c2195134ad878b6a730db76572085f9807846",
+    "referencedAt": "2026-06-18"
+  }
+}

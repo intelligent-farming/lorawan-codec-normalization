@@ -1,0 +1,29 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/mclimate/ht-sensor-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Short periodic uplink",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          1,
+          2,
+          116,
+          115,
+          241,
+          4,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "sensorTemperature": 22.8,
+          "relativeHumidity": 44.92,
+          "batteryVoltage": 3.5,
+          "thermistorProperlyConnected": false,
+          "extThermistorTemperature": 0
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "vendor": "mclimate",
+  "device": "co2-sensor",
+  "name": "CO2 Sensor and Notifier",
+  "categories": [
+    "climate",
+    "air-quality"
+  ],
+  "sensors": [
+    "co2",
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "mclimate",
+    "device": "co2-sensor",
+    "codecId": "co2-sensor-codec",
+    "codecFile": "co2-sensor.js",
+    "codecSha256": "959db876bd8a2eb2ae1c0fbfea5a4d7cb560f5f2b6e1c8fd7ad0da383c4128d5",
+    "referencedAt": "2026-06-18"
+  }
+}

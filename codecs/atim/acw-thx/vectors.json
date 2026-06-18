@@ -1,0 +1,101 @@
+{
+  "uplink": [
+    {
+      "description": "measurement frame: 25.00 C / 50.00 % on internal channel 0",
+      "input": { "fPort": 1, "bytes": [160, 8, 9, 196, 9, 19, 136] },
+      "expected": {
+        "data": {
+          "frameType": "measurement",
+          "channel": 0,
+          "air": { "temperature": 25, "relativeHumidity": 50 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds 0xA0 'Trame de mesure': temp type 0x08 -> 0x09C4=2500/100=25.00 C; hum type 0x09 -> 0x1388=5000/100=50.00 %. expected.data produced by running reference/upstream-codec.js (temperature0.value=[25], humidity0.value=[50]) and mapping to the normalized vocabulary."
+    },
+    {
+      "description": "measurement frame: fractional 21.35 C / 48.72 %",
+      "input": { "fPort": 1, "bytes": [160, 8, 8, 87, 9, 19, 8] },
+      "expected": {
+        "data": {
+          "frameType": "measurement",
+          "channel": 0,
+          "air": { "temperature": 21.35, "relativeHumidity": 48.72 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: temp 0x0857=2135/100=21.35 C; hum 0x1308=4872/100=48.72 %. Verified against reference/upstream-codec.js (temperature0.value=[21.35], humidity0.value=[48.72])."
+    },
+    {
+      "description": "measurement frame: negative temperature -5.00 C / 50.00 %",
+      "input": { "fPort": 1, "bytes": [160, 8, 254, 12, 9, 19, 136] },
+      "expected": {
+        "data": {
+          "frameType": "measurement",
+          "channel": 0,
+          "air": { "temperature": -5, "relativeHumidity": 50 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic two's-complement temperature: 0xFE0C as signed 16-bit = -500/100 = -5.00 C. Verified against reference/upstream-codec.js (temperature0.value=[-5])."
+    },
+    {
+      "description": "measurement frame on voie/channel 1: 25.00 C / 50.00 %",
+      "input": { "fPort": 1, "bytes": [160, 24, 9, 196, 25, 19, 136] },
+      "expected": {
+        "data": {
+          "frameType": "measurement",
+          "channel": 1,
+          "air": { "temperature": 25, "relativeHumidity": 50 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: high nibble of the type byte selects voie 1 (0x18 temp, 0x19 hum). Verified against reference/upstream-codec.js (temperature1/humidity1, voie '1')."
+    },
+    {
+      "description": "life frame: battery 3.55 V, supply rail 5.000 V",
+      "input": { "fPort": 1, "bytes": [129, 13, 222, 19, 136] },
+      "expected": {
+        "data": { "frameType": "life", "battery": 3.55, "supplyVoltage": 5 }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic 0x81 'Trame de vie': tensionv 0x0DDE=3550/1000=3.55 V -> battery; tensionc 0x1388=5000/1000=5 V -> supplyVoltage. Verified against reference/upstream-codec.js (tensionv.value=3.55, tensionc.value=5)."
+    },
+    {
+      "description": "measurement frame: temperature sensor fault, humidity valid",
+      "input": { "fPort": 1, "bytes": [160, 8, 128, 0, 9, 19, 136] },
+      "expected": {
+        "data": {
+          "frameType": "measurement",
+          "channel": 0,
+          "air": { "relativeHumidity": 50 }
+        },
+        "warnings": ["sensor-fault sentinel"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: temp 0x8000 = -327.68 C is the upstream sensor-fault sentinel (reference temperature0.value=['erreur']); humidity remains valid. Faulty channel is dropped and a warning is emitted."
+    },
+    {
+      "description": "error frame yields no climate measurement",
+      "input": { "fPort": 1, "bytes": [142, 14, 1, 149] },
+      "expected": { "errors": ["unsupported frame type"] },
+      "source": "synthetic",
+      "_note": "Synthetic 0x8E 'Trame d'erreur' (reference decodes a diagnostic 'Erreur' object). This codec only normalizes temperature/humidity, so an error frame returns errors."
+    },
+    {
+      "description": "unknown frame type yields no climate measurement",
+      "input": { "fPort": 1, "bytes": [131, 3] },
+      "expected": { "errors": ["unsupported frame type"] },
+      "source": "synthetic",
+      "_note": "Synthetic 0x83 -> reference 'Type de trame inconnu'; no temperature/humidity to normalize."
+    },
+    {
+      "description": "empty payload",
+      "input": { "fPort": 1, "bytes": [] },
+      "expected": { "errors": ["empty payload"] },
+      "source": "synthetic",
+      "_note": "Synthetic empty payload; reference returns an empty data object, this codec reports an explicit error."
+    }
+  ],
+  "downlink": []
+}

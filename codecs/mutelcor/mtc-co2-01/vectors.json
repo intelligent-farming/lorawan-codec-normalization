@@ -1,0 +1,92 @@
+{
+  "uplink": [
+    {
+      "description": "Measurements (opcode 3): temperature + humidity + CO2",
+      "input": { "fPort": 14, "bytes": [1, 1, 44, 3, 19, 0, 235, 55, 3, 32] },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "air": { "temperature": 23.5, "relativeHumidity": 55, "co2": 800 },
+          "payloadVersion": 1,
+          "messageType": "measurements"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected values produced by running reference/upstream-codec.js (voltage=300/100=3.0V, temp raw 235/10=23.5C, rh=55, co2=3*256+32=800ppm)."
+    },
+    {
+      "description": "Measurements with pressure: temp + humidity + pressure + CO2",
+      "input": { "fPort": 14, "bytes": [1, 1, 44, 3, 23, 0, 235, 55, 39, 16, 3, 32] },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "air": { "temperature": 23.5, "relativeHumidity": 55, "pressure": 1000, "co2": 800 },
+          "payloadVersion": 1,
+          "messageType": "measurements"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; pressure bit (4) set, raw 39*256+16=10000, /10=1000.0hPa (in 900-1100 vocab bound). Verified against reference/upstream-codec.js."
+    },
+    {
+      "description": "Measurements with negative temperature",
+      "input": { "fPort": 14, "bytes": [1, 1, 44, 3, 19, 255, 206, 55, 3, 32] },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "air": { "temperature": -5, "relativeHumidity": 55, "co2": 800 },
+          "payloadVersion": 1,
+          "messageType": "measurements"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; temp raw 0xFFCE=65486 -> 16-bit signed -50 -> -5.0C. Verified against reference/upstream-codec.js."
+    },
+    {
+      "description": "Heartbeat (opcode 0): battery only",
+      "input": { "fPort": 8, "bytes": [1, 1, 71, 0] },
+      "expected": {
+        "data": {
+          "battery": 3.27,
+          "payloadVersion": 1,
+          "messageType": "heartbeat"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; voltage 1*256+71=327, /100=3.27V. Verified against reference/upstream-codec.js."
+    },
+    {
+      "description": "Alarm (opcode 1): button 1 pressed",
+      "input": { "fPort": 14, "bytes": [1, 1, 44, 1, 1] },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "payloadVersion": 1,
+          "messageType": "alarm",
+          "buttons": ["1"]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; buttons bitmask 0x01 -> button 1. Verified against reference/upstream-codec.js."
+    },
+    {
+      "description": "Truncated frame: opcode Measurements with no measurements byte",
+      "input": { "fPort": 14, "bytes": [1, 1, 44, 3] },
+      "expected": {
+        "errors": ["requires Measurements"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error frame; reference reports decode error 80 (Unexpected end, OpCode Measurements/Thresholds requires Measurements)."
+    },
+    {
+      "description": "Empty payload",
+      "input": { "fPort": 14, "bytes": [] },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error frame; reference reports decode error 0 (Empty)."
+    }
+  ],
+  "downlink": []
+}

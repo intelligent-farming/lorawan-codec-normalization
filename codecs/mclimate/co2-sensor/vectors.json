@@ -1,0 +1,129 @@
+{
+  "uplink": [
+    {
+      "description": "Periodic keepalive uplink (CO2, temperature, humidity, battery)",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          1,
+          2,
+          113,
+          2,
+          115,
+          132,
+          237
+        ]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "co2": 625,
+            "temperature": 22.7,
+            "relativeHumidity": 51.56
+          },
+          "battery": 3.5
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Keepalive uplink, mid-range readings (CO2 800 ppm, 25 C, 70.31% RH, 2.56 V)",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          1,
+          3,
+          32,
+          2,
+          138,
+          180,
+          120
+        ]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "co2": 800,
+            "temperature": 25,
+            "relativeHumidity": 70.31
+          },
+          "battery": 2.56
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected.data derived by running reference/upstream-codec.js (oracle) and mapping CO2->air.co2, sensorTemperature->air.temperature, relativeHumidity->air.relativeHumidity, batteryVoltage->battery."
+    },
+    {
+      "description": "Keepalive uplink, low CO2 / cooler reading (420 ppm, 18.3 C, 35.16% RH, 3.2 V)",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          1,
+          1,
+          164,
+          2,
+          71,
+          90,
+          200
+        ]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "co2": 420,
+            "temperature": 18.3,
+            "relativeHumidity": 35.16
+          },
+          "battery": 3.2
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected.data derived by running reference/upstream-codec.js (oracle) and applying the vocabulary mapping."
+    },
+    {
+      "description": "Unsupported packet type (leading byte not 0x01)",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          4,
+          1,
+          2,
+          1,
+          2,
+          113,
+          2,
+          115,
+          132,
+          237
+        ]
+      },
+      "expected": {
+        "errors": [
+          "unsupported packet type"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; the configuration-response frame (leading byte != 0x01) is not modeled by this codec."
+    },
+    {
+      "description": "Truncated keepalive payload (fewer than 7 bytes)",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          1,
+          2,
+          113,
+          2
+        ]
+      },
+      "expected": {
+        "errors": [
+          "too short"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; exercises the length guard on the keepalive frame."
+    }
+  ],
+  "downlink": []
+}

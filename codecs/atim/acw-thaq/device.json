@@ -1,0 +1,29 @@
+{
+  "vendor": "atim",
+  "device": "acw-thaq",
+  "name": "ACW-THAQ - CO2/VOC/Temperature/Humidity Sensor",
+  "categories": [
+    "climate",
+    "air-quality"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "co2",
+    "tvoc",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "atim",
+    "device": "acw-thaq",
+    "codecId": "codec",
+    "codecFile": "decodeur.js",
+    "codecSha256": "b86b0c72a7ee43f4caa766c25057326897faafe3a98f98fe3cf17d12627d8758",
+    "referencedAt": "2026-06-18"
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "uplink": [
+    {
+      "description": "Periodic keepalive uplink, reason 0x01 (TTN example bytes)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 29, 90, 120, 250, 44, 1, 240, 128]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 18.01, "relativeHumidity": 46.88 },
+          "targetTemperature": 29,
+          "targetTemperatureFloat": 29,
+          "motorPosition": 250,
+          "motorRange": 300,
+          "valveOpenness": 17,
+          "battery": 3.5,
+          "openWindow": false,
+          "highMotorConsumption": false,
+          "lowMotorConsumption": false,
+          "brokenSensor": false,
+          "childLock": true,
+          "calibrationFailed": false,
+          "attachedBackplate": false,
+          "perceiveAsOnline": false,
+          "antiFreezeProtection": false,
+          "reason": 1
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Explicit-request keepalive, reason 0x81 (open window + child lock set) (synthetic)",
+      "input": {
+        "fPort": 1,
+        "bytes": [129, 19, 85, 128, 16, 160, 52, 200, 128]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 10, "relativeHumidity": 50 },
+          "targetTemperature": 19,
+          "targetTemperatureFloat": 19,
+          "motorPosition": 784,
+          "motorRange": 1184,
+          "valveOpenness": 34,
+          "battery": 3.2,
+          "openWindow": true,
+          "highMotorConsumption": false,
+          "lowMotorConsumption": false,
+          "brokenSensor": false,
+          "childLock": true,
+          "calibrationFailed": false,
+          "attachedBackplate": false,
+          "perceiveAsOnline": false,
+          "antiFreezeProtection": false,
+          "reason": 129
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds reason-0x81 frame; vocabulary values (air.temperature, air.relativeHumidity, battery) and TRV extras verified by running reference/upstream-codec.js on the same bytes."
+    },
+    {
+      "description": "Periodic keepalive with motorRange 0 -> valveOpenness 0 (synthetic)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 18, 100, 64, 0, 0, 0, 160, 0]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 24.45, "relativeHumidity": 25 },
+          "targetTemperature": 18,
+          "targetTemperatureFloat": 18,
+          "motorPosition": 0,
+          "motorRange": 0,
+          "valveOpenness": 0,
+          "battery": 3,
+          "openWindow": false,
+          "highMotorConsumption": false,
+          "lowMotorConsumption": false,
+          "brokenSensor": false,
+          "childLock": false,
+          "calibrationFailed": false,
+          "attachedBackplate": false,
+          "perceiveAsOnline": false,
+          "antiFreezeProtection": false,
+          "reason": 1
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame exercising the motorRange==0 valveOpenness branch; values confirmed against reference/upstream-codec.js."
+    },
+    {
+      "description": "Empty payload returns an error",
+      "input": { "fPort": 1, "bytes": [] },
+      "expected": { "errors": ["empty payload"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

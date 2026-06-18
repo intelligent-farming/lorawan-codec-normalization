@@ -1,0 +1,77 @@
+{
+  "uplink": [
+    {
+      "description": "Keepalive, external thermistor disconnected",
+      "input": {
+        "fPort": 2,
+        "bytes": [1, 2, 116, 115, 241, 4, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.5,
+          "thermistorProperlyConnected": false,
+          "extThermistorTemperature": 0,
+          "air": {
+            "temperature": 22.8,
+            "relativeHumidity": 44.92
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "Keepalive, external thermistor connected (18.0 C)",
+      "input": {
+        "fPort": 2,
+        "bytes": [1, 2, 128, 128, 197, 32, 180]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.2,
+          "thermistorProperlyConnected": true,
+          "extThermistorTemperature": 18,
+          "air": {
+            "temperature": 24,
+            "relativeHumidity": 50
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "Keepalive, low battery / cold reading",
+      "input": {
+        "fPort": 2,
+        "bytes": [1, 1, 200, 40, 153, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.9,
+          "thermistorProperlyConnected": false,
+          "extThermistorTemperature": 0,
+          "air": {
+            "temperature": 5.6,
+            "relativeHumidity": 15.63
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "Empty payload is rejected",
+      "input": {
+        "fPort": 2,
+        "bytes": []
+      },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    }
+  ],
+  "downlink": []
+}

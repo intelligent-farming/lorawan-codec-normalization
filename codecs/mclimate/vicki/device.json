@@ -1,0 +1,26 @@
+{
+  "vendor": "mclimate",
+  "device": "vicki",
+  "name": "Vicki - LoRaWAN Radiator Thermostat (TRV)",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "battery",
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "mclimate",
+    "device": "vicki",
+    "codecId": "vicki-codec",
+    "codecFile": "vicki.js",
+    "codecSha256": "a4d4421f71b026740fc012ee43c3c568b3abc5e04922a459eaf4492e6a611185",
+    "referencedAt": "2026-06-18"
+  }
+}

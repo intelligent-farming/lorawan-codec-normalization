@@ -1,0 +1,43 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/browan/tbhh100-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Temperature & Humidity",
+      "input": {
+        "fPort": 103,
+        "bytes": [
+          8,
+          171,
+          53,
+          34,
+          255,
+          255,
+          255,
+          255
+        ]
+      },
+      "output": {
+        "data": {
+          "status": 1,
+          "temperature": 21,
+          "humidity": 34,
+          "battery": 3.6
+        }
+      }
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [
+          1
+        ]
+      },
+      "output": {
+        "errors": [
+          "unknown FPort"
+        ]
+      }
+    }
+  ]
+}

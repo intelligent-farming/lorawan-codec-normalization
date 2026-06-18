@@ -1,0 +1,78 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/adeunis/comfort-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "0x4c Comfort 2 data",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          76,
+          150,
+          0,
+          197,
+          31,
+          0,
+          199,
+          32,
+          0,
+          200,
+          33,
+          0,
+          202,
+          34,
+          0,
+          204,
+          35,
+          0,
+          205,
+          36,
+          20,
+          171,
+          163,
+          233
+        ]
+      },
+      "output": {
+        "data": {
+          "bytes": {
+            "type": "0x4c Comfort 2 data",
+            "status": {
+              "frameCounter": 4,
+              "hardwareError": false,
+              "lowBattery": true,
+              "configurationDone": false,
+              "configurationInconsistency": false,
+              "timestamp": true
+            },
+            "timestamp": "2023-12-28T19:22:17.000",
+            "decodingInfo": "values: [t=0, t-1, t-2, ...]",
+            "temperature": {
+              "unit": "°C",
+              "values": [
+                19.7,
+                19.9,
+                20,
+                20.2,
+                20.4,
+                20.5
+              ]
+            },
+            "humidity": {
+              "unit": "%",
+              "values": [
+                31,
+                32,
+                33,
+                34,
+                35,
+                36
+              ]
+            }
+          }
+        },
+        "warnings": [],
+        "errors": []
+      }
+    }
+  ]
+}

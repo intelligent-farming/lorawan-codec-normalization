@@ -1,0 +1,64 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/adeunis/comfort-co2-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "0x6a Comfort CO2 data",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          106,
+          128,
+          1,
+          179,
+          62,
+          1,
+          164,
+          1,
+          180,
+          63,
+          1,
+          165
+        ]
+      },
+      "output": {
+        "data": {
+          "bytes": {
+            "type": "0x6a Comfort CO2 data",
+            "status": {
+              "frameCounter": 4,
+              "hardwareError": false,
+              "lowBattery": false,
+              "configurationDone": false,
+              "configurationInconsistency": false,
+              "timestamp": false
+            },
+            "decodingInfo": "values: [t=0, t-1, t-2, ...]",
+            "temperature": {
+              "unit": "°C",
+              "values": [
+                43.5,
+                43.6
+              ]
+            },
+            "humidity": {
+              "unit": "%",
+              "values": [
+                62,
+                63
+              ]
+            },
+            "co2": {
+              "unit": "ppm",
+              "values": [
+                420,
+                421
+              ]
+            }
+          }
+        },
+        "warnings": [],
+        "errors": []
+      }
+    }
+  ]
+}

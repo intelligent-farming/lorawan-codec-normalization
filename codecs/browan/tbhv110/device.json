@@ -1,0 +1,29 @@
+{
+  "vendor": "browan",
+  "device": "tbhv110",
+  "name": "Healthy Home IAQ Sensor",
+  "categories": [
+    "climate",
+    "air-quality"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "co2",
+    "voc",
+    "iaq"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "browan",
+    "device": "tbhv110",
+    "codecId": "tbhv110-codec",
+    "codecFile": "tbhv110.js",
+    "codecSha256": "21ee6ded542cddc205d5b44f55b85e40c7ef16ba21704274f62d7a4dad5ec39f",
+    "referencedAt": "2026-06-18"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "vendor": "adeunis",
+  "device": "comfort",
+  "name": "Comfort - Temperature & Humidity Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "adeunis",
+    "device": "comfort",
+    "codecId": "comfort-codec",
+    "codecFile": "comfort_lib.js",
+    "codecSha256": "469aa17c192d5e78196b2df159802c1065a71d06ea7e6e95149909c1935142f5",
+    "referencedAt": "2026-06-18"
+  }
+}

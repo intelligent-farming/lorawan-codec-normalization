@@ -1,0 +1,25 @@
+{
+  "vendor": "mclimate",
+  "device": "ht-sensor",
+  "name": "Humidity and Temperature Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "mclimate",
+    "device": "ht-sensor",
+    "codecId": "ht-sensor-codec",
+    "codecFile": "ht-sensor.js",
+    "codecSha256": "dbdf8fb2a2736ca47f4f6e8898a55b30790e5671302050b7e058ec5efb1d0b2e",
+    "referencedAt": "2026-06-18"
+  }
+}

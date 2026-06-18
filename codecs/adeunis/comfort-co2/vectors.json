@@ -1,0 +1,97 @@
+{
+  "uplink": [
+    {
+      "description": "0x6a Comfort CO2 data, two samples (newest-first); newest -> air.*, older -> samples",
+      "input": {
+        "fPort": 1,
+        "bytes": [106, 128, 1, 179, 62, 1, 164, 1, 180, 63, 1, 165]
+      },
+      "expected": {
+        "data": {
+          "frameType": "0x6a data",
+          "air": { "temperature": 43.5, "relativeHumidity": 62, "co2": 420 },
+          "frameCounter": 4,
+          "lowBattery": false,
+          "configurationDone": false,
+          "configurationInconsistency": false,
+          "samples": [
+            { "temperature": 43.5, "relativeHumidity": 62, "co2": 420 },
+            { "temperature": 43.6, "relativeHumidity": 63, "co2": 421 }
+          ]
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Single sample with status flags set (frameCounter 1, lowBattery, configurationDone)",
+      "input": {
+        "fPort": 1,
+        "bytes": [106, 35, 0, 198, 45, 1, 224]
+      },
+      "expected": {
+        "data": {
+          "frameType": "0x6a data",
+          "air": { "temperature": 19.8, "relativeHumidity": 45, "co2": 480 },
+          "frameCounter": 1,
+          "lowBattery": true,
+          "configurationDone": true,
+          "configurationInconsistency": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds single-sample frame; expected.data produced by running reference/upstream-codec.js (status byte 0x23 -> frameCounter 1, lowBattery, configurationDone; temp 0x00C6/10=19.8, hum 45, CO2 0x01E0=480)."
+    },
+    {
+      "description": "Negative temperature (exercises signed 16-bit big-endian decode)",
+      "input": {
+        "fPort": 1,
+        "bytes": [106, 0, 255, 206, 40, 1, 194]
+      },
+      "expected": {
+        "data": {
+          "frameType": "0x6a data",
+          "air": { "temperature": -5, "relativeHumidity": 40, "co2": 450 },
+          "frameCounter": 0,
+          "lowBattery": false,
+          "configurationDone": false,
+          "configurationInconsistency": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected.data produced by running reference/upstream-codec.js (temp 0xFFCE = -50/10 = -5.0 C, hum 40, CO2 0x01C2 = 450)."
+    },
+    {
+      "description": "Timestamped frame (status bit 0x04 set) -> RFC3339 time",
+      "input": {
+        "fPort": 1,
+        "bytes": [106, 4, 0, 220, 55, 2, 188, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "frameType": "0x6a data",
+          "air": { "temperature": 22, "relativeHumidity": 55, "co2": 700 },
+          "frameCounter": 0,
+          "lowBattery": false,
+          "configurationDone": false,
+          "configurationInconsistency": false,
+          "time": "2013-01-01T00:00:00.000Z"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; wire-format values confirmed by running reference/upstream-codec.js (temp 0x00DC/10=22.0, hum 55, CO2 0x02BC=700, trailing 4-byte timestamp raw 0 -> Adeunis epoch 2013-01-01). Upstream emits the timestamp without a Z; we normalize to an RFC3339 'time' with the Z suffix."
+    },
+    {
+      "description": "Unsupported frame code returns an error",
+      "input": {
+        "fPort": 1,
+        "bytes": [48, 0, 2, 3, 1, 4]
+      },
+      "expected": {
+        "errors": ["unsupported frame code 0x30"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; the 0x30 daily-statistics frame is not normalized (upstream returns it under data.bytes, but our normalized codec only emits the 0x6a measurement frame)."
+    }
+  ],
+  "downlink": []
+}

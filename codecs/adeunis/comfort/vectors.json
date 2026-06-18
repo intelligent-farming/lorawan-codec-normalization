@@ -1,0 +1,126 @@
+{
+  "uplink": [
+    {
+      "description": "0x4c data frame, 6 samples + timestamp (upstream TTN example input; status 0x96 -> frameCounter 4, lowBattery)",
+      "input": {
+        "fPort": 1,
+        "bytes": [76, 150, 0, 197, 31, 0, 199, 32, 0, 200, 33, 0, 202, 34, 0, 204, 35, 0, 205, 36, 20, 171, 163, 233]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "location": "indoor",
+            "temperature": 19.7,
+            "relativeHumidity": 31
+          },
+          "frameType": "0x4c",
+          "frameCounter": 4,
+          "lowBattery": true,
+          "configurationDone": false,
+          "configurationInconsistency": false,
+          "time": "2023-12-28T19:22:17.000Z",
+          "temperatureHistory": [19.9, 20, 20.2, 20.4, 20.5],
+          "humidityHistory": [32, 33, 34, 35, 36]
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "0x4c data frame, single sample, no timestamp (status 0x00; current reading only)",
+      "input": {
+        "fPort": 1,
+        "bytes": [76, 0, 0, 220, 45]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "location": "indoor",
+            "temperature": 22,
+            "relativeHumidity": 45
+          },
+          "frameType": "0x4c",
+          "frameCounter": 0,
+          "lowBattery": false,
+          "configurationDone": false,
+          "configurationInconsistency": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected computed by running reference/upstream-codec.js (current sample 220/10=22.0 degC, humidity 45%). Single sample => no temperatureHistory/humidityHistory."
+    },
+    {
+      "description": "0x4c data frame, two samples, negative current temperature, no timestamp (status 0x21 -> frameCounter 1, configurationDone)",
+      "input": {
+        "fPort": 1,
+        "bytes": [76, 33, 255, 206, 28, 0, 15, 35]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "location": "indoor",
+            "temperature": -5,
+            "relativeHumidity": 28
+          },
+          "frameType": "0x4c",
+          "frameCounter": 1,
+          "lowBattery": false,
+          "configurationDone": true,
+          "configurationInconsistency": false,
+          "temperatureHistory": [1.5],
+          "humidityHistory": [35]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected computed by running reference/upstream-codec.js. Current sample 0xFFCE=-50 -> -5.0 degC (int16 BE two's complement, /10); prior sample 0x000F=15 -> 1.5 degC. Exercises negative temperature and the prior-sample history extras."
+    },
+    {
+      "description": "0x4c data frame, single sample with timestamp (status 0x04 -> timestamp bit only)",
+      "input": {
+        "fPort": 1,
+        "bytes": [76, 4, 1, 9, 55, 20, 171, 163, 233]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "location": "indoor",
+            "temperature": 26.5,
+            "relativeHumidity": 55
+          },
+          "frameType": "0x4c",
+          "frameCounter": 0,
+          "lowBattery": false,
+          "configurationDone": false,
+          "configurationInconsistency": false,
+          "time": "2023-12-28T19:22:17.000Z"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected computed by running reference/upstream-codec.js. Current sample 0x0109=265 -> 26.5 degC, humidity 55%. Timestamp field 0x14ABA3E9=346792937 + 1356998400 epoch offset -> 2023-12-28T19:22:17Z."
+    },
+    {
+      "description": "0x30 keep-alive frame: no temperature/humidity data -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [48, 32]
+      },
+      "expected": {
+        "errors": ["unsupported frame 0x30"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; the keep-alive frame (0x30) carries only a status byte and no climate measurement, so the normalized codec returns an error rather than an incomplete measurement."
+    },
+    {
+      "description": "Payload shorter than frame code + status byte -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [76]
+      },
+      "expected": {
+        "errors": ["payload too short"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic guard: a single byte cannot carry a frame code and a status byte."
+    }
+  ],
+  "downlink": []
+}

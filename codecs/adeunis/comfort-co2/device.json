@@ -1,0 +1,29 @@
+{
+  "vendor": "adeunis",
+  "device": "comfort-co2",
+  "name": "Comfort CO2 - Indoor Air Quality Sensor",
+  "categories": [
+    "climate",
+    "air-quality"
+  ],
+  "sensors": [
+    "co2",
+    "temperature",
+    "humidity",
+    "button",
+    "digital input"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "adeunis",
+    "device": "comfort-co2",
+    "codecId": "comfort-co2-codec",
+    "codecFile": "comfort_co2_lib.js",
+    "codecSha256": "1820de264366e6ace582fa24b61f42e3ec59cd55233a139157ab1a62b3b219b4",
+    "referencedAt": "2026-06-18"
+  }
+}

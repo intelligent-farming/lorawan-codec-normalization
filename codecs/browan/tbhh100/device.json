@@ -1,0 +1,25 @@
+{
+  "vendor": "browan",
+  "device": "tbhh100",
+  "name": "Temperature & Humidity Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "browan",
+    "device": "tbhh100",
+    "codecId": "tbhh100-codec",
+    "codecFile": "tbhh100.js",
+    "codecSha256": "d977186dfba2b390f4a8484ed1a1d77bd1514d0acfd4b9fa907bab931726884c",
+    "referencedAt": "2026-06-18"
+  }
+}

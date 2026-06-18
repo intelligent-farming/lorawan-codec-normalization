@@ -1,0 +1,104 @@
+{
+  "uplink": [
+    {
+      "description": "Temperature & Humidity (status 1, battery 3.6 V)",
+      "input": {
+        "fPort": 103,
+        "bytes": [8, 171, 53, 34, 255, 255, 255, 255]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "status": 1,
+          "air": {
+            "temperature": 21,
+            "relativeHumidity": 34
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Upstream TTN example INPUT reused; expected.data produced by the ORACLE method (running reference/upstream-codec.js on this input) then normalized: battery (already volts) -> battery; temperature -> air.temperature; humidity -> air.relativeHumidity; status flags -> camelCase extra status."
+    },
+    {
+      "description": "Mid-range climate, status 0, minimum battery level (2.5 V)",
+      "input": {
+        "fPort": 103,
+        "bytes": [0, 160, 55, 50, 255, 255, 255, 255]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.5,
+          "status": 0,
+          "air": {
+            "temperature": 23,
+            "relativeHumidity": 50
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected.data from the ORACLE method (reference/upstream-codec.js) then normalized. battery level nibble 0 -> 2.5 V."
+    },
+    {
+      "description": "High temperature & humidity, status 2, maximum battery (4.0 V)",
+      "input": {
+        "fPort": 103,
+        "bytes": [16, 175, 80, 95, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 4,
+          "status": 2,
+          "air": {
+            "temperature": 48,
+            "relativeHumidity": 95
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected.data from the ORACLE method (reference/upstream-codec.js) then normalized. battery level nibble 15 -> 4.0 V; trailing zero bytes are ignored by the fixed 4-byte layout."
+    },
+    {
+      "description": "Below-freezing temperature (-12 C), status 3, battery 2.7 V",
+      "input": {
+        "fPort": 103,
+        "bytes": [24, 162, 20, 12, 1, 2, 3, 4]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.7,
+          "status": 3,
+          "air": {
+            "temperature": -12,
+            "relativeHumidity": 12
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected.data from the ORACLE method (reference/upstream-codec.js) then normalized. temperature = (byte2 & 0x7f) - 32 = 20 - 32 = -12 C exercises the freezing-point offset."
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [1]
+      },
+      "expected": {
+        "errors": ["unknown FPort"]
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Empty (all-zero) payload",
+      "input": {
+        "fPort": 103,
+        "bytes": [0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic",
+      "_note": "Upstream returns a bare {} here; this module's contract forbids that, so we report an error instead."
+    }
+  ],
+  "downlink": []
+}

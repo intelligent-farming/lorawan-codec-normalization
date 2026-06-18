@@ -1,0 +1,28 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/mclimate/co2-sensor-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Short periodic uplink",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          1,
+          2,
+          113,
+          2,
+          115,
+          132,
+          237
+        ]
+      },
+      "output": {
+        "data": {
+          "batteryVoltage": 3.5,
+          "CO2": 625,
+          "relativeHumidity": 51.56,
+          "sensorTemperature": 22.7
+        }
+      }
+    }
+  ]
+}

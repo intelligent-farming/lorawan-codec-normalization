@@ -1,0 +1,80 @@
+{
+  "uplink": [
+    {
+      "description": "Climate measurements frame: 23.0 C, 50 %RH, battery 3.10 V (temp+humidity bitmask 0x03)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 54, 3, 3, 0, 230, 50]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 23, "relativeHumidity": 50 },
+          "battery": 3.1
+        }
+      },
+      "source": "synthetic",
+      "_note": "synthetic in-bounds input; expected produced by running reference/upstream-codec.js (opcode 3, meas 0x03): temp int16/10, rh uint8, voltage uint16/100 -> battery. temp->air.temperature, rh->air.relativeHumidity"
+    },
+    {
+      "description": "Full air-quality frame: 22.5 C, 45 %RH, 1020.2 hPa, 300 lux, 600 ppm CO2, 250 ppb TVOC, PM 10/15/20 ug/m3, battery 3.30 V",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 74, 3, 191, 0, 225, 45, 39, 218, 1, 44, 2, 88, 0, 250, 2, 0, 10, 0, 15, 0, 20]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 22.5,
+            "relativeHumidity": 45,
+            "pressure": 1020.2,
+            "lightIntensity": 300,
+            "co2": 600
+          },
+          "tvoc": 250,
+          "pm1_0": 10,
+          "pm2_5": 15,
+          "pm10": 20,
+          "battery": 3.3
+        }
+      },
+      "source": "synthetic",
+      "_note": "synthetic in-bounds input; expected produced by running reference/upstream-codec.js (opcode 3, meas 0xBF = temp|rh|press|light|co2|tvoc|ext, ext 0x02 = PM). press uint16/10, light/co2/tvoc/pm uint16. co2->air.co2 (air-quality), press->air.pressure, light->air.lightIntensity; tvoc/pm size bins -> camelCase extras"
+    },
+    {
+      "description": "Sub-zero temperature only: -5.0 C, battery 3.30 V (two's-complement int16)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 74, 3, 1, 255, 206]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": -5 },
+          "battery": 3.3
+        }
+      },
+      "source": "synthetic",
+      "_note": "synthetic in-bounds input; expected produced by running reference/upstream-codec.js (opcode 3, meas 0x01): raw 0xFFCE = -50 -> -5.0 C confirms signed int16 / 10"
+    },
+    {
+      "description": "Truncated CO2 field: measurement bitmask declares CO2 (0x10) but no bytes follow",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 74, 3, 16]
+      },
+      "expected": { "errors": ["truncated CO2 field"] },
+      "source": "synthetic",
+      "_note": "synthetic in-bounds input; upstream reports error code 130 'Unexpected end, measurements without (complete) CO2 value' for the same truncation; this codec surfaces it as an error result rather than partial data"
+    },
+    {
+      "description": "Unsupported opcode (99): only the Measurements opcode (3) is decoded for this air-quality sensor",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 74, 99]
+      },
+      "expected": { "errors": ["unsupported opcode 99"] },
+      "source": "synthetic",
+      "_note": "synthetic in-bounds input; upstream reports error code 30 'Unknown OpCode' (99 is not a defined opcode); this codec rejects any non-Measurements opcode"
+    }
+  ],
+  "downlink": []
+}

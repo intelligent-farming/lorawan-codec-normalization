@@ -1,0 +1,36 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/mclimate/fan-coil-thermostat-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Periodic uplink",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          1,
+          2,
+          136,
+          117,
+          1,
+          59,
+          1,
+          0,
+          6,
+          1,
+          1
+        ]
+      },
+      "output": {
+        "data": {
+          "sensorTemperature": 24.8,
+          "relativeHumidity": 45.7,
+          "targetTemperature": 31.5,
+          "operationalMode": 1,
+          "displayedFanSpeed": 0,
+          "actualFanSpeed": 6,
+          "valveStatus": 1,
+          "deviceStatus": 1
+        }
+      }
+    }
+  ]
+}

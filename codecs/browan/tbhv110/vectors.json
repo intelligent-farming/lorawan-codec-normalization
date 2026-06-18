@@ -1,0 +1,65 @@
+{
+  "uplink": [
+    {
+      "description": "IAQ changed (fPort 103)",
+      "input": {
+        "fPort": 103,
+        "bytes": [97, 11, 53, 30, 191, 3, 1, 0, 81, 0, 54]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "air": {
+            "relativeHumidity": 30,
+            "temperature": 22,
+            "co2": 959
+          },
+          "boardTemperature": 21,
+          "voc": 1,
+          "iaq": 81,
+          "status": 1,
+          "tempHumidChanged": 0,
+          "iaqChanged": 1
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "synthetic mid-range temp/humidity/eCO2 (fPort 103)",
+      "input": {
+        "fPort": 103,
+        "bytes": [17, 9, 55, 45, 16, 2, 120, 0, 40, 0, 55]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.4,
+          "air": {
+            "relativeHumidity": 45,
+            "temperature": 23,
+            "co2": 528
+          },
+          "boardTemperature": 23,
+          "voc": 120,
+          "iaq": 40,
+          "status": 1,
+          "tempHumidChanged": 1,
+          "iaqChanged": 0
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected fields produced by running reference/upstream-codec.js and re-keyed to the normalized vocabulary (humidity->air.relativeHumidity, temperature->air.temperature, eco2->air.co2, temperatureBoard->boardTemperature; voc/iaq/status flags are camelCase extras)."
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [1]
+      },
+      "expected": {
+        "errors": ["unsupported fPort"]
+      },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}
