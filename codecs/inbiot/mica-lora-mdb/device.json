@@ -1,0 +1,31 @@
+{
+  "vendor": "inbiot",
+  "device": "mica-lora-mdb",
+  "name": "MICA Modbus- Indoor Air Quality Sensor",
+  "categories": [
+    "climate",
+    "air-quality"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "co2",
+    "tvoc",
+    "pm2.5",
+    "pm10",
+    "sound"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "inbiot",
+    "device": "mica-lora-mdb",
+    "codecId": "inbiot-lora-codec",
+    "codecFile": "decoder.js",
+    "codecSha256": "5aa4d128bd6c628ac336e4aaad7fb4d2ca7949896c8a8498964183080b755411",
+    "referencedAt": "2026-06-18"
+  }
+}

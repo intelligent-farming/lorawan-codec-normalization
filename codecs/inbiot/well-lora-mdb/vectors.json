@@ -1,0 +1,134 @@
+{
+  "uplink": [
+    {
+      "description": "WELL sensor reading, all channels active (gases warmed up)",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          1,
+          0, 225,
+          2, 40,
+          2, 142,
+          0, 12,
+          0, 130,
+          0, 5,
+          0, 9,
+          0, 11,
+          0, 14,
+          0, 23,
+          0, 18,
+          0, 35,
+          0, 7,
+          87, 69, 76, 76,
+          0,
+          48, 60, 42, 70, 12, 39
+        ]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 22.5,
+            "relativeHumidity": 55.2,
+            "co2": 654,
+            "ch2o": 12,
+            "tvoc": 130,
+            "pm1": 5,
+            "pm25": 9,
+            "pm4": 11,
+            "pm10": 14,
+            "o3": 23,
+            "no2": 18,
+            "co": 3.5
+          },
+          "type": "WELL",
+          "vIndex": 48,
+          "tIndex": 60,
+          "virusIndex": 42,
+          "iaqIndex": 70,
+          "moldIndex": 12,
+          "noiseDb": 39,
+          "counter": 7
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds WELL sensor frame. Expected values produced by running reference/upstream-codec.js (InbiotDeviceDecode, WELL branch) on these bytes, then normalized: temperature/humidity (/10) -> air.temperature/air.relativeHumidity, co2 -> air.co2, gases/PM/TVOC/HCHO -> camelCase air extras, CO /10, indices/type/noise/counter -> top-level camelCase extras. uint16 fields are big-endian per upstream getUint16."
+    },
+    {
+      "description": "WELL sensor reading, gases preheating and mold still calculating (noise channel absent)",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          1,
+          0, 210,
+          1, 244,
+          1, 144,
+          0, 3,
+          0, 45,
+          0, 2,
+          0, 4,
+          0, 5,
+          0, 6,
+          255, 255,
+          255, 255,
+          255, 255,
+          0, 12,
+          87, 69, 76, 76,
+          0,
+          30, 55, 20, 40, 255, 0
+        ]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 21,
+            "relativeHumidity": 50,
+            "co2": 400,
+            "ch2o": 3,
+            "tvoc": 45,
+            "pm1": 2,
+            "pm25": 4,
+            "pm4": 5,
+            "pm10": 6,
+            "o3": "Preheating",
+            "no2": "Preheating",
+            "co": "Preheating"
+          },
+          "type": "WELL",
+          "vIndex": 30,
+          "tIndex": 55,
+          "virusIndex": 20,
+          "iaqIndex": 40,
+          "moldIndex": "Calculating",
+          "counter": 12
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic WELL frame exercising the preheating (0xffff -> 'Preheating') gas branch, the mold 'Calculating' (0xff) marker, and the absent-noise branch (bytes[37] === 0 -> noiseDb omitted). Expected produced via reference/upstream-codec.js then normalized as above."
+    },
+    {
+      "description": "Device configuration message (bytes[0] === 0) carries no measurements",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 1, 1, 1, 0, 5, 255, 0, 1]
+      },
+      "expected": {
+        "errors": ["unsupported inBiot message type 0"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic. The shared inBiot payload multiplexes config (0), sensor (1) and info (2) frames on bytes[0]; only the sensor frame carries measurements, so non-sensor frames are reported as errors rather than a bare {} (output contract). reference/upstream-codec.js would decode this to device-config fields, which are not measurement data."
+    },
+    {
+      "description": "Empty payload",
+      "input": {
+        "fPort": 1,
+        "bytes": []
+      },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic guard vector: an empty byte array yields no measurement."
+    }
+  ],
+  "downlink": []
+}

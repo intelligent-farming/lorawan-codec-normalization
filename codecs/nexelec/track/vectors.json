@@ -1,0 +1,94 @@
+{
+  "uplink": [
+    {
+      "description": "periodic data: temperature, humidity, pressure, CO2",
+      "input": { "fPort": 1, "bytes": [181, 1, 7, 2, 3, 8, 1, 224, 9, 3, 245, 10, 2, 188] },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 21.5,
+            "relativeHumidity": 48,
+            "pressure": 1013,
+            "co2": 700
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds periodic frame (product 0xB5, msg 0x01). TLV channels 0x07/0x08/0x09/0x0A. Expected derived by running reference/upstream-codec.js (temp 515/10-30=21.5 C, hum 480/10=48 %RH, pressure 1013 hPa, co2 700 ppm), then mapped to the normalized vocabulary."
+    },
+    {
+      "description": "periodic data: temperature + humidity + PM1/PM2.5/PM10 mass",
+      "input": { "fPort": 1, "bytes": [181, 1, 7, 2, 38, 8, 2, 98, 1, 0, 12, 2, 0, 18, 3, 0, 30] },
+      "expected": {
+        "data": {
+          "pm1UgM3": 12,
+          "pm2_5UgM3": 18,
+          "pm10UgM3": 30,
+          "air": {
+            "temperature": 25,
+            "relativeHumidity": 61
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic periodic frame exercising PM mass channels 0x01/0x02/0x03 (ug/m3, no vocabulary key -> camelCase extras) alongside temp/humidity. Expected derived by running reference/upstream-codec.js."
+    },
+    {
+      "description": "periodic data: temperature sensor error sentinel suppressed, humidity retained",
+      "input": { "fPort": 1, "bytes": [181, 1, 7, 255, 255, 8, 2, 98] },
+      "expected": {
+        "data": {
+          "air": {
+            "relativeHumidity": 61
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Temperature channel 0x07 carries the 0xFFFF error sentinel (upstream returns \"Error\"); we suppress it and keep humidity. Expected derived by running reference/upstream-codec.js."
+    },
+    {
+      "description": "product status: battery voltage (mV) normalized to volts",
+      "input": { "fPort": 1, "bytes": [181, 2, 1, 20, 14, 16, 100, 200, 192] },
+      "expected": {
+        "data": {
+          "hardwareVersion": 1,
+          "softwareVersion": 2,
+          "battery": 3.6,
+          "powerSource": "external"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Product status frame (msg 0x02): batteryVoltage 0x0E10 = 3600 mV -> battery 3.6 V (mV/1000 per the unit table). Expected derived by running reference/upstream-codec.js (swRevision 20*0.1=2.0, power source bit 0 = external)."
+    },
+    {
+      "description": "positionning frame: GPS fix -> decimal latitude/longitude",
+      "input": { "fPort": 1, "bytes": [181, 3, 97, 35, 74, 0, 129, 0, 0, 0, 74, 64] },
+      "expected": {
+        "data": {
+          "position": {
+            "latitude": 48.607333,
+            "longitude": 4.033333
+          },
+          "satellites": 2
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic positionning frame (msg 0x03). Upstream DMS extraction yields lat 48 deg 36 min 26 s 400 ms North, lon 4 deg 2 min 0 s 0 ms East, 2 satellites. Converted to decimal degrees (deg + min/60 + sec/3600 + ms/1000/3600) -> 48.607333 / 4.033333. Expected components verified by running reference/upstream-codec.js."
+    },
+    {
+      "description": "product configuration frame carries no measurement",
+      "input": { "fPort": 1, "bytes": [181, 4, 0, 0, 0, 0] },
+      "expected": { "errors": ["product configuration frame carries no normalized measurement"] },
+      "source": "synthetic",
+      "_note": "Msg 0x04 is device settings, not telemetry; we report an error rather than fabricate a measurement object."
+    },
+    {
+      "description": "unexpected product byte rejected",
+      "input": { "fPort": 1, "bytes": [171, 1, 7, 2, 3] },
+      "expected": { "errors": ["unexpected product byte"] },
+      "source": "synthetic",
+      "_note": "Product byte 0xAB (Nexelec MOVE) is not 0xB5 (TRACK+); the codec rejects it. Synthetic negative test."
+    }
+  ],
+  "downlink": []
+}

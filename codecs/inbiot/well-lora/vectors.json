@@ -1,0 +1,126 @@
+{
+  "uplink": [
+    {
+      "description": "WELL sensor message, all gas sensors active",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 0, 234, 1, 199, 2, 108, 0, 12, 0, 85, 0, 3, 0, 5, 0, 7, 0, 9, 0, 42, 0, 18, 0, 150, 0, 7, 87, 69, 76, 76, 0, 50, 60, 40, 72, 30, 44]
+      },
+      "expected": {
+        "data": {
+          "type": "WELL",
+          "tvoc": 85,
+          "pm2_5": 5,
+          "pm10": 9,
+          "ch2o": 12,
+          "pm1_0": 3,
+          "pm4": 7,
+          "o3": 42,
+          "no2": 18,
+          "co": 15,
+          "vIndex": 50,
+          "tIndex": 60,
+          "virusIndex": 40,
+          "iaqIndex": 72,
+          "moldIndex": 30,
+          "noise": 44,
+          "counter": 7,
+          "air": {
+            "temperature": 23.4,
+            "relativeHumidity": 45.5,
+            "co2": 620
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds WELL reading (temp 23.4 C, RH 45.5 %, CO2 620 ppm, all gas sensors warmed up). Expected values produced by running reference/upstream-codec.js on this input; temperature/humidity/co2 mapped to vocabulary air.* keys, every other field kept as a camelCase extra (upstream dB renamed to noise)."
+    },
+    {
+      "description": "WELL sensor message, gas sensors preheating (TTN example)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 0, 216, 2, 7, 3, 47, 0, 2, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 255, 255, 255, 255, 255, 255, 0, 2, 87, 69, 76, 76, 0, 52, 64, 49, 79, 255, 255]
+      },
+      "expected": {
+        "data": {
+          "type": "WELL",
+          "tvoc": 0,
+          "pm2_5": 1,
+          "pm10": 1,
+          "ch2o": 2,
+          "pm1_0": 1,
+          "pm4": 1,
+          "o3": "Preheating",
+          "no2": "Preheating",
+          "co": "Preheating",
+          "vIndex": 52,
+          "tIndex": 64,
+          "virusIndex": 49,
+          "iaqIndex": 79,
+          "moldIndex": "Calculating",
+          "noise": "Preheating",
+          "counter": 2,
+          "air": {
+            "temperature": 21.6,
+            "relativeHumidity": 51.9,
+            "co2": 815
+          }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Device configuration message (TTN example)",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 1, 1, 1, 0, 5, 255, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "timeToSend": 1,
+          "ventilation": 1,
+          "ledStatus": true,
+          "useWifi": false,
+          "lorawanRegion": "EU868",
+          "lorawanChannelMask": 255,
+          "ledConfiguration": 0,
+          "touchEnable": true
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Device information message (TTN example)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 2, 0, 65, 87, 69, 76, 76, 95, 76, 79, 82, 65, 95, 48, 48, 48, 95, 86, 65, 67, 77, 73, 67, 65, 95, 87, 69, 76, 76, 48, 201, 34, 96, 31, 248, 1, 0, 0, 0, 37, 128, 1]
+      },
+      "expected": {
+        "data": {
+          "fwVersion": "2.65",
+          "model": "WELL_LORA_000_VAC",
+          "micaType": "MICA_WELL",
+          "mac": "30:C9:22:60:1F:F8",
+          "resetReason": "1 Reset due to power-on event",
+          "modbusAddress": 1,
+          "modbusParity": 0,
+          "modbusBaudRate": 9600
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Unrecognized message type byte",
+      "input": {
+        "fPort": 1,
+        "bytes": [99, 0, 0]
+      },
+      "expected": {
+        "errors": ["unrecognized message type"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: leading byte 99 is not a known message kind. Upstream returns a bare { data: {} }; our codec returns an error per the output contract (never emit an empty object)."
+    }
+  ],
+  "downlink": []
+}

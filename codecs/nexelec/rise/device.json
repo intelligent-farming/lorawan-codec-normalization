@@ -1,0 +1,27 @@
+{
+  "vendor": "nexelec",
+  "device": "rise",
+  "name": "RISE - Air Quality",
+  "categories": [
+    "climate",
+    "air-quality"
+  ],
+  "sensors": [
+    "co2",
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "nexelec",
+    "device": "rise",
+    "codecId": "sign-codec",
+    "codecFile": "sign-codec.js",
+    "codecSha256": "bdd5dda0d7d0e386b26cccb8a3901530cb4b1cfe945eafdda9e708c4dd1d10eb",
+    "referencedAt": "2026-06-18"
+  }
+}

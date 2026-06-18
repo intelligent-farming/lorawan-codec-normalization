@@ -1,0 +1,25 @@
+{
+  "vendor": "nexelec",
+  "device": "origin-plus",
+  "name": "ORIGIN PLUS",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "nexelec",
+    "device": "origin-plus",
+    "codecId": "origin-plus-codec",
+    "codecFile": "origin-plus-codec.js",
+    "codecSha256": "55ff50e88cfe1874a4927530eb21e15ee3d78ec5da7fe998349c3606db057b00",
+    "referencedAt": "2026-06-18"
+  }
+}

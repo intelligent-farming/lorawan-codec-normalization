@@ -1,0 +1,28 @@
+{
+  "vendor": "nexelec",
+  "device": "carbon",
+  "name": "Carbon - Air Quality",
+  "categories": [
+    "climate",
+    "air-quality"
+  ],
+  "sensors": [
+    "co2",
+    "temperature",
+    "humidity",
+    "iaq"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "nexelec",
+    "device": "carbon",
+    "codecId": "carbon-codec",
+    "codecFile": "carbon-codec-v1.js",
+    "codecSha256": "b16b14061d3b26ef1abaa4284fc1bee2223784aad21206e077d1e926c767ec3f",
+    "referencedAt": "2026-06-18"
+  }
+}

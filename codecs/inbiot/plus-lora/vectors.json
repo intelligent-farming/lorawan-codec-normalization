@@ -1,0 +1,99 @@
+{
+  "uplink": [
+    {
+      "description": "PLUS sensor reading: temperature/humidity/co2 -> air.*, formaldehyde/TVOC/PM/indices/noise -> extras",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          1, 0, 232, 1, 222, 2, 100, 0, 12, 0, 145, 0, 3, 0, 5, 0, 6, 0, 8,
+          0, 0, 0, 0, 0, 0, 0, 17, 80, 76, 85, 83, 0, 72, 68, 40, 81, 12, 42
+        ]
+      },
+      "expected": {
+        "data": {
+          "type": "PLUS",
+          "ch2o": 12,
+          "tvoc": 145,
+          "pm1_0": 3,
+          "pm2_5": 5,
+          "pm4": 6,
+          "pm10": 8,
+          "vIndex": 72,
+          "tIndex": 68,
+          "virusIndex": 40,
+          "iaqIndex": 81,
+          "moldIndex": 12,
+          "dB": 42,
+          "counter": 17,
+          "air": { "temperature": 23.2, "relativeHumidity": 47.8, "co2": 612 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds PLUS reading. Bytes hand-built to the upstream wire layout (big-endian uint16 fields; 'PLUS' type tag at bytes 27-30); expected.data is the normalized form of the upstream reference decoder's output for these bytes (temperature/humidity/co2 routed to air.*, all other measured fields kept as camelCase extras)."
+    },
+    {
+      "description": "Device configuration message (bytes[0]=0): no measurements, settings as extras",
+      "input": { "fPort": 1, "bytes": [0, 1, 1, 1, 0, 5, 255, 0, 1] },
+      "expected": {
+        "data": {
+          "timeToSend": 1,
+          "ventilation": 1,
+          "ledStatus": true,
+          "useWifi": false,
+          "lorawanRegion": "EU868",
+          "lorawanChannelMask": 255,
+          "ledConfiguration": 0,
+          "touchEnable": true
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream example input (Apache-2.0). expected.data authored here: the configuration message carries no climate/air-quality measurement, so the codec emits only camelCase extras and no air block. Matches the upstream reference decoder for these bytes."
+    },
+    {
+      "description": "Device information message (bytes[0]=2): firmware/model/MAC/Modbus as extras",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2, 2, 0, 65, 87, 69, 76, 76, 95, 76, 79, 82, 65, 95, 48, 48, 48, 95,
+          86, 65, 67, 77, 73, 67, 65, 95, 87, 69, 76, 76, 48, 201, 34, 96, 31,
+          248, 1, 0, 0, 0, 37, 128, 1
+        ]
+      },
+      "expected": {
+        "data": {
+          "fwVersion": "2.65",
+          "model": "WELL_LORA_000_VAC",
+          "micaType": "MICA_WELL",
+          "mac": "30:C9:22:60:1F:F8",
+          "resetReason": "1 Reset due to power-on event",
+          "modbusAddress": 1,
+          "modbusParity": 0,
+          "modbusBaudRate": 9600
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream example input (Apache-2.0). expected.data authored here: info message carries no measurement, only diagnostic extras; matches the upstream reference decoder for these bytes."
+    },
+    {
+      "description": "Sensor reading with an unrecognized device type tag returns an error",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          1, 0, 232, 1, 222, 2, 100, 0, 12, 0, 145, 0, 3, 0, 5, 0, 6, 0, 8,
+          0, 0, 0, 0, 0, 0, 0, 17, 90, 90, 90, 90, 0, 72, 68, 40, 81, 12, 42
+        ]
+      },
+      "expected": { "errors": ["unrecognized inBiot device type"] },
+      "source": "synthetic",
+      "_note": "Synthetic: same PLUS layout but the type tag at bytes 27-30 spells 'ZZZZ', which the upstream type whitelist (MINI/MICA/PLUS/WELL/NULL) rejects and decodes nothing. The codec surfaces this as an error rather than emitting an empty measurement."
+    },
+    {
+      "description": "Unrecognized message-type discriminator returns an error",
+      "input": { "fPort": 1, "bytes": [9, 1, 2, 3] },
+      "expected": { "errors": ["unrecognized inBiot message type 9"] },
+      "source": "synthetic",
+      "_note": "Synthetic: bytes[0]=9 is outside the upstream switch (0/1/2). The upstream default branch returns an empty object; the codec reports an error instead so the result is never a bare {}."
+    }
+  ],
+  "downlink": []
+}

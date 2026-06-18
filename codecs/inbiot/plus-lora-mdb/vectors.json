@@ -1,0 +1,122 @@
+{
+  "uplink": [
+    {
+      "description": "PLUS sensor message (upstream example input), temp 23.3 C / RH 51.9% / 815 ppm CO2, indices set",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 0, 233, 2, 7, 3, 47, 0, 2, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 255, 255, 255, 255, 255, 255, 0, 2, 80, 76, 85, 83, 0, 52, 64, 49, 79, 255, 255]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 23.3, "relativeHumidity": 51.9, "co2": 815 },
+          "hcho": 2,
+          "tvoc": 0,
+          "pm1_0": 1,
+          "pm2_5": 1,
+          "pm4": 1,
+          "pm10": 1,
+          "ventilationIndex": 52,
+          "thermalIndex": 64,
+          "virusIndex": 49,
+          "iaqIndex": 79,
+          "moldIndex": "Calculating",
+          "noise": "Preheating",
+          "messageCounter": 2
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Input bytes verbatim from the upstream inbiot-lora-codec PLUS example. Expected values authored here by running reference/upstream-codec.js as oracle and mapping its output to normalized vocabulary keys (air.*) plus camelCase extras (ch2o->hcho, vIndex->ventilationIndex, tIndex->thermalIndex, dB->noise, counter->messageCounter)."
+    },
+    {
+      "description": "PLUS sensor message (synthetic), temp 21.4 C / RH 47.2% / 640 ppm CO2, moldIndex calculated, audible noise 38 dBA",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 0, 214, 1, 216, 2, 128, 0, 5, 0, 120, 0, 3, 0, 8, 0, 9, 0, 12, 0, 0, 0, 0, 0, 0, 0, 101, 80, 76, 85, 83, 0, 60, 55, 20, 42, 0, 38]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 21.4, "relativeHumidity": 47.2, "co2": 640 },
+          "hcho": 5,
+          "tvoc": 120,
+          "pm1_0": 3,
+          "pm2_5": 8,
+          "pm4": 9,
+          "pm10": 12,
+          "ventilationIndex": 60,
+          "thermalIndex": 55,
+          "virusIndex": 20,
+          "iaqIndex": 42,
+          "moldIndex": 0,
+          "noise": 38,
+          "messageCounter": 101
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds PLUS frame. Expected produced by running reference/upstream-codec.js over these bytes (oracle) and mapping its output to normalized keys."
+    },
+    {
+      "description": "PLUS sensor message (synthetic), temp 26.8 C / RH 61.8% / 1180 ppm CO2, moldIndex calculating, noise preheating",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 12, 2, 106, 4, 156, 0, 14, 1, 84, 0, 7, 0, 19, 0, 22, 0, 31, 0, 0, 0, 0, 0, 0, 16, 1, 80, 76, 85, 83, 0, 80, 70, 55, 88, 255, 255]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 26.8, "relativeHumidity": 61.8, "co2": 1180 },
+          "hcho": 14,
+          "tvoc": 340,
+          "pm1_0": 7,
+          "pm2_5": 19,
+          "pm4": 22,
+          "pm10": 31,
+          "ventilationIndex": 80,
+          "thermalIndex": 70,
+          "virusIndex": 55,
+          "iaqIndex": 88,
+          "moldIndex": "Calculating",
+          "noise": "Preheating",
+          "messageCounter": 4097
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds PLUS frame; noise byte 0xff yields the 'Preheating' sentinel (a string, matching upstream). Expected produced via the upstream oracle, mapped to normalized keys."
+    },
+    {
+      "description": "Config message (leading byte 0x00) — not a sensor frame",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 1, 1, 1, 0, 5, 255, 0, 1]
+      },
+      "expected": {
+        "errors": ["unsupported message type"]
+      },
+      "source": "ttn-example",
+      "_note": "Input bytes verbatim from the upstream device-configuration example; this codec only decodes the sensor message (0x01)."
+    },
+    {
+      "description": "MINI sensor message — wrong device type for this PLUS codec",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 0, 250, 2, 7, 3, 47, 0, 2, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 255, 255, 255, 255, 255, 255, 0, 2, 77, 73, 78, 73, 0, 52, 64, 49, 79, 255, 255]
+      },
+      "expected": {
+        "errors": ["unsupported device type"]
+      },
+      "source": "ttn-example",
+      "_note": "Input bytes verbatim from the upstream MINI sensor example; the PLUS codec rejects non-PLUS device-type strings."
+    },
+    {
+      "description": "Truncated sensor frame — too short for a PLUS payload",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 0, 233, 2, 7]
+      },
+      "expected": {
+        "errors": ["too short"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic short frame to exercise the length guard."
+    }
+  ],
+  "downlink": []
+}

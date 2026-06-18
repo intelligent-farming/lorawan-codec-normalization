@@ -1,0 +1,60 @@
+{
+  "uplink": [
+    {
+      "description": "periodic frame: 23.0 C, 45.5 %RH, button not pressed (all non-temp/humidity sensors absent)",
+      "input": { "fPort": 1, "bytes": [169, 1, 132, 156, 127, 255, 255, 255, 255, 223, 255, 255, 254] },
+      "expected": {
+        "data": {
+          "air": { "temperature": 23, "relativeHumidity": 45.5 },
+          "buttonPressed": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds periodic frame (product 0xA9 FEEL, message 0x01). temp code 530 -> 23.0 C, hum code 455 -> 45.5 %RH; co2/covt/luminosity/noise/occupancy/IAQ fields set to sentinel (sensor absent), matching the FEEL's temperature+humidity-only sensor set. expected.data authored from the FEEL frame layout and confirmed against reference/upstream-codec.js."
+    },
+    {
+      "description": "periodic frame: -15.0 C, 80.0 %RH, button not pressed",
+      "input": { "fPort": 1, "bytes": [169, 1, 37, 178, 15, 255, 255, 255, 255, 223, 255, 255, 254] },
+      "expected": {
+        "data": {
+          "air": { "temperature": -15, "relativeHumidity": 80 },
+          "buttonPressed": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame exercising a negative temperature: temp code 150 -> 150/10 - 30 = -15.0 C, hum code 800 -> 80.0 %RH. expected.data confirmed against reference/upstream-codec.js."
+    },
+    {
+      "description": "periodic frame: 40.0 C, 12.3 %RH, button pressed",
+      "input": { "fPort": 1, "bytes": [169, 1, 175, 7, 191, 255, 255, 255, 255, 255, 255, 255, 254] },
+      "expected": {
+        "data": {
+          "air": { "temperature": 40, "relativeHumidity": 12.3 },
+          "buttonPressed": true
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame exercising the button-press flag and a one-decimal humidity: temp code 700 -> 40.0 C, hum code 123 -> 12.3 %RH, button bit set. expected.data confirmed against reference/upstream-codec.js."
+    },
+    {
+      "description": "periodic frame: temperature sensor deactivated (sentinel), 50.0 %RH only",
+      "input": { "fPort": 1, "bytes": [169, 1, 255, 95, 79, 255, 255, 255, 255, 223, 255, 255, 254] },
+      "expected": {
+        "data": {
+          "air": { "relativeHumidity": 50 },
+          "buttonPressed": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic frame with the temperature field at the 1021 'deactivated' sentinel (suppressed) and hum code 500 -> 50.0 %RH. Verifies sentinel suppression; upstream reports temperature as 'Desactivated sensor' for this input."
+    },
+    {
+      "description": "wrong product byte (0xAB MOVE) rejected",
+      "input": { "fPort": 1, "bytes": [171, 1, 132, 156, 127, 255, 255, 255, 255, 223, 255, 255, 254] },
+      "expected": { "errors": ["unexpected product byte"] },
+      "source": "synthetic",
+      "_note": "Same payload with the product byte changed from 0xA9 (FEEL) to 0xAB (MOVE) to exercise the product guard."
+    }
+  ],
+  "downlink": []
+}

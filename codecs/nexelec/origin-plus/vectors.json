@@ -1,0 +1,99 @@
+{
+  "uplink": [
+    {
+      "description": "Real Time frame (0x04): normal indoor climate — temperature 22.5 C, relative humidity 45%",
+      "input": {
+        "fPort": 1,
+        "bytes": [177, 4, 131, 86, 128]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 22.5, "relativeHumidity": 45 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "in-bounds synthetic frame; expected derived from running reference/upstream-codec.js (0xB1 Real Time): temp code 525 -> 22.5 C, hum code 90 -> 45% (upstream mislabels the humidity unit as C). Maps temperature->air.temperature, humidity->air.relativeHumidity."
+    },
+    {
+      "description": "Real Time frame (0x04): sub-zero temperature -10 C, relative humidity 65%",
+      "input": {
+        "fPort": 1,
+        "bytes": [177, 4, 50, 32, 128]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": -10, "relativeHumidity": 65 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "in-bounds synthetic frame; expected derived from running reference/upstream-codec.js: temp code 200 -> -10 C, hum code 130 -> 65%."
+    },
+    {
+      "description": "Real Time frame (0x04): temperature sensor disconnected (code 1022) suppressed, humidity 55% retained",
+      "input": {
+        "fPort": 1,
+        "bytes": [177, 4, 255, 155, 128]
+      },
+      "expected": {
+        "data": {
+          "air": { "relativeHumidity": 55 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from reference/upstream-codec.js, which returns the string 'Deconnected Sensor' for temp code 1022; we suppress the absent temperature and emit only the valid humidity (code 110 -> 55%)."
+    },
+    {
+      "description": "Real Time frame (0x04): temperature 22.5 C retained, humidity error (code 255) suppressed",
+      "input": {
+        "fPort": 1,
+        "bytes": [177, 4, 131, 127, 192]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 22.5 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from reference/upstream-codec.js, which returns the string 'Error' for hum code 255; we suppress the absent humidity and emit only the valid temperature."
+    },
+    {
+      "description": "Air Quality frame (0x03): daily summary — avg 58.5 C / 24.5%, with min/max temperature and humidity as extras",
+      "input": {
+        "fPort": 1,
+        "bytes": [177, 3, 126, 177, 141, 212, 170, 100, 196]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 58.5, "relativeHumidity": 24.5 },
+          "temperatureMinC": 20.6,
+          "temperatureMaxC": 49.2,
+          "humidityMinPercent": 21,
+          "humidityMaxPercent": 76.5
+        }
+      },
+      "source": "synthetic",
+      "_note": "in-bounds synthetic daily-air frame; expected derived from running reference/upstream-codec.js (0xB1 Air Quality): tmin 506->20.6, tmax 792->49.2, tavg 885->58.5, hmin 42->21, hmax 153->76.5, havg 49->24.5. Avg temp/humidity map to air.temperature/air.relativeHumidity; min/max have no vocabulary key so they become camelCase extras."
+    },
+    {
+      "description": "Wrong product byte (0xB2 = Origin, not Origin+) returns an error",
+      "input": {
+        "fPort": 1,
+        "bytes": [178, 4, 131, 86, 128]
+      },
+      "expected": { "errors": ["unexpected product byte"] },
+      "source": "synthetic",
+      "_note": "the shared upstream decoder happily decodes 0xB2 as 'Origin LoRa' (no product gating), but this is the Origin+ codec so a non-0xB1 product byte is rejected."
+    },
+    {
+      "description": "Unsupported message type (0x00 = Product Status) returns an error",
+      "input": {
+        "fPort": 1,
+        "bytes": [177, 0, 1, 2, 3, 4, 5, 6, 7, 8]
+      },
+      "expected": { "errors": ["unsupported message type"] },
+      "source": "synthetic",
+      "_note": "upstream decodes Product Status (battery/version/status flags), but those messages carry no climate telemetry so this codec rejects every message type other than Real Time (0x04) and Air Quality (0x03)."
+    }
+  ],
+  "downlink": []
+}

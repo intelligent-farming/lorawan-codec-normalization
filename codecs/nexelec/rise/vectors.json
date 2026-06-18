@@ -1,0 +1,57 @@
+{
+  "uplink": [
+    {
+      "description": "Periodic frame: full 3-in-1 reading — temperature 22.5 C, humidity 48.3 %RH, CO2 650 ppm",
+      "input": {
+        "fPort": 1,
+        "bytes": [170, 1, 131, 94, 48, 162, 128, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 22.5, "relativeHumidity": 48.3, "co2": 650 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived by running the upstream TTN decoder (reference/upstream-codec.js, 0xAA periodic frame): temp 22.5 C, humidity 48.3 %RH, co2 650 ppm. RISE has only co2/temp/humidity sensors so the shared frame's VOC/lux/noise/occupancy fields are left zero and not decoded."
+    },
+    {
+      "description": "Periodic frame: sub-zero temperature -10 C, humidity 65 %RH, CO2 412 ppm",
+      "input": {
+        "fPort": 1,
+        "bytes": [170, 1, 50, 40, 160, 103, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": -10, "relativeHumidity": 65, "co2": 412 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived by running the upstream TTN decoder (0xAA periodic frame): temp -10 C, humidity 65 %RH, co2 412 ppm"
+    },
+    {
+      "description": "Periodic frame: CO2 error sentinel (16383) and temperature deactivated sentinel (1021) suppressed; humidity 55 %RH retained",
+      "input": {
+        "fPort": 1,
+        "bytes": [170, 1, 255, 98, 111, 255, 192, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "air": { "relativeHumidity": 55 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived by running the upstream TTN decoder: temp code 1021 -> 'Desactivated sensor', co2 code 16383 -> 'Error'; both suppressed per the sensor-absent codes, humidity 55 %RH retained"
+    },
+    {
+      "description": "Wrong product byte (0xAB = Move, not RISE) returns an error",
+      "input": {
+        "fPort": 1,
+        "bytes": [171, 1, 131, 94, 48, 162, 128, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": { "errors": ["unexpected product byte"] },
+      "source": "synthetic",
+      "_note": "the shared upstream decoder happily decodes 0xAB as 'Move LoRa' (no product gating), but this is the RISE codec so the non-0xAA product byte is rejected"
+    }
+  ],
+  "downlink": []
+}

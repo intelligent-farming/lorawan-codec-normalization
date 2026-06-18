@@ -1,0 +1,87 @@
+{
+  "uplink": [
+    {
+      "description": "Real-Time frame: 600 ppm CO2, 22.0 C, 45.0 %RH, all iZiAiR indices Excellent (CO2 source), comfort Good",
+      "input": {
+        "fPort": 1,
+        "bytes": [114, 30, 110, 90, 10, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "air": { "co2": 600, "temperature": 22, "relativeHumidity": 45 },
+          "iaqGlobal": "Excellent",
+          "iaqSource": "CO2",
+          "iaqCo2": "Excellent",
+          "iaqDryness": "Excellent",
+          "iaqMould": "Excellent",
+          "iaqDustMites": "Excellent",
+          "iaqComfort": "Good",
+          "frameIndex": 1
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder (Carbon 0x7 Real-Time 0x2 frame); iZiAiR global/source/sub-indices/comfort -> iaq* camelCase extras"
+    },
+    {
+      "description": "Real-Time frame: 660 ppm CO2, 22.4 C (0.2-step rounding), 45.5 %RH, mixed iZiAiR indices",
+      "input": {
+        "fPort": 1,
+        "bytes": [114, 33, 112, 91, 34, 156, 183]
+      },
+      "expected": {
+        "data": {
+          "air": { "co2": 660, "temperature": 22.4, "relativeHumidity": 45.5 },
+          "iaqGlobal": "Good",
+          "iaqSource": "Dryness Indicator",
+          "iaqCo2": "Fair",
+          "iaqDryness": "Poor",
+          "iaqMould": "Bad",
+          "iaqDustMites": "Erreur",
+          "iaqComfort": "Bad",
+          "frameIndex": 7
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder; temperature 0.2*112 rounded to 0.1; 'Erreur' is upstream's verbatim label"
+    },
+    {
+      "description": "Real-Time frame: 1500 ppm CO2, 30.0 C, 65.0 %RH, global Bad / source CO, sub-indices unmapped (suppressed), comfort error",
+      "input": {
+        "fPort": 1,
+        "bytes": [114, 75, 150, 130, 137, 182, 216]
+      },
+      "expected": {
+        "data": {
+          "air": { "co2": 1500, "temperature": 30, "relativeHumidity": 65 },
+          "iaqGlobal": "Bad",
+          "iaqSource": "CO",
+          "iaqComfort": "Erreur",
+          "frameIndex": 0
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder; iaqCo2/iaqDryness/iaqMould/iaqDustMites codes are unmapped (upstream returns empty string) so they are suppressed"
+    },
+    {
+      "description": "Wrong product nibble (0x8, not Carbon's 0x7) returns an error",
+      "input": {
+        "fPort": 1,
+        "bytes": [130, 30, 110, 90, 0, 40, 16]
+      },
+      "expected": { "errors": ["unexpected product byte"] },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder; the shared upstream decoder produces an empty payload for any product != 0x7, so the non-Carbon product nibble is rejected here"
+    },
+    {
+      "description": "Carbon Keep-Alive message (type 0xA) is not a Real-Time data frame and returns an error",
+      "input": {
+        "fPort": 1,
+        "bytes": [122, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": { "errors": ["unsupported message type"] },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder; upstream decodes this only as Type_of_message Keep_Alive with no measurement, so this codec (Real-Time only) rejects it"
+    }
+  ],
+  "downlink": []
+}

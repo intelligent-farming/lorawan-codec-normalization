@@ -1,0 +1,99 @@
+{
+  "uplink": [
+    {
+      "description": "Real Time frame: instantaneous indoor temperature + relative humidity (covers the climate category)",
+      "input": {
+        "fPort": 1,
+        "bytes": [179, 4, 130, 203, 128, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 22.3, "relativeHumidity": 23 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder (origin-plus-codec.js); temp code 523 -> 22.3 C, hum code 46 -> 23 %RH. Upstream mislabels the humidity unit as C; normalized to air.relativeHumidity here."
+    },
+    {
+      "description": "Real Time frame: temperature sensor error (code 1023) suppressed, humidity retained",
+      "input": {
+        "fPort": 1,
+        "bytes": [179, 4, 255, 222, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "air": { "relativeHumidity": 60 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder; temp code 1023 = Error sentinel (suppressed), hum code 120 -> 60 %RH."
+    },
+    {
+      "description": "Smoke Alarm frame: carries ambient temperature only",
+      "input": {
+        "fPort": 1,
+        "bytes": [179, 2, 0, 0, 11, 76, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 36.4 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder; Smoke Alarm temp code 723 -> 36.4 C. Smoke-alarm status fields are device diagnostics, not normalized."
+    },
+    {
+      "description": "Air Quality (daily) frame: min/max/avg temperature and humidity; averages map to vocabulary, min/max are extras",
+      "input": {
+        "fPort": 1,
+        "bytes": [179, 3, 120, 35, 8, 33, 65, 225, 144, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 22, "relativeHumidity": 50 },
+          "temperatureMinC": 18,
+          "temperatureMaxC": 26,
+          "relativeHumidityMinPercent": 40,
+          "relativeHumidityMaxPercent": 60
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder; tMin 480->18, tMax 560->26, tAvg 520->22 C; hMin 80->40, hMax 120->60, hAvg 100->50 %RH."
+    },
+    {
+      "description": "Product Status frame: battery voltage",
+      "input": {
+        "fPort": 1,
+        "bytes": [179, 0, 0, 0, 0, 0, 100, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.5
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder; battery code 100 -> 100*5 + 2000 = 2500 mV = 2.5 V."
+    },
+    {
+      "description": "Unsupported message type (0x01 Product Configuration carries no climate data) returns an error",
+      "input": {
+        "fPort": 1,
+        "bytes": [179, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": { "errors": ["unsupported message type"] },
+      "source": "synthetic",
+      "_note": "Product Configuration is a diagnostics frame with no temperature/humidity; our codec only decodes the climate-bearing message types 0x00, 0x02, 0x03, 0x04."
+    },
+    {
+      "description": "Wrong product byte (0xB1 = Origin+, not Guard+) returns an error",
+      "input": {
+        "fPort": 1,
+        "bytes": [177, 4, 130, 203, 128, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": { "errors": ["unexpected product byte"] },
+      "source": "synthetic",
+      "_note": "upstream typeOfProduct does not gate on the product byte; our codec rejects non-0xB3 frames since the Guard+ family shares one decoder."
+    }
+  ],
+  "downlink": []
+}

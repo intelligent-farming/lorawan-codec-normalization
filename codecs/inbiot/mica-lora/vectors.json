@@ -1,0 +1,86 @@
+{
+  "uplink": [
+    {
+      "description": "MICA sensor reading (TTN example bytes; warm-up: moldIndex Calculating, dB Preheating)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 0, 222, 2, 7, 3, 47, 0, 2, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 255, 255, 255, 255, 255, 255, 0, 2, 77, 73, 67, 65, 0, 52, 64, 49, 79, 255, 255]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 22.2, "relativeHumidity": 51.9, "co2": 815 },
+          "type": "MICA",
+          "tvoc": 0,
+          "pm2_5": 1,
+          "pm10": 1,
+          "vIndex": 52,
+          "tIndex": 64,
+          "virusIndex": 49,
+          "iaqIndex": 79,
+          "moldIndex": "Calculating",
+          "dB": "Preheating",
+          "counter": 2
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "MICA sensor reading, all sensors warmed up with a real noise level",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 0, 234, 1, 222, 2, 130, 0, 0, 0, 120, 0, 0, 0, 8, 0, 0, 0, 14, 0, 0, 0, 0, 0, 0, 4, 210, 77, 73, 67, 65, 0, 30, 50, 20, 65, 12, 45]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 23.4, "relativeHumidity": 47.8, "co2": 642 },
+          "type": "MICA",
+          "tvoc": 120,
+          "pm2_5": 8,
+          "pm10": 14,
+          "vIndex": 30,
+          "tIndex": 50,
+          "virusIndex": 20,
+          "iaqIndex": 65,
+          "moldIndex": 12,
+          "dB": 45,
+          "counter": 1234
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds MICA reading; expected.data produced by running the ported codec, which reproduces the upstream source-of-truth decode (temperature 23.4 C, humidity 47.8 %, CO2 642 ppm, TVOC 120, PM2.5 8, PM10 14, numeric moldIndex 12, noise 45 dB)."
+    },
+    {
+      "description": "MICA sensor reading near upper humidity / CO2, warm-up index/noise strings",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 0, 198, 2, 89, 3, 212, 0, 0, 0, 5, 0, 0, 0, 2, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 7, 77, 73, 67, 65, 0, 10, 22, 5, 40, 255, 255]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 19.8, "relativeHumidity": 60.1, "co2": 980 },
+          "type": "MICA",
+          "tvoc": 5,
+          "pm2_5": 2,
+          "pm10": 3,
+          "vIndex": 10,
+          "tIndex": 22,
+          "virusIndex": 5,
+          "iaqIndex": 40,
+          "moldIndex": "Calculating",
+          "dB": "Preheating",
+          "counter": 7
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds MICA reading; expected.data produced by running the ported codec, which reproduces the upstream source-of-truth decode. Exercises the moldIndex==0xff -> 'Calculating' and dB==0xff -> 'Preheating' string branches."
+    },
+    {
+      "description": "Unrecognized message type byte returns an error (not a bare {})",
+      "input": { "fPort": 1, "bytes": [9, 0, 0] },
+      "expected": { "errors": ["unrecognized inBiot message type"] },
+      "source": "synthetic",
+      "_note": "Synthetic: byte0=9 is not one of the upstream dispatch values (0/1/2); the upstream decoder would return an empty object, which violates the output contract, so the ported codec returns an error instead."
+    }
+  ],
+  "downlink": []
+}

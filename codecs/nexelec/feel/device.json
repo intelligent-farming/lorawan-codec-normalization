@@ -1,0 +1,25 @@
+{
+  "vendor": "nexelec",
+  "device": "feel",
+  "name": "FEEL - Temperature & Humidity Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "nexelec",
+    "device": "feel",
+    "codecId": "sign-codec",
+    "codecFile": "sign-codec.js",
+    "codecSha256": "bdd5dda0d7d0e386b26cccb8a3901530cb4b1cfe945eafdda9e708c4dd1d10eb",
+    "referencedAt": "2026-06-18"
+  }
+}

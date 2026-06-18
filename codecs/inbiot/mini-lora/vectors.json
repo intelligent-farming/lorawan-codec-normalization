@@ -1,0 +1,130 @@
+{
+  "uplink": [
+    {
+      "description": "MINI sensor reading, typical indoor values",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          1, 0, 234, 1, 230, 2, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+          255, 255, 255, 255, 255, 255, 0, 5, 77, 73, 78, 73, 0,
+          40, 55, 20, 90, 10, 42
+        ]
+      },
+      "expected": {
+        "data": {
+          "type": "MINI",
+          "vIndex": 40,
+          "tIndex": 55,
+          "virusIndex": 20,
+          "iaqIndex": 90,
+          "moldIndex": 10,
+          "dB": 42,
+          "counter": 5,
+          "air": {
+            "temperature": 23.4,
+            "relativeHumidity": 48.6,
+            "co2": 612
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "MINI sensor reading, cool/dry with mold index calculating and noise preheating",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          1, 0, 180, 1, 44, 1, 154, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+          255, 255, 255, 255, 255, 255, 0, 1, 77, 73, 78, 73, 0,
+          10, 12, 5, 99, 255, 255
+        ]
+      },
+      "expected": {
+        "data": {
+          "type": "MINI",
+          "vIndex": 10,
+          "tIndex": 12,
+          "virusIndex": 5,
+          "iaqIndex": 99,
+          "moldIndex": "Calculating",
+          "dB": "Preheating",
+          "counter": 1,
+          "air": {
+            "temperature": 18,
+            "relativeHumidity": 30,
+            "co2": 410
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "MINI sensor reading, warm/humid, noise sensor reporting zero (dB omitted)",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          1, 1, 43, 2, 213, 5, 170, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+          255, 255, 255, 255, 255, 255, 4, 210, 77, 73, 78, 73, 0,
+          80, 88, 60, 30, 55, 0
+        ]
+      },
+      "expected": {
+        "data": {
+          "type": "MINI",
+          "vIndex": 80,
+          "tIndex": 88,
+          "virusIndex": 60,
+          "iaqIndex": 30,
+          "moldIndex": 55,
+          "counter": 1234,
+          "air": {
+            "temperature": 29.9,
+            "relativeHumidity": 72.5,
+            "co2": 1450
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder; bytes[37]=0 so dB is omitted, matching the upstream `if (bytes[37])` guard"
+    },
+    {
+      "description": "Configuration frame (message type 0) carries no measurement",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 1, 1, 1, 0, 5, 255, 0, 1]
+      },
+      "expected": {
+        "errors": ["configuration frame carries no measurement"]
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder; the upstream decodes this as a config object, which has no normalized measurement"
+    },
+    {
+      "description": "Device-information frame (message type 2) carries no measurement",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["device-information frame carries no measurement"]
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder; the upstream decodes this as a device-info object, which has no normalized measurement"
+    },
+    {
+      "description": "Sensor reading truncated below the 38-byte minimum",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 0, 250, 2, 7]
+      },
+      "expected": {
+        "errors": ["sensor reading too short"]
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder; a short sensor frame would read undefined bytes, so it is rejected"
+    }
+  ],
+  "downlink": []
+}

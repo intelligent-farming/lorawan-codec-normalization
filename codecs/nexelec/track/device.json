@@ -1,0 +1,30 @@
+{
+  "vendor": "nexelec",
+  "device": "track",
+  "name": "track",
+  "categories": [
+    "climate",
+    "gps-tracker"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "pm10",
+    "pm2.5",
+    "pressure",
+    "gps"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "nexelec",
+    "device": "track",
+    "codecId": "track-codec",
+    "codecFile": "track.js",
+    "codecSha256": "268d2fa26c732d20911392019d9e19412ac1f662c73b6386a1ea19fcb2f175fd",
+    "referencedAt": "2026-06-18"
+  }
+}

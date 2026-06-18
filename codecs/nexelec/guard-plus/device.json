@@ -1,0 +1,26 @@
+{
+  "vendor": "nexelec",
+  "device": "guard-plus",
+  "name": "Guard+ - Temperature, Humidity (smoke safety monitor)",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "nexelec",
+    "device": "guard-plus",
+    "codecId": "guard-plus-codec",
+    "codecFile": "origin-plus-codec.js",
+    "codecSha256": "55ff50e88cfe1874a4927530eb21e15ee3d78ec5da7fe998349c3606db057b00",
+    "referencedAt": "2026-06-18"
+  }
+}

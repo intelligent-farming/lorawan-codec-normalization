@@ -1,0 +1,79 @@
+{
+  "uplink": [
+    {
+      "description": "MICA sensor message — numeric mould/noise readings",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          1, 0, 213, 1, 199, 2, 100, 0, 0, 0, 120, 0, 0, 0, 8, 0, 0, 0, 12,
+          0, 0, 0, 0, 0, 0, 0, 42, 77, 73, 67, 65, 0, 60, 70, 55, 82, 3, 48
+        ]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 21.3,
+            "relativeHumidity": 45.5,
+            "co2": 612
+          },
+          "tvoc": 120,
+          "pm2_5": 8,
+          "pm10": 12,
+          "ventilationIndex": 60,
+          "thermalIndex": 70,
+          "virusIndex": 55,
+          "iaqIndex": 82,
+          "moldIndex": 3,
+          "noise": 48,
+          "counter": 42
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds MICA frame. Channel values cross-checked by running reference/upstream-codec.js (oracle): temperature 21.3 C, humidity 45.5 %, co2 612 ppm, tvoc 120, pm2_5 8, pm10 12, indices 60/70/55/82, mould 3, noise 48 dB, counter 42. Big-endian uint16 fields; type string \"MICA\" at offsets 27..30."
+    },
+    {
+      "description": "MICA sensor message — sensor-warming-up sentinels (mould Calculating, noise Preheating)",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          1, 0, 185, 2, 111, 4, 0, 0, 0, 1, 94, 0, 0, 0, 25, 0, 0, 0, 40,
+          0, 0, 0, 0, 0, 0, 0, 7, 77, 73, 67, 65, 0, 45, 88, 30, 65, 255, 255
+        ]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 18.5,
+            "relativeHumidity": 62.3,
+            "co2": 1024
+          },
+          "tvoc": 350,
+          "pm2_5": 25,
+          "pm10": 40,
+          "ventilationIndex": 45,
+          "thermalIndex": 88,
+          "virusIndex": 30,
+          "iaqIndex": 65,
+          "moldIndex": "Calculating",
+          "noise": "Preheating",
+          "counter": 7
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds MICA frame exercising the 0xff sentinels. Cross-checked by running reference/upstream-codec.js (oracle): temperature 18.5 C, humidity 62.3 %, co2 1024 ppm, tvoc 350, pm2_5 25, pm10 40, indices 45/88/30/65; mould byte 0xff -> \"Calculating\"; noise byte 0xff -> \"Preheating\"; counter 7."
+    },
+    {
+      "description": "Configuration message (type 0) is not a measurement",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 1, 1, 1, 0, 5, 255, 0, 1]
+      },
+      "expected": {
+        "errors": ["unsupported message type"]
+      },
+      "source": "synthetic",
+      "_note": "TTN upstream example input for the device configuration frame (message-type byte 0). Our normalized codec only emits measurements, so a non-sensor frame is reported as an error rather than normalized."
+    }
+  ],
+  "downlink": []
+}
