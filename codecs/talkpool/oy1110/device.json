@@ -1,0 +1,25 @@
+{
+  "vendor": "talkpool",
+  "device": "oy1110",
+  "name": "OY1110 LoRaWAN® temperature and humidity sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "talkpool",
+    "device": "oy1110",
+    "codecId": "oy1110-codec",
+    "codecFile": "oy1110.js",
+    "codecSha256": "871daea47377822cb0450006e0e8ad2ff49b4d5ba23610495c1a404adbb3001a",
+    "referencedAt": "2026-06-18"
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "uplink": [
+    {
+      "description": "TTN example payload (temperature + humidity, 12-bit packed)",
+      "input": {
+        "fPort": 1,
+        "bytes": [18, 26, 215, 18, 26, 70, 233, 25, 206]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 30.1, "relativeHumidity": 42.3 }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream decodes only the first 3 bytes; expected.data produced by running reference/upstream-codec.js (Temperature 30.1, RelativeHumidity 42.3) and mapped onto air.temperature / air.relativeHumidity."
+    },
+    {
+      "description": "Synthetic mid-range reading (22.5 C, 55.0 %)",
+      "input": {
+        "fPort": 1,
+        "bytes": [14, 34, 22]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 22.5, "relativeHumidity": 55 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic; expected from running reference/upstream-codec.js (Temperature 22.5, RelativeHumidity 55)."
+    },
+    {
+      "description": "Synthetic high-range reading (40.9 C, 99.0 %)",
+      "input": {
+        "fPort": 1,
+        "bytes": [25, 61, 158]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 40.9, "relativeHumidity": 99 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic exercising the upper nibble packing; expected from running reference/upstream-codec.js (Temperature 40.9, RelativeHumidity 99)."
+    },
+    {
+      "description": "Payload length not a multiple of 3 returns an error",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 2]
+      },
+      "expected": {
+        "errors": ["payload length must be a non-zero multiple of 3 bytes"]
+      },
+      "source": "synthetic",
+      "_note": "Upstream returns null for non-multiple-of-3 payloads; we surface it as an error instead of emitting null data."
+    }
+  ],
+  "downlink": []
+}

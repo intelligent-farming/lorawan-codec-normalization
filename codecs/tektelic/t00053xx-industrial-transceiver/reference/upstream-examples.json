@@ -1,0 +1,31 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/tektelic/t00053xx-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Output 1 and 2 Uplink",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          1,
+          1,
+          0,
+          2,
+          1,
+          1
+        ]
+      },
+      "output": {
+        "data": {
+          "change_output_states": {
+            "output1": 0,
+            "output2": 1
+          },
+          "port": "10",
+          "raw": "[01, 01, 00, 02, 01, 01]"
+        },
+        "errors": [],
+        "warnings": []
+      }
+    }
+  ]
+}

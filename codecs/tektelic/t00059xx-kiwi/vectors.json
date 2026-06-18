@@ -1,0 +1,121 @@
+{
+  "uplink": [
+    {
+      "description": "Battery, ambient temperature, relative humidity (climate core + battery volts)",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 186, 50, 11, 103, 0, 220, 11, 104, 90]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "batteryEndOfShelfLifeAlert": false,
+          "air": {
+            "temperature": 22,
+            "relativeHumidity": 45
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected.data authored from running reference/upstream-codec.js (Battery Status level=3.0V eos=0, ambient_temperature=22.0, relative_humidity=45.0) and normalizing per the vocabulary."
+    },
+    {
+      "description": "Temperature, humidity, ambient light intensity (climate + light categories)",
+      "input": {
+        "fPort": 10,
+        "bytes": [11, 103, 1, 44, 11, 104, 100, 9, 101, 1, 244]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 30,
+            "relativeHumidity": 50,
+            "lightIntensity": 500
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected.data authored from running reference/upstream-codec.js (ambient_temperature=30.0, relative_humidity=50.0, light_intensity=500) and mapping light_intensity -> air.lightIntensity (lux)."
+    },
+    {
+      "description": "Negative ambient temperature (two's complement)",
+      "input": {
+        "fPort": 10,
+        "bytes": [11, 103, 255, 156, 11, 104, 70]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": -10,
+            "relativeHumidity": 35
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected.data authored from running reference/upstream-codec.js (ambient_temperature=-10.0, relative_humidity=35.0)."
+    },
+    {
+      "description": "Light alarm flag, MCU temperature, temperature, humidity (extras alongside climate)",
+      "input": {
+        "fPort": 10,
+        "bytes": [9, 0, 1, 12, 103, 1, 9, 11, 103, 0, 200, 11, 104, 80]
+      },
+      "expected": {
+        "data": {
+          "lightAlarm": true,
+          "mcuTemperature": 26.5,
+          "air": {
+            "temperature": 20,
+            "relativeHumidity": 40
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected.data authored from running reference/upstream-codec.js (light_alarm=1, mcu_temperature=26.5, ambient_temperature=20.0, relative_humidity=40.0). light_alarm is a categorical flag -> extra lightAlarm; mcu_temperature is board temperature -> extra mcuTemperature, not ambient air."
+    },
+    {
+      "description": "Battery end-of-shelf-life flag set (bit 7) with climate readings",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 186, 178, 11, 103, 0, 220, 11, 104, 90]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "batteryEndOfShelfLifeAlert": true,
+          "air": {
+            "temperature": 22,
+            "relativeHumidity": 45
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected.data authored from running reference/upstream-codec.js (Battery Status level=3.0V eos_alert=1). The EOS flag (bit 7) maps to the extra batteryEndOfShelfLifeAlert; the low 7 bits still give 3.0 V."
+    },
+    {
+      "description": "Unsupported fPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [11, 103, 0, 200]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 42"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error vector: the agriculture data uplink is only defined on fPort 10. Upstream reports this as data.error \"Wrong port: 42\"; our codec returns an errors[] entry per the output contract."
+    },
+    {
+      "description": "Unrecognized channel/type header",
+      "input": {
+        "fPort": 10,
+        "bytes": [153, 153, 0]
+      },
+      "expected": {
+        "errors": ["unrecognized channel/type"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error vector: header 0x99 is not in the decoder table. Upstream reports \"Couldn't find header ... in decoder object\"; our codec returns an errors[] entry."
+    }
+  ],
+  "downlink": []
+}

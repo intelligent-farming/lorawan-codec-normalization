@@ -1,0 +1,62 @@
+{
+  "uplink": [
+    {
+      "description": "Onboard climate: battery 3.60 V, temperature 23.5 C, humidity 51.5 %",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 255, 1, 104, 3, 103, 0, 235, 4, 104, 103]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "air": {
+            "temperature": 23.5,
+            "relativeHumidity": 51.5
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected values produced by running reference/upstream-codec.js (battery_voltage signed16*0.01, temperature signed16*0.1, relative_humidity u8*0.5) and mapping temperature->air.temperature, relative_humidity->air.relativeHumidity, battery_voltage(V)->battery."
+    },
+    {
+      "description": "Full I/O sweep: battery, outputs, negative temperature, humidity, digital/analog inputs, pulse count, MCU temperature",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 255, 1, 104, 1, 1, 1, 2, 1, 0, 3, 103, 255, 206, 4, 104, 90, 5, 0, 1, 6, 2, 39, 16, 7, 2, 3, 232, 8, 4, 0, 42, 9, 103, 1, 44]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "input1": 1,
+          "input2": 0.01,
+          "input3": 1,
+          "input1Count": 42,
+          "mcuTemperature": 30,
+          "air": {
+            "temperature": -5,
+            "relativeHumidity": 45
+          },
+          "changeOutputStates": {
+            "output1": 1,
+            "output2": 0
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame exercising every port-10 channel; expected values produced by running reference/upstream-codec.js. temperature 0xFFCE = -50 -> -5.0 C (two's complement); input_2 0x2710=10000 * 0.000001 = 0.01; input_3 0x03E8=1000 * 0.001 = 1; mcu_temperature 0x012C=300 * 0.1 = 30. Onboard temperature/humidity map to air.*; battery_voltage(V)->battery; digital outputs/inputs, analog inputs, pulse count and MCU temperature -> camelCase extras."
+    },
+    {
+      "description": "Unrecognized TLV header is rejected",
+      "input": {
+        "fPort": 10,
+        "bytes": [171, 205, 0]
+      },
+      "expected": {
+        "errors": ["unrecognized TLV header"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic. Header 0xAB 0xCD is not in the port-10 descriptor table; upstream reports this as a `data.error` ('Couldn't find header...'), this codec returns it via the {errors} contract instead."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,101 @@
+{
+  "uplink": [
+    {
+      "description": "nominal indoor reading (temperature, humidity and CO2 all present)",
+      "input": {
+        "fPort": 2,
+        "bytes": [62, 68, 29, 2, 27]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 19.3,
+            "relativeHumidity": 85.1,
+            "co2": 539
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Oracle method: expected.data produced by running reference/upstream-codec.js on this synthetic in-bounds input and mapping Temperature->air.temperature, Humidity->air.relativeHumidity, CO2->air.co2 (ppm). Byte values mirror the upstream documented example."
+    },
+    {
+      "description": "cool low-CO2 reading (negative temperature)",
+      "input": {
+        "fPort": 2,
+        "bytes": [48, 56, 0, 1, 144]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": -3.2,
+            "relativeHumidity": 64.6,
+            "co2": 400
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Oracle method: expected.data produced by running reference/upstream-codec.js on this synthetic in-bounds input. Exercises a negative air.temperature."
+    },
+    {
+      "description": "mild reading with mid-range CO2",
+      "input": {
+        "fPort": 2,
+        "bytes": [57, 66, 16, 3, 32]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 11.3,
+            "relativeHumidity": 80.6,
+            "co2": 800
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Oracle method: expected.data produced by running reference/upstream-codec.js on this synthetic in-bounds input."
+    },
+    {
+      "description": "elevated CO2 reading",
+      "input": {
+        "fPort": 2,
+        "bytes": [56, 76, 85, 5, 220]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 10.1,
+            "relativeHumidity": 97.1,
+            "co2": 1500
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Oracle method: expected.data produced by running reference/upstream-codec.js on this synthetic in-bounds input. Exercises a CO2 value above 1000 ppm."
+    },
+    {
+      "description": "wrong payload length on fPort 2 (upstream returns null; we surface an error)",
+      "input": {
+        "fPort": 2,
+        "bytes": [62, 68, 29, 2]
+      },
+      "expected": {
+        "errors": ["expected 5 bytes"]
+      },
+      "source": "synthetic",
+      "_note": "Oracle method: upstream returns { data: null } for any non-5-byte fPort 2 payload; the normalized codec reports this as an error instead of emitting a null measurement."
+    },
+    {
+      "description": "unsupported fPort (upstream returns null; we surface an error)",
+      "input": {
+        "fPort": 1,
+        "bytes": [62, 68, 29, 2, 27]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 1"]
+      },
+      "source": "synthetic",
+      "_note": "Oracle method: upstream only decodes fPort 2 and returns { data: null } otherwise; the normalized codec reports this as an error."
+    }
+  ],
+  "downlink": []
+}

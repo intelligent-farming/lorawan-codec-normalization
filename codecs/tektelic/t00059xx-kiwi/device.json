@@ -1,0 +1,27 @@
+{
+  "vendor": "tektelic",
+  "device": "t00059xx-kiwi",
+  "name": "KIWI Agriculture Sensor",
+  "categories": [
+    "climate",
+    "light"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "light"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "tektelic",
+    "device": "t00059xx-kiwi",
+    "codecId": "t00059xx-codec",
+    "codecFile": "decoder_agriculture_sensor.js",
+    "codecSha256": "1aa3c7bc436c9f1b24e400ae6706838de021c109d1d83c026850529db107bec8",
+    "referencedAt": "2026-06-18"
+  }
+}

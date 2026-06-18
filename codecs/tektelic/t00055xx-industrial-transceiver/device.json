@@ -1,0 +1,30 @@
+{
+  "vendor": "tektelic",
+  "device": "t00055xx-industrial-transceiver",
+  "name": "T00055xx - Industrial Transceiver",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "battery",
+    "temperature",
+    "humidity",
+    "digital input",
+    "analog input",
+    "pulse counter",
+    "digital output"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "tektelic",
+    "device": "t00055xx-industrial-transceiver",
+    "codecId": "t00055xx-codec",
+    "codecFile": "decoder_industrial_transceiver.js",
+    "codecSha256": "6c120a6778bfdc46d51268828ae579836a2232c09c266277b69d3b59722d2dea",
+    "referencedAt": "2026-06-18"
+  }
+}

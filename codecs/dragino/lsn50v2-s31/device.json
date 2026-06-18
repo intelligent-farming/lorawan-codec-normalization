@@ -1,0 +1,26 @@
+{
+  "vendor": "dragino",
+  "device": "lsn50v2-s31",
+  "name": "LSN50v2-S31 - Temperature & Humidity Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "battery",
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "lsn50v2-s31",
+    "codecId": "lsn50v2-s31-codec",
+    "codecFile": "lsn50v2-s31.js",
+    "codecSha256": "5d02f3b7837c784e77f3f4f6f9e19f75feead8e533d7122c48d2f4d409b0f9a4",
+    "referencedAt": "2026-06-18"
+  }
+}

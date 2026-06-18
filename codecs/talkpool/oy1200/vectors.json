@@ -1,0 +1,63 @@
+{
+  "uplink": [
+    {
+      "description": "CO2, temperature and humidity (TTN example bytes)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 33, 1, 145, 1, 153, 8, 175, 10, 5, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 22.23, "relativeHumidity": 25.65, "co2": 409 },
+          "co2Raw": 401
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Mid-range CO2/temp/humidity (synthetic, in-bounds)",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 2, 88, 2, 83, 7, 58, 16, 104, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 18.5, "relativeHumidity": 42, "co2": 595 },
+          "co2Raw": 600
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds vector. expected.data produced by the ORACLE method: ran reference/upstream-codec.js on this input (CO2Raw=600, CO2Filtered=595, Temperature=18.5, Humidity=42) then mapped CO2Filtered->air.co2, Temperature->air.temperature, Humidity->air.relativeHumidity, CO2Raw->co2Raw extra."
+    },
+    {
+      "description": "Higher humidity / 25.75 C (synthetic, in-bounds)",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 1, 154, 1, 159, 10, 15, 23, 122, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 25.75, "relativeHumidity": 60.1, "co2": 415 },
+          "co2Raw": 410
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds vector. expected.data produced by the ORACLE method: ran reference/upstream-codec.js on this input (CO2Raw=410, CO2Filtered=415, Temperature=25.75, Humidity=60.1) then applied the same key mapping."
+    },
+    {
+      "description": "Wrong payload length returns an error",
+      "input": { "fPort": 1, "bytes": [1, 2, 3] },
+      "expected": { "errors": ["unexpected payload length"] },
+      "source": "synthetic",
+      "_note": "Upstream returns null for any length != 12 on fPort 1; we surface an error per the output contract."
+    },
+    {
+      "description": "Unsupported fPort returns an error",
+      "input": { "fPort": 2, "bytes": [1, 33, 1, 145, 1, 153, 8, 175, 10, 5, 0, 0] },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "synthetic",
+      "_note": "Upstream only decodes fPort 1 (returns null otherwise); we surface an error per the output contract."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,28 @@
+{
+  "vendor": "senzemo",
+  "device": "smc30",
+  "name": "SMC30 - Senstick Microclimate",
+  "categories": [
+    "climate",
+    "weather-station"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "pressure",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "senzemo",
+    "device": "smc30",
+    "codecId": "smc30-codec",
+    "codecFile": "smc30.js",
+    "codecSha256": "272e5b04bc0183d3dea2d60ecfdb910c90de1730a9e859ee80b25fd431409964",
+    "referencedAt": "2026-06-18"
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "uplink": [
+    {
+      "description": "data packet (fPort 2): positive temperature, humidity, pressure, battery",
+      "input": { "fPort": 2, "bytes": [0, 8, 107, 18, 212, 39, 148, 230] },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 21.55,
+            "relativeHumidity": 48.2,
+            "pressure": 1013.2
+          },
+          "battery": 3.3,
+          "status": 0
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; raw fields temp=2155 hum=4820 pressure=10132 batt-byte=230. expected.data authored from running reference/upstream-codec.js (Temperature 21.55 C, Humidity 48.2 %, AirPressure 1013.2 hPa, BatteryLevel 3.3 V) and re-expressing in vocabulary keys."
+    },
+    {
+      "description": "data packet (fPort 1): negative temperature (two's complement), high humidity",
+      "input": { "fPort": 1, "bytes": [1, 253, 225, 37, 28, 38, 252, 45] },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": -5.43,
+            "relativeHumidity": 95,
+            "pressure": 998
+          },
+          "battery": 1.45,
+          "status": 1
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; raw temp=64993 (signed -543) hum=9500 pressure=9980 batt-byte=45. expected.data authored from running reference/upstream-codec.js (Temperature -5.43 C, Humidity 95 %, AirPressure 998 hPa, BatteryLevel 1.45 V)."
+    },
+    {
+      "description": "config packet (fPort 3): device identification / settings frame -> camelCase extras",
+      "input": { "fPort": 3, "bytes": [0, 30, 5, 1, 2, 7, 11, 30, 21] },
+      "expected": {
+        "data": {
+          "status": 0,
+          "sendPeriod": 30,
+          "movementThreshold": 5,
+          "packetConfirm": 1,
+          "dataRate": 2,
+          "familyId": 7,
+          "productId": 11,
+          "hardwareVersion": 3,
+          "firmwareVersion": 2.1
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic config frame; expected.data authored from running reference/upstream-codec.js config branch (HW 30/10=3.0, FW 21/10=2.1). The config frame carries no vocabulary measurement; all fields are camelCase extras."
+    },
+    {
+      "description": "error: data packet too short on fPort 2",
+      "input": { "fPort": 2, "bytes": [0, 8, 107, 18] },
+      "expected": { "errors": ["data packet too short"] },
+      "source": "synthetic",
+      "_note": "Synthetic truncated frame. Upstream silently produces NaN/undefined on short input; our codec guards the fixed-length data frame and reports an error."
+    }
+  ],
+  "downlink": []
+}

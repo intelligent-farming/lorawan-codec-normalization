@@ -1,0 +1,27 @@
+{
+  "vendor": "talkpool",
+  "device": "oy1700",
+  "name": "OY1700 LoRaWAN Particles meter",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "pm2.5",
+    "pm10"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "talkpool",
+    "device": "oy1700",
+    "codecId": "oy1700-codec",
+    "codecFile": "oy1700.js",
+    "codecSha256": "d189bdd8fcc402bba88db3db2fb87e8b8850d39d69e2e122b73d84ee9fe9fe46",
+    "referencedAt": "2026-06-18"
+  }
+}

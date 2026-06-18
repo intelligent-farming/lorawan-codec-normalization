@@ -1,0 +1,25 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/talkpool/oy1210-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Example",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          62,
+          68,
+          29,
+          2,
+          27
+        ]
+      },
+      "output": {
+        "data": {
+          "CO2": 539,
+          "Humidity": 85.1,
+          "Temperature": 19.3
+        }
+      }
+    }
+  ]
+}

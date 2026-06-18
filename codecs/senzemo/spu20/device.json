@@ -1,0 +1,31 @@
+{
+  "vendor": "senzemo",
+  "device": "spu20",
+  "name": "SPU20 - Senspuck Pure PV",
+  "categories": [
+    "climate",
+    "air-quality",
+    "weather-station"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "pressure",
+    "co2",
+    "tvoc",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "senzemo",
+    "device": "spu20",
+    "codecId": "spu20-codec",
+    "codecFile": "spu20.js",
+    "codecSha256": "87786e35fda43326e1aeecd4a5df095c5db2a81be8e35fe00b9591829cd691dd",
+    "referencedAt": "2026-06-18"
+  }
+}

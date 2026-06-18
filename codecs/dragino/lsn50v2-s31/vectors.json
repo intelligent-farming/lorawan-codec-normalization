@@ -1,0 +1,78 @@
+{
+  "uplink": [
+    {
+      "description": "IIC work mode: SHT31 temp/humidity + battery, door open (TTN example bytes)",
+      "input": {
+        "fPort": 2,
+        "bytes": [11, 84, 0, 0, 0, 0, 0, 0, 252, 2, 5]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.9,
+          "temperatureC1": 0,
+          "adcCh0V": 0,
+          "digitalInputStatus": "L",
+          "extiTrigger": "FALSE",
+          "workMode": "IIC",
+          "air": { "temperature": 25.2, "relativeHumidity": 51.7 },
+          "action": { "contactState": "open" }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "IIC work mode: nominal warm reading, door closed + digital input high + EXTI trigger (synthetic)",
+      "input": {
+        "fPort": 2,
+        "bytes": [11, 200, 1, 44, 1, 244, 131, 1, 5, 1, 144]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.016,
+          "temperatureC1": 30,
+          "adcCh0V": 0.5,
+          "digitalInputStatus": "H",
+          "extiTrigger": "TRUE",
+          "workMode": "IIC",
+          "air": { "temperature": 26.1, "relativeHumidity": 40 },
+          "action": { "contactState": "closed" }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected.data produced by running reference/upstream-codec.js decodeUplink on these bytes (mode 0 IIC) and normalizing per this module's mapping; bytes[6]=131 sets door-closed (0x80), digital-high (0x02) and EXTI (0x01) while keeping the work-mode nibble at 0."
+    },
+    {
+      "description": "IIC work mode: sub-zero SHT31 temperature, low battery (synthetic)",
+      "input": {
+        "fPort": 2,
+        "bytes": [11, 150, 0, 0, 0, 0, 0, 255, 156, 1, 144]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.966,
+          "temperatureC1": 0,
+          "adcCh0V": 0,
+          "digitalInputStatus": "L",
+          "extiTrigger": "FALSE",
+          "workMode": "IIC",
+          "air": { "temperature": -10, "relativeHumidity": 40 },
+          "action": { "contactState": "open" }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected.data produced by running reference/upstream-codec.js decodeUplink on these bytes and normalizing; bytes[7..8]=0xFF9C is the two's-complement -100 raw -> -10.0 C, exercising negative SHT31 temperatures."
+    },
+    {
+      "description": "Unknown FPort returns an error",
+      "input": {
+        "fPort": 42,
+        "bytes": [11, 84, 0, 0, 0, 0, 0, 0, 252, 2, 5]
+      },
+      "expected": {
+        "errors": ["unknown FPort"]
+      },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

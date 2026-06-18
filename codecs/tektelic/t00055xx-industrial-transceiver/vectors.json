@@ -1,0 +1,88 @@
+{
+  "uplink": [
+    {
+      "description": "Full port-10 uplink: battery, both outputs, onboard temperature + humidity, digital/analog inputs, pulse count, MCU temperature",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          0, 255, 1, 44,
+          1, 1, 0,
+          2, 1, 1,
+          3, 103, 0, 230,
+          4, 104, 90,
+          5, 0, 1,
+          6, 2, 39, 16,
+          7, 2, 3, 232,
+          8, 4, 0, 100,
+          9, 103, 255, 156
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "input1": 1,
+          "input2": 0.01,
+          "input3": 1,
+          "input1Count": 100,
+          "mcuTemperature": -10,
+          "air": {
+            "temperature": 23,
+            "relativeHumidity": 45
+          },
+          "changeOutputStates": {
+            "output1": 0,
+            "output2": 1
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds TLV stream covering every recognized port-10 header. Expected values produced by running reference/upstream-codec.js (the TTN source of truth) and applying the documented vocabulary mapping (battery_voltage->battery, temperature->air.temperature, relative_humidity->air.relativeHumidity, others->camelCase extras)."
+    },
+    {
+      "description": "Temperature + humidity only (onboard climate sensor)",
+      "input": {
+        "fPort": 10,
+        "bytes": [3, 103, 0, 231, 4, 104, 85]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 23.1,
+            "relativeHumidity": 42.5
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; expected from reference/upstream-codec.js (temperature 0x00E7=231*0.1; relative_humidity 0x55=85*0.5)."
+    },
+    {
+      "description": "TTN catalog example: change output states for output1 and output2",
+      "input": {
+        "fPort": 10,
+        "bytes": [1, 1, 0, 2, 1, 1]
+      },
+      "expected": {
+        "data": {
+          "changeOutputStates": {
+            "output1": 0,
+            "output2": 1
+          }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Unrecognized TLV header is rejected",
+      "input": {
+        "fPort": 10,
+        "bytes": [171, 205]
+      },
+      "expected": {
+        "errors": ["unrecognized TLV header"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; upstream returns data.error 'Couldn't find header ...' for the same input. This codec returns it via the {errors} contract instead."
+    }
+  ],
+  "downlink": []
+}

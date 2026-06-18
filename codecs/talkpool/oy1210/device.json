@@ -1,0 +1,27 @@
+{
+  "vendor": "talkpool",
+  "device": "oy1210",
+  "name": "OY1210 LoRaWAN CO2 meter",
+  "categories": [
+    "climate",
+    "air-quality"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "co2"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "talkpool",
+    "device": "oy1210",
+    "codecId": "oy1210-codec",
+    "codecFile": "oy1210.js",
+    "codecSha256": "5f6b7cf92f6e79a9206f8321ad0e6232c3d11292d5c19146b5395a8afb1e96d4",
+    "referencedAt": "2026-06-18"
+  }
+}

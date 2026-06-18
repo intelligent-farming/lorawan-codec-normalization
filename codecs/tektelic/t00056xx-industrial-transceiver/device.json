@@ -1,0 +1,26 @@
+{
+  "vendor": "tektelic",
+  "device": "t00056xx-industrial-transceiver",
+  "name": "T00056xx - Industrial Transceiver",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "digital input",
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "tektelic",
+    "device": "t00056xx-industrial-transceiver",
+    "codecId": "t00056xx-codec",
+    "codecFile": "decoder_industrial_transceiver.js",
+    "codecSha256": "6c120a6778bfdc46d51268828ae579836a2232c09c266277b69d3b59722d2dea",
+    "referencedAt": "2026-06-18"
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "uplink": [
+    {
+      "description": "data packet: 23.45C, 50.12%RH, 1013.2hPa, TVOC 15.75, 842ppm CO2, 3.3V",
+      "input": { "fPort": 1, "bytes": [1, 9, 41, 19, 148, 39, 148, 6, 39, 3, 74, 12, 228, 0, 0] },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 23.45,
+            "relativeHumidity": 50.12,
+            "pressure": 1013.2,
+            "co2": 842
+          },
+          "battery": 3.3,
+          "tvoc": 15.75,
+          "status": 1
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected.data derived by porting reference/upstream-codec.js (Status,Temp s16/100,Hum/100,AirPressure/10,TVOC/100,CO2,Voltage mV) and normalizing Voltage->battery V, TVOC->tvoc, Status->status."
+    },
+    {
+      "description": "data packet with sub-zero temperature: -5.12C, 30%RH, 950hPa, TVOC 8, 412ppm CO2, 3.21V",
+      "input": { "fPort": 1, "bytes": [2, 254, 0, 11, 184, 37, 28, 3, 32, 1, 156, 12, 138, 0, 0] },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": -5.12,
+            "relativeHumidity": 30,
+            "pressure": 950,
+            "co2": 412
+          },
+          "battery": 3.21,
+          "tvoc": 8,
+          "status": 2
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic frame exercising the two's-complement negative-temperature branch (raw 0xFE00 = 65024 -> -512/100 = -5.12C); expected.data computed from reference/upstream-codec.js then normalized."
+    },
+    {
+      "description": "config packet (10 bytes): carries device configuration, no climate measurement",
+      "input": { "fPort": 2, "bytes": [1, 0, 5, 0, 50, 100, 16, 32, 20, 10] },
+      "expected": { "errors": ["config packet"] },
+      "source": "synthetic",
+      "_note": "Synthetic config frame; upstream decodes it to device settings only. With no vocabulary measurement to emit, our codec reports an error instead of empty data."
+    },
+    {
+      "description": "unrecognized payload length",
+      "input": { "fPort": 1, "bytes": [1, 2, 3] },
+      "expected": { "errors": ["unexpected payload length"] },
+      "source": "synthetic",
+      "_note": "Synthetic short frame; upstream returns undefined for this length, which violates the output contract, so our codec returns an explicit error."
+    }
+  ],
+  "downlink": []
+}

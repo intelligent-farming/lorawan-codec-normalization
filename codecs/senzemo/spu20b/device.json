@@ -1,0 +1,30 @@
+{
+  "vendor": "senzemo",
+  "device": "spu20b",
+  "name": "SPU20B - Senspuck Pure Battery",
+  "categories": [
+    "climate",
+    "air-quality"
+  ],
+  "sensors": [
+    "co2",
+    "tvoc",
+    "temperature",
+    "humidity",
+    "pressure",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "senzemo",
+    "device": "spu20b",
+    "codecId": "spu20b-codec",
+    "codecFile": "spu20.js",
+    "codecSha256": "87786e35fda43326e1aeecd4a5df095c5db2a81be8e35fe00b9591829cd691dd",
+    "referencedAt": "2026-06-18"
+  }
+}

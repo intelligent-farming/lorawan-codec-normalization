@@ -1,0 +1,47 @@
+{
+  "uplink": [
+    {
+      "description": "fPort 2 single reading, distinct b2 nibbles (high=temp LSB, low=humidity LSB)",
+      "input": { "fPort": 2, "bytes": [70, 40, 90] },
+      "expected": { "data": { "air": { "temperature": 32.5, "relativeHumidity": 40 } } },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "fPort 2 single reading, high humidity",
+      "input": { "fPort": 2, "bytes": [62, 68, 29] },
+      "expected": { "data": { "air": { "temperature": 19.3, "relativeHumidity": 85.1 } } },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "fPort 3 datalog frame, 1-byte header then one 3-byte reading",
+      "input": { "fPort": 3, "bytes": [16, 64, 50, 16] },
+      "expected": { "data": { "air": { "temperature": 22.5, "relativeHumidity": 55 } } },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "fPort 2 payload not a multiple of 3 (upstream returns null, we error)",
+      "input": { "fPort": 2, "bytes": [1, 2] },
+      "expected": { "errors": ["fPort 2 payload length"] },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder (upstream yields data:null; normalized to an error)"
+    },
+    {
+      "description": "fPort 3 payload length not 1 + multiple of 3 (upstream returns null, we error)",
+      "input": { "fPort": 3, "bytes": [16, 64, 50] },
+      "expected": { "errors": ["fPort 3 payload length"] },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder (upstream yields data:null; normalized to an error)"
+    },
+    {
+      "description": "unsupported fPort (upstream returns null, we error)",
+      "input": { "fPort": 1, "bytes": [1, 2, 3] },
+      "expected": { "errors": ["unsupported fPort 1"] },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder (upstream yields data:null; normalized to an error)"
+    }
+  ],
+  "downlink": []
+}

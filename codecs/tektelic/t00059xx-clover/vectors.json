@@ -1,0 +1,76 @@
+{
+  "uplink": [
+    {
+      "description": "Full payload: battery, ambient temp/humidity, light intensity + alarm, MCU temp, accelerometer, external inputs 1-2",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          0, 186, 100,
+          1, 4, 5, 110,
+          2, 2, 3, 92,
+          9, 101, 1, 44,
+          9, 0, 1,
+          10, 113, 0, 100, 255, 156, 3, 232,
+          11, 103, 0, 250,
+          11, 104, 100,
+          12, 103, 1, 9
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.5,
+          "air": {
+            "lightIntensity": 300,
+            "temperature": 25,
+            "relativeHumidity": 50
+          },
+          "batteryEndOfService": false,
+          "input1Frequency": 1390,
+          "input2Voltage": 860,
+          "lightAlarm": true,
+          "accelerationX": 0.1,
+          "accelerationY": -0.1,
+          "accelerationZ": 1,
+          "mcuTemperature": 26.5
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; channel/type headers and field encodings taken from the upstream Apache-2.0 decoder (vendor/tektelic decoder_agriculture_sensor.js) channel map. expected.data computed by running this codec and cross-checked field-by-field against the upstream decoder (battery 3.5 V, temp 25.0 C, RH 50.0 %, light 300 lux, MCU 26.5 C, accel 0.1/-0.1/1.0 g, input1 1390 Hz, input2 860 mV)."
+    },
+    {
+      "description": "Climate-only uplink: sub-zero ambient temperature + relative humidity",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          11, 103, 254, 112,
+          11, 104, 155
+        ]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": -40,
+            "relativeHumidity": 77.5
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload exercising two's-complement negative ambient temperature (0xFE70 = -400 -> -40.0 C) and odd RH count (155 * 0.5 = 77.5 %). Cross-checked against the upstream decoder."
+    },
+    {
+      "description": "Unsupported fPort (config/downlink-ack port, not a data uplink)",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          11, 104, 100
+        ]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 2"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error input: the upstream decoder only maps data uplinks on fPort 10; this codec rejects other ports rather than emitting a partial decode."
+    }
+  ],
+  "downlink": []
+}

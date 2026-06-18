@@ -1,0 +1,95 @@
+{
+  "uplink": [
+    {
+      "description": "Full uplink: battery, onboard temperature + humidity, outputs, digital/analog/pulse inputs, MCU temp",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 255, 1, 104, 1, 1, 1, 2, 1, 0, 3, 103, 0, 235, 4, 104, 90, 5, 0, 1, 6, 2, 46, 224, 7, 2, 12, 228, 8, 4, 4, 210, 9, 103, 1, 44]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "air": { "temperature": 23.5, "relativeHumidity": 45 },
+          "outputState1": 1,
+          "outputState2": 0,
+          "digitalInput1": 1,
+          "analogInput2Current": 0.012,
+          "analogInput3Voltage": 3.3,
+          "digitalInput1Count": 1234,
+          "mcuTemperature": 30
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload covering every fPort-10 channel/type the codec recognizes. battery 0x0168=360*0.01=3.6 V; temp 0x00EB=235*0.1=23.5 C; rh 0x5A=90*0.5=45 %; input_2 0x2EE0=12000*1e-6=0.012 A (12 mA in the 4-20 mA band); input_3 0x0CE4=3300*0.001=3.3 V; pulse 0x04D2=1234; mcu 0x012C=300*0.1=30 C. expected.data produced by running reference/upstream-codec.js (raw decode) and normalizing per the mapping notes."
+    },
+    {
+      "description": "Climate-only uplink: battery + onboard air temperature and humidity",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 255, 1, 104, 3, 103, 0, 235, 4, 104, 90]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "air": { "temperature": 23.5, "relativeHumidity": 45 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic minimal climate payload. Matches the temperature/relative_humidity values the upstream decoder produces for the same bytes."
+    },
+    {
+      "description": "Negative onboard temperature with humidity",
+      "input": {
+        "fPort": 10,
+        "bytes": [3, 103, 255, 206, 4, 104, 100]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": -5, "relativeHumidity": 50 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic two's-complement check: temp 0xFFCE=-50*0.1=-5.0 C; rh 0x64=100*0.5=50 %. Upstream decoder yields temperature -5, relative_humidity 50 for these bytes."
+    },
+    {
+      "description": "TTN example: Output 1 and 2 change-state uplink",
+      "input": {
+        "fPort": 10,
+        "bytes": [1, 1, 0, 2, 1, 1]
+      },
+      "expected": {
+        "data": {
+          "outputState1": 0,
+          "outputState2": 1
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Input is the upstream t00056xx-codec.yaml example. Upstream emits change_output_states.output1=0, output2=1; normalized here to the extras outputState1/outputState2 (no climate keys present, so this is a supporting vector)."
+    },
+    {
+      "description": "Unsupported fPort (configuration/diagnostic port, not measurement data)",
+      "input": {
+        "fPort": 100,
+        "bytes": [0, 1, 2, 3]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 100"]
+      },
+      "source": "synthetic",
+      "_note": "fPort 100 is the register read-back port in the upstream decoder, not a measurement uplink; this codec only decodes data on fPort 10."
+    },
+    {
+      "description": "Unrecognized channel/type on the data port",
+      "input": {
+        "fPort": 10,
+        "bytes": [171, 0]
+      },
+      "expected": {
+        "errors": ["unrecognized channel/type"]
+      },
+      "source": "synthetic",
+      "_note": "0xAB is not a defined channel on fPort 10. Upstream reports 'Couldn't find header ...'; this codec reports an unrecognized channel/type error."
+    }
+  ],
+  "downlink": []
+}
