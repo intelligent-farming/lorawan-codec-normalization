@@ -1,0 +1,107 @@
+{
+  "uplink": [
+    {
+      "description": "fPort 1 measurement: 3.5V battery, 868.43ppm CO2, 18.75°C, 44.29% RH (TTN example input)",
+      "input": {
+        "fPort": 1,
+        "bytes": [15, 0, 0, 1, 83, 59, 7, 83, 17, 77]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.5,
+          "air": {
+            "location": "indoor",
+            "co2": 868.43,
+            "temperature": 18.75,
+            "relativeHumidity": 44.29
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Input is the TTN upstream example. expected.data authored by normalizing the upstream oracle output (battery V, co2 ppm, temperature °C, relativeHumidity %)."
+    },
+    {
+      "description": "fPort 1 measurement with negative temperature: 3.0V battery, 10ppm CO2, -5.00°C, 25.00% RH",
+      "input": {
+        "fPort": 1,
+        "bytes": [10, 0, 0, 0, 3, 232, 254, 12, 9, 196]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "air": {
+            "location": "indoor",
+            "co2": 10,
+            "temperature": -5,
+            "relativeHumidity": 25
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; tempX100=0xFE0C>32767 exercises the two's-complement negative branch. expected.data normalized from upstream oracle output."
+    },
+    {
+      "description": "fPort 1 measurement with 'no temp' sentinel (0x7FFF): 2.8V battery, 5ppm CO2, 50.00% RH",
+      "input": {
+        "fPort": 1,
+        "bytes": [8, 0, 0, 0, 1, 244, 127, 255, 19, 136]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.8,
+          "air": {
+            "location": "indoor",
+            "co2": 5,
+            "temperatureValid": false,
+            "relativeHumidity": 50
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; tempX100=0x7FFF is the upstream 'no temp' sentinel. Upstream emits the string 'no temp'; vocabulary air.temperature is a number, so we omit it and flag the camelCase extra temperatureValid:false instead."
+    },
+    {
+      "description": "fPort 223 status frame: traffic-light state 10, 3.0V battery",
+      "input": {
+        "fPort": 223,
+        "bytes": [138]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "messageType": "status",
+          "trafficLightState": 10
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic input; bytes[0]=0x8A: high bits 0xC0&==0x80 mark a status frame, low 6 bits = traffic-light state 10, low nibble 0x0A => battery 3.0V. Upstream type:'status'/status:N normalized to camelCase extras messageType/trafficLightState."
+    },
+    {
+      "description": "unsupported fPort carries battery only",
+      "input": {
+        "fPort": 2,
+        "bytes": [15, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.5
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic input; on an unrecognized fPort upstream decodes only the battery nibble and returns the rest empty. We mirror that, emitting battery only."
+    },
+    {
+      "description": "error: fPort 1 frame too short to hold a full measurement",
+      "input": {
+        "fPort": 1,
+        "bytes": [15, 0, 0, 1]
+      },
+      "expected": {
+        "errors": ["too short"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic malformed input; a fPort 1 measurement needs 10 bytes. Upstream would read undefined bytes; our codec rejects the truncated frame."
+    }
+  ],
+  "downlink": []
+}

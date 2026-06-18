@@ -1,0 +1,72 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/elv/elv-bm-trx1-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "temperature and humidity",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          1,
+          0,
+          0,
+          11,
+          202,
+          2,
+          0,
+          209,
+          3,
+          0,
+          222,
+          61
+        ]
+      },
+      "output": {
+        "data": {
+          "Supply_Voltage": 3018,
+          "TH_Sensor_Humidity": "61",
+          "TH_Sensor_Temperature": "22.2",
+          "TX_Reason": "User_Button_Event",
+          "Temperature_Sensor": "20.9"
+        }
+      }
+    },
+    {
+      "description": "gps position",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          4,
+          0,
+          0,
+          11,
+          202,
+          4,
+          2,
+          138,
+          47,
+          3,
+          110,
+          14,
+          156,
+          0,
+          216,
+          177,
+          2,
+          0,
+          1,
+          11
+        ]
+      },
+      "output": {
+        "data": {
+          "Supply_Voltage": 3018,
+          "TX_Reason": "Cyclic_Event",
+          "altitude": 17.66,
+          "hdop": 1.44,
+          "latitude": 53.44717,
+          "longitude": 10.22731
+        }
+      }
+    }
+  ]
+}

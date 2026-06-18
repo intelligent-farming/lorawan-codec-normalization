@@ -1,0 +1,72 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/cital/lorasoil-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Example Payload 1",
+      "input": {
+        "fPort": 152,
+        "bytes": [
+          16,
+          247,
+          34,
+          168,
+          100,
+          8,
+          160,
+          1,
+          155,
+          6,
+          203,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          2,
+          5,
+          16,
+          198,
+          3,
+          246,
+          10,
+          0,
+          0,
+          40,
+          120
+        ]
+      },
+      "output": {
+        "data": {
+          "latitude": 0,
+          "longitude": 0,
+          "battery": 100,
+          "soil_temperature": 43.43,
+          "soil_moisture": -88.72,
+          "soil_resistance": 10360,
+          "ambient_pressure": 1014,
+          "ambient_humidity": 10,
+          "ambient_temperature": 42.94,
+          "time_stamp": 1659611859000
+        }
+      }
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [
+          1,
+          42
+        ]
+      },
+      "output": {
+        "errors": [
+          "unknown FPort"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "vendor": "uradmonitor",
+  "device": "model-a3",
+  "name": "MODEL A3 - Air Quality Monitoring",
+  "categories": [
+    "climate",
+    "air-quality",
+    "weather-station"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "sound",
+    "co2",
+    "o3",
+    "pm2.5",
+    "pm10"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "uradmonitor",
+    "device": "model-a3",
+    "codecId": "uradmonitor-model-a3-codec",
+    "codecFile": "a3.js",
+    "codecSha256": "423ce048c2868b008cd0c4a78fe3a85c50b166066d96a47affc55a36689d582b",
+    "referencedAt": "2026-06-18"
+  }
+}

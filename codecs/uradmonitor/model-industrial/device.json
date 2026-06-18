@@ -1,0 +1,38 @@
+{
+  "vendor": "uradmonitor",
+  "device": "model-industrial",
+  "name": "MODEL INDUSTRIAL - Air Quality Monitoring",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "pressure",
+    "humidity",
+    "voc",
+    "sound",
+    "co",
+    "o3",
+    "no2",
+    "so2",
+    "h2s",
+    "nh3",
+    "cl2",
+    "pm1",
+    "pm2.5",
+    "pm10"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "uradmonitor",
+    "device": "model-industrial",
+    "codecId": "uradmonitor-model-industrial-codec",
+    "codecFile": "industrial.js",
+    "codecSha256": "8012160652876aa25488a45e62c3f701f571b2cf6829afb30dda088a06906122",
+    "referencedAt": "2026-06-18"
+  }
+}

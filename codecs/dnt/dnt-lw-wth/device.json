@@ -1,0 +1,25 @@
+{
+  "vendor": "dnt",
+  "device": "dnt-lw-wth",
+  "name": "LoRaWAN® Wall Thermostat",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dnt",
+    "device": "dnt-lw-wth",
+    "codecId": "dnt-lw-wth-codec",
+    "codecFile": "dnt-lw-wth.js",
+    "codecSha256": "5072e98adf003273397c69a82850d2c8735c7a54b6af8ddcb0342495be2888d0",
+    "referencedAt": "2026-06-18"
+  }
+}

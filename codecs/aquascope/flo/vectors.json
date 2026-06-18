@@ -1,0 +1,91 @@
+{
+  "uplink": [
+    {
+      "description": "fPort 10 status: leak detected, remote flag clear",
+      "input": {
+        "fPort": 10,
+        "bytes": [1, 95, 0, 21]
+      },
+      "expected": {
+        "data": {
+          "water": {
+            "temperature": { "current": 21 },
+            "leak": true
+          },
+          "batteryPercent": 95,
+          "remote": 0
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected derived by running reference/upstream-codec.js (leak=1->water.leak true; battery=95->batteryPercent; temperature=0*255+21=21->water.temperature.current; remote flag clear)."
+    },
+    {
+      "description": "fPort 10 status: no leak, remote flag clear",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 88, 0, 18]
+      },
+      "expected": {
+        "data": {
+          "water": {
+            "temperature": { "current": 18 },
+            "leak": false
+          },
+          "batteryPercent": 88,
+          "remote": 0
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected derived by running reference/upstream-codec.js (leak=0->water.leak false; temperature=0*255+18=18)."
+    },
+    {
+      "description": "fPort 10 status: leak detected, remote flag set",
+      "input": {
+        "fPort": 10,
+        "bytes": [3, 72, 1, 5]
+      },
+      "expected": {
+        "data": {
+          "water": {
+            "temperature": { "current": 260 },
+            "leak": true
+          },
+          "batteryPercent": 72,
+          "remote": 1
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected derived by running reference/upstream-codec.js (byte0=3 sets bit0 leak + bit1 remote; temperature=1*255+5=260 confirms the verbatim bytes[2]*0xff+bytes[3] formula)."
+    },
+    {
+      "description": "fPort 16 heartbeat: battery + temperature, no leak channel",
+      "input": {
+        "fPort": 16,
+        "bytes": [0, 90, 0, 22]
+      },
+      "expected": {
+        "data": {
+          "water": {
+            "temperature": { "current": 22 }
+          },
+          "batteryPercent": 90
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected derived by running reference/upstream-codec.js (fPort 16 carries no leak/remote; battery=90->batteryPercent; temperature=0*255+22=22)."
+    },
+    {
+      "description": "unknown fPort is rejected",
+      "input": {
+        "fPort": 42,
+        "bytes": [1, 42]
+      },
+      "expected": {
+        "errors": ["unknown FPort"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic input; reference/upstream-codec.js returns {errors:['unknown FPort']} for any fPort other than 10 or 16."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,113 @@
+{
+  "uplink": [
+    {
+      "description": "Upstream TTN example: O3/NO2/SO2/CO gas sensors, PM1/2.5/10, ~18.4C 65%RH 1002.46hPa",
+      "input": {
+        "fPort": 1,
+        "bytes": [20, 0, 0, 142, 6, 78, 0, 0, 28, 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 50, 135, 151, 130, 3, 18, 118, 163, 42, 0, 2, 141, 44, 0, 0, 13, 43, 0, 0, 10, 4, 0, 0, 0, 2, 0, 7, 0, 69]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 18.42, "pressure": 1002.46, "relativeHumidity": 65 },
+          "hardwareVersion": "HW6",
+          "firmwareVersion": 78,
+          "gasResistance": 201334,
+          "noise": 81.5,
+          "o3": 0.653,
+          "no2": 0.013,
+          "so2": 0.01,
+          "co": 0,
+          "pm1": 5,
+          "pm25": 7,
+          "pm10": 7,
+          "iaq": 14
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Synthetic: O3 + CO sensors, 22.5C 50%RH 1013.25hPa, PM1/2.5/10 = 9/12/17",
+      "input": {
+        "fPort": 1,
+        "bytes": [20, 0, 0, 142, 6, 78, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 202, 139, 206, 100, 3, 13, 64, 90, 42, 0, 2, 141, 4, 0, 4, 176, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 12, 5, 0]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 22.5, "pressure": 1013.25, "relativeHumidity": 50 },
+          "hardwareVersion": "HW6",
+          "firmwareVersion": 78,
+          "gasResistance": 200000,
+          "noise": 45,
+          "o3": 0.653,
+          "co": 1.2,
+          "pm1": 9,
+          "pm25": 12,
+          "pm10": 17,
+          "iaq": 14
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected.data produced by running reference/upstream-codec.js (the source of truth) and applying this codec's vocabulary normalization (pressure Pa/100 -> hPa). Exercises negative-free positive temperature and the O3 + CO electrochemical slots."
+    },
+    {
+      "description": "Synthetic: negative temperature -5C, NO2/SO2/NH3/H2S sensors, 80%RH 980hPa",
+      "input": {
+        "fPort": 1,
+        "bytes": [20, 0, 0, 142, 6, 78, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 129, 244, 126, 209, 160, 0, 195, 80, 61, 44, 0, 0, 13, 43, 0, 0, 10, 2, 0, 0, 250, 3, 0, 0, 40, 2, 0, 9, 4, 0]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": -5, "pressure": 980, "relativeHumidity": 80 },
+          "hardwareVersion": "HW6",
+          "firmwareVersion": 78,
+          "gasResistance": 50000,
+          "noise": 30.5,
+          "no2": 0.013,
+          "so2": 0.01,
+          "nh3": 0.25,
+          "h2s": 0.04,
+          "pm1": 7,
+          "pm25": 9,
+          "pm10": 13,
+          "iaq": 14
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected.data produced by running reference/upstream-codec.js and applying this codec's normalization. Exercises the signed-magnitude negative temperature path and all four gas slots (NO2/SO2/NH3/H2S)."
+    },
+    {
+      "description": "Synthetic: CL2 sensor only, 30C 100%RH 1000hPa, three empty gas slots",
+      "input": {
+        "fPort": 1,
+        "bytes": [20, 0, 0, 142, 6, 78, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11, 184, 134, 161, 200, 4, 147, 224, 120, 49, 0, 19, 136, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 20, 10, 0]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 30, "pressure": 1000, "relativeHumidity": 100 },
+          "hardwareVersion": "HW6",
+          "firmwareVersion": 78,
+          "gasResistance": 300000,
+          "noise": 60,
+          "cl2": 5,
+          "pm1": 19,
+          "pm25": 20,
+          "pm10": 30,
+          "iaq": 16
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected.data produced by running reference/upstream-codec.js and applying this codec's normalization. Exercises the CL2 slot, three unconfigured (0x00) gas slots that upstream and this codec both skip, and the 100%RH humidity bound."
+    },
+    {
+      "description": "Wrong-length frame (49 bytes) is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [20, 0, 0, 142, 6, 78, 0, 0, 28, 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 50, 135, 151, 130, 3, 18, 118, 163, 42, 0, 2, 141, 44, 0, 0, 13, 43, 0, 0, 10, 4, 0, 0, 0, 2, 0, 7, 0]
+      },
+      "expected": { "errors": ["50-byte"] },
+      "source": "synthetic",
+      "_note": "Upstream returns null (DecodePayload length guard) for any frame that is not exactly 50 bytes; this codec maps that to an explicit error per the output contract."
+    }
+  ],
+  "downlink": []
+}

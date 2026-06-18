@@ -1,0 +1,150 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/comtac/lpn-cm4-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Temp/Hum data on port 3",
+      "input": {
+        "fPort": 3,
+        "bytes": [
+          1,
+          18,
+          9,
+          151,
+          3,
+          10,
+          141,
+          35
+        ]
+      },
+      "output": {
+        "data": {
+          "batLevel": 75.5,
+          "humNOW": [
+            35
+          ],
+          "tempNOW": [
+            27.01
+          ]
+        }
+      }
+    },
+    {
+      "description": "Temp/Hum history data on port 3",
+      "input": {
+        "fPort": 3,
+        "bytes": [
+          1,
+          18,
+          2,
+          151,
+          4,
+          10,
+          163,
+          29,
+          10,
+          141,
+          30,
+          10,
+          152,
+          30,
+          10,
+          160,
+          30,
+          10,
+          169,
+          30,
+          10,
+          160,
+          30,
+          10,
+          156,
+          30,
+          10,
+          157,
+          30
+        ]
+      },
+      "output": {
+        "data": {
+          "batLevel": 75.5,
+          "humNOW": [
+            29,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30,
+            30
+          ],
+          "tempNOW": [
+            27.23,
+            27.01,
+            27.12,
+            27.2,
+            27.29,
+            27.2,
+            27.16,
+            27.17
+          ]
+        }
+      }
+    },
+    {
+      "description": "Config data on port 100",
+      "input": {
+        "fPort": 100,
+        "bytes": [
+          1,
+          2,
+          1,
+          149,
+          0,
+          10,
+          1,
+          0,
+          0,
+          50,
+          0,
+          0,
+          70,
+          20
+        ]
+      },
+      "output": {
+        "data": {
+          "batLevel": 74.5,
+          "historyTrigger": 1,
+          "humMax": 70,
+          "humMin": 20,
+          "humOffset": 0,
+          "measRate": 10,
+          "tempMax": 50,
+          "tempMin": 0,
+          "tempOffset": 0
+        }
+      }
+    },
+    {
+      "description": "Info data on port 101",
+      "input": {
+        "fPort": 101,
+        "bytes": [
+          1,
+          2,
+          1,
+          145,
+          1,
+          3
+        ]
+      },
+      "output": {
+        "data": {
+          "appMainVers": 1,
+          "appMinorVers": 3,
+          "batLevel": 72.5
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "vendor": "teneo-iot",
+  "device": "filling-degree-sensor",
+  "name": "Filling Degree Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "distance",
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "teneo-iot",
+    "device": "filling-degree-sensor",
+    "codecId": "filling-degree-sensor-codec",
+    "codecFile": "filling-degree-sensor.js",
+    "codecSha256": "d3772d49f1b6daa0d259da8133b3820c9eea6c7159b0677dc2652e5c3d937b37",
+    "referencedAt": "2026-06-18"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "vendor": "elv",
+  "device": "elv-bm-trx1",
+  "name": "LoRIS-BM-TRX1 - Experimental platform for LoRaWAN",
+  "categories": [
+    "air-quality",
+    "climate",
+    "light",
+    "motion",
+    "weather-station"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "co2",
+    "brightness",
+    "pressure",
+    "motion"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "elv",
+    "device": "elv-bm-trx1",
+    "codecId": "elv-bm-trx1-codec",
+    "codecFile": "elv-bm-trx1.js",
+    "codecSha256": "c02374527a10723d664298fd2808c99a20fe8458a5a25fe2df828643eebac0bf",
+    "referencedAt": "2026-06-18"
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "uplink": [
+    {
+      "description": "Sensor data: 22.5 C, 60.0% RH, battery 88%, heartbeat",
+      "input": {
+        "fPort": 10,
+        "bytes": [1, 1, 88, 0, 225, 2, 88, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "event": "heartbeat",
+          "batteryPercent": 88,
+          "air": {
+            "temperature": 22.5,
+            "relativeHumidity": 60
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected.data authored from the upstream reference decode (temperature/humidity = signed 16-bit big-endian /10; battery byte = percent), normalized to vocabulary keys."
+    },
+    {
+      "description": "Sensor data: -5.0 C, 33.0% RH, battery 47%, temperature_low + humidity_low",
+      "input": {
+        "fPort": 10,
+        "bytes": [1, 40, 47, 255, 206, 1, 74, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "event": "temperature_low,humidity_low",
+          "batteryPercent": 47,
+          "air": {
+            "temperature": -5,
+            "relativeHumidity": 33
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input exercising negative two's-complement temperature (0xFFCE = -50 -> -5.0 C) and a multi-bit event bitmask (0x28); expected.data from the upstream reference decode normalized to vocabulary keys."
+    },
+    {
+      "description": "Firmware version 2.01.005 (fPort 8)",
+      "input": {
+        "fPort": 8,
+        "bytes": [2, 1, 0, 5]
+      },
+      "expected": {
+        "data": {
+          "firmwareVersion": "2.01.005"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; firmwareVersion string formatted exactly as the upstream reference (major.minor(2)-padded.build(3)-padded); no vocabulary mapping, emitted as camelCase extra."
+    },
+    {
+      "description": "Device settings: data upload interval = 30 min (fPort 12)",
+      "input": {
+        "fPort": 12,
+        "bytes": [1, 0, 30]
+      },
+      "expected": {
+        "data": {
+          "dataUploadInterval": 30
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; dataUploadInterval = signed 16-bit big-endian from the upstream reference decode; no vocabulary mapping, emitted as camelCase extra."
+    },
+    {
+      "description": "Threshold settings: high temp 45, low temp 5, high RH 90, low RH 30 (fPort 13)",
+      "input": {
+        "fPort": 13,
+        "bytes": [1, 0, 45, 0, 5, 90, 30]
+      },
+      "expected": {
+        "data": {
+          "highTemperatureThreshold": 45,
+          "lowTemperatureThreshold": 5,
+          "highHumidityThreshold": 90,
+          "lowHumidityThreshold": 30
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; threshold fields from the upstream reference decode (temperatures signed 16-bit big-endian, humidities single bytes); no vocabulary mapping, emitted as camelCase extras."
+    },
+    {
+      "description": "Sensor data with unknown sensor type byte (fPort 10, bytes[0] != 1)",
+      "input": {
+        "fPort": 10,
+        "bytes": [2, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unknown sensor type"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error input; upstream returns 'unknown sensor type' when the fPort 10 sensor-type byte is not 1."
+    },
+    {
+      "description": "Unrecognized FPort",
+      "input": {
+        "fPort": 1,
+        "bytes": [0]
+      },
+      "expected": {
+        "errors": ["unknown FPort"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error input; upstream returns 'unknown FPort' for any fPort other than 8, 10, 12, 13."
+    }
+  ],
+  "downlink": []
+}

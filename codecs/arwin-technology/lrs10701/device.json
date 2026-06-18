@@ -1,0 +1,33 @@
+{
+  "vendor": "arwin-technology",
+  "device": "lrs10701",
+  "name": "LRS10701 - Indoor Air Quality (IAQ) Sensor",
+  "categories": [
+    "climate",
+    "air-quality"
+  ],
+  "sensors": [
+    "iaq",
+    "temperature",
+    "humidity",
+    "co2",
+    "tvoc",
+    "particulate matter",
+    "h2s",
+    "co",
+    "no2"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "arwin-technology",
+    "device": "lrs10701",
+    "codecId": "lrs10701-codec",
+    "codecFile": "lrs10701.js",
+    "codecSha256": "56b61493dbf1fb4577ca4dc29ff3091c1c70a71acd670bb63d0a92e9ca202773",
+    "referencedAt": "2026-06-18"
+  }
+}

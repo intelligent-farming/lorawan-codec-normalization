@@ -1,0 +1,59 @@
+{
+  "uplink": [
+    {
+      "description": "Full 30-byte uplink: soil temp + GNSS fix + on-board ambient micro-climate (synthetic in-bounds; expected from upstream-codec.js field values, normalized)",
+      "input": {
+        "fPort": 152,
+        "bytes": [8, 202, 17, 148, 87, 9, 199, 5, 229, 11, 196, 0, 68, 252, 90, 255, 113, 231, 167, 2, 5, 7, 188, 3, 245, 56, 0, 0, 48, 57]
+      },
+      "expected": {
+        "data": {
+          "soil": { "temperature": 22.5 },
+          "soilWaterPotential": -45,
+          "batteryPercent": 87,
+          "time": "2025-03-15T09:30:12.000Z",
+          "position": { "latitude": 45.2105, "longitude": -93.12345 },
+          "firmware": 2.5,
+          "air": { "temperature": 19.8, "pressure": 1013, "relativeHumidity": 56 },
+          "soilResistance": 12345
+        }
+      },
+      "source": "synthetic",
+      "_note": "Upstream decodeUplink returns {time_stamp:1742031012000, soil_temperature:22.5, soil_moisture:-45, soil_resistance:12345, ambient_temperature:19.8, ambient_humidity:56, ambient_pressure:1013, latitude:45.2105, longitude:-93.12345, battery:87}. soil_temperature->soil.temperature; soil_moisture is waterPotOffBoard (raw/-100, negative water potential, NOT a 0-100% moisture)->soilWaterPotential extra; ambient_*->air.temperature/pressure/relativeHumidity; latitude/longitude->position.*; battery (0-100 percent)->batteryPercent; time_stamp(ms)->time(RFC3339); soil_resistance/firmware->extras."
+    },
+    {
+      "description": "Short 21-byte uplink: soil temp + GNSS only, negative soil temperature, no on-board ambient block (synthetic in-bounds)",
+      "input": {
+        "fPort": 152,
+        "bytes": [254, 187, 47, 18, 100, 9, 108, 0, 108, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 5]
+      },
+      "expected": {
+        "data": {
+          "soil": { "temperature": -3.25 },
+          "soilWaterPotential": -120.5,
+          "batteryPercent": 100,
+          "time": "2024-12-01T08:00:00.000Z",
+          "position": { "latitude": 0, "longitude": 0 },
+          "firmware": 2.5
+        }
+      },
+      "source": "synthetic",
+      "_note": "Upstream returns {time_stamp:1733040000000, soil_temperature:-3.25, soil_moisture:-120.5, soil_resistance:0, ambient_temperature:0, ambient_humidity:0, ambient_pressure:0, latitude:0, longitude:0, battery:100}. bytes[0..1]=0xFEBB is signed -325 (0.01 C) -> -3.25. The on-board ambient channels are zero-filled by upstream on a <26-byte payload; we omit air.* entirely (a zero air.pressure would violate the 900-1100 hPa vocabulary bound)."
+    },
+    {
+      "description": "Unknown FPort returns an error",
+      "input": { "fPort": 42, "bytes": [1, 42] },
+      "expected": { "errors": ["unknown FPort"] },
+      "source": "synthetic",
+      "_note": "Upstream returns {errors:['unknown FPort']} for any fPort other than 152."
+    },
+    {
+      "description": "Truncated payload (fewer than 21 bytes) returns an error",
+      "input": { "fPort": 152, "bytes": [8, 202, 17, 148, 87] },
+      "expected": { "errors": ["expected at least 21 bytes"] },
+      "source": "synthetic",
+      "_note": "Length guard; upstream would read undefined bytes and produce NaN lat/long and an invalid timestamp."
+    }
+  ],
+  "downlink": []
+}

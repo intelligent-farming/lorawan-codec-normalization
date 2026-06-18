@@ -1,0 +1,108 @@
+{
+  "uplink": [
+    {
+      "description": "Status uplink: battery + room temperature + room humidity (TTN example input)",
+      "input": {
+        "fPort": 10,
+        "bytes": [4, 7, 138, 0, 219, 55]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.88,
+          "air": {
+            "temperature": 21.9,
+            "relativeHumidity": 55
+          }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream example input. expected.data authored here: upstream emits voltage=2880 mV (-> battery 2.88 V), room_temperature=219 (tenths degC -> air.temperature 21.9), room_humidity=55 (-> air.relativeHumidity 55)."
+    },
+    {
+      "description": "Room temperature query response (CMD_GET_ROOM_TEMPERATURE)",
+      "input": {
+        "fPort": 10,
+        "bytes": [38, 0, 225]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 22.5
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds. Upstream decodes room_temperature = (0<<8)+225 = 225 (tenths degC -> 22.5)."
+    },
+    {
+      "description": "Humidity query response (CMD_GET_HUMIDITY)",
+      "input": {
+        "fPort": 10,
+        "bytes": [67, 48]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "relativeHumidity": 48
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds. Upstream decodes humidity = 48 (percent -> air.relativeHumidity)."
+    },
+    {
+      "description": "Status uplink: battery + set-point temperature (controller extra)",
+      "input": {
+        "fPort": 10,
+        "bytes": [4, 9, 140, 50]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.9,
+          "setPointTemperature": 25
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds. tx_en_reg=0x09 (battery|set-point). Upstream voltage=140*10+1500=2900 mV (-> battery 2.9 V), set_point_temperature=50*0.5=25.0 (controller state, no vocabulary home -> camelCase extra setPointTemperature)."
+    },
+    {
+      "description": "Set-point temperature change (CMD_GET_SET_POINT, TTN example input)",
+      "input": {
+        "fPort": 10,
+        "bytes": [33, 43]
+      },
+      "expected": {
+        "data": {
+          "setPointTemperature": 21.5
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream example input. Upstream set_point_temperature = (43*0.5).toFixed(1) = \"21.5\"; emitted here as the numeric camelCase extra setPointTemperature (no vocabulary key for a thermostat set-point)."
+    },
+    {
+      "description": "Unsupported command id",
+      "input": {
+        "fPort": 10,
+        "bytes": [99, 0]
+      },
+      "expected": {
+        "errors": ["unsupported command 0x63"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic. Command id 99 (0x63) is not in the upstream command set; our codec stops and reports it rather than silently mis-parsing."
+    },
+    {
+      "description": "Truncated status temperature field",
+      "input": {
+        "fPort": 10,
+        "bytes": [4, 2]
+      },
+      "expected": {
+        "errors": ["truncated status temperature field"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic. CMD_GET_STATUS with tx_en_reg=0x02 (room temperature) but no temperature bytes follow; the 16-bit read would run off the end."
+    }
+  ],
+  "downlink": []
+}

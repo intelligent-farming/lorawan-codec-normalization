@@ -1,0 +1,105 @@
+{
+  "uplink": [
+    {
+      "description": "uRADMonitor A3 full frame (TTN catalog example input): temperature, pressure, humidity, VOC, noise, CO2, formaldehyde, ozone, PM",
+      "input": {
+        "fPort": 1,
+        "bytes": [130, 0, 2, 154, 108, 78, 0, 0, 2, 88, 8, 228, 142, 228, 112, 3, 45, 211, 59, 2, 54, 0, 7, 0, 20, 0, 8, 0, 10, 0, 11, 213]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 22.76,
+            "relativeHumidity": 56,
+            "co2": 566,
+            "pressure": 1021.15
+          },
+          "model": "A3",
+          "hardwareVersion": "HW108",
+          "firmwareVersion": 78,
+          "gasResistance": 208339,
+          "noise": 29.5,
+          "hcho": 7,
+          "o3": 20,
+          "pm1": 8,
+          "pm25": 10,
+          "pm10": 11,
+          "iaq": 14
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Synthetic typical indoor frame: 25.87 C, 51%RH, 1013.25 hPa, 618 ppm CO2",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 0, 0, 108, 80, 0, 0, 0, 0, 10, 27, 139, 206, 102, 1, 49, 41, 85, 2, 106, 0, 83, 0, 20, 0, 5, 0, 12, 0, 18, 0]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 25.87,
+            "relativeHumidity": 51,
+            "co2": 618,
+            "pressure": 1013.25
+          },
+          "model": "A3",
+          "hardwareVersion": "HW108",
+          "firmwareVersion": 80,
+          "gasResistance": 78121,
+          "noise": 42.5,
+          "hcho": 83,
+          "o3": 20,
+          "pm1": 5,
+          "pm25": 12,
+          "pm10": 18,
+          "iaq": 13
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame built by encoding round target values into the A3 wire layout; expected.data produced by running this codec (a faithful port of reference/upstream-codec.js) and cross-checked byte-for-byte against the upstream decoder."
+    },
+    {
+      "description": "Synthetic cold-outdoor frame: negative sign-magnitude temperature -5.5 C, 88%RH, 990 hPa",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 0, 0, 108, 82, 0, 0, 0, 0, 130, 38, 130, 185, 176, 1, 212, 192, 60, 1, 154, 0, 2, 0, 35, 0, 1, 0, 3, 0, 9, 0]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": -5.5,
+            "relativeHumidity": 88,
+            "co2": 410,
+            "pressure": 990
+          },
+          "model": "A3",
+          "hardwareVersion": "HW108",
+          "firmwareVersion": 82,
+          "gasResistance": 120000,
+          "noise": 30,
+          "hcho": 2,
+          "o3": 35,
+          "pm1": 1,
+          "pm25": 3,
+          "pm10": 9,
+          "iaq": 15
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame exercising the sign-magnitude (0x8000) negative-temperature branch; expected.data produced by running this codec and cross-checked byte-for-byte against reference/upstream-codec.js."
+    },
+    {
+      "description": "Wrong length frame (not 32 bytes) is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [130, 0, 2, 154, 108, 78, 0, 0, 2, 88]
+      },
+      "expected": {
+        "errors": ["expected 32-byte uRADMonitor A3 frame"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

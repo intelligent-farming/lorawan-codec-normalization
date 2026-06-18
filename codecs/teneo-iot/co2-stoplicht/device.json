@@ -1,0 +1,27 @@
+{
+  "vendor": "teneo-iot",
+  "device": "co2-stoplicht",
+  "name": "CO2 stoplicht",
+  "categories": [
+    "air-quality",
+    "climate"
+  ],
+  "sensors": [
+    "co2",
+    "humidity",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "teneo-iot",
+    "device": "co2-stoplicht",
+    "codecId": "co2-stoplicht-codec",
+    "codecFile": "co2-stoplicht.js",
+    "codecSha256": "132a8738f156c18d804c08e0f4ca24bf2ac85f360c71786a78f885a3055f10fa",
+    "referencedAt": "2026-06-18"
+  }
+}

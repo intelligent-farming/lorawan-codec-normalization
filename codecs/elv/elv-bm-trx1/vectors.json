@@ -1,0 +1,120 @@
+{
+  "uplink": [
+    {
+      "description": "TTN example: standalone temperature probe (0x02) + TH module (0x03) on port 10",
+      "input": {
+        "fPort": 10,
+        "bytes": [1, 0, 0, 11, 202, 2, 0, 209, 3, 0, 222, 61]
+      },
+      "expected": {
+        "data": {
+          "txReason": "User_Button_Event",
+          "battery": 3.018,
+          "temperatureSensor": 20.9,
+          "air": {
+            "relativeHumidity": 61,
+            "temperature": 22.2
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Input bytes are the upstream TTN example; expected.data is this normalized codec's output, value-checked against the upstream Apache-2.0 reference decoder (Temperature_Sensor=20.9, TH temp=22.2, humidity=61, Supply_Voltage=3018 mV). The 0x03 TH module owns air.temperature; the standalone 0x02 probe is preserved as the camelCase extra temperatureSensor."
+    },
+    {
+      "description": "TH module only (0x03): air.temperature + air.relativeHumidity",
+      "input": {
+        "fPort": 10,
+        "bytes": [4, 0, 0, 14, 16, 3, 0, 210, 55]
+      },
+      "expected": {
+        "data": {
+          "txReason": "Cyclic_Event",
+          "battery": 3.6,
+          "air": {
+            "relativeHumidity": 55,
+            "temperature": 21
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload. Reference decode: TH_Sensor_Temperature=21.0 (0x00D2*0.1), TH_Sensor_Humidity=55, Supply_Voltage=3600 mV -> battery 3.6 V."
+    },
+    {
+      "description": "Combined climate modules: TH (0x03) + concentration/CO2 (0x08) + brightness (0x0B) + pressure (0x0E) + motion (0x0C) + battery indicator (0x07)",
+      "input": {
+        "fPort": 10,
+        "bytes": [4, 0, 0, 14, 16, 3, 0, 210, 55, 8, 2, 88, 11, 0, 39, 16, 14, 0, 39, 116, 12, 128, 45, 7, 2]
+      },
+      "expected": {
+        "data": {
+          "txReason": "Cyclic_Event",
+          "battery": 3.6,
+          "tiltArea2": false,
+          "tiltArea1": false,
+          "tiltArea0": false,
+          "acceleration": false,
+          "tiltAngle": 45,
+          "batteryIndicator": "Battery_OKAY",
+          "action": {
+            "motion": {
+              "detected": true
+            }
+          },
+          "air": {
+            "relativeHumidity": 55,
+            "co2": 600,
+            "lightIntensity": 100,
+            "pressure": 1010,
+            "temperature": 21
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload exercising every climate/environmental module. Reference decode: TH temp 21.0 / hum 55; Concentration 600 (0x0258) -> air.co2; Brightness 100.00 (0x002710*0.01 lx) -> air.lightIntensity; Pressure 1010.0 (0x002774/10 hPa); acceleration In_Motion bit set -> action.motion.detected; Battery_Indicator OKAY. Upstream emits temperature/brightness/pressure as strings; normalized to numbers here."
+    },
+    {
+      "description": "Negative TH temperature (two's-complement 0xFFCE = -5.0 C)",
+      "input": {
+        "fPort": 10,
+        "bytes": [4, 0, 0, 14, 16, 3, 255, 206, 55]
+      },
+      "expected": {
+        "data": {
+          "txReason": "Cyclic_Event",
+          "battery": 3.6,
+          "air": {
+            "relativeHumidity": 55,
+            "temperature": -5
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic. Reference decode: 0xFFCE > 0x7FFF so -= 0x10000 -> -50, *0.1 -> -5.0 C; humidity 55."
+    },
+    {
+      "description": "Wrong port (not 10) -> error",
+      "input": {
+        "fPort": 5,
+        "bytes": [1, 0, 0, 11, 202]
+      },
+      "expected": {
+        "errors": ["Wrong Port Number"]
+      },
+      "source": "synthetic",
+      "_note": "Reference: Decoder() sets decoded.parser_error = 'Wrong Port Number' for any port other than 10. Normalized to an errors array."
+    },
+    {
+      "description": "Unknown datatype byte -> parser error",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 0, 0, 11, 202, 153, 0, 0]
+      },
+      "expected": {
+        "errors": ["Data Type Failure"]
+      },
+      "source": "synthetic",
+      "_note": "Reference: datatype 0x99 (153) hits the default branch, clears decoded and sets parser_error='Data Type Failure --> Please update your payload parser'. Normalized to an errors array."
+    }
+  ],
+  "downlink": []
+}

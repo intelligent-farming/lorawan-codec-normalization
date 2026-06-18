@@ -1,0 +1,64 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/uradmonitor/uradmonitor-model-a3-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "ERS CO2 temperature, humidity, light, motion and co2",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          130,
+          0,
+          2,
+          154,
+          108,
+          78,
+          0,
+          0,
+          2,
+          88,
+          8,
+          228,
+          142,
+          228,
+          112,
+          3,
+          45,
+          211,
+          59,
+          2,
+          54,
+          0,
+          7,
+          0,
+          20,
+          0,
+          8,
+          0,
+          10,
+          0,
+          11,
+          213
+        ]
+      },
+      "output": {
+        "data": {
+          "model": "A3",
+          "hardware_version": "HW108",
+          "firmware_version": 78,
+          "temperature": 22.76,
+          "pressure": 102115,
+          "humidity": 56,
+          "gas_resistance": 208339,
+          "sound": 29.5,
+          "co2": 566,
+          "ch20": 7,
+          "o3": 20,
+          "pm1": 8,
+          "pm2_5": 10,
+          "pm10": 11,
+          "iaq": 14
+        }
+      }
+    }
+  ]
+}

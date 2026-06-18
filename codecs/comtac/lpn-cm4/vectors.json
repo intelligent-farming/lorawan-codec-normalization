@@ -1,0 +1,129 @@
+{
+  "uplink": [
+    {
+      "description": "Temp/Hum event on port 3",
+      "input": {
+        "fPort": 3,
+        "bytes": [1, 18, 9, 151, 3, 10, 141, 35]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 75.5,
+          "air": {
+            "temperature": 27.01,
+            "relativeHumidity": 35
+          }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Negative temperature event on port 3 (synthetic in-bounds)",
+      "input": {
+        "fPort": 3,
+        "bytes": [1, 0, 0, 90, 3, 254, 0, 40]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 45,
+          "air": {
+            "temperature": -5.12,
+            "relativeHumidity": 40
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds: raw temp 0xFE00 = -512 -> -5.12 C; expected produced by running reference/upstream-codec.js on this input (tempNOW [-5.12], humNOW [40], batLevel 45) and mapping to the normalized vocabulary."
+    },
+    {
+      "description": "Temp/Hum history (8 samples) on port 3",
+      "input": {
+        "fPort": 3,
+        "bytes": [1, 18, 2, 151, 4, 10, 163, 29, 10, 141, 30, 10, 152, 30, 10, 160, 30, 10, 169, 30, 10, 160, 30, 10, 156, 30, 10, 157, 30]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 75.5,
+          "air": {
+            "temperature": 27.23,
+            "relativeHumidity": 29
+          },
+          "additionalSamples": [
+            { "temperature": 27.01, "relativeHumidity": 30 },
+            { "temperature": 27.12, "relativeHumidity": 30 },
+            { "temperature": 27.2, "relativeHumidity": 30 },
+            { "temperature": 27.29, "relativeHumidity": 30 },
+            { "temperature": 27.2, "relativeHumidity": 30 },
+            { "temperature": 27.16, "relativeHumidity": 30 },
+            { "temperature": 27.17, "relativeHumidity": 30 }
+          ]
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Newest sample (index 0) at top level; remaining 7 samples in the camelCase extra `additionalSamples` because the history frame carries no per-sample timestamps. expected produced by running reference/upstream-codec.js on this input (tempNOW/humNOW arrays, batLevel 75.5) and mapping to the normalized vocabulary."
+    },
+    {
+      "description": "Config data on port 100 (vendor extras)",
+      "input": {
+        "fPort": 100,
+        "bytes": [1, 2, 1, 149, 0, 10, 1, 0, 0, 50, 0, 0, 70, 20]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 74.5,
+          "measRate": 10,
+          "historyTrigger": 1,
+          "tempOffset": 0,
+          "tempMax": 50,
+          "tempMin": 0,
+          "humOffset": 0,
+          "humMax": 70,
+          "humMin": 20
+        }
+      },
+      "source": "ttn-example",
+      "_note": "CONFIG payload carries no normalized measurement; battery percentage -> batteryPercent, all device-configuration fields are camelCase extras. expected produced by running reference/upstream-codec.js (batLevel 74.5 + config fields)."
+    },
+    {
+      "description": "Info data on port 101 (firmware version, vendor extras)",
+      "input": {
+        "fPort": 101,
+        "bytes": [1, 2, 1, 145, 1, 3]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 72.5,
+          "appMainVersion": 1,
+          "appMinorVersion": 3
+        }
+      },
+      "source": "ttn-example",
+      "_note": "INFO payload carries no normalized measurement; battery percentage -> batteryPercent, firmware version as camelCase extras (renamed from upstream appMainVers/appMinorVers). expected produced by running reference/upstream-codec.js (batLevel 72.5, appMainVers 1, appMinorVers 3)."
+    },
+    {
+      "description": "Invalid fPort is rejected",
+      "input": {
+        "fPort": 5,
+        "bytes": [1, 2, 3]
+      },
+      "expected": {
+        "errors": ["invalid fPort"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: upstream returns 'Invalid FPort' for any port other than 3/100/101."
+    },
+    {
+      "description": "Invalid payload version is rejected",
+      "input": {
+        "fPort": 3,
+        "bytes": [2, 0, 0, 90, 3, 8, 202, 55]
+      },
+      "expected": {
+        "errors": ["invalid payload version"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: first byte must be PAYLOAD_VERSION 0x01; upstream returns 'Invalid payload version' otherwise."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,30 @@
+{
+  "vendor": "imbuildings",
+  "device": "imbuildings-comfort-sensor",
+  "name": "Comfort Sensor",
+  "categories": [
+    "climate",
+    "air-quality",
+    "motion"
+  ],
+  "sensors": [
+    "battery",
+    "co2",
+    "temperature",
+    "humidity",
+    "motion"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "imbuildings",
+    "device": "imbuildings-comfort-sensor",
+    "codecId": "imbuildings-codec",
+    "codecFile": "imbuildings.js",
+    "codecSha256": "4fc1356abbf7f6f4a87132f796b75569b0ab16379ae9fc0a549a5f678fef574f",
+    "referencedAt": "2026-06-18"
+  }
+}

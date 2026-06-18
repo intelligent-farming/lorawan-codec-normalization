@@ -1,0 +1,25 @@
+{
+  "vendor": "arwin-technology",
+  "device": "lrs20100",
+  "name": "LRS20100 - Temperature & Humidity Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "arwin-technology",
+    "device": "lrs20100",
+    "codecId": "lrs20100-codec",
+    "codecFile": "lrs20100.js",
+    "codecSha256": "9baf67c39338f97a7b6da6db1c148d36d84bd59440043494c57446dd5a5cd4f6",
+    "referencedAt": "2026-06-18"
+  }
+}

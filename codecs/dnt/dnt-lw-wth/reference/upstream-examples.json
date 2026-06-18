@@ -1,0 +1,45 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/dnt/dnt-lw-wth-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Status Uplink",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          4,
+          7,
+          138,
+          0,
+          219,
+          55
+        ]
+      },
+      "output": {
+        "data": {
+          "room_humidity": 55,
+          "room_temperature": 219,
+          "voltage": 2880
+        },
+        "errors": [],
+        "warnings": []
+      }
+    },
+    {
+      "description": "Set-Point-Temperture Change",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          33,
+          43
+        ]
+      },
+      "output": {
+        "data": {
+          "set_point_temperature": "21.5"
+        },
+        "errors": [],
+        "warnings": []
+      }
+    }
+  ]
+}

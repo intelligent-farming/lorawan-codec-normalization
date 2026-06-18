@@ -1,0 +1,29 @@
+{
+  "vendor": "cital",
+  "device": "lorasoil",
+  "name": "Valenco LoRa Soil",
+  "categories": [
+    "climate",
+    "gps-tracker"
+  ],
+  "sensors": [
+    "moisture",
+    "humidity",
+    "temperature",
+    "gps",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "cital",
+    "device": "lorasoil",
+    "codecId": "lorasoil-codec",
+    "codecFile": "lorasoil.js",
+    "codecSha256": "7c15e5366f9f46b5ee07391a3a9e2c3c841f996bb33c6c771d7ed9d2d224184c",
+    "referencedAt": "2026-06-18"
+  }
+}

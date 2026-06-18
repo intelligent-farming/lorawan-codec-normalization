@@ -1,0 +1,139 @@
+{
+  "uplink": [
+    {
+      "description": "fPort 1, 8-byte data+status frame: 3.4V, 120cm, 18.75C, 44.29% RH (covers air.temperature + air.relativeHumidity)",
+      "input": {
+        "fPort": 1,
+        "bytes": [14, 0, 120, 0, 7, 83, 17, 77]
+      },
+      "expected": {
+        "data": {
+          "sensorType": "fillrate",
+          "settingsAllowed": true,
+          "charging": false,
+          "battery": 3.4,
+          "valid": true,
+          "distance": 120,
+          "air": {
+            "temperature": 18.75,
+            "relativeHumidity": 44.29
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Bytes are an in-bounds synthetic frame; expected.data derived by running reference/upstream-codec.js and mapping battery->battery (V), temperature->air.temperature, relativeHumidity->air.relativeHumidity, distance->extra `distance` (cm)."
+    },
+    {
+      "description": "fPort 1, 7-byte distance+temp/humidity frame: 3.6V, 300cm, 20.00C, 50.00% RH",
+      "input": {
+        "fPort": 1,
+        "bytes": [16, 1, 44, 7, 208, 19, 136]
+      },
+      "expected": {
+        "data": {
+          "sensorType": "fillrate",
+          "settingsAllowed": true,
+          "charging": false,
+          "battery": 3.6,
+          "valid": true,
+          "distance": 300,
+          "air": {
+            "temperature": 20,
+            "relativeHumidity": 50
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic frame; expected.data from running reference/upstream-codec.js."
+    },
+    {
+      "description": "fPort 1, 3-byte distance-only frame: 3.1V, 30cm, no climate sensors",
+      "input": {
+        "fPort": 1,
+        "bytes": [11, 0, 30]
+      },
+      "expected": {
+        "data": {
+          "sensorType": "fillrate",
+          "settingsAllowed": true,
+          "charging": false,
+          "battery": 3.1,
+          "valid": true,
+          "distance": 30
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic frame; expected.data from running reference/upstream-codec.js."
+    },
+    {
+      "description": "fPort 1, 4-byte data+status frame, status code 1: 3.3V, error, invalid reading",
+      "input": {
+        "fPort": 1,
+        "bytes": [13, 0, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "sensorType": "fillrate",
+          "settingsAllowed": true,
+          "charging": false,
+          "battery": 3.3,
+          "valid": false,
+          "distance": 0,
+          "errorCode": 1
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic frame; expected.data from running reference/upstream-codec.js (upstream `errorcode` normalized to camelCase extra `errorCode`)."
+    },
+    {
+      "description": "fPort 1, status code 4 (no echo): distance set to -1 but reading marked valid",
+      "input": {
+        "fPort": 1,
+        "bytes": [13, 0, 0, 4]
+      },
+      "expected": {
+        "data": {
+          "sensorType": "fillrate",
+          "settingsAllowed": true,
+          "charging": false,
+          "battery": 3.3,
+          "valid": true,
+          "distance": -1
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic frame; expected.data from running reference/upstream-codec.js."
+    },
+    {
+      "description": "fPort 3 charging frame: no measurement",
+      "input": {
+        "fPort": 3,
+        "bytes": [10]
+      },
+      "expected": {
+        "data": {
+          "sensorType": "fillrate",
+          "settingsAllowed": true,
+          "charging": true,
+          "battery": 3,
+          "valid": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic frame; expected.data from running reference/upstream-codec.js."
+    },
+    {
+      "description": "Empty payload returns an error",
+      "input": {
+        "fPort": 1,
+        "bytes": []
+      },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic",
+      "_note": "Reference returns a bare object with valid=false for empty bytes; our output contract forbids a bare/empty measurement, so the normalized codec reports an error instead."
+    }
+  ],
+  "downlink": []
+}

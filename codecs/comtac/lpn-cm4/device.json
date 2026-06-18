@@ -1,0 +1,26 @@
+{
+  "vendor": "comtac",
+  "device": "lpn-cm4",
+  "name": "LPN CM-4 Sensor - Temperature & Humidity Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "humidity",
+    "temperature",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "comtac",
+    "device": "lpn-cm4",
+    "codecId": "lpn-cm4-codec",
+    "codecFile": "lpn-cm4.js",
+    "codecSha256": "dfe8ed5d860cc55811a9b9e5060fa6c2083ed35e720d1ab92eea0d635cdf03a0",
+    "referencedAt": "2026-06-18"
+  }
+}

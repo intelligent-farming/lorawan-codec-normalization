@@ -1,0 +1,60 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/aquascope/wwd-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Alarm and 29 Degree",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          1,
+          100,
+          0,
+          29
+        ]
+      },
+      "output": {
+        "data": {
+          "leak": 1,
+          "remote": 0,
+          "battery": 100,
+          "temperature": 29
+        }
+      }
+    },
+    {
+      "description": "Valve Closed",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          0,
+          100,
+          0,
+          29
+        ]
+      },
+      "output": {
+        "data": {
+          "leak": 0,
+          "remote": 0,
+          "battery": 100,
+          "temperature": 29
+        }
+      }
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [
+          1,
+          42
+        ]
+      },
+      "output": {
+        "errors": [
+          "unknown FPort"
+        ]
+      }
+    }
+  ]
+}
