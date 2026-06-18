@@ -1,0 +1,44 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 Intelligent Farming Foundation
+
+name: CI
+
+# Run the full test suite on every push, and on pull requests targeting any
+# branch. `npm test` builds (tsc) then runs the smoke + conformance suites.
+on:
+  push:
+  pull_request:
+
+# Least privilege: the test job only needs to read the repository.
+permissions:
+  contents: read
+
+# Cancel superseded runs for the same ref so rapid pushes don't pile up.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test (Node ${{ matrix.node-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Support floor is engines.node ">=18"; cover the current LTS line too.
+        node-version: ['18.x', '20.x', '22.x']
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
