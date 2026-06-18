@@ -1,0 +1,73 @@
+{
+  "uplink": [
+    {
+      "description": "Interval uplink (fPort 2): battery 3.3V, light 300 lux, temperature 22.0 C",
+      "input": { "fPort": 2, "bytes": [12, 228, 1, 44, 8, 152] },
+      "expected": {
+        "data": {
+          "air": { "lightIntensity": 300, "temperature": 22 },
+          "battery": 3.3,
+          "event": "interval"
+        }
+      },
+      "source": "synthetic",
+      "_note": "synthetic in-bounds input; expected derived by running reference/upstream-codec.js (battery raw mV->V, light->air.lightIntensity, temp raw/100->air.temperature)"
+    },
+    {
+      "description": "Motion event (fPort 3): battery 3.1V, dark (0 lux), sub-zero temperature -1.0 C, motion detected",
+      "input": { "fPort": 3, "bytes": [12, 28, 0, 0, 255, 156] },
+      "expected": {
+        "data": {
+          "air": { "lightIntensity": 0, "temperature": -1 },
+          "battery": 3.1,
+          "event": "motion",
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "synthetic in-bounds input; expected derived by running reference/upstream-codec.js; fPort 3 motion event surfaced as action.motion.detected"
+    },
+    {
+      "description": "Button event (fPort 4): battery 3.0V, bright (10000 lux), temperature 30.0 C, button pressed",
+      "input": { "fPort": 4, "bytes": [11, 184, 39, 16, 11, 184] },
+      "expected": {
+        "data": {
+          "air": { "lightIntensity": 10000, "temperature": 30 },
+          "battery": 3,
+          "event": "button",
+          "buttonPressed": true
+        }
+      },
+      "source": "synthetic",
+      "_note": "synthetic in-bounds input; expected derived by running reference/upstream-codec.js; fPort 4 button event surfaced as the camelCase extra buttonPressed"
+    },
+    {
+      "description": "Setup uplink (fPort 1): battery 3.333V, light 100 lux, temperature 16.0 C",
+      "input": { "fPort": 1, "bytes": [13, 5, 0, 100, 6, 64] },
+      "expected": {
+        "data": {
+          "air": { "lightIntensity": 100, "temperature": 16 },
+          "battery": 3.333,
+          "event": "setup"
+        }
+      },
+      "source": "synthetic",
+      "_note": "synthetic in-bounds input; expected derived by running reference/upstream-codec.js"
+    },
+    {
+      "description": "Unknown fPort (42) is rejected",
+      "input": { "fPort": 42, "bytes": [12, 228, 1, 44, 8, 152] },
+      "expected": { "errors": ["unknown fPort"] },
+      "source": "synthetic",
+      "_note": "synthetic error vector; the upstream event map only defines fPorts 1-4"
+    },
+    {
+      "description": "Payload too short (4 bytes) is rejected",
+      "input": { "fPort": 2, "bytes": [12, 228, 1, 44] },
+      "expected": { "errors": ["too short"] },
+      "source": "synthetic",
+      "_note": "synthetic error vector; a full reading needs 6 bytes"
+    }
+  ],
+  "downlink": []
+}

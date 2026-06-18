@@ -1,0 +1,30 @@
+{
+  "vendor": "tinovi",
+  "device": "pm-io-5-sm",
+  "name": "LoRaWAN Soil Moisture, Temperature | Air temperature/humidity | boosted 12v output from battery",
+  "categories": [
+    "soil-monitor",
+    "climate"
+  ],
+  "sensors": [
+    "battery",
+    "pulse count",
+    "humidity",
+    "pressure",
+    "temperature",
+    "moisture"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "tinovi",
+    "device": "pm-io-5-sm",
+    "codecId": "pm-io-5-sm-codec",
+    "codecFile": "pm-io-5-sm.js",
+    "codecSha256": "e7882f5edf2d8aa13e16367adfee68ad4f7f033be5b868226056adea607dbaf4",
+    "referencedAt": "2026-06-18"
+  }
+}

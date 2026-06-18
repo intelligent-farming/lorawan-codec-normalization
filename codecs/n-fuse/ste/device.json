@@ -1,0 +1,31 @@
+{
+  "vendor": "n-fuse",
+  "device": "ste",
+  "name": "Environment sensor",
+  "categories": [
+    "climate",
+    "air-quality"
+  ],
+  "sensors": [
+    "battery",
+    "temperature",
+    "humidity",
+    "iaq",
+    "co2",
+    "bvoc",
+    "pressure"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "n-fuse",
+    "device": "ste",
+    "codecId": "ste-codec",
+    "codecFile": "ste.js",
+    "codecSha256": "78de45373a31077d681144118427d4786fb8dd1c1cd5e26632a6287e9d440439",
+    "referencedAt": "2026-06-18"
+  }
+}

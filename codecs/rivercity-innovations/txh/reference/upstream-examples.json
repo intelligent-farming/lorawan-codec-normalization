@@ -1,0 +1,106 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/rivercity-innovations/txh-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Regular Uplink with optional bytes (5 & 6) for battery",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          255,
+          232,
+          2,
+          251,
+          2,
+          11,
+          162
+        ]
+      },
+      "output": {
+        "data": {
+          "temperature": -2.4,
+          "humidity": 76.3,
+          "temperatureAlertActive": true,
+          "humidityAlertActive": false,
+          "battery": 2.978
+        }
+      }
+    },
+    {
+      "description": "Version Info Uplink",
+      "input": {
+        "fPort": 3,
+        "bytes": [
+          1,
+          0,
+          3,
+          0,
+          1,
+          4,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "LoRaWANVersion": "1.0.3.0",
+          "FirmwareVersion": "1.4.0.0"
+        }
+      }
+    },
+    {
+      "description": "Device Settings Uplink",
+      "input": {
+        "fPort": 5,
+        "bytes": [
+          1,
+          44,
+          0,
+          0,
+          3,
+          132,
+          0,
+          100,
+          3,
+          23
+        ]
+      },
+      "output": {
+        "data": {
+          "TemperatureLimitHigh": 30,
+          "TemperatureLimitLow": 0,
+          "HumidityLimitHigh": 90,
+          "HumidityLimitLow": 10,
+          "DataAverageNumber": 3,
+          "TemperatureAlertsEnabled": true,
+          "HumidityAlertsEnabled": false,
+          "AdrOn": true,
+          "ConfirmedUplinks": true,
+          "IsAlertsConfirmed": true
+        }
+      }
+    },
+    {
+      "description": "Uplink and Check times",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          0,
+          0,
+          0,
+          60,
+          0,
+          30,
+          0,
+          20
+        ]
+      },
+      "output": {
+        "data": {
+          "CheckTimeSeconds": 60,
+          "ReportsNumChecksRegular": 30,
+          "ReportsNumChecksAlert": 20
+        }
+      }
+    }
+  ]
+}

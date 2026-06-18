@@ -1,0 +1,38 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/the-things-industries/generic-node-sensor-edition-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Uplink example",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          35,
+          2,
+          216,
+          0,
+          250,
+          1
+        ]
+      },
+      "output": {
+        "data": {
+          "batt_volt": 3.5,
+          "temperature": 22.8,
+          "humidity": 25,
+          "button": 1
+        }
+      },
+      "normalizedOutput": {
+        "data": [
+          {
+            "air": {
+              "temperature": 22.8,
+              "relativeHumidity": 25
+            },
+            "battery": 3.5
+          }
+        ]
+      }
+    }
+  ]
+}

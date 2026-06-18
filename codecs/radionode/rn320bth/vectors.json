@@ -1,0 +1,97 @@
+{
+  "uplink": [
+    {
+      "description": "datain upload (live sensor frame, head 12) - TTN example bytes",
+      "input": {
+        "fPort": 88,
+        "bytes": [12, 30, 0, 42, 247, 6, 104, 2, 168, 186, 198, 65, 184, 30, 30, 66]
+      },
+      "expected": {
+        "data": {
+          "time": "2025-04-22T01:55:54Z",
+          "air": { "temperature": 24.84, "relativeHumidity": 39.53 },
+          "frameType": "live"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "holdin upload (buffered sensor frame, head 13) - TTN example bytes",
+      "input": {
+        "fPort": 88,
+        "bytes": [13, 30, 0, 42, 247, 6, 104, 2, 168, 186, 198, 65, 184, 30, 30, 66]
+      },
+      "expected": {
+        "data": {
+          "time": "2025-04-22T01:55:54Z",
+          "air": { "temperature": 24.84, "relativeHumidity": 39.53 },
+          "frameType": "hold"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "sensor frame with clean float values (synthetic; expected from running reference/upstream-codec.js: temperature 22.5 degC, humidity 55.0 %RH)",
+      "input": {
+        "fPort": 88,
+        "bytes": [12, 30, 0, 42, 247, 6, 104, 2, 0, 0, 180, 65, 0, 0, 92, 66]
+      },
+      "expected": {
+        "data": {
+          "time": "2025-04-22T01:55:54Z",
+          "air": { "temperature": 22.5, "relativeHumidity": 55 },
+          "frameType": "live"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload. temperature/humidity are IEEE-754 float32 LE (22.5 -> 00 00 B4 41, 55.0 -> 00 00 5C 42); expected values produced by running reference/upstream-codec.js, then mapped to vocabulary keys."
+    },
+    {
+      "description": "buffered sensor frame, negative temperature (synthetic; expected from running reference/upstream-codec.js: temperature -5.25 degC, humidity 80.0 %RH)",
+      "input": {
+        "fPort": 88,
+        "bytes": [13, 30, 0, 42, 247, 6, 104, 2, 0, 0, 168, 192, 0, 0, 160, 66]
+      },
+      "expected": {
+        "data": {
+          "time": "2025-04-22T01:55:54Z",
+          "air": { "temperature": -5.25, "relativeHumidity": 80 },
+          "frameType": "hold"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload exercising a negative float32 temperature (-5.25 -> 00 00 A8 C0). Expected values produced by running reference/upstream-codec.js, then mapped."
+    },
+    {
+      "description": "check-in / config frame (head 11) carrying battery voltage (synthetic; expected from running reference/upstream-codec.js: volt 3.6 V, bat index 200)",
+      "input": {
+        "fPort": 88,
+        "bytes": [11, 30, 169, 241, 5, 104, 88, 2, 200, 16, 14, 5, 2]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "batteryLevel": 200,
+          "reportInterval": 600,
+          "freqBand": 5,
+          "subBand": 2
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds check-in frame. millivolt 3600 (10 0E LE) -> battery 3.6 V; bat index 200 (raw 1..255, not a 0-100 percent) -> batteryLevel; reportInterval 600 (58 02 LE). Expected values produced by running reference/upstream-codec.js, then mapped (volt -> battery)."
+    },
+    {
+      "description": "sensor frame with unsupported data format returns an error",
+      "input": {
+        "fPort": 88,
+        "bytes": [12, 30, 0, 42, 247, 6, 104, 1, 0, 0, 180, 65, 0, 0, 92, 66]
+      },
+      "expected": {
+        "errors": ["Unsupported Sensor Data Format: 1"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic payload with splfmt=1 (only format 2 / IEEE-754 float32 is supported), matching the upstream error string."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,25 @@
+{
+  "vendor": "rivercity-innovations",
+  "device": "txh",
+  "name": "TxH - Temperature & Humidity Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "rivercity-innovations",
+    "device": "txh",
+    "codecId": "txh-codec",
+    "codecFile": "txh.js",
+    "codecSha256": "5b4d56f312630dd934dfb405c6fae0551c860a1d021e02c4901632e569458295",
+    "referencedAt": "2026-06-18"
+  }
+}

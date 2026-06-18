@@ -1,0 +1,105 @@
+{
+  "_note": "Synthetic in-bounds vectors. The `input.bytes` were authored by hand (not copied from the upstream TTN examples) and the `expected` values were produced by running reference/upstream-codec.js (the TTN codec is the source of truth) on each input, then normalizing the result into this module's vocabulary: temperature -> air.temperature, humidity -> air.relativeHumidity, battery (mV/1000 = volts) -> battery, and all non-vocabulary fields recased to camelCase extras (the upstream emits PascalCase). Re-derive with: node -e 'const fs=require(\"fs\"),vm=require(\"vm\");const s=fs.readFileSync(\"reference/upstream-codec.js\",\"utf8\");console.log(vm.runInNewContext(s+\";JSON.stringify(decodeUplink(INPUT))\"))'.",
+  "uplink": [
+    {
+      "description": "fPort 2 regular reading with battery: 21.5C, 55% RH, both alerts active, 3.300V",
+      "input": {
+        "fPort": 2,
+        "bytes": [0, 215, 2, 38, 3, 12, 228]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 21.5,
+            "relativeHumidity": 55
+          },
+          "temperatureAlertActive": true,
+          "humidityAlertActive": true,
+          "battery": 3.3
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "fPort 2 regular reading, no battery (5-byte frame): negative temperature -5.0C, 80% RH, no alerts",
+      "input": {
+        "fPort": 2,
+        "bytes": [255, 206, 3, 32, 0]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": -5,
+            "relativeHumidity": 80
+          },
+          "temperatureAlertActive": false,
+          "humidityAlertActive": false
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "fPort 3 version info: LoRaWAN 1.0.3.0, firmware 1.4.0.0",
+      "input": {
+        "fPort": 3,
+        "bytes": [1, 0, 3, 0, 1, 4, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "loRaWANVersion": "1.0.3.0",
+          "firmwareVersion": "1.4.0.0"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "fPort 5 device settings: limits 25/5C, 90/15% RH, avg 5, all flags enabled",
+      "input": {
+        "fPort": 5,
+        "bytes": [0, 250, 0, 50, 3, 132, 0, 150, 5, 31]
+      },
+      "expected": {
+        "data": {
+          "temperatureLimitHigh": 25,
+          "temperatureLimitLow": 5,
+          "humidityLimitHigh": 90,
+          "humidityLimitLow": 15,
+          "dataAverageNumber": 5,
+          "temperatureAlertsEnabled": true,
+          "humidityAlertsEnabled": true,
+          "adrOn": true,
+          "confirmedUplinks": true,
+          "isAlertsConfirmed": true
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "fPort 6 uplink/check timing: 300s check, 60 regular, 40 alert checks",
+      "input": {
+        "fPort": 6,
+        "bytes": [0, 0, 1, 44, 0, 60, 0, 40]
+      },
+      "expected": {
+        "data": {
+          "checkTimeSeconds": 300,
+          "reportsNumChecksRegular": 60,
+          "reportsNumChecksAlert": 40
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "unsupported fPort 1 is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 215, 2, 38, 3]
+      },
+      "expected": {
+        "errors": ["unsupported fPort"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

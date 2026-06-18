@@ -1,0 +1,27 @@
+{
+  "vendor": "smart-parks",
+  "device": "opencollar",
+  "name": "OpenCollar - Wildlife Protection",
+  "categories": [
+    "gps-tracker",
+    "motion"
+  ],
+  "sensors": [
+    "gps",
+    "temperature",
+    "accelerometer"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "smart-parks",
+    "device": "opencollar",
+    "codecId": "opencollar-v26-codec",
+    "codecFile": "opencollar-v26.js",
+    "codecSha256": "75a9459ced1af82757b59e96e14903a861ade3a4f61ab80a1a27b8987fd6b415",
+    "referencedAt": "2026-06-18"
+  }
+}

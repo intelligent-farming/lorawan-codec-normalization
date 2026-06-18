@@ -1,0 +1,28 @@
+{
+  "vendor": "the-things-industries",
+  "device": "generic-node-sensor-edition",
+  "name": "Generic Node (Sensor Edition)",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "accelerometer",
+    "battery",
+    "button",
+    "humidity",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "the-things-industries",
+    "device": "generic-node-sensor-edition",
+    "codecId": "generic-node-sensor-edition-codec",
+    "codecFile": "generic-node-sensor-edition-codec.js",
+    "codecSha256": "09ce328810b9e4d3677b0cf99d4bbaa729a737fac83442c6d127e874eb6d5df1",
+    "referencedAt": "2026-06-18"
+  }
+}

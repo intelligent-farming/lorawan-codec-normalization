@@ -1,0 +1,112 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/sting/pengy-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Payload example (v2.0)",
+      "input": {
+        "fPort": 3,
+        "bytes": [
+          1,
+          1,
+          1,
+          80,
+          3,
+          202,
+          0,
+          89,
+          0,
+          95,
+          0,
+          95,
+          33,
+          137
+        ]
+      },
+      "output": {
+        "data": {
+          "EAQI": "Fair",
+          "RPM": 10,
+          "FPM": 10,
+          "UPM": 9,
+          "Temperature": 33.6,
+          "Humidity": 25.7,
+          "Pressure": 970,
+          "Noise": 85.85,
+          "Version": "2.0"
+        },
+        "warnings": []
+      }
+    },
+    {
+      "description": "Payload example (v1.5)",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          1,
+          41,
+          1,
+          35,
+          0,
+          125,
+          0,
+          111,
+          3,
+          221,
+          0,
+          45,
+          0,
+          5,
+          0,
+          100,
+          36,
+          133
+        ]
+      },
+      "output": {
+        "data": {
+          "EAQI": "Fair",
+          "FPM": 11,
+          "RPM": 13,
+          "Temperature": 29.1,
+          "Humidity": 29.7,
+          "Pressure": 989,
+          "Noise": 93.49,
+          "CO": 45,
+          "NH3": 5,
+          "NO2": 1,
+          "Version": "1.5"
+        },
+        "warnings": []
+      }
+    },
+    {
+      "description": "Payload example (v1.0)",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          4,
+          67,
+          1,
+          15,
+          0,
+          55,
+          0,
+          52
+        ]
+      },
+      "output": {
+        "data": {
+          "EAQI": "Good",
+          "FPM": 5,
+          "RPM": 6,
+          "Temperature": 27.1,
+          "Humidity": 100,
+          "Version": "1.0"
+        },
+        "warnings": [
+          "Humidity out of range (109.1)"
+        ]
+      }
+    }
+  ]
+}

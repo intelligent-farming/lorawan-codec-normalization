@@ -1,0 +1,82 @@
+{
+  "uplink": [
+    {
+      "description": "full boat frame: BME280 air T/P/RH + dewpoint, 12.6V battery + batt temp, GNSS fix, two analog levels, bilge alarm + relay on",
+      "input": {
+        "fPort": 2,
+        "bytes": [10, 0, 238, 27, 148, 39, 217, 18, 152, 23, 56, 49, 232, 28, 167, 2, 117, 26, 255, 19, 61, 15, 125, 0, 0, 0, 17]
+      },
+      "expected": {
+        "data": {
+          "counter": 10,
+          "dewpoint": 10.4,
+          "air": {
+            "temperature": 21.5,
+            "pressure": 1013.2,
+            "relativeHumidity": 48.25
+          },
+          "battery": 12.6,
+          "batteryTemperature": 24,
+          "position": {
+            "latitude": 51.193901,
+            "longitude": 6.796773
+          },
+          "level1": 1.25,
+          "level2": 0,
+          "water": {
+            "leak": true
+          },
+          "relay": 1
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected.data produced by running reference/upstream-codec.js on this input and normalizing to the vocabulary (renamed keys, dropped upstream-hardcoded device/altitude/hdop and the redundant position object). air.pressure kept within the 900-1100 hPa vocabulary bound."
+    },
+    {
+      "description": "low-battery boat frame: 9.85V triggers undervoltage warning, no bilge alarm, relay off",
+      "input": {
+        "fPort": 2,
+        "bytes": [99, 0, 124, 21, 252, 38, 40, 35, 200, 20, 122, 38, 218, 22, 168, 2, 0, 0, 0, 20, 0, 0, 0, 0, 250, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "counter": 99,
+          "dewpoint": 3.2,
+          "air": {
+            "temperature": 5,
+            "pressure": 998,
+            "relativeHumidity": 90
+          },
+          "battery": 9.85,
+          "batteryTemperature": 8.5,
+          "position": {
+            "latitude": 51.2,
+            "longitude": 6.8
+          },
+          "level1": 0,
+          "level2": 2.5,
+          "water": {
+            "leak": false
+          },
+          "relay": 0
+        },
+        "warnings": ["Battery undervoltage"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected.data produced by running reference/upstream-codec.js on this input and normalizing to the vocabulary. Battery 9.85V is below the upstream 10V threshold; the codec emits a `warnings` array (declared here per the conformance contract: data vectors that emit warnings must declare them)."
+    },
+    {
+      "description": "truncated frame (10 bytes) is rejected",
+      "input": {
+        "fPort": 2,
+        "bytes": [10, 0, 238, 27, 148, 39, 217, 18, 152, 23]
+      },
+      "expected": {
+        "errors": ["payload too short"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error case: the fixed frame is 27 bytes; anything shorter cannot be decoded."
+    }
+  ],
+  "downlink": []
+}

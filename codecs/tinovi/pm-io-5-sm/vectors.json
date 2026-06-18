@@ -1,0 +1,108 @@
+{
+  "uplink": [
+    {
+      "description": "SOIL + BME blocks (synthetic in-bounds; covers soil-monitor + climate required keys)",
+      "input": {
+        "fPort": 1,
+        "bytes": [3, 72, 9, 196, 52, 188, 7, 208, 0, 35, 8, 187, 23, 162, 200, 125]
+      },
+      "expected": {
+        "data": {
+          "valveOpen": false,
+          "batteryPercent": 72,
+          "soilE25": 25,
+          "soil": { "ec": 1.35, "temperature": 20, "moisture": 35 },
+          "air": { "temperature": 22.35, "relativeHumidity": 60.5, "pressure": 1013.25 },
+          "water": { "leak": false }
+        }
+      },
+      "source": "synthetic",
+      "_note": "byte[0]=0x03 enables SOIL(bit0)+BME(bit1). Upstream decodeUplink returns {valv:0,leak:0,bat:72,e25:25,ec:1350,temp:20,vwc:35,airTemp:22.35,airHum:60.5,airPres:101325}. Mapped: vwc->soil.moisture, temp->soil.temperature, ec 1350 uS/cm /1000->soil.ec 1.35 dS/m, e25->soilE25 extra, airTemp->air.temperature, airHum->air.relativeHumidity, airPres 101325 Pa /100->air.pressure 1013.25 hPa, bat percent->batteryPercent, valv->valveOpen, leak->water.leak."
+    },
+    {
+      "description": "SOIL only with negative soil temperature and valve+leak flags set (synthetic in-bounds)",
+      "input": {
+        "fPort": 1,
+        "bytes": [193, 55, 7, 8, 0, 250, 253, 218, 0, 12]
+      },
+      "expected": {
+        "data": {
+          "valveOpen": true,
+          "batteryPercent": 55,
+          "soilE25": 18,
+          "soil": { "ec": 0.025, "temperature": -5.5, "moisture": 12 },
+          "water": { "leak": true }
+        }
+      },
+      "source": "synthetic",
+      "_note": "byte[0]=0xC1 enables valv(bit7)+leak(bit6)+SOIL(bit0). Upstream returns {valv:1,leak:1,bat:55,e25:18,ec:25,temp:-5.5,vwc:12} for soil-temp bytes 0xFDDA (signed -550, /100). ec 25 uS/cm /1000->soil.ec 0.025 dS/m."
+    },
+    {
+      "description": "All optional blocks present: SOIL+BME+OPT+PULSE+second SOIL+PRESSURE+LEAF (synthetic in-bounds)",
+      "input": {
+        "fPort": 1,
+        "bytes": [63, 80, 9, 196, 0, 100, 5, 220, 0, 40, 7, 58, 27, 88, 199, 56, 0, 0, 195, 80, 0, 0, 0, 250, 8, 152, 0, 80, 6, 64, 0, 38, 35, 40, 2, 33, 52, 6, 164]
+      },
+      "expected": {
+        "data": {
+          "valveOpen": false,
+          "batteryPercent": 80,
+          "soilE25": 25,
+          "pulseCount": 250,
+          "soil1E25": 22,
+          "soil1Ec": 0.008,
+          "soil1Temperature": 16,
+          "soil1Moisture": 38,
+          "pressureChannel": 90,
+          "leafHumidity": 85,
+          "leafTemperature": 17,
+          "soil": { "ec": 0.01, "temperature": 15, "moisture": 40 },
+          "air": { "temperature": 18.5, "relativeHumidity": 70, "pressure": 1010, "lightIntensity": 500 },
+          "water": { "leak": false }
+        }
+      },
+      "source": "synthetic",
+      "_note": "byte[0]=0x3F enables bits 0-5; trailing set1=0x02 enables LEAF. Upstream returns {valv:0,leak:0,bat:80,e25:25,ec:10,temp:15,vwc:40,airTemp:18.5,airHum:70,airPres:101000,lux:500,pulse:250,e25_1:22,ec_1:8,temp_1:16,vwc_1:38,press:90,leafHum:85,leafTemp:17}. Blocks decode in upstream wire order SOIL,BME,OPT,PULSE,SOIL_1,PRESSURE. Second soil probe -> soil1* extras; lux->air.lightIntensity; press analog channel->pressureChannel extra; leaf->leaf* extras."
+    },
+    {
+      "description": "BME present with pressure sentinel suppressed (raw 15536 == 65536 Pa)",
+      "input": {
+        "fPort": 1,
+        "bytes": [3, 60, 9, 196, 52, 188, 7, 208, 0, 35, 8, 187, 23, 162, 60, 176]
+      },
+      "expected": {
+        "data": {
+          "valveOpen": false,
+          "batteryPercent": 60,
+          "soilE25": 25,
+          "soil": { "ec": 1.35, "temperature": 20, "moisture": 35 },
+          "air": { "temperature": 22.35, "relativeHumidity": 60.5 },
+          "water": { "leak": false }
+        }
+      },
+      "source": "synthetic",
+      "_note": "airPres raw 0x3CB0 (15536) + 50000 = 65536 Pa is upstream's no-reading sentinel; upstream omits airPres and so does this codec. air.pressure absent here."
+    },
+    {
+      "description": "Payload too short (fewer than 2 bytes) returns an error",
+      "input": {
+        "fPort": 1,
+        "bytes": [1]
+      },
+      "expected": { "errors": ["expected at least 2 bytes"] },
+      "source": "synthetic",
+      "_note": "Length guard. byte[0] flags + byte[1] battery are always required; upstream would read undefined bytes and produce NaN."
+    },
+    {
+      "description": "SOIL flag set but block truncated returns an error",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 63, 0, 0]
+      },
+      "expected": { "errors": ["truncated SOIL block"] },
+      "source": "synthetic",
+      "_note": "byte[0]=0x01 claims an 8-byte SOIL block but only 2 block bytes follow; guarded. Upstream would slice past the array and emit NaN/partial values."
+    }
+  ],
+  "downlink": []
+}

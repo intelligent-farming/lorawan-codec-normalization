@@ -1,0 +1,92 @@
+{
+  "uplink": [
+    {
+      "description": "TTN example uplink (button pressed)",
+      "input": {
+        "fPort": 1,
+        "bytes": [35, 2, 216, 0, 250, 1]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 22.8,
+            "relativeHumidity": 25
+          },
+          "battery": 3.5,
+          "button": 1
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Mid-range field reading, button idle",
+      "input": {
+        "fPort": 1,
+        "bytes": [36, 2, 188, 2, 69, 0]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 20,
+            "relativeHumidity": 58.1
+          },
+          "battery": 3.6,
+          "button": 0
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected.data produced by running reference/upstream-codec.js (source of truth) and mapping to the vocabulary."
+    },
+    {
+      "description": "Sub-zero temperature, saturated humidity, button pressed",
+      "input": {
+        "fPort": 1,
+        "bytes": [33, 1, 200, 3, 232, 1]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": -4.4,
+            "relativeHumidity": 100
+          },
+          "battery": 3.3,
+          "button": 1
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input exercising the -500 temperature offset (negative °C) and the humidity ceiling; expected.data produced by running reference/upstream-codec.js."
+    },
+    {
+      "description": "Low battery, deeper sub-zero temperature, button idle",
+      "input": {
+        "fPort": 1,
+        "bytes": [30, 1, 144, 1, 144, 0]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": -10,
+            "relativeHumidity": 40
+          },
+          "battery": 3,
+          "button": 0
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected.data produced by running reference/upstream-codec.js."
+    },
+    {
+      "description": "Truncated payload shorter than the fixed 6-byte uplink",
+      "input": {
+        "fPort": 1,
+        "bytes": [35, 2, 216]
+      },
+      "expected": {
+        "errors": ["expected at least 6 bytes"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error input: the upstream decoder reads bytes[0..5] unconditionally; this codec guards the fixed length and reports an error instead of producing NaN/undefined fields."
+    }
+  ],
+  "downlink": []
+}

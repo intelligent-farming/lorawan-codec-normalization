@@ -1,0 +1,66 @@
+{
+  "uplink": [
+    {
+      "description": "current-state frame (fPort 1): temperature 22.5C, humidity 55%, mag switch count 3, orientation YH, activity HIGH, impact event set",
+      "input": { "fPort": 129, "bytes": [128, 22, 55, 3, 82] },
+      "expected": {
+        "data": {
+          "majorAxisOrientation": "YH",
+          "activityState": "HIGH",
+          "magSwitchCount": 3,
+          "air": { "temperature": 22.5, "relativeHumidity": 55 },
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame. fPort 129 = LAST_BLOCK encoding of frame type 1 (current-state); status byte 0x52 = orientation YH | activity HIGH | impact_evnt. expected.data produced by running reference/upstream-codec.js (temperature 22.5, humidity 55, mag_sw_cnt_u8 3, activity_state HIGH, impact_evnt 1) and applying our normalization (mV/percent extras, action.motion)."
+    },
+    {
+      "description": "chained last-temp (frame 10) + last-humid (frame 12): temperature 22.5C, humidity 60%",
+      "input": { "fPort": 138, "bytes": [128, 22, 130, 60] },
+      "expected": {
+        "data": { "air": { "temperature": 22.5, "relativeHumidity": 60 } }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic multi-frame uplink. fPort 138 = frame type 10 (last-temp), then frame-type delta byte 130 (0x82, LAST_BLOCK value 2) advances 10->12 (last-humid). expected.data from running reference/upstream-codec.js (temperature 22.5, humidity 60)."
+    },
+    {
+      "description": "negative temperature (last-temp frame 10): -5.5C",
+      "input": { "fPort": 138, "bytes": [128, 250] },
+      "expected": {
+        "data": { "air": { "temperature": -5.5 } }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame exercising signed f8.8 temperature. 0xFA80 little-endian = -1408 / 256 = -5.5C. expected.data from running reference/upstream-codec.js."
+    },
+    {
+      "description": "motion-events frame (frame 7): 5 impacts, 2 free-falls",
+      "input": { "fPort": 135, "bytes": [5, 0, 0, 0, 2, 0, 0, 0] },
+      "expected": {
+        "data": {
+          "freeFallCount": 2,
+          "action": { "motion": { "count": 5 } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame. fPort 135 = frame type 7 (motion-events): impact_cnt u32 = 5, free_fall_cnt u32 = 2. expected.data from running reference/upstream-codec.js, normalized to action.motion.count + freeFallCount extra."
+    },
+    {
+      "description": "dev-health frame (frame 21): battery 2952 mV",
+      "input": { "fPort": 149, "bytes": [136, 11] },
+      "expected": {
+        "data": { "battery": 2.952 }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame. fPort 149 = frame type 21 (dev-health): battery_mv u16 = 0x0B88 = 2952 mV. expected.data from running reference/upstream-codec.js, normalized to volts (battery = 2.952)."
+    },
+    {
+      "description": "invalid frame type 40 (no decoder) -> error",
+      "input": { "fPort": 168, "bytes": [] },
+      "expected": { "errors": ["Invalid key: 40"] },
+      "source": "synthetic",
+      "_note": "Synthetic error case. fPort 168 = LAST_BLOCK encoding of frame type 40, which has no decoder. Reference/upstream-codec.js returns errors: ['Invalid key: 40']."
+    }
+  ],
+  "downlink": []
+}

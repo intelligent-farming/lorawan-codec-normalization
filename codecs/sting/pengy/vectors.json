@@ -1,0 +1,78 @@
+{
+  "uplink": [
+    {
+      "description": "fw 1.0 (fPort 1): temperature + humidity + particulate matter",
+      "input": { "fPort": 1, "bytes": [1, 194, 0, 215, 0, 180, 0, 90] },
+      "expected": {
+        "data": {
+          "rpm": 18,
+          "fpm": 9,
+          "eaqi": "Good",
+          "version": "1.0",
+          "air": { "relativeHumidity": 45, "temperature": 21.5 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected.data produced by running reference/upstream-codec.js (ORACLE) on this input and re-keying to the normalized vocabulary (Humidity->air.relativeHumidity, Temperature->air.temperature; RPM/FPM/EAQI/Version have no vocabulary key -> camelCase extras)."
+    },
+    {
+      "description": "fw 1.0 (fPort 1): negative temperature (signed 16-bit, two's complement)",
+      "input": { "fPort": 1, "bytes": [1, 0, 255, 201, 0, 50, 0, 40] },
+      "expected": {
+        "data": {
+          "rpm": 5,
+          "fpm": 4,
+          "eaqi": "Good",
+          "version": "1.0",
+          "air": { "relativeHumidity": 25.6, "temperature": -5.5 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame exercising the upstream signed-temperature path (bytes[2]<<24>>16|bytes[3] => -55 => -5.5 C). expected.data from the ORACLE, re-keyed."
+    },
+    {
+      "description": "fw 1.5 (fPort 2): adds pressure, CO/NH3/NO2 gases and noise",
+      "input": { "fPort": 2, "bytes": [2, 11, 0, 198, 0, 120, 0, 80, 3, 245, 0, 40, 0, 6, 0, 75, 21, 74] },
+      "expected": {
+        "data": {
+          "rpm": 12,
+          "fpm": 8,
+          "eaqi": "Good",
+          "co": 40,
+          "nh3": 6,
+          "no2": 0.75,
+          "noise": 54.5,
+          "version": "1.5",
+          "air": { "relativeHumidity": 52.3, "temperature": 19.8, "pressure": 1013 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame (pressure 1013 hPa within the vocabulary 900..1100 bound). expected.data from the ORACLE, re-keyed: Pressure->air.pressure; CO/NH3/NO2/Noise/Version have no vocabulary key -> camelCase extras (the Pengy reports CO/NH3/NO2, not CO2, so no air.co2)."
+    },
+    {
+      "description": "fw 2.0 (fPort 3): temperature + humidity + pressure + PM1/PM2.5/PM10 + noise",
+      "input": { "fPort": 3, "bytes": [1, 124, 0, 240, 3, 230, 0, 90, 0, 100, 0, 110, 23, 137] },
+      "expected": {
+        "data": {
+          "pm1": 9,
+          "pm25": 10,
+          "pm10": 11,
+          "noise": 60.25,
+          "eaqi": "Fair",
+          "version": "2.0",
+          "air": { "relativeHumidity": 38, "temperature": 24, "pressure": 998 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame (pressure 998 hPa within 900..1100). expected.data from the ORACLE, re-keyed: UPM/FPM/RPM (PM1/PM2.5/PM10) -> pm1/pm25/pm10 extras; EAQI/Noise/Version -> camelCase extras."
+    },
+    {
+      "description": "unsupported fPort is rejected",
+      "input": { "fPort": 42, "bytes": [0, 0, 0, 0, 0, 0, 0, 0] },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "synthetic",
+      "_note": "Synthetic error case: upstream silently returns an empty data object for any fPort other than 1/2/3; this codec instead reports an error so the caller is not handed a bare {}."
+    }
+  ],
+  "downlink": []
+}

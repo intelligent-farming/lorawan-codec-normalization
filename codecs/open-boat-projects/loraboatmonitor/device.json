@@ -1,0 +1,32 @@
+{
+  "vendor": "open-boat-projects",
+  "device": "loraboatmonitor",
+  "name": "LoRa Boat Monitor",
+  "categories": [
+    "climate",
+    "gps-tracker",
+    "water-leak"
+  ],
+  "sensors": [
+    "digital input",
+    "gps",
+    "temperature",
+    "pressure",
+    "humidity",
+    "level",
+    "voltage"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "open-boat-projects",
+    "device": "loraboatmonitor",
+    "codecId": "loraboatmonitor-codec",
+    "codecFile": "loraboatmonitor.js",
+    "codecSha256": "3c6f16c6c421a89eb04ca378e46114773a14ef5fb1b661e56d1f0279f3b51875",
+    "referencedAt": "2026-06-18"
+  }
+}

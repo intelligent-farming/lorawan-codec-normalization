@@ -1,0 +1,25 @@
+{
+  "vendor": "southerniot",
+  "device": "senseclimate",
+  "name": "senseclimate",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "southerniot",
+    "device": "senseclimate",
+    "codecId": "senseclimate-codec",
+    "codecFile": "senseclimate.js",
+    "codecSha256": "6a6508cb7ef112fd30217e001c173c771c104efe399d24fe8ff0694bc8dc04a6",
+    "referencedAt": "2026-06-18"
+  }
+}

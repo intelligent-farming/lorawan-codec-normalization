@@ -1,0 +1,85 @@
+{
+  "uplink": [
+    {
+      "description": "fPort 1 climate reading (10 C, 70 %RH) — upstream example input",
+      "input": {
+        "fPort": 1,
+        "bytes": [10, 70]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 10,
+            "relativeHumidity": 70
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "fPort 1 mid-range climate reading (22 C, 55 %RH)",
+      "input": {
+        "fPort": 1,
+        "bytes": [22, 55]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 22,
+            "relativeHumidity": 55
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "fPort 1 zero reading (0 C, 0 %RH)",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 0,
+            "relativeHumidity": 0
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "fPort 1 upper-range climate reading (85 C, 97 %RH)",
+      "input": {
+        "fPort": 1,
+        "bytes": [85, 97]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 85,
+            "relativeHumidity": 97
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "unsupported fPort is rejected",
+      "input": {
+        "fPort": 2,
+        "bytes": [1, 2]
+      },
+      "expected": {
+        "errors": ["unknown FPort"]
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,110 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/radionode/rn320bth-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "checkin upload",
+      "input": {
+        "fPort": 88,
+        "bytes": [
+          11,
+          30,
+          169,
+          241,
+          5,
+          104,
+          44,
+          1,
+          232,
+          240,
+          13,
+          7,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "head": 11,
+          "ver": 20250421,
+          "interval": 300,
+          "splrate": 300,
+          "bat": 232,
+          "volt": 3.568,
+          "freqband": 7,
+          "subband": 0
+        }
+      }
+    },
+    {
+      "description": "datain upload",
+      "input": {
+        "fPort": 88,
+        "bytes": [
+          12,
+          30,
+          0,
+          42,
+          247,
+          6,
+          104,
+          2,
+          168,
+          186,
+          198,
+          65,
+          184,
+          30,
+          30,
+          66
+        ]
+      },
+      "output": {
+        "data": {
+          "head": 12,
+          "model": 30,
+          "tsmode": 0,
+          "timestamp": 1745286954,
+          "splfmt": 2,
+          "data_size": 8,
+          "temperature": 24.84,
+          "humidity": 39.53
+        }
+      }
+    },
+    {
+      "description": "holdin upload",
+      "input": {
+        "fPort": 88,
+        "bytes": [
+          13,
+          30,
+          0,
+          42,
+          247,
+          6,
+          104,
+          2,
+          168,
+          186,
+          198,
+          65,
+          184,
+          30,
+          30,
+          66
+        ]
+      },
+      "output": {
+        "data": {
+          "head": 13,
+          "model": 30,
+          "tsmode": 0,
+          "timestamp": 1745286954,
+          "splfmt": 2,
+          "data_size": 8,
+          "temperature": 24.84,
+          "humidity": 39.53
+        }
+      }
+    }
+  ]
+}

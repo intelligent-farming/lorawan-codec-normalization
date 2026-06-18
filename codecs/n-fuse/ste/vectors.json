@@ -1,0 +1,53 @@
+{
+  "uplink": [
+    {
+      "description": "fPort 1, format v01: warm indoor climate (~22.4 C, 55 %rH, 1013 hPa), CO2-e present, battery 2.95 V, txpower 0",
+      "input": { "fPort": 1, "bytes": [64, 95, 255, 55, 245, 3, 16, 128, 32, 2, 6] },
+      "expected": {
+        "data": {
+          "air": { "temperature": 22.38, "relativeHumidity": 55, "pressure": 1013, "co2": 25120 },
+          "battery": 2.95,
+          "voc": 5,
+          "iaq": 0,
+          "iaqAccuracy": "medium",
+          "formatVersion": 1,
+          "txPower": 0
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected derived by running the upstream TTN decoder (vendor/n-fuse/ste.js, the source of truth) and mapping bme680.temperature->air.temperature (round 2), bme680.humidity->air.relativeHumidity, bme680.pressure->air.pressure, bme680.co2(CO2-e)->air.co2, info.battery(V)->battery; bme680.voc/iaq/iaq_accuracy.str + info.version/txpower -> camelCase extras. CO2-e value reflects upstream's exact bit-packing (kept verbatim)."
+    },
+    {
+      "description": "fPort 1, format v01: cool frame (~-9.9 C, 72 %rH, 980 hPa), high IAQ accuracy, CO2-e + bVOC-e present, battery 2.40 V, txpower 1",
+      "input": { "fPort": 1, "bytes": [68, 40, 123, 72, 212, 3, 171, 18, 52, 5, 7] },
+      "expected": {
+        "data": {
+          "air": { "temperature": -9.91, "relativeHumidity": 72, "pressure": 980, "co2": 30004 },
+          "battery": 2.4,
+          "voc": 5.2676,
+          "iaq": 0,
+          "iaqAccuracy": "high",
+          "formatVersion": 1,
+          "txPower": 1
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected derived from the upstream TTN decoder (source of truth). voc rounded to 4 decimals; iaq_accuracy index 3 -> 'high'. Negative temperature exercises the (count/511*125-40) path."
+    },
+    {
+      "description": "wrong FPort (2) is rejected",
+      "input": { "fPort": 2, "bytes": [64, 95, 255, 55, 245, 3, 16, 128, 32, 2, 6] },
+      "expected": { "errors": ["unknown FPort"] },
+      "source": "synthetic",
+      "_note": "Expected derived from the upstream TTN decoder: decodeUplink asserts fPort == 1."
+    },
+    {
+      "description": "format-version guard: odd bytes[0] is rejected (upstream precedence quirk bytes[0] & 0xc0 != 0x40)",
+      "input": { "fPort": 1, "bytes": [65, 95, 255, 55, 245, 3, 16, 128, 32, 2, 6] },
+      "expected": { "errors": ["unknown format version"] },
+      "source": "synthetic",
+      "_note": "Expected derived from the upstream TTN decoder: the version guard evaluates as (bytes[0] & 1) due to JS operator precedence, ported verbatim. bytes[0]=65 is odd -> rejected."
+    }
+  ],
+  "downlink": []
+}

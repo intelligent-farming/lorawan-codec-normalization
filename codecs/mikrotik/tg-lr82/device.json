@@ -1,0 +1,35 @@
+{
+  "vendor": "mikrotik",
+  "device": "tg-lr82",
+  "name": "tg-lr82",
+  "categories": [
+    "climate",
+    "motion"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "tilt",
+    "motion",
+    "accelerometer",
+    "vibration",
+    "time",
+    "battery",
+    "pulse count",
+    "rssi",
+    "snr"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "mikrotik",
+    "device": "tg-lr82",
+    "codecId": "tg-lr82-codec",
+    "codecFile": "tg-lrx2-2.0-ul-dec.js",
+    "codecSha256": "420d0742a6ae9eda61c4dece3c26e758644ce9cebca64437a6925a9aa5b0c4bf",
+    "referencedAt": "2026-06-18"
+  }
+}

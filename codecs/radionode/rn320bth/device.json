@@ -1,0 +1,25 @@
+{
+  "vendor": "radionode",
+  "device": "rn320bth",
+  "name": "RN320-BTH",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "radionode",
+    "device": "rn320bth",
+    "codecId": "rn320bth-codec",
+    "codecFile": "rn320bth.js",
+    "codecSha256": "486e3d44be8de8353b775abd7add73d241c5f4cc82b9ac2bd535e64c9724b88f",
+    "referencedAt": "2026-06-18"
+  }
+}

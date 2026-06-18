@@ -1,0 +1,21 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/southerniot/senseclimate-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "10 degrees",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          10,
+          70
+        ]
+      },
+      "output": {
+        "data": {
+          "temperature": 10,
+          "humidity": 70
+        }
+      }
+    }
+  ]
+}

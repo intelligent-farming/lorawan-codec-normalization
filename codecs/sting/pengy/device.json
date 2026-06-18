@@ -1,0 +1,29 @@
+{
+  "vendor": "sting",
+  "device": "pengy",
+  "name": "Pengy",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "pressure",
+    "particulate matter",
+    "gas",
+    "sound"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "sting",
+    "device": "pengy",
+    "codecId": "pengy-codec",
+    "codecFile": "pengy-decoder.js",
+    "codecSha256": "dab7b9cba18fea4b6dac534d15fe8fe49606a58c267c772c3aabd390ecfa8ffa",
+    "referencedAt": "2026-06-18"
+  }
+}
