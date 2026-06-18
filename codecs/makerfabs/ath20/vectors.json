@@ -1,0 +1,71 @@
+{
+  "uplink": [
+    {
+      "description": "nominal indoor reading",
+      "input": {
+        "fPort": 2,
+        "bytes": [0, 1, 31, 2, 11, 1, 50, 0, 0, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.1,
+          "air": {
+            "temperature": 30.6,
+            "relativeHumidity": 52.3
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Upstream TTN example input; expected.data produced by running reference/upstream-codec.js (oracle) and mapping Bat->battery, Humi->air.relativeHumidity, Temp->air.temperature."
+    },
+    {
+      "description": "warm humid afternoon (humidity at 100, temp 40C)",
+      "input": {
+        "fPort": 2,
+        "bytes": [0, 1, 29, 3, 232, 1, 144, 0, 0, 0, 2]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.9,
+          "air": {
+            "temperature": 40,
+            "relativeHumidity": 100
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input (humidity 100%, temperature 40C); expected.data from running reference/upstream-codec.js (oracle)."
+    },
+    {
+      "description": "sub-zero frost reading (negative temperature)",
+      "input": {
+        "fPort": 2,
+        "bytes": [0, 1, 33, 0, 200, 255, 206, 0, 0, 0, 3]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "air": {
+            "temperature": -5,
+            "relativeHumidity": 20
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input exercising two's-complement negative temperature (-5C); expected.data from running reference/upstream-codec.js (oracle)."
+    },
+    {
+      "description": "payload too short",
+      "input": {
+        "fPort": 2,
+        "bytes": [0, 1, 31]
+      },
+      "expected": {
+        "errors": ["payload too short"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic truncated payload; upstream would read undefined bytes and emit NaN, our codec guards on length."
+    }
+  ],
+  "downlink": []
+}

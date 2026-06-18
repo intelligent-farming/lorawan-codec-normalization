@@ -1,0 +1,31 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/makerfabs/ath20-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Temperature",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          0,
+          1,
+          31,
+          2,
+          11,
+          1,
+          50,
+          0,
+          0,
+          0,
+          1
+        ]
+      },
+      "output": {
+        "data": {
+          "Bat": 3.1,
+          "Humi": 52.3,
+          "Temp": 30.6
+        }
+      }
+    }
+  ]
+}

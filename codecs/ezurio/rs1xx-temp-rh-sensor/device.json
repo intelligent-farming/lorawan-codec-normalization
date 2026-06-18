@@ -1,0 +1,25 @@
+{
+  "vendor": "ezurio",
+  "device": "rs1xx-temp-rh-sensor",
+  "name": "Sentrius RS1xx Temp-RH Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "ezurio",
+    "device": "rs1xx-temp-rh-sensor",
+    "codecId": "rs1xx-temp-rh-sensor-codec",
+    "codecFile": "rs1xx-temp-rh-sensor.js",
+    "codecSha256": "80687a92868530de6317adf43a9cc2cde1cfd8c415a3d5e20416560a4e352db8",
+    "referencedAt": "2026-06-18"
+  }
+}

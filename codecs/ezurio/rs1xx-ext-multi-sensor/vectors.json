@@ -1,0 +1,270 @@
+{
+  "uplink": [
+    {
+      "description": "Internal temp/humidity notification (msgType 0x01) -> air.temperature + air.relativeHumidity",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 0, 25, 48, 50, 21, 5, 0, 3, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "msgType": "Laird_Internal_TH",
+          "options": ["None"],
+          "batteryCapacity": "80-100%",
+          "alarmMsgCount": 3,
+          "backlogMsgCount": 1,
+          "air": {
+            "relativeHumidity": 48.25,
+            "temperature": 21.5
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "ORACLE: synthetic in-bounds bytes; humidity=dec48+frac25/100=48.25%, temperature=dec21+frac50/100=21.5C. Expected decoded values reproduced by running reference/upstream-codec.js (humidity/temperature/batteryCapacity/counts); normalized mapping (air.*, camelCase extras) authored here."
+    },
+    {
+      "description": "Aggregated temp/humidity (msgType 0x02) -> first reading to air.*, full batch as readings extra",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 0, 0, 0, 0, 5, 2, 0, 0, 0, 0, 25, 48, 50, 21, 30, 49, 80, 22]
+      },
+      "expected": {
+        "data": {
+          "msgType": "Laird_Agg_TH",
+          "options": ["None"],
+          "batteryCapacity": "80-100%",
+          "alarmMsgCount": 0,
+          "backlogMsgCount": 0,
+          "numberOfReadings": 2,
+          "timestamp": {
+            "year": 2015,
+            "month": "January",
+            "day": 1,
+            "hours": 0,
+            "minutes": 0,
+            "seconds": 0
+          },
+          "readings": [
+            { "relativeHumidity": 48.25, "temperature": 21.5 },
+            { "relativeHumidity": 49.3, "temperature": 22.8 }
+          ],
+          "air": {
+            "relativeHumidity": 48.25,
+            "temperature": 21.5
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "ORACLE: synthetic 2-reading aggregate (len = 2*4 + 11 = 19). Decoded reading values/timestamp reproduced by running reference/upstream-codec.js; current reading promoted to air.* and the batch kept as the camelCase extra `readings`."
+    },
+    {
+      "description": "Single backlog message (msgType 0x03) -> air.* with timestamp extra",
+      "input": {
+        "fPort": 1,
+        "bytes": [3, 0, 0, 0, 0, 2, 25, 48, 50, 21]
+      },
+      "expected": {
+        "data": {
+          "msgType": "SendBackLogMessage",
+          "options": ["None"],
+          "timestamp": {
+            "year": 2015,
+            "month": "January",
+            "day": 1,
+            "hours": 0,
+            "minutes": 0,
+            "seconds": 2
+          },
+          "air": {
+            "relativeHumidity": 48.25,
+            "temperature": 21.5
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "ORACLE: synthetic 10-byte single backlog. Decoded humidity/temperature/timestamp reproduced by running reference/upstream-codec.js; mapped to air.* plus the camelCase extra `timestamp`."
+    },
+    {
+      "description": "Multiple backlog messages (msgType 0x04) -> first reading to air.*, readings extra",
+      "input": {
+        "fPort": 1,
+        "bytes": [4, 1, 1, 0, 0, 0, 0, 25, 48, 50, 21]
+      },
+      "expected": {
+        "data": {
+          "msgType": "SendBackLogMessages",
+          "options": ["Sensor request for server time"],
+          "numberOfReadings": 1,
+          "readings": [
+            {
+              "timestamp": {
+                "year": 2015,
+                "month": "January",
+                "day": 1,
+                "hours": 0,
+                "minutes": 0,
+                "seconds": 0
+              },
+              "relativeHumidity": 48.25,
+              "temperature": 21.5
+            }
+          ],
+          "air": {
+            "relativeHumidity": 48.25,
+            "temperature": 21.5
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "ORACLE: synthetic 1-reading multi-backlog (len = 1*8 + 3 = 11). Decoded values reproduced by running reference/upstream-codec.js; current reading promoted to air.*, batch kept as `readings`. Options 0x01 decodes to the server-time-request flag."
+    },
+    {
+      "description": "Simple sensor config (msgType 0x05) -> config fields as camelCase extras (no measurement)",
+      "input": {
+        "fPort": 1,
+        "bytes": [5, 0, 1, 1, 0, 0, 1, 0]
+      },
+      "expected": {
+        "data": {
+          "msgType": "Laird_Simple_Config",
+          "options": ["None"],
+          "batteryType": "Alkaline",
+          "sensorReadPeriod": 256,
+          "sensorAggregate": 0,
+          "tempAlarmsEnabled": "True",
+          "humidityAlarmsEnabled": "False"
+        }
+      },
+      "source": "synthetic",
+      "_note": "ORACLE: synthetic 8-byte simple config. Decoded fields reproduced by running reference/upstream-codec.js; all carried verbatim as camelCase extras (config messages carry no normalized measurement)."
+    },
+    {
+      "description": "Advanced sensor config (msgType 0x06) -> config + alarm limits as camelCase extras",
+      "input": {
+        "fPort": 1,
+        "bytes": [6, 0, 1, 1, 0, 1, 1, 1, 255, 80, 0, 16, 0, 10, 0, 10]
+      },
+      "expected": {
+        "data": {
+          "msgType": "Laird_Advanced_Config",
+          "options": ["None"],
+          "batteryType": "Alkaline",
+          "sensorReadPeriod": 256,
+          "sensorAggregate": 1,
+          "tempAlarmsEnabled": "True",
+          "humidityAlarmsEnabled": "True",
+          "tempAlarmLimitLow": -1,
+          "tempAlarmLimitHigh": 80,
+          "humidityAlarmLimitLow": 0,
+          "humidityAlarmLimitHigh": 16,
+          "ledBle": 10,
+          "ledLora": 10
+        }
+      },
+      "source": "synthetic",
+      "_note": "ORACLE: synthetic 16-byte advanced config. Decoded fields (incl. signed low-temp limit -1 from byte 255) reproduced by running reference/upstream-codec.js; carried as camelCase extras."
+    },
+    {
+      "description": "Firmware version notification (msgType 0x07) -> version metadata as camelCase extras",
+      "input": {
+        "fPort": 1,
+        "bytes": [7, 0, 20, 11, 5, 6, 1, 1, 2, 3, 4]
+      },
+      "expected": {
+        "data": {
+          "msgType": "Laird_FW_Version",
+          "options": ["None"],
+          "releaseDate": "20/11/5",
+          "releaseNumber": "6.1",
+          "partNumber": 16909060
+        }
+      },
+      "source": "synthetic",
+      "_note": "ORACLE: synthetic 11-byte FW version. partNumber is big-endian U32 of [1,2,3,4]=16909060; reproduced by running reference/upstream-codec.js. Carried as camelCase extras."
+    },
+    {
+      "description": "Open/closed contact config (msgType 0x08) -> contact config as camelCase extras",
+      "input": {
+        "fPort": 1,
+        "bytes": [8, 1, 1, 3, 0, 10, 0, 11, 170, 187]
+      },
+      "expected": {
+        "data": {
+          "msgType": "Laird_Contact_Sensor_Config",
+          "options": ["Sensor request for server time"],
+          "operatingMode": "Pushbutton",
+          "loraNotificationOptions": ["Open", "Closed"],
+          "openDwellTime": 10,
+          "closedDwellTime": 11,
+          "resendInterval": 170,
+          "debounceAdjust": 187
+        }
+      },
+      "source": "synthetic",
+      "_note": "ORACLE: synthetic 10-byte contact config. Decoded fields/bitfields reproduced by running reference/upstream-codec.js; carried as camelCase extras."
+    },
+    {
+      "description": "Open/closed contact state (msgType 0x09) -> action.contactState plus extras",
+      "input": {
+        "fPort": 1,
+        "bytes": [9, 0, 0, 1, 1, 1]
+      },
+      "expected": {
+        "data": {
+          "msgType": "Laird_Contact_Sensor",
+          "options": ["None"],
+          "operatingMode": "Door Sensor",
+          "alertCancellation": "True",
+          "counter": 1,
+          "action": {
+            "contactState": "open"
+          },
+          "state": "Open"
+        }
+      },
+      "source": "synthetic",
+      "_note": "ORACLE: synthetic 6-byte contact state. Upstream `state` (\"Open\") reproduced by running reference/upstream-codec.js; normalized to the vocabulary action.contactState enum (lowercase \"open\") with the raw value kept as the `state` extra."
+    },
+    {
+      "description": "Battery voltage notification (msgType 0x0A) -> battery (volts)",
+      "input": {
+        "fPort": 1,
+        "bytes": [10, 0, 1, 3]
+      },
+      "expected": {
+        "data": {
+          "msgType": "Laird_Battery_Voltage",
+          "options": ["None"],
+          "battery": 3.01
+        }
+      },
+      "source": "synthetic",
+      "_note": "ORACLE: synthetic 4-byte battery message; voltage=dec3+frac1/100=3.01 V reproduced by running reference/upstream-codec.js. Already in volts, so mapped directly to the vocabulary `battery` key."
+    },
+    {
+      "description": "Truncated internal temp/humidity payload -> length error",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 0, 25, 48]
+      },
+      "expected": {
+        "errors": ["Invalid uplink message length!"]
+      },
+      "source": "synthetic",
+      "_note": "ORACLE: msgType 0x01 requires exactly 11 bytes; the 4-byte payload triggers the upstream length error, reproduced by running reference/upstream-codec.js."
+    },
+    {
+      "description": "Unknown message type -> type error",
+      "input": {
+        "fPort": 1,
+        "bytes": [255, 0, 0]
+      },
+      "expected": {
+        "errors": ["Invalid message type used!"]
+      },
+      "source": "synthetic",
+      "_note": "ORACLE: type 0xFF is outside the dispatcher's 0x01-0x0A range (as are the external RTD/thermistor probe types 0x0B/0x0C, which upstream never routes), so it falls through to the upstream default error, reproduced by running reference/upstream-codec.js."
+    }
+  ],
+  "downlink": []
+}

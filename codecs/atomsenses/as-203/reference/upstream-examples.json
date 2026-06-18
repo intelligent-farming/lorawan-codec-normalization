@@ -1,0 +1,45 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/atomsenses/as-203-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "5 in 1  Indoor Air Quality GAS Sensor (example 1) - Atomsenses",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          1,
+          117,
+          92,
+          3,
+          103,
+          52,
+          1,
+          4,
+          104,
+          101,
+          7,
+          125,
+          231,
+          4,
+          8,
+          125,
+          7,
+          0,
+          10,
+          125,
+          63,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "battery": 92,
+          "temperature": 30.8,
+          "humidity": 50.5,
+          "co2": 1255,
+          "tvoc": 7,
+          "hcho": 63
+        }
+      }
+    }
+  ]
+}

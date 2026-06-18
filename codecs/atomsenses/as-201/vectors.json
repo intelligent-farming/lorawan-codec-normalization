@@ -1,0 +1,74 @@
+{
+  "uplink": [
+    {
+      "description": "Battery, temperature, humidity, CO2 (TTN example bytes) - covers climate + air-quality",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 92, 3, 103, 52, 1, 4, 104, 101, 7, 125, 231, 4]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 92,
+          "air": { "temperature": 30.8, "relativeHumidity": 50.5, "co2": 1255 }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "Battery + light channel (illuminance + IR sub-channels) - covers light category",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 80, 6, 101, 244, 1, 64, 1, 120, 0]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 80,
+          "infraredAndVisible": 320,
+          "infrared": 120,
+          "air": { "lightIntensity": 500 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "Negative temperature + humidity + pressure (exercises signed LE decode and air.pressure)",
+      "input": {
+        "fPort": 85,
+        "bytes": [3, 103, 206, 255, 4, 104, 130, 9, 115, 148, 39]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": -5, "relativeHumidity": 65, "pressure": 1013.2 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "Temperature + humidity + PIR activity + TVOC extras",
+      "input": {
+        "fPort": 85,
+        "bytes": [3, 103, 225, 0, 4, 104, 88, 5, 106, 7, 0, 8, 125, 150, 0]
+      },
+      "expected": {
+        "data": {
+          "activity": 7,
+          "tvoc": 150,
+          "air": { "temperature": 22.5, "relativeHumidity": 44 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "Unrecognized channel returns an error",
+      "input": { "fPort": 85, "bytes": [255, 1, 0] },
+      "expected": { "errors": ["no recognized AtomSenses channels"] },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    }
+  ],
+  "downlink": []
+}

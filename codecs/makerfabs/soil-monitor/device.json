@@ -1,0 +1,27 @@
+{
+  "vendor": "makerfabs",
+  "device": "soil-monitor",
+  "name": "AgroSense Soil Monitor",
+  "categories": [
+    "soil-monitor"
+  ],
+  "sensors": [
+    "moisture",
+    "temperature",
+    "conductivity",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "makerfabs",
+    "device": "soil-monitor",
+    "codecId": "soil-monitor-codec",
+    "codecFile": "soil-monitor.js",
+    "codecSha256": "4b2986a7d1572b663b185e8994a7e40207f853b84d50f17fa84f255e48a9bf4a",
+    "referencedAt": "2026-06-18"
+  }
+}

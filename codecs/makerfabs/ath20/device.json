@@ -1,0 +1,26 @@
+{
+  "vendor": "makerfabs",
+  "device": "ath20",
+  "name": "ath20 - air-temperature-and-humidity-sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "battery",
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "makerfabs",
+    "device": "ath20",
+    "codecId": "ath20-codec",
+    "codecFile": "ath20.js",
+    "codecSha256": "ef40b8ea72e179366cde091d15846d9ce37955b1d6fd174c2103b754fa556cbc",
+    "referencedAt": "2026-06-18"
+  }
+}

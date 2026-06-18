@@ -1,0 +1,28 @@
+{
+  "vendor": "atomsenses",
+  "device": "as-201",
+  "name": "AS201 LoRaWAN Indoor Ambient Environment Sensor",
+  "categories": [
+    "climate",
+    "air-quality",
+    "light"
+  ],
+  "sensors": [
+    "co2",
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "atomsenses",
+    "device": "as-201",
+    "codecId": "as-201-codec",
+    "codecFile": "as-201.js",
+    "codecSha256": "fd51781019b2ba98995b1de58743b6c4384d38620ff84ddf69415c97f0950baf",
+    "referencedAt": "2026-06-18"
+  }
+}

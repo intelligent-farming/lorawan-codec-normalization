@@ -1,0 +1,27 @@
+{
+  "vendor": "atomsenses",
+  "device": "as-202",
+  "name": "AS202 LoRaWAN Car Park Air Quality",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "co",
+    "no2",
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "atomsenses",
+    "device": "as-202",
+    "codecId": "as-202-codec",
+    "codecFile": "as-202.js",
+    "codecSha256": "576b640124154a3faec8bd32f722b132c63e7d058193717571e4d8c346231626",
+    "referencedAt": "2026-06-18"
+  }
+}

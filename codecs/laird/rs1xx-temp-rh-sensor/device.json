@@ -1,0 +1,25 @@
+{
+  "vendor": "laird",
+  "device": "rs1xx-temp-rh-sensor",
+  "name": "Sentrius RS1xx Temp-RH Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "laird",
+    "device": "rs1xx-temp-rh-sensor",
+    "codecId": "rs1xx-temp-rh-sensor-codec",
+    "codecFile": "rs1xx-temp-rh-sensor.js",
+    "codecSha256": "f6696c68af4518e1c454a7736fe8e5f8e69695c05b229dc6542c2e42de6e0c15",
+    "referencedAt": "2026-06-18"
+  }
+}

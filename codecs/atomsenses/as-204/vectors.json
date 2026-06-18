@@ -1,0 +1,45 @@
+{
+  "uplink": [
+    {
+      "description": "5-in-1 odour sensor: battery, temp, humidity, CO2, NH3, H2S (TTN example inputs)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 92, 3, 103, 52, 1, 4, 104, 101, 7, 125, 231, 4, 8, 125, 0, 0, 9, 125, 1, 0]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 92,
+          "nh3": 0,
+          "h2s": 0.01,
+          "air": { "temperature": 30.8, "relativeHumidity": 50.5, "co2": 1255 }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Negative temperature with distinct CO2/NH3/H2S (synthetic, in-bounds; expected from running reference/upstream-codec.js)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 80, 3, 103, 246, 255, 4, 104, 90, 7, 125, 144, 1, 8, 125, 75, 0, 9, 125, 200, 0]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 80,
+          "nh3": 0.75,
+          "h2s": 2,
+          "air": { "temperature": -1, "relativeHumidity": 45, "co2": 400 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds bytes; expected values produced by running the upstream reference decoder (oracle) and then normalized (battery percent -> batteryPercent; temperature/humidity/co2 -> air.*; nh3/h2s kept as ppm extras)."
+    },
+    {
+      "description": "Unrecognized channel returns an error (synthetic)",
+      "input": { "fPort": 85, "bytes": [255, 1, 0] },
+      "expected": { "errors": ["no recognized AtomSenses channels"] },
+      "source": "synthetic",
+      "_note": "Synthetic. Upstream returns a bare {} (empty data) here; this codec reports an error instead, per AUTHORING.md (never return a bare {})."
+    }
+  ],
+  "downlink": []
+}

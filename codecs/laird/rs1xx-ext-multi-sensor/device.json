@@ -1,0 +1,26 @@
+{
+  "vendor": "laird",
+  "device": "rs1xx-ext-multi-sensor",
+  "name": "Sentrius RS1xx Multi Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "proximity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "laird",
+    "device": "rs1xx-ext-multi-sensor",
+    "codecId": "rs1xx-ext-multi-sensor-codec",
+    "codecFile": "rs1xx-ext-multi-sensor.js",
+    "codecSha256": "4afdd18b7621d10c6e990370f321fefb27eff85605cb492b62cfc2ff937fcc07",
+    "referencedAt": "2026-06-18"
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "uplink": [
+    {
+      "description": "Nominal soil reading (synthetic in-bounds; expected from upstream-codec.js field values, normalized)",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 33, 1, 1, 94, 0, 250, 5, 220, 0, 70, 0, 0, 14, 16]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "soil": { "moisture": 35, "temperature": 25, "ec": 1.5, "pH": 7 },
+          "transmitInterval": 3.6
+        }
+      },
+      "source": "synthetic",
+      "_note": "Upstream decodeUplink returns {field1:3.3,field2:35,field3:25,field4:1500,field5:7,field6:3.6}; field2->soil.moisture, field3->soil.temperature, field4 uS/cm /1000->soil.ec, field5->soil.pH, field1->battery, field6 (ms/1000=s)->transmitInterval extra."
+    },
+    {
+      "description": "Negative soil temperature (synthetic in-bounds; exercises two's-complement sign extension)",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 28, 1, 0, 200, 255, 156, 1, 44, 0, 55, 0, 0, 1, 44]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.8,
+          "soil": { "moisture": 20, "temperature": -10, "ec": 0.3, "pH": 5.5 },
+          "transmitInterval": 0.3
+        }
+      },
+      "source": "synthetic",
+      "_note": "Upstream returns {field1:2.8,field2:20,field3:-10,field4:300,field5:5.5,field6:0.3} for bytes[6..7]=0xFF9C (signed -100, 0.1 C)."
+    },
+    {
+      "description": "Significant validity flag clear (bytes[3]=0) returns an error",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 33, 0, 1, 94, 0, 250, 5, 220, 0, 70, 0, 0, 14, 16]
+      },
+      "expected": { "errors": ["data invalid"] },
+      "source": "synthetic",
+      "_note": "Upstream returns {Significant: \"data invalid\"} when bytes[3] is falsy; normalized to an error."
+    },
+    {
+      "description": "Truncated payload (fewer than 16 bytes) returns an error",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 33, 1, 1, 94, 0, 250]
+      },
+      "expected": { "errors": ["expected at least 16 bytes"] },
+      "source": "synthetic",
+      "_note": "Length guard; upstream would read undefined bytes and produce NaN."
+    }
+  ],
+  "downlink": []
+}

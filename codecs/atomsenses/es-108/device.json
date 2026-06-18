@@ -1,0 +1,36 @@
+{
+  "vendor": "atomsenses",
+  "device": "es-108",
+  "name": "ES108 LoRaWAN Indoor Air Quality Modular Combo",
+  "categories": [
+    "climate",
+    "air-quality"
+  ],
+  "sensors": [
+    "battery",
+    "temperature",
+    "humidity",
+    "co2",
+    "no2",
+    "tvoc",
+    "nh3",
+    "h2s",
+    "hcho",
+    "pm2.5",
+    "pm10",
+    "o3"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "atomsenses",
+    "device": "es-108",
+    "codecId": "es-108-codec",
+    "codecFile": "es-108.js",
+    "codecSha256": "7f4f47359671a468f88c5fac67ce0ac57e05187e1844acd94eb73014fc049894",
+    "referencedAt": "2026-06-18"
+  }
+}

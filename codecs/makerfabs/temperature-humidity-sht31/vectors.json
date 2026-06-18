@@ -1,0 +1,71 @@
+{
+  "uplink": [
+    {
+      "description": "Nominal reading: 3.1 V battery, 52.3% RH, 30.6 C",
+      "input": {
+        "fPort": 2,
+        "bytes": [0, 1, 31, 2, 11, 1, 50]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.1,
+          "air": {
+            "temperature": 30.6,
+            "relativeHumidity": 52.3
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected.data produced by running reference/upstream-codec.js (oracle) and normalizing field1->battery, field2->air.relativeHumidity, field3->air.temperature."
+    },
+    {
+      "description": "Negative temperature: 3.0 V, 45.0% RH, -5.5 C (signed big-endian)",
+      "input": {
+        "fPort": 2,
+        "bytes": [0, 2, 30, 1, 194, 255, 201]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "air": {
+            "temperature": -5.5,
+            "relativeHumidity": 45
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic input exercising the s16 two's-complement temperature branch (65481 - 65536 = -55, /10 = -5.5). Expected from reference/upstream-codec.js oracle."
+    },
+    {
+      "description": "Low edge: 2.5 V, 0.0% RH, 0.0 C",
+      "input": {
+        "fPort": 2,
+        "bytes": [0, 3, 25, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.5,
+          "air": {
+            "temperature": 0,
+            "relativeHumidity": 0
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic floor input; expected from reference/upstream-codec.js oracle."
+    },
+    {
+      "description": "Truncated payload (4 bytes) returns an error",
+      "input": {
+        "fPort": 2,
+        "bytes": [0, 1, 31, 2]
+      },
+      "expected": {
+        "errors": ["payload too short"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic short frame; upstream would index undefined bytes (NaN) instead of erroring. Our codec guards on length."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,59 @@
+{
+  "uplink": [
+    {
+      "description": "Battery, temperature, humidity, NO2 (TTN example bytes; trailing unrecognized channel 0x07 stops parsing, matching upstream)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 92, 3, 103, 52, 1, 4, 104, 101, 6, 112, 8, 7, 125, 16, 0]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 92,
+          "no2": 8,
+          "air": { "temperature": 30.8, "relativeHumidity": 50.5 }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "All four channels plus CO (synthetic, in-bounds; exercises uint16 CO decode)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 80, 3, 103, 200, 0, 4, 104, 120, 6, 112, 12, 9, 115, 94, 1]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 80,
+          "no2": 12,
+          "co": 350,
+          "air": { "temperature": 20, "relativeHumidity": 60 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected.data produced by running reference/upstream-codec.js on these bytes and normalizing per this module's vocabulary (battery%->batteryPercent, temp->air.temperature, humidity->air.relativeHumidity, no2/co as extras)."
+    },
+    {
+      "description": "Negative temperature (synthetic, exercises signed LE decode)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 100, 3, 103, 206, 255, 4, 104, 66]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 100,
+          "air": { "temperature": -5, "relativeHumidity": 33 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected.data produced by running reference/upstream-codec.js on these bytes and normalizing per this module's vocabulary."
+    },
+    {
+      "description": "Unrecognized leading channel returns an error",
+      "input": { "fPort": 85, "bytes": [255, 1, 0] },
+      "expected": { "errors": ["no recognized AtomSenses channels"] },
+      "source": "synthetic",
+      "_note": "Synthetic error case. Upstream returns a bare {data:{}} here; this module's output contract forbids bare empty data, so the codec returns an error instead."
+    }
+  ],
+  "downlink": []
+}

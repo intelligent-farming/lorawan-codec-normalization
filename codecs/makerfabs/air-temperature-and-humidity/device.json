@@ -1,0 +1,26 @@
+{
+  "vendor": "makerfabs",
+  "device": "air-temperature-and-humidity",
+  "name": "Air Temperature and Humidity Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "makerfabs",
+    "device": "air-temperature-and-humidity",
+    "codecId": "air-temperature-and-humidity-codec",
+    "codecFile": "air-temperature-and-humidity.js",
+    "codecSha256": "5e6ce310c1f917a902931d83117581388cf7fa90a93837119c9288fdaa4f291c",
+    "referencedAt": "2026-06-18"
+  }
+}

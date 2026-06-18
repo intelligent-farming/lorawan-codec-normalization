@@ -1,0 +1,36 @@
+{
+  "uplink": [
+    {
+      "description": "Battery 3.6 V, humidity 50.0 %, temperature 25.0 °C",
+      "input": { "fPort": 2, "bytes": [0, 1, 36, 1, 244, 0, 250] },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "air": { "temperature": 25, "relativeHumidity": 50 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected values produced by running reference/upstream-codec.js (oracle: field1=3.6 V, field2=50 %, field3=25 °C) and mapped to vocabulary keys (field1->battery, field2->air.relativeHumidity, field3->air.temperature). Upstream has no examples in air-temperature-and-humidity-codec.yaml."
+    },
+    {
+      "description": "Negative temperature (two's complement): battery 3.1 V, humidity 70.0 %, temperature -12.0 °C",
+      "input": { "fPort": 2, "bytes": [0, 2, 31, 2, 188, 255, 136] },
+      "expected": {
+        "data": {
+          "battery": 3.1,
+          "air": { "temperature": -12, "relativeHumidity": 70 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input exercising the temp >= 0x8000 two's-complement branch; expected values produced by running reference/upstream-codec.js (oracle: field1=3.1 V, field2=70 %, field3=-12 °C)."
+    },
+    {
+      "description": "Too-short payload (missing temperature bytes) -> error",
+      "input": { "fPort": 2, "bytes": [0, 1, 36, 1, 244] },
+      "expected": { "errors": ["payload too short"] },
+      "source": "synthetic",
+      "_note": "Synthetic; upstream decoder has no length guard and would read undefined bytes (NaN). Our codec rejects payloads shorter than 7 bytes."
+    }
+  ],
+  "downlink": []
+}

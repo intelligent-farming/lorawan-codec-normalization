@@ -1,0 +1,72 @@
+{
+  "uplink": [
+    {
+      "description": "full 5-in-1 frame: battery, temperature, humidity, CO2, TVOC, HCHO",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 75, 3, 103, 16, 1, 4, 104, 90, 7, 125, 208, 2, 8, 125, 44, 0, 10, 125, 20, 0]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 75,
+          "air": {
+            "temperature": 27.2,
+            "relativeHumidity": 45,
+            "co2": 720,
+            "tvoc": 44,
+            "hcho": 20
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame. Channel ids/types/byte-widths per upstream Decoder(); expected raw values produced by running reference/upstream-codec.js (battery 75%, temp 0x0110 LE /10 = 27.2 °C, humidity 90/2 = 45%, CO2 0x02d0 = 720 ppm, TVOC 44, HCHO 20), then normalized: battery%-> batteryPercent extra, temp/humidity/co2 -> air.*, tvoc/hcho -> air.* extras."
+    },
+    {
+      "description": "negative temperature with battery and humidity",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 100, 3, 103, 246, 255, 4, 104, 70]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 100,
+          "air": {
+            "temperature": -1,
+            "relativeHumidity": 35
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame exercising the two's-complement signed temperature path. Expected from reference/upstream-codec.js: temp 0xfff6 LE = -10 /10 = -1.0 °C, humidity 70/2 = 35%, battery 100%."
+    },
+    {
+      "description": "CO2-only frame (air-quality core measurement in isolation)",
+      "input": {
+        "fPort": 85,
+        "bytes": [7, 125, 144, 1]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "co2": 400
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame. Expected from reference/upstream-codec.js: CO2 0x0190 LE = 400 ppm. Normalized to air.co2."
+    },
+    {
+      "description": "unrecognized channel -> error (upstream silently returns empty object)",
+      "input": {
+        "fPort": 85,
+        "bytes": [255, 255, 0]
+      },
+      "expected": {
+        "errors": ["no recognized AtomSenses channels"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error frame. Upstream Decoder() breaks on the unknown channel and returns a bare {data:{}}, which the output contract forbids; our codec reports an error instead."
+    }
+  ],
+  "downlink": []
+}

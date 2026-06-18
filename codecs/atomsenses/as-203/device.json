@@ -1,0 +1,29 @@
+{
+  "vendor": "atomsenses",
+  "device": "as-203",
+  "name": "AS203 LoRaWAN Indoor Air Quality GAS Sensor",
+  "categories": [
+    "climate",
+    "air-quality"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "co2",
+    "tvoc",
+    "hcho"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "atomsenses",
+    "device": "as-203",
+    "codecId": "as-203-codec",
+    "codecFile": "as-203.js",
+    "codecSha256": "7fadd618d735eb708de167096b0c141603d5555eecbeb67cce44cfeb0d177dac",
+    "referencedAt": "2026-06-18"
+  }
+}

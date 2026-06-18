@@ -1,0 +1,26 @@
+{
+  "vendor": "ezurio",
+  "device": "rs1xx-ext-multi-sensor",
+  "name": "Sentrius RS1xx Multi Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "proximity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "ezurio",
+    "device": "rs1xx-ext-multi-sensor",
+    "codecId": "rs1xx-ext-multi-sensor-codec",
+    "codecFile": "rs1xx-ext-multi-sensor.js",
+    "codecSha256": "78c8956531f1cbc97c8a894fc21b4c656414a40e4ca413c3a1097972fd88484e",
+    "referencedAt": "2026-06-18"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "vendor": "atomsenses",
+  "device": "as-204",
+  "name": "AS204 LoRaWAN Smart Toilet Odour Sensor",
+  "categories": [
+    "climate",
+    "air-quality"
+  ],
+  "sensors": [
+    "battery",
+    "temperature",
+    "humidity",
+    "co2",
+    "nh3",
+    "h2s"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "atomsenses",
+    "device": "as-204",
+    "codecId": "as-204-codec",
+    "codecFile": "as-204.js",
+    "codecSha256": "e58fc7085b51d651ebfb7c60e4d378b77b5e95a3b126730968b2d525e8f9a402",
+    "referencedAt": "2026-06-18"
+  }
+}

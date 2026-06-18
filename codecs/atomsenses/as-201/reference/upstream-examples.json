@@ -1,0 +1,35 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/atomsenses/as-201-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "3 in 1 Ambience Monitoring Sensors (example 1) - Atomsenses",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          1,
+          117,
+          92,
+          3,
+          103,
+          52,
+          1,
+          4,
+          104,
+          101,
+          7,
+          125,
+          231,
+          4
+        ]
+      },
+      "output": {
+        "data": {
+          "battery": 92,
+          "co2": 1255,
+          "humidity": 50.5,
+          "temperature": 30.8
+        }
+      }
+    }
+  ]
+}

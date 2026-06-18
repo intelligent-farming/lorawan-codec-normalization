@@ -1,0 +1,171 @@
+{
+  "uplink": [
+    {
+      "description": "Temp/RH data notification (0x01): onboard temperature + humidity",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 0, 50, 45, 25, 21, 4, 0, 2, 0, 7]
+      },
+      "expected": {
+        "data": {
+          "messageType": "tempRh",
+          "air": {
+            "relativeHumidity": 45.5,
+            "temperature": 21.25
+          },
+          "batteryCapacityRange": "60-80%",
+          "options": [],
+          "alarmMsgCount": 2,
+          "backlogMsgCount": 7
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected.data produced by running this codec, with the RS1xx wire decode cross-checked against reference/upstream-codec.js (humidity 45.50, temperature 21.25, battery band 60-80%)."
+    },
+    {
+      "description": "Aggregated Temp/RH notification (0x02): newest reading at top level, older in history",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 0, 3, 0, 0, 3, 2, 0, 0, 0, 0, 10, 30, 0, 19, 20, 31, 50, 20]
+      },
+      "expected": {
+        "data": {
+          "messageType": "aggregatedTempRh",
+          "air": {
+            "relativeHumidity": 31.2,
+            "temperature": 20.5
+          },
+          "time": "2015-01-01T00:00:00Z",
+          "batteryCapacityRange": "40-60%",
+          "options": [],
+          "alarmMsgCount": 3,
+          "backlogMsgCount": 0,
+          "numberOfReadings": 2,
+          "history": [
+            {
+              "air": {
+                "relativeHumidity": 30.1,
+                "temperature": 19
+              },
+              "time": "2015-01-01T00:00:00Z"
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic 2-reading aggregated frame (timestamp = 2015-01-01T00:00:00Z epoch base); expected.data produced by running this codec, RS1xx readings cross-checked against reference/upstream-codec.js."
+    },
+    {
+      "description": "Single backlog message (0x03): timestamped temperature + humidity",
+      "input": {
+        "fPort": 1,
+        "bytes": [3, 2, 0, 0, 0, 2, 50, 45, 25, 21]
+      },
+      "expected": {
+        "data": {
+          "messageType": "backlog",
+          "air": {
+            "relativeHumidity": 45.5,
+            "temperature": 21.25
+          },
+          "time": "2015-01-01T00:00:02Z",
+          "options": ["configurationError"]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic backlog frame with the configurationError option flag set (byte[1]=0x02); expected.data produced by running this codec, cross-checked against reference/upstream-codec.js."
+    },
+    {
+      "description": "Multiple backlog messages (0x04): newest at top level, older in history",
+      "input": {
+        "fPort": 1,
+        "bytes": [4, 1, 2, 0, 0, 0, 0, 50, 45, 25, 21, 0, 0, 0, 0, 20, 31, 0, 19]
+      },
+      "expected": {
+        "data": {
+          "messageType": "backlogMultiple",
+          "air": {
+            "relativeHumidity": 31.2,
+            "temperature": 19
+          },
+          "time": "2015-01-01T00:00:00Z",
+          "options": ["serverTimeRequest"],
+          "numberOfReadings": 2,
+          "history": [
+            {
+              "air": {
+                "relativeHumidity": 45.5,
+                "temperature": 21.25
+              },
+              "time": "2015-01-01T00:00:00Z"
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic 2-reading backlog frame; expected.data produced by running this codec, RS1xx readings cross-checked against reference/upstream-codec.js."
+    },
+    {
+      "description": "Open/closed contact sensor state (0x09): maps to action.contactState",
+      "input": {
+        "fPort": 1,
+        "bytes": [9, 0, 0, 1, 1, 5]
+      },
+      "expected": {
+        "data": {
+          "messageType": "contactSensor",
+          "action": {
+            "contactState": "open"
+          },
+          "operatingMode": "doorSensor",
+          "alertCancellation": true,
+          "contactCounter": 5,
+          "options": []
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic contact-sensor state frame (state byte=1 -> open); the upstream decoder reports state \"Open\" for the same bytes. expected.data produced by running this codec."
+    },
+    {
+      "description": "Battery voltage notification (0x0A): voltage -> battery (V)",
+      "input": {
+        "fPort": 1,
+        "bytes": [10, 0, 30, 3]
+      },
+      "expected": {
+        "data": {
+          "messageType": "batteryVoltage",
+          "battery": 3.3,
+          "options": []
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic battery frame; voltage 3.30 V. Upstream reports voltage 3.30 for the same bytes. expected.data produced by running this codec."
+    },
+    {
+      "description": "Wrong length for a known message type is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 0, 0]
+      },
+      "expected": {
+        "errors": ["Invalid uplink message length!"]
+      },
+      "source": "synthetic",
+      "_note": "A 0x01 (temp/RH) frame must be exactly 11 bytes; a short frame is rejected, matching the upstream length guard."
+    },
+    {
+      "description": "Unknown message type is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [200, 0, 0]
+      },
+      "expected": {
+        "errors": ["Invalid message type used!"]
+      },
+      "source": "synthetic",
+      "_note": "Message-type byte 0xC8 is not a decodable uplink; upstream returns the same error string."
+    }
+  ],
+  "downlink": []
+}
