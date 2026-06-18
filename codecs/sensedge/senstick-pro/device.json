@@ -1,0 +1,27 @@
+{
+  "vendor": "sensedge",
+  "device": "senstick-pro",
+  "name": "SensTick Pro - Multi-Sensor Microclimate Node",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "motion",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "sensedge",
+    "device": "senstick-pro",
+    "codecId": "senstick-pro-codec",
+    "codecFile": "senstick-pro.js",
+    "codecSha256": "06d5618309ed5d1d1e68f400879e30923fa3b7effe2769316bc49c053ebb8da2",
+    "referencedAt": "2026-06-18"
+  }
+}

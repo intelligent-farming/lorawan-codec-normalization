@@ -1,0 +1,55 @@
+{
+  "uplink": [
+    {
+      "description": "fPort 2: temp 22.50C, humidity 48.00%, no motion, battery 3.30V (synthetic, in-bounds; expected from upstream arithmetic)",
+      "input": {
+        "fPort": 2,
+        "bytes": [0, 8, 202, 18, 192, 13, 0, 230]
+      },
+      "expected": {
+        "data": {
+          "status": 0,
+          "air": { "temperature": 22.5, "relativeHumidity": 48 },
+          "airPressureRaw": 13,
+          "action": { "motion": { "detected": false } },
+          "battery": 3.3
+        }
+      },
+      "source": "synthetic",
+      "_note": "Bytes synthesized in-bounds; expected values produced by running reference/upstream-codec.js (with its missing `var bytes = input.bytes` binding supplied) and remapping to normalized vocabulary keys. Temperature 2250=0x08CA signed BE /100; humidity 4800=0x12C0 BE /100; battery (230+100)/100."
+    },
+    {
+      "description": "fPort 2: negative temp -5.00C, humidity 40.00%, motion present, battery 3.00V (synthetic, exercises signed BE decode + motion=true)",
+      "input": {
+        "fPort": 2,
+        "bytes": [2, 254, 12, 15, 160, 5, 1, 200]
+      },
+      "expected": {
+        "data": {
+          "status": 2,
+          "air": { "temperature": -5, "relativeHumidity": 40 },
+          "airPressureRaw": 5,
+          "action": { "motion": { "detected": true } },
+          "battery": 3
+        }
+      },
+      "source": "synthetic",
+      "_note": "Bytes synthesized in-bounds; expected values produced by running reference/upstream-codec.js. Temperature -500 -> 65036=0xFE0C signed BE /100; humidity 4000=0x0FA0 BE /100; movement byte 1 (nonzero) -> detected true; battery (200+100)/100."
+    },
+    {
+      "description": "Unknown fPort returns an error",
+      "input": { "fPort": 7, "bytes": [0, 0, 0, 0, 0, 0, 0, 0] },
+      "expected": { "errors": ["unknown FPort"] },
+      "source": "synthetic",
+      "_note": "Upstream default branch returns { errors: ['unknown FPort'] } for any fPort other than 2."
+    },
+    {
+      "description": "fPort 2 truncated payload returns an error",
+      "input": { "fPort": 2, "bytes": [0, 8, 202] },
+      "expected": { "errors": ["at least 8 bytes"] },
+      "source": "synthetic",
+      "_note": "Length guard: a faithful improvement over upstream, which would read undefined bytes and emit NaN."
+    }
+  ],
+  "downlink": []
+}

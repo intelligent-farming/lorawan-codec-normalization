@@ -1,0 +1,92 @@
+{
+  "uplink": [
+    {
+      "description": "ATH periodic report, 22.5 C / 55.5 %RH (climate requires)",
+      "input": { "fPort": 1, "bytes": [16, 13, 0, 22, 80, 55, 80] },
+      "expected": {
+        "data": {
+          "air": { "temperature": 22.5, "relativeHumidity": 55.5 },
+          "messageType": "ath",
+          "event": "Periodic Report",
+          "counter": 0
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds ATH event (0x0D). temperature 22.5 = byte3 22 + (byte4 0x50>>4)/10; humidity 55.5 = byte5 55 + (byte6 0x50>>4)/10. expected.data authored from running reference/upstream-codec.js (ATH.Temperature=22.5, ATH.Humidity=55.5) mapped to vocabulary air.*"
+    },
+    {
+      "description": "ATH negative temperature, -3.5 C / 40 %RH (signed sign-magnitude path)",
+      "input": { "fPort": 1, "bytes": [16, 13, 0, 131, 80, 40, 0] },
+      "expected": {
+        "data": {
+          "air": { "temperature": -3.5, "relativeHumidity": 40 },
+          "messageType": "ath",
+          "event": "Periodic Report",
+          "counter": 0
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; exercises upstream Convert mode-1 negative path. byte3 131 > 127 => -(131 + 0.5 - 128) = -3.5. Oracle reference/upstream-codec.js yields ATH.Temperature=-3.5, ATH.Humidity=40."
+    },
+    {
+      "description": "ATH temperature report-on-change increase, 18.7 C / 60.3 %RH, counter 1",
+      "input": { "fPort": 1, "bytes": [33, 13, 3, 18, 112, 60, 48] },
+      "expected": {
+        "data": {
+          "air": { "temperature": 18.7, "relativeHumidity": 60.3 },
+          "messageType": "ath",
+          "event": "Temperature Report-on-Change Increase",
+          "counter": 1
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; eventType 3 -> 'Temperature Report-on-Change Increase'; byte0 0x21 -> counter nibble 1. Oracle yields ATH.Temperature=18.7, ATH.Humidity=60.3, Counter=1."
+    },
+    {
+      "description": "Supervisory event, battery 3.6 V (battery as vocabulary volts)",
+      "input": { "fPort": 1, "bytes": [16, 1, 0, 0, 54, 0, 0, 0, 0, 0, 5] },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "messageType": "supervisory",
+          "batteryLow": false,
+          "tamperSinceLastReset": false,
+          "tamperState": false,
+          "errorWithLastDownlink": false,
+          "radioCommError": false,
+          "accumulationCount": 5,
+          "counter": 0
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic supervisory event (0x01). battery 3.6 = byte4 0x36 nibbles (3 + 6/10); accumulation 5 = byte9*256+byte10. Oracle yields Supervisory.Battery='3.6V', Accumulation=5, all flags 0."
+    },
+    {
+      "description": "Supervisory event, battery low flag set, 3.2 V, accumulation 256",
+      "input": { "fPort": 1, "bytes": [16, 1, 2, 0, 50, 0, 0, 0, 0, 1, 0] },
+      "expected": {
+        "data": {
+          "battery": 3.2,
+          "messageType": "supervisory",
+          "batteryLow": true,
+          "tamperSinceLastReset": false,
+          "tamperState": false,
+          "errorWithLastDownlink": false,
+          "radioCommError": false,
+          "accumulationCount": 256,
+          "counter": 0
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; byte2 0x02 sets BatteryLow bit. battery 3.2 = byte4 0x32 nibbles; accumulation 256 = byte9 1*256+byte10 0. Oracle yields Supervisory.Battery='3.2V', BatteryLow=1, Accumulation=256."
+    },
+    {
+      "description": "Unsupported event type returns an error",
+      "input": { "fPort": 1, "bytes": [16, 153, 0] },
+      "expected": { "errors": ["unsupported RadioBridge event type"] },
+      "source": "synthetic",
+      "_note": "Synthetic; payload type 0x99 is not an event this device emits. Upstream returns {data:{Event:'UNDEFINED'}}; our output contract forbids a no-data measurement, so we authored an error instead."
+    }
+  ],
+  "downlink": []
+}

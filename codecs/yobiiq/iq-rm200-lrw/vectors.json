@@ -1,0 +1,100 @@
+{
+  "uplink": [
+    {
+      "description": "Climate periodic uplink: ambient temperature + humidity + battery voltage (fPort 1)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 130, 8, 237, 1, 131, 54, 1, 108, 38]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.8,
+          "air": {
+            "temperature": 22.85,
+            "relativeHumidity": 54
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; channel 0x01 register stream — ambientTemperature 0x82 raw 2285 x0.01 = 22.85 C, ambientHumidity 0x83 = 54 %, batteryVoltage 0x6C raw 38 x0.1 = 3.8 V. expected.data produced by running reference/upstream-codec.js then normalizing (ambient* -> air.*, batteryVoltage -> battery)."
+    },
+    {
+      "description": "Relay channels + internal-circuit diagnostics + sub-zero ambient (fPort 1)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 26, 1, 1, 28, 0, 0, 0, 8, 1, 42, 0, 1, 122, 13, 63, 1, 123, 16, 1, 130, 254, 162, 1, 131, 61]
+      },
+      "expected": {
+        "data": {
+          "channel1State": "ON",
+          "channel1Counter": 8,
+          "channel2State": "OFF",
+          "internalCircuitTemperature": 33.91,
+          "internalCircuitHumidity": 16,
+          "air": {
+            "temperature": -3.5,
+            "relativeHumidity": 61
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; exercises relay channel state/counter (kept as camelCase extras), internal-circuit temp/humidity diagnostics (NOT mapped to air.*), and negative ambient temperature (0x82 two's-complement 0xFEA2 = -350 x0.01 = -3.5 C). expected.data from reference/upstream-codec.js, renormalized."
+    },
+    {
+      "description": "Generic device info: external power, model, firmware version, battery percent (fPort 50)",
+      "input": {
+        "fPort": 50,
+        "bytes": [255, 107, 1, 255, 103, 82, 77, 50, 48, 48, 255, 105, 2, 1, 255, 109, 77]
+      },
+      "expected": {
+        "data": {
+          "externalPowerStatus": "AC POWER ON",
+          "deviceModel": "RM200",
+          "firmwareVersion": "V2.1",
+          "batteryPercent": 77
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds generic-data payload (channel 0xFF). batteryPercentage 0x6D = 77 % -> camelCase extra batteryPercent (vocabulary battery is volts). firmwareVersion 0x69 DIGIT:false renders V<major>.<minor>. expected.data from reference/upstream-codec.js, renormalized (constant codecVersion/genericModel/productCode/manufacturer identity fields dropped)."
+    },
+    {
+      "description": "Single-byte downlink acknowledgement (success)",
+      "input": {
+        "fPort": 1,
+        "bytes": [0]
+      },
+      "expected": {
+        "data": {
+          "downlinkAck": "DOWNLINK COMMAND SUCCEEDED"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; upstream treats any 1-byte payload as a downlink ack (0 = success). Upstream emits this under key `info`; renamed to camelCase extra `downlinkAck`."
+    },
+    {
+      "description": "Unknown register type on device-data fPort (error)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 238, 0]
+      },
+      "expected": {
+        "errors": ["Unknown type 0xEE"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error vector; type 0xEE (238) is not in any register table, so upstream sets an error. Mirrors upstream error string from reference/upstream-codec.js."
+    },
+    {
+      "description": "fPort outside all known ranges (error)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 130, 8, 202]
+      },
+      "expected": {
+        "errors": ["Incorrect fPort"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error vector; fPort 6 falls outside generic (50-99), device (1-5), alarm (11) and parameter (100) ranges. Mirrors upstream error string."
+    }
+  ],
+  "downlink": []
+}

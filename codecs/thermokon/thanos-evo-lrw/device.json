@@ -1,0 +1,30 @@
+{
+  "vendor": "thermokon",
+  "device": "thanos-evo-lrw",
+  "name": "Thanos Evo LRW - Room Operating Unit",
+  "categories": [
+    "climate",
+    "air-quality",
+    "light",
+    "motion"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "co2",
+    "tvoc"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "thermokon",
+    "device": "thanos-evo-lrw",
+    "codecId": "thermokon-codec-ext",
+    "codecFile": "thermokon-codec-ext.js",
+    "codecSha256": "b303fb6621ada4438a63e715f39d856cf163998d1812a090c4030ff1a225b6ff",
+    "referencedAt": "2026-06-18"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "vendor": "dingtek",
+  "device": "dt311",
+  "name": "DT311 - Temperature & Humidity Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "humidity",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dingtek",
+    "device": "dt311",
+    "codecId": "dt311-codec",
+    "codecFile": "dt311.js",
+    "codecSha256": "5119cbd565afcf15bc140502fd1cae53b537aa21da2bd525dcaf054c7e4374bb",
+    "referencedAt": "2026-06-18"
+  }
+}

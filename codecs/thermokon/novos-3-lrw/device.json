@@ -1,0 +1,29 @@
+{
+  "vendor": "thermokon",
+  "device": "novos-3-lrw",
+  "name": "NOVOS 3 LRW - Room Operating Unit",
+  "categories": [
+    "climate",
+    "air-quality"
+  ],
+  "sensors": [
+    "battery",
+    "temperature",
+    "co2",
+    "humidity",
+    "potentiometer"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "thermokon",
+    "device": "novos-3-lrw",
+    "codecId": "thermokon-codec",
+    "codecFile": "thermokon-codec.js",
+    "codecSha256": "b6d8be2b7c48a232ab9bf0025598b85e61d25d3be939be8dd1d017f3e36da1c8",
+    "referencedAt": "2026-06-18"
+  }
+}

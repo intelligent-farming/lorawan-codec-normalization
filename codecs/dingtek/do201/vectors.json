@@ -1,0 +1,114 @@
+{
+  "uplink": [
+    {
+      "description": "telemetry uplink — empty bin, +22C / 55% RH, no alarms",
+      "input": {
+        "fPort": 3,
+        "bytes": [128, 0, 49, 2, 4, 4, 226, 0, 0, 1, 104, 0, 120, 255, 206, 0, 8, 22, 55, 0, 7, 0, 129]
+      },
+      "expected": {
+        "data": {
+          "fillLevel": 1250,
+          "alarmPark": false,
+          "alarmLevel": false,
+          "alarmMagnet": false,
+          "alarmBattery": false,
+          "xMagnet": 120,
+          "yMagnet": -50,
+          "zMagnet": 8,
+          "frameCounter": 7,
+          "battery": 3.6,
+          "air": {
+            "temperature": 22,
+            "relativeHumidity": 55
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "telemetry uplink — all alarms set, sub-zero temperature, signed magnetometer",
+      "input": {
+        "fPort": 3,
+        "bytes": [128, 0, 49, 2, 1, 1, 44, 17, 17, 1, 49, 255, 156, 0, 200, 255, 255, 251, 80, 0, 42, 0, 129]
+      },
+      "expected": {
+        "data": {
+          "fillLevel": 300,
+          "alarmPark": true,
+          "alarmLevel": true,
+          "alarmMagnet": true,
+          "alarmBattery": true,
+          "xMagnet": -100,
+          "yMagnet": 200,
+          "zMagnet": -1,
+          "frameCounter": 42,
+          "battery": 3.05,
+          "air": {
+            "temperature": -5,
+            "relativeHumidity": 80
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "parameter/config packet (16 bytes, data_type 0x03)",
+      "input": {
+        "fPort": 3,
+        "bytes": [128, 0, 49, 3, 16, 2, 5, 12, 15, 50, 3, 232, 25, 0, 0, 129]
+      },
+      "expected": {
+        "data": {
+          "firmware": "2.5",
+          "uploadInterval": 12,
+          "detectInterval": 15,
+          "levelThreshold": 50,
+          "magnetThreshold": 1000,
+          "batteryThreshold": 25
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "wrong FPort is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [128, 0, 49, 2, 4, 4, 226, 0, 0, 1, 104, 0, 120, 255, 206, 0, 8, 22, 55, 0, 7, 0, 129]
+      },
+      "expected": {
+        "errors": ["unknown FPort"]
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "unrecognized frame length is rejected",
+      "input": {
+        "fPort": 3,
+        "bytes": [128, 0, 49, 2, 4, 4, 226, 0, 0, 1]
+      },
+      "expected": {
+        "errors": ["wrong length"]
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "16-byte frame with non-0x03 data_type falls through to wrong length",
+      "input": {
+        "fPort": 3,
+        "bytes": [128, 0, 49, 5, 16, 2, 5, 12, 15, 50, 3, 232, 25, 0, 0, 129]
+      },
+      "expected": {
+        "errors": ["wrong length"]
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    }
+  ],
+  "downlink": []
+}

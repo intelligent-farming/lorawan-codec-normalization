@@ -1,0 +1,112 @@
+{
+  "uplink": [
+    {
+      "description": "ATH periodic report: 22.5 C / 55.3 %RH (protocol 1, counter 2)",
+      "input": { "fPort": 1, "bytes": [18, 13, 0, 22, 80, 55, 48] },
+      "expected": {
+        "data": {
+          "protocol": 1,
+          "counter": 2,
+          "messageType": "ath",
+          "event": "Periodic Report",
+          "air": { "temperature": 22.5, "relativeHumidity": 55.3 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds ATH frame; expected from running reference/upstream-codec.js (Temperature 22.5, Humidity 55.3) mapped to air.temperature / air.relativeHumidity."
+    },
+    {
+      "description": "ATH report-on-change decrease: negative temperature -2.5 C / 40 %RH",
+      "input": { "fPort": 1, "bytes": [18, 13, 4, 130, 80, 40, 0] },
+      "expected": {
+        "data": {
+          "protocol": 1,
+          "counter": 2,
+          "messageType": "ath",
+          "event": "Temperature Report-on-Change Decrease",
+          "air": { "temperature": -2.5, "relativeHumidity": 40 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; exercises the upstream >127 sign flip (Convert mode 1): combined 130.5 -> -(130.5-128) = -2.5. Expected from running reference/upstream-codec.js."
+    },
+    {
+      "description": "Supervisory: battery 3.6 V, no flags, accumulation 261",
+      "input": { "fPort": 1, "bytes": [17, 1, 0, 0, 54, 0, 0, 0, 0, 1, 5] },
+      "expected": {
+        "data": {
+          "protocol": 1,
+          "counter": 1,
+          "messageType": "supervisory",
+          "battery": 3.6,
+          "accumulation": 261,
+          "tamperSinceLastReset": false,
+          "tamperState": false,
+          "errorWithLastDownlink": false,
+          "batteryLow": false,
+          "radioCommError": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; upstream Battery string \"3.6V\" -> battery 3.6 V; byte4 0x36, accumulation bytes[9..10]=1,5 -> 261. Expected from running reference/upstream-codec.js."
+    },
+    {
+      "description": "Supervisory: tamper since reset + current tamper + low battery, 2.9 V",
+      "input": { "fPort": 1, "bytes": [17, 1, 26, 0, 41, 0, 0, 0, 0, 0, 0] },
+      "expected": {
+        "data": {
+          "protocol": 1,
+          "counter": 1,
+          "messageType": "supervisory",
+          "battery": 2.9,
+          "accumulation": 0,
+          "tamperSinceLastReset": true,
+          "tamperState": true,
+          "errorWithLastDownlink": false,
+          "batteryLow": true,
+          "radioCommError": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; byte2 0x1A sets TamperSinceLastReset(bit4)+TamperState(bit3)+BatteryLow(bit1); upstream flags 1/0 mapped to booleans; \"2.9V\" -> 2.9. Expected from running reference/upstream-codec.js."
+    },
+    {
+      "description": "Tamper event: enclosure open",
+      "input": { "fPort": 1, "bytes": [16, 2, 0] },
+      "expected": {
+        "data": {
+          "protocol": 1,
+          "counter": 0,
+          "messageType": "tamper",
+          "event": "Open"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; byte2 0 -> \"Open\" per upstream TAMPER_EVENT. Expected from running reference/upstream-codec.js."
+    },
+    {
+      "description": "Link quality: subband 2, RSSI -56 dBm, SNR 7",
+      "input": { "fPort": 1, "bytes": [16, 251, 2, 200, 7] },
+      "expected": {
+        "data": {
+          "protocol": 1,
+          "counter": 0,
+          "messageType": "linkQuality",
+          "subband": 2,
+          "rssi": -56,
+          "snr": 7
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; upstream RSSI = -256 + byte3 = -256 + 200 = -56. Expected from running reference/upstream-codec.js."
+    },
+    {
+      "description": "Unsupported message type returns an error",
+      "input": { "fPort": 1, "bytes": [16, 153, 0, 0] },
+      "expected": { "errors": ["unsupported message type"] },
+      "source": "synthetic",
+      "_note": "Synthetic; byte1 0x99 is not a RadioBridge event type. Upstream returns the placeholder {Event:\"UNDEFINED\"}, which violates the output contract, so this codec returns an error instead."
+    }
+  ],
+  "downlink": []
+}

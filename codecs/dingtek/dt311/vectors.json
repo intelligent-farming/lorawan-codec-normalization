@@ -1,0 +1,131 @@
+{
+  "uplink": [
+    {
+      "description": "heartbeat upload (telemetry, frame type 2)",
+      "input": {
+        "fPort": 3,
+        "bytes": [128, 0, 1, 2, 18, 1, 164, 0, 0, 38, 105, 87, 98, 16, 16, 0, 1, 129]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 26.69, "relativeHumidity": 57.62 },
+          "battery": 4.2,
+          "alarmHighTemperature": true,
+          "alarmLowTemperature": false,
+          "alarmHighHumidity": true,
+          "alarmLowHumidity": false,
+          "alarmBattery": false,
+          "frameCounter": 1
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "synthetic telemetry (frame type 1, positive temp, alarms clear)",
+      "input": {
+        "fPort": 3,
+        "bytes": [128, 0, 1, 1, 0, 1, 44, 0, 0, 33, 85, 69, 0, 0, 0, 0, 5, 129]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 21.55, "relativeHumidity": 45 },
+          "battery": 3,
+          "alarmHighTemperature": false,
+          "alarmLowTemperature": false,
+          "alarmHighHumidity": false,
+          "alarmLowHumidity": false,
+          "alarmBattery": false,
+          "frameCounter": 5
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected.data produced by running reference/upstream-codec.js (temp 21.55 C, humidity 45.00 %, volt 3.00 V) and normalizing temperature/humidity to numbers and into air.* / battery."
+    },
+    {
+      "description": "synthetic telemetry (frame type 2, negative temp, all alarms set)",
+      "input": {
+        "fPort": 3,
+        "bytes": [128, 0, 1, 2, 0, 1, 144, 1, 1, 5, 0, 153, 153, 17, 17, 1, 0, 129]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": -5, "relativeHumidity": 99.99 },
+          "battery": 4,
+          "alarmHighTemperature": true,
+          "alarmLowTemperature": true,
+          "alarmHighHumidity": true,
+          "alarmLowHumidity": true,
+          "alarmBattery": true,
+          "frameCounter": 256
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame exercising the temperature sign byte (bytes[8]=1 -> negative) and every alarm bit; expected.data produced by running reference/upstream-codec.js (temp -5.00 C, humidity 99.99 %, volt 4.00 V)."
+    },
+    {
+      "description": "parameter packet (configuration frame, frame type 3)",
+      "input": {
+        "fPort": 3,
+        "bytes": [128, 0, 1, 3, 17, 1, 2, 24, 10, 0, 100, 1, 10, 100, 0, 0, 20, 129]
+      },
+      "expected": {
+        "data": {
+          "firmware": "1.2",
+          "uploadInterval": 24,
+          "detectInterval": 10,
+          "highTemperatureThreshold": 100,
+          "lowTemperatureThreshold": -10,
+          "highHumidityThreshold": 100,
+          "lowHumidityThreshold": 0,
+          "batteryThreshold": 20,
+          "workMode": 0
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Configuration frame carries no environmental readings; all fields are device-specific camelCase extras. expected.data matches reference/upstream-codec.js verbatim."
+    },
+    {
+      "description": "synthetic parameter packet (frame type 3, negative low-temp threshold)",
+      "input": {
+        "fPort": 3,
+        "bytes": [128, 0, 1, 3, 18, 1, 5, 12, 30, 0, 85, 1, 30, 80, 20, 1, 15, 129]
+      },
+      "expected": {
+        "data": {
+          "firmware": "1.5",
+          "uploadInterval": 12,
+          "detectInterval": 30,
+          "highTemperatureThreshold": 85,
+          "lowTemperatureThreshold": -30,
+          "highHumidityThreshold": 80,
+          "lowHumidityThreshold": 20,
+          "batteryThreshold": 15,
+          "workMode": 1
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds configuration frame exercising the low-temperature threshold sign byte (bytes[11]=1 -> negative); expected.data produced by running reference/upstream-codec.js."
+    },
+    {
+      "description": "wrong FPort is rejected",
+      "input": {
+        "fPort": 2,
+        "bytes": [128, 0, 1, 2, 18, 1, 164, 0, 0, 38, 105, 87, 98, 16, 16, 0, 1, 129]
+      },
+      "expected": { "errors": ["unknown FPort"] },
+      "source": "synthetic",
+      "_note": "Synthetic frame on a non-3 FPort; reference/upstream-codec.js returns errors:['unknown FPort']."
+    },
+    {
+      "description": "unrecognized frame type is rejected",
+      "input": {
+        "fPort": 3,
+        "bytes": [128, 0, 1, 9, 18, 1, 164, 0, 0, 38, 105, 87, 98, 16, 16, 0, 1, 129]
+      },
+      "expected": { "errors": ["wrong length"] },
+      "source": "synthetic",
+      "_note": "Synthetic frame with an out-of-range frame type byte (bytes[3]=9); reference/upstream-codec.js falls through to errors:['wrong length']."
+    }
+  ],
+  "downlink": []
+}

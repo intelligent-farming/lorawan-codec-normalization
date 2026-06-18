@@ -1,0 +1,73 @@
+{
+  "uplink": [
+    {
+      "description": "telemetry upload (synthetic, in-bounds onboard climate)",
+      "input": {
+        "fPort": 3,
+        "bytes": [128, 0, 50, 2, 23, 6, 180, 0, 0, 1, 109, 0, 100, 1, 44, 254, 212, 22, 55, 0, 7, 0, 129]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.65,
+          "air": {
+            "temperature": 22,
+            "relativeHumidity": 55
+          },
+          "alarmPark": false,
+          "alarmLevel": false,
+          "alarmMagnet": false,
+          "alarmBattery": false,
+          "xMagnet": 100,
+          "yMagnet": 300,
+          "zMagnet": -300,
+          "frameCounter": 7
+        }
+      },
+      "source": "synthetic",
+      "_note": "Derived from the upstream TTN example telemetry frame (fPort 3, 23 bytes) with the battery (bytes 9-10 = 365 cV -> 3.65 V), onboard temperature (byte 17 = 22 -> 22 C), and humidity (byte 18 = 55 -> 55 %) bytes adjusted to physically plausible in-bounds values; magnetometer bytes (11-16) set to xyz = 100/300/-300. expected.data computed by running reference/upstream-codec.js on this input and applying the authored vocabulary mapping (volt->battery, temperature->air.temperature, humidity->air.relativeHumidity; alarms/magnetometer/frameCounter as extras)."
+    },
+    {
+      "description": "parameter/configuration packet (16 bytes, type 0x03)",
+      "input": {
+        "fPort": 3,
+        "bytes": [128, 0, 50, 3, 16, 1, 1, 24, 30, 60, 0, 60, 20, 0, 0, 129]
+      },
+      "expected": {
+        "data": {
+          "firmware": "1.1",
+          "uploadInterval": 24,
+          "detectInterval": 30,
+          "magnetThreshold": 60,
+          "batteryThreshold": 20
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream TTN example parameter packet input; expected.data computed by running reference/upstream-codec.js. This frame carries only device configuration fields (no vocabulary measurements), all emitted as camelCase extras."
+    },
+    {
+      "description": "wrong FPort is rejected",
+      "input": {
+        "fPort": 2,
+        "bytes": [128, 0, 50, 2, 23, 6, 180, 0, 0, 1, 109, 0, 100, 1, 44, 254, 212, 22, 55, 0, 7, 0, 129]
+      },
+      "expected": {
+        "errors": ["unknown FPort"]
+      },
+      "source": "synthetic",
+      "_note": "Upstream returns errors:['unknown FPort'] for any fPort != 3; verified against reference/upstream-codec.js."
+    },
+    {
+      "description": "unrecognized payload length is rejected",
+      "input": {
+        "fPort": 3,
+        "bytes": [1, 2, 3]
+      },
+      "expected": {
+        "errors": ["wrong length"]
+      },
+      "source": "synthetic",
+      "_note": "Upstream returns errors:['wrong length'] for any payload that is neither a 23-byte telemetry frame nor a 16-byte type-0x03 parameter packet; verified against reference/upstream-codec.js."
+    }
+  ],
+  "downlink": []
+}

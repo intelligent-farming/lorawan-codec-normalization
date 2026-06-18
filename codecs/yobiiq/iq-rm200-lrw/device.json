@@ -1,0 +1,26 @@
+{
+  "vendor": "yobiiq",
+  "device": "iq-rm200-lrw",
+  "name": "iQ RM200 (iQ Digital Controller)",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "yobiiq",
+    "device": "iq-rm200-lrw",
+    "codecId": "iq-rm200-lrw-codec",
+    "codecFile": "iq-rm200-lrw.js",
+    "codecSha256": "49e99a2159e3582d885d145570c6c561806509dd69fc7de8398685906f908e46",
+    "referencedAt": "2026-06-18"
+  }
+}

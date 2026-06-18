@@ -1,0 +1,25 @@
+{
+  "vendor": "rakwireless",
+  "device": "qingping-t-h",
+  "name": "QingPing Temperature & Humidity Monitor for LoRaWAN",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "rakwireless",
+    "device": "qingping-t-h",
+    "codecId": "qingping-t-h-codec",
+    "codecFile": "decoder-qingping.js",
+    "codecSha256": "0b9a917f0132760b88043397071ee589a033177ac444aa85a6282b329e4705e3",
+    "referencedAt": "2026-06-18"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "vendor": "yobiiq",
+  "device": "iq-dsmr-lrw",
+  "name": "iQ DSMR - Dutch Smart Meter Reader",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "current",
+    "power",
+    "voltage",
+    "pulse count"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "yobiiq",
+    "device": "iq-dsmr-lrw",
+    "codecId": "iq-dsmr-lrw-codec",
+    "codecFile": "iq-dsmr-lrw.js",
+    "codecSha256": "62e6ac347c537cb1e3e801056de5493d89c74e331e9c2b86d1342eadd2b948fe",
+    "referencedAt": "2026-06-18"
+  }
+}

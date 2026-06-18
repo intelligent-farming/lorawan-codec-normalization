@@ -1,0 +1,28 @@
+{
+  "vendor": "sensedge",
+  "device": "senstick-pure",
+  "name": "Senstick Pure - Air Quality & Microclimate Sensor",
+  "categories": [
+    "climate",
+    "air-quality"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "pressure",
+    "tvoc"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "sensedge",
+    "device": "senstick-pure",
+    "codecId": "senstick-pure-codec",
+    "codecFile": "senstick-pure.js",
+    "codecSha256": "8383c6c41095a2cd3ec871d6b9c9f538844b12736bc4b5a56d14f269d47ce50b",
+    "referencedAt": "2026-06-18"
+  }
+}

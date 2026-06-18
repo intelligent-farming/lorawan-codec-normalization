@@ -1,0 +1,65 @@
+{
+  "uplink": [
+    {
+      "description": "fPort 2 frame, typical indoor reading (23.45 C, 47.18% RH, 1005 hPa, 500 ppm CO2)",
+      "input": {
+        "fPort": 2,
+        "bytes": [0, 9, 41, 18, 110, 160, 0, 50, 0, 40, 1, 244, 75, 3]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 23.45,
+            "relativeHumidity": 47.18,
+            "pressure": 1005,
+            "co2": 500
+          },
+          "status": 0,
+          "iaq": 50,
+          "staticIaq": 40,
+          "breathVoc": 7.5,
+          "iaqAccuracy": 3
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame. Bytes hand-built so air.pressure (byte+845) and CO2 land inside vocabulary bounds; expected.data is the normalized form of the upstream reference decoder output (TheThingsNetwork/lorawan-devices vendor/sensedge/senstick-pure.js, run as an oracle): Status->status, Temperature->air.temperature, Humidity->air.relativeHumidity, AirPressure->air.pressure, eCO2->air.co2, IAQ/StaticIAQ/BreathVOC/IAQAccuracy->camelCase extras."
+    },
+    {
+      "description": "fPort 2 frame, sub-zero temperature (signed) and pressure ceiling (-12.34 C, 26% RH, 1100 hPa, 800 ppm CO2)",
+      "input": {
+        "fPort": 2,
+        "bytes": [1, 251, 46, 10, 40, 255, 0, 100, 0, 90, 3, 32, 12, 2]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": -12.34,
+            "relativeHumidity": 26,
+            "pressure": 1100,
+            "co2": 800
+          },
+          "status": 1,
+          "iaq": 100,
+          "staticIaq": 90,
+          "breathVoc": 1.2,
+          "iaqAccuracy": 2
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame exercising the signed two's-complement temperature branch (0xFB2E -> -12.34 C) and the pressure ceiling (byte 0xFF -> 1100 hPa). expected.data is the normalized form of the upstream reference decoder output run as an oracle."
+    },
+    {
+      "description": "wrong fPort -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 9, 41, 18, 110, 160, 0, 50, 0, 40, 1, 244, 75, 3]
+      },
+      "expected": {
+        "errors": ["unknown FPort"]
+      },
+      "source": "synthetic",
+      "_note": "Upstream returns { errors: ['unknown FPort'] } for any fPort other than 2; our codec mirrors that, appending the offending port number."
+    }
+  ],
+  "downlink": []
+}

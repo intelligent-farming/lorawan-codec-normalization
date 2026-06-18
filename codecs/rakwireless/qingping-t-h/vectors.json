@@ -1,0 +1,72 @@
+{
+  "_note": "The upstream codec YAML ships no examples, so vectors are synthetic. Inputs are hand-built real-time frames (function_code 0x41, data_type 0x01) with all decoded values held inside vocabulary bounds. expected.data was produced by the ORACLE method: the upstream decoder (reference/upstream-codec.js) is run with its only transcription bug fixed (its `Decoder` body reads an undefined `data` identifier instead of the `bytes` argument; run as-is it throws ReferenceError), then the resulting fields are normalized per codec.js. The T&H model has no CO2 sensor, so the shared decoder's co2 field is always 0 on the wire.",
+  "uplink": [
+    {
+      "description": "Nominal real-time frame: T=23.5C, RH=52.3%, battery=85%",
+      "input": {
+        "fPort": 2,
+        "bytes": [1, 65, 10, 1, 18, 52, 86, 120, 45, 242, 11, 0, 0, 85]
+      },
+      "expected": {
+        "data": {
+          "deviceAddress": 1,
+          "timestamp": 305419896,
+          "batteryPercent": 85,
+          "air": { "temperature": 23.5, "relativeHumidity": 52.3, "co2": 0 }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Negative temperature: T=-10.0C, RH=10.0%, battery=100% (exercises sub-baseline temp math)",
+      "input": {
+        "fPort": 2,
+        "bytes": [2, 65, 10, 1, 0, 0, 1, 0, 25, 0, 100, 0, 0, 100]
+      },
+      "expected": {
+        "data": {
+          "deviceAddress": 2,
+          "timestamp": 256,
+          "batteryPercent": 100,
+          "air": { "temperature": -10, "relativeHumidity": 10, "co2": 0 }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "High humidity edge: T=30.0C, RH=99.9%, battery=20% (exercises 12-bit humidity nibble math)",
+      "input": {
+        "fPort": 2,
+        "bytes": [3, 65, 10, 1, 0, 0, 0, 5, 50, 3, 231, 0, 0, 20]
+      },
+      "expected": {
+        "data": {
+          "deviceAddress": 3,
+          "timestamp": 5,
+          "batteryPercent": 20,
+          "air": { "temperature": 30, "relativeHumidity": 99.9, "co2": 0 }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unsupported frame (function_code 0x42, not real-time) returns an error",
+      "input": {
+        "fPort": 2,
+        "bytes": [1, 66, 10, 1, 0, 0, 0, 0, 45, 242, 11, 0, 0, 85]
+      },
+      "expected": { "errors": ["unsupported frame"] },
+      "source": "synthetic"
+    },
+    {
+      "description": "Truncated real-time frame (header only) returns an error",
+      "input": {
+        "fPort": 2,
+        "bytes": [1, 65, 10, 1, 0]
+      },
+      "expected": { "errors": ["truncated real-time frame"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

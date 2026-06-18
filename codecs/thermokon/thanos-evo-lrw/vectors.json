@@ -1,0 +1,62 @@
+{
+  "uplink": [
+    {
+      "description": "LPP stream: temperature, humidity, CO2, VOC, pressure, battery, setpoint (covers climate + air-quality requires)",
+      "input": {
+        "fPort": 2,
+        "bytes": [16, 0, 235, 17, 48, 18, 2, 88, 19, 0, 120, 48, 3, 245, 84, 75, 99, 22]
+      },
+      "expected": {
+        "data": {
+          "voc": 120,
+          "battery": 1.5,
+          "setpoint": 22,
+          "air": { "temperature": 23.5, "relativeHumidity": 48, "co2": 600, "pressure": 1013 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds LPP frame; expected derived by running reference/upstream-codec.js (DecodeLPPPayload) and normalizing: 0x10 TEMP 235/10=23.5C, 0x11 RHUM 48%, 0x12 CO2 600ppm, 0x13 VOC 120, 0x30 ATM_P 1013 hPa, 0x54 VBAT 75*20=1500mV=1.5V, 0x63 SETPOINT 22."
+    },
+    {
+      "description": "LPP stream: negative temperature, occupancy/motion, visible light, hi-res battery",
+      "input": {
+        "fPort": 2,
+        "bytes": [16, 255, 246, 17, 40, 18, 1, 244, 64, 1, 94, 65, 11, 133, 64, 12, 228]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "air": { "temperature": -1, "relativeHumidity": 40, "co2": 500, "lightIntensity": 350 },
+          "action": { "motion": { "detected": true, "count": 5 } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic LPP frame exercising signed temp and the 2-byte tag path; expected derived from reference/upstream-codec.js: 0x10 TEMP 0xFFF6 -> -10/10 = -1.0C, 0x11 RHUM 40%, 0x12 CO2 500ppm, 0x40 VISIBLE_LIGHT 350 lux, 0x41 OCCU0 byte 11 -> state=11&1=1 (detected), count=11>>1=5, 0x8540 VBAT_HI_RES 3300mV = 3.3V."
+    },
+    {
+      "description": "Holding-register frame (fPort 4): temperature, humidity, CO2, VOC, setpoint, fan",
+      "input": {
+        "fPort": 4,
+        "bytes": [1, 244, 0, 235, 1, 245, 0, 48, 1, 249, 2, 88, 1, 250, 0, 120, 0, 103, 0, 220, 0, 104, 0, 2]
+      },
+      "expected": {
+        "data": {
+          "voc": 120,
+          "setpoint": 22,
+          "fan": 2,
+          "air": { "temperature": 23.5, "relativeHumidity": 48, "co2": 600 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic fPort-4 HR frame; expected derived from reference/upstream-codec.js (DecodeHR): reg 500 TEMP 235/10=23.5C, 501 RHUM 48%, 505 CO2 600ppm, 506 VOC 120, 103 SETPOINT 220/10=22.0C, 104 FAN 2."
+    },
+    {
+      "description": "Unrecognized LPP identifier returns an error",
+      "input": { "fPort": 2, "bytes": [127, 0] },
+      "expected": { "errors": ["unrecognized Thermokon LPP identifier"] },
+      "source": "synthetic",
+      "_note": "Synthetic; tag 0x7F is unmapped. Upstream silently bails (i = data.length) and returns {data:{}}; our contract forbids bare {} so we surface an error."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,67 @@
+{
+  "uplink": [
+    {
+      "description": "Full room reading: temperature 23.5 degC, humidity 48 %rH, CO2 620 ppm, VOC 12, setpoint dial 128, battery 1500 mV",
+      "input": {
+        "fPort": 1,
+        "bytes": [16, 0, 235, 17, 48, 18, 2, 108, 19, 0, 12, 99, 128, 84, 75]
+      },
+      "expected": {
+        "data": {
+          "voc": 12,
+          "setpoint": 128,
+          "battery": 1.5,
+          "air": {
+            "temperature": 23.5,
+            "relativeHumidity": 48,
+            "co2": 620
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; raw values produced by running reference/upstream-codec.js (TEMP=23.5, RHUM=48, CO2=620, VOC=12, SETPOINT=128, VBAT=1500 mV), then normalized per this codec (battery mV/1000 -> V; VOC and setpoint as camelCase extras)."
+    },
+    {
+      "description": "Climate-only reading: temperature 23.5 degC, humidity 48 %rH",
+      "input": {
+        "fPort": 1,
+        "bytes": [16, 0, 235, 17, 48]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 23.5,
+            "relativeHumidity": 48
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; raw values produced by running reference/upstream-codec.js (TEMP=23.5, RHUM=48)."
+    },
+    {
+      "description": "Unrecognized Thermokon identifier returns an error",
+      "input": {
+        "fPort": 1,
+        "bytes": [119, 0]
+      },
+      "expected": {
+        "errors": ["unrecognized Thermokon identifier"]
+      },
+      "source": "synthetic",
+      "_note": "0x77 is not a known data-point tag. Upstream silently aborts the parse and returns {}; this codec reports the unrecognized identifier instead."
+    },
+    {
+      "description": "Truncated CO2 value returns an error",
+      "input": {
+        "fPort": 1,
+        "bytes": [18, 2]
+      },
+      "expected": {
+        "errors": ["truncated CO2 value"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: 0x12 (CO2) tag with only one of its two value bytes present."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,83 @@
+{
+  "uplink": [
+    {
+      "description": "Measurement uplink with ambient temperature + humidity (climate) plus enclosure diagnostics",
+      "input": {
+        "fPort": 1,
+        "bytes": [221, 254, 103, 41, 213, 48, 221, 129, 9, 41, 221, 130, 47, 221, 113, 8, 52, 221, 114, 41]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 23.45,
+            "relativeHumidity": 47
+          },
+          "deviceTimestamp": 1730794800,
+          "internalCircuitTemperature": 21,
+          "internalCircuitHumidity": 41
+        }
+      },
+      "source": "synthetic",
+      "_note": "ORACLE: synthetic in-bounds TLV (channel 0xDD): 0xFE deviceTimestamp, 0x81 ambientTemperature raw 2345 x0.01 = 23.45 C, 0x82 ambientHumidity 47%, 0x71 internalCircuitTemperature raw 2100 x0.01 = 21 C, 0x72 internalCircuitHumidity 41%. expected.data authored from running reference/upstream-codec.js on this input, then normalized (ambient -> air.*; upstream version-control fields dropped)."
+    },
+    {
+      "description": "Basic information uplink (fPort 50): battery voltage + percentage, device class, power event",
+      "input": {
+        "fPort": 50,
+        "bytes": [255, 7, 88, 255, 8, 36, 255, 17, 2, 255, 6, 1]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "batteryPercent": 88,
+          "deviceClass": "Class C",
+          "powerEvent": "AC Power On"
+        }
+      },
+      "source": "synthetic",
+      "_note": "ORACLE: synthetic basic-info TLV (channel 0xFF): 0x07 batteryPercentage 88, 0x08 batteryVoltage raw 36 x0.1 = 3.6 V, 0x11 deviceClass 0x02 = Class C, 0x06 powerEvent 0x01 = AC Power On. expected.data from reference, then normalized: battery voltage -> vocabulary battery (V), percentage -> batteryPercent extra."
+    },
+    {
+      "description": "Electricity + voltage/current + P1 slave-channel reading (all metering extras, no vocab key)",
+      "input": {
+        "fPort": 2,
+        "bytes": [221, 6, 0, 0, 3, 232, 221, 34, 0, 0, 8, 252, 221, 38, 0, 0, 0, 5, 221, 80, 103, 41, 213, 48, 0, 0, 48, 57]
+      },
+      "expected": {
+        "data": {
+          "electricityDeliveredToClientT1": { "data": 1000, "unit": "Wh" },
+          "voltageL1": { "data": 230, "unit": "V" },
+          "currentL1": { "data": 5, "unit": "A" },
+          "lastReadingOnChannel1": { "timestamp": 1730794800, "value": 12345 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "ORACLE: synthetic measurement TLV: 0x06 electricityDeliveredToClientT1 1000 Wh, 0x22 voltageL1 raw 2300 x0.1 = 230 V, 0x26 currentL1 5 A, 0x50 lastReadingOnChannel1 (P1 slave, e.g. gas) ts 1730794800 value 12345. expected.data from reference, normalized to camelCase extras: the vocabulary has no electricity/gas-metering key and metering.water.total is WATER volume only, so these are preserved verbatim as extras."
+    },
+    {
+      "description": "Unsupported fPort returns an error",
+      "input": {
+        "fPort": 99,
+        "bytes": [1, 2, 3]
+      },
+      "expected": {
+        "errors": ["incorrect fPort"]
+      },
+      "source": "synthetic",
+      "_note": "ORACLE: fPort 99 is outside the info (50) and measurement (1-10) ranges. Upstream returns {data:{error:'Incorrect fPort'}}; this codec returns {errors:[...]} per the output contract."
+    },
+    {
+      "description": "Empty payload returns an error",
+      "input": {
+        "fPort": 1,
+        "bytes": []
+      },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic",
+      "_note": "ORACLE: defensive guard for a zero-length byte array (not exercised by upstream, which would index undefined)."
+    }
+  ],
+  "downlink": []
+}

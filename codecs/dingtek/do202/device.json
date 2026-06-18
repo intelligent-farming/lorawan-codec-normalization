@@ -1,0 +1,26 @@
+{
+  "vendor": "dingtek",
+  "device": "do202",
+  "name": "DO202 - Parking Occupancy Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "magnetometer",
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dingtek",
+    "device": "do202",
+    "codecId": "do202-codec",
+    "codecFile": "do202.js",
+    "codecSha256": "612a167d893c936d429df33520d15ba1051eb3ac95edc7911023622b54da48f5",
+    "referencedAt": "2026-06-18"
+  }
+}
