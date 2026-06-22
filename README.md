@@ -104,8 +104,8 @@ category. Coverage grows over time — devices are added incrementally. Use
 
 | Category | `requires` | Authored members |
 |---|---|---|
-| `soil-monitor` | `soil.moisture`, `soil.temperature` | 5 |
-| `climate` | `air.temperature`, `air.relativeHumidity` | 243 |
+| `soil-monitor` | `soil.moisture`, `soil.temperature` | 15 |
+| `climate` | `air.temperature`, `air.relativeHumidity` | 244 |
 | `air-quality` | `air.co2` | 78 |
 | `light` | `air.lightIntensity` | 72 |
 | `weather-station` | `air.temperature`, `air.pressure` | 69 |
@@ -115,7 +115,7 @@ category. Coverage grows over time — devices are added incrementally. Use
 | `motion` | `action.motion` | 48 |
 | `contact` | `action.contactState` | 6 |
 | `gps-tracker` | `position.latitude`, `position.longitude` | 9 |
-| `water-leak` | `water.leak` | 10 |
+| `water-leak` | `water.leak` | 11 |
 
 `devices()` / `devices({ category })` enumerate registered devices;
 `device(vendor, device)` returns one device's metadata.
