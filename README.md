@@ -108,16 +108,16 @@ of the listed paths present).
 | Category | membership | Authored members |
 |---|---|---|
 | `soil-monitor` | `atLeastOne`: `soil.moisture` / `soil.temperature` / `soil.ec` / `soil.pH` / … | 17 |
-| `climate` | `air.temperature`, `air.relativeHumidity` | 261 |
+| `climate` | `air.temperature`, `air.relativeHumidity` | 262 |
 | `air-quality` | `air.co2` | 84 |
 | `light` | `air.lightIntensity` | 72 |
-| `weather-station` | `air.temperature`, `air.pressure` | 69 |
+| `weather-station` | `air.temperature`, `air.pressure` | 72 |
 | `wind` | `wind.speed` | 12 |
 | `rain-gauge` | `rain.cumulative` | 10 |
 | `water-meter` | `metering.water.total` | 0 |
 | `motion` | `action.motion` | 50 |
 | `contact` | `action.contactState` | 20 |
-| `gps-tracker` | `position.latitude`, `position.longitude` | 11 |
+| `gps-tracker` | `position.latitude`, `position.longitude` | 12 |
 | `water-leak` | `water.leak` | 12 |
 
 `devices()` / `devices({ category })` enumerate registered devices;
