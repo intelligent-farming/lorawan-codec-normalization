@@ -1,0 +1,31 @@
+{
+  "vendor": "stmicroelectronics",
+  "device": "steval-astra1b",
+  "name": "STEVAL-ASTRA1B",
+  "categories": [
+    "weather-station",
+    "gps-tracker",
+    "climate"
+  ],
+  "sensors": [
+    "accelerometer",
+    "gyroscope",
+    "pressure",
+    "temperature",
+    "gps",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "stmicroelectronics",
+    "device": "steval-astra1b",
+    "codecId": "steval-astra1b-codec",
+    "codecFile": "steval-astra1b.js",
+    "codecSha256": "509ca710d6c29dbef9488e214895353e230f6e5b9ddf37a39c26e82d7736c2ec",
+    "referencedAt": "2026-06-22"
+  }
+}

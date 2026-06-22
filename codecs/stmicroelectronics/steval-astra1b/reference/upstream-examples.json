@@ -1,0 +1,116 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/stmicroelectronics/steval-astra1b-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Data example",
+      "input": {
+        "fPort": 99,
+        "bytes": [
+          0,
+          115,
+          39,
+          136,
+          1,
+          103,
+          1,
+          34,
+          2,
+          104,
+          68,
+          3,
+          113,
+          255,
+          232,
+          255,
+          218,
+          252,
+          61,
+          4,
+          136,
+          5,
+          182,
+          143,
+          2,
+          76,
+          68,
+          0,
+          19,
+          9,
+          5,
+          2,
+          15,
+          215,
+          6,
+          1,
+          0,
+          7,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "accelerationOnX": {
+            "displayName": "Acceleration on X axis",
+            "unit": "mg",
+            "value": -24
+          },
+          "accelerationOnY": {
+            "displayName": "Acceleration on Y axis",
+            "unit": "mg",
+            "value": -38
+          },
+          "accelerationOnZ": {
+            "displayName": "Acceleration on Z axis",
+            "unit": "mg",
+            "value": -963
+          },
+          "altitude": {
+            "displayName": "Altitude",
+            "unit": "mslm",
+            "value": 48.73
+          },
+          "batteryVoltage": {
+            "displayName": "Battery voltage",
+            "unit": "mV",
+            "value": 4055
+          },
+          "humidity": {
+            "displayName": "Humidity",
+            "unit": "%",
+            "value": 34
+          },
+          "latitude": {
+            "displayName": "Latitude",
+            "unit": "°",
+            "value": 37.4415
+          },
+          "ledStatus": {
+            "displayName": "Led status",
+            "value": "OFF"
+          },
+          "longitude": {
+            "displayName": "Longitude",
+            "unit": "°",
+            "value": 15.0596
+          },
+          "pressure": {
+            "displayName": "Barometric pressure",
+            "unit": "hPa",
+            "value": 1012
+          },
+          "tamperInput": {
+            "displayName": "Tamper input",
+            "unit": "null",
+            "value": "null"
+          },
+          "temperature": {
+            "displayName": "Temperature",
+            "unit": "°C",
+            "value": 29
+          }
+        }
+      }
+    }
+  ]
+}

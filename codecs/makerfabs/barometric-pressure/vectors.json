@@ -1,0 +1,47 @@
+{
+  "uplink": [
+    {
+      "description": "Standard sea-level pressure 1013.25 hPa, 21.34 C, battery 3.6 V",
+      "input": { "fPort": 1, "bytes": [0, 1, 36, 6, 10, 24, 200, 0, 0, 8, 86] },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "air": { "temperature": 21.34, "pressure": 1013.25 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected.data derived by running reference/upstream-codec.js. Pressure raw 101325000 / 100000 = 1013.25 hPa (atmospheric)."
+    },
+    {
+      "description": "Low-pressure system 985.5 hPa, 5 C, battery 4.1 V",
+      "input": { "fPort": 1, "bytes": [0, 1, 41, 5, 223, 192, 240, 0, 0, 1, 244] },
+      "expected": {
+        "data": {
+          "battery": 4.1,
+          "air": { "temperature": 5, "pressure": 985.5 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected.data derived by running reference/upstream-codec.js."
+    },
+    {
+      "description": "High pressure 1080 hPa, 33.7 C, battery 2.8 V",
+      "input": { "fPort": 1, "bytes": [0, 1, 28, 6, 111, 243, 0, 0, 0, 13, 42] },
+      "expected": {
+        "data": {
+          "battery": 2.8,
+          "air": { "temperature": 33.7, "pressure": 1080 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected.data derived by running reference/upstream-codec.js."
+    },
+    {
+      "description": "Truncated payload (5 bytes) is rejected",
+      "input": { "fPort": 1, "bytes": [0, 1, 36, 6, 10] },
+      "expected": { "errors": ["payload too short"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

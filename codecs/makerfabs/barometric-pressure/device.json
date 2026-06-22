@@ -1,0 +1,26 @@
+{
+  "vendor": "makerfabs",
+  "device": "barometric-pressure",
+  "name": "Barometric Pressure",
+  "categories": [
+    "weather-station"
+  ],
+  "sensors": [
+    "pressure",
+    "temperature",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "makerfabs",
+    "device": "barometric-pressure",
+    "codecId": "barometric-pressure-codec",
+    "codecFile": "barometric-pressure.js",
+    "codecSha256": "b1bc4075f6d526644177027760563019126bef831ff12121ebe430183b2417ca",
+    "referencedAt": "2026-06-22"
+  }
+}

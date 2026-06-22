@@ -1,0 +1,25 @@
+{
+  "vendor": "netvox",
+  "device": "r720c",
+  "name": "R720C - Wireless Air Pressure and Temperature Sensor",
+  "categories": [
+    "weather-station"
+  ],
+  "sensors": [
+    "pressure",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r720c",
+    "codecId": "r720c-codec",
+    "codecFile": "payload/r720c.js",
+    "codecSha256": "ec0ceb28710842be3ecc12862f2e7471738670dad40893e6bc7feefe552953f2",
+    "referencedAt": "2026-06-22"
+  }
+}

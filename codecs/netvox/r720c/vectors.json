@@ -1,0 +1,84 @@
+{
+  "uplink": [
+    {
+      "description": "Data report: 1013.25 hPa atmospheric pressure, 25.01 C, 3.6 V (upstream reference example input)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 112, 1, 36, 0, 1, 139, 205, 9, 197, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "air": {
+            "pressure": 1013.25,
+            "temperature": 25.01
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Input is the upstream TTN example status-report frame; expected.data authored here and cross-checked against reference/upstream-codec.js (AirPressure 1013.25 hPa, Temp 25.01 C, Volt 3.6 V). Pressure 1013.25 hPa is standard sea-level atmospheric pressure, confirming a genuine barometer."
+    },
+    {
+      "description": "Data report: 995.0 hPa, 18.5 C, 3.6 V",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 112, 1, 36, 0, 1, 132, 172, 7, 58, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "air": {
+            "pressure": 995,
+            "temperature": 18.5
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame (pressure raw 99500 Pa = 995.0 hPa, within 900-1100). expected.data produced by running reference/upstream-codec.js as the oracle (AirPressure 995, Temp 18.5, Volt 3.6)."
+    },
+    {
+      "description": "Data report: 1020.0 hPa, -5.25 C, low battery 3.0 V",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 112, 1, 158, 0, 1, 142, 112, 253, 243, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3,
+          "air": {
+            "pressure": 1020,
+            "temperature": -5.25
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame (pressure raw 102000 Pa = 1020.0 hPa, within 900-1100; negative temperature exercises two's-complement; byte[3] high bit set => low battery). Oracle reference/upstream-codec.js reports AirPressure 1020, Temp -5.25, Volt '3(low battery)'."
+    },
+    {
+      "description": "Startup/device-info frame (reportType 0x00) carries no measurement",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 112, 0, 100, 21, 32, 32, 8, 17, 0, 0]
+      },
+      "expected": {
+        "errors": ["no measurement"]
+      },
+      "source": "synthetic",
+      "_note": "Upstream TTN example startup version report input. reportType byte[2]==0x00 is a device-info frame; our codec rejects it as carrying no measurement."
+    },
+    {
+      "description": "Config response on fPort 7 is rejected",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 112, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort"]
+      },
+      "source": "synthetic",
+      "_note": "Upstream TTN example ConfigReportRsp input. fPort 7 carries config responses, not measurements; our codec only decodes fPort 6."
+    }
+  ],
+  "downlink": []
+}
