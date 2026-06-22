@@ -1,0 +1,28 @@
+{
+  "vendor": "truvami",
+  "device": "tag-l",
+  "name": "tag L",
+  "categories": [
+    "gps-tracker",
+    "motion"
+  ],
+  "sensors": [
+    "accelerometer",
+    "battery",
+    "hall effect",
+    "gps"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "truvami",
+    "device": "tag-l",
+    "codecId": "tag-s-l-codec",
+    "codecFile": "tag-s-l.js",
+    "codecSha256": "faa11ad1e79133aac42a8972f818125050aa32930d097b93287ea9758ec3ec4e",
+    "referencedAt": "2026-06-22"
+  }
+}
