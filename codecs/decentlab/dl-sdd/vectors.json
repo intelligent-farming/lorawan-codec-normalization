@@ -1,0 +1,148 @@
+{
+  "uplink": [
+    {
+      "description": "TTN example 1: levels 0-5 profile + battery (flags 0b101)",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2, 67, 227, 0, 5,
+          128, 0, 128, 0, 128, 0, 128, 0, 128, 0, 128, 0,
+          135, 65, 135, 123, 135, 73, 135, 108, 135, 108, 135, 102,
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 74,
+          9, 227
+        ]
+      },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 17379,
+          "soilMoistureProfile": [
+            { "level": 0, "moisture": 0 },
+            { "level": 1, "moisture": 0 },
+            { "level": 2, "moisture": 0 },
+            { "level": 3, "moisture": 0 },
+            { "level": 4, "moisture": 0 },
+            { "level": 5, "moisture": 0 }
+          ],
+          "soilTemperatureProfile": [
+            { "level": 0, "temperature": 18.57 },
+            { "level": 1, "temperature": 19.15 },
+            { "level": 2, "temperature": 18.65 },
+            { "level": 3, "temperature": 19 },
+            { "level": 4, "temperature": 19 },
+            { "level": 5, "temperature": 18.94 }
+          ],
+          "soilSalinityProfile": [
+            { "level": 0, "salinity": -100 },
+            { "level": 1, "salinity": -100 },
+            { "level": 2, "salinity": -100 },
+            { "level": 3, "salinity": -100 },
+            { "level": 4, "salinity": -100 },
+            { "level": 5, "salinity": 230 }
+          ],
+          "soil": { "moisture": 0, "temperature": 18.57 },
+          "battery": 2.531
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Input bytes are the upstream TTN dl-sdd-codec.yaml Example 1; expected.data authored here by normalizing the upstream per-level conversions ((word-32768)/100 for moisture % and temperature °C, word-100 for the dimensionless salinity index, word/1000 for battery V). Level 0 maps to the bounded vocabulary soil.moisture/soil.temperature; full per-level readings are kept in the profile extras."
+    },
+    {
+      "description": "Synthetic full profile: levels 0-11 + battery (flags 0b111)",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2, 67, 227, 0, 7,
+          131, 232, 132, 208, 136, 184, 140, 160, 144, 136, 148, 112,
+          135, 208, 136, 52, 136, 152, 136, 252, 137, 96, 137, 196,
+          0, 200, 0, 210, 0, 220, 0, 230, 0, 240, 0, 250,
+          129, 244, 130, 88, 130, 188, 131, 32, 131, 132, 131, 232,
+          135, 108, 135, 8, 134, 164, 134, 64, 133, 220, 133, 120,
+          0, 150, 0, 160, 0, 170, 0, 180, 0, 190, 0, 195,
+          9, 227
+        ]
+      },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 17379,
+          "soilMoistureProfile": [
+            { "level": 0, "moisture": 10 },
+            { "level": 1, "moisture": 12.32 },
+            { "level": 2, "moisture": 22.32 },
+            { "level": 3, "moisture": 32.32 },
+            { "level": 4, "moisture": 42.32 },
+            { "level": 5, "moisture": 52.32 },
+            { "level": 6, "moisture": 5 },
+            { "level": 7, "moisture": 6 },
+            { "level": 8, "moisture": 7 },
+            { "level": 9, "moisture": 8 },
+            { "level": 10, "moisture": 9 },
+            { "level": 11, "moisture": 10 }
+          ],
+          "soilTemperatureProfile": [
+            { "level": 0, "temperature": 20 },
+            { "level": 1, "temperature": 21 },
+            { "level": 2, "temperature": 22 },
+            { "level": 3, "temperature": 23 },
+            { "level": 4, "temperature": 24 },
+            { "level": 5, "temperature": 25 },
+            { "level": 6, "temperature": 19 },
+            { "level": 7, "temperature": 18 },
+            { "level": 8, "temperature": 17 },
+            { "level": 9, "temperature": 16 },
+            { "level": 10, "temperature": 15 },
+            { "level": 11, "temperature": 14 }
+          ],
+          "soilSalinityProfile": [
+            { "level": 0, "salinity": 100 },
+            { "level": 1, "salinity": 110 },
+            { "level": 2, "salinity": 120 },
+            { "level": 3, "salinity": 130 },
+            { "level": 4, "salinity": 140 },
+            { "level": 5, "salinity": 150 },
+            { "level": 6, "salinity": 50 },
+            { "level": 7, "salinity": 60 },
+            { "level": 8, "salinity": 70 },
+            { "level": 9, "salinity": 80 },
+            { "level": 10, "salinity": 90 },
+            { "level": 11, "salinity": 95 }
+          ],
+          "soil": { "moisture": 10, "temperature": 20 },
+          "battery": 2.531
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload exercising both profile blocks (levels 0-11) plus battery. Header reuses the upstream device id 17379 / protocol v2; sensor words chosen to land in-bounds. expected.data produced by running reference/upstream-codec.js over these bytes and normalizing per the documented mapping."
+    },
+    {
+      "description": "TTN example 2: battery only (flags 0b100)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 67, 227, 0, 4, 9, 227]
+      },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 17379,
+          "battery": 2.531
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream TTN Example 2 input (only the battery sensor flagged); expected.data normalized here (battery word/1000 V). No soil block present, so no soil.* keys are emitted."
+    },
+    {
+      "description": "Error: unsupported protocol version",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 67, 227, 0, 4, 9, 227]
+      },
+      "expected": {
+        "errors": ["protocol version 1 doesn't match v2"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: first byte is protocol version 1, which the Decentlab v2 framing rejects."
+    }
+  ],
+  "downlink": []
+}

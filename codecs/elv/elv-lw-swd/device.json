@@ -1,0 +1,26 @@
+{
+  "vendor": "elv",
+  "device": "elv-lw-swd",
+  "name": "ELV LW-SWD - Soil/Water Moisture Detector",
+  "categories": [
+    "water-leak"
+  ],
+  "sensors": [
+    "moisture",
+    "water",
+    "accelerometer"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "elv",
+    "device": "elv-lw-swd",
+    "codecId": "elv-lw-swd-codec",
+    "codecFile": "elv-lw-swd.js",
+    "codecSha256": "f4cc4e752304093cc945f059b72d84bc0e180bc66a0ffccc7f14e596427e0d71",
+    "referencedAt": "2026-06-22"
+  }
+}

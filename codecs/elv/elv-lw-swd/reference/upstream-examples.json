@@ -1,0 +1,87 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/elv/elv-lw-swd-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "cyclic status message",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          108,
+          1,
+          2,
+          0,
+          1,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Activation_count": 0,
+          "Dryness": true,
+          "Error_Msg": 0,
+          "Frame_Type": "Device_State",
+          "Moisture": false,
+          "Supply_Voltage": 2.88,
+          "TX_Reason": "Cyclic Timer",
+          "Tilt_Angle": 0,
+          "Water": false
+        }
+      }
+    },
+    {
+      "description": "moisture detected",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          108,
+          2,
+          7,
+          0,
+          2,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Dry": false,
+          "Error_Msg": 0,
+          "Frame_Type": "Sensor_Data",
+          "Moisture": true,
+          "Supply_Voltage": 2.88,
+          "TX_Reason": "Moisture",
+          "Tilt_Angle": 0,
+          "Water": false
+        }
+      }
+    },
+    {
+      "description": "water detected",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          108,
+          2,
+          8,
+          0,
+          6,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Dry": false,
+          "Error_Msg": 0,
+          "Frame_Type": "Sensor_Data",
+          "Moisture": true,
+          "Supply_Voltage": 2.88,
+          "TX_Reason": "Water",
+          "Tilt_Angle": 0,
+          "Water": true
+        }
+      }
+    }
+  ]
+}

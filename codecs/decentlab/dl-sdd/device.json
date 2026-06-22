@@ -1,0 +1,27 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-sdd",
+  "name": "DL-SDD - Soil Moisture, Temperature and Salinity Profile For LoRaWAN",
+  "categories": [
+    "soil-monitor"
+  ],
+  "sensors": [
+    "moisture",
+    "temperature",
+    "salinity",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-sdd",
+    "codecId": "dl-sdd-codec",
+    "codecFile": "dl-sdd.js",
+    "codecSha256": "91336ce26987ce4fb1e1bd129de605fb3d3eb27a6a43e0b1d3fd4e1903508d58",
+    "referencedAt": "2026-06-22"
+  }
+}

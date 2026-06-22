@@ -1,0 +1,27 @@
+{
+  "vendor": "lansitec",
+  "device": "temperature-humidity-sensor",
+  "name": "Temperature Humidity Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "battery",
+    "rssi"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "lansitec",
+    "device": "temperature-humidity-sensor",
+    "codecId": "temperature-humidity-sensor-codec",
+    "codecFile": "temperature-humidity-sensor.js",
+    "codecSha256": "58e5e7bf72c21da1c979938424c5af5faccf881a681405b16aaa1d5e7a78aa28",
+    "referencedAt": "2026-06-22"
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "uplink": [
+    {
+      "description": "Heartbeat, positive air temperature (climate: air.temperature + air.relativeHumidity)",
+      "input": { "fPort": 2, "bytes": [33, 62, 85, 0, 120, 22, 53, 55, 18, 52] },
+      "expected": {
+        "data": {
+          "messageType": "heartbeat",
+          "protocolVersion": 1,
+          "batteryPercent": 62,
+          "rssi": -85,
+          "snr": 1.2,
+          "air": { "temperature": 22.53, "relativeHumidity": 55 },
+          "crc": 4660
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected produced by running reference/upstream-codec.js (temperature 22.53C, humidity 55%, battery 62%, snr 1.2)."
+    },
+    {
+      "description": "Heartbeat, negative air temperature (sign bit set in byte 5)",
+      "input": { "fPort": 2, "bytes": [33, 30, 110, 0, 0, 133, 75, 88, 0, 9] },
+      "expected": {
+        "data": {
+          "messageType": "heartbeat",
+          "protocolVersion": 1,
+          "batteryPercent": 30,
+          "rssi": -110,
+          "snr": 0,
+          "air": { "temperature": -5.75, "relativeHumidity": 88 },
+          "crc": 9
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; byte5=0x85 (sign + 5 deg), byte6=0x4b (0.75). Expected produced by running reference/upstream-codec.js (-5.75C, 88%)."
+    },
+    {
+      "description": "Register message (config; no air measurement)",
+      "input": { "fPort": 2, "bytes": [30, 32, 64, 24, 0, 6, 18, 52] },
+      "expected": {
+        "data": {
+          "messageType": "register",
+          "adrEnabled": true,
+          "region": "EU868",
+          "supportedRegion": "EU868",
+          "loraTxPower": 8,
+          "dataRate": "DR1",
+          "repeating": true,
+          "transmitInterval": 60,
+          "crc": 4660
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected produced by running reference/upstream-codec.js (EU868, DR1, txpower 8dBm, TH 60s)."
+    },
+    {
+      "description": "Acknowledge message (downlink ack; no measurement)",
+      "input": { "fPort": 2, "bytes": [243, 7] },
+      "expected": {
+        "data": {
+          "messageType": "acknowledge",
+          "result": 3,
+          "messageId": 7
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected produced by running reference/upstream-codec.js (result 3, msgid 7)."
+    },
+    {
+      "description": "Unknown uplink type (upstream returns null) -> error",
+      "input": { "fPort": 2, "bytes": [48, 0] },
+      "expected": { "errors": ["unknown uplink type"] },
+      "source": "synthetic",
+      "_note": "High nibble 0x3 is not Register/Heartbeat/Acknowledge; upstream returns null. We surface an explicit error rather than a bare result."
+    },
+    {
+      "description": "Truncated heartbeat -> error",
+      "input": { "fPort": 2, "bytes": [33, 50, 80] },
+      "expected": { "errors": ["heartbeat message expects at least 10 bytes"] },
+      "source": "synthetic",
+      "_note": "Synthetic short payload guarding the heartbeat length check."
+    }
+  ],
+  "downlink": []
+}

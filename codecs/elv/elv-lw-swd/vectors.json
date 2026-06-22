@@ -1,0 +1,111 @@
+{
+  "uplink": [
+    {
+      "description": "Device_State frame, water (leak) detected",
+      "input": { "fPort": 10, "bytes": [108, 1, 8, 0, 4, 12, 0, 5] },
+      "expected": {
+        "data": {
+          "battery": 2.88,
+          "frameType": "Device_State",
+          "txReason": "Water",
+          "errorMsg": 0,
+          "dryness": false,
+          "moisture": false,
+          "water": { "leak": true },
+          "tiltAngle": 12,
+          "activationCount": 5
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected.data authored for this module and cross-checked against the upstream Apache-2.0 decoder run as an oracle (Supply_Voltage 2.88, Water true)."
+    },
+    {
+      "description": "Sensor_Data frame, water (leak) detected, also moist",
+      "input": { "fPort": 10, "bytes": [108, 2, 8, 0, 6, 3] },
+      "expected": {
+        "data": {
+          "battery": 2.88,
+          "frameType": "Sensor_Data",
+          "txReason": "Water",
+          "errorMsg": 0,
+          "dry": false,
+          "moisture": true,
+          "water": { "leak": true },
+          "tiltAngle": 3
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected.data cross-checked against the upstream decoder oracle (Water true, Moisture true)."
+    },
+    {
+      "description": "Sensor_Data frame, dry (no leak)",
+      "input": { "fPort": 10, "bytes": [100, 2, 6, 0, 1, 0] },
+      "expected": {
+        "data": {
+          "battery": 2.72,
+          "frameType": "Sensor_Data",
+          "txReason": "Dryness",
+          "errorMsg": 0,
+          "dry": true,
+          "moisture": false,
+          "water": { "leak": false },
+          "tiltAngle": 0
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected.data cross-checked against the upstream decoder oracle (Supply_Voltage 2.72, Water false)."
+    },
+    {
+      "description": "Device_Info frame",
+      "input": { "fPort": 10, "bytes": [200, 0, 4, 1, 0, 4, 2, 3, 1, 0, 7] },
+      "expected": {
+        "data": {
+          "battery": 4.16,
+          "frameType": "Device_Info",
+          "txReason": "Joined",
+          "bootloaderVersion": "1.0.4",
+          "firmwareVersion": "2.3.1",
+          "hwRevision": 7
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected.data cross-checked against the upstream decoder oracle."
+    },
+    {
+      "description": "Config_Data frame, Water mode",
+      "input": { "fPort": 10, "bytes": [150, 3, 3, 2, 30, 4, 45, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
+      "expected": {
+        "data": {
+          "battery": 3.44,
+          "frameType": "Config_Data",
+          "txReason": "Settings",
+          "datarate": "DR3",
+          "sendCycle": 30,
+          "deviceMode": "Water",
+          "triggerAngle": 45,
+          "acousticAlarmTriggerSource": 1,
+          "acousticAlarmSignalDryness": 2,
+          "acousticAlarmDurationDryness": 3,
+          "acousticAlarmSignalMoisture": 4,
+          "acousticAlarmDurationMoisture": 5,
+          "acousticAlarmSignalWater": 6,
+          "acousticAlarmDurationWater": 7,
+          "acousticAlarmSignalFlat": 8,
+          "acousticAlarmDurationFlat": 9,
+          "acousticAlarmSignalTilt": 10,
+          "acousticAlarmDurationTilt": 11
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected.data cross-checked against the upstream decoder oracle (DR3, Device_Mode Water)."
+    },
+    {
+      "description": "unsupported fPort is rejected",
+      "input": { "fPort": 1, "bytes": [108, 2, 8, 0, 6, 3] },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "synthetic",
+      "_note": "Synthetic error vector: only fPort 10 carries app data; upstream emits a parser_error for any other port."
+    }
+  ],
+  "downlink": []
+}
