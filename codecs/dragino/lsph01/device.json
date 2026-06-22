@@ -1,0 +1,26 @@
+{
+  "vendor": "dragino",
+  "device": "lsph01",
+  "name": "LSPH01 - Soil pH Sensor",
+  "categories": [
+    "soil-monitor"
+  ],
+  "sensors": [
+    "pH",
+    "temperature",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "lsph01",
+    "codecId": "lsph01-codec",
+    "codecFile": "lsph01.js",
+    "codecSha256": "cfd58fe08b5844d07a4b4860ad96a1232a7692b18066dbb109a3bb943e2805a4",
+    "referencedAt": "2026-06-22"
+  }
+}

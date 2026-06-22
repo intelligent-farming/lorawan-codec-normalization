@@ -1,0 +1,80 @@
+{
+  "uplink": [
+    {
+      "description": "Acidic soil pH 5.96, soil temp 24.90 C, no external probe",
+      "input": {
+        "fPort": 2,
+        "bytes": [13, 35, 0, 0, 2, 84, 0, 249, 0, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.363,
+          "externalTemperature": 0,
+          "interruptFlag": 0,
+          "messageType": 1,
+          "soil": {
+            "pH": 5.96,
+            "temperature": 24.9
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "Alkaline soil pH 8.20, cold soil temp 2.50 C",
+      "input": {
+        "fPort": 2,
+        "bytes": [12, 28, 0, 0, 3, 52, 0, 25, 0, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.1,
+          "externalTemperature": 0,
+          "interruptFlag": 0,
+          "messageType": 1,
+          "soil": {
+            "pH": 8.2,
+            "temperature": 2.5
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "Interrupt event, neutral pH 7.00, external probe 21.30 C, message type 2",
+      "input": {
+        "fPort": 2,
+        "bytes": [12, 178, 0, 213, 2, 188, 0, 186, 1, 0, 2]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.25,
+          "externalTemperature": 21.3,
+          "interruptFlag": 1,
+          "messageType": 2,
+          "soil": {
+            "pH": 7,
+            "temperature": 18.6
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "Unknown FPort rejected",
+      "input": {
+        "fPort": 42,
+        "bytes": [13, 35, 0, 0, 2, 84, 0, 249, 0, 0, 1]
+      },
+      "expected": {
+        "errors": ["unknown FPort"]
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,90 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/decentlab/dl-pheht-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Example 1",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          82,
+          184,
+          0,
+          3,
+          0,
+          0,
+          136,
+          66,
+          130,
+          199,
+          127,
+          99,
+          127,
+          246,
+          12,
+          92
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.164
+          },
+          "device_id": 21176,
+          "ph": {
+            "displayName": "pH",
+            "value": 7.11
+          },
+          "ph_mv": {
+            "displayName": "pH-mV",
+            "unit": "mV",
+            "value": -1
+          },
+          "protocol_version": 2,
+          "redox": {
+            "displayName": "Redox",
+            "unit": "mV",
+            "value": -15.7
+          },
+          "status": {
+            "displayName": "Status",
+            "value": 0
+          },
+          "temperature": {
+            "displayName": "Temperature",
+            "unit": "°C",
+            "value": 21.14
+          }
+        }
+      }
+    },
+    {
+      "description": "Example 2",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          82,
+          184,
+          0,
+          2,
+          12,
+          92
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.164
+          },
+          "device_id": 21176,
+          "protocol_version": 2
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-pheht",
+  "name": "DL-PHEHT - pH, ORP and Temperature Sensor",
+  "categories": [
+    "soil-monitor"
+  ],
+  "sensors": [
+    "ph",
+    "redox",
+    "temperature",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-pheht",
+    "codecId": "dl-pheht-codec",
+    "codecFile": "dl-pheht.js",
+    "codecSha256": "a28981a9a90bad4f64ae1d2869173d2a9e6733f3239528cc2deb0fbc9925afba",
+    "referencedAt": "2026-06-22"
+  }
+}

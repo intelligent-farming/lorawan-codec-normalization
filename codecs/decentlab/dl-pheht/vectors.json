@@ -1,0 +1,58 @@
+{
+  "uplink": [
+    {
+      "description": "Full probe + battery: pH 7.11, temp 21.14 C, redox -15.7 mV, pH-mV -1, battery 3.164 V",
+      "input": { "fPort": 1, "bytes": [2, 82, 184, 0, 3, 0, 0, 136, 66, 130, 199, 127, 99, 127, 246, 12, 92] },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 21176,
+          "status": 0,
+          "redox": -15.7,
+          "phMv": -1,
+          "battery": 3.164,
+          "soil": { "temperature": 21.14, "pH": 7.11 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Input from the upstream TTN example (Apache-2.0); soil.pH 7.11 is within 0-14. expected.data authored by running reference/upstream-codec.js and mapping to the normalized vocabulary."
+    },
+    {
+      "description": "Battery only (flags bit1): battery 3.164 V",
+      "input": { "fPort": 1, "bytes": [2, 82, 184, 0, 2, 12, 92] },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 21176,
+          "battery": 3.164
+        }
+      },
+      "source": "synthetic",
+      "_note": "Input from the upstream TTN example (Apache-2.0); expected.data derived by running reference/upstream-codec.js."
+    },
+    {
+      "description": "Probe only (flags bit0): pH 7.0, temp 25.0 C, redox -50.0 mV, pH-mV 15.0",
+      "input": { "fPort": 1, "bytes": [2, 18, 52, 0, 1, 0, 0, 137, 196, 130, 188, 126, 12, 128, 150] },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 4660,
+          "status": 0,
+          "redox": -50,
+          "phMv": 15,
+          "soil": { "temperature": 25, "pH": 7 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input (soil.pH within 0-14); expected.data derived by running reference/upstream-codec.js."
+    },
+    {
+      "description": "Protocol version mismatch (version byte 1, not 2)",
+      "input": { "fPort": 1, "bytes": [1, 82, 184, 0, 2, 12, 92] },
+      "expected": { "errors": ["protocol version 1 doesn't match v2"] },
+      "source": "synthetic",
+      "_note": "Synthetic error input; upstream returns the same protocol-version error."
+    }
+  ],
+  "downlink": []
+}
