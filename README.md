@@ -102,9 +102,12 @@ fPort-variant, config, and partial uplinks legal.
 category. Coverage grows over time — devices are added incrementally. Use
 `devices({ category })` for the live member list; the counts below are a snapshot.
 
-| Category | `requires` | Authored members |
+Membership is either `requires` (every listed path present) or `atLeastOne` (≥1
+of the listed paths present).
+
+| Category | membership | Authored members |
 |---|---|---|
-| `soil-monitor` | `soil.moisture`, `soil.temperature` | 15 |
+| `soil-monitor` | `atLeastOne`: `soil.moisture` / `soil.temperature` / `soil.ec` / `soil.pH` / … | 17 |
 | `climate` | `air.temperature`, `air.relativeHumidity` | 244 |
 | `air-quality` | `air.co2` | 78 |
 | `light` | `air.lightIntensity` | 72 |

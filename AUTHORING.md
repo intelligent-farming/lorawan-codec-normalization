@@ -113,8 +113,10 @@ sensors) report battery as a **percentage**. Do **not** push a percentage into
 - Provide **≥1 data vector** (`expected.data`) and **≥1 error vector**
   (`expected.errors`). Data vectors are matched with `deepStrictEqual`; error
   vectors assert each expected string is a **substring** of some returned error.
-- Across all data vectors, the union of produced key paths must cover **every**
-  `requires` path of **every** declared category.
+- Across all data vectors, the union of produced key paths must satisfy **every**
+  declared category's membership: cover **every** `requires` path, and (for a
+  category defined with `atLeastOne`, e.g. `soil-monitor`) produce **at least one**
+  of its `atLeastOne` paths.
 - `bytes` are decimal integers (JSON has no hex). `source` ranks the vector's
   provenance, best first: `ttn-example` > `datasheet` > `captured` > `synthetic`.
   Use upstream example **inputs** freely; author the `expected.data` yourself.
