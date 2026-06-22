@@ -115,10 +115,10 @@ of the listed paths present).
 | `wind` | `wind.speed` | 12 |
 | `rain-gauge` | `rain.cumulative` | 10 |
 | `water-meter` | `metering.water.total` | 0 |
-| `motion` | `action.motion` | 49 |
-| `contact` | `action.contactState` | 6 |
-| `gps-tracker` | `position.latitude`, `position.longitude` | 10 |
-| `water-leak` | `water.leak` | 11 |
+| `motion` | `action.motion` | 50 |
+| `contact` | `action.contactState` | 20 |
+| `gps-tracker` | `position.latitude`, `position.longitude` | 11 |
+| `water-leak` | `water.leak` | 12 |
 
 `devices()` / `devices({ category })` enumerate registered devices;
 `device(vendor, device)` returns one device's metadata.
