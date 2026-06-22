@@ -1,0 +1,60 @@
+{
+  "uplink": [
+    {
+      "description": "Door/Window event, contact open (synthetic, exercises 'open' state)",
+      "input": { "fPort": 2, "bytes": [18, 3, 1] },
+      "expected": {
+        "data": {
+          "protocol": 1,
+          "counter": 2,
+          "messageType": "doorWindow",
+          "action": { "contactState": "open" }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input (proto 1 / counter 2, type 0x03 DOOR/WINDOW, state byte 1). The upstream reference decoder yields DoorWindow.Event 'Open'; normalized here to action.contactState 'open' (the contact vocabulary key, not action.motion)."
+    },
+    {
+      "description": "Door/Window event, contact closed (synthetic, exercises 'closed' state)",
+      "input": { "fPort": 2, "bytes": [18, 3, 0] },
+      "expected": {
+        "data": {
+          "protocol": 1,
+          "counter": 2,
+          "messageType": "doorWindow",
+          "action": { "contactState": "closed" }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input (type 0x03 DOOR/WINDOW, state byte 0). The upstream reference decoder yields DoorWindow.Event 'Closed'; normalized here to action.contactState 'closed'."
+    },
+    {
+      "description": "Supervisory event: battery voltage, accumulation, batteryLow flag (synthetic)",
+      "input": { "fPort": 2, "bytes": [17, 1, 2, 0, 54, 0, 0, 0, 0, 0, 5] },
+      "expected": {
+        "data": {
+          "protocol": 1,
+          "counter": 1,
+          "messageType": "supervisory",
+          "battery": 3.6,
+          "accumulation": 5,
+          "tamperSinceLastReset": false,
+          "tamperState": false,
+          "errorWithLastDownlink": false,
+          "batteryLow": true,
+          "radioCommError": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input (type 0x01 SUPERVISORY; byte[4]=0x36 battery nibbles, byte[2]=0x02 BatteryLow flag, byte[9..10]=accumulation 5). The upstream reference decoder yields Battery '3.6V', BatteryLow 1, Accumulation 5; normalized to battery 3.6 V (volts per vocabulary) and camelCase flag/diagnostic extras."
+    },
+    {
+      "description": "Unsupported message type returns an error",
+      "input": { "fPort": 2, "bytes": [16, 171, 0] },
+      "expected": { "errors": ["unsupported message type"] },
+      "source": "synthetic",
+      "_note": "Synthetic input (type 0xAB is not a defined RadioBridge event). The upstream reference decoder returns its default {Event: 'UNDEFINED'} (no normalized data); our codec reports an explicit error per the repo's standard, so expected.errors is authored here rather than taken from upstream."
+    }
+  ],
+  "downlink": []
+}

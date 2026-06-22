@@ -1,0 +1,24 @@
+{
+  "vendor": "dragino",
+  "device": "lds01",
+  "name": "LDS01 - Door Sensor",
+  "categories": [
+    "contact"
+  ],
+  "sensors": [
+    "magnetometer"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "lds01",
+    "codecId": "lds01-codec",
+    "codecFile": "lds01.js",
+    "codecSha256": "49e7e485651b37d8ff8a225272fc56912b2b77bb51e68eb0025084275ec90c2c",
+    "referencedAt": "2026-06-22"
+  }
+}

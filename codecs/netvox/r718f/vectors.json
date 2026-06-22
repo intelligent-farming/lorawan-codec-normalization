@@ -1,0 +1,87 @@
+{
+  "uplink": [
+    {
+      "description": "Status report — contact open, 3.6 V battery",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 29, 1, 36, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "action": { "contactState": "open" }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Upstream R718F status frame: bytes[3]=36 -> 3.6 V, bytes[4]=1 (OnOff) -> contact open. Input bytes taken from the TTN upstream example; expected normalized data authored here."
+    },
+    {
+      "description": "Status report — contact closed, 3.0 V battery",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 29, 1, 30, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.0,
+          "action": { "contactState": "closed" }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame: bytes[3]=30 -> 3.0 V, bytes[4]=0 (OnOff) -> contact closed."
+    },
+    {
+      "description": "Status report — contact open, low-battery flag set (2.4 V)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 29, 1, 152, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 2.4,
+          "action": { "contactState": "open" }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: bytes[3]=152 (0x98) -> high bit set (low battery) + 0x18=24 -> 2.4 V; bytes[4]=1 -> contact open."
+    },
+    {
+      "description": "Startup/device-info frame — no measurement",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 29, 0, 100, 2, 32, 25, 6, 25, 0, 0]
+      },
+      "expected": {
+        "errors": ["device info frame"]
+      },
+      "source": "synthetic",
+      "_note": "reportType (bytes[2]) == 0x00 is the version/datecode frame; carries no measurement. Input from TTN upstream startup example."
+    },
+    {
+      "description": "Config report response on fPort 7 — no measurement",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 29, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["fPort 7"]
+      },
+      "source": "synthetic",
+      "_note": "fPort 7 carries configuration responses, not measurements. Input from TTN upstream ConfigReportRsp example."
+    },
+    {
+      "description": "Unknown fPort — unsupported",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 29, 1, 36, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 1"]
+      },
+      "source": "synthetic",
+      "_note": "Only fPort 6 carries data reports; any other data fPort is unsupported."
+    }
+  ],
+  "downlink": []
+}

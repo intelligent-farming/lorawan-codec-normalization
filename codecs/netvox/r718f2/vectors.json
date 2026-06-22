@@ -1,0 +1,84 @@
+{
+  "uplink": [
+    {
+      "description": "Status report: gang-1 open, gang-2 closed, battery 3.0 V",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 62, 1, 30, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "action": {
+            "contactState": "open"
+          },
+          "contactState2": "closed"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame derived from the upstream example input (TTN r718f2 status report). reportType 0x01; byte3=30 -> 3.0 V; byte4=1 -> gang-1 open; byte5=0 -> gang-2 closed. expected.data authored to the normalized vocabulary (action.contactState + extra contactState2), not copied from upstream's Volt/status1/status2 output."
+    },
+    {
+      "description": "Status report: gang-1 closed, gang-2 open, battery 3.6 V",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 62, 1, 36, 0, 1, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "action": {
+            "contactState": "closed"
+          },
+          "contactState2": "open"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame. byte3=36 -> 3.6 V; byte4=0 -> gang-1 closed; byte5=1 -> gang-2 open. Covers the inverse channel states from vector 1."
+    },
+    {
+      "description": "Status report: both gangs open, low battery flag set (2.8 V)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 62, 1, 156, 1, 1, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 2.8,
+          "action": {
+            "contactState": "open"
+          },
+          "contactState2": "open"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame exercising the low-battery flag. byte3=156=0x9C -> high bit set (lowBattery true), low 7 bits 0x1C=28 -> 2.8 V; both gangs open."
+    },
+    {
+      "description": "Startup version report (fPort 6, reportType 0x00) carries no measurement",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 62, 0, 100, 11, 32, 32, 4, 36, 0, 0]
+      },
+      "expected": {
+        "errors": ["no measurement"]
+      },
+      "source": "synthetic",
+      "_note": "Upstream example input for the device-info/startup frame. reportType 0x00 carries version/datecode, not a measurement -> error."
+    },
+    {
+      "description": "Config response on fPort 7 is not a data report",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 62, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort"]
+      },
+      "source": "synthetic",
+      "_note": "Upstream example input for a ConfigReportRsp on fPort 7; carries no measurement -> error."
+    }
+  ],
+  "downlink": []
+}

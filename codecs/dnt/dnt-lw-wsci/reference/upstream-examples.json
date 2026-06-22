@@ -1,0 +1,61 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/dnt/dnt-lw-wsci-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Status Uplink",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          4,
+          240,
+          144,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "unit": "mV",
+            "value": "2940"
+          },
+          "hall_sensor_state": {
+            "unit": "string",
+            "value": "LOW"
+          },
+          "input_clamp_state": {
+            "unit": "string",
+            "value": "LOW"
+          },
+          "sabotage_contact_state": {
+            "unit": "string",
+            "value": "IDLE"
+          }
+        },
+        "errors": [],
+        "warnings": []
+      }
+    },
+    {
+      "description": "Window state change",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          14,
+          1
+        ]
+      },
+      "output": {
+        "data": {
+          "hall_sensor_state": {
+            "unit": "string",
+            "value": "HIGH"
+          }
+        },
+        "errors": [],
+        "warnings": []
+      }
+    }
+  ]
+}

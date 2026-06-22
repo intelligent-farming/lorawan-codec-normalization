@@ -1,0 +1,24 @@
+{
+  "vendor": "netvox",
+  "device": "r718f",
+  "name": "R718F - Wireless Reed Switch Open/Close Detection Sensor",
+  "categories": [
+    "contact"
+  ],
+  "sensors": [
+    "reed switch"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r718f",
+    "codecId": "r718f-codec",
+    "codecFile": "payload/r311a_r718f_r730f.js",
+    "codecSha256": "59d542ebee7782651b192a2a26c12304c4c118dcb2c74208e694ef48cfc25f26",
+    "referencedAt": "2026-06-22"
+  }
+}

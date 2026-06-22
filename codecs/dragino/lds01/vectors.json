@@ -1,0 +1,57 @@
+{
+  "uplink": [
+    {
+      "description": "Door closed, mode 1, no alarm",
+      "input": {
+        "fPort": 10,
+        "bytes": [11, 184, 1, 0, 0, 5, 0, 0, 42, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "action": {
+            "contactState": "closed"
+          },
+          "openCount": 5,
+          "lastOpenDurationMinutes": 42,
+          "alarm": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds door-mode frame. bytes[0..1]=(11<<8|184)&0x3fff=3000 mV -> 3 V; bit 0x80 clear -> closed; MOD=1; open count=5; last duration=42 min; alarm bit clear. expected.data derived by running reference/upstream-codec.js (BAT_V 3, DOOR_OPEN_STATUS 0, DOOR_OPEN_TIMES 5, LAST_DOOR_OPEN_DURATION 42, ALARM 0) then normalizing."
+    },
+    {
+      "description": "Door open, mode 1, alarm set",
+      "input": {
+        "fPort": 10,
+        "bytes": [139, 184, 1, 0, 1, 7, 0, 0, 12, 1]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "action": {
+            "contactState": "open"
+          },
+          "openCount": 263,
+          "lastOpenDurationMinutes": 12,
+          "alarm": true
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds door-mode frame. bytes[0]=139 sets bit 0x80 (open); (139<<8|184)&0x3fff=3000 mV -> 3 V; MOD=1; open count=(1<<8|7)=263; last duration=12 min; alarm bit set. expected.data derived by running reference/upstream-codec.js (BAT_V 3, DOOR_OPEN_STATUS 1, DOOR_OPEN_TIMES 263, LAST_DOOR_OPEN_DURATION 12, ALARM 1) then normalizing."
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [11, 184, 1, 0, 0, 5, 0, 0, 42, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort"]
+      },
+      "source": "synthetic",
+      "_note": "Reference upstream returns 'unknown FPort' on any non-10 port; this module rejects non-10 ports with 'unsupported fPort 42 (expected 10)'."
+    }
+  ],
+  "downlink": []
+}

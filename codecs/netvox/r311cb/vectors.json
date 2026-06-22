@@ -1,0 +1,75 @@
+{
+  "uplink": [
+    {
+      "description": "Status report: door/window open, glass intact (TTN example input)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 86, 1, 30, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "action": { "contactState": "open" },
+          "glassBroken": false
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Status report: door/window closed, glass intact",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 86, 1, 30, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "action": { "contactState": "closed" },
+          "glassBroken": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic, in-bounds. Closed-state counterpart of the TTN status example (bytes[4]=0x00); upstream r718da2_r718db2_r718f2.js decodes this as status1=0. battery byte 0x1E (30) -> 3.0 V."
+    },
+    {
+      "description": "Status report: door/window open, glass broken, low battery",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 86, 1, 158, 1, 1, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3,
+          "action": { "contactState": "open" },
+          "glassBroken": true
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic, in-bounds. battery byte 0x9E sets the high (low-battery) bit; 0x9E & 0x7F = 0x1E (30) -> 3.0 V. status1=1 (open), status2=1 (glass broken). Upstream renders Volt as '3(low battery)'."
+    },
+    {
+      "description": "Device-info / startup frame carries no measurement (reportType 0x00)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 86, 0, 100, 11, 32, 32, 4, 36, 0, 0]
+      },
+      "expected": {
+        "errors": ["no measurement"]
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Config-report response on fPort 7 carries no measurement",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 86, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort"]
+      },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

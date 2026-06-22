@@ -1,0 +1,50 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/dragino/lds01-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Distance Detection",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          11,
+          136,
+          1,
+          0,
+          37,
+          0,
+          1
+        ]
+      },
+      "output": {
+        "data": {
+          "ALARM": 0,
+          "BAT_V": 2.952,
+          "DOOR_OPEN_STATUS": 0,
+          "DOOR_OPEN_TIMES": 9472,
+          "LAST_DOOR_OPEN_DURATION": 65536,
+          "MOD": 1
+        }
+      }
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [
+          11,
+          136,
+          1,
+          0,
+          37,
+          0,
+          1
+        ]
+      },
+      "output": {
+        "errors": [
+          "unknown FPort"
+        ]
+      }
+    }
+  ]
+}

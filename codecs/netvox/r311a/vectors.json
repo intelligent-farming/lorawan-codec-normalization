@@ -1,0 +1,75 @@
+{
+  "uplink": [
+    {
+      "description": "Status report - door/window closed, normal battery (3.0 V)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 2, 1, 30, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "action": { "contactState": "closed" }
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic frame derived from the upstream status-report example by setting OnOff (byte 4) to 0 (magnet present = closed). Wire decode confirmed against reference/upstream-codec.js (Volt 3, OnOff 0); contactState mapping authored here (0 -> closed)."
+    },
+    {
+      "description": "Status report - door/window open, normal battery (3.0 V)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 2, 1, 30, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "action": { "contactState": "open" }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Upstream status-report example (TTN), OnOff (byte 4) = 1 (open). Wire decode confirmed against reference/upstream-codec.js (Volt 3, OnOff 1); contactState mapping authored here (1 -> open)."
+    },
+    {
+      "description": "Status report - door/window open, low battery (2.3 V)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 2, 1, 151, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 2.3,
+          "action": { "contactState": "open" }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Upstream status-report example (TTN), byte 3 = 0x97 (high bit = low-battery flag, 0x17 = 23 -> 2.3 V). Wire decode confirmed against reference/upstream-codec.js (Volt '2.3(low battery)', OnOff 1); battery is normalized to volts and the flag is surfaced as the extra lowBattery."
+    },
+    {
+      "description": "Device-info / startup frame (reportType 0x00) carries no measurement",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 2, 0, 100, 11, 32, 32, 4, 36, 0, 0]
+      },
+      "expected": {
+        "errors": ["no measurement"]
+      },
+      "source": "ttn-example",
+      "_note": "Upstream startup version report example. reportType byte 2 = 0x00 -> device-info frame, no measurement."
+    },
+    {
+      "description": "Config response on fPort 7 is unsupported (not a measurement)",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort"]
+      },
+      "source": "ttn-example",
+      "_note": "Upstream ConfigReportRsp example on fPort 7; config responses carry no measurement."
+    }
+  ],
+  "downlink": []
+}

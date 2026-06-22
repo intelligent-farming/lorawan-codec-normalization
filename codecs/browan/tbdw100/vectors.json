@@ -1,0 +1,93 @@
+{
+  "uplink": [
+    {
+      "description": "Door closed",
+      "input": {
+        "fPort": 100,
+        "bytes": [0, 203, 53, 0, 0, 138, 58, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "air": {
+            "temperature": 21
+          },
+          "action": {
+            "contactState": "closed"
+          },
+          "openCount": 14986,
+          "openTimeSeconds": 0
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "Door open",
+      "input": {
+        "fPort": 100,
+        "bytes": [1, 200, 53, 16, 0, 200, 58, 1]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "air": {
+            "temperature": 21
+          },
+          "action": {
+            "contactState": "open"
+          },
+          "openCount": 80584,
+          "openTimeSeconds": 16
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "Door open, full battery, warmer board, high counters",
+      "input": {
+        "fPort": 100,
+        "bytes": [1, 207, 70, 255, 1, 255, 255, 2]
+      },
+      "expected": {
+        "data": {
+          "battery": 4,
+          "air": {
+            "temperature": 38
+          },
+          "action": {
+            "contactState": "open"
+          },
+          "openCount": 196607,
+          "openTimeSeconds": 511
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [1, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unknown FPort"]
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Empty / all-zero payload",
+      "input": {
+        "fPort": 100,
+        "bytes": [0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

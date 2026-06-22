@@ -1,0 +1,30 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/mclimate/open-close-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Short periodic uplink",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          1,
+          171,
+          0,
+          217,
+          27,
+          92,
+          174,
+          1
+        ]
+      },
+      "output": {
+        "data": {
+          "temperature": 21.7,
+          "batteryVoltage": 2.97,
+          "thermistorProperlyConnected": true,
+          "counter": 1793198,
+          "status": 1
+        }
+      }
+    }
+  ]
+}

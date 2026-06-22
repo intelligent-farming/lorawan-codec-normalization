@@ -1,0 +1,75 @@
+{
+  "uplink": [
+    {
+      "description": "Status report — contact open, battery 3.0 V",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 37, 1, 30, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "action": { "contactState": "open" }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected authored from this repo's codec and cross-checked against the upstream reference decoder (Volt=3, status=1). Upstream status byte 1 -> contact 'open'."
+    },
+    {
+      "description": "Status report — contact closed, battery 3.6 V",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 37, 1, 36, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "action": { "contactState": "closed" }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; status byte 0 -> contact 'closed'; upstream Volt=3.6."
+    },
+    {
+      "description": "Status report — low battery flag set (bit7), contact open",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 37, 1, 158, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3,
+          "action": { "contactState": "open" }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic frame: byte3 = 0x9E (158): bit7 set => low battery, 0x1E (30) => 3.0 V. Mirrors upstream's '(low battery)' annotation on Volt."
+    },
+    {
+      "description": "Device-info / startup version frame (reportType 0x00) — no measurement",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 37, 0, 100, 11, 32, 32, 4, 36, 0, 0]
+      },
+      "expected": {
+        "errors": ["no measurement"]
+      },
+      "source": "synthetic",
+      "_note": "Upstream decodes this as Device/SWver/HWver/Datecode (no measurement); normalized codec reports it as an error."
+    },
+    {
+      "description": "Config report response on fPort 7 — not a data report",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 37, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 7"]
+      },
+      "source": "synthetic",
+      "_note": "fPort 7 carries config responses, not measurements; normalized codec rejects it."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,24 @@
+{
+  "vendor": "radio-bridge",
+  "device": "rbs301-dws",
+  "name": "RBS301-DWS - Door/Window Sensor",
+  "categories": [
+    "contact"
+  ],
+  "sensors": [
+    "reed switch"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "radio-bridge",
+    "device": "rbs301-dws",
+    "codecId": "rbs301-dws-codec",
+    "codecFile": "radio_bridge_packet_decoder.js",
+    "codecSha256": "83bc2db0c2c9a7bacb4cbe22d63bc8169172ce2caac5f1969526626978d5ff24",
+    "referencedAt": "2026-06-22"
+  }
+}

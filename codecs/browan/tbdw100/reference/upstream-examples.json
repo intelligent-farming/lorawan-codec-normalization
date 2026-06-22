@@ -1,0 +1,59 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/browan/tbdw100-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Door closed",
+      "input": {
+        "fPort": 100,
+        "bytes": [
+          0,
+          203,
+          53,
+          0,
+          0,
+          138,
+          58,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "battery": 3.6,
+          "count": 14986,
+          "status": 0,
+          "temperatureBoard": 21,
+          "time": 0
+        }
+      },
+      "normalizedOutput": {
+        "data": [
+          {
+            "action": {
+              "motion": {
+                "detected": false
+              }
+            },
+            "air": {
+              "temperature": 21
+            },
+            "battery": 3.6
+          }
+        ]
+      }
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [
+          1
+        ]
+      },
+      "output": {
+        "errors": [
+          "unknown FPort"
+        ]
+      }
+    }
+  ]
+}

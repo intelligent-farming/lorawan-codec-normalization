@@ -1,0 +1,25 @@
+{
+  "vendor": "mclimate",
+  "device": "open-close",
+  "name": "Open/Close Sensor",
+  "categories": [
+    "contact"
+  ],
+  "sensors": [
+    "temperature",
+    "magnetometer"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "mclimate",
+    "device": "open-close",
+    "codecId": "open-close-codec",
+    "codecFile": "open-close.js",
+    "codecSha256": "9c38bbf5006a3f6e0219bfac7b9ff8959fd7282015aa4f07aa046ccd8b3bc1ed",
+    "referencedAt": "2026-06-22"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "vendor": "netvox",
+  "device": "r718lb",
+  "name": "R718LB - Wireless Hall Type Open/Close Detector",
+  "categories": [
+    "contact"
+  ],
+  "sensors": [
+    "hall-effect open/close"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r718lb",
+    "codecId": "r718lb-codec",
+    "codecFile": "payload/r718da_r718db_r718j_r718lb_r718mba.js",
+    "codecSha256": "e9bc7cc99a2db42fdb784f0a9375b5a1225234723052a67a2fc1576471862747",
+    "referencedAt": "2026-06-22"
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "uplink": [
+    {
+      "description": "Keepalive/data frame, contact open (status bit0 = 1)",
+      "input": {
+        "fPort": 2,
+        "bytes": [1, 171, 0, 217, 27, 92, 174, 1]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.97,
+          "thermistorProperlyConnected": true,
+          "openCloseCount": 1793198,
+          "eventStatus": 1,
+          "air": {
+            "temperature": 21.7
+          },
+          "action": {
+            "contactState": "open"
+          }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Keepalive/data frame, contact closed (status bit0 = 0)",
+      "input": {
+        "fPort": 2,
+        "bytes": [1, 171, 0, 217, 27, 92, 174, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.97,
+          "thermistorProperlyConnected": true,
+          "openCloseCount": 1793198,
+          "eventStatus": 0,
+          "air": {
+            "temperature": 21.7
+          },
+          "action": {
+            "contactState": "closed"
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Derived from the TTN example input with the trailing status byte cleared to 0 to exercise the 'closed' contact state. All measurement fields are produced by running reference/upstream-codec.js on this input (battery 2.97 V, temperature 21.7 C, counter 1793198, status 0); the normalization (contactState 'closed', openCloseCount, eventStatus) is authored here."
+    },
+    {
+      "description": "Keepalive/data frame, external thermistor disconnected, low counter",
+      "input": {
+        "fPort": 2,
+        "bytes": [1, 200, 4, 50, 0, 0, 5, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.2,
+          "thermistorProperlyConnected": false,
+          "openCloseCount": 5,
+          "eventStatus": 0,
+          "air": {
+            "temperature": 5
+          },
+          "action": {
+            "contactState": "closed"
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame: byte[2] bit2 set => thermistor disconnected; battery byte 200 (3.2 V), 10-bit temperature raw 50 (5.0 C), 24-bit counter 5, status 0 (closed). Expected measurement values produced by running reference/upstream-codec.js on this input; normalization authored here."
+    },
+    {
+      "description": "Payload too short to contain an 8-byte keepalive frame",
+      "input": {
+        "fPort": 2,
+        "bytes": [1, 2, 3]
+      },
+      "expected": {
+        "errors": ["payload too short"]
+      },
+      "source": "synthetic",
+      "_note": "Error vector: the upstream decoder reads bytes[3..7] out of bounds and emits garbage (e.g. temperature 76.8). This codec guards the frame length and returns an error instead."
+    }
+  ],
+  "downlink": []
+}

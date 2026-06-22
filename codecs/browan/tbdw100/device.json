@@ -1,0 +1,24 @@
+{
+  "vendor": "browan",
+  "device": "tbdw100",
+  "name": "Door/Window Sensor",
+  "categories": [
+    "contact"
+  ],
+  "sensors": [
+    "magnetometer"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "browan",
+    "device": "tbdw100",
+    "codecId": "tbdw100-codec",
+    "codecFile": "tbdw100.js",
+    "codecSha256": "4e681556955bbfb67fdfae720a5ffbbb23cac01dcc72e7f29700edfa0cbcda8c",
+    "referencedAt": "2026-06-22"
+  }
+}

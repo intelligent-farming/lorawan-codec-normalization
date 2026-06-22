@@ -1,0 +1,108 @@
+{
+  "uplink": [
+    {
+      "description": "MOD 1 door sensor, contact closed",
+      "input": {
+        "fPort": 10,
+        "bytes": [11, 136, 1, 0, 0, 5, 0, 0, 3, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.952,
+          "mode": 1,
+          "action": { "contactState": "closed" },
+          "doorOpenTimes": 5,
+          "lastDoorOpenDuration": 3,
+          "alarm": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds MOD 1 frame; expected.data produced by running reference/upstream-codec.js (BAT_V 2.952, DOOR_OPEN_STATUS 0, DOOR_OPEN_TIMES 5, LAST_DOOR_OPEN_DURATION 3, ALARM 0) and normalizing to the vocabulary."
+    },
+    {
+      "description": "MOD 1 door sensor, contact open with alarm",
+      "input": {
+        "fPort": 10,
+        "bytes": [139, 136, 1, 0, 0, 42, 0, 0, 15, 1]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.952,
+          "mode": 1,
+          "action": { "contactState": "open" },
+          "doorOpenTimes": 42,
+          "lastDoorOpenDuration": 15,
+          "alarm": true
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds MOD 1 frame, byte[0] bit 0x80 set (door open) and byte[9] bit 0x01 set (alarm); expected.data confirmed against reference/upstream-codec.js (DOOR_OPEN_STATUS 1, DOOR_OPEN_TIMES 42, LAST_DOOR_OPEN_DURATION 15, ALARM 1)."
+    },
+    {
+      "description": "MOD 2 water-leak variant, leak detected",
+      "input": {
+        "fPort": 10,
+        "bytes": [75, 136, 2, 0, 0, 3, 0, 0, 8, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.952,
+          "mode": 2,
+          "water": { "leak": true },
+          "waterLeakTimes": 3,
+          "lastWaterLeakDuration": 8
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds MOD 2 frame, byte[0] bit 0x40 set (leak); expected.data confirmed against reference/upstream-codec.js (WATER_LEAK_STATUS 1, WATER_LEAK_TIMES 3, LAST_WATER_LEAK_DURATION 8)."
+    },
+    {
+      "description": "MOD 2 water-leak variant, no leak",
+      "input": {
+        "fPort": 10,
+        "bytes": [11, 136, 2, 0, 0, 1, 0, 0, 2, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.952,
+          "mode": 2,
+          "water": { "leak": false },
+          "waterLeakTimes": 1,
+          "lastWaterLeakDuration": 2
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds MOD 2 frame, byte[0] bit 0x40 clear (no leak); expected.data confirmed against reference/upstream-codec.js (WATER_LEAK_STATUS 0, WATER_LEAK_TIMES 1, LAST_WATER_LEAK_DURATION 2)."
+    },
+    {
+      "description": "MOD 3 combined door + water-leak, both active with alarm",
+      "input": {
+        "fPort": 10,
+        "bytes": [203, 136, 3, 0, 0, 0, 0, 0, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.952,
+          "mode": 3,
+          "action": { "contactState": "open" },
+          "water": { "leak": true },
+          "alarm": true
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds MOD 3 frame, byte[0] bits 0x80 and 0x40 set (door open + leak), byte[9] bit 0x01 set (alarm); expected.data confirmed against reference/upstream-codec.js (DOOR_OPEN_STATUS 1, WATER_LEAK_STATUS 1, ALARM 1)."
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [11, 136, 1, 0, 37, 0, 1]
+      },
+      "expected": {
+        "errors": ["unsupported fPort"]
+      },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

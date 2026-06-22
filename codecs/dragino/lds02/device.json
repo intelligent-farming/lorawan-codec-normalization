@@ -1,0 +1,26 @@
+{
+  "vendor": "dragino",
+  "device": "lds02",
+  "name": "LDS02 - Door Sensor",
+  "categories": [
+    "contact",
+    "water-leak"
+  ],
+  "sensors": [
+    "magnetometer",
+    "leak"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "lds02",
+    "codecId": "lds02-codec",
+    "codecFile": "lds02.js",
+    "codecSha256": "dd943f85d474e95facea33f6b7dac794bc57035f8b70526733027aa28800db90",
+    "referencedAt": "2026-06-22"
+  }
+}

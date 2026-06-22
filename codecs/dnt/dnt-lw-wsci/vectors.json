@@ -1,0 +1,83 @@
+{
+  "uplink": [
+    {
+      "description": "Status uplink (battery + sabotage + hall LOW/closed + input clamp LOW)",
+      "input": {
+        "fPort": 10,
+        "bytes": [4, 240, 144, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.94,
+          "sabotageContactState": "IDLE",
+          "inputClampState": "LOW",
+          "action": {
+            "contactState": "closed"
+          }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Hall sensor state change to HIGH (window open)",
+      "input": {
+        "fPort": 10,
+        "bytes": [14, 1]
+      },
+      "expected": {
+        "data": {
+          "action": {
+            "contactState": "open"
+          }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Status uplink with hall HIGH/open, sabotage TRIGGERED, input clamp HIGH",
+      "input": {
+        "fPort": 10,
+        "bytes": [4, 240, 200, 1, 1, 1]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.5,
+          "sabotageContactState": "TRIGGERED",
+          "inputClampState": "HIGH",
+          "action": {
+            "contactState": "open"
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds GET_STATUS frame (tx-enable 0xF0 = battery|sabotage|hall|clamp). Battery code 200 -> 200*10+1500 = 3500 mV -> 3.5 V. Hall HIGH -> contactState 'open'. expected.data produced by running reference/upstream-codec.js (mV string 3500 -> 3.5 V; hall HIGH; sabotage TRIGGERED; clamp HIGH)."
+    },
+    {
+      "description": "Standalone battery-voltage command",
+      "input": {
+        "fPort": 10,
+        "bytes": [5, 144]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.94
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic COMMAND_ID_GET_BATTERY_VOLTAGE (id 5). Code 144 -> 144*10+1500 = 2940 mV -> 2.94 V, matching reference/upstream-codec.js battery_voltage.value '2940' mV."
+    },
+    {
+      "description": "Unsupported command id",
+      "input": {
+        "fPort": 10,
+        "bytes": [99]
+      },
+      "expected": {
+        "errors": ["unsupported command"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: command id 99 (0x63) is not in the device's COMMAND_ID table; the reference decoder silently ignores it, our codec reports it as an error rather than emitting empty data."
+    }
+  ],
+  "downlink": []
+}

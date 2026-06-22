@@ -1,0 +1,78 @@
+{
+  "uplink": [
+    {
+      "description": "Status report: gang 1 open, gang 2 closed, battery 3.0 V",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 108, 1, 30, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "action": { "contactState": "open" },
+          "contact2State": "closed"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Upstream example input (status report). Upstream emits raw status1=1/status2=0 and Volt=3; we map gang 1 -> action.contactState 'open' and gang 2 -> contact2State 'closed', battery in volts."
+    },
+    {
+      "description": "Status report: both gangs closed, battery 3.0 V",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 108, 1, 30, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "action": { "contactState": "closed" },
+          "contact2State": "closed"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame, both gangs closed (status bytes 0/0). Confirmed against reference/upstream-codec.js (status1=0,status2=0,Volt=3)."
+    },
+    {
+      "description": "Status report: gang 1 closed, gang 2 open, low battery flag set",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 108, 1, 158, 0, 1, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3,
+          "action": { "contactState": "closed" },
+          "contact2State": "open"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic low-battery frame: byte3 0x9E has high bit set (low battery) and low 7 bits 0x1E = 30 -> 3.0 V. Confirmed against reference/upstream-codec.js (Volt='3(low battery)', status1=0, status2=1)."
+    },
+    {
+      "description": "Device info / version frame (no measurement)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 108, 0, 100, 11, 32, 32, 4, 36, 0, 0]
+      },
+      "expected": {
+        "errors": ["device info frame"]
+      },
+      "source": "synthetic",
+      "_note": "Upstream example input (startup version report, byte2=0x00). Carries SW/HW version + datecode, no measurement, so we report an error."
+    },
+    {
+      "description": "Configure report response on fPort 7 (no measurement)",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 108, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["fPort 7"]
+      },
+      "source": "synthetic",
+      "_note": "Upstream example input (ConfigReportRsp). Configuration responses carry no measurement, so we report an error."
+    }
+  ],
+  "downlink": []
+}

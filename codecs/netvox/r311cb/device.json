@@ -1,0 +1,24 @@
+{
+  "vendor": "netvox",
+  "device": "r311cb",
+  "name": "R311CB - Wireless Window/Door Sensor and Wireless Glass Sensor",
+  "categories": [
+    "contact"
+  ],
+  "sensors": [
+    "reed switch"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r311cb",
+    "codecId": "r311cb-codec",
+    "codecFile": "payload/r718da2_r718db2_r718f2.js",
+    "codecSha256": "abc850a575db243c63a6f437e62a6916931b081d18adc283bb3ce9da261ede69",
+    "referencedAt": "2026-06-22"
+  }
+}

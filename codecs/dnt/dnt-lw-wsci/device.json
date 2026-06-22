@@ -1,0 +1,26 @@
+{
+  "vendor": "dnt",
+  "device": "dnt-lw-wsci",
+  "name": "LoRaWAN® window sensor and contact interface",
+  "categories": [
+    "contact"
+  ],
+  "sensors": [
+    "battery",
+    "hall sensor",
+    "digital input"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dnt",
+    "device": "dnt-lw-wsci",
+    "codecId": "dnt-lw-wsci-codec",
+    "codecFile": "dnt-lw-wsci.js",
+    "codecSha256": "50c17297a6d50ce68dbbb8c0e4d90891ca94be7353c77be853427e162d2d4ff5",
+    "referencedAt": "2026-06-22"
+  }
+}

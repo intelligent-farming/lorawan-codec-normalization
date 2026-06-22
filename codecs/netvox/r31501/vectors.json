@@ -1,0 +1,120 @@
+{
+  "uplink": [
+    {
+      "description": "Binary-sensor report (0x11) - contact closed, all detectors idle, 3.0 V",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 210, 17, 30, 0, 0, 32, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "action": { "contactState": "closed" },
+          "pirState": false,
+          "emergencyButtonAlarm": false,
+          "tiltState": false,
+          "internalShockState": false,
+          "externalShockState": false,
+          "externalDryContactInState": false,
+          "waterLeak1State": false,
+          "waterLeak2State": false,
+          "seatState": false,
+          "glassBreak1State": false,
+          "glassBreak2State": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame: report type 0x11, internal contact provisioned (FunctionEnable bit5, bytes[6]=0x20), BinarySensorReport all-clear, battery bytes[3]=30 -> 3.0 V. Expected derived from the upstream r315.js 0x11 parser (state byte 0 = idle), authoring contactState 'closed' per the vocabulary enum."
+    },
+    {
+      "description": "Binary-sensor report (0x11) - contact open (reed triggered), 3.0 V",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 210, 17, 30, 0, 0, 32, 0, 8]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "action": { "contactState": "open" },
+          "pirState": false,
+          "emergencyButtonAlarm": false,
+          "tiltState": false,
+          "internalShockState": false,
+          "externalShockState": false,
+          "externalDryContactInState": false,
+          "waterLeak1State": false,
+          "waterLeak2State": false,
+          "seatState": false,
+          "glassBreak1State": false,
+          "glassBreak2State": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame: InternalContactSwitchSensorState (BinarySensorReport bit3) set -> bytes[8]=8. Netvox 1=triggered -> contactState 'open'. Verified against upstream r315.js 0x11 parser which computes InternalContactSwitchSensorState = (bytes[7]<<8|bytes[8])>>3&1 = 1 for this input."
+    },
+    {
+      "description": "Binary-sensor report (0x11) - contact open with low battery, PIR + tilt active",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 210, 17, 158, 0, 0, 32, 0, 13]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3,
+          "action": { "contactState": "open" },
+          "pirState": true,
+          "emergencyButtonAlarm": false,
+          "tiltState": true,
+          "internalShockState": false,
+          "externalShockState": false,
+          "externalDryContactInState": false,
+          "waterLeak1State": false,
+          "waterLeak2State": false,
+          "seatState": false,
+          "glassBreak1State": false,
+          "glassBreak2State": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame: battery byte 158 = 0x80|30 -> low-battery flag set, (158&0x7f)/10 = 3.0 V. BinarySensorReport low byte 13 = 0b1101 -> bit0 PIR, bit2 tilt, bit3 internal contact set. Matches upstream r315.js 0x11 bit assignments."
+    },
+    {
+      "description": "Device-info / startup frame (report type 0x00) - no measurement",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 210, 0, 100, 2, 32, 32, 8, 17, 0, 0]
+      },
+      "expected": {
+        "errors": ["device info frame (no measurement)"]
+      },
+      "source": "ttn-example",
+      "_note": "Upstream example input (R315 startup version report). Authored as an error: it carries firmware/datecode metadata, not a measurement."
+    },
+    {
+      "description": "Config response on fPort 7 - no measurement",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 210, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["config response on fPort 7"]
+      },
+      "source": "ttn-example",
+      "_note": "Upstream example input (ConfigReportRsp). fPort 7 is the config channel and carries no measurement."
+    },
+    {
+      "description": "Report type 0x01 (temperature/humidity) - not applicable to this device",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 210, 1, 28, 8, 73, 0, 18, 10, 220, 106]
+      },
+      "expected": {
+        "errors": ["carries no measurement for this device"]
+      },
+      "source": "ttn-example",
+      "_note": "Upstream example input belonging to a T/H variant of the shared R315 codec. The R31501 has no temperature/humidity sensor (datasheet), so report type 0x01 is rejected."
+    }
+  ],
+  "downlink": []
+}
