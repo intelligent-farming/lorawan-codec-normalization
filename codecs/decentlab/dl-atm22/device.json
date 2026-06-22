@@ -1,0 +1,29 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-atm22",
+  "name": "DL-ATM22 - Wind Speed, Wind Direction and Temperature Sensor",
+  "categories": [
+    "wind"
+  ],
+  "sensors": [
+    "wind speed",
+    "wind direction",
+    "wind gust",
+    "air temperature",
+    "tilt",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-atm22",
+    "codecId": "dl-atm22-codec",
+    "codecFile": "dl-atm22.js",
+    "codecSha256": "383f6da906b2cf6174ebe618b75dcc73cc43a3dabad3edbae3b418db3251239d",
+    "referencedAt": "2026-06-22"
+  }
+}

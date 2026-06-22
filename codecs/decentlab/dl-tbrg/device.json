@@ -1,0 +1,25 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-tbrg",
+  "name": "DL-TBRG - Tipping Bucket Rain Gauge",
+  "categories": [
+    "rain-gauge"
+  ],
+  "sensors": [
+    "precipitation",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-tbrg",
+    "codecId": "dl-tbrg-01-codec",
+    "codecFile": "dl-tbrg-01.js",
+    "codecSha256": "98b1498e2c824edabd1b60e5383b306d1801a902c7c2c11b691e42d8f749d1c7",
+    "referencedAt": "2026-06-22"
+  }
+}

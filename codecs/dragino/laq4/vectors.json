@@ -1,0 +1,80 @@
+{
+  "uplink": [
+    {
+      "description": "CO2 measurement frame (TTN example bytes)",
+      "input": {
+        "fPort": 2,
+        "bytes": [13, 7, 5, 0, 18, 2, 11, 0, 251, 1, 179]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.335,
+          "air": {
+            "location": "indoor",
+            "co2": 523,
+            "temperature": 25.1,
+            "relativeHumidity": 43.5
+          },
+          "tvoc": 18,
+          "alarmStatus": true
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "CO2 measurement frame with negative temperature (synthetic, exercises sign extension)",
+      "input": {
+        "fPort": 2,
+        "bytes": [11, 184, 4, 1, 44, 3, 32, 255, 206, 2, 38]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "air": {
+            "location": "indoor",
+            "co2": 800,
+            "temperature": -5,
+            "relativeHumidity": 55
+          },
+          "tvoc": 300,
+          "alarmStatus": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame: battery 0x0BB8=3000 mV, mode 1 (byte2 0x04), TVOC 0x012C=300 ppb, CO2 0x0320=800 ppm, SHT temp 0xFFCE=-50 (0.1 C) -> -5.0 C, humidity 0x0226=550 (0.1 %) -> 55.0 %. expected.data verified by running reference/upstream-codec.js."
+    },
+    {
+      "description": "Alarm-threshold frame (synthetic)",
+      "input": {
+        "fPort": 2,
+        "bytes": [11, 184, 124, 250, 30, 40, 80, 1, 144, 3, 32]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "workMode": "alarm",
+          "tempMin": -6,
+          "tempMax": 30,
+          "humidityMin": 40,
+          "humidityMax": 80,
+          "co2Min": 400,
+          "co2Max": 800
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame: mode 31 (byte2 0x7C), temp thresholds -6/30 C, humidity 40/80 %, CO2 0x0190=400 / 0x0320=800 ppm. Threshold limits, not live readings. expected.data verified by running reference/upstream-codec.js (matched to its SHTEMPMIN/.../CO2MAX fields)."
+    },
+    {
+      "description": "Unknown fPort returns an error",
+      "input": {
+        "fPort": 42,
+        "bytes": [13, 7, 5, 0, 18, 2, 11, 0, 251, 1, 179]
+      },
+      "expected": {
+        "errors": ["unknown FPort"]
+      },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

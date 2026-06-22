@@ -1,0 +1,46 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/browan/cd10-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "MerryIoT Air Quality CO2 detected",
+      "input": {
+        "fPort": 127,
+        "bytes": [
+          17,
+          15,
+          231,
+          0,
+          67,
+          7,
+          25
+        ]
+      },
+      "output": {
+        "data": {
+          "status": 1,
+          "button": 0,
+          "co2threshold": 1,
+          "co2calibration": 0,
+          "battery": 3.6,
+          "temperature": 23.1,
+          "humidity": 67,
+          "co2_ppm": 6407
+        }
+      }
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [
+          1
+        ]
+      },
+      "output": {
+        "errors": [
+          "unknown FPort"
+        ]
+      }
+    }
+  ]
+}

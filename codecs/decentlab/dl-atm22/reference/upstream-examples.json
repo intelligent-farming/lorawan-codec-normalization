@@ -1,0 +1,113 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/decentlab/dl-atm22-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Example 1",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          8,
+          201,
+          0,
+          3,
+          128,
+          9,
+          129,
+          43,
+          128,
+          20,
+          129,
+          8,
+          128,
+          2,
+          127,
+          232,
+          128,
+          8,
+          128,
+          4,
+          11,
+          245
+        ]
+      },
+      "output": {
+        "data": {
+          "air_temperature": {
+            "displayName": "Air temperature",
+            "unit": "°C",
+            "value": 26.4
+          },
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.061
+          },
+          "device_id": 2249,
+          "east_wind_speed": {
+            "displayName": "East wind speed",
+            "unit": "m⋅s⁻¹",
+            "value": 0.04
+          },
+          "maximum_wind_speed": {
+            "displayName": "Maximum wind speed",
+            "unit": "m⋅s⁻¹",
+            "value": 0.2
+          },
+          "north_wind_speed": {
+            "displayName": "North wind speed",
+            "unit": "m⋅s⁻¹",
+            "value": 0.08
+          },
+          "protocol_version": 2,
+          "wind_direction": {
+            "displayName": "Wind direction",
+            "unit": "°",
+            "value": 29.9
+          },
+          "wind_speed": {
+            "displayName": "Wind speed",
+            "unit": "m⋅s⁻¹",
+            "value": 0.09
+          },
+          "x_orientation_angle": {
+            "displayName": "X orientation angle",
+            "unit": "°",
+            "value": 0.2
+          },
+          "y_orientation_angle": {
+            "displayName": "Y orientation angle",
+            "unit": "°",
+            "value": -2.4
+          }
+        }
+      }
+    },
+    {
+      "description": "Example 2",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          8,
+          201,
+          0,
+          2,
+          11,
+          245
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.061
+          },
+          "device_id": 2249,
+          "protocol_version": 2
+        }
+      }
+    }
+  ]
+}

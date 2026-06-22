@@ -1,0 +1,66 @@
+{
+  "uplink": [
+    {
+      "description": "telemetry: CO2 + air temperature + air humidity",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 16, 204, 91, 0, 0, 1, 2, 16, 144, 176, 0, 0, 1, 4, 16, 160, 86, 9, 0, 222, 1]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 23.5,
+            "relativeHumidity": 45.2,
+            "co2": 612
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame (channel 1: measurementId 4097=23.5degC, 4098=45.2%RH, 4100=612ppm) with a valid CRC16 trailer computed against the SenseCAP table. Expected values produced by running reference/upstream-codec.js (report_telemetry messages 23.5 / 45.2 / 612) and mapping by measurement ID."
+    },
+    {
+      "description": "telemetry: CO2 only",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 4, 16, 0, 53, 12, 0, 138, 45]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "co2": 800
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic single-frame CO2 reading (measurementId 4100 = 800ppm) with a valid CRC16 trailer. Expected value produced by running reference/upstream-codec.js (report_telemetry measurementValue 800)."
+    },
+    {
+      "description": "battery percent + reporting interval frame",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 7, 0, 100, 0, 60, 0, 219, 232]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 100,
+          "reportingInterval": 3600
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic special dataID-7 frame (battery 100%, interval 60min) with a valid CRC16 trailer. Expected values produced by running reference/upstream-codec.js (upload_battery 100, upload_interval 3600); battery percent is emitted as the batteryPercent extra because the vocabulary `battery` is volts."
+    },
+    {
+      "description": "corrupted payload: CRC trailer does not validate",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 4, 16, 0, 53, 12, 0, 138, 46]
+      },
+      "expected": {
+        "errors": ["crc check fail"]
+      },
+      "source": "synthetic",
+      "_note": "The CO2-only frame above with its final CRC byte flipped (45 -> 46); the running CRC16 no longer reaches zero, matching upstream err -1."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,29 @@
+{
+  "vendor": "dragino",
+  "device": "laq4",
+  "name": "LAQ4 - Air Quality Sensor",
+  "categories": [
+    "air-quality",
+    "climate"
+  ],
+  "sensors": [
+    "battery",
+    "co2",
+    "temperature",
+    "humidity",
+    "tvoc"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "laq4",
+    "codecId": "laq4-codec",
+    "codecFile": "laq4.js",
+    "codecSha256": "050b3e60b26d8f997c57cc35e49d64aa864c9b519a021a3175e8d6133d750ff8",
+    "referencedAt": "2026-06-22"
+  }
+}

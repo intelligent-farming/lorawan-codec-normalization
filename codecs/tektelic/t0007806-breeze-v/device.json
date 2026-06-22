@@ -1,0 +1,30 @@
+{
+  "vendor": "tektelic",
+  "device": "t0007806-breeze-v",
+  "name": "Breeze-V Indoor Ambient Environment Monitoring",
+  "categories": [
+    "air-quality",
+    "climate",
+    "motion"
+  ],
+  "sensors": [
+    "co2",
+    "temperature",
+    "humidity",
+    "pressure",
+    "occupancy"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "tektelic",
+    "device": "t0007806-breeze-v",
+    "codecId": "t0007806-codec",
+    "codecFile": "decoder_breeze-v.js",
+    "codecSha256": "aac1a44697d97b50bf585a6c25f38eda41275d80d26f84813b2c7c06f068f4ff",
+    "referencedAt": "2026-06-22"
+  }
+}

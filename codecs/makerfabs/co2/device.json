@@ -1,0 +1,25 @@
+{
+  "vendor": "makerfabs",
+  "device": "co2",
+  "name": "Carbon Dioxide CO2",
+  "categories": [
+    "air-quality"
+  ],
+  "sensors": [
+    "co2",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "makerfabs",
+    "device": "co2",
+    "codecId": "co2-codec",
+    "codecFile": "co2.js",
+    "codecSha256": "4957be32aa1929aea252a2a7fbbfa860a655e292abc53fb6579cbd3eb2879fde",
+    "referencedAt": "2026-06-22"
+  }
+}

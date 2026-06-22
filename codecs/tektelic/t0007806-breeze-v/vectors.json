@@ -1,0 +1,64 @@
+{
+  "uplink": [
+    {
+      "description": "Full uplink: battery voltage, temp, RH, CO2 (compensated + raw), pressure, motion state + count, sensor + display battery percent",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 186, 12, 44, 3, 103, 0, 224, 4, 104, 83, 11, 228, 2, 164, 14, 228, 2, 188, 12, 115, 39, 16, 10, 0, 1, 13, 4, 0, 5, 0, 211, 98, 17, 211, 90]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.116,
+          "air": {
+            "temperature": 22.4,
+            "relativeHumidity": 41.5,
+            "co2": 676,
+            "pressure": 1000
+          },
+          "action": {
+            "motion": {
+              "detected": true,
+              "count": 5
+            }
+          },
+          "co2Raw": 700,
+          "batteryPercent": 98,
+          "displayBatteryPercent": 90
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload. Channel/type headers and field encodings taken from reference/upstream-codec.js port-10 map (source of truth); expected values produced by running that upstream decoder and re-mapping its parameter names onto normalized keys (temperature->air.temperature, relative_humidity->air.relativeHumidity, co2_pressure_compensated->air.co2, barometric_pressure->air.pressure[1000.0 hPa, in 900-1100 bounds], battery_voltage->battery[V], co2_raw->co2Raw, motion_event_state->action.motion.detected, motion_event_count->action.motion.count, rem_batt_capacity_sensor->batteryPercent, rem_batt_capacity_display->displayBatteryPercent)."
+    },
+    {
+      "description": "Climate + air-quality minimal: temperature, RH, CO2 only (negative temp)",
+      "input": {
+        "fPort": 10,
+        "bytes": [3, 103, 253, 218, 4, 104, 100, 11, 228, 1, 244]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": -55,
+            "relativeHumidity": 50,
+            "co2": 500
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected from running reference/upstream-codec.js: temperature 0xFDDA signed*0.1 = -55.0 C, relative_humidity 0x64=100 *0.5 = 50.0 %, co2_pressure_compensated 0x01F4 = 500 ppm. Confirms negative two's-complement temperature and the climate+air-quality required keys."
+    },
+    {
+      "description": "Unsupported fPort (config port 100) is rejected",
+      "input": {
+        "fPort": 100,
+        "bytes": [0, 0, 0, 0, 0, 0, 0, 1]
+      },
+      "expected": {
+        "errors": ["unsupported fPort"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error case. This normalized codec only decodes the port-10 measurement uplink; the upstream decoder also handles config (port 100) and time-sync (port 20) frames, which are out of scope for normalization."
+    }
+  ],
+  "downlink": []
+}

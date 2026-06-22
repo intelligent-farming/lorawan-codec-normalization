@@ -1,0 +1,33 @@
+{
+  "uplink": [
+    {
+      "description": "battery 3.8 V, CO2 1000 ppm",
+      "input": { "fPort": 1, "bytes": [2, 1, 38, 3, 232] },
+      "expected": { "data": { "battery": 3.8, "air": { "co2": 1000 } } },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected verified against reference/upstream-codec.js (byte2/10 V, bytes3-4 BE ppm)."
+    },
+    {
+      "description": "battery 4.0 V, CO2 400 ppm (fresh-air baseline)",
+      "input": { "fPort": 1, "bytes": [0, 0, 40, 1, 144] },
+      "expected": { "data": { "battery": 4, "air": { "co2": 400 } } },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected verified against reference/upstream-codec.js."
+    },
+    {
+      "description": "battery 3.5 V, CO2 2000 ppm",
+      "input": { "fPort": 1, "bytes": [1, 2, 35, 7, 208] },
+      "expected": { "data": { "battery": 3.5, "air": { "co2": 2000 } } },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected verified against reference/upstream-codec.js."
+    },
+    {
+      "description": "payload too short (4 bytes)",
+      "input": { "fPort": 1, "bytes": [0, 0, 38, 3] },
+      "expected": { "errors": ["payload too short"] },
+      "source": "synthetic",
+      "_note": "Truncated payload; upstream would read undefined bytes, our codec rejects it."
+    }
+  ],
+  "downlink": []
+}

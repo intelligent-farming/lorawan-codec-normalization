@@ -1,0 +1,27 @@
+{
+  "vendor": "netvox",
+  "device": "r718ubd",
+  "name": "R718UBD - Wireless Multifunctional CO2 Sensor",
+  "categories": [
+    "air-quality",
+    "climate"
+  ],
+  "sensors": [
+    "co2",
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r718ubd",
+    "codecId": "r718ubb-codec",
+    "codecFile": "payload/r718ub.js",
+    "codecSha256": "ec189c2254413a5c27011a3da2021bb41b509e6f34b93ea156e761483ed580d9",
+    "referencedAt": "2026-06-22"
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "uplink": [
+    {
+      "description": "Precipitation + battery (flags 0x0003): 0.4 mm interval over 600 s, 1653.8 mm cumulative, 3.156 V",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 2, 248, 0, 3, 0, 4, 2, 88, 64, 154, 0, 0, 12, 84]
+      },
+      "expected": {
+        "data": {
+          "intervalPrecipitation": 0.4,
+          "precipitationIntervalSeconds": 600,
+          "tipCount": 16538,
+          "rain": { "cumulative": 1653.8 },
+          "battery": 3.156
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Battery only (flags 0x0002): 3.156 V, no precipitation block",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 2, 248, 0, 2, 12, 84]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.156
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Precipitation only (flags 0x0001): synthetic in-bounds; expected computed by running reference/upstream-codec.js (interval 0.2 mm over 300 s, 102.3 mm cumulative)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 2, 248, 0, 1, 0, 2, 1, 44, 4, 7, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "intervalPrecipitation": 0.2,
+          "precipitationIntervalSeconds": 300,
+          "tipCount": 1031,
+          "rain": { "cumulative": 103.1 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected derived from the upstream decoder formulas (word0*0.1 mm; word1 s; (word2+word3*65536)*0.1 mm)."
+    },
+    {
+      "description": "Wrong protocol version (3) is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [3, 2, 248, 0, 3, 0, 4, 2, 88, 64, 154, 0, 0, 12, 84]
+      },
+      "expected": {
+        "errors": ["protocol version 3 doesn't match v2"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: version byte forced to 3 to exercise the protocol-version guard."
+    }
+  ],
+  "downlink": []
+}

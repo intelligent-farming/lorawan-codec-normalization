@@ -1,0 +1,59 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/dragino/laq4-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Air Quality Sensor",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          13,
+          7,
+          5,
+          0,
+          18,
+          2,
+          11,
+          0,
+          251,
+          1,
+          179
+        ]
+      },
+      "output": {
+        "data": {
+          "Alarm_status": "TRUE",
+          "Bat_V": 3.335,
+          "CO2_ppm": 523,
+          "Hum_SHT": 43.5,
+          "TVOC_ppb": 18,
+          "TempC_SHT": 25.1,
+          "Work_mode": "CO2"
+        }
+      }
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [
+          13,
+          7,
+          5,
+          0,
+          18,
+          2,
+          11,
+          0,
+          251,
+          1,
+          179
+        ]
+      },
+      "output": {
+        "errors": [
+          "unknown FPort"
+        ]
+      }
+    }
+  ]
+}

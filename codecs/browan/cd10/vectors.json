@@ -1,0 +1,85 @@
+{
+  "uplink": [
+    {
+      "description": "CO2 + climate reading, status set and CO2 threshold flag",
+      "input": {
+        "fPort": 127,
+        "bytes": [17, 15, 231, 0, 67, 7, 25]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "status": 1,
+          "button": 0,
+          "co2Threshold": 1,
+          "co2Calibration": 0,
+          "air": {
+            "temperature": 23.1,
+            "relativeHumidity": 67,
+            "co2": 6407
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Input is the TTN upstream example; expected.data authored from running reference/upstream-codec.js (oracle) and mapping to normalized keys."
+    },
+    {
+      "description": "Low CO2, button pressed, calibration flag set",
+      "input": {
+        "fPort": 127,
+        "bytes": [34, 9, 200, 1, 45, 200, 1]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "status": 0,
+          "button": 1,
+          "co2Threshold": 0,
+          "co2Calibration": 1,
+          "air": {
+            "temperature": 45.6,
+            "relativeHumidity": 45,
+            "co2": 456
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected.data from oracle (reference/upstream-codec.js) mapped to normalized keys."
+    },
+    {
+      "description": "Minimum battery, high humidity, CO2 threshold flag",
+      "input": {
+        "fPort": 127,
+        "bytes": [16, 0, 46, 2, 95, 244, 1]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.1,
+          "status": 0,
+          "button": 0,
+          "co2Threshold": 1,
+          "co2Calibration": 0,
+          "air": {
+            "temperature": 55.8,
+            "relativeHumidity": 95,
+            "co2": 500
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected.data from oracle (reference/upstream-codec.js) mapped to normalized keys."
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [1]
+      },
+      "expected": {
+        "errors": ["unknown FPort"]
+      },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

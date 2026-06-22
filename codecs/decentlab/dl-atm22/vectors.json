@@ -1,0 +1,72 @@
+{
+  "uplink": [
+    {
+      "description": "Full uplink: wind/temperature block + battery (flags 0x0003)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 8, 201, 0, 3, 130, 38, 138, 140, 131, 57, 128, 215, 128, 30, 127, 236, 128, 120, 127, 206, 11, 245]
+      },
+      "expected": {
+        "data": {
+          "wind": { "speed": 5.5, "direction": 270 },
+          "air": { "temperature": 21.5 },
+          "windGust": 8.25,
+          "xOrientationAngle": 3,
+          "yOrientationAngle": -2,
+          "windSpeedNorth": 1.2,
+          "windSpeedEast": -0.5,
+          "battery": 3.061
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "Wind block only, direction >360 wrapped to 0..<360 (flags 0x0001)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 8, 201, 0, 1, 128, 232, 142, 66, 128, 232, 128, 100, 128, 0, 128, 0, 128, 100, 128, 0]
+      },
+      "expected": {
+        "data": {
+          "wind": { "speed": 2.32, "direction": 5 },
+          "air": { "temperature": 10 },
+          "windGust": 2.32,
+          "xOrientationAngle": 0,
+          "yOrientationAngle": 0,
+          "windSpeedNorth": 1,
+          "windSpeedEast": 0
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder; upstream emits unwrapped 365deg, normalized codec wraps to 5deg to satisfy wind.direction 0..<360"
+    },
+    {
+      "description": "Battery-only uplink (flags 0x0002)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 8, 201, 0, 2, 11, 245]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.061
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "Protocol version mismatch (v3) -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [3, 8, 201, 0, 3]
+      },
+      "expected": {
+        "errors": ["protocol version 3 doesn't match v2"]
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    }
+  ],
+  "downlink": []
+}

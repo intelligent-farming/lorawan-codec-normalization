@@ -1,0 +1,27 @@
+{
+  "vendor": "browan",
+  "device": "cd10",
+  "name": "MerryIoT Air Quality CO2",
+  "categories": [
+    "air-quality",
+    "climate"
+  ],
+  "sensors": [
+    "co2",
+    "temperature",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "browan",
+    "device": "cd10",
+    "codecId": "cd10-codec",
+    "codecFile": "cd10.js",
+    "codecSha256": "e8fe766fcbc9b263d5c5d73291b90f83ed17f1496d19d065203ddbb0a4215b0c",
+    "referencedAt": "2026-06-22"
+  }
+}

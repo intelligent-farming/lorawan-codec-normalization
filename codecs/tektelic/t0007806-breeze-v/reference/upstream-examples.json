@@ -1,0 +1,44 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/tektelic/t0007806-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Transducer Data Uplink",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          3,
+          103,
+          0,
+          224,
+          4,
+          104,
+          83,
+          11,
+          228,
+          2,
+          164,
+          12,
+          115,
+          35,
+          23,
+          0,
+          211,
+          98
+        ]
+      },
+      "output": {
+        "data": {
+          "barometric_pressure": 898.3,
+          "co2_pressure_compensated": 676,
+          "relative_humidity": 41.5,
+          "rem_batt_capacity_sensor": 98,
+          "temperature": 22.4,
+          "port": "10",
+          "raw": "[03, 67, 00, E0, 04, 68, 53, 0B, E4, 02, A4, 0C, 73, 23, 17, 00, D3, 62]"
+        },
+        "errors": [],
+        "warnings": []
+      }
+    }
+  ]
+}
