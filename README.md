@@ -58,10 +58,13 @@ A provisioner (e.g. Leftenant) resolves a device's codec in priority order:
 
 The registry supports a `draft` flag for scaffolded-but-unauthored devices, but
 the published package ships **none** — every codec here is authored and verified
-against a real device payload. If a draft is ever present, `devices()` hides it
-by default (`devices({ includeDrafts: true })` lists them), `codecScript`
-**throws** for it so the fallback proceeds to step 2, and `device(v, d).draft`
-detects it.
+by its conformance vectors, which run the codec in a sandbox and validate the
+output against the vocabulary. Expected outputs are derived from the device's
+upstream TTN decoder used as an oracle: real TTN example payloads where the
+upstream provides them, otherwise synthetic in-bounds inputs. If a draft is ever
+present, `devices()` hides it by default (`devices({ includeDrafts: true })`
+lists them), `codecScript` **throws** for it so the fallback proceeds to step 2,
+and `device(v, d).draft` detects it.
 
 ## Lint a codec
 
