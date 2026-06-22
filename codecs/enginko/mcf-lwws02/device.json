@@ -3,6 +3,7 @@
   "device": "mcf-lwws02",
   "name": "MCF-LWWS02 - Weather Station",
   "categories": [
+    "climate",
     "weather-station"
   ],
   "sensors": [

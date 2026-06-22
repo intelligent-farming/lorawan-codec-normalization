@@ -3,6 +3,7 @@
   "device": "dl-pm",
   "name": "DL-PM - Particulate Matter, Temperature, Humidity and Barometric Pressure Sensor",
   "categories": [
+    "climate",
     "weather-station"
   ],
   "sensors": [

@@ -3,6 +3,7 @@
   "device": "mcf-lw06davpk",
   "name": "MCF-LW06DAVPK - Davis Vantage Pro2 Weather Station with Dust",
   "categories": [
+    "climate",
     "weather-station"
   ],
   "sensors": [

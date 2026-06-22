@@ -3,6 +3,7 @@
   "device": "mcf-lw06davk",
   "name": "MCF-LW06DAVK - Weather Station",
   "categories": [
+    "climate",
     "weather-station"
   ],
   "sensors": [

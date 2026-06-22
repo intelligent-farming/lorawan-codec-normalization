@@ -3,6 +3,7 @@
   "device": "sensecaps2102-light",
   "name": "S2102 - LoRaWAN® Light Intensity Sensor",
   "categories": [
+    "climate",
     "light"
   ],
   "sensors": [

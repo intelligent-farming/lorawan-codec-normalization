@@ -3,6 +3,7 @@
   "device": "sensecap-light",
   "name": "Wireless Light Intensity Sensor - LoRaWAN®",
   "categories": [
+    "climate",
     "light"
   ],
   "sensors": [

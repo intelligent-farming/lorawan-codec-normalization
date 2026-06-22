@@ -3,6 +3,7 @@
   "device": "mcf-lwws01",
   "name": "MCF-LWWS01 - Weather Station",
   "categories": [
+    "climate",
     "weather-station",
     "wind",
     "rain-gauge"

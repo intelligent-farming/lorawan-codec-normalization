@@ -3,7 +3,9 @@
   "device": "rak2560",
   "name": "RAK2560 Sensor Hub",
   "categories": [
-    "weather-station"
+    "climate",
+    "weather-station",
+    "gps-tracker"
   ],
   "sensors": [
     "temperature",
