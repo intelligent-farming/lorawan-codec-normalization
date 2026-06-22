@@ -61,7 +61,10 @@ test('categories() returns the 12 defined categories', () => {
   }
   for (const c of cats) {
     assert.equal(typeof c.name, 'string');
-    assert.ok(Array.isArray(c.requires));
+    assert.ok(
+      Array.isArray(c.requires) || Array.isArray(c.atLeastOne),
+      `${c.id} must define requires or atLeastOne`,
+    );
     assert.ok(Array.isArray(c.provides));
   }
 });
@@ -70,7 +73,15 @@ test('categorySchema() returns a 2020-12 schema with annotations', () => {
   const schema = lib.categorySchema('soil-monitor');
   assert.equal(schema.$schema, 'https://json-schema.org/draft/2020-12/schema');
   assert.equal(schema.title, 'Soil monitor');
-  assert.deepEqual(schema['x-requires'], ['soil.moisture', 'soil.temperature']);
+  // soil-monitor uses atLeastOne (not a fixed requires set).
+  assert.equal(schema['x-requires'], undefined);
+  assert.ok(schema['x-atLeastOne'].includes('soil.pH'));
+  assert.ok(schema['x-atLeastOne'].includes('soil.moisture'));
+  // a requires-based category still exposes x-requires.
+  assert.deepEqual(lib.categorySchema('climate')['x-requires'], [
+    'air.temperature',
+    'air.relativeHumidity',
+  ]);
   assert.throws(() => lib.categorySchema('nope'), /unknown category/);
 });
 
@@ -109,16 +120,34 @@ test('validate() rejects a group with a non-object value (rule: schema)', () => 
 });
 
 test('validate() honours requireAll', () => {
-  const partial = { soil: { moisture: 10 } };
-  assert.equal(lib.validate('soil-monitor', partial).valid, true);
-  const strict = lib.validate('soil-monitor', partial, { requireAll: true });
+  // `requires` category (climate): every listed path must be present.
+  const partial = { air: { temperature: 20 } };
+  assert.equal(lib.validate('climate', partial).valid, true);
+  const strict = lib.validate('climate', partial, { requireAll: true });
   assert.equal(strict.valid, false);
-  assert.ok(strict.issues.some((i) => /soil\.temperature/.test(i.path)));
-  const full = { soil: { moisture: 10, temperature: 20 } };
+  assert.ok(strict.issues.some((i) => /air\.relativeHumidity/.test(i.path)));
+  const full = { air: { temperature: 20, relativeHumidity: 55 } };
   assert.equal(
-    lib.validate('soil-monitor', full, { requireAll: true }).valid,
+    lib.validate('climate', full, { requireAll: true }).valid,
     true,
   );
+});
+
+test('validate() honours requireAll for an atLeastOne category', () => {
+  // soil-monitor uses atLeastOne: a single soil measurement (e.g. pH) qualifies.
+  assert.equal(
+    lib.validate('soil-monitor', { soil: { pH: 6.5 } }, { requireAll: true })
+      .valid,
+    true,
+  );
+  // ...but a measurement producing none of the atLeastOne paths fails.
+  const none = lib.validate(
+    'soil-monitor',
+    { air: { relativeHumidity: 50 } },
+    { requireAll: true },
+  );
+  assert.equal(none.valid, false);
+  assert.ok(none.issues.some((i) => /at least one/.test(i.message)));
 });
 
 test('validate() enforces history rules', () => {

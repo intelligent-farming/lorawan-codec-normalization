@@ -145,16 +145,18 @@ export function category(id: string): CategoryInfo {
 export function categorySchema(id: string): Record<string, unknown> {
   const info = category(id);
   const vocab = vocabularySchema();
-  return {
+  const schema: Record<string, unknown> = {
     $schema: 'https://json-schema.org/draft/2020-12/schema',
     $id: `${String(vocab.$id)}/category/${id}`,
     title: info.name,
     description: info.description,
     $defs: vocab.$defs,
     allOf: [{ $ref: '#/$defs/measurement' }],
-    'x-requires': info.requires,
     'x-provides': info.provides,
   };
+  if (info.requires) schema['x-requires'] = info.requires;
+  if (info.atLeastOne) schema['x-atLeastOne'] = info.atLeastOne;
+  return schema;
 }
 
 /**

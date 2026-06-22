@@ -241,10 +241,16 @@ for (const { vendor, device, dir } of DEVICES) {
       }
       for (const cat of meta.categories) {
         const info = categories().find((c) => c.id === cat);
-        for (const req of info.requires) {
+        for (const req of info.requires ?? []) {
           assert.ok(
             union.has(req),
             `category ${cat} requires "${req}" but no data vector produces it`,
+          );
+        }
+        if (info.atLeastOne && info.atLeastOne.length > 0) {
+          assert.ok(
+            info.atLeastOne.some((p) => union.has(p)),
+            `category ${cat} requires at least one of [${info.atLeastOne.join(', ')}] but no data vector produces any`,
           );
         }
       }
@@ -278,9 +284,9 @@ describe('suite-level', () => {
     assert.doesNotThrow(() => ajv.compile(vocabularySchema()));
   });
 
-  it('every manifest requires/provides path resolves to a vocabulary property', () => {
+  it('every manifest requires/atLeastOne/provides path resolves to a vocabulary property', () => {
     for (const c of categories()) {
-      for (const p of [...c.requires, ...c.provides]) {
+      for (const p of [...(c.requires ?? []), ...(c.atLeastOne ?? []), ...c.provides]) {
         assert.ok(resolveVocabularyPath(p), `category ${c.id}: path "${p}" does not resolve`);
       }
     }

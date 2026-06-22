@@ -1,8 +1,8 @@
 {
   "id": "soil-monitor",
   "name": "Soil monitor",
-  "description": "In-ground probes. Every member reports soil moisture and temperature.",
-  "requires": ["soil.moisture", "soil.temperature"],
+  "description": "In-ground / soil probes. A member reports at least one soil measurement (moisture, temperature, EC, pH, or NPK).",
+  "atLeastOne": ["soil.moisture", "soil.temperature", "soil.ec", "soil.pH", "soil.n", "soil.p", "soil.k", "soil.depth", "battery", "air.temperature"],
   "provides": ["soil.ec", "soil.pH", "soil.n", "soil.p", "soil.k", "soil.depth", "battery", "air.temperature"],
-  "notes": "soil.ec is dS/m (upstream codecs often emit uS/cm — divide by 1000)."
+  "notes": "Membership is `atLeastOne` rather than a fixed required set: single-quantity probes (e.g. a soil pH or soil-temperature-only sensor) still qualify. soil.ec is dS/m (upstream codecs often emit uS/cm — divide by 1000)."
 }

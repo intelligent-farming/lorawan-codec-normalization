@@ -191,8 +191,18 @@ export interface CategoryInfo {
   name: string;
   /** One-line description. */
   description: string;
-  /** Dotted paths every member device reports in ≥1 uplink. */
-  requires: string[];
+  /**
+   * Dotted paths every member device reports across its uplinks (ALL required).
+   * A category defines membership with either `requires` or {@link atLeastOne}.
+   */
+  requires?: string[];
+  /**
+   * Dotted paths where a member must report AT LEAST ONE — used instead of
+   * `requires` for categories defined by a family of interchangeable
+   * measurements rather than a fixed mandatory set (e.g. a soil probe that may
+   * report any of moisture / temperature / pH / EC / NPK).
+   */
+  atLeastOne?: string[];
   /** Documented typical optional paths (informational). */
   provides: string[];
   /** Authoring notes (units, gotchas). */

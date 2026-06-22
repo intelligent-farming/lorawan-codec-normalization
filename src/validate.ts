@@ -208,12 +208,14 @@ function validateMeasurement(
  * Validate a measurement (or array of measurements) against a category.
  *
  * Bounds and key legality come from the global vocabulary; the category only
- * adds its `requires` set, enforced when `opts.requireAll` is true. The default
- * (`requireAll: false`) keeps fPort-variant, config, and partial uplinks legal.
+ * adds its membership contract, enforced when `opts.requireAll` is true: every
+ * `requires` path must be present, and/or at least one `atLeastOne` path must be
+ * present. The default (`requireAll: false`) keeps fPort-variant, config, and
+ * partial uplinks legal.
  *
  * @param categoryId - Category id (e.g. `"soil-monitor"`). Throws if unknown.
  * @param data - One measurement or a TTN-style array of measurements.
- * @param opts.requireAll - Require every `requires` path to be present.
+ * @param opts.requireAll - Enforce the category's `requires` / `atLeastOne` contract.
  */
 export function validate(
   categoryId: string,
@@ -230,7 +232,8 @@ export function validate(
     validateMeasurement(m, base, false, issues, style);
 
     if (opts?.requireAll) {
-      for (const req of info.requires) {
+      // `requires`: every listed path must be present.
+      for (const req of info.requires ?? []) {
         if (!hasPath(m, req)) {
           issues.push({
             path: joinPath(base, req),
@@ -238,6 +241,15 @@ export function validate(
             rule: 'schema',
           });
         }
+      }
+      // `atLeastOne`: at least one of the listed paths must be present.
+      const anyOf = info.atLeastOne ?? [];
+      if (anyOf.length > 0 && !anyOf.some((p) => hasPath(m, p))) {
+        issues.push({
+          path: base,
+          message: `category "${info.id}" requires at least one of [${anyOf.join(', ')}]`,
+          rule: 'schema',
+        });
       }
     }
   });
