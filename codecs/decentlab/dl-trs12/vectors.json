@@ -1,0 +1,71 @@
+{
+  "uplink": [
+    {
+      "description": "Full uplink: soil probe (VWC, temperature, EC) + battery",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 16, 211, 0, 3, 95, 60, 128, 225, 4, 176, 12, 128]
+      },
+      "expected": {
+        "data": {
+          "dielectricPermittivity": 11.8522,
+          "soil": {
+            "moisture": 25.01,
+            "temperature": 22.5,
+            "ec": 1.2
+          },
+          "battery": 3.2
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload (Decentlab v2, device id 4307, flags 0x0003). Soil-probe and battery words chosen to land at VWC=0.2501002 m³/m³, soil temp 22.5 °C, EC 1200 µS/cm, battery 3.2 V; expected values are the normalized mapping of the upstream reference decoder's output (VWC fraction ×100 -> %, EC µS/cm /1000 -> dS/m)."
+    },
+    {
+      "description": "Full uplink: low moisture, cool soil, low EC, lower battery",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 16, 211, 0, 3, 75, 20, 128, 50, 1, 94, 12, 28]
+      },
+      "expected": {
+        "data": {
+          "dielectricPermittivity": 2.8075,
+          "soil": {
+            "moisture": 4.9944,
+            "temperature": 5,
+            "ec": 0.35
+          },
+          "battery": 3.1
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload (flags 0x0003) at VWC=0.0499438 m³/m³, soil temp 5 °C, EC 350 µS/cm, battery 3.1 V; expected = normalized mapping of the upstream reference decoder output."
+    },
+    {
+      "description": "Battery-only uplink (flags 0x0002)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 16, 211, 0, 2, 12, 128]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.2
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic battery-only payload (flags 0x0002); battery word 3200 -> 3.2 V. No soil block present, so no soil.* keys are emitted."
+    },
+    {
+      "description": "Wrong protocol version is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 16, 211, 0, 3, 95, 60, 128, 225, 4, 176, 12, 128]
+      },
+      "expected": {
+        "errors": ["protocol version 1 doesn't match v2"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic negative case: version byte 1 instead of 2; the decoder rejects non-v2 protocol payloads."
+    }
+  ],
+  "downlink": []
+}

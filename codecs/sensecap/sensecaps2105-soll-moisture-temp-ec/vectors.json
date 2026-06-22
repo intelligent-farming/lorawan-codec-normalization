@@ -1,0 +1,66 @@
+{
+  "uplink": [
+    {
+      "description": "soil telemetry: temperature 18.5 degC, VWC 42.3 %, EC 1.25 dS/m",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 6, 16, 68, 72, 0, 0, 1, 7, 16, 60, 165, 0, 0, 1, 12, 16, 226, 4, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "soil": {
+            "temperature": 18.5,
+            "moisture": 42.3,
+            "ec": 1.25
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frames (measurementIds 4102/4103/4108) hand-built to the SenseCAP S210x wire format; expected values produced by running reference/upstream-codec.js on these bytes (measurementValue 18.5 / 42.3 / 1.25, already in natural units degC / % / dS/m)."
+    },
+    {
+      "description": "negative soil temperature -5.5 degC (two's-complement)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 6, 16, 132, 234, 255, 255, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "soil": {
+            "temperature": -5.5
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic single 4102 frame with a negative raw value; expected -5.5 confirmed by running reference/upstream-codec.js (verifies signed two's-complement decode)."
+    },
+    {
+      "description": "battery + interval control frame: 100% battery, 3600 s reporting interval",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 7, 0, 100, 0, 60, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 100,
+          "reportingInterval": 3600
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic dataId 7 (battery+interval) frame; expected values from running reference/upstream-codec.js (upload_battery 100, upload_interval 3600 s). Battery is a percentage, so it normalizes to the camelCase extra batteryPercent (vocabulary battery is volts)."
+    },
+    {
+      "description": "length check failure: payload is not N*7 + 2 bytes",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 2, 3]
+      },
+      "expected": {
+        "errors": ["length check fail"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic malformed payload; upstream sets err -2 (length check fail) on the same input. Our codec surfaces this as an errors result per the output contract."
+    }
+  ],
+  "downlink": []
+}

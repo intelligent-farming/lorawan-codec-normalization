@@ -1,0 +1,57 @@
+{
+  "uplink": [
+    {
+      "description": "Battery, soil temperature & moisture (recovers the soil.temperature the upstream codec omits)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 92, 3, 103, 52, 1, 4, 104, 101]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 92,
+          "soil": { "temperature": 30.8, "moisture": 50.5 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder for the channels it handles (battery=92, moisture byte 101/2=50.5); soil.temperature (0x03/0x67 signed int16 LE /10 = 308/10) is authored to the family-standard wire format since the upstream EM500-SMT decoder has no temperature handler."
+    },
+    {
+      "description": "Negative soil temperature (synthetic)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 80, 3, 103, 241, 255, 4, 104, 40]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 80,
+          "soil": { "temperature": -1.5, "moisture": 20 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder for battery (80) and moisture (40/2=20); soil.temperature 0xFFF1 = -15 -> -1.5 degC authored to the family-standard wire format."
+    },
+    {
+      "description": "Battery and soil moisture only (TTN YAML example bytes)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 100, 4, 104, 113]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 100,
+          "soil": { "moisture": 56.5 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder (its YAML example: battery=100, humidity=113/2=56.5); humidity is mapped to soil.moisture."
+    },
+    {
+      "description": "Unrecognized channel returns an error",
+      "input": { "fPort": 85, "bytes": [255, 1] },
+      "expected": { "errors": ["no recognized Milesight channels"] },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder, which produces empty data for an unrecognized leading channel; our codec reports an explicit error instead."
+    }
+  ],
+  "downlink": []
+}

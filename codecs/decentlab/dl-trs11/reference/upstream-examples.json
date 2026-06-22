@@ -1,0 +1,49 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/decentlab/dl-trs11-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Example 1",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          16,
+          213,
+          0,
+          3,
+          70,
+          63,
+          129,
+          11,
+          12,
+          121
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.193
+          },
+          "device_id": 4309,
+          "dielectric_permittivity": {
+            "displayName": "Dielectric permittivity",
+            "value": 1.0259018697121038
+          },
+          "protocol_version": 2,
+          "soil_temperature": {
+            "displayName": "Soil temperature",
+            "unit": "°C",
+            "value": 26.7
+          },
+          "volumetric_water_content": {
+            "displayName": "Volumetric water content",
+            "unit": "m³⋅m⁻³",
+            "value": 0.0019605699999999393
+          }
+        }
+      }
+    }
+  ]
+}

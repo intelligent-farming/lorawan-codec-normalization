@@ -1,0 +1,26 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-5tm",
+  "name": "DL-5TM - Legacy Soil Moisture and Temperature Sensor",
+  "categories": [
+    "soil-monitor"
+  ],
+  "sensors": [
+    "moisture",
+    "temperature",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-5tm",
+    "codecId": "dl-5tm-codec",
+    "codecFile": "dl-5tm.js",
+    "codecSha256": "fd586317dbac4fc086799178e399a20d3da3591316b13d9292baa1d43e612879",
+    "referencedAt": "2026-06-22"
+  }
+}

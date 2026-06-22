@@ -1,0 +1,26 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-smtp",
+  "name": "DL-SMTP - Soil Moisture and Temperature Profile",
+  "categories": [
+    "soil-monitor"
+  ],
+  "sensors": [
+    "moisture",
+    "temperature",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-smtp",
+    "codecId": "dl-smtp-codec",
+    "codecFile": "dl-smtp.js",
+    "codecSha256": "a36b267ebb29af316e7f86e4c906fd191a5874b1ac0c9c308e13b73db59f5be6",
+    "referencedAt": "2026-06-22"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "vendor": "sensecap",
+  "device": "sensecaps2104-soil-moisture-temp",
+  "name": "S2104 - LoRaWAN® Soil Moisture and Temperature Sensor",
+  "categories": [
+    "soil-monitor"
+  ],
+  "sensors": [
+    "moisture",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "sensecap",
+    "device": "sensecaps2104-soil-moisture-temp",
+    "codecId": "sensecap210x-codec",
+    "codecFile": "sensecap210x-common-decoder.js",
+    "codecSha256": "a6fa30d76ae387841a7a64cae3845d171984565c6a57de1bb2e189466f02b251",
+    "referencedAt": "2026-06-22"
+  }
+}

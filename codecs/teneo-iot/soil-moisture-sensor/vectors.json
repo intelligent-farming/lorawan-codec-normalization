@@ -1,0 +1,94 @@
+{
+  "uplink": [
+    {
+      "description": "fPort 1, 6-byte frame: moisture + negative soil temperature",
+      "input": {
+        "fPort": 1,
+        "bytes": [12, 40, 255, 156, 4, 63]
+      },
+      "expected": {
+        "data": {
+          "soil": {
+            "moisture": 40,
+            "temperature": -1
+          },
+          "battery": 3.2,
+          "sensorType": "moisture",
+          "settingsAllowed": true,
+          "charging": false,
+          "valid": true
+        }
+      },
+      "source": "synthetic",
+      "_note": "Upstream example input; expected.data produced by running reference/upstream-codec.js (battery 2+12/10=3.2 V, moisture=byte1=40%, temp=(255<<24>>16|156)/100=-1 C). bytes 4..5 unused upstream."
+    },
+    {
+      "description": "fPort 1, 6-byte frame: positive soil temperature",
+      "input": {
+        "fPort": 1,
+        "bytes": [20, 35, 0, 200, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "soil": {
+            "moisture": 35,
+            "temperature": 2
+          },
+          "battery": 4,
+          "sensorType": "moisture",
+          "settingsAllowed": true,
+          "charging": false,
+          "valid": true
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds; expected from reference/upstream-codec.js (battery 2+20/10=4 V, moisture=35%, temp=(0<<24>>16|200)/100=2 C)."
+    },
+    {
+      "description": "fPort 1, 2-byte frame: moisture only (no temperature)",
+      "input": {
+        "fPort": 1,
+        "bytes": [12, 40]
+      },
+      "expected": {
+        "data": {
+          "soil": {
+            "moisture": 40
+          },
+          "battery": 3.2,
+          "sensorType": "moisture",
+          "settingsAllowed": true,
+          "charging": false,
+          "valid": true
+        }
+      },
+      "source": "synthetic",
+      "_note": "Upstream example input; expected from reference/upstream-codec.js. 2-byte frame carries no temperature reading."
+    },
+    {
+      "description": "fPort 1, malformed length (3 bytes)",
+      "input": {
+        "fPort": 1,
+        "bytes": [12, 40, 1]
+      },
+      "expected": {
+        "errors": ["malformed fPort 1 frame"]
+      },
+      "source": "synthetic",
+      "_note": "Upstream returns valid=false, errorcode=-1 for any fPort-1 length other than 2 or 6; normalized contract surfaces this as an error (no soil reading)."
+    },
+    {
+      "description": "empty payload",
+      "input": {
+        "fPort": 1,
+        "bytes": []
+      },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic",
+      "_note": "Upstream returns valid=false on empty bytes; no measurement to normalize."
+    }
+  ],
+  "downlink": []
+}

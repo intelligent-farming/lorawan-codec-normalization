@@ -1,0 +1,66 @@
+{
+  "uplink": [
+    {
+      "description": "Soil telemetry: soil temperature 23.5 C (id 4102), soil moisture 42.7 % VWC (id 4103)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 6, 16, 204, 91, 0, 0, 1, 7, 16, 204, 166, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "soil": {
+            "temperature": 23.5,
+            "moisture": 42.7
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected authored from the upstream oracle (reference/upstream-codec.js): id 4102 -> measurementValue 23.5 -> soil.temperature; id 4103 -> 42.7 -> soil.moisture. Each 7-byte frame is [channel, dataId(2B LE), value(4B LE signed /1000)]; trailing 2 bytes are the CRC slot. soil temp scaled 23500 = 0x5BCC LE, soil VWC scaled 42700 = 0xA6CC LE."
+    },
+    {
+      "description": "Soil telemetry with negative soil temperature: -12.3 C (id 4102), soil moisture 8.5 % (id 4103)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 6, 16, 244, 207, 255, 255, 1, 7, 16, 52, 33, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "soil": {
+            "temperature": -12.3,
+            "moisture": 8.5
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload exercising the two's-complement negative branch of ttnDataFormat. Expected from upstream oracle: id 4102 value 0xFFFFCFF4 LE signed -> -12300/1000 = -12.3; id 4103 value 0x00002134 LE -> 8500/1000 = 8.5."
+    },
+    {
+      "description": "Device properties frame: firmware/hardware version, battery 100 %, reporting interval 3600 s, remove-sensor (no soil telemetry)",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 0, 1, 1, 0, 1, 0, 7, 0, 100, 0, 60, 0, 1, 32, 1, 0, 0, 0, 0, 40, 144]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 100,
+          "reportingInterval": 3600
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream sample-1 (End device's properties). Upstream emits messages upload_version/upload_battery(battery 100)/upload_interval(interval 3600)/report_remove_sensor. We map the dataId 7 control frame to batteryPercent (percentage, not volts) and reportingInterval (interval field 60 min * 60 = 3600 s). Version/EUI/remove-sensor frames carry no field measurement and are dropped."
+    },
+    {
+      "description": "Length check failure: payload is not N*7 + 2 bytes",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 2, 3]
+      },
+      "expected": {
+        "errors": ["length check fail"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic malformed payload. Upstream sets err -2 (length check fail); our codec returns an errors array with the same diagnosis."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,71 @@
+{
+  "uplink": [
+    {
+      "description": "Soil sensor + battery (flags=0x0003): moist soil, 20 C, 3.0 V",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 2, 59, 0, 3, 3, 132, 2, 88, 11, 184]
+      },
+      "expected": {
+        "data": {
+          "deviceId": 571,
+          "dielectricPermittivity": 18,
+          "soil": {
+            "moisture": 31.95,
+            "temperature": 20
+          },
+          "battery": 3
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload built on the Decentlab v2 wire format (device id 571). Soil block word0=900 -> permittivity 900/50=18; cubic VWC calibration -> 0.3194776 m3/m3 -> 31.95 %; word1=600 -> (600-400)/10=20 C. Battery word=3000 -> 3.000 V. expected.data computed by porting reference/upstream-codec.js per-sensor formulas (VWC fraction x100 for soil.moisture)."
+    },
+    {
+      "description": "Soil sensor only (flags=0x0001): drier soil, -15 C",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 2, 59, 0, 1, 2, 238, 0, 250]
+      },
+      "expected": {
+        "data": {
+          "deviceId": 571,
+          "dielectricPermittivity": 15,
+          "soil": {
+            "moisture": 27.58,
+            "temperature": -15
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload, soil flag only. word0=750 -> permittivity 15; cubic VWC -> 0.2757625 m3/m3 -> 27.58 %; word1=250 -> (250-400)/10=-15 C (signed below-zero soil temperature). expected.data from reference/upstream-codec.js."
+    },
+    {
+      "description": "Battery only (flags=0x0002): 3.3 V housekeeping uplink",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 2, 59, 0, 2, 12, 228]
+      },
+      "expected": {
+        "data": {
+          "deviceId": 571,
+          "battery": 3.3
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload, battery flag only. Battery word=3300 -> 3.300 V; no soil block so soil.* is absent. expected.data from reference/upstream-codec.js."
+    },
+    {
+      "description": "Wrong protocol version (byte0=1) -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 2, 59, 0, 3, 3, 132, 2, 88, 11, 184]
+      },
+      "expected": {
+        "errors": ["protocol version 1 doesn't match v2"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic protocol-version-mismatch vector: first byte is 1 instead of the required v2. Mirrors the upstream version guard."
+    }
+  ],
+  "downlink": []
+}

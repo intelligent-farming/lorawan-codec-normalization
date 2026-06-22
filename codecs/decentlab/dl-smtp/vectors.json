@@ -1,0 +1,73 @@
+{
+  "uplink": [
+    {
+      "description": "Full profile uplink: 8 soil depths (moisture % + temperature °C) and battery, both sensor blocks present (flags 0x0003)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 11, 80, 0, 3, 19, 136, 135, 208, 20, 130, 136, 52, 21, 124, 136, 152, 22, 118, 136, 252, 23, 112, 137, 96, 24, 106, 137, 196, 25, 100, 138, 40, 26, 94, 138, 140, 14, 16]
+      },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 2896,
+          "soilMoistureProfile": [
+            { "depth": 0, "moisture": 5 },
+            { "depth": 1, "moisture": 5.5 },
+            { "depth": 2, "moisture": 6 },
+            { "depth": 3, "moisture": 6.5 },
+            { "depth": 4, "moisture": 7 },
+            { "depth": 5, "moisture": 7.5 },
+            { "depth": 6, "moisture": 8 },
+            { "depth": 7, "moisture": 8.5 }
+          ],
+          "soilTemperatureProfile": [
+            { "depth": 0, "temperature": 20 },
+            { "depth": 1, "temperature": 21 },
+            { "depth": 2, "temperature": 22 },
+            { "depth": 3, "temperature": 23 },
+            { "depth": 4, "temperature": 24 },
+            { "depth": 5, "temperature": 25 },
+            { "depth": 6, "temperature": 26 },
+            { "depth": 7, "temperature": 27 }
+          ],
+          "soil": {
+            "moisture": 5,
+            "temperature": 20
+          },
+          "battery": 3.6
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; per-depth moisture raws chosen so (raw-2500)/500 lands in [0,100] %, temperature raws so (raw-32768)/100 lands at 20-27 °C, battery raw 3600 -> 3.6 V. expected.data derived by running reference/upstream-codec.js on this input and mapping its raw per-depth channels onto the normalized vocabulary (topmost depth -> soil.*, full profile -> camelCase extras)."
+    },
+    {
+      "description": "Battery-only uplink: profile block absent, only the 1-word battery block present (flags 0x0002)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 11, 80, 0, 2, 14, 16]
+      },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 2896,
+          "battery": 3.6
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; flags 0x0002 selects only the battery block. expected.data derived from reference/upstream-codec.js (battery raw 3600 -> 3.6 V)."
+    },
+    {
+      "description": "Wrong protocol version byte is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [3, 11, 80, 0, 2, 14, 16]
+      },
+      "expected": {
+        "errors": ["protocol version 3 doesn't match v2"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error payload; reference/upstream-codec.js returns {error: \"protocol version 3 doesn't match v2\"} for a non-2 version byte."
+    }
+  ],
+  "downlink": []
+}

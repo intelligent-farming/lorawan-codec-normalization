@@ -1,0 +1,25 @@
+{
+  "vendor": "teneo-iot",
+  "device": "soil-moisture-sensor",
+  "name": "Soil Moisture Sensor",
+  "categories": [
+    "soil-monitor"
+  ],
+  "sensors": [
+    "moisture",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "teneo-iot",
+    "device": "soil-moisture-sensor",
+    "codecId": "soil-moisture-sensor-codec",
+    "codecFile": "soil-moisture-sensor.js",
+    "codecSha256": "25c9972aafc81b936a295b527fe17db3aff8962b30727c1708b004326b3bdb10",
+    "referencedAt": "2026-06-22"
+  }
+}

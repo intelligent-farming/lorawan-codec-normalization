@@ -1,0 +1,27 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-trs12",
+  "name": "DL-TRS12 - Soil Moisture, Temperature and Electrical Conductivity Sensor",
+  "categories": [
+    "soil-monitor"
+  ],
+  "sensors": [
+    "moisture",
+    "temperature",
+    "conductivity",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-trs12",
+    "codecId": "dl-trs12-codec",
+    "codecFile": "dl-trs12.js",
+    "codecSha256": "04e46fd2035405fd3faea9495086848f6bc3fb895a46fa9e677e8ef68544ce6c",
+    "referencedAt": "2026-06-22"
+  }
+}

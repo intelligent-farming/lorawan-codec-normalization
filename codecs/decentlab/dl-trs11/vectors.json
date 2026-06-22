@@ -1,0 +1,74 @@
+{
+  "uplink": [
+    {
+      "description": "Upstream Example 1 (sensor + battery block): permittivity, VWC->soil.moisture, soil.temperature, battery",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 16, 213, 0, 3, 70, 63, 129, 11, 12, 121]
+      },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 4309,
+          "dielectricPermittivity": 1.0259,
+          "battery": 3.193,
+          "soil": {
+            "moisture": 0.196,
+            "temperature": 26.7
+          }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Synthetic mid-range moist warm soil with battery (flags=3)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 16, 214, 0, 3, 95, 57, 128, 185, 12, 228]
+      },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 4310,
+          "dielectricPermittivity": 11.8464,
+          "battery": 3.3,
+          "soil": {
+            "moisture": 24.998,
+            "temperature": 18.5
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected produced by running reference/upstream-codec.js. x0=24377 -> VWC 0.24998 m3/m3 -> soil.moisture 24.998%; x1=32953 -> 18.5 C; battery word 3300 -> 3.3 V."
+    },
+    {
+      "description": "Synthetic battery-only uplink (flags=2, sensor block absent)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 16, 215, 0, 2, 11, 234]
+      },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 4311,
+          "battery": 3.05
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected produced by running reference/upstream-codec.js. Only the battery sensor bit set; battery word 3050 -> 3.05 V; no soil block emitted."
+    },
+    {
+      "description": "Wrong protocol version is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [3, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["protocol version 3 doesn't match v2"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error input; upstream rejects any version != 2 with this message."
+    }
+  ],
+  "downlink": []
+}

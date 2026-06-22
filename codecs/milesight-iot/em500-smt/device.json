@@ -1,0 +1,26 @@
+{
+  "vendor": "milesight-iot",
+  "device": "em500-smt",
+  "name": "Milesight EM500-SMT Soil Moisture Sensor",
+  "categories": [
+    "soil-monitor"
+  ],
+  "sensors": [
+    "battery",
+    "temperature",
+    "moisture"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "em500-smt",
+    "codecId": "em500-smt-codec",
+    "codecFile": "em500-smt.js",
+    "codecSha256": "f5fe0571f31d2e825ba05fd609d7c3bb7481eb99b677688985b46f40c15226d4",
+    "referencedAt": "2026-06-22"
+  }
+}

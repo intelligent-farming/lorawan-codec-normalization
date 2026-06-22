@@ -1,0 +1,67 @@
+{
+  "uplink": [
+    {
+      "description": "soil temperature + volumetric moisture telemetry",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 16, 204, 91, 0, 0, 1, 3, 16, 196, 164, 0, 0, 124, 79]
+      },
+      "expected": {
+        "data": {
+          "soil": {
+            "temperature": 23.5,
+            "moisture": 42.18
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload. Two 7-byte frames: dataId 4097 (soil temperature, raw 23500/1000=23.5 degC) and dataId 4099 (soil VWC, raw 42180/1000=42.18 %), CRC16 trailer 124,79. expected.data mirrors the upstream sensecap-codec oracle messages [{4097:23.5},{4099:42.18}] mapped onto soil.temperature/soil.moisture."
+    },
+    {
+      "description": "soil temperature (negative) + moisture + EC (S2105 variant)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 16, 126, 235, 255, 255, 1, 3, 16, 212, 48, 0, 0, 1, 4, 16, 210, 4, 0, 0, 136, 223]
+      },
+      "expected": {
+        "data": {
+          "soil": {
+            "temperature": -5.25,
+            "moisture": 12.5,
+            "ec": 1.234
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload exercising two's-complement negative temperature. Three frames: dataId 4097 (raw -5250/1000=-5.25 degC), dataId 4099 (12500/1000=12.5 %), dataId 4100 (soil EC, 1234/1000=1.234 dS/m), CRC16 trailer 136,223. Upstream oracle returns [{4097:'-5.25'},{4099:12.5},{4100:1.234}] (negative is a string upstream; our authored port emits the JSON number -5.25)."
+    },
+    {
+      "description": "battery + reporting interval frame (no field measurement)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 7, 0, 88, 0, 60, 0, 200, 172]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 88,
+          "reportingInterval": 3600
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic special dataId 7 frame. Upstream oracle returns upload_battery battery=88 (percent) and upload_interval interval=3600 (60 min * 60). We emit batteryPercent (vocabulary battery is volts, not percent) and reportingInterval seconds. CRC16 trailer 200,172."
+    },
+    {
+      "description": "corrupted CRC trailer is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 16, 204, 91, 0, 0, 1, 3, 16, 196, 164, 0, 0, 124, 176]
+      },
+      "expected": {
+        "errors": ["crc check fail"]
+      },
+      "source": "synthetic",
+      "_note": "First data vector with its final CRC byte flipped (79 -> 176), so the running CRC16 over the whole payload is non-zero and the codec rejects it before parsing frames."
+    }
+  ],
+  "downlink": []
+}

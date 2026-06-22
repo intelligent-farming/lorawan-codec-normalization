@@ -1,0 +1,75 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/decentlab/dl-5tm-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Example 1",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          2,
+          59,
+          0,
+          3,
+          0,
+          55,
+          2,
+          113,
+          12,
+          96
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.168
+          },
+          "device_id": 571,
+          "dielectric_permittivity": {
+            "displayName": "Dielectric permittivity",
+            "value": 1.1
+          },
+          "protocol_version": 2,
+          "soil_temperature": {
+            "displayName": "Soil temperature",
+            "unit": "°C",
+            "value": 22.5
+          },
+          "volumetric_water_content": {
+            "displayName": "Volumetric water content",
+            "unit": "m³⋅m⁻³",
+            "value": -0.0215397767
+          }
+        }
+      }
+    },
+    {
+      "description": "Example 2",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          2,
+          59,
+          0,
+          2,
+          12,
+          96
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.168
+          },
+          "device_id": 571,
+          "protocol_version": 2
+        }
+      }
+    }
+  ]
+}
