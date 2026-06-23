@@ -1,0 +1,87 @@
+{
+  "uplink": [
+    {
+      "description": "Status report, occupancy detected",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 151, 1, 30, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "action": {
+            "motion": {
+              "detected": true
+            }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame derived from the upstream status example; byte 4 (0x01) is the occupancy detection flag -> action.motion.detected true. Battery byte 30 -> 3.0 V. Expected authored from this codec's normalization."
+    },
+    {
+      "description": "Status report, occupancy clear",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 151, 1, 30, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "action": {
+            "motion": {
+              "detected": false
+            }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; byte 4 (0x00) clear -> action.motion.detected false."
+    },
+    {
+      "description": "Status report, low battery flagged",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 151, 1, 158, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3,
+          "action": {
+            "motion": {
+              "detected": true
+            }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; battery byte 158 (0x9E) has the high bit set -> lowBattery true, low 7 bits (30) -> 3.0 V."
+    },
+    {
+      "description": "Startup version report carries no measurement",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 151, 0, 100, 11, 32, 32, 4, 36, 0, 0]
+      },
+      "expected": {
+        "errors": ["device info frame"]
+      },
+      "source": "synthetic",
+      "_note": "Upstream startup example input; reportType byte 2 == 0x00 is a device-info frame with no measurement -> error."
+    },
+    {
+      "description": "Unsupported fPort",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 151, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort"]
+      },
+      "source": "synthetic",
+      "_note": "Config-response port 7 carries no measurement -> error."
+    }
+  ],
+  "downlink": []
+}

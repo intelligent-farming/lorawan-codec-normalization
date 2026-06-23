@@ -1,0 +1,26 @@
+{
+  "vendor": "makerfabs",
+  "device": "leaf-moisture-sn-3001",
+  "name": "Leaf Moisture SN-3001",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "makerfabs",
+    "device": "leaf-moisture-sn-3001",
+    "codecId": "leaf-moisture-sn-3001-codec",
+    "codecFile": "leaf-moisture-sn-3001.js",
+    "codecSha256": "648ff5a28089f6625c296d9cc223110f6e8c9f2ea86b60987829c6edbb6c5a9e",
+    "referencedAt": "2026-06-23"
+  }
+}
