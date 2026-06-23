@@ -1,0 +1,116 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/elv/elv-lw-gps1-codec-1-0-0.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "cyclic gps position",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          3,
+          1,
+          19,
+          136,
+          1,
+          32,
+          138,
+          47,
+          3,
+          110,
+          14,
+          156,
+          0,
+          216,
+          177,
+          2,
+          0,
+          1,
+          11
+        ]
+      },
+      "output": {
+        "data": {
+          "Supply_Voltage": 5000,
+          "TX_Reason": "Timer_Event",
+          "altitude": 17.66,
+          "hdop": 1.44,
+          "latitude": 53.4472,
+          "longitude": 10.22731
+        }
+      }
+    },
+    {
+      "description": "heartbeat gps position",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          3,
+          4,
+          46,
+          224,
+          1,
+          32,
+          138,
+          47,
+          3,
+          230,
+          14,
+          156,
+          0,
+          64,
+          255,
+          252,
+          255,
+          1,
+          24
+        ]
+      },
+      "output": {
+        "data": {
+          "Supply_Voltage": 12000,
+          "TX_Reason": "Heartbeat",
+          "altitude": -19.68,
+          "hdop": 1.96,
+          "latitude": 53.4472,
+          "longitude": 10.22743
+        }
+      }
+    },
+    {
+      "description": "user button gps position",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          3,
+          2,
+          19,
+          136,
+          1,
+          152,
+          111,
+          44,
+          3,
+          204,
+          207,
+          114,
+          0,
+          212,
+          148,
+          0,
+          0,
+          1,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Supply_Voltage": 5000,
+          "TX_Reason": "User_Button",
+          "altitude": 3.81,
+          "hdop": 1,
+          "latitude": 53.2438,
+          "longitude": 7.5243
+        }
+      }
+    }
+  ]
+}

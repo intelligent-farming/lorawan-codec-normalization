@@ -1,0 +1,108 @@
+{
+  "uplink": [
+    {
+      "description": "POSITION_MESSAGE with a GPS fix (STATIC): on-device latitude/longitude, temperature, battery level, horizontal accuracy",
+      "input": { "fPort": 18, "bytes": [3, 106, 193, 137, 0, 0, 29, 40, 185, 1, 96, 55, 2] },
+      "expected": {
+        "data": {
+          "trackingMode": "MOTION_START_END_TRACKING",
+          "action": { "motion": { "detected": false } },
+          "air": { "temperature": 25.3 },
+          "batteryLevel": 193,
+          "messageType": "POSITION_MESSAGE",
+          "rawPositionType": "GPS",
+          "position": { "latitude": 48.9208064, "longitude": 2.3082752 },
+          "fixAge": 0,
+          "horizontalAccuracy": 7.84
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Input is the upstream asset-tracker-2-codec.yaml GPS_FIX example (Apache-2.0); expected.data authored here and cross-checked by running reference/upstream-codec.js (gpsLatitude 48.9208064, gpsLongitude 2.3082752, horizontalAccuracy 7.84, temperatureMeasure 25.3, batteryLevel 193, dynamicMotionState STATIC)."
+    },
+    {
+      "description": "POSITION_MESSAGE with a GPS fix (MOVING): synthetic in-bounds lat/lon, moving flag set",
+      "input": { "fPort": 18, "bytes": [3, 68, 180, 140, 0, 10, 23, 215, 132, 211, 227, 124, 50] },
+      "expected": {
+        "data": {
+          "trackingMode": "PERMANENT_TRACKING",
+          "action": { "motion": { "detected": true } },
+          "air": { "temperature": 26.8 },
+          "batteryLevel": 180,
+          "messageType": "POSITION_MESSAGE",
+          "rawPositionType": "GPS",
+          "position": { "latitude": 40, "longitude": -74.0066304 },
+          "fixAge": 80,
+          "horizontalAccuracy": 196.08
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds fix (lat 40.0, lon -74.0066304); byte[1]=0x44 sets PERMANENT_TRACKING + the moving bit. expected.data produced by running reference/upstream-codec.js on this input and normalizing."
+    },
+    {
+      "description": "POSITION_MESSAGE WiFi BSSID scan: MAC list for cloud solving (no on-device position)",
+      "input": { "fPort": 18, "bytes": [3, 68, 200, 150, 9, 30, 170, 187, 204, 17, 34, 51, 192] },
+      "expected": {
+        "data": {
+          "trackingMode": "PERMANENT_TRACKING",
+          "action": { "motion": { "detected": true } },
+          "air": { "temperature": 31.9 },
+          "batteryLevel": 200,
+          "messageType": "POSITION_MESSAGE",
+          "rawPositionType": "WIFI_BSSIDS_WITH_NO_CYPHER",
+          "fixAge": 240,
+          "wifiBssids": [{ "id": "aa:bb:cc:11:22:33", "rssi": -64 }]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic WiFi scan (byte[4] low nibble 9 = WIFI_BSSIDS_WITH_NO_CYPHER). Cross-checked against reference/upstream-codec.js (rawPositionType WIFI_BSSIDS_WITH_NO_CYPHER, bssid aa:bb:cc:11:22:33 rssi -64). WiFi scans never yield position.* on-device."
+    },
+    {
+      "description": "POSITION_MESSAGE BLE beacon scan: MAC list for cloud solving (no on-device position)",
+      "input": { "fPort": 18, "bytes": [3, 64, 210, 160, 7, 40, 1, 2, 3, 4, 5, 6, 144] },
+      "expected": {
+        "data": {
+          "trackingMode": "PERMANENT_TRACKING",
+          "action": { "motion": { "detected": false } },
+          "air": { "temperature": 36.9 },
+          "batteryLevel": 210,
+          "messageType": "POSITION_MESSAGE",
+          "rawPositionType": "BLE_BEACON_SCAN",
+          "fixAge": 320,
+          "bleBssids": [{ "id": "01:02:03:04:05:06", "rssi": -112 }]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic BLE scan (byte[4] low nibble 7 = BLE_BEACON_SCAN). Cross-checked against reference/upstream-codec.js (bssid 01:02:03:04:05:06 rssi -112). BLE scans never yield position.* on-device."
+    },
+    {
+      "description": "EVENT message (GEOLOC_START): climate + motion header only, no position",
+      "input": { "fPort": 18, "bytes": [10, 0, 249, 134, 0, 0] },
+      "expected": {
+        "data": {
+          "trackingMode": "STAND_BY",
+          "action": { "motion": { "detected": false } },
+          "air": { "temperature": 23.8 },
+          "batteryLevel": 249,
+          "messageType": "EVENT"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Input is the upstream asset-tracker-2-codec.yaml GEOLOC_START example (Apache-2.0); expected.data authored here and cross-checked against reference/upstream-codec.js (temperatureMeasure 23.8, batteryLevel 249, STAND_BY, STATIC)."
+    },
+    {
+      "description": "GPS position with decoded coordinates out of range -> error",
+      "input": { "fPort": 18, "bytes": [3, 64, 180, 140, 0, 10, 64, 0, 0, 0, 0, 0, 50] },
+      "expected": { "errors": ["decoded GPS position out of range"] },
+      "source": "synthetic",
+      "_note": "byte[6..8] = 0x400000 + '00' shift decodes to ~107.37 deg latitude, outside [-90, 90]."
+    },
+    {
+      "description": "FRAME_PENDING uplink carries no measurement -> error",
+      "input": { "fPort": 18, "bytes": [0, 1, 2] },
+      "expected": { "errors": ["frame-pending uplink carries no normalized measurement"] },
+      "source": "synthetic",
+      "_note": "byte[0]=0 selects the FRAME_PENDING message type."
+    }
+  ],
+  "downlink": []
+}

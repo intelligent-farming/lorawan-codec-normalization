@@ -1,0 +1,76 @@
+{
+  "uplink": [
+    {
+      "description": "GNSS fix, battery-powered, moving (lat 40.12345, lon -74.05678)",
+      "input": {
+        "fPort": 10,
+        "bytes": [144, 2, 3, 0, 0, 236, 113, 101, 57, 57, 61, 0, 146, 255, 142, 255, 15, 0, 5, 0, 12, 139]
+      },
+      "expected": {
+        "data": {
+          "powerSource": "battery",
+          "batteryPercent": 72,
+          "position": { "latitude": 40.12345, "longitude": -74.05678 },
+          "altitude": 15,
+          "speedKmh": 5,
+          "hdop": 1.2,
+          "satellites": 11,
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds GNSS uplink; lat/lon/alt/speed/hdop/sats verified by running reference/upstream-codec.js (frame.lat=40.12345, frame.lon=-74.05678, used_sat=11, in_movement=true). batteryPercent=charge bits (72), powerSource from bit0."
+    },
+    {
+      "description": "GNSS fix with serial number + temperature frame, external power, stationary (Sydney)",
+      "input": {
+        "fPort": 10,
+        "bytes": [101, 3, 64, 226, 1, 0, 3, 0, 0, 236, 113, 101, 178, 86, 204, 255, 193, 187, 230, 0, 58, 0, 0, 0, 9, 7, 15, 0, 0, 236, 113, 101, 1, 237, 0]
+      },
+      "expected": {
+        "data": {
+          "powerSource": "external",
+          "batteryPercent": 50,
+          "serialNumber": 123456,
+          "position": { "latitude": -33.85678, "longitude": 151.21345 },
+          "altitude": 58,
+          "speedKmh": 0,
+          "hdop": 0.9,
+          "satellites": 7,
+          "action": { "motion": { "detected": false } },
+          "air": { "temperature": 23.7 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds uplink (is_sn set). Verified against reference/upstream-codec.js: frame.lat=-33.85678, frame.lon=151.21345, used_sat=7, in_movement=false, temperature_cel=23.7, sn=123456."
+    },
+    {
+      "description": "WiFi-scan + movement uplink (upstream example) — cloud-solved, no on-device position",
+      "input": {
+        "fPort": 10,
+        "bytes": [194, 226, 19, 0, 88, 11, 115, 101, 0, 4, 0, 89, 11, 115, 101, 83, 228, 8, 9, 31, 172, 201, 128, 107, 12, 191, 153, 240, 193, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "powerSource": "battery",
+          "batteryPercent": 97,
+          "action": { "motion": { "detected": false } },
+          "wifiAccessPoints": [
+            { "mac": "53:e4:08:09:1f:ac", "rssi": -55 },
+            { "mac": "80:6b:0c:bf:99:f0", "rssi": -63 }
+          ]
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream TTN example input (the 'personnal tracker' sample): a movement frame then a WiFi scan. WiFi geolocation is cloud-solved, so position.* is intentionally NOT emitted; access points go to the wifiAccessPoints extra. battery_pct=97 and the two MACs/RSSIs match reference/upstream-codec.js output."
+    },
+    {
+      "description": "payload too short",
+      "input": { "fPort": 10, "bytes": [144] },
+      "expected": { "errors": ["payload too short"] },
+      "source": "synthetic",
+      "_note": "Single byte cannot carry the 2-byte header; codec rejects it."
+    }
+  ],
+  "downlink": []
+}

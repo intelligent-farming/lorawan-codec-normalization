@@ -1,0 +1,93 @@
+{
+  "uplink": [
+    {
+      "description": "cyclic timer position fix",
+      "input": { "fPort": 10, "bytes": [3, 1, 19, 136, 1, 32, 138, 47, 3, 110, 14, 156, 0, 216, 177, 2, 0, 1, 11] },
+      "expected": {
+        "data": {
+          "txReason": "Timer_Event",
+          "battery": 5,
+          "position": { "latitude": 53.4472, "longitude": 10.22731 },
+          "altitudeM": 17.66,
+          "hdop": 1.44
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "heartbeat with negative altitude",
+      "input": { "fPort": 10, "bytes": [3, 4, 46, 224, 1, 32, 138, 47, 3, 230, 14, 156, 0, 64, 255, 252, 255, 1, 24] },
+      "expected": {
+        "data": {
+          "txReason": "Heartbeat",
+          "battery": 12,
+          "position": { "latitude": 53.4472, "longitude": 10.22743 },
+          "altitudeM": -19.68,
+          "hdop": 1.96
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "user button position fix",
+      "input": { "fPort": 10, "bytes": [3, 2, 19, 136, 1, 152, 111, 44, 3, 204, 207, 114, 0, 212, 148, 0, 0, 1, 0] },
+      "expected": {
+        "data": {
+          "txReason": "User_Button",
+          "battery": 5,
+          "position": { "latitude": 53.2438, "longitude": 7.5243 },
+          "altitudeM": 3.81,
+          "hdop": 1
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "motion start -> moving (action.motion.detected true)",
+      "input": { "fPort": 10, "bytes": [3, 7, 14, 116, 1, 8, 78, 222, 2, 184, 130, 176, 0, 128, 88, 79, 0, 0, 20] },
+      "expected": {
+        "data": {
+          "txReason": "Motion_Start",
+          "battery": 3.7,
+          "action": { "motion": { "detected": true } },
+          "position": { "latitude": 48.1234, "longitude": 11.5678 },
+          "altitudeM": 520,
+          "hdop": 0.8
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds fix: lat/lon/altitude packed with the same signed int32 LE layout the upstream reference decoder reads; supply 3700 mV (battery 3.7 V); reason byte 7 = Motion_Start, exercising the moving flag."
+    },
+    {
+      "description": "motion stop -> at rest (action.motion.detected false), southern hemisphere",
+      "input": { "fPort": 10, "bytes": [3, 9, 12, 110, 1, 0, 52, 251, 253, 84, 69, 3, 9, 144, 208, 3, 0, 1, 5] },
+      "expected": {
+        "data": {
+          "txReason": "Motion_Stop",
+          "battery": 3.182,
+          "action": { "motion": { "detected": false } },
+          "position": { "latitude": -33.8688, "longitude": 151.2093 },
+          "altitudeM": 25,
+          "hdop": 1.2
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic negative-latitude/positive-longitude fix (Sydney) packed with the upstream signed int32 LE layout; reason byte 9 = Motion_Stop, exercising detected:false."
+    },
+    {
+      "description": "wrong port",
+      "input": { "fPort": 5, "bytes": [3, 1, 19, 136] },
+      "expected": { "errors": ["unsupported FPort"] },
+      "source": "synthetic",
+      "_note": "Synthetic: upstream rejects any port other than 10 (\"Wrong Port Number\")."
+    },
+    {
+      "description": "unsupported application data type",
+      "input": { "fPort": 10, "bytes": [3, 1, 19, 136, 9, 0, 0, 0, 0] },
+      "expected": { "errors": ["unsupported application data type"] },
+      "source": "synthetic",
+      "_note": "Synthetic: data-type byte 0x09 is not 0x01; upstream reports \"Data Type Failure\"."
+    }
+  ],
+  "downlink": []
+}

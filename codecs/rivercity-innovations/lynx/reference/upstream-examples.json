@@ -1,0 +1,99 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/rivercity-innovations/lynx-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Regular Uplink",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          3,
+          27,
+          161,
+          119,
+          249,
+          164,
+          254,
+          241,
+          148,
+          223,
+          38
+        ]
+      },
+      "output": {
+        "data": {
+          "latitudeDeg": 52.142455,
+          "longitudeDeg": -106.627343,
+          "inTrip": true,
+          "fixFailed": false,
+          "batV": 4,
+          "direction": 314.8235294117647,
+          "temperature": 19,
+          "type": "position"
+        }
+      }
+    },
+    {
+      "description": "Version Info",
+      "input": {
+        "fPort": 3,
+        "bytes": [
+          1,
+          0,
+          3,
+          0,
+          1,
+          2,
+          2,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "LoRaWANVersion": "1.0.3.0",
+          "FirmwareVersion": "1.2.2.0"
+        }
+      }
+    },
+    {
+      "description": "Sleep Time Info",
+      "input": {
+        "fPort": 4,
+        "bytes": [
+          0,
+          0,
+          0,
+          120,
+          0,
+          1,
+          81,
+          128
+        ]
+      },
+      "output": {
+        "data": {
+          "ShortSleepTime": 120,
+          "LongSleepTime": 86400
+        }
+      }
+    },
+    {
+      "description": "Peripheral Info",
+      "input": {
+        "fPort": 5,
+        "bytes": [
+          0,
+          0,
+          0,
+          90,
+          8
+        ]
+      },
+      "output": {
+        "data": {
+          "gpsTimeoutSec": 90,
+          "accelSensitivity": 8
+        }
+      }
+    }
+  ]
+}

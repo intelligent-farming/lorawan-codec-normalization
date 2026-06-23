@@ -115,9 +115,9 @@ of the listed paths present).
 | `wind` | `wind.speed` | 12 |
 | `rain-gauge` | `rain.cumulative` | 10 |
 | `water-meter` | `metering.water.total` | 0 |
-| `motion` | `action.motion` | 62 |
+| `motion` | `action.motion` | 71 |
 | `contact` | `action.contactState` | 20 |
-| `gps-tracker` | `position.latitude`, `position.longitude` | 23 |
+| `gps-tracker` | `position.latitude`, `position.longitude` | 35 |
 | `water-leak` | `water.leak` | 12 |
 
 `devices()` / `devices({ category })` enumerate registered devices;

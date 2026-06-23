@@ -1,0 +1,86 @@
+{
+  "uplink": [
+    {
+      "description": "Regular position uplink (live fix, in trip)",
+      "input": {
+        "fPort": 2,
+        "bytes": [3, 27, 161, 119, 249, 164, 254, 241, 148, 223, 38]
+      },
+      "expected": {
+        "data": {
+          "battery": 4,
+          "action": { "motion": { "detected": true } },
+          "headingDeg": 314.823529,
+          "fixFailed": false,
+          "air": { "temperature": 19 },
+          "position": { "latitude": 52.142455, "longitude": -106.627343 }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Synthetic position uplink (live fix, not in trip, southern/eastern hemisphere)",
+      "input": {
+        "fPort": 2,
+        "bytes": [253, 251, 66, 216, 9, 3, 71, 172, 44, 128, 50]
+      },
+      "expected": {
+        "data": {
+          "battery": 6.4,
+          "action": { "motion": { "detected": false } },
+          "headingDeg": 180.705882,
+          "fixFailed": false,
+          "air": { "temperature": 25 },
+          "position": { "latitude": -33.865, "longitude": 151.2099 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected.data derived via the ORACLE method by running reference/upstream-codec.js and re-shaping to the normalized vocabulary. Status byte 44 = inTrip 0, fixFailed 0, batteryCode 0x2C; heading byte 128; temp byte 50 -> 25 C."
+    },
+    {
+      "description": "Synthetic position uplink (fix failed -> cached coordinates, no live position)",
+      "input": {
+        "fPort": 2,
+        "bytes": [2, 182, 70, 96, 248, 177, 69, 192, 202, 200, 200]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "action": { "motion": { "detected": true } },
+          "headingDeg": 282.352941,
+          "fixFailed": true,
+          "air": { "temperature": 36 },
+          "cachedLatitude": 45.5,
+          "cachedLongitude": -122.6
+        },
+        "warnings": ["fix failed"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic input with status byte 0xCA (inTrip 1, fixFailed 1, batteryCode 10); coordinates and temp derived via the ORACLE method from reference/upstream-codec.js. fixFailed suppresses position.* and surfaces cached coordinates with a warning."
+    },
+    {
+      "description": "Version-info frame carries no normalized measurement",
+      "input": {
+        "fPort": 3,
+        "bytes": [1, 0, 3, 0, 1, 2, 2, 0]
+      },
+      "expected": {
+        "errors": ["no normalized measurement"]
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Truncated position frame is rejected",
+      "input": {
+        "fPort": 2,
+        "bytes": [3, 27, 161, 119]
+      },
+      "expected": {
+        "errors": ["requires 11 bytes"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic short-payload input to exercise the length guard."
+    }
+  ],
+  "downlink": []
+}

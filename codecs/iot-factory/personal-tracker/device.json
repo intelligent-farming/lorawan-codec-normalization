@@ -1,0 +1,29 @@
+{
+  "vendor": "iot-factory",
+  "device": "personal-tracker",
+  "name": "Personal Tracker",
+  "categories": [
+    "gps-tracker",
+    "motion"
+  ],
+  "sensors": [
+    "gps",
+    "wifi ssid",
+    "accelerometer",
+    "button",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "iot-factory",
+    "device": "personal-tracker",
+    "codecId": "generic-codec",
+    "codecFile": "generic-decoder.js",
+    "codecSha256": "d65494907cc7f7ce3112c11819c577773f27cd80225a1139e2f682eefaec5762",
+    "referencedAt": "2026-06-23"
+  }
+}

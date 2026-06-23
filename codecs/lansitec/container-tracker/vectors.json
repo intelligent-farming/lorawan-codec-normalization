@@ -1,0 +1,120 @@
+{
+  "uplink": [
+    {
+      "description": "GNSS position, live on-device fix (lat/lon float32 BE) with fix time",
+      "input": {
+        "fPort": 2,
+        "bytes": [48, 66, 243, 0, 0, 65, 250, 0, 0, 101, 83, 241, 0]
+      },
+      "expected": {
+        "data": {
+          "messageType": "gnssPosition",
+          "position": { "latitude": 31.25, "longitude": 121.5 },
+          "time": "2023-11-14T22:13:20.000Z"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds fix; bytes built so the big-endian IEEE-754 float32 lon=121.5, lat=31.25 and the u32 fix epoch=1700000000. Two deliberate forks from reference/upstream-codec.js: (1) upstream's hex2float divides the mantissa by 0x7fffff instead of 0x800000, an off-by-one that makes it decode these bytes as 121.50000685/31.25000182; we use the correct IEEE-754 divisor (0x800000) and recover the exact encoded 121.5/31.25. (2) upstream emits the timestamp shifted +8h (CST applied to an already-UTC epoch); we emit the true UTC instant 2023-11-14T22:13:20Z."
+    },
+    {
+      "description": "Heartbeat: battery volts, link quality, temperature, vibration -> motion",
+      "input": {
+        "fPort": 2,
+        "bytes": [33, 220, 95, 0, 150, 51, 0, 23, 0, 12]
+      },
+      "expected": {
+        "data": {
+          "messageType": "heartbeat",
+          "battery": 3.7,
+          "rssi": -95,
+          "gpsState": "located",
+          "vibrationLevel": 3,
+          "temperatureC": 23,
+          "movementSeconds": 60,
+          "action": { "motion": { "detected": true } },
+          "snr": 1.5
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic heartbeat; expected.data computed from reference/upstream-codec.js (vol byte 220 -> 1.5+220*0.01 = 3.7 V mapped to battery; rssi byte 95 -> -95 dBm; SNR-included flag set, snr 150*0.01 = 1.5 dB; gpsstate nibble 3 -> located; vibstate 3 -> vibrationLevel 3 and action.motion.detected; temperature 23; movement 12*5 = 60 s)."
+    },
+    {
+      "description": "Position beacon: BLE scan (cloud-solved) surfaced as bleBeacons extra",
+      "input": {
+        "fPort": 2,
+        "bytes": [114, 1, 0, 0, 0, 0, 18, 52, 86, 120, 200, 171, 205, 239, 1, 180]
+      },
+      "expected": {
+        "data": {
+          "messageType": "positionBeacon",
+          "bleBeacons": [
+            { "major": "1234", "minor": "5678", "rssi": -56 },
+            { "major": "ABCD", "minor": "EF01", "rssi": -76 }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic position-beacon (type 0x7, length nibble 2); two 5-byte beacon records at offset 6. major/minor are upstream's uppercase hex pairs; rssi byte - 256. BLE scans are positioning inputs requiring a cloud solver, so they are extras, never position.*."
+    },
+    {
+      "description": "Asset beacon: BLE asset scan surfaced as bleBeacons extra",
+      "input": {
+        "fPort": 2,
+        "bytes": [129, 1, 170, 187, 204, 221, 210]
+      },
+      "expected": {
+        "data": {
+          "messageType": "assetBeacon",
+          "bleBeacons": [
+            { "major": "AABB", "minor": "CCDD", "rssi": -46 }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic asset-beacon (type 0x8, qty 1); one 5-byte record at offset 2. Matches reference/upstream-codec.js AssetBeacon_Proc field extraction, remapped to the bleBeacons extra."
+    },
+    {
+      "description": "Alarm: magnet removed",
+      "input": {
+        "fPort": 2,
+        "bytes": [144, 1]
+      },
+      "expected": {
+        "data": {
+          "messageType": "alarm",
+          "alarm": "magnetRemoved"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic alarm (type 0x9). Upstream's Alarm_proc never reads the payload flag (a bug: it tests an uninitialised local); we read the alarm bit from byte 1 so a set flag is reported as magnetRemoved."
+    },
+    {
+      "description": "Shock detection: shock event counter",
+      "input": {
+        "fPort": 2,
+        "bytes": [160, 0, 5]
+      },
+      "expected": {
+        "data": {
+          "messageType": "shockDetection",
+          "shockCount": 5
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic shock-detection (type 0xA); count is the big-endian u16 at bytes 1-2, matching reference/upstream-codec.js ShockDetection_proc."
+    },
+    {
+      "description": "Unsupported message type yields an error",
+      "input": {
+        "fPort": 2,
+        "bytes": [240, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported message type"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error vector: high-nibble message type 0xF is not defined by the protocol (upstream returns null for this; we report an error)."
+    }
+  ],
+  "downlink": []
+}

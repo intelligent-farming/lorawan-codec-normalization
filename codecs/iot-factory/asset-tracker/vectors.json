@@ -1,0 +1,76 @@
+{
+  "uplink": [
+    {
+      "description": "GNSS fix, stationary, southern/eastern hemisphere",
+      "input": {
+        "fPort": 10,
+        "bytes": [100, 2, 3, 0, 0, 241, 83, 101, 112, 85, 204, 255, 104, 186, 230, 0, 50, 0, 0, 0, 8, 11]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 50,
+          "externalPower": false,
+          "position": { "latitude": -33.86, "longitude": 151.21 },
+          "time": "2023-11-14T22:13:20.000Z",
+          "altitude": 50,
+          "speedKmph": 0,
+          "speed": 0,
+          "hdop": 0.8,
+          "satellites": 11,
+          "action": { "motion": { "detected": false } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds GNSS uplink; expected data produced by running reference/upstream-codec.js (frame.lat -33.86, frame.lon 151.21, speed_kmh 0, hdop 0.8, used_sat 11, in_movement false; header battery 50%) and re-shaping its gnss frame to the normalized vocabulary."
+    },
+    {
+      "description": "GNSS fix, moving, with a temperature frame",
+      "input": {
+        "fPort": 10,
+        "bytes": [176, 2, 3, 0, 244, 242, 83, 101, 208, 18, 19, 0, 120, 10, 251, 255, 200, 0, 30, 0, 15, 135, 15, 0, 244, 242, 83, 101, 1, 235, 0]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 88,
+          "externalPower": false,
+          "position": { "latitude": 12.5, "longitude": -3.25 },
+          "time": "2023-11-14T22:21:40.000Z",
+          "altitude": 200,
+          "speedKmph": 30,
+          "speed": 8.333,
+          "hdop": 1.5,
+          "satellites": 7,
+          "air": { "temperature": 23.5 },
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds GNSS + temperature uplink; expected data produced by running reference/upstream-codec.js (gnss frame.lat 12.5, frame.lon -3.25, speed_kmh 30, hdop 1.5, used_sat 7, in_movement true; temperature frame temperature_cel 23.5; header battery 88%) and re-shaping to the normalized vocabulary (speed km/h -> m/s, temperature_cel -> air.temperature)."
+    },
+    {
+      "description": "unknown frame type rejected",
+      "input": {
+        "fPort": 10,
+        "bytes": [100, 2, 153, 0, 0, 241, 83, 101]
+      },
+      "expected": {
+        "errors": ["unknown frame type"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic frame header with type 0x99 (153), which reference/upstream-codec.js reports via unknownFrame() as error_type 'unknown_frame'."
+    },
+    {
+      "description": "wrong FPort rejected",
+      "input": {
+        "fPort": 5,
+        "bytes": [100, 2, 3, 0]
+      },
+      "expected": {
+        "errors": ["unsupported FPort"]
+      },
+      "source": "synthetic",
+      "_note": "The generic protocol is carried only on FPort 10; reference/upstream-codec.js only runs Decode() for fPort 10."
+    }
+  ],
+  "downlink": []
+}

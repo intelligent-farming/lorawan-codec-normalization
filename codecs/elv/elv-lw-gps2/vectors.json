@@ -1,0 +1,87 @@
+{
+  "uplink": [
+    {
+      "description": "cyclic gps position (timer event)",
+      "input": {
+        "fPort": 10,
+        "bytes": [1, 1, 0, 1, 2, 2, 3, 7, 3, 1, 4, 11, 252, 10, 232, 85, 42, 3, 47, 196, 125, 0, 176, 173, 1, 0, 1, 11]
+      },
+      "expected": {
+        "data": {
+          "appVersion": "V1.0.1",
+          "blVersion": "V2.3.7",
+          "txReason": "TIMER_EVENT",
+          "battery": 3.068,
+          "position": {
+            "latitude": 53.106152,
+            "longitude": 8.242223
+          },
+          "altitudeMeters": 11,
+          "hdop": 1.44
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "user button gps position",
+      "input": {
+        "fPort": 10,
+        "bytes": [1, 1, 0, 1, 2, 2, 3, 7, 3, 2, 4, 12, 2, 10, 248, 85, 42, 3, 76, 196, 125, 0, 176, 173, 1, 0, 1, 11]
+      },
+      "expected": {
+        "data": {
+          "appVersion": "V1.0.1",
+          "blVersion": "V2.3.7",
+          "txReason": "USER_BUTTON_EVENT",
+          "battery": 3.074,
+          "position": {
+            "latitude": 53.106168,
+            "longitude": 8.242252
+          },
+          "altitudeMeters": 11,
+          "hdop": 1.44
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "motion start event with gps position",
+      "input": {
+        "fPort": 10,
+        "bytes": [3, 7, 4, 14, 116, 10, 232, 85, 42, 3, 47, 196, 125, 0, 176, 173, 1, 0, 1, 11]
+      },
+      "expected": {
+        "data": {
+          "txReason": "MOTION_START_EVENT",
+          "action": {
+            "motion": {
+              "detected": true
+            }
+          },
+          "battery": 3.7,
+          "position": {
+            "latitude": 53.106152,
+            "longitude": 8.242223
+          },
+          "altitudeMeters": 11,
+          "hdop": 1.44
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame: tx-reason MOTION_START (0x07), supply 0x0E74 = 3700 mV, and the cyclic-vector position block. expected.data produced by porting the upstream reference decoder; battery = 3700/1000, action.motion.detected = true for the motion-start event."
+    },
+    {
+      "description": "unknown data type byte is rejected",
+      "input": {
+        "fPort": 10,
+        "bytes": [255, 1, 2]
+      },
+      "expected": {
+        "errors": ["unknown data type"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic frame leading with an unsupported type byte (0xFF). Upstream clears its output and sets parser_error 'Data Type Failure'; our codec returns an error result."
+    }
+  ],
+  "downlink": []
+}

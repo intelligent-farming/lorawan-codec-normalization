@@ -1,0 +1,47 @@
+{
+  "uplink": [
+    {
+      "description": "0xF1 GNSS fix frame, northern/eastern hemisphere fix with paws/battery/working",
+      "input": { "fPort": 2, "bytes": [241, 0, 0, 0, 0, 0, 0, 204, 141, 200, 3, 33, 208, 64, 0, 0, 0, 0, 4, 210, 0, 10, 43, 69] },
+      "expected": { "data": { "position": { "latitude": 52.547648, "longitude": 13.40564 }, "paws": 1234, "batteryLevel": 40, "working": 837 } },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; lat/lon chosen in range (Berlin-ish), expected produced by running reference/upstream-codec.js field math."
+    },
+    {
+      "description": "0xF1 GNSS fix frame, southern/western hemisphere fix (signed wraparound)",
+      "input": { "fPort": 2, "bytes": [241, 0, 0, 0, 0, 0, 251, 210, 0, 64, 253, 251, 51, 236, 0, 0, 0, 0, 16, 0, 0, 18, 52, 86] },
+      "expected": { "data": { "position": { "latitude": -33.86882, "longitude": -70.123456 }, "paws": 4096, "batteryLevel": 72, "working": 86 } },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds negative-coordinate frame; expected produced by running reference/upstream-codec.js sign-bit/wraparound math."
+    },
+    {
+      "description": "0xF0 no-fix frame, paws/battery/working only",
+      "input": { "fPort": 2, "bytes": [240, 0, 0, 0, 0, 0, 0, 0, 4, 210, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 43, 69] },
+      "expected": { "data": { "paws": 1234, "batteryLevel": 40, "working": 837 } },
+      "source": "synthetic",
+      "_note": "Synthetic; expected produced by running reference/upstream-codec.js (0xF0 carries no position)."
+    },
+    {
+      "description": "0xF2 no-fix frame, paws at alternate offset",
+      "input": { "fPort": 2, "bytes": [242, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 43, 69, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 22, 46] },
+      "expected": { "data": { "paws": 5678, "batteryLevel": 40, "working": 837 } },
+      "source": "synthetic",
+      "_note": "Synthetic; expected produced by running reference/upstream-codec.js (0xF2 carries no position, paws at byte 35)."
+    },
+    {
+      "description": "unsupported frame type byte",
+      "input": { "fPort": 2, "bytes": [85, 0, 0, 0] },
+      "expected": { "errors": ["unsupported frame type"] },
+      "source": "synthetic",
+      "_note": "Synthetic error vector: leading byte is not 0xF0/0xF1/0xF2."
+    },
+    {
+      "description": "0xF1 frame truncated below required length",
+      "input": { "fPort": 2, "bytes": [241, 0, 0] },
+      "expected": { "errors": ["requires 24 bytes"] },
+      "source": "synthetic",
+      "_note": "Synthetic error vector: 0xF1 frame too short to extract the GNSS fix."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,101 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/elv/elv-lw-gps2-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "cyclic gps position",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          1,
+          1,
+          0,
+          1,
+          2,
+          2,
+          3,
+          7,
+          3,
+          1,
+          4,
+          11,
+          252,
+          10,
+          232,
+          85,
+          42,
+          3,
+          47,
+          196,
+          125,
+          0,
+          176,
+          173,
+          1,
+          0,
+          1,
+          11
+        ]
+      },
+      "output": {
+        "data": {
+          "altitude": 11,
+          "app_version": "V1.0.1",
+          "bl_version": "V2.3.7",
+          "hdop": 1.44,
+          "latitude": 53.106152,
+          "longitude": 8.242223,
+          "supply_voltage": 3068,
+          "tx_reason": "TIMER_EVENT"
+        }
+      }
+    },
+    {
+      "description": "user button gps position",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          1,
+          1,
+          0,
+          1,
+          2,
+          2,
+          3,
+          7,
+          3,
+          2,
+          4,
+          12,
+          2,
+          10,
+          248,
+          85,
+          42,
+          3,
+          76,
+          196,
+          125,
+          0,
+          176,
+          173,
+          1,
+          0,
+          1,
+          11
+        ]
+      },
+      "output": {
+        "data": {
+          "altitude": 11,
+          "app_version": "V1.0.1",
+          "bl_version": "V2.3.7",
+          "hdop": 1.44,
+          "latitude": 53.106168,
+          "longitude": 8.242252,
+          "supply_voltage": 3074,
+          "tx_reason": "USER_BUTTON_EVENT"
+        }
+      }
+    }
+  ]
+}

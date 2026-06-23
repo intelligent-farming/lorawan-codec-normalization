@@ -1,0 +1,26 @@
+{
+  "vendor": "elv",
+  "device": "elv-lw-gps1",
+  "name": "LoRaWAN® GPS Tracker 1",
+  "categories": [
+    "gps-tracker",
+    "motion"
+  ],
+  "sensors": [
+    "gps",
+    "accelerometer"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "elv",
+    "device": "elv-lw-gps1",
+    "codecId": "elv-lw-gps1-codec-1-0-0",
+    "codecFile": "elv-lw-gps1-1.0.0.js",
+    "codecSha256": "440665ae1a24d5fcde943610d60dbb3758cbaca1ef60cf611431f5e8b2003262",
+    "referencedAt": "2026-06-23"
+  }
+}

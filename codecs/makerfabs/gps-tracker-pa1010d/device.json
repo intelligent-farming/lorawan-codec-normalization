@@ -1,0 +1,26 @@
+{
+  "vendor": "makerfabs",
+  "device": "gps-tracker-pa1010d",
+  "name": "GPS Tracker_PA1010D",
+  "categories": [
+    "gps-tracker"
+  ],
+  "sensors": [
+    "gps",
+    "accelerometer",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "makerfabs",
+    "device": "gps-tracker-pa1010d",
+    "codecId": "gps-tracker-pa1010d-codec",
+    "codecFile": "gps-tracker-pa1010d.js",
+    "codecSha256": "e93d90409b5c044231c8271307190b855d6a2fc0eb001434f59bf97e54309e67",
+    "referencedAt": "2026-06-23"
+  }
+}

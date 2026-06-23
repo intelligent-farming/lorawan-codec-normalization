@@ -1,0 +1,27 @@
+{
+  "vendor": "rivercity-innovations",
+  "device": "lynx",
+  "name": "Lynx - Micro LoRa GPS Tracker",
+  "categories": [
+    "gps-tracker",
+    "motion"
+  ],
+  "sensors": [
+    "accelerometer",
+    "gps",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "rivercity-innovations",
+    "device": "lynx",
+    "codecId": "lynx-codec",
+    "codecFile": "lynx.js",
+    "codecSha256": "2f8e25e25c75aab6bb0c826d115f6d4f69ae280dfe0399b4699ca6ad7e5b7349",
+    "referencedAt": "2026-06-23"
+  }
+}

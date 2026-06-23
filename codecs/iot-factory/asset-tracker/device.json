@@ -1,0 +1,25 @@
+{
+  "vendor": "iot-factory",
+  "device": "asset-tracker",
+  "name": "Asset Tracker",
+  "categories": [
+    "gps-tracker"
+  ],
+  "sensors": [
+    "gps",
+    "temperature"
+  ],
+  "variantOf": "iot-factory/personal-tracker",
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "iot-factory",
+    "device": "asset-tracker",
+    "codecId": "generic-codec",
+    "codecFile": "generic-decoder.js",
+    "codecSha256": "d65494907cc7f7ce3112c11819c577773f27cd80225a1139e2f682eefaec5762",
+    "referencedAt": "2026-06-23"
+  }
+}

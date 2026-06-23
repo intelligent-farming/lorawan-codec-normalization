@@ -1,0 +1,26 @@
+{
+  "vendor": "dnt",
+  "device": "dnt-lw-ats",
+  "name": "LoRaWAN® Asset Tracker Solar",
+  "categories": [
+    "gps-tracker",
+    "motion"
+  ],
+  "sensors": [
+    "accelerometer",
+    "gps"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dnt",
+    "device": "dnt-lw-ats",
+    "codecId": "dnt-lw-ats-codec",
+    "codecFile": "dnt-lw-ats.js",
+    "codecSha256": "34617c383e0b6a8bb10d2f6ec4498f3a7e31ae60a7344953cb3d07eed1c40e6e",
+    "referencedAt": "2026-06-23"
+  }
+}

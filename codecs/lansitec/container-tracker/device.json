@@ -1,0 +1,30 @@
+{
+  "vendor": "lansitec",
+  "device": "container-tracker",
+  "name": "Container Tracker",
+  "categories": [
+    "gps-tracker",
+    "motion"
+  ],
+  "sensors": [
+    "accelerometer",
+    "temperature",
+    "gps",
+    "ble",
+    "battery",
+    "rssi"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "lansitec",
+    "device": "container-tracker",
+    "codecId": "container-tracker-codec",
+    "codecFile": "container-tracker.js",
+    "codecSha256": "be82bfd0790eadbe51bb839d9757f100c663e504bc4e440ea94d72d0ccf898dc",
+    "referencedAt": "2026-06-23"
+  }
+}

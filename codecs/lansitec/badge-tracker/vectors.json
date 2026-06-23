@@ -1,0 +1,92 @@
+{
+  "uplink": [
+    {
+      "description": "GNSSPosition (0x3) on-device fix: lon -122.25, lat 37.5",
+      "input": {
+        "fPort": 2,
+        "bytes": [48, 194, 244, 128, 0, 66, 22, 0, 0, 102, 116, 194, 128]
+      },
+      "expected": {
+        "data": {
+          "position": { "latitude": 37.5, "longitude": -122.25 },
+          "time": "2024-06-21T00:00:00.000Z"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds fix. bytes[0]=0x30 (type 3). bytes 1-4 / 5-8 are big-endian IEEE-754 float32 encodings of longitude -122.25 and latitude 37.5; bytes 9-12 are big-endian uint32 UTC epoch seconds. expected.data derived by decoding the IEEE-754 floats correctly (the upstream hex2float uses a 0x7fffff mantissa divisor and is off by ~6e-6; we use 0x800000) and remapping to the normalized vocabulary."
+    },
+    {
+      "description": "Heartbeat (0x2): battery 85%, moving, GPS located, charging",
+      "input": {
+        "fPort": 2,
+        "bytes": [32, 85, 70, 2, 88, 49, 80]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 85,
+          "rssi": -70,
+          "snr": 6,
+          "gpsState": "located",
+          "action": { "motion": { "detected": true } },
+          "chargeState": "charging"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic heartbeat. bytes[0]=0x20 (type 2). bytes[1]=battery percent, bytes[2]=RSSI magnitude (negated), bytes[3..4]=SNR*0.01 big-endian (0x0258=600 -> 6.0 dB), bytes[5] high nibble=GPS state 3 (located) / low nibble=move state 1 (moving), bytes[6] high nibble=charge state 5 (charging). expected.data remapped to the vocabulary: move state -> action.motion.detected, percent -> batteryPercent."
+    },
+    {
+      "description": "Beacon (0x7): one BLE beacon scan, cloud-solved (no on-device fix)",
+      "input": {
+        "fPort": 2,
+        "bytes": [113, 3, 0, 0, 0, 0, 18, 52, 86, 120, 200]
+      },
+      "expected": {
+        "data": {
+          "movementLevel": 3,
+          "bleBeacons": [
+            { "major": "1234", "minor": "5678", "rssi": -56 }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic beacon frame. bytes[0]=0x71 (type 7, low nibble = beacon count 1). bytes[1]=movement level. Each beacon tuple starts at offset 6: major bytes[6..7]=0x1234, minor bytes[8..9]=0x5678, rssi byte bytes[10]=200 -> 200-256=-56 dBm. BLE positioning is solved off-device, so no position.* is synthesized; the scan list is emitted as the bleBeacons extra."
+    },
+    {
+      "description": "Alarm (0x8): SOS",
+      "input": {
+        "fPort": 2,
+        "bytes": [128, 1]
+      },
+      "expected": {
+        "data": { "alarm": "sos" }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic alarm frame. bytes[0]=0x80 (type 8), bytes[1]=1 -> SOS alarm. expected.data emits the alarm string as a camelCase extra."
+    },
+    {
+      "description": "Register (0x1) carries configuration, not a measurement",
+      "input": {
+        "fPort": 2,
+        "bytes": [16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["register frame carries device configuration"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic register frame. bytes[0]=0x10 (type 1). The register frame is device configuration (ADR, DR, periods, firmware version) with no normalized measurement, so an error is returned."
+    },
+    {
+      "description": "Unsupported message type yields an error",
+      "input": {
+        "fPort": 2,
+        "bytes": [64, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported message type"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error vector. bytes[0]=0x40 (type 4, not defined for this device)."
+    }
+  ],
+  "downlink": []
+}

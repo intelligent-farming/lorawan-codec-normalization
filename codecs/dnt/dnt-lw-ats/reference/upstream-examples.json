@@ -1,0 +1,75 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/dnt/dnt-lw-ats-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Positon Data Message",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          195,
+          34,
+          128,
+          110,
+          44,
+          3,
+          199,
+          210,
+          114,
+          0,
+          0,
+          10,
+          0,
+          24,
+          13,
+          5,
+          4
+        ]
+      },
+      "output": {
+        "data": {
+          "gnss": {
+            "altitude": 10,
+            "hdop": 0.96,
+            "latitude": 53.24352,
+            "longitude": 7.525063,
+            "ttf": 26
+          },
+          "gnss_info": "Data_DD",
+          "qos_state": "Almost full",
+          "reason": "Cycle",
+          "voltage": 4.06
+        }
+      }
+    },
+    {
+      "description": "Heartbeat Message",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          195,
+          1,
+          0,
+          0,
+          11,
+          0,
+          0,
+          0,
+          0,
+          0,
+          119,
+          15
+        ]
+      },
+      "output": {
+        "data": {
+          "average_ttf": 30,
+          "false_activations": 119,
+          "gps_activations": 11,
+          "gps_timeouts": 0,
+          "reason": "Heartbeat",
+          "voltage": 4.06
+        }
+      }
+    }
+  ]
+}

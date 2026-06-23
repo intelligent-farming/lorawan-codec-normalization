@@ -1,0 +1,103 @@
+{
+  "uplink": [
+    {
+      "description": "fPort 2 fix-success with a live GNSS fix (lat/lon, pdop, motion, battery, IC temperature)",
+      "input": { "fPort": 2, "bytes": [33, 25, 83, 2, 7, 234, 6, 22, 14, 30, 15, 8, 9, 22, 131, 254, 8, 183, 8, 72, 48, 15] },
+      "expected": {
+        "data": {
+          "air": { "temperature": 25 },
+          "action": { "motion": { "detected": true } },
+          "battery": 2.7,
+          "workMode": "period",
+          "lowPower": false,
+          "tamper": false,
+          "idle": false,
+          "downlinkCount": 3,
+          "fixType": "work_mode_fix",
+          "fixTech": "gps",
+          "time": "2026-06-22T06:30:15Z",
+          "position": { "latitude": 37.7749, "longitude": -122.4194 },
+          "pdop": 1.5
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected lat/lon/pdop/battery/motion produced by running reference/upstream-codec.js Decoder(bytes,2) (San Francisco, 37.7749/-122.4194). time re-authored to RFC3339 UTC from the decoded local time + TZ:8."
+    },
+    {
+      "description": "fPort 12 limit-GPS compact live fix (motion set, distinct 2-byte head)",
+      "input": { "fPort": 12, "bytes": [33, 3, 22, 131, 254, 8, 183, 8, 72, 48, 15] },
+      "expected": {
+        "data": {
+          "workMode": "period",
+          "lowPower": false,
+          "tamper": false,
+          "idle": false,
+          "action": { "motion": { "detected": true } },
+          "fixType": "work_mode_fix",
+          "downlinkCount": 3,
+          "battery": 2.3,
+          "position": { "latitude": 37.7749, "longitude": -122.4194 },
+          "pdop": 1.5
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected lat/lon/pdop/battery produced by running reference/upstream-codec.js Decoder(bytes,12). battery code shares byte2 high nibble with the lat MSB upstream, giving 2.3V for this coordinate."
+    },
+    {
+      "description": "fPort 2 fix-success with a Wi-Fi scan list (cloud-solved, no on-device position)",
+      "input": { "fPort": 2, "bytes": [33, 25, 83, 0, 7, 234, 6, 22, 14, 30, 15, 8, 7, 170, 187, 204, 221, 238, 255, 200] },
+      "expected": {
+        "data": {
+          "air": { "temperature": 25 },
+          "action": { "motion": { "detected": true } },
+          "battery": 2.7,
+          "workMode": "period",
+          "lowPower": false,
+          "tamper": false,
+          "idle": false,
+          "downlinkCount": 3,
+          "fixType": "work_mode_fix",
+          "fixTech": "wifi",
+          "time": "2026-06-22T06:30:15Z",
+          "wifiScans": [{ "mac": "aabbccddeeff", "rssi": -56 }]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic frame; mac/rssi produced by running reference/upstream-codec.js Decoder(bytes,2) with fix tech = wifi. No position.* is emitted because the scan is solved off-device."
+    },
+    {
+      "description": "fPort 1 heartbeat (firmware version, restart reason, motion count)",
+      "input": { "fPort": 1, "bytes": [33, 25, 83, 0, 82, 0, 0, 0, 5] },
+      "expected": {
+        "data": {
+          "air": { "temperature": 25 },
+          "action": { "motion": { "detected": true } },
+          "battery": 2.7,
+          "workMode": "period",
+          "lowPower": false,
+          "tamper": false,
+          "idle": false,
+          "downlinkCount": 3,
+          "restartReason": "power_restart",
+          "firmwareVersion": "V1.1.2",
+          "motionCount": 5
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic frame; firmwareVersion/restartReason/motionCount produced by running reference/upstream-codec.js Decoder(bytes,1)."
+    },
+    {
+      "description": "unsupported FPort is rejected",
+      "input": { "fPort": 99, "bytes": [1, 2, 3] },
+      "expected": { "errors": ["unsupported FPort"] },
+      "source": "synthetic"
+    },
+    {
+      "description": "fPort 2 frame too short is rejected",
+      "input": { "fPort": 2, "bytes": [1, 2, 3] },
+      "expected": { "errors": ["requires at least 13 bytes"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,112 @@
+{
+  "uplink": [
+    {
+      "description": "Position fix (Cycle) with trailing QoS record",
+      "input": {
+        "fPort": 10,
+        "bytes": [195, 34, 128, 110, 44, 3, 199, 210, 114, 0, 0, 10, 0, 24, 13, 5, 4]
+      },
+      "expected": {
+        "data": {
+          "battery": 4.06,
+          "reason": "Cycle",
+          "position": { "latitude": 53.24352, "longitude": 7.525063 },
+          "altitudeM": 10,
+          "hdop": 0.96,
+          "timeToFixS": 26,
+          "qosState": "Almost full"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Position fix on Start trip — motion detected",
+      "input": {
+        "fPort": 10,
+        "bytes": [195, 50, 128, 110, 44, 3, 199, 210, 114, 0, 0, 120, 1, 25, 10]
+      },
+      "expected": {
+        "data": {
+          "battery": 4.06,
+          "reason": "Start trip",
+          "position": { "latitude": 53.24352, "longitude": 7.525063 },
+          "action": { "motion": { "detected": true } },
+          "altitudeM": 120,
+          "hdop": 2,
+          "timeToFixS": 20
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; reason nibble set to START_MOVING (3). Wire decode confirmed against reference/upstream-codec.js; expected.data authored to the normalized vocabulary."
+    },
+    {
+      "description": "Heartbeat statistics frame (no fix)",
+      "input": {
+        "fPort": 10,
+        "bytes": [195, 1, 0, 0, 11, 0, 0, 0, 0, 0, 119, 15]
+      },
+      "expected": {
+        "data": {
+          "battery": 4.06,
+          "reason": "Heartbeat",
+          "gpsActivations": 11,
+          "gpsTimeouts": 0,
+          "falseActivations": 119,
+          "averageTimeToFixS": 30
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Power-on / start-up frame",
+      "input": {
+        "fPort": 10,
+        "bytes": [195, 0, 66, 1, 0, 4, 1, 0, 2]
+      },
+      "expected": {
+        "data": {
+          "battery": 4.06,
+          "reason": "Start-up",
+          "hardwareRevision": "B",
+          "firmwareVersion": "1.0.4",
+          "bootloaderVersion": "1.0.2"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input modelling the POWER_ON record (hw rev 'B', fw 1.0.4, bl 1.0.2). Wire decode confirmed against reference/upstream-codec.js."
+    },
+    {
+      "description": "GNSS timeout frame (no fix obtained)",
+      "input": {
+        "fPort": 10,
+        "bytes": [195, 35, 7, 30]
+      },
+      "expected": {
+        "data": {
+          "battery": 4.06,
+          "reason": "Cycle",
+          "gnssTimeout": true,
+          "satellitesInView": 7,
+          "gnssActiveTimeS": 30
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input modelling the GNSS_TIMEOUT record. Wire decode confirmed against reference/upstream-codec.js."
+    },
+    {
+      "description": "Empty payload — error",
+      "input": { "fPort": 10, "bytes": [] },
+      "expected": { "errors": ["missing payload bytes"] },
+      "source": "synthetic",
+      "_note": "Synthetic invalid input: no bytes."
+    },
+    {
+      "description": "Battery byte only, no record — error",
+      "input": { "fPort": 10, "bytes": [195] },
+      "expected": { "errors": ["no record"] },
+      "source": "synthetic",
+      "_note": "Synthetic invalid input: battery byte present but no following record."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,24 @@
+{
+  "vendor": "cotx",
+  "device": "cotxpetfon",
+  "name": "Petfon LoRa Tracker",
+  "categories": [
+    "gps-tracker"
+  ],
+  "sensors": [
+    "gps"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "cotx",
+    "device": "cotxpetfon",
+    "codecId": "cotxpetfon-codec",
+    "codecFile": "cotxpetfon.js",
+    "codecSha256": "834ccad49461ac02f6b6f5b4d013b430ad5dfed3242e55a21ed8675f673eead2",
+    "referencedAt": "2026-06-23"
+  }
+}

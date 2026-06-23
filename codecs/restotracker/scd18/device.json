@@ -1,0 +1,32 @@
+{
+  "vendor": "restotracker",
+  "device": "scd18",
+  "name": "SCD18 - Tracker",
+  "categories": [
+    "gps-tracker",
+    "motion"
+  ],
+  "sensors": [
+    "accelerometer",
+    "auxiliary",
+    "battery",
+    "gps",
+    "light",
+    "time",
+    "vibration",
+    "wifi ssid"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "restotracker",
+    "device": "scd18",
+    "codecId": "scd18-codec",
+    "codecFile": "scd18.js",
+    "codecSha256": "b88693bfeba07203d243a07a543c66e3f3271c0820c716af95c1c85412c5a88f",
+    "referencedAt": "2026-06-23"
+  }
+}

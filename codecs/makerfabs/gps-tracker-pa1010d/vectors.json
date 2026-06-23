@@ -1,0 +1,44 @@
+{
+  "uplink": [
+    {
+      "description": "live GNSS fix: 40.71280 N, 74.00600 W, battery 4.1 V, RTC timestamp",
+      "input": { "fPort": 1, "bytes": [0, 42, 41, 7, 1, 7, 234, 6, 22, 14, 30, 15, 0, 62, 31, 112, 0, 0, 112, 236, 152, 1, 1, 0] },
+      "expected": {
+        "data": {
+          "messageCounter": 42,
+          "battery": 4.1,
+          "gSensorState": 7,
+          "gSensorEnabled": true,
+          "gSensorSensitivity": 0,
+          "position": { "latitude": 40.7128, "longitude": -74.006 },
+          "time": "2026-06-22T14:30:15Z"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; lat/lon magnitudes verified against reference/upstream-codec.js (field2=40.7128, field3=74.006, field1=4.1). Hemisphere bytes (N, W) applied to produce signed WGS84 degrees."
+    },
+    {
+      "description": "no GNSS fix (gpsStatus=0): battery only, position suppressed",
+      "input": { "fPort": 1, "bytes": [0, 43, 39, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] },
+      "expected": {
+        "data": {
+          "messageCounter": 43,
+          "battery": 3.9,
+          "gSensorState": 2,
+          "gSensorEnabled": false,
+          "gSensorSensitivity": 1
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic no-fix frame; upstream reports field2=0/field3=0 (no live coordinate). We suppress position rather than publish a false (0,0) fix."
+    },
+    {
+      "description": "truncated frame (too short for the 24-byte layout)",
+      "input": { "fPort": 1, "bytes": [0, 42, 41, 7, 1] },
+      "expected": { "errors": ["requires 24 bytes"] },
+      "source": "synthetic",
+      "_note": "Synthetic short frame to exercise the length guard."
+    }
+  ],
+  "downlink": []
+}
