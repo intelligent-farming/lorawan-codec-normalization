@@ -201,6 +201,21 @@
                 }
               },
               "additionalProperties": true
+            },
+            "level": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Water-column level / depth above the sensor (m)"
+            },
+            "pressure": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Hydrostatic (liquid) pressure (kPa). Distinct from air.pressure, which is atmospheric."
+            },
+            "ec": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Water electrical conductivity (µS/cm). Distinct from soil.ec, which is dS/m."
             }
           },
           "additionalProperties": true

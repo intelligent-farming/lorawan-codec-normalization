@@ -1,0 +1,27 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-pr36ctd",
+  "name": "DL-PR36CTD - High-Precision Pressure / Liquid Level, Temperature and Electrical Conductivity Sensor",
+  "categories": [
+    "groundwater"
+  ],
+  "sensors": [
+    "pressure",
+    "temperature",
+    "conductivity",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-pr36ctd",
+    "codecId": "dl-pr36ctd-8192-1024-codec",
+    "codecFile": "dl-pr36ctd-8192-1024.js",
+    "codecSha256": "333292b39549bd09764a30be77de91512879d62f653d11e86fc6990bc63af5f5",
+    "referencedAt": "2026-06-23"
+  }
+}

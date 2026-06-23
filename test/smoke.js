@@ -38,9 +38,9 @@ test('module loads and exposes a version', () => {
   assert.match(lib.VERSION, /^\d+\.\d+\.\d+/);
 });
 
-test('categories() returns the 12 defined categories', () => {
+test('categories() returns the 13 defined categories', () => {
   const cats = lib.categories();
-  assert.equal(cats.length, 12);
+  assert.equal(cats.length, 13);
   const ids = cats.map((c) => c.id);
   assert.deepEqual([...ids].sort(), ids); // already sorted
   for (const id of [
@@ -56,6 +56,7 @@ test('categories() returns the 12 defined categories', () => {
     'motion',
     'contact',
     'gps-tracker',
+    'groundwater',
   ]) {
     assert.ok(ids.includes(id), `missing category ${id}`);
   }

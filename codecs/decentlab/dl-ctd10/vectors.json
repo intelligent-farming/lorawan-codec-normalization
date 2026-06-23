@@ -1,0 +1,68 @@
+{
+  "uplink": [
+    {
+      "description": "Example 1 - full reading (depth, temperature, conductivity, freezing flag, battery)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 7, 217, 0, 3, 144, 136, 128, 129, 0, 100, 0, 0, 12, 96]
+      },
+      "expected": {
+        "data": {
+          "water": {
+            "level": 4.232,
+            "temperature": { "current": 12.9 },
+            "ec": 100
+          },
+          "freezingFlag": 0,
+          "battery": 3.168
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Example 2 - battery-only uplink (no water-column block)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 7, 217, 0, 2, 12, 96]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.168
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Synthetic in-bounds full reading: 1.500 m level, 8.5 degC, 350 uS/cm, freezing, 3.600 V",
+      "_note": "Synthetic input; expected.data derived by running reference/upstream-codec.js then converting to canonical vocabulary units (water_depth mm /1000 -> m; battery already V). word level = 32768+1500 = 34268 (0x85DC); temp = 32768+85 = 32853 (0x8055); ec = 350 (0x015E); freezing = 1; battery = 3600 (0x0E10).",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 7, 217, 0, 3, 133, 220, 128, 85, 1, 94, 0, 1, 14, 16]
+      },
+      "expected": {
+        "data": {
+          "water": {
+            "level": 1.5,
+            "temperature": { "current": 8.5 },
+            "ec": 350
+          },
+          "freezingFlag": 1,
+          "battery": 3.6
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Wrong protocol version (1) -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 7, 217, 0, 2, 12, 96]
+      },
+      "expected": {
+        "errors": ["protocol version 1 doesn't match v2"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

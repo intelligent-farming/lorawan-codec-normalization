@@ -1,0 +1,71 @@
+{
+  "uplink": [
+    {
+      "description": "Full sensor block + battery (synthetic, in-bounds): pressure 0.5 bar, electronics 24 degC, PT1000 18.5 degC, EC 1.5 mS/cm, battery 3.115 V",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 10, 23, 0, 3, 144, 0, 152, 0, 146, 128, 134, 0, 12, 43]
+      },
+      "expected": {
+        "data": {
+          "electronicsTemperature": 24,
+          "battery": 3.115,
+          "water": {
+            "pressure": 50,
+            "temperature": { "current": 18.5 },
+            "ec": 1500
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Oracle: words chosen so upstream reference/upstream-codec.js yields pressure=0.5 bar, temperature_electronics=24, temperature_pt1000=18.5, electrical_conductivity=1.5 mS/cm, battery_voltage=3.115 V. Canonical conversion: pressure bar x100 -> 50 kPa; PT1000 degC -> water.temperature.current; EC mS/cm x1000 -> 1500 uS/cm; electronics temp -> camelCase extra; battery V as-is."
+    },
+    {
+      "description": "Upstream example frame (full block + battery)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 10, 23, 0, 3, 128, 7, 151, 134, 151, 129, 128, 6, 12, 43]
+      },
+      "expected": {
+        "data": {
+          "electronicsTemperature": 23.5234,
+          "battery": 3.115,
+          "water": {
+            "pressure": 0.0854,
+            "temperature": { "current": 23.5039 },
+            "ec": 5.8594
+          }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Input from upstream example. Oracle: upstream yields pressure=0.0008544921875 bar, electronics=23.5234375, pt1000=23.50390625, EC=0.005859375 mS/cm, battery=3.115 V. Canonical: pressure x100 -> 0.08544921875 kPa (round 4dp = 0.0854); pt1000 -> 23.5039; EC x1000 -> 5.859375 uS/cm (round 4dp = 5.8594); electronics extra = 23.5234; battery 3.115."
+    },
+    {
+      "description": "Battery-only uplink (flags bit1 only)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 10, 23, 0, 2, 12, 43]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.115
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Oracle: upstream yields only battery_voltage=3.115 V when only the battery flag bit is set. No water-column fields present."
+    },
+    {
+      "description": "Wrong protocol version byte (v1) is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 10, 23, 0, 2, 12, 43]
+      },
+      "expected": {
+        "errors": ["protocol version 1 doesn't match v2"]
+      },
+      "source": "synthetic",
+      "_note": "Oracle: upstream returns {error: \"protocol version 1 doesn't match v2\"}; our codec surfaces the same string in errors[]."
+    }
+  ],
+  "downlink": []
+}

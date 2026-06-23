@@ -1,0 +1,27 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-ctd10",
+  "name": "DL-CTD10 - Pressure / Liquid Level, Temperature and Electrical Conductivity Sensor",
+  "categories": [
+    "groundwater"
+  ],
+  "sensors": [
+    "conductivity",
+    "level",
+    "temperature",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-ctd10",
+    "codecId": "dl-ctd10-codec",
+    "codecFile": "dl-ctd10.js",
+    "codecSha256": "e8a914aed8fac3fc4e4f879458bdc242e054af9e13667020b9b33a04064b3e50",
+    "referencedAt": "2026-06-23"
+  }
+}

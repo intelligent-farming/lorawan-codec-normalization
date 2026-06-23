@@ -1,0 +1,78 @@
+{
+  "uplink": [
+    {
+      "description": "Measurement package (ct=3): P1 medium pressure, TOB1 water temp, PBaro/TBaro/Pd as extras",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 3, 0, 211, 63, 3, 83, 248, 63, 192, 0, 0, 65, 100, 0, 0, 63, 124, 172, 8, 65, 180, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "water": {
+            "pressure": 150,
+            "temperature": {
+              "current": 14.25
+            }
+          },
+          "differentialPressureKpa": 51.3,
+          "barometricPressureKpa": 98.7,
+          "barometerTemperature": 22.5
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected produced by running reference/upstream-codec.js then converting to canonical units (P1 1.5 bar -> 150 kPa; PBaro 0.987 bar -> 98.7 kPa extra; Pd 0.513 bar -> 51.3 kPa extra; TOB1 14.25 C -> water.temperature.current; TBaro 22.5 C -> barometerTemperature extra). Channel set mirrors the upstream ct=3 example but with positive medium pressure so water.pressure >= 0."
+    },
+    {
+      "description": "Measurement package (ct=9): P1 pressure, TOB1 water temp, Conductivity Tc -> water.ec",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 9, 4, 18, 64, 0, 212, 254, 65, 148, 204, 205, 63, 180, 221, 47]
+      },
+      "expected": {
+        "data": {
+          "water": {
+            "pressure": 201.3,
+            "temperature": {
+              "current": 18.6
+            },
+            "ec": 1413
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected produced by running reference/upstream-codec.js then converting to canonical units (P1 2.013 bar -> 201.3 kPa; TOB1 18.6 C -> water.temperature.current; Conductivity Tc 1.413 mS/cm -> 1413 uS/cm)."
+    },
+    {
+      "description": "Device-info package (fPort 4, func=12): battery + diagnostic extras",
+      "input": {
+        "fPort": 4,
+        "bytes": [12, 1, 19, 0, 19, 47, 0, 0, 0, 12, 39, 227, 146, 139, 64, 162, 176, 13, 47, 58]
+      },
+      "expected": {
+        "data": {
+          "battery": 5.084,
+          "batteryPercent": 47,
+          "enclosureHumidity": 58,
+          "classGroup": "19.00",
+          "swVersion": "19.47",
+          "serialNumber": 12,
+          "deviceLocalDatetime": "2021-03-16 16:00:11"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Input is the upstream info-message example; expected authored here (battery_voltage 5.083990... V -> battery 5.084; capacity % -> batteryPercent; enclosure humidity % -> enclosureHumidity; version/serial/datetime -> camelCase extras). Secondary frame: carries only battery/extras, no water.level/pressure (allowed; the measurement vectors cover the groundwater atLeastOne requirement)."
+    },
+    {
+      "description": "Unsupported function code",
+      "input": {
+        "fPort": 1,
+        "bytes": [99, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported function code"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

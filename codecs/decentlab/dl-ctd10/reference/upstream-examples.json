@@ -1,0 +1,84 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/decentlab/dl-ctd10-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Example 1",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          7,
+          217,
+          0,
+          3,
+          144,
+          136,
+          128,
+          129,
+          0,
+          100,
+          0,
+          0,
+          12,
+          96
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.168
+          },
+          "device_id": 2009,
+          "electrical_conductivity": {
+            "displayName": "Electrical conductivity",
+            "unit": "µS⋅cm⁻¹",
+            "value": 100
+          },
+          "freezing_flag": {
+            "displayName": "Freezing flag",
+            "value": 0
+          },
+          "protocol_version": 2,
+          "temperature": {
+            "displayName": "Temperature",
+            "unit": "°C",
+            "value": 12.9
+          },
+          "water_depth": {
+            "displayName": "Water depth",
+            "unit": "mm",
+            "value": 4232
+          }
+        }
+      }
+    },
+    {
+      "description": "Example 2",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          7,
+          217,
+          0,
+          2,
+          12,
+          96
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.168
+          },
+          "device_id": 2009,
+          "protocol_version": 2
+        }
+      }
+    }
+  ]
+}

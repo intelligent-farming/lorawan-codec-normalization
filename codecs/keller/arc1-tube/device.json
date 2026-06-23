@@ -1,0 +1,29 @@
+{
+  "vendor": "keller",
+  "device": "arc1-tube",
+  "name": "ARC1 Tube - Remote Transmitter",
+  "categories": [
+    "groundwater"
+  ],
+  "sensors": [
+    "pressure",
+    "temperature",
+    "conductivity",
+    "barometer",
+    "battery",
+    "humidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "keller",
+    "device": "arc1-tube",
+    "codecId": "keller-codec",
+    "codecFile": "kellerpayload.js",
+    "codecSha256": "e6b798403c1eb01b1fe1346ad399c3a15fd7a5286c786a79515bf16f233daa9e",
+    "referencedAt": "2026-06-23"
+  }
+}

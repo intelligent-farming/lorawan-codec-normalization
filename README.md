@@ -98,7 +98,7 @@ fPort-variant, config, and partial uplinks legal.
 
 ## Categories
 
-`categories()` lists all 12; `categorySchema(id)` returns the JSON Schema for a
+`categories()` lists all 13; `categorySchema(id)` returns the JSON Schema for a
 category. Coverage grows over time — devices are added incrementally. Use
 `devices({ category })` for the live member list; the counts below are a snapshot.
 
@@ -119,6 +119,7 @@ of the listed paths present).
 | `contact` | `action.contactState` | 20 |
 | `gps-tracker` | `position.latitude`, `position.longitude` | 46 |
 | `water-leak` | `water.leak` | 12 |
+| `groundwater` | `atLeastOne`: `water.level` / `water.pressure` | 6 |
 
 `devices()` / `devices({ category })` enumerate registered devices;
 `device(vendor, device)` returns one device's metadata.
@@ -126,7 +127,11 @@ of the listed paths present).
 ## Units and conventions
 
 Normalized values use the vocabulary's units (e.g. `soil.ec` in dS/m,
-`air.pressure` in hPa). Note that the vocabulary's `battery` is **voltage (V)**;
+`air.pressure` in hPa). Water-column quantities are deliberately distinct from
+their air/soil counterparts: `water.pressure` is hydrostatic (kPa, vs the
+atmospheric `air.pressure` in hPa), `water.ec` is in µS/cm (vs `soil.ec` in
+dS/m), and `water.level` is in m. Note that the vocabulary's `battery` is
+**voltage (V)**;
 devices that report battery as a percentage (e.g. all Milesight sensors) emit
 the camelCase extra `batteryPercent` instead. See [AUTHORING.md](AUTHORING.md)
 for the full conversion table.

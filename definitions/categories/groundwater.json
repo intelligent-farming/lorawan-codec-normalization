@@ -1,0 +1,8 @@
+{
+  "id": "groundwater",
+  "name": "Groundwater",
+  "description": "Subsurface water-column probes: borehole, well, and piezometer level/pressure loggers. A member reports water level and/or hydrostatic pressure.",
+  "atLeastOne": ["water.level", "water.pressure"],
+  "provides": ["water.temperature.current", "water.ec", "battery"],
+  "notes": "Membership is `atLeastOne` of water.level / water.pressure: a logger that reports either qualifies. water.pressure is hydrostatic (kPa) — never map liquid pressure to air.pressure (atmospheric, 900-1100 hPa). water.ec is the water-column conductivity in µS/cm (distinct from soil.ec in dS/m)."
+}

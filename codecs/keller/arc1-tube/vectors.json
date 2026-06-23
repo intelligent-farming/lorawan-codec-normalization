@@ -1,0 +1,73 @@
+{
+  "uplink": [
+    {
+      "description": "Measurement (ct=3): P1 pressure, TOB1 water temp, barometric PBaro + TBaro",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 3, 0, 210, 63, 192, 0, 0, 65, 99, 51, 51, 63, 127, 124, 238, 65, 168, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "water": {
+            "pressure": 150,
+            "temperature": { "current": 14.2 }
+          },
+          "barometricPressureKpa": 99.8,
+          "barometerTemperature": 21
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; floats hand-encoded (P1=1.5 bar, TOB1=14.2 C, PBaro=0.998 bar, TBaro=21 C). Expected derived by running reference/upstream-codec.js and converting to canonical units (bar*100=kPa, C as-is)."
+    },
+    {
+      "description": "Measurement (ct=9): P1 pressure, TOB1 water temp, temperature-corrected conductivity",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 9, 4, 18, 64, 22, 20, 123, 65, 59, 51, 51, 63, 157, 243, 182]
+      },
+      "expected": {
+        "data": {
+          "water": {
+            "pressure": 234.5,
+            "temperature": { "current": 11.7 },
+            "ec": 1234
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; floats hand-encoded (P1=2.345 bar, TOB1=11.7 C, Conductivity Tc=1.234 mS/cm). Expected derived by running reference/upstream-codec.js and converting to canonical units (bar*100=kPa, mS/cm*1000=uS/cm)."
+    },
+    {
+      "description": "Device information package (func 12): battery voltage + diagnostics",
+      "input": {
+        "fPort": 4,
+        "bytes": [12, 1, 19, 0, 19, 47, 0, 0, 0, 12, 39, 227, 146, 139, 64, 162, 176, 13, 47, 58]
+      },
+      "expected": {
+        "data": {
+          "battery": 5.084,
+          "batteryPercent": 47,
+          "enclosureHumidity": 58,
+          "classGroup": "19.00",
+          "swVersion": "19.47",
+          "serialNumber": 12
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream TTN example input (Apache-2.0). Expected derived by running reference/upstream-codec.js: battery_voltage -> battery (V), battery_capacity_percentage -> batteryPercent, humidity_percentage -> enclosureHumidity."
+    },
+    {
+      "description": "Unsupported function code yields an error",
+      "input": {
+        "fPort": 2,
+        "bytes": [200, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported function code"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: function code 200 is neither a measurement (1) nor information (12) package."
+    }
+  ],
+  "downlink": []
+}
