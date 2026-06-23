@@ -1,0 +1,93 @@
+{
+  "uplink": [
+    {
+      "description": "POSITION / GNSS fix: decodes lat+lon on-device, motion flag + counter, battery percent (gps-tracker + motion)",
+      "input": {
+        "bytes": [
+          16, 94, 12, 36, 138, 0, 0, 1, 25, 255, 63, 242, 4, 54, 69, 128,
+          0, 161, 0, 0, 0, 10, 23, 101
+        ],
+        "fPort": 19
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 94,
+          "action": { "motion": { "detected": true, "count": 0 } },
+          "positionStatus": "success",
+          "positionType": "gnss",
+          "position": { "latitude": 43.615845, "longitude": 7.06656 },
+          "altitudeM": 161,
+          "courseDeg": 0,
+          "speedMS": 0.1,
+          "gpsAccuracyM": 23,
+          "fixQuality": "fix3D",
+          "satellites": 5
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "ACCELEROMETER MOTION_START notification: motion detected, charging (motion)",
+      "input": {
+        "bytes": [9, 0, 127, 66, 48],
+        "fPort": 19
+      },
+      "expected": {
+        "data": {
+          "batteryState": "charging",
+          "notificationType": "motionStart",
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "TEMPERATURE notification (TEMP_NORMAL): air.temperature = 21 C",
+      "input": {
+        "bytes": [8, 50, 0, 0, 34, 21],
+        "fPort": 19
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 50,
+          "notificationType": "temperature",
+          "temperatureAlarm": "normal",
+          "air": { "temperature": 21 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected output produced by running reference/upstream-codec.js (notification class 2 TEMPERATURE, byte5 signed int8 = 21 C)."
+    },
+    {
+      "description": "POSITION / WIFI scan: no on-device fix, AP MAC list emitted as extra (gps-tracker scan not solved on-device)",
+      "input": {
+        "bytes": [16, 80, 0, 0, 3, 0, 0, 0, 0, 17, 34, 51, 68, 85, 200],
+        "fPort": 19
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 80,
+          "action": { "motion": { "detected": false, "count": 0 } },
+          "positionStatus": "success",
+          "positionType": "wifi",
+          "wifiScan": [{ "mac": "00:11:22:33:44:55", "rssi": -56 }]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected output produced by running reference/upstream-codec.js (position type 3 WIFI, one 7-byte AP record: MAC 00:11:22:33:44:55, signed int8 RSSI 200 -> -56 dBm)."
+    },
+    {
+      "description": "Truncated header: payload shorter than 4 bytes",
+      "input": {
+        "bytes": [16, 94],
+        "fPort": 19
+      },
+      "expected": {
+        "errors": ["payload too short"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; the upstream determineHeader throws on payload.length < 4, so no measurement is decodable."
+    }
+  ],
+  "downlink": []
+}

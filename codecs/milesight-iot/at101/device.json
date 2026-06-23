@@ -1,0 +1,29 @@
+{
+  "vendor": "milesight-iot",
+  "device": "at101",
+  "name": "AT101",
+  "categories": [
+    "gps-tracker",
+    "motion"
+  ],
+  "sensors": [
+    "accelerometer",
+    "battery",
+    "gps",
+    "temperature",
+    "tilt"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "at101",
+    "codecId": "at101-codec",
+    "codecFile": "at101.js",
+    "codecSha256": "026fd3e6db6bea1b1b579c85428ab6355e3ed8f4677212d30c97f48e481563cb",
+    "referencedAt": "2026-06-22"
+  }
+}

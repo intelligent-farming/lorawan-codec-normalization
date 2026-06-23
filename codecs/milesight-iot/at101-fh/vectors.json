@@ -1,0 +1,71 @@
+{
+  "uplink": [
+    {
+      "description": "GNSS fix with real motion (moving) inside geofence",
+      "input": {
+        "fPort": 85,
+        "bytes": [4, 136, 128, 117, 54, 2, 64, 139, 184, 248, 2]
+      },
+      "expected": {
+        "data": {
+          "motionStatus": "moving",
+          "geofenceStatus": "inside",
+          "position": { "latitude": 37.123456, "longitude": -122.123456 },
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload (0x04/0x88 LOCATION: lat=37.123456, lon=-122.123456; status low nibble 0x02=moving, high nibble 0x00=inside). expected.data authored from the normalized mapping; verified the wire-level field reads match reference/upstream-codec.js (upstream emits latitude/longitude/motion_status=moving/geofence_status=inside)."
+    },
+    {
+      "description": "Battery + temperature + GNSS fix, motion stopped outside geofence",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 77, 3, 103, 235, 0, 4, 136, 236, 51, 251, 253, 74, 69, 3, 9, 19]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 77,
+          "motionStatus": "stop",
+          "geofenceStatus": "outside",
+          "position": { "latitude": -33.86882, "longitude": 151.20929 },
+          "air": { "temperature": 23.5 },
+          "action": { "motion": { "detected": false } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload (0x01/0x75 battery=77%, 0x03/0x67 temp=23.5C, 0x04/0x88 LOCATION lat=-33.86882 lon=151.20929; status 0x13 low nibble 0x03=stop, high nibble 0x01=outside). Battery is a percentage so it maps to batteryPercent (not volts). Stop is not real motion so action.motion.detected=false. Verified field reads against reference/upstream-codec.js (upstream: battery=77, temperature=23.5, motion_status=stop, geofence_status=outside)."
+    },
+    {
+      "description": "Initial connection device info (versions + serial)",
+      "input": {
+        "fPort": 85,
+        "bytes": [255, 11, 255, 255, 1, 1, 255, 22, 103, 69, 226, 117, 102, 36, 0, 8, 255, 9, 1, 16, 255, 10, 1, 2]
+      },
+      "expected": {
+        "data": {
+          "deviceStatus": "on",
+          "ipsoVersion": "v0.1",
+          "sn": "6745e27566240008",
+          "hardwareVersion": "v1.1",
+          "firmwareVersion": "v1.2"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream TTN example INPUT (Initial Connection). expected.data authored as camelCase extras; verified against reference/upstream-codec.js (upstream snake_case: device_status=on, ipso_version=v0.1, sn=6745e27566240008, hardware_version=v1.1, firmware_version=v1.2)."
+    },
+    {
+      "description": "Unrecognized channel/type yields an error",
+      "input": {
+        "fPort": 85,
+        "bytes": [153, 153, 1]
+      },
+      "expected": {
+        "errors": ["no recognized Milesight channels"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic payload with no recognized Milesight channel/type pair; decoder returns an error rather than a bare {}."
+    }
+  ],
+  "downlink": []
+}

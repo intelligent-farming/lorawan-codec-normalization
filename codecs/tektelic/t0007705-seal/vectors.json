@@ -1,0 +1,121 @@
+{
+  "uplink": [
+    {
+      "description": "Full fix frame: UTC timestamp, GPS coordinates, ground speed, GNSS fix, accelerometer, temperature, barometric pressure, battery lifetime, and a free-fall safety event (motion).",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 133, 105, 172, 231, 143, 0, 136, 64, 44, 39, 202, 197, 140, 16, 43, 0, 146, 10, 0, 0, 1, 0, 113, 0, 120, 255, 226, 3, 222, 0, 103, 0, 235, 0, 115, 39, 148, 0, 211, 100, 0, 189, 1, 153, 2, 149, 2]
+      },
+      "expected": {
+        "data": {
+          "time": "2026-06-22T14:30:15Z",
+          "position": { "latitude": 44.9999949, "longitude": -74.999998 },
+          "air": { "temperature": 23.5, "pressure": 1013.2 },
+          "action": { "motion": { "detected": true } },
+          "altitudeMeters": 99.98,
+          "groundSpeed": 2.778,
+          "gpsFix": 1,
+          "accelerationX": 0.12,
+          "accelerationY": -0.03,
+          "accelerationZ": 0.99,
+          "batteryPercent": 100,
+          "batteryDaysRemaining": 409,
+          "emergencyButton": false,
+          "freeFall": true,
+          "shockImpact": false,
+          "extendedAbsence": false,
+          "pressureAlarm": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload. GPS/ground-speed/fix/battery fields are byte-for-byte consistent with the working upstream decode (reference/upstream-codec.js); temperature, barometric pressure, accelerometer and the safety/dead-zone bitfields are authored from the documented field table because the upstream generic engine mis-decodes those (temperature/pressure -> [0], accelerometer throws, bitfields read 0). lat raw 0x402C27 (45/1.07e-5), lon raw 0xCAC58C (-75/2.15e-5), alt raw 0x102B, temp 235*0.1=23.5C, pressure 10132*0.1=1013.2hPa, safety bit1=free-fall."
+    },
+    {
+      "description": "GPS fix with GNSS dead-zone status and a shock-impact safety event (motion).",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 136, 64, 44, 39, 202, 197, 140, 16, 43, 0, 149, 27, 2, 149, 4]
+      },
+      "expected": {
+        "data": {
+          "position": { "latitude": 44.9999949, "longitude": -74.999998 },
+          "action": { "motion": { "detected": true } },
+          "altitudeMeters": 99.98,
+          "gnssDeadZone0": 3,
+          "gnssDeadZone1": 2,
+          "gnssDeadZone2": 1,
+          "gnssDeadZone3": 0,
+          "emergencyButton": false,
+          "freeFall": false,
+          "shockImpact": true,
+          "extendedAbsence": false,
+          "pressureAlarm": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic. gnss_status byte 0x1B -> dz0=3,dz1=2,dz2=1,dz3=0; safety bit2=shock-impact -> action.motion.detected true."
+    },
+    {
+      "description": "GPS fix with calibrated pressure and an emergency-button safety event (no motion).",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 136, 64, 44, 39, 202, 197, 140, 16, 43, 2, 149, 1, 0, 116, 39, 148]
+      },
+      "expected": {
+        "data": {
+          "position": { "latitude": 44.9999949, "longitude": -74.999998 },
+          "action": { "motion": { "detected": false } },
+          "altitudeMeters": 99.98,
+          "emergencyButton": true,
+          "freeFall": false,
+          "shockImpact": false,
+          "extendedAbsence": false,
+          "pressureAlarm": false,
+          "calibratedPressure": 1013.2
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic. safety byte 0x01 = emergency button only -> action.motion.detected false (button press is not motion). cal_barometric_pressure 10132*0.1=1013.2hPa -> calibratedPressure extra."
+    },
+    {
+      "description": "Battery lifetime percentage and days remaining (upstream example input).",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 211, 100, 0, 189, 1, 153]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 100,
+          "batteryDaysRemaining": 409
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Input from the upstream YAML example; upstream decodes battery_lifetime_pct=100 and battery_lifetime_dys=409 (this path works upstream). We surface them as camelCase extras (percentage, not the volt-valued `battery` vocabulary key)."
+    },
+    {
+      "description": "Unsupported fPort (config/downlink-response port, not a data uplink).",
+      "input": {
+        "fPort": 99,
+        "bytes": [1, 2, 3]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 99"]
+      },
+      "source": "synthetic",
+      "_note": "Only fPort 10 carries the normalized measurement frame."
+    },
+    {
+      "description": "Unrecognized channel/type header.",
+      "input": {
+        "fPort": 10,
+        "bytes": [171, 205, 1]
+      },
+      "expected": {
+        "errors": ["unrecognized channel/type"]
+      },
+      "source": "synthetic",
+      "_note": "0xAB 0xCD is not a defined SEAL fPort-10 header."
+    }
+  ],
+  "downlink": []
+}

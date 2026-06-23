@@ -1,0 +1,136 @@
+{
+  "uplink": [
+    {
+      "description": "fPort 1 position, valid fix, in-trip (moving)",
+      "input": {
+        "fPort": 1,
+        "bytes": [72, 23, 246, 24, 240, 192, 196, 203, 65, 42, 160]
+      },
+      "expected": {
+        "data": {
+          "battery": 4,
+          "action": { "motion": { "detected": true } },
+          "headingDeg": 90,
+          "speedKmph": 42,
+          "fixFailed": false,
+          "position": { "latitude": 41.8781, "longitude": -87.6298 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds fix; bytes built so int32 LE lat/lon*1e-7 = 41.8781,-87.6298, heading 90, speed 42 km/h, batV 4.0. expected.data derived by running reference/upstream-codec.js and remapping to the normalized vocabulary."
+    },
+    {
+      "description": "fPort 1 position, valid fix, not in trip (TTN example input)",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 48, 237, 236, 0, 50, 36, 69, 0, 0, 222]
+      },
+      "expected": {
+        "data": {
+          "battery": 5.55,
+          "action": { "motion": { "detected": false } },
+          "headingDeg": 0,
+          "speedKmph": 0,
+          "fixFailed": false,
+          "position": { "latitude": -32, "longitude": 116 }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Input from upstream-examples.json; expected.data authored from reference/upstream-codec.js output remapped to the vocabulary (lat -32, lon 116, batV 5.55)."
+    },
+    {
+      "description": "fPort 4 compact position, valid fix, in-trip + man-down",
+      "input": {
+        "fPort": 4,
+        "bytes": [225, 245, 5, 194, 235, 11, 26, 148, 5]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.7,
+          "action": { "motion": { "detected": true } },
+          "headingDeg": 90,
+          "speedKmph": 15,
+          "fixFailed": false,
+          "manDown": true,
+          "position": { "latitude": 10, "longitude": 20 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds fix; bytes built so int24 LE lat/lon*256e-7 = 10,20, heading 90, speed 15 km/h, batV 3.7, man-down set. expected.data from reference/upstream-codec.js remapped to the vocabulary."
+    },
+    {
+      "description": "fPort 1 position, fix failed (cached coordinates, no live position; TTN example input)",
+      "input": {
+        "fPort": 1,
+        "bytes": [133, 168, 197, 235, 216, 118, 63, 11, 3, 1, 190]
+      },
+      "expected": {
+        "data": {
+          "battery": 4.75,
+          "action": { "motion": { "detected": true } },
+          "headingDeg": 0,
+          "speedKmph": 1,
+          "fixFailed": true,
+          "cachedLatitude": -33.9367803,
+          "cachedLongitude": 18.8708568
+        },
+        "warnings": ["fix failed"]
+      },
+      "source": "ttn-example",
+      "_note": "Input from upstream-examples.json. Upstream nests the stale fix under `cached`; we suppress position.* on a failed fix and surface the cached coordinates as extras."
+    },
+    {
+      "description": "fPort 3 device statistics",
+      "input": {
+        "fPort": 3,
+        "bytes": [26, 5, 16, 32, 48, 64, 80, 96, 112, 5, 2]
+      },
+      "expected": {
+        "data": {
+          "battery": 5,
+          "txCount": 2592,
+          "tripCount": 1024,
+          "gpsSuccesses": 24640,
+          "gpsFails": 0,
+          "aveGpsFixS": 321,
+          "aveGpsFailS": 192,
+          "aveGpsFreshenS": 112,
+          "wakeupsPerTrip": 5,
+          "uptimeWeeks": 4
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic stats frame; expected.data computed from reference/upstream-codec.js (initialBatV -> battery)."
+    },
+    {
+      "description": "fPort 2 downlink acknowledgement",
+      "input": {
+        "fPort": 2,
+        "bytes": [131, 2, 7]
+      },
+      "expected": {
+        "data": {
+          "sequence": 3,
+          "accepted": true,
+          "firmwareMajor": 2,
+          "firmwareMinor": 7
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic ack; expected.data from reference/upstream-codec.js (fwMaj/fwMin -> firmwareMajor/Minor)."
+    },
+    {
+      "description": "unsupported FPort yields an error",
+      "input": {
+        "fPort": 9,
+        "bytes": [0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported FPort"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error vector: FPort outside 1-4."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,104 @@
+{
+  "uplink": [
+    {
+      "description": "TTN example: acceleration alarm + temperature",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 0, 1, 0, 103, 1, 90]
+      },
+      "expected": {
+        "data": {
+          "action": { "motion": { "detected": true } },
+          "air": { "temperature": 34.6 },
+          "accelerationAlarm": 1
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "GPS fix (NW hemisphere) + ground speed + temperature + battery1 + fix status",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 136, 55, 21, 20, 200, 45, 124, 22, 1, 244, 0, 146, 0, 125, 0, 103, 0, 223, 1, 186, 50, 0, 149, 3]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "position": { "latitude": 45.12345, "longitude": -93.654321 },
+          "air": { "temperature": 22.3 },
+          "altitude": 250,
+          "groundSpeed": 12.5,
+          "batteryEndOfService": false,
+          "gpsFixUtc": true,
+          "gpsFixPosition": true
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds GPS coordinates; expected.data produced by mapping the upstream reference decoder (reference/upstream-codec.js) output for these synthetic bytes into the normalized vocabulary."
+    },
+    {
+      "description": "Motion alarm + acceleration vector + battery1 end-of-service + temperature",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 0, 1, 0, 113, 0, 120, 255, 226, 3, 232, 1, 186, 188, 0, 103, 0, 223]
+      },
+      "expected": {
+        "data": {
+          "action": { "motion": { "detected": true } },
+          "battery": 3.1,
+          "air": { "temperature": 22.3 },
+          "accelerationAlarm": 1,
+          "accelerationX": 1,
+          "accelerationY": -0.03,
+          "accelerationZ": 0.12,
+          "batteryEndOfService": true
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic accelerometer event; acceleration axis values reproduced from the upstream reference decoder (xaxis/yaxis/zaxis read MSB-first from the 6-byte chunk)."
+    },
+    {
+      "description": "GPS fix (SE hemisphere, negative temperature) + battery2 cell",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 136, 240, 189, 192, 77, 162, 146, 160, 0, 0, 0, 103, 255, 199, 2, 186, 45]
+      },
+      "expected": {
+        "data": {
+          "position": { "latitude": -12.5, "longitude": 130.25 },
+          "air": { "temperature": -5.7 },
+          "altitude": 0,
+          "battery2": 2.95,
+          "battery2EndOfService": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds southern/eastern coordinates and a negative temperature; expected values from the upstream reference decoder mapped to the normalized vocabulary."
+    },
+    {
+      "description": "Unrecognized channel/type header",
+      "input": {
+        "fPort": 10,
+        "bytes": [170, 187, 1]
+      },
+      "expected": {
+        "errors": ["unrecognized channel/type"]
+      },
+      "source": "synthetic",
+      "_note": "0xAA 0xBB is not a known ORCA header; the upstream reference returns a 'Couldn't find header' error for the same bytes."
+    },
+    {
+      "description": "Wrong fPort (not a data uplink)",
+      "input": {
+        "fPort": 5,
+        "bytes": [0, 0, 1]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 5"]
+      },
+      "source": "synthetic",
+      "_note": "Upstream returns 'Wrong port: 5' for this fPort; we reject non-10 data ports."
+    }
+  ],
+  "downlink": []
+}

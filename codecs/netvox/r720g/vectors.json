@@ -1,0 +1,95 @@
+{
+  "uplink": [
+    {
+      "description": "Latitude report (reportType 0x01) with tilt angles",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 181, 1, 36, 1, 249, 156, 192, 37, 129, 90]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "position": { "latitude": 33.135808 },
+          "angleX": 37,
+          "angleY": -127,
+          "angleZ": 90
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds latitude frame. Bytes 4-7 (0x01F99CC0) decode to 33.135808 deg; angles bytes 8-10 are signed degrees. expected.data produced by running reference/upstream-codec.js (source of truth) and mapping Latitude->position.latitude, Volt->battery, AngleX/Y/Z->angleX/angleY/angleZ."
+    },
+    {
+      "description": "Longitude report (reportType 0x02) with HDOP and altitude",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 181, 2, 38, 250, 46, 250, 207, 12, 1, 244]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.8,
+          "position": { "longitude": -97.584433 },
+          "hdop": 12,
+          "altitude": 500
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds longitude frame. Bytes 4-7 (0xFA2EFACF) decode via two's-complement to -97.584433 deg; bytes 9-10 (0x01F4) to altitude 500 m. expected.data produced by running reference/upstream-codec.js (source of truth) and mapping Longitude->position.longitude, Volt->battery, HDop->hdop, AltitudeGPS->altitude."
+    },
+    {
+      "description": "Latitude report with low-battery flag set",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 181, 1, 164, 1, 249, 156, 192, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3.6,
+          "position": { "latitude": 33.135808 },
+          "angleX": 0,
+          "angleY": 0,
+          "angleZ": 0
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic frame: byte3 high bit (0xA4 = 0x80|0x24) flags low battery while still encoding 3.6 V, matching upstream's '(low battery)' suffix on Volt. Surfaced as the camelCase extra lowBattery."
+    },
+    {
+      "description": "Startup/device-info frame (reportType 0x00) carries no measurement",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 181, 0, 100, 2, 32, 32, 8, 17, 0, 0]
+      },
+      "expected": {
+        "errors": ["device info frame"]
+      },
+      "source": "ttn-example",
+      "_note": "Upstream example input; upstream emits Device/SWver/HWver/Datecode, none of which are measurements, so we report an error."
+    },
+    {
+      "description": "No GPS fix sentinel (latitude 0xFFFFFFFF)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 181, 1, 36, 255, 255, 255, 255, 37, 129, 90]
+      },
+      "expected": {
+        "errors": ["no GPS fix"]
+      },
+      "source": "ttn-example",
+      "_note": "Upstream example input; the 0xFFFFFFFF coordinate is the device's no-fix sentinel (upstream stringifies it as '0xFFFFFFFF'), so no position is decoded."
+    },
+    {
+      "description": "Config response on fPort 7 is unsupported",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 181, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort"]
+      },
+      "source": "ttn-example",
+      "_note": "Upstream example input; fPort 7 carries config/command responses, not measurements."
+    }
+  ],
+  "downlink": []
+}

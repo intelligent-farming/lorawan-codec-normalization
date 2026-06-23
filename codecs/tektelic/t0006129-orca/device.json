@@ -1,0 +1,27 @@
+{
+  "vendor": "tektelic",
+  "device": "t0006129-orca",
+  "name": "ORCA Industrial GPS Asset Tracker",
+  "categories": [
+    "gps-tracker",
+    "motion"
+  ],
+  "sensors": [
+    "gps",
+    "accelerometer",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "tektelic",
+    "device": "t0006129-orca",
+    "codecId": "t0006129-codec",
+    "codecFile": "decoder_orca_industrial_gps_asset_tracker.js",
+    "codecSha256": "52ccdc2a5fd0137654da66fadbee7b6b3c111f3849415856de83bd1c7faf3d1e",
+    "referencedAt": "2026-06-22"
+  }
+}

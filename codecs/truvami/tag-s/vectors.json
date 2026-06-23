@@ -1,0 +1,110 @@
+{
+  "uplink": [
+    {
+      "description": "fPort 10 GNSS fix (lat 48.1, lon 11.5, moving, 3.700V, 9 sats)",
+      "input": { "fPort": 10, "bytes": [9, 2, 221, 242, 160, 0, 175, 121, 224, 20, 110, 101, 83, 241, 0, 14, 116, 42, 24, 9] },
+      "expected": {
+        "data": {
+          "position": { "latitude": 48.1, "longitude": 11.5 },
+          "action": { "motion": { "detected": true } },
+          "battery": 3.7,
+          "altitude": 523,
+          "gnssTimestamp": 1700000000,
+          "numSatellites": 9,
+          "pdop": 12,
+          "ttf": 42,
+          "confChangeId": 1,
+          "confSuccess": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected derived via the ORACLE method by running reference/upstream-codec.js (tag-s-l.js, shared with tag-l). Upstream yields latitude 48.1, longitude 11.5, altitude 523 m, batteryVoltage 3700 mV, pdop 12, moving true, conf_change_id 1. Normalized: lat/lon -> position, moving -> action.motion.detected, 3700 mV -> battery 3.7 V (status 0x09 => moving + confChangeId 1)."
+    },
+    {
+      "description": "fPort 110 buffered GNSS fix (buffer level 7, steady, 4.100V)",
+      "input": { "fPort": 110, "bytes": [0, 7, 8, 2, 221, 242, 160, 0, 175, 121, 224, 20, 110, 101, 83, 241, 0, 16, 4, 30, 16, 7] },
+      "expected": {
+        "data": {
+          "position": { "latitude": 48.1, "longitude": 11.5 },
+          "action": { "motion": { "detected": false } },
+          "battery": 4.1,
+          "altitude": 523,
+          "gnssTimestamp": 1700000000,
+          "numSatellites": 7,
+          "pdop": 8,
+          "ttf": 30,
+          "confChangeId": 1,
+          "confSuccess": false,
+          "bufferLevel": 7
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic buffered GNSS input; oracle (upstream) confirms bufferLevel 7, batteryVoltage 4100 mV (=> battery 4.1 V), pdop 8, moving false. 2-byte buffer level (7) precedes the status byte (0x08 => steady)."
+    },
+    {
+      "description": "fPort 51 combined GNSS + 2 WiFi APs",
+      "input": { "fPort": 51, "bytes": [9, 2, 221, 242, 160, 0, 175, 121, 224, 20, 110, 101, 83, 241, 0, 14, 116, 42, 24, 9, 0, 17, 34, 51, 68, 85, 192, 170, 187, 204, 221, 238, 255, 160] },
+      "expected": {
+        "data": {
+          "position": { "latitude": 48.1, "longitude": 11.5 },
+          "action": { "motion": { "detected": true } },
+          "battery": 3.7,
+          "altitude": 523,
+          "gnssTimestamp": 1700000000,
+          "numSatellites": 9,
+          "pdop": 12,
+          "ttf": 42,
+          "confChangeId": 1,
+          "confSuccess": false,
+          "accessPoints": [
+            { "mac": "00:11:22:33:44:55", "rssi": -64 },
+            { "mac": "aa:bb:cc:dd:ee:ff", "rssi": -96 }
+          ],
+          "wifiTimestamp": 1699999968
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic combined uplink; oracle (upstream) yields wifiData of two APs and wifiTimestamp 1699999968 (= gnssTimestamp - ttf + 10). 20-byte GNSS block followed by two 7-byte WiFi AP records (MAC + int8 RSSI)."
+    },
+    {
+      "description": "fPort 151 buffered combined GNSS + 1 WiFi AP",
+      "input": { "fPort": 151, "bytes": [0, 3, 9, 2, 221, 242, 160, 0, 175, 121, 224, 20, 110, 101, 83, 241, 0, 14, 116, 42, 24, 9, 0, 17, 34, 51, 68, 85, 192] },
+      "expected": {
+        "data": {
+          "position": { "latitude": 48.1, "longitude": 11.5 },
+          "action": { "motion": { "detected": true } },
+          "battery": 3.7,
+          "altitude": 523,
+          "gnssTimestamp": 1700000000,
+          "numSatellites": 9,
+          "pdop": 12,
+          "ttf": 42,
+          "confChangeId": 1,
+          "confSuccess": false,
+          "bufferLevel": 3,
+          "accessPoints": [
+            { "mac": "00:11:22:33:44:55", "rssi": -64 }
+          ],
+          "wifiTimestamp": 1699999968
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic buffered combined uplink; oracle (upstream) confirms bufferLevel 3 and one WiFi AP. 2-byte buffer level (3) precedes the 20-byte GNSS block then one WiFi AP record."
+    },
+    {
+      "description": "fPort 10 GNSS packet too short",
+      "input": { "fPort": 10, "bytes": [1, 2, 3] },
+      "expected": { "errors": ["Invalid payload length for GNSS packet"] },
+      "source": "synthetic",
+      "_note": "Synthetic short payload; fewer than the 20 bytes required for a GNSS fix. Oracle (upstream) returns the same length error."
+    },
+    {
+      "description": "fPort 6 button-press uplink carries no normalized measurement",
+      "input": { "fPort": 6, "bytes": [1] },
+      "expected": { "errors": ["unsupported fPort 6"] },
+      "source": "synthetic",
+      "_note": "Synthetic; upstream decodes port 6 as a button-press event, but it carries no vocabulary measurement so this codec reports it unsupported. Only the position-bearing ports 10/110/51/151 are normalized."
+    }
+  ],
+  "downlink": []
+}

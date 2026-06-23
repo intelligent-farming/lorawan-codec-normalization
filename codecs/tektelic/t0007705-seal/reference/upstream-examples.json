@@ -1,0 +1,30 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/tektelic/t0007705-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Battery Lifetime Percentage",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          0,
+          211,
+          100,
+          0,
+          189,
+          1,
+          153
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_lifetime_pct": 100,
+          "battery_lifetime_dys": 409,
+          "port": "10",
+          "raw": "[00, D3, 64, 00, BD, 01, 99]"
+        },
+        "errors": [],
+        "warnings": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "vendor": "digital-matter",
+  "device": "oyster",
+  "name": "Oyster - Asset Tracking",
+  "categories": [
+    "gps-tracker",
+    "motion"
+  ],
+  "sensors": [
+    "accelerometer",
+    "battery",
+    "gps",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "digital-matter",
+    "device": "oyster",
+    "codecId": "oyster-codec",
+    "codecFile": "oyster.js",
+    "codecSha256": "8f07f98f87152f710748adb74e92f0926644e35ec5d94aebd51500a944867a3a",
+    "referencedAt": "2026-06-22"
+  }
+}

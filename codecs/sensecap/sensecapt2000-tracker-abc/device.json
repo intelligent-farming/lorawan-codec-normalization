@@ -1,0 +1,27 @@
+{
+  "vendor": "sensecap",
+  "device": "sensecapt2000-tracker-abc",
+  "name": "T2000 Tracker A/B/C",
+  "categories": [
+    "gps-tracker",
+    "motion"
+  ],
+  "sensors": [
+    "gnss",
+    "accelerometer",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "sensecap",
+    "device": "sensecapt2000-tracker-abc",
+    "codecId": "sensecapt2000-tracker-abc-codec",
+    "codecFile": "sensecapt2000-tracker-abc-decoder.js",
+    "codecSha256": "c535a6e65600abea04fef0bfef4d466618cc0897a85fd9ff47a8d7693f42437b",
+    "referencedAt": "2026-06-22"
+  }
+}

@@ -1,0 +1,194 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/netvox/r720g-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Startup version report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          181,
+          0,
+          100,
+          2,
+          32,
+          32,
+          8,
+          17,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R720G",
+          "SWver": 10,
+          "HWver": 2,
+          "Datecode": "20200811"
+        }
+      }
+    },
+    {
+      "description": "Status report - 1",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          181,
+          1,
+          36,
+          255,
+          255,
+          255,
+          255,
+          37,
+          129,
+          90
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R720G",
+          "Volt": 3.6,
+          "Latitude": "0xFFFFFFFF",
+          "AngleX": 37,
+          "AngleY": -127,
+          "AngleZ": 90
+        }
+      }
+    },
+    {
+      "description": "Status report - 2",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          181,
+          2,
+          36,
+          254,
+          54,
+          60,
+          128,
+          37,
+          0,
+          250
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R720G",
+          "Volt": 3.6,
+          "Longitude": -30,
+          "HDop": 37,
+          "AltitudeGPS": 250
+        }
+      }
+    },
+    {
+      "description": "Configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          129,
+          181,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ConfigReportRsp",
+          "Device": "R720G",
+          "Status": "Success"
+        }
+      }
+    },
+    {
+      "description": "Read configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          130,
+          181,
+          3,
+          132,
+          7,
+          8,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ReadConfigReportRsp",
+          "Device": "R720G",
+          "MinTime": 900,
+          "MaxTime": 1800
+        }
+      }
+    },
+    {
+      "description": "Set active threshold response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          131,
+          181,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "SetActiveThresholdRsp",
+          "Device": "R720G",
+          "Status": "Success"
+        }
+      }
+    },
+    {
+      "description": "Get active threshold response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          132,
+          181,
+          10,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "GetActiveThresholdRsp",
+          "Device": "R720G",
+          "ActiveThreshold": 10
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "uplink": [
+    {
+      "description": "GNSS fix while moving, with battery and temperature",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 55, 3, 103, 214, 0, 4, 136, 0, 241, 23, 2, 207, 224, 240, 249, 2]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 55,
+          "air": { "temperature": 21.4 },
+          "motionStatus": "moving",
+          "geofenceStatus": "inside",
+          "position": { "latitude": 35.123456, "longitude": -101.654321 },
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload (lat 35.123456, lon -101.654321 both in WGS84 range). Field values cross-checked by running reference/upstream-codec.js: {battery:55, temperature:21.4, latitude:35.123456, longitude:-101.654321, motion_status:'moving', geofence_status:'inside'}. Normalized to vocabulary: battery%->batteryPercent, temperature->air.temperature, lat/lon->position, moving->action.motion.detected=true."
+    },
+    {
+      "description": "Wi-Fi scan result (one AP) while stopped, with battery",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 80, 6, 217, 1, 36, 111, 40, 18, 52, 86, 189, 3]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 80,
+          "wifiScanResult": "finish",
+          "wifiScan": [
+            { "group": 1, "mac": "24:6f:28:12:34:56", "rssi": -67, "motionStatus": "stop" }
+          ],
+          "action": { "motion": { "detected": false } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic Wi-Fi positioning payload. Upstream reference run yields {battery:80, wifi_scan_result:'finish', motion_status:'stop', wifi:[{group:1, mac:'24:6f:28:12:34:56', rssi:-67, motion_status:'stop'}]}. 'stop' is a real motion state, so action.motion.detected=false; the scan list is the camelCase extra wifiScan[]."
+    },
+    {
+      "description": "Initial connection / device info frame",
+      "input": {
+        "fPort": 85,
+        "bytes": [255, 11, 255, 255, 1, 1, 255, 22, 103, 69, 226, 117, 102, 36, 0, 8, 255, 9, 1, 16, 255, 10, 1, 2]
+      },
+      "expected": {
+        "data": {
+          "deviceStatus": "on",
+          "ipsoVersion": "v0.1",
+          "sn": "6745e27566240008",
+          "hardwareVersion": "v1.1",
+          "firmwareVersion": "v1.2"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "TTN catalog example input (at101-codec.yaml). Upstream decodes device_status/ipso/hardware/firmware/sn (the 0xff/0x0b status byte, then 0xff/0x01 IPSO, 0xff/0x16 SN, 0xff/0x09 HW, 0xff/0x0a FW). All emitted as camelCase device-info extras (no measurement vocabulary applies)."
+    },
+    {
+      "description": "Historical location entry",
+      "input": {
+        "fPort": 85,
+        "bytes": [32, 206, 192, 219, 117, 102, 224, 138, 199, 255, 32, 251, 105, 2]
+      },
+      "expected": {
+        "data": {
+          "locationHistory": [
+            { "timestamp": 1719000000, "latitude": 40.5, "longitude": -3.7 }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic 0x20/0xCE historical-location TLV. Upstream reference run yields history:[{timestamp:1719000000, longitude:-3.7, latitude:40.5}]; emitted as the camelCase extra locationHistory[] (a single-object decode cannot use the top-level position for a past fix)."
+    },
+    {
+      "description": "Unrecognized channels yields an error",
+      "input": {
+        "fPort": 85,
+        "bytes": [170, 187, 0]
+      },
+      "expected": {
+        "errors": ["no recognized Milesight channels"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic payload with an unknown channel/type so the decoder recognizes nothing and returns an error."
+    }
+  ],
+  "downlink": []
+}

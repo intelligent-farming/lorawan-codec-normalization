@@ -1,0 +1,24 @@
+{
+  "vendor": "netvox",
+  "device": "r720g",
+  "name": "R720G - Wireless GPS Tracker with tilt angle",
+  "categories": [
+    "gps-tracker"
+  ],
+  "sensors": [
+    "gps"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r720g",
+    "codecId": "r720g-codec",
+    "codecFile": "payload/r720g.js",
+    "codecSha256": "7778cafdccd44581afa8e07d1a6686deeff3ab76eb7534cc973e8ac8a81cbe00",
+    "referencedAt": "2026-06-22"
+  }
+}

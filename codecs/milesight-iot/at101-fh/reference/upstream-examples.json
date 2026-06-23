@@ -1,0 +1,46 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/milesight-iot/at101-fh-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Initial Connection - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          255,
+          11,
+          255,
+          255,
+          1,
+          1,
+          255,
+          22,
+          103,
+          69,
+          226,
+          117,
+          102,
+          36,
+          0,
+          8,
+          255,
+          9,
+          1,
+          16,
+          255,
+          10,
+          1,
+          2
+        ]
+      },
+      "output": {
+        "data": {
+          "device_status": "on",
+          "firmware_version": "v1.2",
+          "hardware_version": "v1.1",
+          "ipso_version": "v0.1",
+          "sn": "6745e27566240008"
+        }
+      }
+    }
+  ]
+}

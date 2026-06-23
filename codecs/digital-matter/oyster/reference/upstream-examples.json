@@ -1,0 +1,75 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/digital-matter/oyster-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Position update fix valid",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          0,
+          48,
+          237,
+          236,
+          0,
+          50,
+          36,
+          69,
+          0,
+          0,
+          222
+        ]
+      },
+      "output": {
+        "warnings": [],
+        "data": {
+          "type": "position",
+          "batV": 5.55,
+          "fixFailed": false,
+          "inTrip": false,
+          "manDown": null,
+          "latitudeDeg": -32,
+          "longitudeDeg": 116,
+          "speedKmph": 0,
+          "headingDeg": 0
+        }
+      }
+    },
+    {
+      "description": "Position update fix failed",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          133,
+          168,
+          197,
+          235,
+          216,
+          118,
+          63,
+          11,
+          3,
+          1,
+          190
+        ]
+      },
+      "output": {
+        "warnings": [
+          "fix failed"
+        ],
+        "data": {
+          "type": "position",
+          "batV": 4.75,
+          "fixFailed": true,
+          "inTrip": true,
+          "manDown": null,
+          "cached": {
+            "latitudeDeg": -33.9367803,
+            "longitudeDeg": 18.8708568,
+            "speedKmph": 1,
+            "headingDeg": 0
+          }
+        }
+      }
+    }
+  ]
+}

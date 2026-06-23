@@ -1,0 +1,125 @@
+{
+  "uplink": [
+    {
+      "description": "POSITION_MESSAGE GPS fix (northern/eastern hemisphere) -> position + air.temperature + motion",
+      "input": {
+        "fPort": 18,
+        "bytes": [3, 106, 193, 137, 0, 0, 29, 40, 185, 1, 96, 55, 2],
+        "recvTime": "2025-03-20T10:00:00.000+02:00"
+      },
+      "expected": {
+        "data": {
+          "messageType": "POSITION_MESSAGE",
+          "trackingMode": "MOTION_START_END_TRACKING",
+          "sosFlag": 0,
+          "appState": 1,
+          "periodicPosition": true,
+          "onDemand": false,
+          "action": { "motion": { "detected": false } },
+          "batteryLevel": 193,
+          "batteryStatus": "OPERATING",
+          "air": { "temperature": 25.3 },
+          "ackToken": 0,
+          "rawPositionType": "GPS",
+          "age": 0,
+          "position": { "latitude": 48.9208064, "longitude": 2.3082752 },
+          "horizontalAccuracy": 7.84
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "POSITION_MESSAGE GPS fix (southern/eastern hemisphere, negative latitude)",
+      "input": {
+        "fPort": 18,
+        "bytes": [3, 34, 200, 128, 0, 0, 235, 208, 8, 90, 32, 181, 50]
+      },
+      "expected": {
+        "data": {
+          "messageType": "POSITION_MESSAGE",
+          "trackingMode": "MOTION_TRACKING",
+          "sosFlag": 0,
+          "appState": 0,
+          "periodicPosition": true,
+          "onDemand": false,
+          "action": { "motion": { "detected": false } },
+          "batteryLevel": 200,
+          "batteryStatus": "OPERATING",
+          "air": { "temperature": 20.8 },
+          "ackToken": 0,
+          "rawPositionType": "GPS",
+          "age": 0,
+          "position": { "latitude": -33.8688, "longitude": 151.2092928 },
+          "horizontalAccuracy": 196.08
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds GPS fix; expected values produced by running reference/upstream-codec.js (decodeUplink) on this input. Latitude/longitude are encoded as the top 24 bits of the signed 1e-7-degree int32 for -33.8688 / 151.2093."
+    },
+    {
+      "description": "POSITION_MESSAGE WiFi scan (no GPS fix) -> scans extra, no position",
+      "input": {
+        "fPort": 18,
+        "bytes": [3, 32, 180, 128, 9, 0, 170, 187, 204, 221, 238, 255, 17, 34, 51, 68, 85, 102]
+      },
+      "expected": {
+        "data": {
+          "messageType": "POSITION_MESSAGE",
+          "trackingMode": "MOTION_TRACKING",
+          "sosFlag": 0,
+          "appState": 0,
+          "periodicPosition": false,
+          "onDemand": false,
+          "action": { "motion": { "detected": false } },
+          "batteryLevel": 180,
+          "batteryStatus": "OPERATING",
+          "air": { "temperature": 20.8 },
+          "ackToken": 0,
+          "rawPositionType": "WIFI_BSSIDS_WITH_NO_CYPHER",
+          "age": 0,
+          "scans": [{ "bssid": "aa:bb:cc:dd:ee:ff", "rssi": 17 }]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic WIFI_BSSIDS_WITH_NO_CYPHER frame; expected fields match reference/upstream-codec.js (a WiFi scan, not a GPS fix, so no position is emitted)."
+    },
+    {
+      "description": "EVENT GEOLOC_START -> header + eventType, no position",
+      "input": {
+        "fPort": 18,
+        "bytes": [10, 0, 249, 134, 0, 0],
+        "recvTime": "2025-03-20T10:05:00.000+02:00"
+      },
+      "expected": {
+        "data": {
+          "messageType": "EVENT",
+          "trackingMode": "STAND_BY",
+          "sosFlag": 0,
+          "appState": 0,
+          "periodicPosition": false,
+          "onDemand": false,
+          "action": { "motion": { "detected": false } },
+          "batteryLevel": 249,
+          "batteryStatus": "OPERATING",
+          "air": { "temperature": 23.8 },
+          "ackToken": 0,
+          "eventType": "GEOLOC_START"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Unsupported message type (heartbeat etc.) -> error",
+      "input": {
+        "fPort": 18,
+        "bytes": [99, 0, 100, 128, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported message type"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: byte 0 is not POSITION_MESSAGE (3) or EVENT (10), so no normalized measurement is produced."
+    }
+  ],
+  "downlink": []
+}

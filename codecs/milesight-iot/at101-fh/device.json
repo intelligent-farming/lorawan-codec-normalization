@@ -1,0 +1,29 @@
+{
+  "vendor": "milesight-iot",
+  "device": "at101-fh",
+  "name": "AT101-FH - Asset Tracker (fleet/forklift-harsh variant)",
+  "categories": [
+    "gps-tracker",
+    "motion"
+  ],
+  "sensors": [
+    "accelerometer",
+    "battery",
+    "gps",
+    "temperature",
+    "tilt"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "at101-fh",
+    "codecId": "at101-fh-codec",
+    "codecFile": "at101-fh.js",
+    "codecSha256": "386e6531275d3fa997057a06087d83d80fbf6cfac2753dfd66a4170512cba6b3",
+    "referencedAt": "2026-06-22"
+  }
+}

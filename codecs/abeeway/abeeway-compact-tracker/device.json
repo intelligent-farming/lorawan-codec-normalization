@@ -1,0 +1,27 @@
+{
+  "vendor": "abeeway",
+  "device": "abeeway-compact-tracker",
+  "name": "Compact Tracker",
+  "categories": [
+    "gps-tracker",
+    "motion"
+  ],
+  "sensors": [
+    "accelerometer",
+    "gps",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "abeeway",
+    "device": "abeeway-compact-tracker",
+    "codecId": "asset-tracker-2-codec",
+    "codecFile": "asset-tracker-2.js",
+    "codecSha256": "dff73299d21acbff587dd46dddc85ce95dd73dd475d4257e1e32fde0754affef",
+    "referencedAt": "2026-06-22"
+  }
+}

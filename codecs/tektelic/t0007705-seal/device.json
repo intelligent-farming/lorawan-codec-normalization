@@ -1,0 +1,28 @@
+{
+  "vendor": "tektelic",
+  "device": "t0007705-seal",
+  "name": "SEAL Wearable Safety & GPS Tracker",
+  "categories": [
+    "gps-tracker",
+    "motion"
+  ],
+  "sensors": [
+    "gps",
+    "accelerometer",
+    "temperature",
+    "pressure"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "tektelic",
+    "device": "t0007705-seal",
+    "codecId": "t0007705-codec",
+    "codecFile": "decoder_seal.js",
+    "codecSha256": "91aee0739bdd4bcbbdbea819c4c76c6a45fc9cbdfc1f748c709023d2ee4fe6e1",
+    "referencedAt": "2026-06-22"
+  }
+}

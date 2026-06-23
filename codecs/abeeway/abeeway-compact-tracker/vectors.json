@@ -1,0 +1,130 @@
+{
+  "uplink": [
+    {
+      "description": "GPS position fix (Paris) — POSITION_MESSAGE, rawPositionType GPS",
+      "input": {
+        "fPort": 18,
+        "bytes": [3, 106, 193, 137, 0, 0, 29, 40, 185, 1, 96, 55, 2]
+      },
+      "expected": {
+        "data": {
+          "trackingMode": "MOTION_START_END_TRACKING",
+          "action": { "motion": { "detected": false } },
+          "air": { "temperature": 25.3 },
+          "batteryLevel": 193,
+          "messageType": "POSITION_MESSAGE",
+          "rawPositionType": "GPS",
+          "position": { "latitude": 48.9208064, "longitude": 2.3082752 },
+          "fixAge": 0,
+          "horizontalAccuracy": 7.84
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Synthetic GPS fix, northern hemisphere, moving, permanent tracking",
+      "input": {
+        "fPort": 18,
+        "bytes": [3, 70, 200, 131, 0, 0, 24, 68, 71, 211, 227, 148, 50]
+      },
+      "expected": {
+        "data": {
+          "trackingMode": "PERMANENT_TRACKING",
+          "action": { "motion": { "detected": true } },
+          "air": { "temperature": 22.3 },
+          "batteryLevel": 200,
+          "messageType": "POSITION_MESSAGE",
+          "rawPositionType": "GPS",
+          "position": { "latitude": 40.7127808, "longitude": -74.006016 },
+          "fixAge": 0,
+          "horizontalAccuracy": 196.08
+        }
+      },
+      "source": "synthetic",
+      "_note": "Hand-built in-bounds POSITION_MESSAGE; expected produced by running reference/upstream-codec.js and re-shaping to the normalized vocabulary."
+    },
+    {
+      "description": "Synthetic GPS fix, southern hemisphere, static, sub-zero temperature",
+      "input": {
+        "fPort": 18,
+        "bytes": [3, 33, 128, 77, 0, 10, 235, 208, 8, 90, 32, 181, 30]
+      },
+      "expected": {
+        "data": {
+          "trackingMode": "MOTION_TRACKING",
+          "action": { "motion": { "detected": false } },
+          "air": { "temperature": -5 },
+          "batteryLevel": 128,
+          "messageType": "POSITION_MESSAGE",
+          "rawPositionType": "GPS",
+          "position": { "latitude": -33.8688, "longitude": 151.2092928 },
+          "fixAge": 80,
+          "horizontalAccuracy": 117.65
+        }
+      },
+      "source": "synthetic",
+      "_note": "Hand-built in-bounds POSITION_MESSAGE (negative latitude, negative temperature); expected produced by running reference/upstream-codec.js and re-shaping to the normalized vocabulary."
+    },
+    {
+      "description": "WiFi BSSID scan (no on-device position) — MAC list as extra, climate + motion retained",
+      "input": {
+        "fPort": 18,
+        "bytes": [3, 64, 180, 131, 9, 0, 170, 187, 204, 17, 34, 51, 192]
+      },
+      "expected": {
+        "data": {
+          "trackingMode": "PERMANENT_TRACKING",
+          "action": { "motion": { "detected": false } },
+          "air": { "temperature": 22.3 },
+          "batteryLevel": 180,
+          "messageType": "POSITION_MESSAGE",
+          "rawPositionType": "WIFI_BSSIDS_WITH_NO_CYPHER",
+          "fixAge": 0,
+          "wifiBssids": [{ "id": "aa:bb:cc:11:22:33", "rssi": -64 }]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Hand-built WiFi-scan POSITION_MESSAGE (rawPositionType 9); a scan for cloud solving has no decoded lat/lon, so no position.* is emitted. Expected produced by running reference/upstream-codec.js and re-shaping to the normalized vocabulary."
+    },
+    {
+      "description": "GEOLOC_START event — climate + motion header, no position",
+      "input": {
+        "fPort": 18,
+        "bytes": [10, 0, 249, 134, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "trackingMode": "STAND_BY",
+          "action": { "motion": { "detected": false } },
+          "air": { "temperature": 23.8 },
+          "batteryLevel": 249,
+          "messageType": "EVENT"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Frame-pending uplink carries no measurement",
+      "input": {
+        "fPort": 18,
+        "bytes": [0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["frame-pending uplink carries no normalized measurement"]
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Empty payload is rejected",
+      "input": {
+        "fPort": 18,
+        "bytes": []
+      },
+      "expected": {
+        "errors": ["payload too short"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

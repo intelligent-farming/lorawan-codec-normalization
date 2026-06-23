@@ -1,0 +1,81 @@
+{
+  "uplink": [
+    {
+      "description": "0x2E GNSS fix (lat 51.234567, lon 12.345678) + battery 90%, no events",
+      "input": { "fPort": 5, "bytes": [46, 0, 0, 0, 102, 117, 219, 192, 0, 188, 97, 78, 3, 13, 199, 7, 90] },
+      "expected": {
+        "data": {
+          "time": "2024-06-21T20:00:00.000Z",
+          "position": { "longitude": 12.345678, "latitude": 51.234567 },
+          "batteryPercent": 90,
+          "motionId": 0
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "0x2B GNSS fix (lat 40.5, lon -0.123456) + accel + battery 75% + startMoving event",
+      "input": { "fPort": 5, "bytes": [43, 0, 1, 1, 102, 117, 233, 208, 0, 120, 255, 226, 3, 232, 255, 254, 29, 192, 2, 105, 251, 32, 75] },
+      "expected": {
+        "data": {
+          "time": "2024-06-21T21:00:00.000Z",
+          "position": { "longitude": -0.123456, "latitude": 40.5 },
+          "action": { "motion": { "detected": true } },
+          "batteryPercent": 75,
+          "motionId": 1,
+          "accelerometerX": 120,
+          "accelerometerY": -30,
+          "accelerometerZ": 1000,
+          "eventStatus": ["startMoving"]
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "0x2C Wi-Fi scan (2 APs) + accel + battery 100% + endMovement event",
+      "input": { "fPort": 5, "bytes": [44, 0, 2, 2, 102, 117, 247, 224, 0, 10, 0, 20, 255, 251, 100, 2, 170, 187, 204, 221, 238, 255, 196, 17, 34, 51, 68, 85, 102, 176] },
+      "expected": {
+        "data": {
+          "time": "2024-06-21T22:00:00.000Z",
+          "action": { "motion": { "detected": false } },
+          "batteryPercent": 100,
+          "motionId": 2,
+          "accelerometerX": 10,
+          "accelerometerY": 20,
+          "accelerometerZ": -5,
+          "wifiScan": [
+            { "mac": "AA:BB:CC:DD:EE:FF", "rssi": -60 },
+            { "mac": "11:22:33:44:55:66", "rssi": -80 }
+          ],
+          "eventStatus": ["endMovement"]
+        }
+      },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "wrong fPort -> error",
+      "input": { "fPort": 2, "bytes": [1, 2, 3] },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "empty payload -> error",
+      "input": { "fPort": 5, "bytes": [] },
+      "expected": { "errors": ["empty payload"] },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    },
+    {
+      "description": "unknown frame id only -> no decodable measurement",
+      "input": { "fPort": 5, "bytes": [255, 0] },
+      "expected": { "errors": ["no decodable measurement frame"] },
+      "source": "synthetic",
+      "_note": "expected derived from upstream TTN decoder"
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,32 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/tektelic/t0006129-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Acceleration Alarm and MCU Temperature Uplink",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          0,
+          0,
+          1,
+          0,
+          103,
+          1,
+          90
+        ]
+      },
+      "output": {
+        "data": {
+          "port": "10",
+          "raw": "[00, 00, 01, 00, 67, 01, 5A]",
+          "sensor_data": {
+            "acceleration_alarm": 1,
+            "temperature": 34.6
+          }
+        },
+        "errors": [],
+        "warnings": []
+      }
+    }
+  ]
+}

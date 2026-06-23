@@ -1,0 +1,27 @@
+{
+  "vendor": "abeeway",
+  "device": "abeeway-geolocation-module",
+  "name": "Geolocation Module",
+  "categories": [
+    "gps-tracker",
+    "motion"
+  ],
+  "sensors": [
+    "accelerometer",
+    "gps",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "abeeway",
+    "device": "abeeway-geolocation-module",
+    "codecId": "asset-tracker-3-codec",
+    "codecFile": "asset-tracker-3.js",
+    "codecSha256": "e127390854e4ff9729ea164959951e6afd7973a0e67b3dac527773457e21dee6",
+    "referencedAt": "2026-06-22"
+  }
+}
