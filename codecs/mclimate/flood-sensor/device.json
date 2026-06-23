@@ -1,0 +1,25 @@
+{
+  "vendor": "mclimate",
+  "device": "flood-sensor",
+  "name": "Flood Sensor",
+  "categories": [
+    "water-leak"
+  ],
+  "sensors": [
+    "temperature",
+    "water"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "mclimate",
+    "device": "flood-sensor",
+    "codecId": "flood-sensor-codec",
+    "codecFile": "flood-sensor.js",
+    "codecSha256": "2e7003fa8002100670f7f58e6b36e8870148628b94eeb8aebbdaea5f65ab514a",
+    "referencedAt": "2026-06-23"
+  }
+}

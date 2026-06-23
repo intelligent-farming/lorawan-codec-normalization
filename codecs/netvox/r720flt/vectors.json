@@ -1,0 +1,56 @@
+{
+  "uplink": [
+    {
+      "description": "Status report, no leak, normal battery (fPort 6)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 212, 1, 36, 0, 0, 0, 100, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "replenishWaterCount": 100,
+          "fault": false,
+          "water": {
+            "leak": false
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected.data authored from this module's normalization. Wire-format understanding cross-checked against reference/upstream-codec.js, which decodes Volt 3.6, ReplenishWaterCount 100, FaultAlarm Normal, TankLeakAlarm NoLeak."
+    },
+    {
+      "description": "Status report, leak detected, fault, low battery (fPort 6)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 212, 1, 164, 0, 0, 0, 200, 1, 1, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3.6,
+          "replenishWaterCount": 200,
+          "fault": true,
+          "water": {
+            "leak": true
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; byte 3 high bit set flags low battery. Wire-format understanding cross-checked against reference/upstream-codec.js, which decodes Volt '3.6(low battery)', ReplenishWaterCount 200, FaultAlarm Fault, TankLeakAlarm Leak."
+    },
+    {
+      "description": "Config response on fPort 7 carries no measurement",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 212, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 7"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; config responses are not measurements. Upstream decodes this as a ConfigReportRsp."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,80 @@
+{
+  "uplink": [
+    {
+      "description": "Water leakage detected (leak flag set)",
+      "input": {
+        "fPort": 106,
+        "bytes": [
+          17,
+          11,
+          54,
+          40,
+          54
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "boardTemperature": 22,
+          "relativeHumidity": 40,
+          "temperatureChanged": 0,
+          "humidityChanged": 0,
+          "water": {
+            "leak": true,
+            "temperature": {
+              "current": 22
+            }
+          }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Input bytes from the upstream TTN tbwl100-codec example (leak detected). expected.data authored for this module: leak bit -> water.leak true, water-probe byte 4 -> water.temperature.current, battery nibble -> volts; board temp / humidity / change flags emitted as extras."
+    },
+    {
+      "description": "No leak (dry), temperature-changed event",
+      "input": {
+        "fPort": 106,
+        "bytes": [
+          32,
+          5,
+          58,
+          45,
+          46
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "boardTemperature": 26,
+          "relativeHumidity": 45,
+          "temperatureChanged": 1,
+          "humidityChanged": 0,
+          "water": {
+            "leak": false,
+            "temperature": {
+              "current": 14
+            }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame: byte0=0x20 clears leak bit and sets the temperature-changed flag; battery level 5 -> 3.0 V; board 0x3a -> 26 C; humidity 45 %; water probe 0x2e -> 14 C."
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [
+          1
+        ]
+      },
+      "expected": {
+        "errors": [
+          "unknown FPort"
+        ]
+      },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

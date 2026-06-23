@@ -1,0 +1,75 @@
+{
+  "uplink": [
+    {
+      "description": "Status report with leak detected (location 2570)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 12, 1, 118, 1, 1, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 11.8,
+          "leakLocation": 2570,
+          "water": { "leak": true }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Status report with no leak (location 0)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 12, 1, 118, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 11.8,
+          "leakLocation": 0,
+          "water": { "leak": false }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame derived from the TTN status example with the leak-location bytes zeroed; expected.data computed by running reference/upstream-codec.js (Volt 11.8, WaterLeakLocation 0)."
+    },
+    {
+      "description": "Status report with low-battery flag set (location 5120)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 12, 1, 246, 2, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 11.8,
+          "leakLocation": 5120,
+          "water": { "leak": true }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame: byte[3]=0xF6 sets the low-battery high bit over 0x76 (11.8 V); leak-location bytes 0x0200. expected.data computed by running reference/upstream-codec.js (Volt '11.8(low battery)', WaterLeakLocation 5120); upstream's stringified low-battery Volt is normalized here to battery 11.8 V plus the lowBattery extra."
+    },
+    {
+      "description": "Startup version/device-info report (no measurement)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 12, 0, 100, 2, 32, 32, 8, 17, 0, 0]
+      },
+      "expected": {
+        "errors": ["device info frame"]
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Configure report response on fPort 7 (no measurement)",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 7"]
+      },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

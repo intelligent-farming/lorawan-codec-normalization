@@ -1,0 +1,99 @@
+{
+  "uplink": [
+    {
+      "description": "Long package, flood detected (water.leak true)",
+      "input": {
+        "fPort": 2,
+        "bytes": [66, 0, 10, 20, 50]
+      },
+      "expected": {
+        "data": {
+          "water": { "leak": true },
+          "battery": 2,
+          "reason": "floodDetected",
+          "boxTamper": false,
+          "floodDetectionWireState": false,
+          "magnet": false,
+          "alarmValidated": false,
+          "manualOpenIndicator": false,
+          "manualCloseIndicator": false,
+          "closeTime": 10,
+          "openTime": 20
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected.data produced by running reference/upstream-codec.js and mapping flood->water.leak, battery raw 50 -> (50*8+1600)/1000 = 2.0 V."
+    },
+    {
+      "description": "Long package, keepalive, no flood (water.leak false)",
+      "input": {
+        "fPort": 2,
+        "bytes": [0, 0, 5, 7, 100]
+      },
+      "expected": {
+        "data": {
+          "water": { "leak": false },
+          "battery": 2.4,
+          "reason": "keepalive",
+          "boxTamper": false,
+          "floodDetectionWireState": false,
+          "magnet": false,
+          "alarmValidated": false,
+          "manualOpenIndicator": false,
+          "manualCloseIndicator": false,
+          "closeTime": 5,
+          "openTime": 7
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; battery raw 100 -> (100*8+1600)/1000 = 2.4 V."
+    },
+    {
+      "description": "Short periodic uplink, valve open (temperature + valve state, no leak)",
+      "input": {
+        "fPort": 2,
+        "bytes": [44, 192]
+      },
+      "expected": {
+        "data": {
+          "water": { "temperature": { "current": 22 } },
+          "air": { "temperature": 22 },
+          "reason": "keepalive",
+          "valveOpen": true
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream TTN example input; expected.data authored here. waterTemp raw 44/2 = 22, ambient (192&0x7f=64 -> 64-20=44 /2)=22, valve bit set -> valveOpen true."
+    },
+    {
+      "description": "Short periodic uplink, valve closed",
+      "input": {
+        "fPort": 2,
+        "bytes": [40, 56]
+      },
+      "expected": {
+        "data": {
+          "water": { "temperature": { "current": 20 } },
+          "air": { "temperature": 18 },
+          "reason": "keepalive",
+          "valveOpen": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; waterTemp 40/2=20, ambient (56-20)/2=18, valve bit clear -> valveOpen false."
+    },
+    {
+      "description": "Empty payload (unrecognized length)",
+      "input": {
+        "fPort": 2,
+        "bytes": []
+      },
+      "expected": {
+        "errors": ["unrecognized payload length"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error input: zero-length payload matches neither short (2) nor long (>2) package."
+    }
+  ],
+  "downlink": []
+}

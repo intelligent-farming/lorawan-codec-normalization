@@ -1,0 +1,46 @@
+{
+  "uplink": [
+    {
+      "description": "Leak detected + battery (TTN example input)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 100, 3, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 100,
+          "water": { "leak": true }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "No leak + battery",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 72, 3, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 72,
+          "water": { "leak": false }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; battery 72%, leak channel 0x03/0x00 byte=0 => no leak. Expected normalized from running reference/upstream-codec.js (battery 72, leak_status 'no leak')."
+    },
+    {
+      "description": "Unrecognized channel yields error",
+      "input": {
+        "fPort": 85,
+        "bytes": [9, 153, 1]
+      },
+      "expected": {
+        "errors": ["no recognized Milesight channels"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic payload with an unknown channel/type (0x09/0x99); no recognized Milesight channels."
+    }
+  ],
+  "downlink": []
+}

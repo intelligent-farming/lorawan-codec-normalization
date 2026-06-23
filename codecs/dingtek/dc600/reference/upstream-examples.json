@@ -1,0 +1,75 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/dingtek/dc600-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "heartbeat upload",
+      "input": {
+        "fPort": 3,
+        "bytes": [
+          128,
+          0,
+          1,
+          1,
+          17,
+          0,
+          0,
+          0,
+          25,
+          0,
+          0,
+          0,
+          240,
+          0,
+          0,
+          0,
+          129
+        ]
+      },
+      "output": {
+        "data": {
+          "monitorStatus": true,
+          "alarmChannel1": false,
+          "alarmChannel2": false,
+          "alarmChannel3": false,
+          "alarmChannel4": false,
+          "alarmBattery": false,
+          "temperature": 25,
+          "frameCounter": 0
+        }
+      }
+    },
+    {
+      "description": "parameter packet",
+      "input": {
+        "fPort": 3,
+        "bytes": [
+          128,
+          0,
+          1,
+          3,
+          17,
+          1,
+          4,
+          24,
+          0,
+          0,
+          0,
+          20,
+          0,
+          0,
+          0,
+          0,
+          129
+        ]
+      },
+      "output": {
+        "data": {
+          "firmware": "1.4",
+          "uploadInterval": 24,
+          "batteryThreshold": 20,
+          "monitorStatus": true
+        }
+      }
+    }
+  ]
+}

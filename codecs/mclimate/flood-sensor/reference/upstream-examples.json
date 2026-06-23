@@ -1,0 +1,23 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/mclimate/flood-sensor-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Short periodic uplink",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          8,
+          201
+        ]
+      },
+      "output": {
+        "data": {
+          "reason": "keepalive",
+          "boxTamper": true,
+          "flood": false,
+          "battery": 3.216
+        }
+      }
+    }
+  ]
+}

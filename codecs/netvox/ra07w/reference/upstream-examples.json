@@ -1,0 +1,164 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/netvox/ra07w-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Startup version report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          12,
+          0,
+          100,
+          2,
+          32,
+          32,
+          8,
+          17,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "RA07W",
+          "SWver": 10,
+          "HWver": 2,
+          "Datecode": "20200811"
+        }
+      }
+    },
+    {
+      "description": "Status report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          12,
+          1,
+          118,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "RA07W",
+          "Volt": 11.8,
+          "WaterLeakLocation": 2570
+        }
+      }
+    },
+    {
+      "description": "Configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          129,
+          12,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ConfigReportRsp",
+          "Device": "RA07W",
+          "Status": "Success"
+        }
+      }
+    },
+    {
+      "description": "Read configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          130,
+          12,
+          3,
+          132,
+          7,
+          8,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ReadConfigReportRsp",
+          "Device": "RA07W",
+          "MinTime": 900,
+          "MaxTime": 1800
+        }
+      }
+    },
+    {
+      "description": "Set sensor parameters response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          131,
+          12,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "SetSensorParaRsp",
+          "Device": "RA07W",
+          "Status": "Success"
+        }
+      }
+    },
+    {
+      "description": "Get sensor parameters response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          132,
+          12,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "GetSensorParaRsp",
+          "Device": "RA07W",
+          "LineLength": 2570,
+          "Sensitivity": "Mid"
+        }
+      }
+    }
+  ]
+}

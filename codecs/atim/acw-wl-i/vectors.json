@@ -1,0 +1,45 @@
+{
+  "uplink": [
+    {
+      "description": "measurement frame: liquid detected (digital input 0 high) with temperature",
+      "input": { "fPort": 1, "bytes": [160, 1, 1, 8, 10, 40] },
+      "expected": {
+        "data": {
+          "water": { "leak": true, "temperature": { "current": 26 } },
+          "frameType": "measurement"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; byte0=0xA0 selects a non-timestamped measurement frame, block 0x01 carries the digital-input states (bit0=input0=liquid probe, high=leak), block 0x08 carries signed temperature in hundredths of a degree (0x0A28=2600 -> 26.00 C). Expected produced by running reference/upstream-codec.js (entree.value[0][0]=1, temperature0.value[0]=26)."
+    },
+    {
+      "description": "measurement frame: no liquid (digital input 0 low)",
+      "input": { "fPort": 1, "bytes": [160, 1, 0] },
+      "expected": {
+        "data": {
+          "water": { "leak": false },
+          "frameType": "measurement"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; same measurement layout with the digital-input byte 0x00 (no input active). Expected produced by running reference/upstream-codec.js (entree.value[0][0]=0)."
+    },
+    {
+      "description": "life (keep-alive) frame: battery voltage",
+      "input": { "fPort": 1, "bytes": [129, 12, 128, 12, 0] },
+      "expected": {
+        "data": { "battery": 3.2, "frameType": "life" }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; byte0=0x81 selects a non-timestamped life frame, then tensionv=0x0C80=3200 mV (-> 3.2 V) and tensionc=0x0C00. Expected produced by running reference/upstream-codec.js (tensionv.value=3.2)."
+    },
+    {
+      "description": "device error frame yields an error",
+      "input": { "fPort": 1, "bytes": [142, 129] },
+      "expected": { "errors": ["error frame"] },
+      "source": "synthetic",
+      "_note": "Synthetic frame; byte0=0x8E selects the ATIM error frame (low nibble 0xE). Upstream reference/upstream-codec.js classifies this as 'Trame d'erreur'; we surface it as a decode error since it carries no measurement."
+    }
+  ],
+  "downlink": []
+}

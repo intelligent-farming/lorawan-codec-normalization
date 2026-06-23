@@ -1,0 +1,25 @@
+{
+  "vendor": "milesight-iot",
+  "device": "ws303",
+  "name": "Mini Leak Detection Sensor",
+  "categories": [
+    "water-leak"
+  ],
+  "sensors": [
+    "battery",
+    "water"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "ws303",
+    "codecId": "ws303-codec",
+    "codecFile": "ws303.js",
+    "codecSha256": "1f8d58e729b6287edf0cd1d06c5c855b1ec2badcd99f6b894e5164969a628bfc",
+    "referencedAt": "2026-06-23"
+  }
+}

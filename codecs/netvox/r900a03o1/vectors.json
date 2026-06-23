@@ -1,0 +1,66 @@
+{
+  "uplink": [
+    {
+      "description": "Status report - leak detected, healthy battery, no shock alarm",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 19, 1, 120, 1, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 12,
+          "shockTamperAlarm": false,
+          "water": {
+            "leak": true
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; wire interpretation confirmed against reference/upstream-codec.js (Volt 0x78=120 -> 12.0 V, WaterLeak byte 1 -> Leak, ShockTamperAlarm byte 0 -> NoAlarm). lowBattery surfaced as a boolean extra."
+    },
+    {
+      "description": "Status report - no leak, shock/tamper alarm, low battery",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 19, 1, 164, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3.6,
+          "shockTamperAlarm": true,
+          "water": {
+            "leak": false
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; wire interpretation confirmed against reference/upstream-codec.js (Volt 0xA4 high bit set -> low battery, 0x24=36 -> 3.6 V; WaterLeak byte 0 -> noLeak; ShockTamperAlarm byte 1 -> Alarm)."
+    },
+    {
+      "description": "Device info / startup version frame (no measurement)",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 19, 0, 100, 11, 32, 25, 17, 18]
+      },
+      "expected": {
+        "errors": ["device info frame"]
+      },
+      "source": "ttn-example",
+      "_note": "Upstream example startup frame: bytes[3]==0x00 is a version/datecode report carrying no measurement, so we report an error rather than emit a measurement."
+    },
+    {
+      "description": "Config command response on fPort 23 (no measurement)",
+      "input": {
+        "fPort": 23,
+        "bytes": [129, 1, 19, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 23"]
+      },
+      "source": "ttn-example",
+      "_note": "Upstream example ConfigReportRsp; fPort 23 carries config command responses, not measurements."
+    }
+  ],
+  "downlink": []
+}

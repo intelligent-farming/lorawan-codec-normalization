@@ -1,0 +1,24 @@
+{
+  "vendor": "dingtek",
+  "device": "dc600",
+  "name": "DC600 - Water Leakage Sensor",
+  "categories": [
+    "water-leak"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dingtek",
+    "device": "dc600",
+    "codecId": "dc600-codec",
+    "codecFile": "dc600.js",
+    "codecSha256": "3296e200e4f0417d2ff0fb25e455ef0016593ec1a0ba89258ee1a51bedf5980f",
+    "referencedAt": "2026-06-23"
+  }
+}

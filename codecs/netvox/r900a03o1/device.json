@@ -1,0 +1,24 @@
+{
+  "vendor": "netvox",
+  "device": "r900a03o1",
+  "name": "R900A03O1 - Wireless Water leak Sensor",
+  "categories": [
+    "water-leak"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r900a03o1",
+    "codecId": "r900a03o1-codec",
+    "codecFile": "payload/r900a03o1.js",
+    "codecSha256": "70d4986eb1f61af36cbfd35f7081ea1502517490290315c091c0b664c13b8850",
+    "referencedAt": "2026-06-23"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "vendor": "netvox",
+  "device": "ra07w",
+  "name": "RA07W - Wireless Water Leak Detection and Location Sensor",
+  "categories": [
+    "water-leak"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "ra07w",
+    "codecId": "ra07w-codec",
+    "codecFile": "payload/ra07w.js",
+    "codecSha256": "ccad8e74daaf4aaa63a996293366df76e8aaac802972134d55938795ed5dbdde",
+    "referencedAt": "2026-06-23"
+  }
+}

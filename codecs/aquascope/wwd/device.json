@@ -1,0 +1,26 @@
+{
+  "vendor": "aquascope",
+  "device": "wwd",
+  "name": "Aqua-Scope WWD Flood Sensor",
+  "categories": [
+    "water-leak"
+  ],
+  "sensors": [
+    "water",
+    "leak",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "aquascope",
+    "device": "wwd",
+    "codecId": "wwd-codec",
+    "codecFile": "wwd.js",
+    "codecSha256": "12385b9a2d5b204e07161bb7592456c657c86c61193f172bc7d173aeea8e134b",
+    "referencedAt": "2026-06-23"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "vendor": "mclimate",
+  "device": "t-valve",
+  "name": "T-Valve - Water valve",
+  "categories": [
+    "water-leak"
+  ],
+  "sensors": [
+    "temperature",
+    "water"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "mclimate",
+    "device": "t-valve",
+    "codecId": "t-valve-codec",
+    "codecFile": "t-valve.js",
+    "codecSha256": "b1405b60ba01c4a13ae8568741ac5b79d9d645a9829265378cbc3f1ac6724feb",
+    "referencedAt": "2026-06-23"
+  }
+}

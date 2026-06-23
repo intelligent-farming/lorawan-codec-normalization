@@ -1,0 +1,62 @@
+{
+  "uplink": [
+    {
+      "description": "Water event — water present (leak detected), relative level 200",
+      "input": { "fPort": 1, "bytes": [17, 8, 0, 200] },
+      "expected": {
+        "data": {
+          "protocol": 1,
+          "counter": 1,
+          "messageType": "water",
+          "water": { "leak": true },
+          "waterRelative": 200
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected derived via ORACLE (running reference/upstream-codec.js): byte[2]=0 -> 'Water Present' -> water.leak=true, byte[3]=200 -> waterRelative."
+    },
+    {
+      "description": "Water event — water not present (leak cleared), relative level 0",
+      "input": { "fPort": 1, "bytes": [17, 8, 1, 0] },
+      "expected": {
+        "data": {
+          "protocol": 1,
+          "counter": 1,
+          "messageType": "water",
+          "water": { "leak": false },
+          "waterRelative": 0
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected derived via ORACLE: byte[2]=1 -> 'Water Not Present' -> water.leak=false, byte[3]=0 -> waterRelative."
+    },
+    {
+      "description": "Supervisory event — battery 3.6V, no faults, accumulation 5",
+      "input": { "fPort": 1, "bytes": [17, 1, 0, 0, 54, 0, 0, 0, 0, 0, 5] },
+      "expected": {
+        "data": {
+          "protocol": 1,
+          "counter": 1,
+          "messageType": "supervisory",
+          "battery": 3.6,
+          "accumulation": 5,
+          "tamperSinceLastReset": false,
+          "tamperState": false,
+          "errorWithLastDownlink": false,
+          "batteryLow": false,
+          "radioCommError": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected derived via ORACLE: byte[4]=0x36 -> Battery '3.6V' -> battery 3.6 V; byte[2]=0 flags clear; byte[9..10]=0,5 -> accumulation 5. Provides battery for the water-leak category."
+    },
+    {
+      "description": "Unsupported message type 0x0d (ATH event not handled by this water sensor)",
+      "input": { "fPort": 1, "bytes": [17, 13, 0, 22, 0, 50, 0] },
+      "expected": { "errors": ["unsupported message type"] },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; type byte 0x0d is a valid RadioBridge event but not a water-sensor message, so this codec rejects it with an error."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,23 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/mclimate/t-valve-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Short periodic uplink",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          44,
+          192
+        ]
+      },
+      "output": {
+        "data": {
+          "reason": "keepalive",
+          "waterTemp": 22,
+          "valveState": true,
+          "ambientTemp": 22
+        }
+      }
+    }
+  ]
+}

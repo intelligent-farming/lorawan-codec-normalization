@@ -1,0 +1,43 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/browan/tbwl100-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Water leakage detected",
+      "input": {
+        "fPort": 106,
+        "bytes": [
+          17,
+          11,
+          54,
+          40,
+          54
+        ]
+      },
+      "output": {
+        "data": {
+          "battery": 3.6,
+          "humidity": 40,
+          "humidityChanged": 0,
+          "status": 1,
+          "temperature": 22,
+          "temperatureBoard": 22,
+          "temperatureChanged": 0
+        }
+      }
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [
+          1
+        ]
+      },
+      "output": {
+        "errors": [
+          "unknown FPort"
+        ]
+      }
+    }
+  ]
+}

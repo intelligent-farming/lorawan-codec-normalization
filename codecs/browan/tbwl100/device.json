@@ -1,0 +1,24 @@
+{
+  "vendor": "browan",
+  "device": "tbwl100",
+  "name": "Water Leak Sensor",
+  "categories": [
+    "water-leak"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "browan",
+    "device": "tbwl100",
+    "codecId": "tbwl100-codec",
+    "codecFile": "tbwl100.js",
+    "codecSha256": "c0a5a0bd2ef383e064f77d49aff34740ba62f3135f7c4287c7281521d90250bc",
+    "referencedAt": "2026-06-23"
+  }
+}

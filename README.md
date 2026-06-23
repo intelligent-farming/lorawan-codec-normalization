@@ -118,7 +118,7 @@ of the listed paths present).
 | `motion` | `action.motion` | 72 |
 | `contact` | `action.contactState` | 20 |
 | `gps-tracker` | `position.latitude`, `position.longitude` | 46 |
-| `water-leak` | `water.leak` | 14 |
+| `water-leak` | `water.leak` | 36 |
 | `groundwater` | `atLeastOne`: `water.level` / `water.pressure` | 6 |
 
 `devices()` / `devices({ category })` enumerate registered devices;

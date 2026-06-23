@@ -1,0 +1,81 @@
+{
+  "uplink": [
+    {
+      "description": "Status report, both probes dry (no leak)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 6, 1, 30, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "water": { "leak": false },
+          "leak1": false,
+          "leak2": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected.data derived by running reference/upstream-codec.js (Volt 30/10 = 3 V, both probes NoLeak) and mapping to vocabulary."
+    },
+    {
+      "description": "Status report, probe 2 leaking",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 6, 1, 30, 0, 1, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "water": { "leak": true },
+          "leak1": false,
+          "leak2": true
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame (mirrors the upstream status example: WaterLeak_1 NoLeak, WaterLeak_2 Leak). water.leak is the OR of both probes."
+    },
+    {
+      "description": "Status report, both probes leaking with low battery",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 6, 1, 158, 1, 1, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3,
+          "water": { "leak": true },
+          "leak1": true,
+          "leak2": true
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; byte3 0x9E has the low-battery high bit set (0x1E = 30 -> 3 V). Reference decodes Volt '3(low battery)', both probes Leak."
+    },
+    {
+      "description": "Config response on fPort 7 (no measurement)",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 7"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds config-report response; fPort 7 carries configuration, not a measurement."
+    },
+    {
+      "description": "Device info / startup frame (reportType 0x00, no measurement)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 6, 0, 100, 11, 32, 25, 17, 18, 0, 0]
+      },
+      "expected": {
+        "errors": ["device info frame"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds startup frame; reportType 0x00 carries software/hardware version + datecode, not a measurement."
+    }
+  ],
+  "downlink": []
+}

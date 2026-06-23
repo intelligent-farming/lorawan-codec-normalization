@@ -1,0 +1,24 @@
+{
+  "vendor": "netvox",
+  "device": "r720flt",
+  "name": "R720FLT - Wireless Toilet Water Tank Leakage Sensor",
+  "categories": [
+    "water-leak"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r720flt",
+    "codecId": "r720flt-codec",
+    "codecFile": "payload/r720flt.js",
+    "codecSha256": "2b873e778e6fde03a891daf70b3045fa188f9c2b03fddb3bfd53d7bbfe20ca08",
+    "referencedAt": "2026-06-23"
+  }
+}

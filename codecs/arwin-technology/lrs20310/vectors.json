@@ -1,0 +1,129 @@
+{
+  "uplink": [
+    {
+      "description": "sensor data: water leak alert, battery 80%, leak level 70",
+      "input": {
+        "fPort": 10,
+        "bytes": [5, 4, 80, 70, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "water": {
+            "leak": true
+          },
+          "waterLeakLevel": 70,
+          "batteryPercent": 80,
+          "event": "water_leak_alert",
+          "cableBreak": false
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "sensor data: heartbeat only, no leak, battery 95%",
+      "input": {
+        "fPort": 10,
+        "bytes": [5, 1, 95, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "water": {
+            "leak": false
+          },
+          "waterLeakLevel": 0,
+          "batteryPercent": 95,
+          "event": "heartbeat",
+          "cableBreak": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "synthetic in-bounds heartbeat (no alert bits); expected produced by running reference/upstream-codec.js, normalized to vocabulary"
+    },
+    {
+      "description": "sensor data: water leak + cable break, battery 50%, level 30",
+      "input": {
+        "fPort": 10,
+        "bytes": [5, 12, 50, 30, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "water": {
+            "leak": true
+          },
+          "waterLeakLevel": 30,
+          "batteryPercent": 50,
+          "event": "water_leak_alert,cable_break_alert",
+          "cableBreak": true
+        }
+      },
+      "source": "synthetic",
+      "_note": "synthetic in-bounds: both alert bits set; expected from reference/upstream-codec.js"
+    },
+    {
+      "description": "firmware version 1.00.001",
+      "input": {
+        "fPort": 8,
+        "bytes": [1, 0, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "firmwareVersion": "1.00.001"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "device settings: upload interval 10, 3 additional uploads, 1 min apart",
+      "input": {
+        "fPort": 12,
+        "bytes": [5, 0, 10, 0, 3, 1, 1]
+      },
+      "expected": {
+        "data": {
+          "dataUploadInterval": 10,
+          "numAdditionalUploads": 3,
+          "additionalUploadsInterval": 1
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "threshold settings: water leak alert threshold 30",
+      "input": {
+        "fPort": 13,
+        "bytes": [5, 30]
+      },
+      "expected": {
+        "data": {
+          "waterLeakAlertThreshold": 30
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "unknown sensor type on sensor-data port",
+      "input": {
+        "fPort": 10,
+        "bytes": [9, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unknown sensor type"]
+      },
+      "source": "synthetic",
+      "_note": "synthetic: bytes[0] != 5 triggers unknown sensor type error path"
+    },
+    {
+      "description": "unknown FPort",
+      "input": {
+        "fPort": 99,
+        "bytes": [0]
+      },
+      "expected": {
+        "errors": ["unknown FPort"]
+      },
+      "source": "synthetic",
+      "_note": "synthetic: unsupported fPort triggers error path"
+    }
+  ],
+  "downlink": []
+}

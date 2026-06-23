@@ -1,0 +1,24 @@
+{
+  "vendor": "atim",
+  "device": "acw-wl-i",
+  "name": "ACW-WL-I - Indoor Liquid Monitoring",
+  "categories": [
+    "water-leak"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "atim",
+    "device": "acw-wl-i",
+    "codecId": "codec",
+    "codecFile": "decodeur.js",
+    "codecSha256": "b86b0c72a7ee43f4caa766c25057326897faafe3a98f98fe3cf17d12627d8758",
+    "referencedAt": "2026-06-23"
+  }
+}

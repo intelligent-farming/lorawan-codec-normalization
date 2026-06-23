@@ -1,0 +1,101 @@
+{
+  "uplink": [
+    {
+      "description": "Status report, both probes dry (no leak): water.leak false (report type 0x01)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 70, 1, 36, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "water": { "leak": false, "leak1": false, "leak2": false }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input (deviceType 0x46 = 70 = R718WA2). Expected.data from running reference/upstream-codec.js (Volt 3.6, WaterLeak_1 NoLeak, WaterLeak_2 NoLeak); both probes dry -> water.leak false."
+    },
+    {
+      "description": "Status report, probe 1 wet (leak detected): water.leak true via probe 1 (report type 0x01)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 70, 1, 36, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "water": { "leak": true, "leak1": true, "leak2": false }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input (byte4 = 1). Expected.data from running reference/upstream-codec.js (WaterLeak_1 Leak, WaterLeak_2 NoLeak); water.leak = leak1 || leak2 = true."
+    },
+    {
+      "description": "Status report, probe 2 wet (leak detected): water.leak true via probe 2 (report type 0x01)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 70, 1, 36, 0, 1, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "water": { "leak": true, "leak1": false, "leak2": true }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input (byte5 = 1). Expected.data from running reference/upstream-codec.js (WaterLeak_1 NoLeak, WaterLeak_2 Leak); water.leak = leak1 || leak2 = true."
+    },
+    {
+      "description": "Status report, both probes wet (leak detected): water.leak true (report type 0x01)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 70, 1, 36, 1, 1, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "water": { "leak": true, "leak1": true, "leak2": true }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input (byte4 = byte5 = 1). Expected.data from running reference/upstream-codec.js (WaterLeak_1 Leak, WaterLeak_2 Leak); water.leak true."
+    },
+    {
+      "description": "Low-battery flag set (high bit of voltage byte) surfaces lowBattery extra",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 70, 1, 164, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3.6,
+          "water": { "leak": false, "leak1": false, "leak2": false }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic input: byte3 = 0x80 | 36 = 164. Upstream emits Volt '3.6(low battery)'; normalized to battery 3.6 + lowBattery true extra."
+    },
+    {
+      "description": "Device-info / startup frame carries no measurement (report type 0x00)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 70, 0, 100, 11, 32, 25, 17, 18, 0, 0]
+      },
+      "expected": { "errors": ["no measurement"] },
+      "source": "synthetic",
+      "_note": "TTN example input (report type 0x00). Upstream returns device/version/datecode metadata; we report no measurement."
+    },
+    {
+      "description": "Config response on fPort 7 is unsupported",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 70, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "synthetic",
+      "_note": "TTN example input (ConfigReportRsp on fPort 7). Config frames carry no measurement; we report unsupported fPort."
+    }
+  ],
+  "downlink": []
+}

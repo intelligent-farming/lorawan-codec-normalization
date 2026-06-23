@@ -1,0 +1,40 @@
+{
+  "uplink": [
+    {
+      "description": "Measurement frame, leak detected (digital input bit0 high)",
+      "input": { "fPort": 2, "bytes": [160, 1, 1] },
+      "expected": { "data": { "water": { "leak": true }, "digitalInputs": [1, 0, 0, 0] } },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected computed by running reference/upstream-codec.js (entree value [[1],[0],[0],[0]]) and normalizing input bit0 -> water.leak."
+    },
+    {
+      "description": "Measurement frame, no leak, with water temperature 21.50 degC",
+      "input": { "fPort": 2, "bytes": [160, 1, 0, 8, 8, 102] },
+      "expected": { "data": { "water": { "leak": false, "temperature": { "current": 21.5 } }, "digitalInputs": [0, 0, 0, 0] } },
+      "source": "synthetic",
+      "_note": "Synthetic; reference decodes entree [[0],[0],[0],[0]] and temperature0 21.5 degC (0x0866=2150 /100). bit0 low -> water.leak=false; temperature -> water.temperature.current."
+    },
+    {
+      "description": "Life/keep-alive frame, battery 3.600 V, supply 3.400 V",
+      "input": { "fPort": 2, "bytes": [129, 1, 14, 16, 13, 72] },
+      "expected": { "data": { "battery": 3.6, "chargeVoltage": 3.4 } },
+      "source": "synthetic",
+      "_note": "Synthetic; reference decodes tensionv 3.6 V (0x0E10=3600 /1000) and tensionc 3.4 V (0x0D48=3400 /1000). tensionv -> battery; tensionc -> chargeVoltage extra."
+    },
+    {
+      "description": "Error frame, low battery alarm",
+      "input": { "fPort": 2, "bytes": [142, 14, 149, 14, 16] },
+      "expected": { "errors": ["Battery level low"] },
+      "source": "synthetic",
+      "_note": "Synthetic; reference frame type 'Trame d'erreur' with ERR_BATTERY_LEVEL_LOW (0x95) and battery 3.6 V; normalized to an error result."
+    },
+    {
+      "description": "Empty payload",
+      "input": { "fPort": 2, "bytes": [] },
+      "expected": { "errors": ["empty payload"] },
+      "source": "synthetic",
+      "_note": "Synthetic; zero-length payload is rejected."
+    }
+  ],
+  "downlink": []
+}

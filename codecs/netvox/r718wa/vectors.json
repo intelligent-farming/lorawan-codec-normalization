@@ -1,0 +1,71 @@
+{
+  "uplink": [
+    {
+      "description": "Status report, leak detected: water.leak true (report type 0x01)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 50, 1, 30, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "water": { "leak": true }
+        }
+      },
+      "source": "synthetic",
+      "_note": "TTN example input (deviceType 50, report type 0x01). Expected.data from running reference/upstream-codec.js (Volt 3, WaterLeak 'Leak'); mapped to battery 3.0 V and water.leak true."
+    },
+    {
+      "description": "Status report, dry (no leak): water.leak false (report type 0x01)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 50, 1, 30, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "water": { "leak": false }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input (byte4 = 0 -> NoLeak). Expected.data from running reference/upstream-codec.js (Volt 3, WaterLeak 'NoLeak'); maps to water.leak false."
+    },
+    {
+      "description": "Low-battery flag set (high bit of voltage byte) surfaces lowBattery extra",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 50, 1, 158, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3,
+          "water": { "leak": false }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic input: byte3 = 0x80 | 30 = 158. Upstream emits Volt '3(low battery)'; normalized to battery 3.0 + lowBattery true extra (verified against reference/upstream-codec.js)."
+    },
+    {
+      "description": "Device-info / startup frame carries no measurement (report type 0x00)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 50, 0, 100, 11, 32, 25, 17, 18, 0, 0]
+      },
+      "expected": { "errors": ["no measurement"] },
+      "source": "synthetic",
+      "_note": "TTN example input (report type 0x00). Upstream returns device/version metadata; we report no measurement."
+    },
+    {
+      "description": "Config response on fPort 7 is unsupported",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "synthetic",
+      "_note": "TTN example input (ConfigReportRsp on fPort 7). Config frames carry no measurement; we report unsupported fPort."
+    }
+  ],
+  "downlink": []
+}

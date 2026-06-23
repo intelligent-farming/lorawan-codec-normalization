@@ -1,0 +1,24 @@
+{
+  "vendor": "netvox",
+  "device": "r718wb",
+  "name": "R718WB - Wireless Water Leak Detector with Rope Sensor",
+  "categories": [
+    "water-leak"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r718wb",
+    "codecId": "r718wb-codec",
+    "codecFile": "payload/r311w.js",
+    "codecSha256": "aaef2fd88ada03d393ff24e51d09301c1e7e00af84a59b2bbec7cf5fb9d7ed20",
+    "referencedAt": "2026-06-23"
+  }
+}

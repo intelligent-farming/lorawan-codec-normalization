@@ -1,0 +1,75 @@
+{
+  "uplink": [
+    {
+      "description": "Status report, leak detected (battery 3.0 V)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 18, 1, 30, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "water": { "leak": true }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; wire semantics confirmed against reference/upstream-codec.js (Volt=3.0, WaterLeak=Leak). Normalized expected.data authored here: leak status byte (bytes[4]) != 0 -> water.leak true; battery bytes[3]/10 -> battery V."
+    },
+    {
+      "description": "Status report, no leak (battery 2.8 V)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 18, 1, 28, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.8,
+          "water": { "leak": false }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; reference yields Volt=2.8, WaterLeak=NoLeak. Normalized: bytes[4]==0 -> water.leak false."
+    },
+    {
+      "description": "Status report, no leak, low-battery flag set (battery 2.2 V)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 18, 1, 150, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 2.2,
+          "water": { "leak": false }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; reference yields Volt='2.2(low battery)' (high bit of bytes[3] set). Normalized: low-battery bit -> extra lowBattery true; voltage is the low 7 bits /10."
+    },
+    {
+      "description": "Device info / startup frame carries no measurement",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 18, 0, 100, 2, 32, 25, 17, 18, 0, 0]
+      },
+      "expected": {
+        "errors": ["device info frame"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic startup frame (reportType bytes[2]==0x00); reference returns version/datecode info, not a measurement. We report an error rather than emit a non-measurement object."
+    },
+    {
+      "description": "Config response on fPort 7 carries no measurement",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 7"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic config-report response; reference returns a Cmd/Status config object on fPort 7, not a measurement. Only fPort 6 data reports are decoded."
+    }
+  ],
+  "downlink": []
+}

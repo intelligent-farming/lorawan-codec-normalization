@@ -1,0 +1,40 @@
+{
+  "uplink": [
+    {
+      "description": "Short periodic keepalive, no flood (leak=false), box tamper set",
+      "input": { "fPort": 2, "bytes": [8, 201] },
+      "expected": {
+        "data": {
+          "water": { "leak": false },
+          "battery": 3.216,
+          "boxTamper": true,
+          "reason": "keepalive"
+        }
+      },
+      "source": "synthetic",
+      "_note": "byte0=8 (00001000): reason keepalive, boxTamper bit set, flood clear. battery 201*16/1000=3.216 V. Expected produced by the oracle method from reference/upstream-codec.js, then normalized."
+    },
+    {
+      "description": "Long flood-detected uplink (leak=true) with device temperature",
+      "input": { "fPort": 2, "bytes": [66, 180, 22] },
+      "expected": {
+        "data": {
+          "water": { "leak": true, "temperature": { "current": 22 } },
+          "battery": 2.88,
+          "boxTamper": false,
+          "reason": "floodDetected"
+        }
+      },
+      "source": "synthetic",
+      "_note": "byte0=66 (01000010): reason floodDetected, boxTamper clear, flood set. battery 180*16/1000=2.88 V; temperature byte=22 C. Expected produced by the oracle method from reference/upstream-codec.js, then normalized."
+    },
+    {
+      "description": "Truncated payload (1 byte) is rejected",
+      "input": { "fPort": 2, "bytes": [8] },
+      "expected": { "errors": ["payload too short"] },
+      "source": "synthetic",
+      "_note": "Below the 2-byte minimum frame; codec returns an error."
+    }
+  ],
+  "downlink": []
+}

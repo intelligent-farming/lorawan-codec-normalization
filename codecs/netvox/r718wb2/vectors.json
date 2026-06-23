@@ -1,0 +1,81 @@
+{
+  "uplink": [
+    {
+      "description": "Status report, probe 1 leak, probe 2 dry (any-probe leak true)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 71, 1, 30, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "leak1": true,
+          "leak2": false,
+          "water": { "leak": true }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame derived from the TTN status example (probe 1 leak, probe 2 dry). expected.data authored here; cross-checked against reference/upstream-codec.js (Volt 3.0, WaterLeak_1=Leak, WaterLeak_2=NoLeak)."
+    },
+    {
+      "description": "Status report, both probes dry (any-probe leak false)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 71, 1, 28, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.8,
+          "leak1": false,
+          "leak2": false,
+          "water": { "leak": false }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame, both probes dry, battery 2.8 V. expected.data authored here; cross-checked against reference/upstream-codec.js (Volt 2.8, both WaterLeak NoLeak)."
+    },
+    {
+      "description": "Status report, both probes leak, low-battery flag set",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 71, 1, 156, 1, 1, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 2.8,
+          "leak1": true,
+          "leak2": true,
+          "water": { "leak": true }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame, both probes leak, byte[3]=156 (0x80|28) sets the low-battery flag, masked voltage 2.8 V. expected.data authored here; cross-checked against reference/upstream-codec.js (Volt '2.8(low battery)', both WaterLeak Leak)."
+    },
+    {
+      "description": "Device-info / startup frame (no measurement)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 71, 0, 100, 11, 32, 25, 17, 18, 0, 0]
+      },
+      "expected": {
+        "errors": ["device info frame"]
+      },
+      "source": "ttn-example",
+      "_note": "TTN startup version report (reportType 0x00): carries SW/HW version + datecode, not a measurement, so we error."
+    },
+    {
+      "description": "Config response on fPort 7 (no measurement)",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 71, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 7"]
+      },
+      "source": "ttn-example",
+      "_note": "TTN ConfigReportRsp on fPort 7: configuration traffic, not a measurement uplink, so we error."
+    }
+  ],
+  "downlink": []
+}

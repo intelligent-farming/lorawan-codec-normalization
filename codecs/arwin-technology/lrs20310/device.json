@@ -1,0 +1,24 @@
+{
+  "vendor": "arwin-technology",
+  "device": "lrs20310",
+  "name": "LRS20310 - Water Leak Sensor",
+  "categories": [
+    "water-leak"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "arwin-technology",
+    "device": "lrs20310",
+    "codecId": "lrs20310-codec",
+    "codecFile": "lrs20310.js",
+    "codecSha256": "52fb65ebd275547343cab875cc157736aded38f0cce79711fab96d019ba78b61",
+    "referencedAt": "2026-06-23"
+  }
+}
