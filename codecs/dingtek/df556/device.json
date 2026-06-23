@@ -1,0 +1,26 @@
+{
+  "vendor": "dingtek",
+  "device": "df556",
+  "name": "DF556 - Level Sensor with GPS",
+  "categories": [
+    "gps-tracker"
+  ],
+  "sensors": [
+    "level",
+    "gps",
+    "battery"
+  ],
+  "variantOf": "dingtek/df555",
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dingtek",
+    "device": "df556",
+    "codecId": "df556-codec",
+    "codecFile": "df556.js",
+    "codecSha256": "4a9bb0365d9cf8961cad42e0e7bd491ea60d74a36938e4c43d558ed507271533",
+    "referencedAt": "2026-06-23"
+  }
+}

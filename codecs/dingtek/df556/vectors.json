@@ -1,0 +1,79 @@
+{
+  "uplink": [
+    {
+      "description": "heartbeat with on-device GPS fix (level + position + battery)",
+      "input": {
+        "fPort": 3,
+        "bytes": [128, 0, 22, 2, 26, 1, 44, 1, 0, 0, 195, 194, 154, 153, 13, 66, 0, 0, 0, 0, 0, 1, 104, 0, 1, 129]
+      },
+      "expected": {
+        "data": {
+          "level": 300,
+          "gpsEnabled": true,
+          "alarmLevel": false,
+          "alarmBattery": false,
+          "battery": 3.6,
+          "frameCounter": 1,
+          "position": {
+            "latitude": 35.400002,
+            "longitude": -97.500004
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic 26-byte GPS heartbeat. Wire layout taken from the upstream TTN example; lat/lon words replaced with in-bounds IEEE-754 LE coordinates (~35.4N, 97.5W, Oklahoma). expected.data was produced by running reference/upstream-codec.js on this input and normalizing: volt 360 -> battery 3.60 V (volt is hundredths of a volt), lat/lon strings -> numbers under position.*, raw counters kept as extras."
+    },
+    {
+      "description": "heartbeat without GPS (no position fix published)",
+      "input": {
+        "fPort": 3,
+        "bytes": [128, 0, 22, 2, 18, 2, 101, 0, 0, 0, 0, 0, 0, 1, 104, 0, 1, 129]
+      },
+      "expected": {
+        "data": {
+          "level": 613,
+          "gpsEnabled": false,
+          "alarmLevel": false,
+          "alarmBattery": false,
+          "battery": 3.6,
+          "frameCounter": 1
+        }
+      },
+      "source": "synthetic",
+      "_note": "18-byte heartbeat with GPS disabled (matches the upstream TTN no-GPS example input). No position.* is emitted because the frame carries no fix; volt 360 -> battery 3.60 V."
+    },
+    {
+      "description": "configuration packet (firmware + intervals + thresholds)",
+      "input": {
+        "fPort": 3,
+        "bytes": [128, 0, 22, 3, 17, 4, 5, 0, 60, 10, 30, 75, 3, 232, 20, 0, 129]
+      },
+      "expected": {
+        "data": {
+          "firmware": "4.5",
+          "uploadInterval": 60,
+          "detectInterval": 10,
+          "levelThreshold": 30,
+          "density": 1000,
+          "batteryThreshold": 20,
+          "workMode": 0
+        }
+      },
+      "source": "synthetic",
+      "_note": "17-byte configuration packet (byte[3]==0x03). Matches the upstream TTN parameter-packet example input; all fields are device config extras (no position fix in this frame). expected.data produced by running reference/upstream-codec.js."
+    },
+    {
+      "description": "unknown FPort is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 2, 3]
+      },
+      "expected": {
+        "errors": ["unknown FPort"]
+      },
+      "source": "synthetic",
+      "_note": "DF556 only uses FPort 3; any other port is an error (matches upstream)."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,26 @@
+{
+  "vendor": "dingtek",
+  "device": "df702",
+  "name": "DF702 - Waste Bin Level Sensor",
+  "categories": [
+    "gps-tracker"
+  ],
+  "sensors": [
+    "level",
+    "gps",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dingtek",
+    "device": "df702",
+    "codecId": "df702-codec",
+    "codecFile": "df702.js",
+    "codecSha256": "f563dd25a4206841c48278bc414639811e467413292a791748c033cdee42676b",
+    "referencedAt": "2026-06-23"
+  }
+}

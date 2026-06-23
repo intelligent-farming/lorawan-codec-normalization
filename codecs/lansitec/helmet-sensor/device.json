@@ -1,0 +1,29 @@
+{
+  "vendor": "lansitec",
+  "device": "helmet-sensor",
+  "name": "Helmet Sensor",
+  "categories": [
+    "gps-tracker",
+    "motion"
+  ],
+  "sensors": [
+    "accelerometer",
+    "gps",
+    "battery",
+    "button",
+    "rssi"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "lansitec",
+    "device": "helmet-sensor",
+    "codecId": "helmet-sensor-codec",
+    "codecFile": "helmet-sensor.js",
+    "codecSha256": "77514383e537af688087403e2865b5572f31ff2c16b7e9f89189609682edc94a",
+    "referencedAt": "2026-06-23"
+  }
+}

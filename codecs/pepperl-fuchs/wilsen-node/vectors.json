@@ -1,0 +1,49 @@
+{
+  "uplink": [
+    {
+      "description": "Multi-sensor uplink: sensor status, battery, temperature, and a live GPS fix (TTN example 2 input)",
+      "input": {
+        "fPort": 1,
+        "bytes": [3, 12, 4, 0, 6, 2, 1, 65, 174, 102, 102, 3, 81, 1, 36, 6, 80, 1, 2, 241, 198, 8, 6, 80, 2, 0, 125, 33, 179]
+      },
+      "expected": {
+        "data": {
+          "sensor1Detected": false,
+          "sensor2Detected": false,
+          "battery": 3.6,
+          "air": { "temperature": 21.8 },
+          "position": { "latitude": 49.399304, "longitude": 8.200627 }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "GPS fix with a southern-hemisphere / eastern coordinate (negative latitude exercises int32 two's-complement) plus battery",
+      "input": {
+        "fPort": 1,
+        "bytes": [6, 80, 1, 253, 251, 66, 73, 6, 80, 2, 9, 3, 71, 172, 3, 81, 1, 36]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "position": { "latitude": -33.865143, "longitude": 151.2099 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload; expected values produced by running reference/upstream-codec.js (latitude/longitude = int32 / 1e6, battery uint8 / 10)."
+    },
+    {
+      "description": "Truncated TLV block: declared length runs past the end of the payload",
+      "input": {
+        "fPort": 1,
+        "bytes": [6, 80, 1, 253]
+      },
+      "expected": {
+        "errors": ["truncated TLV block"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic malformed frame: a 5001 (GPS latitude) block declaring 6 bytes but carrying only 1 value byte."
+    }
+  ],
+  "downlink": []
+}

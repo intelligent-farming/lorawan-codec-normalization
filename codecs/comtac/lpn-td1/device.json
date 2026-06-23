@@ -1,0 +1,27 @@
+{
+  "vendor": "comtac",
+  "device": "lpn-td1",
+  "name": "LPN TD-1 Tracker",
+  "categories": [
+    "gps-tracker"
+  ],
+  "sensors": [
+    "gps",
+    "wifi ssid",
+    "temperature",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "comtac",
+    "device": "lpn-td1",
+    "codecId": "lpn-td1-codec",
+    "codecFile": "lpn-td1.js",
+    "codecSha256": "5467f3804f030d7e765731e03bf8b643989936a4ee2feafc47ef9dd4f01d36d1",
+    "referencedAt": "2026-06-23"
+  }
+}

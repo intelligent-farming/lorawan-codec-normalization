@@ -1,0 +1,90 @@
+{
+  "uplink": [
+    {
+      "description": "heartbeat upload with GPS fix (upstream example input)",
+      "input": {
+        "fPort": 3,
+        "bytes": [128, 0, 1, 2, 25, 0, 30, 1, 205, 3, 233, 66, 239, 39, 32, 66, 25, 0, 0, 16, 0, 0, 0, 0, 129]
+      },
+      "expected": {
+        "data": {
+          "levelMm": 30,
+          "position": { "latitude": 40.038999, "longitude": 116.50743 },
+          "air": { "temperature": 25 },
+          "empty": true,
+          "batteryLow": false,
+          "frameCounter": 0
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream example input. expected.data authored to the normalized vocabulary; lat/lon verified by running reference/upstream-codec.js (longitude 116.507430, latitude 40.038999), rounded to the device 1e-6 resolution. Upstream `battery` is a low-battery boolean (not volts) -> batteryLow extra."
+    },
+    {
+      "description": "heartbeat upload with GPS fix (synthetic, southern/eastern hemisphere)",
+      "input": {
+        "fPort": 3,
+        "bytes": [128, 0, 1, 2, 25, 0, 120, 0, 149, 53, 23, 67, 195, 117, 7, 194, 18, 0, 0, 0, 1, 1, 44, 0, 129]
+      },
+      "expected": {
+        "data": {
+          "levelMm": 120,
+          "position": { "latitude": -33.865002, "longitude": 151.209308 },
+          "air": { "temperature": 18 },
+          "empty": false,
+          "batteryLow": true,
+          "frameCounter": 300
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame: lat/lon float32 bytes encoded for ~Sydney (lat -33.865, lon 151.2093) then oracle-decoded by reference/upstream-codec.js (latitude -33.865002, longitude 151.209308) and rounded to 1e-6. Exercises a negative latitude, the low-battery flag set, and a non-zero frame counter."
+    },
+    {
+      "description": "heartbeat upload without GPS (17-byte frame, no position)",
+      "input": {
+        "fPort": 3,
+        "bytes": [128, 0, 1, 2, 17, 0, 15, 0, 25, 0, 0, 16, 0, 0, 0, 0, 129]
+      },
+      "expected": {
+        "data": {
+          "levelMm": 15,
+          "air": { "temperature": 25 },
+          "empty": true,
+          "batteryLow": false,
+          "frameCounter": 0
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream example input. No on-board GPS fix in the 17-byte heartbeat, so no position.* is emitted. Values verified against reference/upstream-codec.js (level 15 mm, temperature 25 C)."
+    },
+    {
+      "description": "parameter report (interval + empty alarm threshold, no position)",
+      "input": {
+        "fPort": 3,
+        "bytes": [128, 0, 1, 3, 25, 1, 4, 1, 0, 30, 75, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 129]
+      },
+      "expected": {
+        "data": {
+          "periodicUploadIntervalMinutes": 1,
+          "emptyAlarmThresholdCm": 30
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream example input (25-byte frame with bytes[3]==0x03). Verified against reference/upstream-codec.js (1 minute interval, 30 cm empty-alarm threshold)."
+    },
+    {
+      "description": "unsupported FPort",
+      "input": { "fPort": 2, "bytes": [1, 2, 3] },
+      "expected": { "errors": ["unknown FPort"] },
+      "source": "synthetic",
+      "_note": "Only fPort 3 carries DF530 application data."
+    },
+    {
+      "description": "wrong payload length",
+      "input": { "fPort": 3, "bytes": [1, 2, 3, 4, 5] },
+      "expected": { "errors": ["wrong length"] },
+      "source": "synthetic",
+      "_note": "DF530 frames are 17 or 25 bytes; anything else is rejected."
+    }
+  ],
+  "downlink": []
+}

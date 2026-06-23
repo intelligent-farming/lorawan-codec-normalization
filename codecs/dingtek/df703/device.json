@@ -1,0 +1,27 @@
+{
+  "vendor": "dingtek",
+  "device": "df703",
+  "name": "DF703 - Ultrasonic Waste Bin Level Sensor",
+  "categories": [
+    "gps-tracker"
+  ],
+  "sensors": [
+    "level",
+    "gps",
+    "temperature",
+    "tilt"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dingtek",
+    "device": "df703",
+    "codecId": "df703-codec",
+    "codecFile": "df703.js",
+    "codecSha256": "f0db908b9758e8f23bc2aa8bfa50bf444220ceb9a0a72a70e52651bcf42cb412",
+    "referencedAt": "2026-06-23"
+  }
+}

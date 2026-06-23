@@ -1,0 +1,134 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/comtac/lpn-td1-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Ping data on port 3",
+      "input": {
+        "fPort": 3,
+        "bytes": [
+          1,
+          8,
+          195,
+          26
+        ]
+      },
+      "output": {
+        "data": {
+          "posStatus": "NONE",
+          "pingType": "LONGRANGE",
+          "batVoltage": 3.975,
+          "temp": 26
+        }
+      }
+    },
+    {
+      "description": "Positioning data on port 3",
+      "input": {
+        "fPort": 3,
+        "bytes": [
+          1,
+          168,
+          194,
+          10,
+          1,
+          2,
+          215,
+          173,
+          16,
+          0,
+          131,
+          182,
+          73,
+          245,
+          2,
+          4,
+          254,
+          236,
+          218,
+          173,
+          29,
+          22,
+          54,
+          252,
+          236,
+          218,
+          173,
+          29,
+          22,
+          54,
+          14,
+          236,
+          218,
+          173,
+          29,
+          22,
+          55,
+          252,
+          236,
+          218,
+          167,
+          50,
+          33,
+          59
+        ]
+      },
+      "output": {
+        "data": {
+          "posStatus": "GPS AND WIFI OK",
+          "pingType": "LONGRANGE",
+          "batVoltage": 3.97,
+          "temp": 10,
+          "gpsLat": 47.688976,
+          "gpsLong": 8.631881,
+          "gpsEPE": "> 150 meters",
+          "gpsSAT": 5,
+          "MAC1": "fe:ec:da:ad:1d:16",
+          "RSSI1": -54,
+          "MAC2": "fc:ec:da:ad:1d:16",
+          "RSSI2": -54,
+          "MAC3": "0e:ec:da:ad:1d:16",
+          "RSSI3": -55,
+          "MAC4": "fc:ec:da:a7:32:21",
+          "RSSI4": -59
+        }
+      }
+    },
+    {
+      "description": "Config data on port 100",
+      "input": {
+        "fPort": 100,
+        "bytes": [
+          1,
+          2,
+          194,
+          9,
+          2,
+          0,
+          0,
+          15,
+          1,
+          0,
+          22,
+          128,
+          5,
+          1
+        ]
+      },
+      "output": {
+        "data": {
+          "cfgStatus": "/CFG GET",
+          "batVoltage": 3.97,
+          "temp": 9,
+          "appMainVers": 2,
+          "appMinorVers": 0,
+          "pingInterval": 15,
+          "longRangeTrigger": 1,
+          "midRangeTrigger": 0,
+          "rejoinTrigger": 5760,
+          "gpsFixes": 5,
+          "minWIFIDetects": 1
+        }
+      }
+    }
+  ]
+}

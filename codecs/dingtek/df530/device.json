@@ -1,0 +1,26 @@
+{
+  "vendor": "dingtek",
+  "device": "df530",
+  "name": "DF530 - Ultrasonic Level Sensor with GPS",
+  "categories": [
+    "gps-tracker"
+  ],
+  "sensors": [
+    "gps",
+    "level",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dingtek",
+    "device": "df530",
+    "codecId": "df530-codec",
+    "codecFile": "df530.js",
+    "codecSha256": "3ea901aabbaa9c8f9cc806066661167f22a33b2d11316a4b855c8bcdaafa1b4c",
+    "referencedAt": "2026-06-23"
+  }
+}

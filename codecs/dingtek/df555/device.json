@@ -1,0 +1,26 @@
+{
+  "vendor": "dingtek",
+  "device": "df555",
+  "name": "DF555 - Ultrasonic Tank Level Sensor with GPS",
+  "categories": [
+    "gps-tracker"
+  ],
+  "sensors": [
+    "level",
+    "gps",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dingtek",
+    "device": "df555",
+    "codecId": "df555-codec",
+    "codecFile": "df555.js",
+    "codecSha256": "beb159ccc6a0e2797ce2f0cfee8d6b3993c0cfbc6563a6f1817e75164d39d278",
+    "referencedAt": "2026-06-23"
+  }
+}

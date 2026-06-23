@@ -1,0 +1,28 @@
+{
+  "vendor": "pepperl-fuchs",
+  "device": "wilsen-sonic-level",
+  "name": "WILSEN.sonic.level",
+  "categories": [
+    "gps-tracker"
+  ],
+  "sensors": [
+    "proximity",
+    "distance",
+    "gps",
+    "temperature",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "pepperl-fuchs",
+    "device": "wilsen-sonic-level",
+    "codecId": "wilsen-sonic-level-codec",
+    "codecFile": "wilsen.js",
+    "codecSha256": "0fa6f0c6df00988247e5ff0cc24e88e1f06b93f3977a1c72f94daa07ae4b4d00",
+    "referencedAt": "2026-06-23"
+  }
+}

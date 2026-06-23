@@ -1,0 +1,94 @@
+{
+  "uplink": [
+    {
+      "description": "Payload 1: proximity (cm), fill level, battery, temperature",
+      "input": {
+        "fPort": 1,
+        "bytes": [4, 11, 1, 0, 49, 3, 11, 6, 93, 6, 2, 1, 65, 166, 102, 102, 3, 81, 1, 34]
+      },
+      "expected": {
+        "data": {
+          "distanceCm": 49,
+          "fillLevelPercent": 93,
+          "battery": 3.4,
+          "air": { "temperature": 20.8 }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Payload 1: proximity (mm), fill level, battery, temperature",
+      "input": {
+        "fPort": 1,
+        "bytes": [4, 11, 2, 6, 182, 3, 11, 6, 60, 6, 2, 1, 65, 181, 153, 154, 3, 81, 1, 36]
+      },
+      "expected": {
+        "data": {
+          "distanceMm": 1718,
+          "fillLevelPercent": 60,
+          "battery": 3.6,
+          "air": { "temperature": 22.7 }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Payload 2: proximity (cm), fill level, battery, GPS fix, temperature",
+      "input": {
+        "fPort": 1,
+        "bytes": [4, 11, 1, 0, 33, 3, 11, 6, 100, 6, 2, 1, 65, 200, 148, 125, 3, 81, 1, 38, 6, 80, 1, 2, 244, 0, 111, 6, 80, 2, 0, 129, 51, 109]
+      },
+      "expected": {
+        "data": {
+          "distanceCm": 33,
+          "fillLevelPercent": 100,
+          "battery": 3.8,
+          "air": { "temperature": 25.1 },
+          "position": { "latitude": 49.545327, "longitude": 8.467309 }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Payload 3: serial number, LoRa/GPS/US counters, battery (no GPS fix in this frame)",
+      "input": {
+        "fPort": 1,
+        "bytes": [16, 42, 37, 52, 56, 48, 48, 48, 48, 48, 48, 54, 51, 48, 54, 56, 50, 4, 49, 1, 2, 192, 4, 49, 2, 0, 0, 6, 49, 3, 0, 0, 1, 115, 3, 81, 1, 36]
+      },
+      "expected": {
+        "data": {
+          "serialNumber": "48000000630682",
+          "loraCount": 704,
+          "gpsCount": 0,
+          "usMeasurementCount": 371,
+          "battery": 3.6
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Synthetic: southern/eastern-hemisphere GPS fix (negative latitude exercises the signed int32 path), temperature, fill level, battery",
+      "input": {
+        "fPort": 1,
+        "bytes": [6, 2, 1, 64, 240, 0, 0, 3, 11, 6, 42, 6, 80, 1, 253, 251, 66, 73, 6, 80, 2, 9, 3, 71, 172, 3, 81, 1, 37]
+      },
+      "expected": {
+        "data": {
+          "fillLevelPercent": 42,
+          "battery": 3.7,
+          "air": { "temperature": 7.5 },
+          "position": { "latitude": -33.865143, "longitude": 151.2099 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds coordinates synthesized in code; expected lat/lon/temp/fill/battery produced by running reference/upstream-codec.js as the oracle (latitude -33.865143, longitude 151.2099, temp 7.5, fillinglvl 42, battery_vol 3.7)."
+    },
+    {
+      "description": "Empty payload is rejected",
+      "input": { "fPort": 1, "bytes": [] },
+      "expected": { "errors": ["payload too short"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

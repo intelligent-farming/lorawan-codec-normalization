@@ -1,0 +1,89 @@
+{
+  "uplink": [
+    {
+      "description": "Valve status, sensor details, battery and temperature (no GPS fix)",
+      "input": {
+        "fPort": 1,
+        "bytes": [3, 12, 2, 49, 4, 12, 3, 153, 1, 6, 2, 1, 65, 188, 0, 0, 3, 81, 1, 36]
+      },
+      "expected": {
+        "data": {
+          "valve1State": "Open",
+          "valve2State": "Not connected",
+          "sensor1Details": "High",
+          "sensor2Details": "Low",
+          "sensor3Details": "Not connected",
+          "sensor4Details": "Not connected",
+          "air": { "temperature": 23.5 },
+          "battery": 3.6
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Valve status, sensor details, battery, temperature and GPS position fix",
+      "input": {
+        "fPort": 1,
+        "bytes": [3, 12, 2, 49, 4, 12, 3, 153, 1, 6, 2, 1, 65, 188, 0, 0, 3, 81, 1, 36, 6, 80, 1, 2, 241, 196, 60, 6, 80, 2, 0, 125, 35, 81]
+      },
+      "expected": {
+        "data": {
+          "valve1State": "Open",
+          "valve2State": "Not connected",
+          "sensor1Details": "High",
+          "sensor2Details": "Low",
+          "sensor3Details": "Not connected",
+          "sensor4Details": "Not connected",
+          "air": { "temperature": 23.5 },
+          "battery": 3.6,
+          "position": { "latitude": 49.398844, "longitude": 8.201041 }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Serial number, battery, LoRa/GPS/sensor counters (no live GPS fix)",
+      "input": {
+        "fPort": 1,
+        "bytes": [16, 42, 37, 52, 56, 48, 48, 48, 48, 48, 48, 54, 51, 57, 57, 57, 57, 4, 49, 1, 0, 158, 4, 49, 2, 0, 2, 6, 49, 4, 0, 0, 13, 47, 3, 81, 1, 36]
+      },
+      "expected": {
+        "data": {
+          "serialNumber": "48000000639999",
+          "loraCount": 158,
+          "gpsCount": 2,
+          "sensingCount": 3375,
+          "battery": 3.6
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Synthetic GPS-only fix (lat 10.5, lon -20.25) with battery",
+      "input": {
+        "fPort": 1,
+        "bytes": [6, 80, 1, 0, 160, 55, 160, 6, 80, 2, 254, 203, 2, 112, 3, 81, 1, 38]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.8,
+          "position": { "latitude": 10.5, "longitude": -20.25 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic position frame; lat/lon int32 = round(deg*1e6); expected values produced by running reference/upstream-codec.js on these bytes."
+    },
+    {
+      "description": "Truncated TLV record (length declares more bytes than present)",
+      "input": {
+        "fPort": 1,
+        "bytes": [6, 80, 1, 0]
+      },
+      "expected": {
+        "errors": ["truncated TLV record"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

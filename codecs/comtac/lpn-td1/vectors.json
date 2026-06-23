@@ -1,0 +1,116 @@
+{
+  "uplink": [
+    {
+      "description": "Data port GPS fix (synthetic in-bounds)",
+      "input": {
+        "fPort": 3,
+        "bytes": [1, 32, 120, 22, 1, 2, 207, 12, 0, 0, 132, 13, 241, 40]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "air": { "temperature": 22 },
+          "position": { "latitude": 47.123456, "longitude": 8.654321 },
+          "posStatus": "GPS OK",
+          "pingType": "NORMAL",
+          "gpsEpe": "20-30 meters",
+          "gpsSatellites": 8
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds GPS frame: status byte 0x20 (GPS OK / NORMAL), battery raw 120 -> (120*5+3000)/1000 = 3.6 V, temp 22 C, TLV type 0x01 with int32 BE lat 47123456/1e6 = 47.123456 and lon 8654321/1e6 = 8.654321, EPE/SAT byte 0x28 (epe 2 -> '20-30 meters', 8 satellites). expected.data derived by running reference/upstream-codec.js and remapping gpsLat/gpsLong->position.*, temp->air.temperature, batVoltage->battery."
+    },
+    {
+      "description": "Positioning data on port 3 (TTN example input)",
+      "input": {
+        "fPort": 3,
+        "bytes": [1, 168, 194, 10, 1, 2, 215, 173, 16, 0, 131, 182, 73, 245, 2, 4, 254, 236, 218, 173, 29, 22, 54, 252, 236, 218, 173, 29, 22, 54, 14, 236, 218, 173, 29, 22, 55, 252, 236, 218, 167, 50, 33, 59]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.97,
+          "air": { "temperature": 10 },
+          "position": { "latitude": 47.688976, "longitude": 8.631881 },
+          "posStatus": "GPS AND WIFI OK",
+          "pingType": "LONGRANGE",
+          "gpsEpe": "> 150 meters",
+          "gpsSatellites": 5,
+          "wifiAccessPoints": [
+            { "mac": "fe:ec:da:ad:1d:16", "rssi": -54 },
+            { "mac": "fc:ec:da:ad:1d:16", "rssi": -54 },
+            { "mac": "0e:ec:da:ad:1d:16", "rssi": -55 },
+            { "mac": "fc:ec:da:a7:32:21", "rssi": -59 }
+          ]
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Input from upstream uplinkDecoder example; expected.data authored from reference/upstream-codec.js output (gpsLat 47.688976, gpsLong 8.631881) remapped to the vocabulary. WiFi APs and GPS quality fields emitted as camelCase extras."
+    },
+    {
+      "description": "Ping data on port 3, no GPS fix (TTN example input)",
+      "input": {
+        "fPort": 3,
+        "bytes": [1, 8, 195, 26]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.975,
+          "air": { "temperature": 26 },
+          "posStatus": "NONE",
+          "pingType": "LONGRANGE"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Input from upstream uplinkDecoder example; no TLV record present so no position.* is emitted. expected.data from reference/upstream-codec.js (batVoltage 3.975, temp 26)."
+    },
+    {
+      "description": "Config data on port 100 (TTN example input)",
+      "input": {
+        "fPort": 100,
+        "bytes": [1, 2, 194, 9, 2, 0, 0, 15, 1, 0, 22, 128, 5, 1]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.97,
+          "air": { "temperature": 9 },
+          "configStatus": "/CFG GET",
+          "appMainVersion": 2,
+          "appMinorVersion": 0,
+          "pingInterval": 15,
+          "longRangeTrigger": 1,
+          "midRangeTrigger": 0,
+          "rejoinTrigger": 5760,
+          "gpsFixes": 5,
+          "minWifiDetects": 1
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Input from upstream uplinkDecoder example; config frame carries no position fix. expected.data from reference/upstream-codec.js remapped: cfgStatus->configStatus and remaining config fields as camelCase extras."
+    },
+    {
+      "description": "Invalid payload version",
+      "input": {
+        "fPort": 3,
+        "bytes": [2, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["Invalid payload version"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: byte[0] != 0x01 payload version triggers the version guard."
+    },
+    {
+      "description": "Unsupported FPort",
+      "input": {
+        "fPort": 7,
+        "bytes": [1, 2, 3]
+      },
+      "expected": {
+        "errors": ["Invalid FPort"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: only data port 3 and config port 100 are decoded."
+    }
+  ],
+  "downlink": []
+}

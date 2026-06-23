@@ -1,0 +1,74 @@
+{
+  "uplink": [
+    {
+      "description": "GNSSPosition (type 0x3): on-device float32 BE lon/lat fix + UTC epoch; gps success, wearing",
+      "input": { "fPort": 2, "bytes": [49, 0, 1, 134, 160, 66, 232, 208, 151, 66, 31, 157, 231, 106, 56, 123, 0] },
+      "expected": {
+        "data": {
+          "gpsFixSuccess": true,
+          "wearing": true,
+          "pressureRaw": 100000,
+          "position": { "latitude": 39.9042015, "longitude": 116.407402 },
+          "time": "2026-06-22T00:00:00.000Z"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds fix (lat 39.9042, lon 116.4074 encoded as IEEE-754 float32 BE). Expected re-derived against the CORRECTED codec, which forks from upstream in two ways: (1) upstream hex2float divides the mantissa by 0x7fffff instead of 0x800000, inflating non-zero-mantissa coordinates (e.g. 116.0 -> 116.0000062); we use /0x800000. (2) upstream builds the timestamp as new Date((unixSeconds + 8*3600)*1000), shifting the fix 8h forward; we emit true UTC. epoch 1781827200 -> 2026-06-22T00:00:00Z (upstream would emit 08:00:00Z)."
+    },
+    {
+      "description": "Heartbeat (type 0x2): battery %, link quality, BLE/GPS state, charge/wear timers, movement level 1 -> motion detected",
+      "input": { "fPort": 2, "bytes": [32, 85, 70, 0, 150, 1, 3, 2, 4, 16] },
+      "expected": {
+        "data": {
+          "batteryPercent": 85,
+          "rssi": -70,
+          "snr": 1.5,
+          "bleState": 1,
+          "gpsState": 3,
+          "chargeSeconds": 60,
+          "wearSeconds": 120,
+          "movementLevel": 1,
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Alarm (type 0x8): fall -> motion detected",
+      "input": { "fPort": 2, "bytes": [128, 2] },
+      "expected": {
+        "data": {
+          "alarm": "fall",
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Beacon (type 0x7): cloud-solved BLE positioning + asset scans surfaced as extras, never a position.* fix",
+      "input": { "fPort": 2, "bytes": [113, 0, 0, 0, 0, 1, 1, 18, 52, 86, 120, 200, 171, 205, 239, 1, 208] },
+      "expected": {
+        "data": {
+          "wearing": true,
+          "pressureRaw": 0,
+          "bleBeacons": [{ "major": "1234", "minor": "5678", "rssi": -56 }],
+          "bleAssetBeacons": [{ "major": "ABCD", "minor": "EF01", "rssi": -48 }]
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Register (type 0x1): device configuration, not a measurement -> error",
+      "input": { "fPort": 2, "bytes": [16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+      "expected": { "errors": ["register frame carries device configuration"] },
+      "source": "synthetic"
+    },
+    {
+      "description": "Truncated GNSSPosition frame (< 17 bytes) -> error",
+      "input": { "fPort": 2, "bytes": [49, 0, 1, 134, 160, 66, 232] },
+      "expected": { "errors": ["GNSSPosition frame requires 17 bytes"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

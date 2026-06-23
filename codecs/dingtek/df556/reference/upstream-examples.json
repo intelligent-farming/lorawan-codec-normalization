@@ -1,0 +1,123 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/dingtek/df556-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "heartbeat upload without gps",
+      "input": {
+        "fPort": 3,
+        "bytes": [
+          128,
+          0,
+          22,
+          2,
+          18,
+          2,
+          101,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          104,
+          0,
+          1,
+          129
+        ]
+      },
+      "output": {
+        "data": {
+          "level": 613,
+          "gpsEnabled": false,
+          "alarmLevel": false,
+          "alarmBattery": false,
+          "volt": 360,
+          "frameCounter": 1
+        }
+      }
+    },
+    {
+      "description": "heartbeat upload with gps",
+      "input": {
+        "fPort": 3,
+        "bytes": [
+          128,
+          0,
+          22,
+          2,
+          26,
+          2,
+          101,
+          1,
+          205,
+          3,
+          233,
+          66,
+          239,
+          39,
+          32,
+          66,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          104,
+          0,
+          1,
+          129
+        ]
+      },
+      "output": {
+        "data": {
+          "level": 613,
+          "gpsEnabled": true,
+          "longitude": "116.507430",
+          "latitude": "40.038999",
+          "alarmLevel": false,
+          "alarmBattery": false,
+          "volt": 360,
+          "frameCounter": 1
+        }
+      }
+    },
+    {
+      "description": "parameter packet",
+      "input": {
+        "fPort": 3,
+        "bytes": [
+          128,
+          0,
+          22,
+          3,
+          17,
+          4,
+          5,
+          0,
+          60,
+          10,
+          30,
+          75,
+          3,
+          232,
+          20,
+          0,
+          129
+        ]
+      },
+      "output": {
+        "data": {
+          "firmware": "4.5",
+          "uploadInterval": 60,
+          "detectInterval": 10,
+          "levelThreshold": 30,
+          "density": 1000,
+          "batteryThreshold": 20,
+          "workMode": 0
+        }
+      }
+    }
+  ]
+}
