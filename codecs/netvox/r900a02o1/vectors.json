@@ -1,0 +1,84 @@
+{
+  "uplink": [
+    {
+      "description": "Status report, shock detected (motion true), normal battery and temperature",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 18, 1, 120, 7, 8, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "battery": 12,
+          "air": { "temperature": 18 },
+          "lowTemperatureAlarm": false,
+          "highTemperatureAlarm": false,
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; wire fields parsed per upstream reference/upstream-codec.js (bytes[4]=120 -> 12.0 V, bytes[5..6]=0x0708 -> 18.00 C, bytes[7]=0 -> no temp alarms, bytes[8]=1 -> shock/motion). expected.data authored to the normalized vocabulary."
+    },
+    {
+      "description": "Status report, no shock (motion false)",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 18, 1, 120, 7, 8, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 12,
+          "air": { "temperature": 18 },
+          "lowTemperatureAlarm": false,
+          "highTemperatureAlarm": false,
+          "action": { "motion": { "detected": false } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; bytes[8]=0 -> no shock, action.motion.detected false. Mirrors the motion-true vector with the shock byte cleared."
+    },
+    {
+      "description": "Status report, low battery, negative temperature, both temperature threshold alarms set",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 18, 1, 200, 255, 156, 3, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 7.2,
+          "air": { "temperature": -1 },
+          "lowTemperatureAlarm": true,
+          "highTemperatureAlarm": true,
+          "action": { "motion": { "detected": false } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; bytes[4]=200 has high bit set -> lowBattery extra, (200&0x7f)/10=7.2 V; bytes[5..6]=0xFF9C two's-complement -> -1.00 C; bytes[7]=3 -> low+high temp alarm extras; bytes[8]=0 -> motion false. Parsed per reference/upstream-codec.js."
+    },
+    {
+      "description": "Device info / startup frame carries no measurement",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 18, 0, 100, 11, 32, 25, 17, 18]
+      },
+      "expected": {
+        "errors": ["device info frame"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic frame; bytes[3]=0 is the device-info/startup discriminator (sw/hw version + datecode in upstream), no normalized measurement."
+    },
+    {
+      "description": "Config-response fPort carries no measurement",
+      "input": {
+        "fPort": 23,
+        "bytes": [129, 1, 18, 1, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 23"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic frame; fPort 23 is the upstream config-command channel, not a data report."
+    }
+  ],
+  "downlink": []
+}

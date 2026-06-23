@@ -1,0 +1,44 @@
+{
+  "uplink": [
+    {
+      "description": "Status report, shock/tamper alarm (motion detected), low battery",
+      "input": { "fPort": 22, "bytes": [3, 1, 2, 1, 158, 0, 0, 12, 0, 0, 1, 0, 0, 23, 0, 0, 22, 0, 0, 11, 0, 0, 11, 0, 1, 1] },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3.0,
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds status frame; expected normalized data derived from running reference/upstream-codec.js (Volt 3.0 low battery, ShockTamperAlarm Alarm). Six current readings and current-alarm bits are vendor diagnostics, not part of the motion model, so they are not surfaced."
+    },
+    {
+      "description": "Status report, no shock/tamper alarm (no motion), normal battery",
+      "input": { "fPort": 22, "bytes": [3, 1, 2, 1, 110, 0, 0, 12, 0, 0, 1, 0, 0, 23, 0, 0, 22, 0, 0, 11, 0, 0, 11, 0, 1, 0] },
+      "expected": {
+        "data": {
+          "battery": 11.0,
+          "action": { "motion": { "detected": false } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds status frame; expected normalized data derived from running reference/upstream-codec.js (Volt 11.0, ShockTamperAlarm NoAlarm)."
+    },
+    {
+      "description": "Device-info/startup frame (reportType 0x00) carries no measurement",
+      "input": { "fPort": 22, "bytes": [3, 1, 2, 0, 100, 11, 32, 25, 17, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+      "expected": { "errors": ["device info frame"] },
+      "source": "synthetic",
+      "_note": "Synthetic frame padded to status-frame length; reportType byte[3]==0x00 is a version/datecode report (upstream decodes SWver/HWver/Datecode) with no measurement."
+    },
+    {
+      "description": "Unsupported fPort (config response on fPort 23) carries no measurement",
+      "input": { "fPort": 23, "bytes": [129, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "synthetic",
+      "_note": "Synthetic input mirroring a TTN config-response example; fPort 23 is the config-response channel, not a measurement."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,52 @@
+{
+  "uplink": [
+    {
+      "description": "Status report, shock/movement detected, low battery, negative temperature",
+      "input": { "fPort": 22, "bytes": [3, 1, 10, 1, 158, 255, 156, 0, 1] },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3.0,
+          "air": { "temperature": -1 },
+          "lowTemperatureAlarm": false,
+          "highTemperatureAlarm": false,
+          "action": { "motion": { "detected": true } },
+          "tamperAlarm": true
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected normalized data derived from running reference/upstream-codec.js (Volt 3.0 low battery, Temperature -1 C two's-complement 0xFF9C, ShockTamperAlarm Alarm). Exercises motion-detected true and negative temperature."
+    },
+    {
+      "description": "Status report, no shock, normal battery, +18C, both temperature threshold alarms set",
+      "input": { "fPort": 22, "bytes": [3, 1, 10, 1, 120, 7, 8, 3, 0] },
+      "expected": {
+        "data": {
+          "battery": 12.0,
+          "air": { "temperature": 18 },
+          "lowTemperatureAlarm": true,
+          "highTemperatureAlarm": true,
+          "action": { "motion": { "detected": false } },
+          "tamperAlarm": false
+        }
+      },
+      "source": "ttn-example",
+      "_note": "TTN-example input (alarm byte set to 0 and threshold byte to 3); expected normalized data derived from running reference/upstream-codec.js (Volt 12.0, Temperature 18 C 0x0708, LowTemperatureAlarm 1, HighTemperatureAlarm 1, ShockTamperAlarm NoAlarm). Exercises motion-detected false."
+    },
+    {
+      "description": "Device-info/startup frame (reportType 0x00) carries no measurement",
+      "input": { "fPort": 22, "bytes": [3, 1, 10, 0, 100, 11, 32, 25, 17, 18] },
+      "expected": { "errors": ["device info frame"] },
+      "source": "ttn-example",
+      "_note": "TTN-example input; upstream decodes this as a software/hardware version + datecode report with no measurement."
+    },
+    {
+      "description": "Unsupported fPort (config response on fPort 23) carries no measurement",
+      "input": { "fPort": 23, "bytes": [129, 1, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "ttn-example",
+      "_note": "TTN-example input; fPort 23 is the config-response channel, not a measurement."
+    }
+  ],
+  "downlink": []
+}

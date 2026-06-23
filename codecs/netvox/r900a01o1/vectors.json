@@ -1,0 +1,86 @@
+{
+  "uplink": [
+    {
+      "description": "Status report: temp 23.45C, humidity 56.78%, battery 3.0V, shock alarm",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 17, 1, 30, 9, 41, 22, 46, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "air": {
+            "temperature": 23.45,
+            "relativeHumidity": 56.78
+          },
+          "lowTemperatureAlarm": false,
+          "highTemperatureAlarm": false,
+          "lowHumidityAlarm": false,
+          "highHumidityAlarm": false,
+          "action": {
+            "motion": {
+              "detected": true
+            }
+          },
+          "tamperAlarm": true
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds status frame; wire layout cross-checked against reference/upstream-codec.js (Temperature 23.45, Humidity 56.78, Volt 3, ShockTamperAlarm Alarm). expected.data authored to the normalized vocabulary."
+    },
+    {
+      "description": "Status report: low battery 2.5V, temp -1.0C, humidity 15.0%, low temp+humidity alarms, no shock",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 17, 1, 153, 255, 156, 5, 220, 5, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 2.5,
+          "air": {
+            "temperature": -1,
+            "relativeHumidity": 15
+          },
+          "lowTemperatureAlarm": true,
+          "highTemperatureAlarm": false,
+          "lowHumidityAlarm": true,
+          "highHumidityAlarm": false,
+          "action": {
+            "motion": {
+              "detected": false
+            }
+          },
+          "tamperAlarm": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic frame exercising low-battery flag (byte4 high bit set, 0x99 -> 2.5V), negative two's-complement temperature (0xFF9C -> -1.00C) and threshold alarm bits; cross-checked against reference/upstream-codec.js."
+    },
+    {
+      "description": "Device-info/startup frame carries no measurement",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 17, 0, 100, 11, 32, 25, 17, 18, 0]
+      },
+      "expected": {
+        "errors": ["device info frame"]
+      },
+      "source": "synthetic",
+      "_note": "reportType byte3 == 0x00 is a version/datecode frame with no measurement."
+    },
+    {
+      "description": "Config response fPort 23 is not a data report",
+      "input": {
+        "fPort": 23,
+        "bytes": [129, 1, 17, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 23"]
+      },
+      "source": "synthetic",
+      "_note": "Config/command responses arrive on fPort 23 and carry no normalized measurement."
+    }
+  ],
+  "downlink": []
+}

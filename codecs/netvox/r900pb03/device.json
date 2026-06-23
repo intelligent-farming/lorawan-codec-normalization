@@ -1,0 +1,27 @@
+{
+  "vendor": "netvox",
+  "device": "r900pb03",
+  "name": "R900PB03 - Wireless Contact / Shock Sensor with Distance",
+  "categories": [
+    "contact",
+    "motion"
+  ],
+  "sensors": [
+    "contact",
+    "shock",
+    "distance"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r900pb03",
+    "codecId": "r900pb03-codec",
+    "codecFile": "payload/r900pb03.js",
+    "codecSha256": "006faa70a8b95a84f5b973cf9e484a636002fc3d0591e403ac140d898cbd49f2",
+    "referencedAt": "2026-06-23"
+  }
+}

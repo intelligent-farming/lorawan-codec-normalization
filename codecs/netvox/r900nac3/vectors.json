@@ -1,0 +1,80 @@
+{
+  "uplink": [
+    {
+      "description": "Status report with shock/tamper alarm (motion detected)",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 1, 1, 110, 0, 0, 11, 0, 0, 11, 0, 0, 11, 1, 1]
+      },
+      "expected": {
+        "data": {
+          "battery": 11,
+          "current1": 11,
+          "current2": 11,
+          "current3": 11,
+          "lowCurrent1Alarm": true,
+          "highCurrent1Alarm": false,
+          "lowCurrent2Alarm": false,
+          "highCurrent2Alarm": false,
+          "lowCurrent3Alarm": false,
+          "highCurrent3Alarm": false,
+          "action": { "motion": { "detected": true } },
+          "tamperAlarm": true
+        }
+      },
+      "source": "synthetic",
+      "_note": "Wire shape from the upstream R900NAC3 status-report example (bytes[15]=0x01 shock/tamper alarm); expected.data authored here and produced by running reference/upstream-codec.js to confirm the field layout (Volt 11, Current 11mA, LowCurrent1Alarm 1, ShockTamperAlarm Alarm). Shock maps to action.motion.detected=true."
+    },
+    {
+      "description": "Status report with no alarm and low battery (motion not detected)",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 1, 1, 165, 0, 1, 44, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3.7,
+          "current1": 300,
+          "current2": 0,
+          "current3": 0,
+          "lowCurrent1Alarm": false,
+          "highCurrent1Alarm": false,
+          "lowCurrent2Alarm": false,
+          "highCurrent2Alarm": false,
+          "lowCurrent3Alarm": false,
+          "highCurrent3Alarm": false,
+          "action": { "motion": { "detected": false } },
+          "tamperAlarm": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame: bytes[4]=0xA5 sets the low-battery high bit (0x25=37 -> 3.7 V), bytes[15]=0x00 NoAlarm -> action.motion.detected=false. Verified against reference/upstream-codec.js (Volt '3.7(low battery)', Current1 300mA, ShockTamperAlarm NoAlarm)."
+    },
+    {
+      "description": "Device info / startup frame carries no measurement",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 1, 0, 100, 11, 32, 25, 17, 18, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["device info frame"]
+      },
+      "source": "synthetic",
+      "_note": "Device-info frame: bytes[3]=0x00 -> Device/SWver/HWver/Datecode per reference/upstream-codec.js, no measurement. Zero-padded to 16 bytes so it reaches the reportType==0x00 branch (the short 10-byte upstream startup example would trip the length guard first)."
+    },
+    {
+      "description": "Config response on fPort 23 carries no measurement",
+      "input": {
+        "fPort": 23,
+        "bytes": [129, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 23"]
+      },
+      "source": "synthetic",
+      "_note": "Upstream ConfigReportRsp example input on fPort 23. Config responses carry no measurement, so our codec rejects the fPort."
+    }
+  ],
+  "downlink": []
+}

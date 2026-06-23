@@ -1,0 +1,82 @@
+{
+  "uplink": [
+    {
+      "description": "Status report, no shock alarm (motion false), normal battery",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 3, 1, 120, 0, 0, 29, 0, 0, 14, 2, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 12,
+          "current1": 29,
+          "current2": 14,
+          "lowCurrent1Alarm": false,
+          "highCurrent1Alarm": true,
+          "lowCurrent2Alarm": false,
+          "highCurrent2Alarm": false,
+          "action": { "motion": { "detected": false } }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Status report, shock/tamper alarm (motion true), low battery",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 3, 1, 160, 0, 1, 44, 0, 0, 200, 5, 1]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3.2,
+          "current1": 300,
+          "current2": 200,
+          "lowCurrent1Alarm": true,
+          "highCurrent1Alarm": false,
+          "lowCurrent2Alarm": true,
+          "highCurrent2Alarm": false,
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame: bytes[4]=0xA0 sets the low-battery high bit (3.2 V), bytes[5..7]=300 mA, bytes[8..10]=200 mA, bytes[11]=0x05 sets LowCurrent1+LowCurrent2, bytes[12]=0x01 shock alarm. expected.data authored from the upstream reference decode (Volt '3.2(low battery)', Current1 300mA, Current2 200mA, alarm flags, ShockTamperAlarm 'Alarm')."
+    },
+    {
+      "description": "Startup/device-info frame, reportType 0x00 (no measurement)",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 3, 0, 100, 11, 32, 25, 17, 18, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["device info frame"]
+      },
+      "source": "synthetic",
+      "_note": "Upstream startup example is 10 bytes; right-padded to the 13-byte status-frame length so the reportType 0x00 device-info branch is exercised rather than the length guard. The four datecode bytes (25,17,18) are unchanged from the TTN example input."
+    },
+    {
+      "description": "Config report response on fPort 23 (no measurement)",
+      "input": {
+        "fPort": 23,
+        "bytes": [129, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 23"]
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Truncated status frame (too few bytes)",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 3, 1, 120, 0]
+      },
+      "expected": {
+        "errors": ["expected at least 13 bytes"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic short payload to exercise the length guard."
+    }
+  ],
+  "downlink": []
+}

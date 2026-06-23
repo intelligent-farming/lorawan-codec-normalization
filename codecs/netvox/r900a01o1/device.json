@@ -1,0 +1,26 @@
+{
+  "vendor": "netvox",
+  "device": "r900a01o1",
+  "name": "R900A01O1 - Wireless Temperature/Humidity/Shock Sensor",
+  "categories": [
+    "climate",
+    "motion"
+  ],
+  "sensors": [
+    "air",
+    "shock"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r900a01o1",
+    "codecId": "r900a01o1-codec",
+    "codecFile": "payload/r900a01o1.js",
+    "codecSha256": "7dd9d4f93eee6ddb9d15f153d42cd4f54ffb061103083bfd3bd744b92e1adf19",
+    "referencedAt": "2026-06-23"
+  }
+}

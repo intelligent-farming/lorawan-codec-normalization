@@ -1,0 +1,25 @@
+{
+  "vendor": "netvox",
+  "device": "r900pb02",
+  "name": "R900PB02 - Wireless Soil Moisture/Temperature/EC Sensor with Shock Detection",
+  "categories": [
+    "soil-monitor",
+    "motion"
+  ],
+  "sensors": [
+    "soil"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r900pb02",
+    "codecId": "r900pb02-codec",
+    "codecFile": "payload/r900pb02.js",
+    "codecSha256": "0ec917b6ffc86b12d2768eb99c0a6b3f1353f920d831f3b712bab3f55c264ef9",
+    "referencedAt": "2026-06-23"
+  }
+}

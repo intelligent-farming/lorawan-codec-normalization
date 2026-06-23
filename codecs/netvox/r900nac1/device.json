@@ -1,0 +1,24 @@
+{
+  "vendor": "netvox",
+  "device": "r900nac1",
+  "name": "R900NAC1 - Wireless Shock/Movement Sensor",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "motion"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r900nac1",
+    "codecId": "r900nac1-codec",
+    "codecFile": "payload/r900nac1.js",
+    "codecSha256": "ef1eef5455cdb7617e088850e1f43b2c60bfb35c71c85b001f43fd9e4ccb37dc",
+    "referencedAt": "2026-06-23"
+  }
+}

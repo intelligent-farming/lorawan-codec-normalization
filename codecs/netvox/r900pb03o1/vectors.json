@@ -1,0 +1,80 @@
+{
+  "uplink": [
+    {
+      "description": "Status report: contact open (Off), no shock, healthy battery",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 16, 1, 36, 0, 5, 220, 50, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "action": {
+            "contactState": "open",
+            "motion": { "detected": false }
+          },
+          "tamperAlarm": false,
+          "distance": 1500,
+          "fillLevel": 50,
+          "lowDistanceAlarm": false,
+          "highDistanceAlarm": false,
+          "lowFillLevelAlarm": false,
+          "highFillLevelAlarm": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected.data authored from the byte layout and cross-checked against reference/upstream-codec.js (Off->open, 0x24=3.6V, 0x05DC=1500mm, fill 50%, no shock)."
+    },
+    {
+      "description": "Status report: contact closed (On), shock/tamper alarm, low battery, all distance/fill alarms",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 16, 1, 164, 1, 3, 32, 75, 15, 1]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3.6,
+          "action": {
+            "contactState": "closed",
+            "motion": { "detected": true }
+          },
+          "tamperAlarm": true,
+          "distance": 800,
+          "fillLevel": 75,
+          "lowDistanceAlarm": true,
+          "highDistanceAlarm": true,
+          "lowFillLevelAlarm": true,
+          "highFillLevelAlarm": true
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected.data authored from the byte layout and cross-checked against reference/upstream-codec.js (On->closed, 0xA4 low-battery flag + 3.6V, 0x0320=800mm, fill 75%, shock alarm, all threshold alarms set)."
+    },
+    {
+      "description": "Device-info / startup frame (no measurement)",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 16, 0, 100, 11, 32, 25, 17, 18, 0]
+      },
+      "expected": {
+        "errors": ["device info frame"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic frame derived from the TTN startup example (reportType byte 0x00), padded to the 11-byte status length; carries only version/datecode, not a measurement."
+    },
+    {
+      "description": "Unsupported fPort (config response on 23)",
+      "input": {
+        "fPort": 23,
+        "bytes": [129, 1, 16, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 23"]
+      },
+      "source": "synthetic",
+      "_note": "Config-response port carries no measurement; the normalized codec only decodes the fPort 22 data report."
+    }
+  ],
+  "downlink": []
+}

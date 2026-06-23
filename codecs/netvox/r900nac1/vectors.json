@@ -1,0 +1,66 @@
+{
+  "uplink": [
+    {
+      "description": "Status report, shock/movement detected",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 0, 1, 36, 0, 3, 3, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "current1Ma": 771,
+          "lowCurrentAlarm": false,
+          "highCurrentAlarm": false,
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds status frame. battery 0x24=36 -> 3.6 V; current 0x000303=771 mA; byte[9]=1 shock/movement detected -> action.motion.detected true. expected.data authored against the normalized contract."
+    },
+    {
+      "description": "Status report, no shock, low battery and low-current alarm",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 0, 1, 164, 0, 0, 100, 1, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3.6,
+          "current1Ma": 100,
+          "lowCurrentAlarm": true,
+          "highCurrentAlarm": false,
+          "action": { "motion": { "detected": false } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds status frame. battery 0xA4: high bit set -> lowBattery true, 0x24=36 -> 3.6 V; current 100 mA; byte[8] bit0 set -> lowCurrentAlarm true; byte[9]=0 -> action.motion.detected false."
+    },
+    {
+      "description": "Device info / startup frame (no measurement)",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 0, 0, 100, 11, 32, 25, 17, 18]
+      },
+      "expected": {
+        "errors": ["device info frame"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic frame using the upstream startup-report input shape (reportType byte[3]=0). Carries only firmware/version metadata, no normalized measurement -> error."
+    },
+    {
+      "description": "Config response on fPort 23 (no measurement)",
+      "input": {
+        "fPort": 23,
+        "bytes": [129, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 23"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic config-response input shape. fPort 23 carries configuration responses, not measurements -> error."
+    }
+  ],
+  "downlink": []
+}

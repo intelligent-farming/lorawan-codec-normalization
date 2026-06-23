@@ -1,0 +1,26 @@
+{
+  "vendor": "netvox",
+  "device": "r900a02o1",
+  "name": "R900A02O1 - Wireless Temperature and Shock/ShockTamper Sensor",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "temperature",
+    "shock",
+    "shock tamper"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r900a02o1",
+    "codecId": "r900a02o1-codec",
+    "codecFile": "payload/r900a02o1.js",
+    "codecSha256": "f0ada4ae7aaf957a7784abd40e50bd0a2214374153d449d4607eb2838c2aab52",
+    "referencedAt": "2026-06-23"
+  }
+}

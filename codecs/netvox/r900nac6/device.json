@@ -1,0 +1,24 @@
+{
+  "vendor": "netvox",
+  "device": "r900nac6",
+  "name": "R900NAC6 - Wireless Shock/Tamper Sensor",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "shock"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r900nac6",
+    "codecId": "r900nac6-codec",
+    "codecFile": "payload/r900nac6.js",
+    "codecSha256": "232094243fa6e7d6bc6c6dde889a0605473ef01b45a226f79d4809eb2a035600",
+    "referencedAt": "2026-06-23"
+  }
+}

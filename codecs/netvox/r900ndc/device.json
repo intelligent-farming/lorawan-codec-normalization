@@ -1,0 +1,24 @@
+{
+  "vendor": "netvox",
+  "device": "r900ndc",
+  "name": "R900NDC - Wireless Shock / Shock-Tamper Sensor",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "motion"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r900ndc",
+    "codecId": "r900ndc-codec",
+    "codecFile": "payload/r900ndc.js",
+    "codecSha256": "f2454230d5730a895c6752c1f5081ca186a8f81a393eba90b1eeccb764c7088b",
+    "referencedAt": "2026-06-23"
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "uplink": [
+    {
+      "description": "Status report: climate reading, no shock, no alarms",
+      "input": { "fPort": 22, "bytes": [3, 1, 9, 1, 120, 7, 8, 4, 76, 0, 0] },
+      "expected": {
+        "data": {
+          "battery": 12,
+          "air": { "temperature": 18, "relativeHumidity": 11 },
+          "lowTemperatureAlarm": false,
+          "highTemperatureAlarm": false,
+          "lowHumidityAlarm": false,
+          "highHumidityAlarm": false,
+          "action": { "motion": { "detected": false } },
+          "tamperAlarm": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame (input bytes from the upstream ttn-example status report). expected.data derived by running reference/upstream-codec.js and mapping to the normalized vocabulary: Temperature/Humidity -> air.*, ShockTamperAlarm -> action.motion.detected + tamperAlarm."
+    },
+    {
+      "description": "Status report: shock detected with all four threshold alarms set",
+      "input": { "fPort": 22, "bytes": [3, 1, 9, 1, 118, 9, 16, 11, 184, 15, 1] },
+      "expected": {
+        "data": {
+          "battery": 11.8,
+          "air": { "temperature": 23.2, "relativeHumidity": 30 },
+          "lowTemperatureAlarm": true,
+          "highTemperatureAlarm": true,
+          "lowHumidityAlarm": true,
+          "highHumidityAlarm": true,
+          "action": { "motion": { "detected": true } },
+          "tamperAlarm": true
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame covering the motion category (action.motion.detected == true) plus every threshold-alarm bit. expected.data derived by running reference/upstream-codec.js and mapping to the vocabulary."
+    },
+    {
+      "description": "Status report: negative temperature and low-battery flag",
+      "input": { "fPort": 22, "bytes": [3, 1, 9, 1, 200, 255, 236, 1, 144, 0, 0] },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 7.2,
+          "air": { "temperature": -0.2, "relativeHumidity": 4 },
+          "lowTemperatureAlarm": false,
+          "highTemperatureAlarm": false,
+          "lowHumidityAlarm": false,
+          "highHumidityAlarm": false,
+          "action": { "motion": { "detected": false } },
+          "tamperAlarm": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; byte4 high bit -> lowBattery extra with masked voltage, byte5 high bit -> two's-complement negative temperature. expected.data derived by running reference/upstream-codec.js and mapping to the vocabulary."
+    },
+    {
+      "description": "Device-info / startup frame (reportType 0x00) carries no measurement",
+      "input": { "fPort": 22, "bytes": [3, 1, 9, 0, 100, 11, 32, 25, 17, 18, 0] },
+      "expected": { "errors": ["device info frame"] },
+      "source": "synthetic",
+      "_note": "Synthetic (input bytes from the upstream ttn-example startup report, padded to 11 bytes); reportType byte[3] == 0x00 is a version/datecode frame with no normalized measurement."
+    },
+    {
+      "description": "Unsupported fPort (config response on fPort 23)",
+      "input": { "fPort": 23, "bytes": [129, 1, 9, 0, 0, 0, 0, 0, 0, 0, 0] },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "synthetic",
+      "_note": "Synthetic; fPort 23 carries config command responses, not measurements."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,25 @@
+{
+  "vendor": "netvox",
+  "device": "r900a02",
+  "name": "R900A02 - Wireless Shock Sensor with Temperature",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "accelerometer",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r900a02",
+    "codecId": "r900a02-codec",
+    "codecFile": "payload/r900a02.js",
+    "codecSha256": "7e459a40cd47c79fa198d60c417722c1488634d0882899074072085df732667c",
+    "referencedAt": "2026-06-23"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "vendor": "netvox",
+  "device": "r900pb02o1",
+  "name": "R900PB02O1 - Wireless Water leak Sensor",
+  "categories": [
+    "motion",
+    "soil-monitor"
+  ],
+  "sensors": [
+    "soil"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r900pb02o1",
+    "codecId": "r900pb02o1-codec",
+    "codecFile": "payload/r900pb02.js",
+    "codecSha256": "0ec917b6ffc86b12d2768eb99c0a6b3f1353f920d831f3b712bab3f55c264ef9",
+    "referencedAt": "2026-06-23"
+  }
+}

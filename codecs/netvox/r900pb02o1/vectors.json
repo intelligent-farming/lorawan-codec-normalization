@@ -1,0 +1,76 @@
+{
+  "uplink": [
+    {
+      "description": "Status report with shock/tamper alarm active (motion detected)",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 15, 1, 30, 1, 144, 9, 200, 1, 44, 1, 1]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "soil": { "moisture": 4, "temperature": 25.04, "ec": 0.3 },
+          "lowMoistureAlarm": true,
+          "highMoistureAlarm": false,
+          "lowTemperatureAlarm": false,
+          "highTemperatureAlarm": false,
+          "lowEcAlarm": false,
+          "highEcAlarm": false,
+          "action": { "motion": { "detected": true } },
+          "tamperAlarm": true
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected.data produced by running reference/upstream-codec.js (devtype 271 = 0x010F) and normalizing its fields. Shock/tamper alarm byte = 1 -> action.motion.detected true."
+    },
+    {
+      "description": "Status report, no alarm, low battery, negative soil temperature (motion not detected)",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 15, 1, 157, 0, 50, 255, 156, 0, 100, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 2.9,
+          "soil": { "moisture": 0.5, "temperature": -1, "ec": 0.1 },
+          "lowMoistureAlarm": false,
+          "highMoistureAlarm": false,
+          "lowTemperatureAlarm": false,
+          "highTemperatureAlarm": false,
+          "lowEcAlarm": false,
+          "highEcAlarm": false,
+          "action": { "motion": { "detected": false } },
+          "tamperAlarm": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected.data produced by running reference/upstream-codec.js. byte[4] high bit set -> lowBattery; bytes[7..8]=0xFF9C two's-complement -> -1.00 C; tamper byte = 0 -> action.motion.detected false."
+    },
+    {
+      "description": "Device-info / startup frame (reportType 0x00) carries no measurement",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 15, 0, 100, 11, 32, 25, 17, 18, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["device info frame"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; reportType byte (index 3) = 0 is the device-info/version frame, no measurement."
+    },
+    {
+      "description": "Config-response fPort (23) is not a data report",
+      "input": {
+        "fPort": 23,
+        "bytes": [129, 1, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 23"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; fPort 23 carries config-command echoes (incl. DryContactPointOut), not a measurement."
+    }
+  ],
+  "downlink": []
+}
