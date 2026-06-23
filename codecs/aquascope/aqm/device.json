@@ -1,0 +1,25 @@
+{
+  "vendor": "aquascope",
+  "device": "aqm",
+  "name": "Ultrasonic Clamp-On Water Meter AQMLWE01",
+  "categories": [
+    "water-meter"
+  ],
+  "sensors": [
+    "temperature",
+    "water"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "aquascope",
+    "device": "aqm",
+    "codecId": "aqm-codec",
+    "codecFile": "aqm.js",
+    "codecSha256": "c100cb33463767551d0ae079b8e21323f40419e6e6e8420c121ad55bec0cb541",
+    "referencedAt": "2026-06-23"
+  }
+}

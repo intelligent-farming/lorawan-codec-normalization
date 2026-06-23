@@ -1,0 +1,74 @@
+{
+  "uplink": [
+    {
+      "description": "fPort 2 flow uplink, flag 2 (60 pulses/L), MOD 0, 12000 pulses -> 200 L",
+      "input": {
+        "fPort": 2,
+        "bytes": [8, 0, 0, 46, 224, 0, 0, 106, 29, 116, 64]
+      },
+      "expected": {
+        "data": {
+          "metering": { "water": { "total": 200 } },
+          "flowPulseTotal": 12000,
+          "calculateFlag": 2,
+          "mod": 0,
+          "alarm": false,
+          "totalPulse": 12000,
+          "time": "2026-06-01T12:00:00Z"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; cumulative-volume expectation cross-checked against reference/upstream-codec.js (Water_flow_value = totalPulse / 60 for flag 2). Timestamp emitted as UTC RFC3339 (upstream uses non-deterministic local-TZ Date methods)."
+    },
+    {
+      "description": "fPort 2 flow uplink, flag 1 (360 pulses/L), MOD 1, alarm set, 36000 pulses -> 100 L",
+      "input": {
+        "fPort": 2,
+        "bytes": [6, 0, 0, 140, 160, 1, 0, 106, 29, 116, 64]
+      },
+      "expected": {
+        "data": {
+          "metering": { "water": { "total": 100 } },
+          "flowPulseTotal": 36000,
+          "calculateFlag": 1,
+          "mod": 1,
+          "alarm": true,
+          "lastPulse": 36000,
+          "time": "2026-06-01T12:00:00Z"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; volume cross-checked against reference/upstream-codec.js (Water_flow_value = totalPulse / 360 for flag 1). MOD 1 reports lastPulse rather than totalPulse, per upstream."
+    },
+    {
+      "description": "fPort 5 device-status uplink: SW3L, fw 1.4.6, EU868, battery 3.300 V",
+      "input": {
+        "fPort": 5,
+        "bytes": [17, 1, 70, 1, 255, 12, 228]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "sensorModel": "SW3L",
+          "firmwareVersion": "1.4.6",
+          "frequencyBand": "EU868",
+          "subBand": "NULL"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds status input; battery (mV/1000), model, firmware, and band decode cross-checked against reference/upstream-codec.js fPort 5."
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [11, 136, 1, 0, 37, 0, 1]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 42"]
+      },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

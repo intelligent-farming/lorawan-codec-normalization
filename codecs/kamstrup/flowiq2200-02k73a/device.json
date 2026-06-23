@@ -1,0 +1,25 @@
+{
+  "vendor": "kamstrup",
+  "device": "flowiq2200-02k73a",
+  "name": "flowIQ®2200 OMS over LoRaWAN",
+  "categories": [
+    "water-meter"
+  ],
+  "sensors": [
+    "water",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "kamstrup",
+    "device": "flowiq2200-02k73a",
+    "codecId": "mbusparser",
+    "codecFile": "mbusparser.js",
+    "codecSha256": "367c4bf385731b827f46c0da45a114b1c16f28182c2deea4ca9d968f4ed24612",
+    "referencedAt": "2026-06-23"
+  }
+}

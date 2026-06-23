@@ -114,11 +114,11 @@ of the listed paths present).
 | `weather-station` | `air.temperature`, `air.pressure` | 72 |
 | `wind` | `wind.speed` | 12 |
 | `rain-gauge` | `rain.cumulative` | 10 |
-| `water-meter` | `metering.water.total` | 0 |
+| `water-meter` | `metering.water.total` | 7 |
 | `motion` | `action.motion` | 72 |
 | `contact` | `action.contactState` | 20 |
 | `gps-tracker` | `position.latitude`, `position.longitude` | 46 |
-| `water-leak` | `water.leak` | 12 |
+| `water-leak` | `water.leak` | 14 |
 | `groundwater` | `atLeastOne`: `water.level` / `water.pressure` | 6 |
 
 `devices()` / `devices({ category })` enumerate registered devices;

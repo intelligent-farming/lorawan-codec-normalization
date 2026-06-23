@@ -1,0 +1,24 @@
+{
+  "vendor": "dragino",
+  "device": "sw3l",
+  "name": "SW3L - Flow Sensor",
+  "categories": [
+    "water-meter"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "sw3l",
+    "codecId": "sw3l-codec",
+    "codecFile": "sw3l.js",
+    "codecSha256": "ec8a33a0bc1ad8e07aaee5ff8498782364484b4c6710b7a7bda3f24ea0db9029",
+    "referencedAt": "2026-06-23"
+  }
+}

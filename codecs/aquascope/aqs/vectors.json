@@ -1,0 +1,61 @@
+{
+  "uplink": [
+    {
+      "description": "Metering uplink: water temperature, hydrostatic pressure, cumulative volume, battery",
+      "input": {
+        "fPort": 1,
+        "bytes": [6, 1, 0, 185, 6, 16, 13, 172, 6, 17, 48, 57, 6, 19, 14, 16]
+      },
+      "expected": {
+        "data": {
+          "water": { "temperature": { "current": 18.5 } },
+          "waterPressureKpa": 350,
+          "metering": { "water": { "total": 12345 } },
+          "battery": 3.6
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds TLV stream. fPort 1 with sensor records 0x01 temp (185 -> 18.5 C, 0.1 C/LSB), 0x10 pressure (3500 mbar==hPa -> 350 kPa, /10), 0x11 consumption (12345 L, litres as-is), 0x13 battery (3600 mV -> 3.6 V). expected.data is the upstream raw decode converted to canonical vocabulary units."
+    },
+    {
+      "description": "Valve flow event (state 1): flow active with per-event time and litres",
+      "input": {
+        "fPort": 1,
+        "bytes": [7, 1, 0, 30, 0, 200]
+      },
+      "expected": {
+        "data": {
+          "flow": 0,
+          "consumptionTime": 30,
+          "consumptionLiter": 200
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic. Command 0x07 state 1: flow=0, consumptionTime=30, consumptionLiter=200. These are per-flow-event extras (camelCase), distinct from the cumulative metering total."
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [1, 42]
+      },
+      "expected": {
+        "errors": ["invalid FPort"]
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Unknown command byte",
+      "input": {
+        "fPort": 1,
+        "bytes": [255, 0]
+      },
+      "expected": {
+        "errors": ["unknown command 255"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic. Command byte 0xFF is not a defined Aqua-Scope command; codec reports an error rather than upstream's data.error envelope."
+    }
+  ],
+  "downlink": []
+}

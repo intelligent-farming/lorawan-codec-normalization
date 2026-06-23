@@ -1,0 +1,62 @@
+{
+  "uplink": [
+    {
+      "description": "Sensor report: water temperature, cumulative consumption, battery",
+      "input": {
+        "fPort": 1,
+        "bytes": [6, 1, 0, 21, 6, 17, 48, 57, 6, 19, 0, 87]
+      },
+      "expected": {
+        "data": {
+          "water": { "temperature": { "current": 21 } },
+          "metering": { "water": { "total": 12345 } },
+          "batteryPercent": 87
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic frame; expected.data derived by running reference/upstream-codec.js (temperature=21, consumption=12345, batterylevel=87) then remapping to canonical keys. consumption is litres -> metering.water.total as-is; batterylevel is a percentage -> batteryPercent extra. bytes [6,17,48,57] = 0x06 0x11 0x3039 (12345)."
+    },
+    {
+      "description": "Consumption-only meter read (cumulative total)",
+      "input": {
+        "fPort": 1,
+        "bytes": [6, 17, 234, 96]
+      },
+      "expected": {
+        "data": {
+          "metering": { "water": { "total": 60000 } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Upstream decodes 0x06 0x11 0xEA60 to consumption=60000; remapped to metering.water.total (litres, as-is)."
+    },
+    {
+      "description": "Flow-stop event with per-event consumption (no cumulative total)",
+      "input": {
+        "fPort": 1,
+        "bytes": [7, 1, 2, 88, 0, 42]
+      },
+      "expected": {
+        "data": {
+          "flowActive": false,
+          "consumptionTime": 600,
+          "consumptionLiter": 42
+        }
+      },
+      "source": "synthetic",
+      "_note": "Upstream 0x07 state 1 yields flow=0, conumption_time=600 (0x0258), conumption_liter=42; these are per-event values, surfaced as camelCase extras (not metering.water.total, which is the lifetime totaliser)."
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [1, 42]
+      },
+      "expected": {
+        "errors": ["invalid FPort"]
+      },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

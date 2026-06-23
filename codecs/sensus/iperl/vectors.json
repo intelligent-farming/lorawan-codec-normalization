@@ -1,0 +1,72 @@
+{
+  "uplink": [
+    {
+      "description": "SND-ALARM uplink (TTN example): cumulative volume 25041.978 m^3 + LOW_BATTERY",
+      "input": {
+        "fPort": 20,
+        "bytes": [
+          122, 6, 4, 0, 0, 132, 4, 19, 58, 28, 126, 1, 132, 4, 109, 42, 45,
+          19, 54, 141, 4, 147, 19, 24, 210, 60, 52, 0, 46, 0, 52, 0, 46, 0,
+          57, 0, 46, 0, 52, 0, 46, 0, 52, 0, 51, 0, 52, 0
+        ]
+      },
+      "expected": {
+        "data": {
+          "metering.water.total": 25041978,
+          "accessNo": 6,
+          "statusByte": 4,
+          "alarms": ["LOW_BATTERY"]
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Input bytes from the upstream uplinkDecoder example (Apache-2.0). Expected metering.water.total derived by running the upstream OMS decoder as oracle: first VOLUME record value=25041978, VIF exponent=-3 -> 25041.978 m^3 x 1000 = 25041978 L. status=4 -> LOW_BATTERY."
+    },
+    {
+      "description": "Synthetic plaintext OMS frame on fPort 21: 1234.567 m^3, no alarms",
+      "input": {
+        "fPort": 21,
+        "bytes": [122, 42, 0, 0, 0, 4, 19, 135, 214, 18, 0]
+      },
+      "expected": {
+        "data": {
+          "metering.water.total": 1234567,
+          "accessNo": 42,
+          "statusByte": 0,
+          "alarms": []
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic short-header frame (CI=0x7A, accessNo=42, status=0, config=0), single VOLUME record DIF=0x04 (32-bit int) VIF=0x13 (m^3 x10^-3), value LE 0x0012d687 = 1234567 -> 1234.567 m^3 x 1000 = 1234567 L. Verified against the upstream oracle."
+    },
+    {
+      "description": "Synthetic plaintext OMS frame on fPort 20: 1000 m^3 with multiple status alarms",
+      "input": {
+        "fPort": 20,
+        "bytes": [122, 7, 182, 0, 0, 132, 4, 19, 64, 66, 15, 0]
+      },
+      "expected": {
+        "data": {
+          "metering.water.total": 1000000,
+          "accessNo": 7,
+          "statusByte": 182,
+          "alarms": ["LOW_BATTERY", "LEAKAGE", "SENSOR_OUT_OF_RANGE", "BROKEN_PIPE", "EMPTY_PIPE"]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic frame, status=0xB6, VOLUME record DIF=0x84/DIFE=0x04 VIF=0x13, value LE 0x000f4240 = 1000000 -> 1000 m^3 x 1000 = 1000000 L. Alarm set and ordering verified against the upstream oracle."
+    },
+    {
+      "description": "Unsupported fPort is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [122, 6, 4, 0, 0, 132, 4, 19, 58, 28, 126, 1]
+      },
+      "expected": {
+        "errors": ["unsupported fPort"]
+      },
+      "source": "synthetic",
+      "_note": "The upstream decoder returns {} for any fPort other than 20/21/22; our codec returns an explicit error. No oracle volume."
+    }
+  ],
+  "downlink": []
+}

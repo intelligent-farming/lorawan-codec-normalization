@@ -1,0 +1,24 @@
+{
+  "vendor": "sensus",
+  "device": "iperl",
+  "name": "iPERL",
+  "categories": [
+    "water-meter"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "sensus",
+    "device": "iperl",
+    "codecId": "iperl-codec",
+    "codecFile": "iperl-oms.js",
+    "codecSha256": "dfe9c217a2e4dd3e5bfc292d450d4c01a0f0494ef934f74bf5975c64faa64c31",
+    "referencedAt": "2026-06-23"
+  }
+}

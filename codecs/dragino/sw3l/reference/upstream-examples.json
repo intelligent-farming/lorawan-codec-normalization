@@ -1,0 +1,47 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/dragino/sw3l-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "SW3L LoRaWAN Outdoor Flow Sensor",
+      "input": {
+        "fPort": 4,
+        "bytes": [
+          13,
+          0,
+          0,
+          115,
+          0,
+          164,
+          74
+        ]
+      },
+      "output": {
+        "data": {
+          "Alarm_Timer": 42058,
+          "Stop_Timer": 0,
+          "TDC": 851968
+        }
+      }
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [
+          11,
+          136,
+          1,
+          0,
+          37,
+          0,
+          1
+        ]
+      },
+      "output": {
+        "errors": [
+          "unknown FPort"
+        ]
+      }
+    }
+  ]
+}

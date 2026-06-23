@@ -1,0 +1,26 @@
+{
+  "vendor": "aquascope",
+  "device": "aqs",
+  "name": "Aqua-Scope Monitor AQSWIE02",
+  "categories": [
+    "water-meter"
+  ],
+  "sensors": [
+    "temperature",
+    "pressure",
+    "water"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "aquascope",
+    "device": "aqs",
+    "codecId": "aqs-codec",
+    "codecFile": "aqs.js",
+    "codecSha256": "8bf31f51f3ebda9d92d9b07eb32408decbfbffbbb7ff2015ec83e97e61132b28",
+    "referencedAt": "2026-06-23"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "vendor": "quandify",
+  "device": "cubicmeter-1-1-copper",
+  "name": "CubicMeter 1.1 Copper",
+  "categories": [
+    "water-meter",
+    "water-leak"
+  ],
+  "sensors": [
+    "battery",
+    "temperature",
+    "water"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "quandify",
+    "device": "cubicmeter-1-1-copper",
+    "codecId": "cubicmeter-1-1-copper-codec",
+    "codecFile": "cubicmeter-1-1-uplink.js",
+    "codecSha256": "a39836179ae808fde4b3835ef7da1060ac85b9ae70d22d9fddfa8dd43eaf25ac",
+    "referencedAt": "2026-06-23"
+  }
+}

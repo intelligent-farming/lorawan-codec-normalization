@@ -1,0 +1,202 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/sensus/iperl-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "SND-ALARM",
+      "input": {
+        "fPort": 20,
+        "bytes": [
+          122,
+          6,
+          4,
+          0,
+          0,
+          132,
+          4,
+          19,
+          58,
+          28,
+          126,
+          1,
+          132,
+          4,
+          109,
+          42,
+          45,
+          19,
+          54,
+          141,
+          4,
+          147,
+          19,
+          24,
+          210,
+          60,
+          52,
+          0,
+          46,
+          0,
+          52,
+          0,
+          46,
+          0,
+          57,
+          0,
+          46,
+          0,
+          52,
+          0,
+          46,
+          0,
+          52,
+          0,
+          51,
+          0,
+          52,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "accessNo": 6,
+          "alarms": [
+            "LOW_BATTERY"
+          ],
+          "config": 0,
+          "device": null,
+          "identificationNo": null,
+          "manufacturer": null,
+          "manufacturerCode": null,
+          "records": [
+            {
+              "dif": 1156,
+              "exponent": -3,
+              "function": 0,
+              "isCompactProfile": null,
+              "scaledValue": 25041.978,
+              "storage": 8,
+              "strValue": null,
+              "subUnit": 0,
+              "symbol": "m^3",
+              "tariff": 0,
+              "unit": "M3",
+              "value": 25041978,
+              "values": null,
+              "vif": 19,
+              "vifType": "VOLUME"
+            },
+            {
+              "dif": 1156,
+              "exponent": 0,
+              "function": 0,
+              "isCompactProfile": null,
+              "scaledValue": null,
+              "storage": 8,
+              "strValue": "2024-06-19 13:42:00",
+              "subUnit": 0,
+              "symbol": null,
+              "tariff": 0,
+              "unit": "DATETIME",
+              "value": 1718804520,
+              "values": null,
+              "vif": 109,
+              "vifType": "TIME_POINT"
+            },
+            {
+              "dif": 1165,
+              "exponent": -3,
+              "function": 0,
+              "isCompactProfile": true,
+              "scaledValue": null,
+              "storage": 8,
+              "strValue": null,
+              "subUnit": 0,
+              "symbol": "m^3",
+              "tariff": 0,
+              "unit": "M3",
+              "value": null,
+              "values": [
+                {
+                  "scaledValue": 25041.426,
+                  "storage": 19,
+                  "timestamp": 1718764920,
+                  "value": 25041426
+                },
+                {
+                  "scaledValue": 25041.478,
+                  "storage": 18,
+                  "timestamp": 1718768520,
+                  "value": 25041478
+                },
+                {
+                  "scaledValue": 25041.529000000002,
+                  "storage": 17,
+                  "timestamp": 1718772120,
+                  "value": 25041529
+                },
+                {
+                  "scaledValue": 25041.581000000002,
+                  "storage": 16,
+                  "timestamp": 1718775720,
+                  "value": 25041581
+                },
+                {
+                  "scaledValue": 25041.627,
+                  "storage": 15,
+                  "timestamp": 1718779320,
+                  "value": 25041627
+                },
+                {
+                  "scaledValue": 25041.679,
+                  "storage": 14,
+                  "timestamp": 1718782920,
+                  "value": 25041679
+                },
+                {
+                  "scaledValue": 25041.725000000002,
+                  "storage": 13,
+                  "timestamp": 1718786520,
+                  "value": 25041725
+                },
+                {
+                  "scaledValue": 25041.782,
+                  "storage": 12,
+                  "timestamp": 1718790120,
+                  "value": 25041782
+                },
+                {
+                  "scaledValue": 25041.828,
+                  "storage": 11,
+                  "timestamp": 1718793720,
+                  "value": 25041828
+                },
+                {
+                  "scaledValue": 25041.88,
+                  "storage": 10,
+                  "timestamp": 1718797320,
+                  "value": 25041880
+                },
+                {
+                  "scaledValue": 25041.926,
+                  "storage": 9,
+                  "timestamp": 1718800920,
+                  "value": 25041926
+                },
+                {
+                  "scaledValue": 25041.978,
+                  "storage": 8,
+                  "timestamp": 1718804520,
+                  "value": 25041978
+                }
+              ],
+              "vif": 19,
+              "vifType": "VOLUME"
+            }
+          ],
+          "status": 4,
+          "version": null
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,210 @@
+{
+  "uplink": [
+    {
+      "description": "Normal status report (TTN example): 5342 L total, 22.5C ambient, battery 3.64V",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          73,
+          251,
+          223,
+          1,
+          0,
+          0,
+          222,
+          20,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          70,
+          237,
+          223,
+          1,
+          6,
+          252,
+          139,
+          7,
+          2,
+          226,
+          230,
+          83,
+          84,
+          85
+        ]
+      },
+      "expected": {
+        "data": {
+          "metering": {
+            "water": {
+              "total": 5342
+            }
+          },
+          "water": {
+            "temperature": {
+              "min": 21.5,
+              "max": 22,
+              "current": 21.8
+            },
+            "leak": false
+          },
+          "air": {
+            "temperature": 22.5
+          },
+          "battery": 3.64,
+          "errorCode": 0,
+          "isSensing": true,
+          "leakState": 2,
+          "batteryActiveMv": 3608,
+          "batteryRecoveredMv": 3640
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Synthetic status report: large leak (leakState 4), reverse-flow error 384, low battery",
+      "_note": "Synthetic in-bounds payload; expected computed by running reference/upstream-codec.js scaling (totalVolume u32 LSB litres, battery 1800+(v<<3) mV, temp v*0.5-20 C) and converting to canonical units. byte5..6: error=0x0180=384 (errorCode 384, isSensing true). totalVolume bytes[6..9]=0x00030D40=200000 L. leakState byte22=4. batteryRecovered byte24=160 -> 1800+1280=3080mV (<=3100 low). waterTempMin byte25=80 -> 20C, waterTempMax byte26=88 -> 24C, ambient byte27=84 -> 22C.",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          0,
+          0,
+          0,
+          0,
+          128,
+          1,
+          64,
+          13,
+          3,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          4,
+          150,
+          160,
+          80,
+          88,
+          84
+        ]
+      },
+      "expected": {
+        "data": {
+          "metering": {
+            "water": {
+              "total": 200000
+            }
+          },
+          "water": {
+            "temperature": {
+              "min": 20,
+              "max": 24,
+              "current": 22
+            },
+            "leak": true
+          },
+          "air": {
+            "temperature": 22
+          },
+          "battery": 3.08,
+          "errorCode": 384,
+          "isSensing": true,
+          "leakState": 4,
+          "batteryActiveMv": 3000,
+          "batteryRecoveredMv": 3080
+        },
+        "warnings": [
+          "Reverse flow",
+          "Low battery"
+        ]
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Response uplink on fPort 6 yields no normalized measurement (error)",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          4,
+          0,
+          2,
+          16,
+          0,
+          0,
+          22,
+          2,
+          5,
+          63,
+          1,
+          0,
+          0,
+          3,
+          0,
+          227,
+          221,
+          203,
+          177,
+          189,
+          117,
+          135,
+          50,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "unsupported fPort 6"
+        ]
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Wrong-length status report (error)",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          73,
+          251,
+          223,
+          1,
+          0,
+          0,
+          222,
+          20
+        ]
+      },
+      "expected": {
+        "errors": [
+          "wrong payload length"
+        ]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

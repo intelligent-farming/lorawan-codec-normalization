@@ -1,0 +1,68 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/aquascope/aqs-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Valve On",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          7,
+          255
+        ]
+      },
+      "output": {
+        "data": {
+          "valve": 255
+        }
+      }
+    },
+    {
+      "description": "Valve Off",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          7,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "valve": 0
+        }
+      }
+    },
+    {
+      "description": "Hardware version",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          3,
+          1,
+          18,
+          52
+        ]
+      },
+      "output": {
+        "data": {
+          "hw_version": 1,
+          "capabilities": 4660
+        }
+      }
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [
+          1,
+          42
+        ]
+      },
+      "output": {
+        "errors": [
+          "invalid FPort"
+        ]
+      }
+    }
+  ]
+}

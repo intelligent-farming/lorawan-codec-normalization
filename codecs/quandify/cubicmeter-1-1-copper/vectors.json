@@ -1,0 +1,109 @@
+{
+  "uplink": [
+    {
+      "description": "fPort 1 status report — normal metering, sensing, no leak",
+      "input": { "fPort": 1, "bytes": [0, 0, 0, 0, 0, 0, 64, 226, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200, 210, 48, 60, 52] },
+      "expected": {
+        "data": {
+          "metering": { "water": { "total": 123456 } },
+          "water": {
+            "leak": false,
+            "temperature": { "min": 4, "max": 10, "current": 7 }
+          },
+          "air": { "temperature": 6 },
+          "battery": 3.48,
+          "batteryActiveV": 3.4,
+          "leakState": 0,
+          "errorCode": 0,
+          "isSensing": true
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds bytes; expected.data computed by running reference/upstream-codec.js (totalVolume 123456 L, battRecovered 3480 mV -> 3.48 V, waterTemp min 4/max 10 C, ambient 6 C) converted to vocabulary units."
+    },
+    {
+      "description": "fPort 1 status report — large leak, reverse-flow error, not sensing, low battery",
+      "input": { "fPort": 1, "bytes": [0, 0, 0, 0, 128, 129, 63, 180, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 150, 160, 40, 44, 50] },
+      "expected": {
+        "data": {
+          "metering": { "water": { "total": 9876543 } },
+          "water": {
+            "leak": true,
+            "temperature": { "min": 0, "max": 2, "current": 1 }
+          },
+          "air": { "temperature": 5 },
+          "battery": 3.08,
+          "batteryActiveV": 3,
+          "leakState": 4,
+          "errorCode": 384,
+          "isSensing": false
+        },
+        "warnings": ["Not sensing water", "Reverse flow", "Low battery"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; reference decode: totalVolume 9876543 L, leakState 4 (large) -> water.leak true, errorCode 384 -> Reverse flow, error bit 0x8000 set -> not sensing, battRecovered 3080 mV <= 3100 -> Low battery."
+    },
+    {
+      "description": "fPort 6 response wrapping a status report — normal metering",
+      "input": { "fPort": 6, "bytes": [0, 0, 1, 0, 0, 0, 0, 0, 0, 64, 226, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200, 210, 48, 60, 52] },
+      "expected": {
+        "data": {
+          "metering": { "water": { "total": 123456 } },
+          "water": {
+            "leak": false,
+            "temperature": { "min": 4, "max": 10, "current": 7 }
+          },
+          "air": { "temperature": 6 },
+          "battery": 3.48,
+          "batteryActiveV": 3.4,
+          "leakState": 0,
+          "errorCode": 0,
+          "isSensing": true,
+          "responseStatus": "ok",
+          "responseType": "statusReport"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; fPort-6 response = 3-byte header (echoed fPort, status ok=0, type statusReport=1) + the same 28-byte status report as the first vector. Reference responseDecoder confirms status 'ok' / type 'statusReport'."
+    },
+    {
+      "description": "fPort 6 response wrapping a hardware report — diagnostics, no metering",
+      "input": { "fPort": 6, "bytes": [0, 0, 2, 3, 0, 2, 1, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0] },
+      "expected": {
+        "data": {
+          "firmwareVersion": "1.2.3",
+          "hardwareVersion": 5,
+          "appState": "metering",
+          "pipeId": 1,
+          "pipeType": "Copper 15 mm",
+          "responseStatus": "ok",
+          "responseType": "hardwareReport"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; reference hardwareReportDecoder yields firmware 1.2.3, appState 'metering', pipe id 1 'Copper 15 mm'. Diagnostics-only frame: no metering.water.total (other vectors satisfy the water-meter requirement)."
+    },
+    {
+      "description": "fPort 1 wrong length — too short",
+      "input": { "fPort": 1, "bytes": [0, 0, 0, 0, 0, 0] },
+      "expected": { "errors": ["should be 28 bytes"] },
+      "source": "synthetic",
+      "_note": "Reference statusReportDecoder throws 'Wrong payload length (...), should be 28 bytes' for a non-28-byte status report."
+    },
+    {
+      "description": "fPort 6 invalid response type",
+      "input": { "fPort": 6, "bytes": [0, 0, 9] },
+      "expected": { "errors": ["Invalid response type"] },
+      "source": "synthetic",
+      "_note": "Response type 9 is not in responseTypes; reference responseDecoder throws 'Invalid response type: 9'."
+    },
+    {
+      "description": "unsupported fPort",
+      "input": { "fPort": 5, "bytes": [1, 2, 3] },
+      "expected": { "errors": ["Unsupported fPort 5"] },
+      "source": "synthetic",
+      "_note": "Reference decodeUplink only handles fPort 1 and 6 in its switch; we surface unsupported ports as an error."
+    }
+  ],
+  "downlink": []
+}
