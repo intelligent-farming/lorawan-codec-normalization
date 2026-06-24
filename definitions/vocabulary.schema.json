@@ -141,6 +141,46 @@
             "lightIntensity": {
               "description": "Light intensity (lux)",
               "$ref": "#/$defs/illuminance"
+            },
+            "pm1_0": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Particulate matter <= 1.0 µm (µg/m³)"
+            },
+            "pm2_5": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Particulate matter <= 2.5 µm (µg/m³)"
+            },
+            "pm10": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Particulate matter <= 10 µm (µg/m³)"
+            },
+            "tvoc": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Total volatile organic compounds (ppb)"
+            },
+            "iaqIndex": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 500,
+              "description": "Indoor air-quality index (0-500)"
+            },
+            "solarIrradiance": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Total solar irradiance / shortwave radiation (W/m²)"
+            },
+            "par": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Photosynthetically active radiation (µmol/m²/s)"
+            },
+            "gasAlarm": {
+              "type": "boolean",
+              "description": "Gas alarm state (true = gas detected / abnormal). For detectors that report only an alarm state, not a concentration."
             }
           },
           "additionalProperties": true
@@ -216,6 +256,29 @@
               "type": "number",
               "minimum": 0,
               "description": "Water electrical conductivity (µS/cm). Distinct from soil.ec, which is dS/m."
+            },
+            "ph": {
+              "description": "Water pH level",
+              "$ref": "#/$defs/pH"
+            },
+            "turbidity": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Water turbidity (NTU)"
+            },
+            "residualChlorine": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Residual chlorine (mg/L)"
+            },
+            "dissolvedOxygen": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Dissolved oxygen (mg/L)"
+            },
+            "orp": {
+              "type": "number",
+              "description": "Oxidation-reduction potential (mV)"
             }
           },
           "additionalProperties": true
@@ -230,6 +293,17 @@
                   "type": "number",
                   "minimum": 0,
                   "description": "Total volume (L)"
+                }
+              },
+              "additionalProperties": true
+            },
+            "energy": {
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "number",
+                  "minimum": 0,
+                  "description": "Cumulative active electrical energy (Wh)"
                 }
               },
               "additionalProperties": true
@@ -259,6 +333,128 @@
               "type": "string",
               "description": "State of a contact sensor",
               "enum": ["open", "closed"]
+            },
+            "occupancy": {
+              "type": "object",
+              "properties": {
+                "occupied": {
+                  "type": "boolean",
+                  "description": "Space/vehicle occupied (true) or vacant (false)"
+                },
+                "duration": {
+                  "type": "number",
+                  "minimum": 0,
+                  "description": "Time held in the current occupancy state (s)"
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": true
+        },
+        "pressure": {
+          "type": "object",
+          "description": "Non-atmospheric, non-hydrostatic pressure (industrial/process/HVAC). Distinct from air.pressure (atmospheric hPa) and water.pressure (hydrostatic kPa).",
+          "properties": {
+            "gauge": {
+              "type": "number",
+              "description": "Gauge pressure, relative to ambient (kPa)"
+            },
+            "absolute": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Absolute pressure (kPa)"
+            },
+            "differential": {
+              "type": "number",
+              "description": "Differential pressure across two ports (Pa)"
+            }
+          },
+          "additionalProperties": true
+        },
+        "vibration": {
+          "type": "object",
+          "description": "Continuous vibration / condition-monitoring magnitudes (distinct from the discrete action.motion event).",
+          "properties": {
+            "velocityRms": {
+              "type": "number",
+              "minimum": 0,
+              "description": "RMS vibration velocity (mm/s)"
+            },
+            "accelerationRms": {
+              "type": "number",
+              "minimum": 0,
+              "description": "RMS vibration acceleration (g)"
+            },
+            "accelerationPeak": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Peak vibration acceleration (g)"
+            },
+            "peakFrequency": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Dominant vibration frequency (Hz)"
+            },
+            "accelerationX": { "type": "number", "description": "Acceleration, X axis (g)" },
+            "accelerationY": { "type": "number", "description": "Acceleration, Y axis (g)" },
+            "accelerationZ": { "type": "number", "description": "Acceleration, Z axis (g)" },
+            "velocityX": { "type": "number", "minimum": 0, "description": "Velocity, X axis (mm/s)" },
+            "velocityY": { "type": "number", "minimum": 0, "description": "Velocity, Y axis (mm/s)" },
+            "velocityZ": { "type": "number", "minimum": 0, "description": "Velocity, Z axis (mm/s)" }
+          },
+          "additionalProperties": true
+        },
+        "tilt": {
+          "type": "object",
+          "description": "Continuous inclination / tilt angle (distinct from the discrete action.motion event).",
+          "properties": {
+            "angle": {
+              "type": "number",
+              "description": "Inclination angle from reference (°)"
+            },
+            "x": { "type": "number", "description": "Tilt angle, X axis (°)" },
+            "y": { "type": "number", "description": "Tilt angle, Y axis (°)" },
+            "z": { "type": "number", "description": "Tilt angle, Z axis (°)" }
+          },
+          "additionalProperties": true
+        },
+        "power": {
+          "type": "object",
+          "description": "Electrical power measurements (single-phase AC).",
+          "properties": {
+            "voltage": { "type": "number", "minimum": 0, "description": "RMS voltage (V)" },
+            "current": { "type": "number", "minimum": 0, "description": "RMS current (A)" },
+            "active": { "type": "number", "description": "Active power (W)" },
+            "apparent": { "type": "number", "minimum": 0, "description": "Apparent power (VA)" },
+            "factor": { "type": "number", "minimum": -1, "maximum": 1, "description": "Power factor (-1..1)" },
+            "frequency": { "type": "number", "minimum": 0, "description": "Line frequency (Hz)" }
+          },
+          "additionalProperties": true
+        },
+        "leaf": {
+          "type": "object",
+          "description": "Plant leaf measurements (canopy disease / irrigation monitoring).",
+          "properties": {
+            "wetness": {
+              "description": "Leaf surface wetness/moisture (%)",
+              "$ref": "#/$defs/percentage"
+            },
+            "temperature": {
+              "description": "Leaf temperature (°C)",
+              "$ref": "#/$defs/temperature"
+            }
+          },
+          "additionalProperties": true
+        },
+        "device": {
+          "type": "object",
+          "description": "Device operational telemetry (not an environmental measurement).",
+          "properties": {
+            "runtime": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Cumulative operating / work time (s)"
             }
           },
           "additionalProperties": true

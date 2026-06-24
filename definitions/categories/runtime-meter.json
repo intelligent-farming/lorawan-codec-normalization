@@ -1,0 +1,8 @@
+{
+  "id": "runtime-meter",
+  "name": "Runtime meter",
+  "description": "Equipment activity meters reporting cumulative operating/work time (e.g. pump, compressor, or vibration-driven run-hour counters).",
+  "requires": ["device.runtime"],
+  "provides": ["battery"],
+  "notes": "device.runtime is cumulative seconds. Work-cycle counts are camelCase extras."
+}

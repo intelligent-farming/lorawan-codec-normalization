@@ -1,0 +1,8 @@
+{
+  "id": "tilt",
+  "name": "Tilt / inclinometer",
+  "description": "Inclinometers reporting a continuous tilt/inclination angle (overall and/or per axis). Distinct from `motion`, which is a discrete movement event.",
+  "atLeastOne": ["tilt.angle", "tilt.x", "tilt.y", "tilt.z"],
+  "provides": ["battery"],
+  "notes": "Angles in degrees. A discrete tilt-alarm event belongs in `motion` (action.motion); this category is for the continuous angle."
+}

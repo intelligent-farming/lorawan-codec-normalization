@@ -1,0 +1,8 @@
+{
+  "id": "process-pressure",
+  "name": "Process pressure",
+  "description": "Industrial gauge/absolute pressure transmitters (process, pipe, tank-head). Distinct from atmospheric `weather-station` (air.pressure) and hydrostatic `groundwater` (water.pressure).",
+  "atLeastOne": ["pressure.gauge", "pressure.absolute"],
+  "provides": ["air.temperature", "battery"],
+  "notes": "pressure.gauge/absolute are kPa (convert bar x100, MPa x1000, psi x6.89476, mbar /10). Submersible water-column level/pressure probes belong in `groundwater`; ΔP sensors belong in `differential-pressure`."
+}

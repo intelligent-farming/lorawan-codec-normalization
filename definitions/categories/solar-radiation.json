@@ -1,0 +1,8 @@
+{
+  "id": "solar-radiation",
+  "name": "Solar radiation",
+  "description": "Pyranometer and PAR sensors reporting solar irradiance and/or photosynthetically active radiation. Distinct from `light` (lux illuminance).",
+  "atLeastOne": ["air.solarIrradiance", "air.par"],
+  "provides": ["air.temperature", "battery"],
+  "notes": "air.solarIrradiance is W/m²; air.par is µmol/m²/s. Neither is lux (use `light`/air.lightIntensity for illuminance)."
+}

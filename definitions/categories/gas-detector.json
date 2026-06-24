@@ -1,0 +1,8 @@
+{
+  "id": "gas-detector",
+  "name": "Gas detector",
+  "description": "Gas-safety detectors (CO, combustible/LPG, natural gas) that report a boolean alarm state rather than a concentration.",
+  "requires": ["air.gasAlarm"],
+  "provides": ["air.temperature", "battery"],
+  "notes": "air.gasAlarm is boolean (true = gas detected/abnormal). The specific gas type and any valve/relay actuator state are device-specific camelCase extras. Devices that report a true gas concentration (ppm) would instead use a concentration key."
+}

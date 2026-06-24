@@ -1,0 +1,8 @@
+{
+  "id": "leaf-wetness",
+  "name": "Leaf wetness",
+  "description": "Leaf-wetness / leaf-moisture sensors for canopy disease prediction and irrigation, reporting leaf surface wetness (and often leaf temperature).",
+  "requires": ["leaf.wetness"],
+  "provides": ["leaf.temperature", "air.temperature", "battery"],
+  "notes": "leaf.wetness is % (0-100). leaf.temperature is the leaf-surface temperature; an external DS18B20 probe reading is a camelCase extra."
+}

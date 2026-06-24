@@ -13,7 +13,7 @@
           "tiltAngle": 0,
           "full": false,
           "fire": false,
-          "tilt": false,
+          "tiltAlarm": false,
           "lowBattery": false,
           "position": { "latitude": 40.038999, "longitude": 116.50743 }
         }
@@ -34,7 +34,7 @@
           "tiltAngle": 30,
           "full": true,
           "fire": false,
-          "tilt": false,
+          "tiltAlarm": false,
           "lowBattery": true,
           "position": { "latitude": 37.774899, "longitude": -122.41941 }
         }
@@ -55,7 +55,7 @@
           "tiltAngle": 0,
           "full": false,
           "fire": false,
-          "tilt": false,
+          "tiltAlarm": false,
           "lowBattery": false
         }
       },
@@ -75,7 +75,7 @@
           "tiltAngle": -12,
           "full": false,
           "fire": true,
-          "tilt": false,
+          "tiltAlarm": false,
           "lowBattery": false
         }
       },

@@ -1,0 +1,8 @@
+{
+  "id": "power-meter",
+  "name": "Power meter",
+  "description": "Electrical power/energy meters and smart plugs reporting cumulative energy and/or instantaneous voltage, current, and active power.",
+  "atLeastOne": ["metering.energy.total", "power.active", "power.voltage", "power.current"],
+  "provides": ["power.frequency", "power.factor", "power.apparent", "battery"],
+  "notes": "metering.energy.total is Wh (multiply kWh x1000); power.voltage V, power.current A, power.active W, power.frequency Hz, power.factor -1..1. Relay/load on-off state is a camelCase extra."
+}

@@ -1,0 +1,8 @@
+{
+  "id": "particulate",
+  "name": "Particulate & VOC air quality",
+  "description": "Air monitors reporting particulate matter and/or volatile-organic-compound load (PM1.0/PM2.5/PM10, TVOC, or an IAQ index). Distinct from `air-quality`, which is CO2.",
+  "atLeastOne": ["air.pm1_0", "air.pm2_5", "air.pm10", "air.tvoc", "air.iaqIndex"],
+  "provides": ["air.temperature", "air.relativeHumidity", "battery"],
+  "notes": "PM keys are µg/m³; air.tvoc is ppb (convert µg/m³ readings, or keep mass concentration as a camelCase extra); air.iaqIndex is a 0-500 score."
+}

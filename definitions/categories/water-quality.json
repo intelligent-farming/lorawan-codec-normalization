@@ -1,0 +1,8 @@
+{
+  "id": "water-quality",
+  "name": "Water quality",
+  "description": "Water-quality probes reporting at least one of pH, turbidity, residual chlorine, dissolved oxygen, or ORP.",
+  "atLeastOne": ["water.ph", "water.turbidity", "water.residualChlorine", "water.dissolvedOxygen", "water.orp"],
+  "provides": ["water.temperature.current", "water.ec", "battery"],
+  "notes": "water.ph (0-14), water.turbidity (NTU), water.residualChlorine (mg/L), water.dissolvedOxygen (mg/L), water.orp (mV). Reuses water.temperature.current and water.ec."
+}

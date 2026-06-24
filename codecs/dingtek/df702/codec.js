@@ -99,7 +99,7 @@ function decodeUplink(input) {
       tiltAngle: tiltAngle(bytes[9], bytes[10]),
       full: Boolean(bytes[11] >> 4),
       fire: Boolean(bytes[11] & 0x0f),
-      tilt: Boolean(bytes[12] >> 4),
+      tiltAlarm: Boolean(bytes[12] >> 4),
       lowBattery: Boolean(bytes[12] & 0x0f)
     };
     return { data: data17 };
@@ -116,7 +116,7 @@ function decodeUplink(input) {
       tiltAngle: tiltAngle(bytes[17], bytes[18]),
       full: Boolean(bytes[19] >> 4),
       fire: Boolean(bytes[19] & 0x0f),
-      tilt: Boolean(bytes[20] >> 4),
+      tiltAlarm: Boolean(bytes[20] >> 4),
       lowBattery: Boolean(bytes[20] & 0x0f)
     };
     addPosition(data25, floatLE(bytes, 8), floatLE(bytes, 12));

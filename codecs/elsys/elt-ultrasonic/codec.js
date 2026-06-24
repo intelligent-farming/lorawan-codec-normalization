@@ -177,7 +177,7 @@ function decodeUplink(input) {
       // PRESSURE: 4 bytes; ported faithfully as upstream (raw / 1000). The
       // resulting value is out of the vocabulary air.pressure bounds, so it is
       // emitted as the camelCase extra `pressure`.
-      data.pressure = u32be(bytes[i + 1], bytes[i + 2], bytes[i + 3], bytes[i + 4]) / 1000;
+      data.barometricPressure = u32be(bytes[i + 1], bytes[i + 2], bytes[i + 3], bytes[i + 4]) / 1000;
       i += 5;
       recognized = true;
     } else if (type === 0x15) {

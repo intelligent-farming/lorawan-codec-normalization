@@ -1,0 +1,8 @@
+{
+  "id": "differential-pressure",
+  "name": "Differential pressure",
+  "description": "Differential-pressure (ΔP) sensors for HVAC, filter-clogging, and flow monitoring, measuring the pressure difference across two ports.",
+  "requires": ["pressure.differential"],
+  "provides": ["air.temperature", "battery"],
+  "notes": "pressure.differential is Pa (convert mbar x100, kPa x1000). Signed: negative is reverse ΔP."
+}

@@ -98,7 +98,7 @@ fPort-variant, config, and partial uplinks legal.
 
 ## Categories
 
-`categories()` lists all 13; `categorySchema(id)` returns the JSON Schema for a
+`categories()` lists all 25; `categorySchema(id)` returns the JSON Schema for a
 category. Coverage grows over time — devices are added incrementally. Use
 `devices({ category })` for the live member list; the counts below are a snapshot.
 
@@ -120,6 +120,24 @@ of the listed paths present).
 | `gps-tracker` | `position.latitude`, `position.longitude` | 47 |
 | `water-leak` | `water.leak` | 36 |
 | `groundwater` | `atLeastOne`: `water.level` / `water.pressure` | 7 |
+| `particulate` | `atLeastOne`: `air.pm2_5` / `air.pm10` / `air.tvoc` / `air.iaqIndex` / … | 0 |
+| `gas-detector` | `air.gasAlarm` | 0 |
+| `vibration` | `atLeastOne`: `vibration.velocityRms` / `vibration.accelerationRms` / … | 0 |
+| `tilt` | `atLeastOne`: `tilt.angle` / `tilt.x` / `tilt.y` / `tilt.z` | 0 |
+| `occupancy` | `action.occupancy.occupied` | 0 |
+| `process-pressure` | `atLeastOne`: `pressure.gauge` / `pressure.absolute` | 0 |
+| `differential-pressure` | `pressure.differential` | 0 |
+| `water-quality` | `atLeastOne`: `water.ph` / `water.turbidity` / `water.residualChlorine` / … | 0 |
+| `power-meter` | `atLeastOne`: `metering.energy.total` / `power.active` / `power.voltage` / … | 0 |
+| `solar-radiation` | `atLeastOne`: `air.solarIrradiance` / `air.par` | 0 |
+| `leaf-wetness` | `leaf.wetness` | 0 |
+| `runtime-meter` | `device.runtime` | 0 |
+
+The 12 categories below `groundwater` are newly defined (vocabulary extended for
+process/differential pressure, particulate/VOC, gas alarm, vibration, tilt,
+occupancy, water-quality, power, solar radiation, leaf wetness, and runtime).
+They have no authored members yet — they exist so the ~65 devices that decode
+those quantities (which fit none of the original categories) can be added.
 
 `devices()` / `devices({ category })` enumerate registered devices;
 `device(vendor, device)` returns one device's metadata. Each device's metadata

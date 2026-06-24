@@ -1,0 +1,8 @@
+{
+  "id": "vibration",
+  "name": "Vibration / condition monitor",
+  "description": "Machine condition monitors reporting continuous vibration magnitudes (RMS velocity/acceleration, peak acceleration, or per-axis acceleration/velocity). Distinct from `motion`, which is a discrete movement event.",
+  "atLeastOne": ["vibration.velocityRms", "vibration.accelerationRms", "vibration.accelerationPeak", "vibration.accelerationX", "vibration.accelerationY", "vibration.accelerationZ", "vibration.velocityX", "vibration.velocityY", "vibration.velocityZ"],
+  "provides": ["vibration.peakFrequency", "air.temperature", "battery"],
+  "notes": "velocity in mm/s, acceleration in g, peakFrequency in Hz. FFT spectra/peak lists are device-specific camelCase extras."
+}

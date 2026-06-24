@@ -1,0 +1,8 @@
+{
+  "id": "occupancy",
+  "name": "Occupancy / parking",
+  "description": "Parking-space and area occupancy sensors (magnetometer/radar) reporting a persistent occupied-vs-vacant state. Distinct from `motion`, which is a transient movement event.",
+  "requires": ["action.occupancy.occupied"],
+  "provides": ["action.occupancy.duration", "air.temperature", "battery"],
+  "notes": "action.occupancy.occupied is boolean (true = occupied). action.occupancy.duration is seconds held in the current state. Raw magnetometer/radar signatures are device-specific camelCase extras."
+}

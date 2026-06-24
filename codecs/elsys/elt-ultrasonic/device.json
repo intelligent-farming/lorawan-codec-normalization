@@ -16,9 +16,9 @@
     "air.lightIntensity",
     "air.relativeHumidity",
     "air.temperature",
+    "barometricPressure",
     "battery",
     "distance",
-    "pressure",
     "x",
     "y",
     "z"
