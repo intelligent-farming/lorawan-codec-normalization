@@ -1,0 +1,31 @@
+{
+  "vendor": "thermokon",
+  "device": "dpa-lrw",
+  "name": "DPA+ LRW - Pressure & Volume Flow Sensor",
+  "categories": [
+    "differential-pressure"
+  ],
+  "sensors": [
+    "pressure"
+  ],
+  "provides": [
+    "air.temperature",
+    "battery",
+    "parserVersion",
+    "pressure.differential",
+    "volumeFlow"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "thermokon",
+    "device": "dpa-lrw",
+    "codecId": "thermokon-codec",
+    "codecFile": "thermokon-codec.js",
+    "codecSha256": "b6d8be2b7c48a232ab9bf0025598b85e61d25d3be939be8dd1d017f3e36da1c8",
+    "referencedAt": "2026-06-24"
+  }
+}

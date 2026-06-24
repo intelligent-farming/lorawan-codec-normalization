@@ -1,0 +1,52 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/adeunis/deltap-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "0x53 Delta P periodic data",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          83,
+          32,
+          254,
+          12,
+          255,
+          6,
+          0,
+          0,
+          0,
+          250,
+          1,
+          244
+        ]
+      },
+      "output": {
+        "data": {
+          "bytes": {
+            "type": "0x53 Delta P periodic data",
+            "status": {
+              "frameCounter": 1,
+              "hardwareError": false,
+              "lowBattery": false,
+              "configurationDone": false,
+              "configurationInconsistency": false
+            },
+            "decodingInfo": "values: [t=0, t-1, t-2, ...]",
+            "deltaPressure": {
+              "unit": "pa",
+              "values": [
+                -500,
+                -250,
+                0,
+                250,
+                500
+              ]
+            }
+          }
+        },
+        "warnings": [],
+        "errors": []
+      }
+    }
+  ]
+}

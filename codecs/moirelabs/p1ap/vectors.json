@@ -1,0 +1,80 @@
+{
+  "uplink": [
+    {
+      "description": "kPa unit: last/min/max/avg absolute pressure in kPa (no conversion)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 229, 184, 180, 65, 0, 0, 199, 65, 229, 184, 164, 65, 0, 0, 200, 65]
+      },
+      "expected": {
+        "data": {
+          "pressure": { "absolute": 25 },
+          "pressureAbsoluteMin": 22.5903,
+          "pressureAbsoluteMax": 24.875,
+          "pressureAbsoluteAverage": 20.5903
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream P1A example with unit byte=2 (kPa). pressure.absolute is the 'last' reading. Min/max/avg are camelCase extras (vocabulary models a single scalar pressure.absolute)."
+    },
+    {
+      "description": "MPa unit: same floats scaled x1000 to kPa",
+      "input": {
+        "fPort": 1,
+        "bytes": [3, 229, 184, 180, 65, 0, 0, 199, 65, 229, 184, 164, 65, 0, 0, 200, 65]
+      },
+      "expected": {
+        "data": {
+          "pressure": { "absolute": 25000 },
+          "pressureAbsoluteMin": 22590.2805,
+          "pressureAbsoluteMax": 24875,
+          "pressureAbsoluteAverage": 20590.2805
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream P1A example with unit byte=3 (MPa). Converted to kPa from the full-precision float (more accurate than upstream's pre-rounded 22590.3)."
+    },
+    {
+      "description": "Pa unit: same floats scaled /1000 to kPa (synthetic)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 229, 184, 180, 65, 0, 0, 199, 65, 229, 184, 164, 65, 0, 0, 200, 65]
+      },
+      "expected": {
+        "data": {
+          "pressure": { "absolute": 0.025 },
+          "pressureAbsoluteMin": 0.0226,
+          "pressureAbsoluteMax": 0.0249,
+          "pressureAbsoluteAverage": 0.0206
+        }
+      },
+      "source": "synthetic",
+      "_note": "Exercises the Pa -> kPa (/1000) conversion path."
+    },
+    {
+      "description": "Unsupported unit code 0 (C is not a pressure unit) -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 229, 184, 180, 65, 0, 0, 199, 65, 229, 184, 164, 65, 0, 0, 200, 65]
+      },
+      "expected": {
+        "errors": ["Unsupported pressure unit code"]
+      },
+      "source": "synthetic",
+      "_note": "Unit byte 0 maps to 'C' in the upstream unit table, which is not a pressure unit; we reject rather than emit a bogus pressure."
+    },
+    {
+      "description": "Unknown fPort -> error",
+      "input": {
+        "fPort": 2,
+        "bytes": [0, 0, 0]
+      },
+      "expected": {
+        "errors": ["Unknown FPort"]
+      },
+      "source": "synthetic",
+      "_note": "Only fPort 1 carries pressure telemetry."
+    }
+  ],
+  "downlink": []
+}

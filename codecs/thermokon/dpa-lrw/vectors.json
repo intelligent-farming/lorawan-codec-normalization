@@ -1,0 +1,65 @@
+{
+  "_note": "Inputs are synthetic LPP-channel frames for the Thermokon DPA+ LRW (no upstream examples shipped). Each frame uses 1-byte channel tags (tag <= 0x7F): 0x31 LPP_DP (signed Pa), 0x10 LPP_TEMP (signed deci-degC), 0x32 LPP_FLOW, 0x54 LPP_VBAT (mV), 0x00 LPP_PARSER. Expected values were derived by running reference/upstream-codec.js on the same inputs (raw DP/TEMP/VBAT), then normalizing per the vocabulary: DP -> pressure.differential as-is (Pa), TEMP/10 -> air.temperature (degC), VBAT/1000 -> battery (V), FLOW -> volumeFlow extra, PARSER -> parserVersion extra.",
+  "uplink": [
+    {
+      "description": "Positive differential pressure 150 Pa (LPP_DP)",
+      "input": { "fPort": 2, "bytes": [49, 0, 150] },
+      "expected": { "data": { "pressure": { "differential": 150 } } },
+      "source": "synthetic"
+    },
+    {
+      "description": "Negative (reverse) differential pressure -50 Pa",
+      "input": { "fPort": 2, "bytes": [49, 255, 206] },
+      "expected": { "data": { "pressure": { "differential": -50 } } },
+      "source": "synthetic"
+    },
+    {
+      "description": "Full uplink: DP 300 Pa, air temp 23.0 C, flow 400, battery 3.6 V",
+      "input": { "fPort": 2, "bytes": [49, 1, 44, 16, 0, 230, 50, 1, 144, 84, 180] },
+      "expected": {
+        "data": {
+          "pressure": { "differential": 300 },
+          "air": { "temperature": 23 },
+          "volumeFlow": 400,
+          "battery": 3.6
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Parser version channel followed by DP 100 Pa",
+      "input": { "fPort": 2, "bytes": [0, 0, 1, 49, 0, 100] },
+      "expected": {
+        "data": {
+          "parserVersion": 1,
+          "pressure": { "differential": 100 }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Negative air temperature -4.0 C with DP 0 Pa",
+      "input": { "fPort": 2, "bytes": [16, 255, 216, 49, 0, 0] },
+      "expected": {
+        "data": {
+          "air": { "temperature": -4 },
+          "pressure": { "differential": 0 }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Empty payload -> error",
+      "input": { "fPort": 2, "bytes": [] },
+      "expected": { "errors": ["empty payload"] },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unsupported channel tag -> error",
+      "input": { "fPort": 2, "bytes": [255, 0] },
+      "expected": { "errors": ["unsupported channel tag"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

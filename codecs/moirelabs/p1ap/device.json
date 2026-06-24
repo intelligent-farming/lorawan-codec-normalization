@@ -1,0 +1,30 @@
+{
+  "vendor": "moirelabs",
+  "device": "p1ap",
+  "name": "Pressure Transducer",
+  "categories": [
+    "process-pressure"
+  ],
+  "sensors": [
+    "pressure"
+  ],
+  "provides": [
+    "pressure.absolute",
+    "pressureAbsoluteAverage",
+    "pressureAbsoluteMax",
+    "pressureAbsoluteMin"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "moirelabs",
+    "device": "p1ap",
+    "codecId": "p1a-codec",
+    "codecFile": "p1a-codec.js",
+    "codecSha256": "ddece9382df935cc8c693a825221019101e99671c20b0c34a82277784d1be435",
+    "referencedAt": "2026-06-24"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "vendor": "te-connectivity",
+  "device": "69xx",
+  "name": "69XXN - Pressure Transducer",
+  "categories": [
+    "process-pressure"
+  ],
+  "sensors": [
+    "pressure",
+    "vapor pressure",
+    "temperature"
+  ],
+  "provides": [
+    "air.temperature",
+    "batteryPercent",
+    "deviceStatus",
+    "deviceType.output",
+    "deviceType.platform",
+    "deviceType.sensor",
+    "deviceType.unit",
+    "deviceType.wireless",
+    "messageCount",
+    "pressure.gauge"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "te-connectivity",
+    "device": "69xx",
+    "codecId": "69xx-codec",
+    "codecFile": "universal_decoder.js",
+    "codecSha256": "b78ea55344c5e52ddbf5f9ccb5ea06997ef89c99dc606e1007a522eb9ed75678",
+    "referencedAt": "2026-06-24"
+  }
+}

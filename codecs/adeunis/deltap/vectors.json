@@ -1,0 +1,107 @@
+{
+  "uplink": [
+    {
+      "description": "0x53 periodic data, five ΔP samples (newest-first); newest -> pressure.differential (Pa), older -> samples",
+      "input": {
+        "fPort": 1,
+        "bytes": [83, 32, 254, 12, 255, 6, 0, 0, 0, 250, 1, 244]
+      },
+      "expected": {
+        "data": {
+          "frameType": "0x53 periodic",
+          "pressure": { "differential": -500 },
+          "frameCounter": 1,
+          "lowBattery": false,
+          "configurationDone": false,
+          "configurationInconsistency": false,
+          "samples": [-500, -250, 0, 250, 500]
+        }
+      },
+      "source": "ttn-example",
+      "_note": "TTN catalog example input for vendor/adeunis/deltap. Pressure values confirmed by running reference/upstream-codec.js (signed int16BE, Pa: 0xFE0C=-500, 0xFF06=-250, 0x0000=0, 0x00FA=250, 0x01F4=500, newest-first; status 0x20 -> frameCounter 1, all flags clear). The device reports calibrated ΔP directly in Pa, so the value maps straight to pressure.differential with no conversion. Upstream nests these under data.bytes.deltaPressure.values; we lift the newest reading to the top level and keep older readings in the camelCase extra samples."
+    },
+    {
+      "description": "0x53 single sample with status flags set (frameCounter 1, lowBattery, configurationDone)",
+      "input": {
+        "fPort": 1,
+        "bytes": [83, 35, 0, 250]
+      },
+      "expected": {
+        "data": {
+          "frameType": "0x53 periodic",
+          "pressure": { "differential": 250 },
+          "frameCounter": 1,
+          "lowBattery": true,
+          "configurationDone": true,
+          "configurationInconsistency": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic single-sample frame; expected produced by running reference/upstream-codec.js. Pressure 0x00FA=250 Pa. Status byte 0x23 -> frameCounter (0x23&0xe0)>>5=1, lowBattery (0x23&0x02), configurationDone (0x23&0x01), configurationInconsistency (0x23&0x08)=0. Single sample, so no samples extra."
+    },
+    {
+      "description": "0x54 alarm frame, active, positive ΔP -> pressure.differential (Pa) + alarmStatus extra",
+      "input": {
+        "fPort": 1,
+        "bytes": [84, 32, 1, 0, 250]
+      },
+      "expected": {
+        "data": {
+          "frameType": "0x54 alarm",
+          "pressure": { "differential": 250 },
+          "alarmStatus": "active",
+          "frameCounter": 1,
+          "lowBattery": false,
+          "configurationDone": false,
+          "configurationInconsistency": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic alarm frame; expected produced by running reference/upstream-codec.js (alarm flag byte 0x01 -> active; ΔP signed int16BE 0x00FA=250 Pa at offset 3; status 0x20 -> frameCounter 1, flags clear)."
+    },
+    {
+      "description": "0x55 periodic 0-10 V variant -> raw transducer voltage (mV) only, NO pressure.differential",
+      "input": {
+        "fPort": 1,
+        "bytes": [85, 32, 3, 232, 1, 244]
+      },
+      "expected": {
+        "data": {
+          "frameType": "0x55 periodic 0-10 V",
+          "voltage": [1000, 500],
+          "frameCounter": 1,
+          "lowBattery": false,
+          "configurationDone": false,
+          "configurationInconsistency": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic 0-10 V-variant frame; voltages confirmed by running reference/upstream-codec.js (signed int16BE mV: 0x03E8=1000, 0x01F4=500, newest-first; status 0x20). The 0-10 V product reports a raw transducer voltage with no transfer function on the wire, so it cannot be converted to a calibrated ΔP and is preserved as the camelCase extra voltage (mV); this frame intentionally produces no pressure.differential."
+    },
+    {
+      "description": "Short payload (frame code only) returns an error",
+      "input": {
+        "fPort": 1,
+        "bytes": [83]
+      },
+      "expected": {
+        "errors": ["payload too short"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic truncated frame; fewer than 2 bytes cannot carry the frame-code + status-byte header."
+    },
+    {
+      "description": "Unsupported frame code (0xff) returns an error",
+      "input": {
+        "fPort": 1,
+        "bytes": [255, 32, 1]
+      },
+      "expected": {
+        "errors": ["unsupported frame code 0xff"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; 0xff is not an Adeunis Delta P frame code. Upstream silently returns {type:'Unknown'} under data.bytes; our normalized codec errors instead."
+    }
+  ],
+  "downlink": []
+}

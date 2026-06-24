@@ -1,0 +1,31 @@
+{
+  "vendor": "netvox",
+  "device": "r718y",
+  "name": "R718Y - Wireless Differential Pressure and Temperature Sensor",
+  "categories": [
+    "differential-pressure"
+  ],
+  "sensors": [
+    "pressure",
+    "temperature"
+  ],
+  "provides": [
+    "air.temperature",
+    "battery",
+    "lowBattery",
+    "pressure.differential"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r718y",
+    "codecId": "r718y-codec",
+    "codecFile": "payload/r718y.js",
+    "codecSha256": "ac9c88a02ded697b544e73092f57edd450657d8c186476f0f53ef429ce3576bb",
+    "referencedAt": "2026-06-24"
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "uplink": [
+    {
+      "description": "endpoint 0 analog report — 4-20 mA loop current 13 mA -> hydrostatic pressure | payload:110A000C00553941500000",
+      "input": {
+        "bytes": [17, 10, 0, 12, 0, 85, 57, 65, 80, 0, 0],
+        "fPort": 125,
+        "recvTime": "2023-07-19T07:51:25.508306410Z"
+      },
+      "expected": { "data": { "water": { "pressure": 16.875 } } },
+      "source": "ttn-example",
+      "_note": "Oracle: upstream Decoder() endpoint 0, cluster 0x000C attr 0x0055. Bytes2Float32(0x41500000)=13 mA; DeltaPressure=(13*0.01875-0.075)*100000=16875 Pa; water.pressure = 16875/1000 = 16.875 kPa."
+    },
+    {
+      "description": "endpoint 1 analog report — same 13 mA loop current -> fluid level (hydrostatic head) | payload:210A000C00553941500000",
+      "input": {
+        "bytes": [33, 10, 0, 12, 0, 85, 57, 65, 80, 0, 0],
+        "fPort": 125,
+        "recvTime": "2023-07-19T07:51:25.508306410Z"
+      },
+      "expected": { "data": { "water": { "level": 1.7254 } } },
+      "source": "synthetic",
+      "_note": "byte0 0x21 sets bit0 (standard frame) and yields endpoint 1 via ((b0&0xE0)>>5)|((b0&0x06)<<2). Oracle: upstream FluidLevel = DeltaPressure/(9.81*997) = 16875/9762.57 = 1.72536...; rounded to 4 dp = 1.7254 m. Reproduces upstream when both endpoints carry the same loop current."
+    },
+    {
+      "description": "node power descriptor — disposable battery voltage | payload:110A00500006410503040E6804",
+      "input": {
+        "bytes": [17, 10, 0, 80, 0, 6, 65, 5, 3, 4, 14, 104, 4],
+        "fPort": 125,
+        "recvTime": "2023-07-19T07:51:25.508306410Z"
+      },
+      "expected": { "data": { "battery": 3.688 } },
+      "source": "ttn-example",
+      "_note": "cluster 0x0050 attr 0x0006. Flags byte (index 9) = 0x04 -> disposable battery present; 2-byte millivolts 0x0E68 = 3688 mV -> battery = 3.688 V. Matches upstream disposable_battery_voltage."
+    },
+    {
+      "description": "lorawan configuration — message type (data report) | payload:110A800400000800",
+      "input": {
+        "bytes": [17, 10, 128, 4, 0, 0, 0, 8, 0],
+        "fPort": 125,
+        "recvTime": "2023-07-19T07:51:25.508306410Z"
+      },
+      "expected": { "data": { "messageType": "unconfirmed" } },
+      "source": "synthetic",
+      "_note": "cluster 0x8004 attr 0x0000, value byte (index 7) = 0 -> unconfirmed. Carries no measurement; surfaced as the camelCase extra messageType (mirrors upstream message_type)."
+    },
+    {
+      "description": "Huffman batch frame is not supported | payload:100000000000",
+      "input": {
+        "bytes": [16, 0, 0, 0, 0, 0],
+        "fPort": 125,
+        "recvTime": "2023-07-19T07:51:25.508306410Z"
+      },
+      "expected": { "errors": ["Huffman batch frames are not supported"] },
+      "source": "synthetic",
+      "_note": "byte0 0x10 has bit0 clear -> upstream brUncompress (Huffman) batch path, which this codec does not decode."
+    },
+    {
+      "description": "unsupported fPort",
+      "input": {
+        "bytes": [17, 10, 0, 12, 0, 85, 65, 80, 0, 0],
+        "fPort": 2
+      },
+      "expected": { "errors": ["unsupported fPort 2 (expected 125)"] },
+      "source": "synthetic",
+      "_note": "Watteco standard reports only arrive on fPort 125."
+    }
+  ],
+  "downlink": []
+}

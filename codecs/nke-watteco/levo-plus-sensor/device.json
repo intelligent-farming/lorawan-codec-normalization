@@ -1,0 +1,31 @@
+{
+  "vendor": "nke-watteco",
+  "device": "levo-plus-sensor",
+  "name": "Lev'O+ - Pressure Sensor Probe",
+  "categories": [
+    "groundwater"
+  ],
+  "sensors": [
+    "pressure",
+    "level"
+  ],
+  "provides": [
+    "battery",
+    "messageType",
+    "water.level",
+    "water.pressure"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "nke-watteco",
+    "device": "levo-plus-sensor",
+    "codecId": "levo-plus-sensor-codec",
+    "codecFile": "levo-plus-sensor.js",
+    "codecSha256": "ef23b3cc4eaaff898bdcbf9d434907464aa5b215e0cbac02f2e8b8dfc3fe4a53",
+    "referencedAt": "2026-06-24"
+  }
+}

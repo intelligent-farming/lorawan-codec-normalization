@@ -1,0 +1,31 @@
+{
+  "vendor": "nke-watteco",
+  "device": "ventilo-sensor",
+  "name": "Ventil'O - Pressure & Temperature Sensor",
+  "categories": [
+    "differential-pressure"
+  ],
+  "sensors": [
+    "pressure",
+    "temperature"
+  ],
+  "provides": [
+    "air.temperature",
+    "battery",
+    "messageType",
+    "pressure.differential"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "nke-watteco",
+    "device": "ventilo-sensor",
+    "codecId": "ventilo-sensor-codec",
+    "codecFile": "ventilo-sensor.js",
+    "codecSha256": "46664778cda413f44303616e4471b876f77701782ab87af592631f3bff043963",
+    "referencedAt": "2026-06-24"
+  }
+}

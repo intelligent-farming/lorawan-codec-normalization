@@ -1,0 +1,85 @@
+{
+  "uplink": [
+    {
+      "description": "Typical pressure data (fPort 10, Pressure/Float devtype 0x1321): 1.009334683418274 Bar -> pressure.gauge 100.933 kPa, temp 28.87 C, battery 99%",
+      "input": {
+        "fPort": 10,
+        "bytes": [19, 33, 0, 15, 8, 99, 11, 71, 63, 129, 49, 225]
+      },
+      "source": "ttn-example",
+      "_note": "Upstream universal_decoder DecodeSinglePoint returns the main value as a big-endian float32 in Bar (1.009334683418274) and temp '28.87'; bat 99. We normalize Bar->kPa (x100, round 3dp), temp int16/100->air.temperature, bat->batteryPercent. Verified by running reference/upstream-codec.js.",
+      "expected": {
+        "data": {
+          "messageCount": 15,
+          "deviceStatus": ["PrelPhase"],
+          "batteryPercent": 99,
+          "air": { "temperature": 28.87 },
+          "pressure": { "gauge": 100.933 },
+          "deviceType": {
+            "platform": "Platform_21",
+            "sensor": "Pressure",
+            "unit": "Bar",
+            "wireless": "BLE/LoRaWAN",
+            "output": "Float"
+          }
+        }
+      }
+    },
+    {
+      "description": "Synthetic: status ok, sub-zero temperature (-5.12 C) and 2.5 Bar -> pressure.gauge 250 kPa",
+      "input": {
+        "fPort": 10,
+        "bytes": [19, 33, 1, 44, 0, 87, 254, 0, 64, 32, 0, 0]
+      },
+      "source": "synthetic",
+      "_note": "devtype 0x1321 (Pressure/Float), cnt 0x012C=300, status 0x00=ok, bat 87%, temp int16BE 0xFE00=-512 /100=-5.12 C, pressure float32BE 0x40200000=2.5 Bar x100=250 kPa.",
+      "expected": {
+        "data": {
+          "messageCount": 300,
+          "deviceStatus": "ok",
+          "batteryPercent": 87,
+          "air": { "temperature": -5.12 },
+          "pressure": { "gauge": 250 },
+          "deviceType": {
+            "platform": "Platform_21",
+            "sensor": "Pressure",
+            "unit": "Bar",
+            "wireless": "BLE/LoRaWAN",
+            "output": "Float"
+          }
+        }
+      }
+    },
+    {
+      "description": "Error: unsupported fPort (firmware-revision frame on fPort 2 is not a measurement)",
+      "input": {
+        "fPort": 2,
+        "bytes": [51, 46, 52, 46, 52]
+      },
+      "source": "synthetic",
+      "_note": "Only the fPort-10 single-point pressure frame is normalized.",
+      "expected": { "errors": ["unsupported fPort 2"] }
+    },
+    {
+      "description": "Error: payload too short for the 12-byte single-point frame",
+      "input": {
+        "fPort": 10,
+        "bytes": [19, 33, 0, 15, 8, 99]
+      },
+      "source": "synthetic",
+      "_note": "Single-point frame requires at least 12 bytes.",
+      "expected": { "errors": ["payload too short"] }
+    },
+    {
+      "description": "Error: non-pressure devtype (0x1222 Temperature sensor) yields no calibrated pressure",
+      "input": {
+        "fPort": 10,
+        "bytes": [18, 34, 0, 15, 0, 99, 11, 71, 63, 129, 49, 225]
+      },
+      "source": "synthetic",
+      "_note": "devtype 0x1222 -> Sensor=Temperature; this codec emits a calibrated pressure only for Pressure-sensor frames.",
+      "expected": { "errors": ["expects a Pressure sensor frame"] }
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,32 @@
+{
+  "vendor": "makerfabs",
+  "device": "pipe-pressure",
+  "name": "Pipe Pressure",
+  "categories": [
+    "process-pressure"
+  ],
+  "sensors": [
+    "pressure",
+    "time",
+    "battery"
+  ],
+  "provides": [
+    "battery",
+    "pressure.gauge",
+    "reportingInterval",
+    "sampleCount"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "makerfabs",
+    "device": "pipe-pressure",
+    "codecId": "pipe-pressure-codec",
+    "codecFile": "pipe-pressure.js",
+    "codecSha256": "b0d3fe29e50632eb80057b8068aa7c4536a42ff26d6e9eba68085b3e55efb834",
+    "referencedAt": "2026-06-24"
+  }
+}

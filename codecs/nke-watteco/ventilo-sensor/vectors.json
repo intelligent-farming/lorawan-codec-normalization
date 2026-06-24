@@ -1,0 +1,54 @@
+{
+  "_note": "No upstream examples were published in the TTN ventilo-sensor-codec.yaml. Vectors are synthetic Watteco ZCL standard reports; expected.data values were produced with the ORACLE method by running reference/upstream-codec.js (Decoder, fPort 125, standard report) on each input and normalizing per the authored mapping: differential pressure (cluster 0x8008/32776 attr 0) is a 16-bit value already in Pascals (upstream divide=1, read unsigned) -> pressure.differential; temperature (cluster 0x0402/1026 attr 0) is signed centi-degC /100 -> air.temperature; power descriptor (cluster 0x0050/80 attr 6) is mV/1000 -> battery (V); message type (cluster 0x8004/32772 attr 0) -> messageType extra. Batch frames (byte0 bit0 clear) are reported as an error.",
+  "uplink": [
+    {
+      "description": "Differential pressure standard report, 100 Pa (cluster 0x8008 attr 0)",
+      "input": { "fPort": 125, "bytes": [17, 10, 128, 8, 0, 0, 0, 0, 100] },
+      "expected": { "data": { "pressure": { "differential": 100 } } },
+      "source": "synthetic"
+    },
+    {
+      "description": "Differential pressure standard report, 250 Pa",
+      "input": { "fPort": 125, "bytes": [17, 10, 128, 8, 0, 0, 0, 0, 250] },
+      "expected": { "data": { "pressure": { "differential": 250 } } },
+      "source": "synthetic"
+    },
+    {
+      "description": "Temperature standard report, 21.50 C (cluster 0x0402 attr 0)",
+      "input": { "fPort": 125, "bytes": [17, 10, 4, 2, 0, 0, 0, 8, 102] },
+      "expected": { "data": { "air": { "temperature": 21.5 } } },
+      "source": "synthetic"
+    },
+    {
+      "description": "Temperature standard report, -5.00 C (signed centi-degC)",
+      "input": { "fPort": 125, "bytes": [17, 10, 4, 2, 0, 0, 0, 254, 12] },
+      "expected": { "data": { "air": { "temperature": -5 } } },
+      "source": "synthetic"
+    },
+    {
+      "description": "Power descriptor report, disposable battery 3.400 V (cluster 0x0050 attr 6, flags 0x04)",
+      "input": { "fPort": 125, "bytes": [17, 10, 0, 80, 0, 6, 0, 0, 0, 4, 13, 72] },
+      "expected": { "data": { "battery": 3.4 } },
+      "source": "synthetic"
+    },
+    {
+      "description": "LoRaWAN config message type confirmed (cluster 0x8004 attr 0) -> messageType extra",
+      "input": { "fPort": 125, "bytes": [17, 10, 128, 4, 0, 0, 0, 1] },
+      "expected": { "data": { "messageType": "confirmed" } },
+      "source": "synthetic"
+    },
+    {
+      "description": "Huffman batch frame (byte0 bit0 clear) is not decodable by a stateless codec",
+      "input": { "fPort": 125, "bytes": [0, 0, 0, 0, 0, 0, 100] },
+      "expected": { "errors": ["batch report not supported"] },
+      "source": "synthetic"
+    },
+    {
+      "description": "Wrong fPort is rejected",
+      "input": { "fPort": 2, "bytes": [17, 10, 128, 8, 0, 0, 0, 0, 100] },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

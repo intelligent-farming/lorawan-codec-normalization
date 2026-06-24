@@ -1,0 +1,37 @@
+{
+  "vendor": "adeunis",
+  "device": "deltap",
+  "name": "Delta P - Air Pressure Delta Monitor",
+  "categories": [
+    "differential-pressure"
+  ],
+  "sensors": [
+    "pressure",
+    "digital input",
+    "voltage"
+  ],
+  "provides": [
+    "alarmStatus",
+    "configurationDone",
+    "configurationInconsistency",
+    "frameCounter",
+    "frameType",
+    "lowBattery",
+    "pressure.differential",
+    "samples",
+    "voltage"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "adeunis",
+    "device": "deltap",
+    "codecId": "deltap-codec",
+    "codecFile": "deltap_lib.js",
+    "codecSha256": "42acc39cb77c3b4b685c6ce955a1cb7efb55dc9c7ea68f36fc68de923675b79c",
+    "referencedAt": "2026-06-24"
+  }
+}

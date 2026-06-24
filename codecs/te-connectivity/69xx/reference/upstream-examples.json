@@ -1,0 +1,43 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/te-connectivity/69xx-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Typical pressure data",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          19,
+          33,
+          0,
+          15,
+          8,
+          99,
+          11,
+          71,
+          63,
+          129,
+          49,
+          225
+        ]
+      },
+      "output": {
+        "data": {
+          "bat": 99,
+          "cnt": 15,
+          "data": "1.009334683418274",
+          "devstat": [
+            "PrelPhase"
+          ],
+          "devtype": {
+            "Output": "Float",
+            "Platform": "Platform_21",
+            "Sensor": "Pressure",
+            "Unit": "Bar",
+            "Wireless": "BLE/LoRaWAN"
+          },
+          "temp": "28.87"
+        }
+      }
+    }
+  ]
+}
