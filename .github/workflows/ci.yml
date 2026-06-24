@@ -40,5 +40,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Verify committed device.json `provides` matches what the codecs emit.
+      # Must run before `npm test`, whose build step regenerates `provides` in
+      # place (which would mask stale committed values).
+      - name: Check generated provides is current
+        run: npm run provides:check
+
       - name: Run tests
         run: npm test
