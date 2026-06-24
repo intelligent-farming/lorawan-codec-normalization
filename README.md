@@ -136,8 +136,12 @@ of the listed paths present).
 The 12 categories below `groundwater` are newly defined (vocabulary extended for
 process/differential pressure, particulate/VOC, gas alarm, vibration, tilt,
 occupancy, water-quality, power, solar radiation, leaf wetness, and runtime).
-They exist for the ~65 devices that decode those quantities but fit none of the
-original categories; population is in progress (some still show 0 members).
+They hold devices that decode those quantities but fit none of the original
+categories. Some candidates were deliberately left out: a device whose upstream
+codec emits only a raw ADC count or loop current — with no engineering-unit
+conversion in the payload (e.g. the Ellenex 4-20 mA pressure/level transmitters,
+whose range is per-deployment config) — cannot produce a vocabulary-conformant
+value and is not shipped.
 
 `devices()` / `devices({ category })` enumerate registered devices;
 `device(vendor, device)` returns one device's metadata. Each device's metadata
