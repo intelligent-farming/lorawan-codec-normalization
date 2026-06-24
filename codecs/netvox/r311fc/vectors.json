@@ -1,0 +1,60 @@
+{
+  "uplink": [
+    {
+      "description": "Status report: 3.0 V, cumulative work-duration 18489621 s",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 81, 1, 30, 1, 26, 33, 21, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "device": { "runtime": 18489621 }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream oracle (reference/upstream-codec.js) decodes Volt=3, WorkDurationTime=18489621. WorkDurationTime is the cumulative work-duration counter in seconds, mapped 1:1 to device.runtime; Volt (0.1 V) -> battery V."
+    },
+    {
+      "description": "Status report with low-battery flag: 2.9 V, runtime 3600 s",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 81, 1, 157, 0, 0, 14, 16, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 2.9,
+          "device": { "runtime": 3600 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic. bytes[3]=157=0x9D: high bit set -> lowBattery true; 0x9D & 0x7F = 29 -> 2.9 V. Upstream oracle yields Volt='2.9(low battery)', WorkDurationTime=3600."
+    },
+    {
+      "description": "Device info frame (no measurement)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 81, 0, 100, 11, 32, 32, 4, 36, 0, 0]
+      },
+      "expected": {
+        "errors": ["device info frame"]
+      },
+      "source": "ttn-example",
+      "_note": "bytes[2]==0x00 is the device-info report (Device/SWver/HWver/Datecode upstream); no measurement -> error."
+    },
+    {
+      "description": "Config response frame on fPort 7 (no measurement)",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 81, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["config frame on fPort 7"]
+      },
+      "source": "ttn-example",
+      "_note": "fPort 7 carries ConfigReport request/response frames (upstream ConfigReportRsp/Status); no measurement -> error."
+    }
+  ],
+  "downlink": []
+}

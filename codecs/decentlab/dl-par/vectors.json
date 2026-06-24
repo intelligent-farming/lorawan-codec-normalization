@@ -1,0 +1,70 @@
+{
+  "uplink": [
+    {
+      "description": "TTN example 1: PAR + battery (protocol v2, device 657)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 2, 145, 0, 3, 128, 105, 12, 96]
+      },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 657,
+          "air": {
+            "par": 48.07
+          },
+          "battery": 3.168
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream PAR formula 3*(raw/32768-1)*1000*5 on word 32873 = 48.065185546875, rounded to 2dp -> 48.07. battery word 3168 / 1000 = 3.168 V. Expected computed by running reference/upstream-codec.js (oracle) and applying our rounding."
+    },
+    {
+      "description": "TTN example 2: battery only, PAR sensor flag clear",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 2, 145, 0, 2, 12, 96]
+      },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 657,
+          "battery": 3.168
+        }
+      },
+      "source": "ttn-example",
+      "_note": "flags=2 (bit1 only): battery present, no PAR block. Oracle (reference/upstream-codec.js) emits only battery_voltage and the header."
+    },
+    {
+      "description": "Synthetic: PAR only, battery flag clear",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 2, 145, 0, 1, 128, 105]
+      },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 657,
+          "air": {
+            "par": 48.07
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "flags=1 (bit0 only): PAR present, no battery block. Confirms air.par membership in isolation; oracle emits only photosynthetically_active_radiation and the header."
+    },
+    {
+      "description": "Error: wrong protocol version (v1)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 2, 145, 0, 3, 128, 105, 12, 96]
+      },
+      "expected": {
+        "errors": ["doesn't match v2"]
+      },
+      "source": "synthetic",
+      "_note": "version byte != 2; oracle returns {error: \"protocol version 1 doesn't match v2\"}."
+    }
+  ],
+  "downlink": []
+}

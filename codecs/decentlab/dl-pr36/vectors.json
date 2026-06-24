@@ -1,0 +1,92 @@
+{
+  "uplink": [
+    {
+      "description": "TTN example 1: full payload (flags=0x0003) — hydrostatic pressure 0.0125732421875 bar (1.2573 kPa), 23.5039 C, battery 3.115 V, device 811",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 3, 43, 0, 3, 128, 103, 151, 129, 12, 43]
+      },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 811,
+          "water": {
+            "pressure": 1.2573,
+            "temperature": { "current": 23.5039 }
+          },
+          "battery": 3.115
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Oracle: reference/upstream-codec.js yields pressure 0.0125732421875 bar, temperature 23.50390625 C, battery 3.115 V, device_id 811. bar->kPa (x100) rounded to 4dp -> 1.2573; degC rounded to 4dp -> 23.5039; battery V to 3dp -> 3.115."
+    },
+    {
+      "description": "Synthetic full payload (flags=0x0003): hydrostatic pressure 0.5 bar (50 kPa), 20.0 C, battery 3.6 V",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 3, 43, 0, 3, 144, 0, 148, 0, 14, 16]
+      },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 811,
+          "water": {
+            "pressure": 50,
+            "temperature": { "current": 20 }
+          },
+          "battery": 3.6
+        }
+      },
+      "source": "synthetic",
+      "_note": "Oracle: in-bounds words crafted so reference/upstream-codec.js yields pressure 0.5 bar, temperature 20 C, battery 3.6 V. pressure word=0.5*8192+32768=36864 (0x9000), temp word=20*256+32768=37888 (0x9400), battery=3600 (0x0E10). bar->kPa (x100); degC and V unchanged."
+    },
+    {
+      "description": "Pressure block only (flags=0x0001): 0.0 bar (0 kPa), -10.0 C, no battery",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 3, 43, 0, 1, 128, 0, 118, 0]
+      },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 811,
+          "water": {
+            "pressure": 0,
+            "temperature": { "current": -10 }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Oracle: upstream yields 0.0 bar and -10.0 C; pressure word=32768 (0x8000) -> 0 bar (in-bounds non-negative hydrostatic pressure), temp word=-10*256+32768=30208 (0x7600)."
+    },
+    {
+      "description": "TTN example 2: battery-only payload (flags=0x0002): battery 3.115 V",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 3, 43, 0, 2, 12, 43]
+      },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 811,
+          "battery": 3.115
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Oracle: upstream yields battery 3.115 V; pressure block flag clear. groundwater atLeastOne (water.pressure) is satisfied by the other data vectors."
+    },
+    {
+      "description": "Wrong protocol version (byte0=1) is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 3, 43, 0, 3, 128, 103, 151, 129, 12, 43]
+      },
+      "expected": {
+        "errors": ["protocol version 1 doesn't match v2"]
+      },
+      "source": "synthetic",
+      "_note": "Header version byte must be 2 (Decentlab protocol v2)."
+    }
+  ],
+  "downlink": []
+}

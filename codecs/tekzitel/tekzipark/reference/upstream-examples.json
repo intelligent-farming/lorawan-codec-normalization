@@ -1,0 +1,103 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/tekzitel/tekzipark-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Occupied state with radar detection non-keepalive and non-reset with beacon IDs",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          168,
+          45,
+          99,
+          176,
+          0,
+          85,
+          1,
+          32
+        ]
+      },
+      "output": {
+        "data": {
+          "occupied": 1,
+          "keepAlive": 0,
+          "reset": 0,
+          "No_Beacon": 0,
+          "Radar": 1,
+          "Obstruction": 0,
+          "Good_Battery": 1,
+          "Temperature": 45,
+          "Parking_ID": 99,
+          "Beacon_RSSI": -80,
+          "Beacons": [
+            85,
+            288
+          ]
+        }
+      }
+    },
+    {
+      "description": "Occupied state with radar detection non-keepalive and non-reset",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          168,
+          45,
+          99
+        ]
+      },
+      "output": {
+        "data": {
+          "occupied": 1,
+          "keepAlive": 0,
+          "reset": 0,
+          "No_Beacon": 0,
+          "Radar": 1,
+          "Obstruction": 0,
+          "Good_Battery": 1,
+          "Temperature": 45,
+          "Parking_ID": 99
+        }
+      }
+    },
+    {
+      "description": "Vacant state with radar detection keepalive and non-reset",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          41,
+          46,
+          98
+        ]
+      },
+      "output": {
+        "data": {
+          "occupied": 0,
+          "keepAlive": 1,
+          "reset": 0,
+          "No_Beacon": 0,
+          "Radar": 1,
+          "Obstruction": 0,
+          "Good_Battery": 1,
+          "Temperature": 46,
+          "Parking_ID": 98
+        }
+      }
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [
+          41,
+          46,
+          98
+        ]
+      },
+      "output": {
+        "errors": [
+          "unknown FPort"
+        ]
+      }
+    }
+  ]
+}

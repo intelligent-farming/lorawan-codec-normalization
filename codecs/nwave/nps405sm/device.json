@@ -1,0 +1,41 @@
+{
+  "vendor": "nwave",
+  "device": "nps405sm",
+  "name": "Smart Parking Sensor G4 SM",
+  "categories": [
+    "occupancy"
+  ],
+  "sensors": [
+    "magnetometer",
+    "temperature",
+    "proximity"
+  ],
+  "provides": [
+    "action.occupancy.duration",
+    "action.occupancy.occupied",
+    "air.temperature",
+    "battery",
+    "batteryHealth",
+    "firmwareVersion",
+    "hwHealthStatus",
+    "messageType",
+    "occupancyKnown",
+    "previousStateDurationError",
+    "previousStateDurationOverflow",
+    "resetCause",
+    "tagId"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "nwave",
+    "device": "nps405sm",
+    "codecId": "nps405-codec",
+    "codecFile": "nps405.js",
+    "codecSha256": "1f4c94c224fd7de3887160afb4374ed110175c10b57a75d8312b79f95af9e777",
+    "referencedAt": "2026-06-24"
+  }
+}

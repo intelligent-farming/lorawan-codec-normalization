@@ -1,0 +1,29 @@
+{
+  "vendor": "netvox",
+  "device": "r718mbc",
+  "name": "R718MBC - Wireless Activity Timer",
+  "categories": [
+    "runtime-meter"
+  ],
+  "sensors": [
+    "vibration"
+  ],
+  "provides": [
+    "battery",
+    "device.runtime",
+    "lowBattery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r718mbc",
+    "codecId": "r718mbc-codec",
+    "codecFile": "payload/r311fc_r718mbc_r730mbc.js",
+    "codecSha256": "b6cb4b719d8c9480b509f4673a0a720b00f76673b58a6ef8809e22eff5cfd673",
+    "referencedAt": "2026-06-24"
+  }
+}

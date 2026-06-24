@@ -1,0 +1,33 @@
+{
+  "vendor": "nwave",
+  "device": "nps310sm",
+  "name": "Smart Parking Sensor",
+  "categories": [
+    "occupancy"
+  ],
+  "sensors": [
+    "magnetometer",
+    "temperature",
+    "proximity"
+  ],
+  "provides": [
+    "action.occupancy.occupied",
+    "firmwareVersion",
+    "messageType",
+    "rawBytes",
+    "resetCause"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "nwave",
+    "device": "nps310sm",
+    "codecId": "nps310sm-codec",
+    "codecFile": "nps310sm.js",
+    "codecSha256": "ab53857357172df10ecfb207a0320fa2708a56732ab9f81f163cf0d4f8d3d4d1",
+    "referencedAt": "2026-06-24"
+  }
+}

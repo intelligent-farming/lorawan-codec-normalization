@@ -1,0 +1,35 @@
+{
+  "vendor": "bosch",
+  "device": "tps110",
+  "name": "Parking Lot Sensor",
+  "categories": [
+    "occupancy"
+  ],
+  "sensors": [
+    "magnetometer",
+    "gps",
+    "temperature",
+    "radar"
+  ],
+  "provides": [
+    "action.occupancy.occupied",
+    "air.temperature",
+    "debugCodes",
+    "firmwareVersion",
+    "messageType",
+    "resetCause"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "bosch",
+    "device": "tps110",
+    "codecId": "tps110-0292-codec",
+    "codecFile": "tpl110-0292.js",
+    "codecSha256": "bcc3f502ef42f9145443441fc69262f956ee639031a55abf32e6e230f4ce9129",
+    "referencedAt": "2026-06-24"
+  }
+}

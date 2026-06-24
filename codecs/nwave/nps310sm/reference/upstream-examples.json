@@ -1,0 +1,56 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/nwave/nps310sm-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Parking Status",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          1
+        ]
+      },
+      "output": {
+        "data": {
+          "type": "parking_status",
+          "occupied": true
+        }
+      }
+    },
+    {
+      "description": "Heartbeat",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "type": "heartbeat",
+          "occupied": false
+        }
+      }
+    },
+    {
+      "description": "Startup",
+      "input": {
+        "fPort": 3,
+        "bytes": [
+          1,
+          13,
+          0,
+          2,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "firmware_version": "1.13.0",
+          "occupied": false,
+          "reset_cause": "power_on",
+          "type": "startup"
+        }
+      }
+    }
+  ]
+}

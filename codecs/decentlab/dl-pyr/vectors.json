@@ -1,0 +1,72 @@
+{
+  "uplink": [
+    {
+      "description": "TTN example 1: both sensors flagged (solar radiation + battery)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 2, 145, 0, 3, 128, 105, 12, 96]
+      },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 657,
+          "solarRadiationRaw": 32873,
+          "battery": 3.168,
+          "air": {
+            "solarIrradiance": 48.07
+          }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "expected.data computed by running reference/upstream-codec.js (oracle): raw 0x8069=32873 -> 3*(32873/32768-1)*1000*5 = 48.065... W/m², rounded to 2 dp; battery 0x0C60=3168 mV -> 3.168 V."
+    },
+    {
+      "description": "TTN example 2: battery only (solar radiation flag clear)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 2, 145, 0, 2, 12, 96]
+      },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 657,
+          "battery": 3.168
+        }
+      },
+      "source": "ttn-example",
+      "_note": "flags=0x0002 -> only bit1 (battery) set; matches upstream oracle (no total_solar_radiation key)."
+    },
+    {
+      "description": "Synthetic: solar radiation only, mid-scale count",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 2, 145, 0, 1, 160, 0]
+      },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 657,
+          "solarRadiationRaw": 40960,
+          "air": {
+            "solarIrradiance": 3750
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "flags=0x0001 -> only solar radiation; raw 0xA000=40960 -> 3*(40960/32768-1)*1000*5 = 3750 W/m² (matches upstream oracle exactly)."
+    },
+    {
+      "description": "Error: wrong protocol version byte",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 2, 145, 0, 3, 128, 105, 12, 96]
+      },
+      "expected": {
+        "errors": ["protocol version 1 doesn't match v2"]
+      },
+      "source": "synthetic",
+      "_note": "version byte 1 != 2; mirrors upstream guard which returns an error string."
+    }
+  ],
+  "downlink": []
+}

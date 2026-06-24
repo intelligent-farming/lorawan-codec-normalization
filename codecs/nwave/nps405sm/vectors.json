@@ -1,0 +1,108 @@
+{
+  "_note": "Expected outputs derived with the ORACLE method: each input is the upstream TTN example input (or a synthetic input covering an uncovered branch), run through reference/upstream-codec.js, then hand-normalized into the shared vocabulary (occupied bit -> action.occupancy.occupied, compressed previous-state duration -> action.occupancy.duration, heartbeat temperature -> air.temperature, heartbeat battery voltage -> battery; message type, hardware/battery health, duration error/overflow flags, firmware/reset/tag diagnostics -> camelCase extras). Covers action.occupancy.occupied both true and false, the duration-overflow branch, both battery-health tiers, the SDI-registration vacant (occupancy-unknown) branch, and an unknown-FPort error.",
+  "uplink": [
+    {
+      "description": "Parking Status — occupied, 74 s in previous state",
+      "input": { "fPort": 1, "bytes": [149] },
+      "source": "ttn-example",
+      "expected": {
+        "data": {
+          "messageType": "parkingStatus",
+          "action": { "occupancy": { "occupied": true, "duration": 74 } },
+          "previousStateDurationError": 0,
+          "previousStateDurationOverflow": false
+        }
+      }
+    },
+    {
+      "description": "Parking Status — vacant, duration overflow (>= 660 s)",
+      "input": { "fPort": 1, "bytes": [254] },
+      "source": "synthetic",
+      "expected": {
+        "data": {
+          "messageType": "parkingStatus",
+          "action": { "occupancy": { "occupied": false, "duration": 660 } },
+          "previousStateDurationError": null,
+          "previousStateDurationOverflow": true
+        }
+      }
+    },
+    {
+      "description": "Heartbeat — vacant, -10 C, battery 3.344 V normal",
+      "input": { "fPort": 2, "bytes": [0, 211, 216, 0, 89, 11] },
+      "source": "ttn-example",
+      "expected": {
+        "data": {
+          "messageType": "heartbeat",
+          "action": { "occupancy": { "occupied": false } },
+          "hwHealthStatus": 0,
+          "air": { "temperature": -10 },
+          "battery": 3.344,
+          "batteryHealth": "normal"
+        }
+      }
+    },
+    {
+      "description": "Heartbeat — occupied, 30 C, battery 2.9 V low",
+      "input": { "fPort": 2, "bytes": [1, 100, 40, 0, 0, 0] },
+      "source": "synthetic",
+      "expected": {
+        "data": {
+          "messageType": "heartbeat",
+          "action": { "occupancy": { "occupied": true } },
+          "hwHealthStatus": 1,
+          "air": { "temperature": 30 },
+          "battery": 2.9,
+          "batteryHealth": "low"
+        }
+      }
+    },
+    {
+      "description": "Startup — firmware 2.4.9, power_on, vacant",
+      "input": { "fPort": 3, "bytes": [2, 4, 9, 2, 0] },
+      "source": "ttn-example",
+      "expected": {
+        "data": {
+          "messageType": "startup",
+          "firmwareVersion": "2.4.9",
+          "resetCause": "power_on",
+          "action": { "occupancy": { "occupied": false } }
+        }
+      }
+    },
+    {
+      "description": "SDI tag registration — occupied, tag 1F345678",
+      "input": { "fPort": 10, "bytes": [209, 31, 52, 86, 120] },
+      "source": "ttn-example",
+      "expected": {
+        "data": {
+          "messageType": "userRegistration",
+          "action": { "occupancy": { "occupied": true, "duration": 160 } },
+          "previousStateDurationError": 4,
+          "previousStateDurationOverflow": false,
+          "occupancyKnown": true,
+          "tagId": "1F345678"
+        }
+      }
+    },
+    {
+      "description": "SDI tag registration — occupancy unknown (low bit clear)",
+      "input": { "fPort": 10, "bytes": [0, 0, 0, 0, 1] },
+      "source": "synthetic",
+      "expected": {
+        "data": {
+          "messageType": "userRegistration",
+          "occupancyKnown": false,
+          "tagId": "1"
+        }
+      }
+    },
+    {
+      "description": "Unknown FPort — rejected",
+      "input": { "fPort": 99, "bytes": [0, 0] },
+      "source": "synthetic",
+      "expected": { "errors": ["unknown FPort"] }
+    }
+  ],
+  "downlink": []
+}

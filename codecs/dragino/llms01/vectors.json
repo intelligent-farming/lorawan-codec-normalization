@@ -1,0 +1,46 @@
+{
+  "_note": "Expected data authored via the oracle method: wire values decoded from reference/upstream-codec.js, then normalized to vocabulary keys/units (leaf.wetness %, leaf.temperature C, battery V; DS18B20 probe -> probeTemperature; interrupt/message bytes -> camelCase extras). Negative-temperature vector uses correct two's-complement (value - 0x10000), diverging from the upstream off-by-one (value - 0xffff).",
+  "uplink": [
+    {
+      "description": "TTN example: leaf moisture sensor, positive readings",
+      "input": { "fPort": 2, "bytes": [13, 35, 0, 0, 2, 84, 0, 249, 0, 0, 1] },
+      "expected": {
+        "data": {
+          "battery": 3.363,
+          "probeTemperature": 0,
+          "leaf": { "wetness": 59.6, "temperature": 24.9 },
+          "interruptFlag": 0,
+          "messageType": 1
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Synthetic: high battery mask bits set, negative probe and leaf temperatures (two's-complement)",
+      "input": { "fPort": 2, "bytes": [203, 196, 255, 240, 0, 125, 255, 249, 1, 0, 2] },
+      "expected": {
+        "data": {
+          "battery": 3.012,
+          "probeTemperature": -1.6,
+          "leaf": { "wetness": 12.5, "temperature": -0.7 },
+          "interruptFlag": 1,
+          "messageType": 2
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unknown fPort is rejected",
+      "input": { "fPort": 42, "bytes": [13, 35, 0, 0, 2, 84, 0, 249, 0, 0, 1] },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Truncated payload is rejected",
+      "input": { "fPort": 2, "bytes": [13, 35, 0, 0, 2] },
+      "expected": { "errors": ["expected at least 11 bytes"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

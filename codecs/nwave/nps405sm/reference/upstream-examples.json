@@ -1,0 +1,91 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/nwave/nps405-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Parking Status",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          149
+        ]
+      },
+      "output": {
+        "data": {
+          "type": "parking_status",
+          "occupied": true,
+          "previous_state_duration": 74,
+          "previous_state_duration_error": 0,
+          "previous_state_duration_overflow": false
+        }
+      }
+    },
+    {
+      "description": "User Registration",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          209,
+          31,
+          52,
+          86,
+          120
+        ]
+      },
+      "output": {
+        "data": {
+          "type": "user_registration",
+          "occupied": true,
+          "previous_state_duration": 160,
+          "previous_state_duration_error": 4,
+          "previous_state_duration_overflow": false,
+          "tag_id": "1F345678"
+        }
+      }
+    },
+    {
+      "description": "Heartbeat",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          0,
+          211,
+          216,
+          0,
+          89,
+          11
+        ]
+      },
+      "output": {
+        "data": {
+          "type": "heartbeat",
+          "occupied": false,
+          "battery_voltage": 3.344,
+          "temperature": -10,
+          "battery_health": "normal",
+          "hw_health_status": 0
+        }
+      }
+    },
+    {
+      "description": "Startup",
+      "input": {
+        "fPort": 3,
+        "bytes": [
+          2,
+          4,
+          9,
+          2,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "type": "startup",
+          "firmware_version": "2.4.9",
+          "reset_cause": "power_on",
+          "occupied": false
+        }
+      }
+    }
+  ]
+}

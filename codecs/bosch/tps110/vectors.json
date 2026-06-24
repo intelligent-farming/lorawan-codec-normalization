@@ -1,0 +1,81 @@
+{
+  "_note": "Bosch TPS110 parking sensor. Expected values authored by us; vector inputs taken from the upstream Apache-2.0 examples (ttn-example) and extended with synthetic inputs to cover action.occupancy.occupied false and air.temperature. The status byte low bit is the occupied flag; heartbeat byte[1] is signed degrees Celsius. The device reports no battery voltage or state-hold duration, so `battery` and action.occupancy.duration are not emitted.",
+  "uplink": [
+    {
+      "description": "Parking status, occupied",
+      "input": { "fPort": 1, "bytes": [1] },
+      "expected": {
+        "data": {
+          "messageType": "parking status",
+          "action": { "occupancy": { "occupied": true } }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Parking status, vacant",
+      "input": { "fPort": 1, "bytes": [0] },
+      "expected": {
+        "data": {
+          "messageType": "parking status",
+          "action": { "occupancy": { "occupied": false } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Heartbeat, occupied, temperature -1 C",
+      "input": { "fPort": 2, "bytes": [1, 255] },
+      "expected": {
+        "data": {
+          "messageType": "heartbeat",
+          "action": { "occupancy": { "occupied": true } },
+          "air": { "temperature": -1 }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Heartbeat, vacant, temperature 23 C",
+      "input": { "fPort": 2, "bytes": [0, 23] },
+      "expected": {
+        "data": {
+          "messageType": "heartbeat",
+          "action": { "occupancy": { "occupied": false } },
+          "air": { "temperature": 23 }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Start-up with debug codes 804 and 885, occupied",
+      "input": {
+        "fPort": 3,
+        "bytes": [36, 3, 0, 0, 117, 3, 0, 0, 0, 0, 0, 0, 0, 29, 2, 3, 1]
+      },
+      "expected": {
+        "data": {
+          "messageType": "startup",
+          "debugCodes": [804, 885],
+          "firmwareVersion": "0.29.2",
+          "resetCause": "system request",
+          "action": { "occupancy": { "occupied": true } }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Empty payload is an error",
+      "input": { "fPort": 1, "bytes": [] },
+      "expected": { "errors": ["empty payload"] },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unsupported fPort is an error",
+      "input": { "fPort": 99, "bytes": [1] },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

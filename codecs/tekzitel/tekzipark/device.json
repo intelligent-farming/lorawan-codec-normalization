@@ -1,0 +1,50 @@
+{
+  "vendor": "tekzitel",
+  "device": "tekzipark",
+  "name": "TEKZIPARK",
+  "categories": [
+    "occupancy"
+  ],
+  "sensors": [
+    "radar",
+    "magnetometer",
+    "temperature",
+    "battery"
+  ],
+  "provides": [
+    "action.occupancy.occupied",
+    "air.temperature",
+    "baselineX",
+    "baselineY",
+    "baselineZ",
+    "beaconRssi",
+    "beacons",
+    "deflectionX",
+    "deflectionY",
+    "deflectionZ",
+    "faultCode",
+    "goodBattery",
+    "keepAlive",
+    "messageType",
+    "noBeacon",
+    "obstruction",
+    "obstructionLevel",
+    "parkingId",
+    "radar",
+    "reflection",
+    "reset"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "tekzitel",
+    "device": "tekzipark",
+    "codecId": "tekzipark-codec",
+    "codecFile": "tekzipark.js",
+    "codecSha256": "9801f86217bb850b95f25ba0f42eb747251e5b13d46d70900e3a85ff71dd26b0",
+    "referencedAt": "2026-06-24"
+  }
+}

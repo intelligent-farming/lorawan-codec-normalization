@@ -118,20 +118,20 @@ of the listed paths present).
 | `motion` | `action.motion` | 141 |
 | `contact` | `action.contactState` | 24 |
 | `gps-tracker` | `position.latitude`, `position.longitude` | 47 |
-| `water-leak` | `water.leak` | 36 |
-| `groundwater` | `atLeastOne`: `water.level` / `water.pressure` | 7 |
+| `water-leak` | `water.leak` | 38 |
+| `groundwater` | `atLeastOne`: `water.level` / `water.pressure` | 9 |
 | `particulate` | `atLeastOne`: `air.pm2_5` / `air.pm10` / `air.tvoc` / `air.iaqIndex` / … | 2 |
 | `gas-detector` | `air.gasAlarm` | 3 |
 | `vibration` | `atLeastOne`: `vibration.velocityRms` / `vibration.accelerationRms` / … | 5 |
 | `tilt` | `atLeastOne`: `tilt.angle` / `tilt.x` / `tilt.y` / `tilt.z` | 2 |
-| `occupancy` | `action.occupancy.occupied` | 0 |
+| `occupancy` | `action.occupancy.occupied` | 5 |
 | `process-pressure` | `atLeastOne`: `pressure.gauge` / `pressure.absolute` | 0 |
 | `differential-pressure` | `pressure.differential` | 0 |
 | `water-quality` | `atLeastOne`: `water.ph` / `water.turbidity` / `water.residualChlorine` / … | 2 |
-| `power-meter` | `atLeastOne`: `metering.energy.total` / `power.active` / `power.voltage` / … | 0 |
-| `solar-radiation` | `atLeastOne`: `air.solarIrradiance` / `air.par` | 0 |
-| `leaf-wetness` | `leaf.wetness` | 0 |
-| `runtime-meter` | `device.runtime` | 0 |
+| `power-meter` | `atLeastOne`: `metering.energy.total` / `power.active` / `power.voltage` / … | 1 |
+| `solar-radiation` | `atLeastOne`: `air.solarIrradiance` / `air.par` | 2 |
+| `leaf-wetness` | `leaf.wetness` | 1 |
+| `runtime-meter` | `device.runtime` | 2 |
 
 The 12 categories below `groundwater` are newly defined (vocabulary extended for
 process/differential pressure, particulate/VOC, gas alarm, vibration, tilt,

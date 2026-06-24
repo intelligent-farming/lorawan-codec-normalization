@@ -1,0 +1,103 @@
+{
+  "uplink": [
+    {
+      "description": "MOD 2 water-leak mode, leak detected (synthetic; bat 2.952 V)",
+      "input": {
+        "fPort": 10,
+        "bytes": [75, 136, 2, 0, 0, 5, 0, 0, 12, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.952,
+          "water": { "leak": true },
+          "mod": 2,
+          "leakEvents": 5,
+          "lastLeakDuration": 12
+        }
+      },
+      "source": "synthetic",
+      "_note": "byte0 0x4B = leak flag (0x40) | battery high bits; expected.data produced by running reference/upstream-codec.js."
+    },
+    {
+      "description": "MOD 2 water-leak mode, no leak (synthetic; bat 3.0 V)",
+      "input": {
+        "fPort": 10,
+        "bytes": [11, 184, 2, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "water": { "leak": false },
+          "mod": 2,
+          "leakEvents": 0,
+          "lastLeakDuration": 0
+        }
+      },
+      "source": "synthetic",
+      "_note": "Leak bit clear; water.leak false covered here."
+    },
+    {
+      "description": "MOD 1 door mode, door closed, alarm set (synthetic; bat 2.952 V)",
+      "input": {
+        "fPort": 10,
+        "bytes": [11, 136, 1, 1, 0, 37, 0, 1, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.952,
+          "water": { "leak": false },
+          "mod": 1,
+          "doorOpen": false,
+          "doorOpenEvents": 65573,
+          "lastDoorOpenDuration": 256,
+          "alarm": true
+        }
+      },
+      "source": "synthetic",
+      "_note": "Door work mode still emits water.leak from the fixed status bit."
+    },
+    {
+      "description": "MOD 3 combined mode, door open and leak present (synthetic)",
+      "input": {
+        "fPort": 10,
+        "bytes": [203, 136, 3, 0, 0, 0, 0, 0, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.952,
+          "water": { "leak": true },
+          "mod": 3,
+          "doorOpen": true,
+          "alarm": true
+        }
+      },
+      "source": "synthetic",
+      "_note": "byte0 0xCB = door (0x80) | leak (0x40) | battery high bits; byte9 bit0 = alarm."
+    },
+    {
+      "description": "Unknown FPort returns an error (TTN example input)",
+      "input": {
+        "fPort": 42,
+        "bytes": [11, 136, 1, 0, 37, 0, 1]
+      },
+      "expected": {
+        "errors": ["unknown FPort"]
+      },
+      "source": "ttn-example",
+      "_note": "Upstream TTN example input (Unknown FPort)."
+    },
+    {
+      "description": "Short payload on fPort 10 returns an error (TTN example bytes, 7 of 10)",
+      "input": {
+        "fPort": 10,
+        "bytes": [11, 136, 1, 0, 37, 0, 1]
+      },
+      "expected": {
+        "errors": ["expected at least 10 bytes"]
+      },
+      "source": "ttn-example",
+      "_note": "Upstream TTN example input is only 7 bytes; a full status frame is 10."
+    }
+  ],
+  "downlink": []
+}

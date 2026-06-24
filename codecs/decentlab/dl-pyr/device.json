@@ -1,0 +1,32 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-pyr",
+  "name": "DL-PYR - Total Solar Radiation Sensor",
+  "categories": [
+    "solar-radiation"
+  ],
+  "sensors": [
+    "solar radiation",
+    "battery"
+  ],
+  "provides": [
+    "air.solarIrradiance",
+    "battery",
+    "deviceId",
+    "protocolVersion",
+    "solarRadiationRaw"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-pyr",
+    "codecId": "dl-pyr-codec",
+    "codecFile": "dl-pyr.js",
+    "codecSha256": "ced16c0efb3d56975ca4cd82cc00fdf6d74e14b5a0b9a0d5ff574ddf38b46696",
+    "referencedAt": "2026-06-24"
+  }
+}

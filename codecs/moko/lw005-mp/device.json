@@ -1,0 +1,43 @@
+{
+  "vendor": "moko",
+  "device": "lw005-mp",
+  "name": "MOKO LW005-MP Smart Plug / Power Meter",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "current",
+    "energy",
+    "power",
+    "voltage"
+  ],
+  "provides": [
+    "lastHourEnergyWh",
+    "loadState",
+    "metering.energy.total",
+    "overPowerState",
+    "overVoltageState",
+    "power.active",
+    "power.current",
+    "power.factor",
+    "power.frequency",
+    "power.voltage",
+    "protectPower",
+    "protectVoltage",
+    "relayState",
+    "time"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "moko",
+    "device": "lw005-mp",
+    "codecId": "lw005-mp-codec",
+    "codecFile": "lw005-mp.js",
+    "codecSha256": "4d9a647d224061ebb2870386013bcaa0165319ab26a73409ecfa69cbdcdedb47",
+    "referencedAt": "2026-06-24"
+  }
+}

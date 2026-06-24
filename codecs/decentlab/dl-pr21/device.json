@@ -1,0 +1,32 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-pr21",
+  "name": "DL-PR21 - Pressure / Liquid Level and Temperature Sensor with G1/4\" Pipe Thread",
+  "categories": [
+    "groundwater"
+  ],
+  "sensors": [
+    "pressure",
+    "temperature",
+    "battery"
+  ],
+  "provides": [
+    "battery",
+    "water.pressure",
+    "water.temperature.current",
+    "waterPressureKpa"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-pr21",
+    "codecId": "dl-pr21-1-10-codec",
+    "codecFile": "dl-pr21-1-10.js",
+    "codecSha256": "7d72500902c040459a7c1a9a90737f3350073c0849ebd258678c65801e949dcf",
+    "referencedAt": "2026-06-24"
+  }
+}

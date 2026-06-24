@@ -1,0 +1,85 @@
+{
+  "uplink": [
+    {
+      "description": "TTN example 1: full payload (flags=0x0003) — hydrostatic pressure 0.2461 bar (24.6094 kPa), 25.6719 C, battery 3.199 V",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 1, 103, 0, 3, 78, 128, 96, 23, 12, 127]
+      },
+      "expected": {
+        "data": {
+          "water": {
+            "pressure": 24.6094,
+            "temperature": { "current": 25.6719 }
+          },
+          "battery": 3.199
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Oracle: reference/upstream-codec.js yields pressure 0.24609375 bar, temperature 25.671875 C, battery 3.199 V. bar->kPa (x100, round 4); degC and V unchanged. Satisfies groundwater atLeastOne via water.pressure."
+    },
+    {
+      "description": "Synthetic full payload (flags=0x0003): pressure 2.0 bar (200.0092 kPa), 20.0 C, battery 3.6 V",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 1, 103, 0, 3, 98, 233, 89, 0, 14, 16]
+      },
+      "expected": {
+        "data": {
+          "water": {
+            "pressure": 200.0092,
+            "temperature": { "current": 20 }
+          },
+          "battery": 3.6
+        }
+      },
+      "source": "synthetic",
+      "_note": "Oracle: in-bounds words crafted so reference/upstream-codec.js yields pressure 2.000091552734375 bar, temperature 20.0 C, battery 3.6 V."
+    },
+    {
+      "description": "Synthetic pressure block only (flags=0x0001): negative -0.5001 bar -> sub-atmospheric, -5.0 C",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 1, 103, 0, 1, 69, 209, 57, 192]
+      },
+      "expected": {
+        "data": {
+          "waterPressureKpa": -50.0153,
+          "water": {
+            "temperature": { "current": -5 }
+          }
+        },
+        "warnings": ["hydrostatic pressure -50.0153 kPa is negative (sub-atmospheric); reported as waterPressureKpa"]
+      },
+      "source": "synthetic",
+      "_note": "Oracle: upstream yields -0.500152587890625 bar (the -1-10 variant reads sub-atmospheric). water.pressure has a vocabulary minimum of 0, so the negative reading is surfaced as the camelCase extra waterPressureKpa with a warning; water.temperature.current still satisfies the temperature mapping."
+    },
+    {
+      "description": "TTN example 2 / battery-only payload (flags=0x0002): battery 3.199 V",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 1, 103, 0, 2, 12, 127]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.199
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Oracle: upstream yields battery 3.199 V; pressure block flag clear."
+    },
+    {
+      "description": "Wrong protocol version (byte0=1) is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 103, 0, 3, 78, 128, 96, 23, 12, 127]
+      },
+      "expected": {
+        "errors": ["protocol version 1 doesn't match v2"]
+      },
+      "source": "synthetic",
+      "_note": "Header version byte must be 2 (Decentlab protocol v2)."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,33 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-pr36",
+  "name": "DL-PR36 - High-Precision Pressure / Liquid Level and Temperature Sensor",
+  "categories": [
+    "groundwater"
+  ],
+  "sensors": [
+    "pressure",
+    "temperature",
+    "battery"
+  ],
+  "provides": [
+    "battery",
+    "deviceId",
+    "protocolVersion",
+    "water.pressure",
+    "water.temperature.current"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-pr36",
+    "codecId": "dl-pr36-8192-codec",
+    "codecFile": "dl-pr36-8192.js",
+    "codecSha256": "8fccfc15819cd023c31d0303b7c37751163c0888cec24aef8e7b3928db8a8adc",
+    "referencedAt": "2026-06-24"
+  }
+}

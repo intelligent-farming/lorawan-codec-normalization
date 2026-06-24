@@ -1,0 +1,34 @@
+{
+  "vendor": "dragino",
+  "device": "llms01",
+  "name": "LLMS01 - Leaf Moisture Sensor",
+  "categories": [
+    "leaf-wetness"
+  ],
+  "sensors": [
+    "battery",
+    "moisture",
+    "temperature"
+  ],
+  "provides": [
+    "battery",
+    "interruptFlag",
+    "leaf.temperature",
+    "leaf.wetness",
+    "messageType",
+    "probeTemperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "llms01",
+    "codecId": "llms01-codec",
+    "codecFile": "llms01.js",
+    "codecSha256": "74bc6b01894d7e81fbfbbb3e9b262709f309d9961296eee191d502f5bfda671d",
+    "referencedAt": "2026-06-24"
+  }
+}

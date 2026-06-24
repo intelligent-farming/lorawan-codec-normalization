@@ -1,0 +1,71 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/decentlab/dl-pr36-8192-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Example 1",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          3,
+          43,
+          0,
+          3,
+          128,
+          103,
+          151,
+          129,
+          12,
+          43
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.115
+          },
+          "device_id": 811,
+          "pressure": {
+            "displayName": "Pressure",
+            "unit": "bar",
+            "value": 0.0125732421875
+          },
+          "protocol_version": 2,
+          "temperature": {
+            "displayName": "Temperature",
+            "unit": "°C",
+            "value": 23.50390625
+          }
+        }
+      }
+    },
+    {
+      "description": "Example 2",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          3,
+          43,
+          0,
+          2,
+          12,
+          43
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.115
+          },
+          "device_id": 811,
+          "protocol_version": 2
+        }
+      }
+    }
+  ]
+}

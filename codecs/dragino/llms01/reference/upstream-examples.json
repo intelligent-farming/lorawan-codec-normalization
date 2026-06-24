@@ -1,0 +1,58 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/dragino/llms01-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "LoRaWAN Leaf Moisture Sensor",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          13,
+          35,
+          0,
+          0,
+          2,
+          84,
+          0,
+          249,
+          0,
+          0,
+          1
+        ]
+      },
+      "output": {
+        "data": {
+          "Bat": 3.363,
+          "Interrupt_flag": 0,
+          "Leaf_Temperature": "24.90",
+          "Leaf_Moisture": "59.60",
+          "Message_type": 1,
+          "TempC_DS18B20": "0.00"
+        }
+      }
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [
+          13,
+          35,
+          0,
+          0,
+          2,
+          84,
+          0,
+          249,
+          0,
+          0,
+          1
+        ]
+      },
+      "output": {
+        "errors": [
+          "unknown FPort"
+        ]
+      }
+    }
+  ]
+}

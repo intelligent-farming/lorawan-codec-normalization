@@ -1,0 +1,104 @@
+{
+  "_note": "Expected outputs derived by the ORACLE method: the upstream Apache-2.0 decoder (reference/upstream-codec.js) was run on each input to confirm the wire-format values, then re-shaped into the normalized vocabulary here (occupied -> action.occupancy.occupied; heartbeat temperature -> air.temperature; battery millivolts/1000 -> battery; message type, hw health, firmware, reset cause, tag id, battery-health, and the companded previous-state duration -> camelCase extras). The previous-state duration describes the PRIOR state, not the current one, so it is kept as an extra rather than action.occupancy.duration. ttn-example inputs come from upstream nps405-codec.yaml; the vacant parking status and the occupied heartbeat are synthetic to cover action.occupancy.occupied both true and false.",
+  "uplink": [
+    {
+      "description": "Parking status, occupied (ttn-example)",
+      "input": { "fPort": 1, "bytes": [149] },
+      "expected": {
+        "data": {
+          "messageType": "parkingStatus",
+          "action": { "occupancy": { "occupied": true } },
+          "previousStateDurationMinutes": 74,
+          "previousStateDurationErrorMinutes": 0,
+          "previousStateDurationOverflow": false
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Parking status, vacant (synthetic)",
+      "input": { "fPort": 1, "bytes": [0] },
+      "expected": {
+        "data": {
+          "messageType": "parkingStatus",
+          "action": { "occupancy": { "occupied": false } },
+          "previousStateDurationMinutes": 0,
+          "previousStateDurationErrorMinutes": 0,
+          "previousStateDurationOverflow": false
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Heartbeat, vacant, battery + temperature (ttn-example)",
+      "input": { "fPort": 2, "bytes": [0, 211, 216, 0, 89, 11] },
+      "expected": {
+        "data": {
+          "messageType": "heartbeat",
+          "action": { "occupancy": { "occupied": false } },
+          "hwHealthStatus": 0,
+          "air": { "temperature": -10 },
+          "battery": 3.344,
+          "batteryHealth": "normal"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Heartbeat, occupied (synthetic)",
+      "input": { "fPort": 2, "bytes": [1, 250, 200, 0, 0, 0] },
+      "expected": {
+        "data": {
+          "messageType": "heartbeat",
+          "action": { "occupancy": { "occupied": true } },
+          "hwHealthStatus": 1,
+          "air": { "temperature": -18 },
+          "battery": 3.5,
+          "batteryHealth": "normal"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Startup, vacant (ttn-example)",
+      "input": { "fPort": 3, "bytes": [2, 4, 9, 2, 0] },
+      "expected": {
+        "data": {
+          "messageType": "startup",
+          "firmwareVersion": "2.4.9",
+          "resetCause": "power_on",
+          "action": { "occupancy": { "occupied": false } }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "SDI tag registration, occupied (ttn-example)",
+      "input": { "fPort": 10, "bytes": [209, 31, 52, 86, 120] },
+      "expected": {
+        "data": {
+          "messageType": "tagRegistration",
+          "action": { "occupancy": { "occupied": true } },
+          "previousStateDurationMinutes": 160,
+          "previousStateDurationErrorMinutes": 4,
+          "previousStateDurationOverflow": false,
+          "tagId": "1F345678"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Debug frame carries no normalized measurement (error)",
+      "input": { "fPort": 6, "bytes": [1, 2, 3] },
+      "expected": { "errors": ["debug frame carries no normalized measurement"] },
+      "source": "synthetic"
+    },
+    {
+      "description": "Heartbeat payload too short (error)",
+      "input": { "fPort": 2, "bytes": [1] },
+      "expected": { "errors": ["heartbeat payload too short"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

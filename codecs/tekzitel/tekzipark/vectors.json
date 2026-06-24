@@ -1,0 +1,131 @@
+{
+  "uplink": [
+    {
+      "description": "Status frame (fPort 1): occupied, radar detection, with beacon RSSI and IDs",
+      "input": {
+        "fPort": 1,
+        "bytes": [168, 45, 99, 176, 0, 85, 1, 32]
+      },
+      "expected": {
+        "data": {
+          "action": { "occupancy": { "occupied": true } },
+          "air": { "temperature": 45 },
+          "parkingId": 99,
+          "goodBattery": true,
+          "obstruction": false,
+          "radar": true,
+          "noBeacon": false,
+          "reset": false,
+          "keepAlive": false,
+          "messageType": "status",
+          "beaconRssi": -80,
+          "beacons": [85, 288]
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream example input; expected.data produced by running reference/upstream-codec.js then normalizing (occupied bit7=1 -> action.occupancy.occupied true; byte[1]=45 -> air.temperature; Good_Battery flag -> goodBattery extra, NOT vocabulary battery, since no voltage is reported)."
+    },
+    {
+      "description": "Status frame (fPort 1): occupied, status bytes only (no beacons)",
+      "input": {
+        "fPort": 1,
+        "bytes": [168, 45, 99]
+      },
+      "expected": {
+        "data": {
+          "action": { "occupancy": { "occupied": true } },
+          "air": { "temperature": 45 },
+          "parkingId": 99,
+          "goodBattery": true,
+          "obstruction": false,
+          "radar": true,
+          "noBeacon": false,
+          "reset": false,
+          "keepAlive": false,
+          "messageType": "status"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream example input; 3-byte minimal status frame, no beacon section."
+    },
+    {
+      "description": "Status frame (fPort 1): vacant, keepalive",
+      "input": {
+        "fPort": 1,
+        "bytes": [41, 46, 98]
+      },
+      "expected": {
+        "data": {
+          "action": { "occupancy": { "occupied": false } },
+          "air": { "temperature": 46 },
+          "parkingId": 98,
+          "goodBattery": true,
+          "obstruction": false,
+          "radar": true,
+          "noBeacon": false,
+          "reset": false,
+          "keepAlive": true,
+          "messageType": "status"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream example input; occupied bit7=0 -> action.occupancy.occupied false; keepAlive bit0=1."
+    },
+    {
+      "description": "Diagnostic frame (fPort 2): occupied, magnetometer deflection/baseline, negative temperature",
+      "input": {
+        "fPort": 2,
+        "bytes": [168, 246, 7, 5, 250, 0, 100, 101, 102, 0, 2, 3]
+      },
+      "expected": {
+        "data": {
+          "action": { "occupancy": { "occupied": true } },
+          "air": { "temperature": -10 },
+          "parkingId": 7,
+          "goodBattery": true,
+          "obstruction": false,
+          "radar": true,
+          "noBeacon": false,
+          "reset": false,
+          "keepAlive": false,
+          "messageType": "diagnostic",
+          "deflectionX": 5,
+          "deflectionY": -6,
+          "deflectionZ": 0,
+          "baselineX": 100,
+          "baselineY": 101,
+          "baselineZ": 102,
+          "faultCode": 0,
+          "obstructionLevel": 2,
+          "reflection": 3
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic 12-byte diagnostic frame; expected.data produced by running reference/upstream-codec.js (fPort 2 path) then normalizing. byte[1]=246 -> signed -10 -> air.temperature; byte[4]=250 -> deflectionY -6 (two's complement). Exercises the magnetometer extras."
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [41, 46, 98]
+      },
+      "expected": {
+        "errors": ["unknown FPort"]
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Diagnostic frame too short (fPort 2 with fewer than 12 bytes)",
+      "input": {
+        "fPort": 2,
+        "bytes": [168, 45, 99]
+      },
+      "expected": {
+        "errors": ["diagnostic frame too short"]
+      },
+      "source": "synthetic",
+      "_note": "fPort 2 requires the full 12-byte diagnostic payload; a truncated frame is rejected rather than emitting undefined magnetometer fields."
+    }
+  ],
+  "downlink": []
+}

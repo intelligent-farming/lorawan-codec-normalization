@@ -1,0 +1,134 @@
+{
+  "uplink": [
+    {
+      "description": "Parking status - occupied",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          1
+        ]
+      },
+      "expected": {
+        "data": {
+          "messageType": "parkingStatus",
+          "action": {
+            "occupancy": {
+              "occupied": true
+            }
+          }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "bit 0 of byte 0 = 1 -> space occupied. expected authored from upstream oracle (vendor/nwave/nps310sm.js)."
+    },
+    {
+      "description": "Parking status - vacant",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "messageType": "parkingStatus",
+          "action": {
+            "occupancy": {
+              "occupied": false
+            }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "bit 0 of byte 0 = 0 -> space vacant. covers action.occupancy.occupied = false."
+    },
+    {
+      "description": "Heartbeat - vacant",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "messageType": "heartbeat",
+          "action": {
+            "occupancy": {
+              "occupied": false
+            }
+          }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "keepalive message; still carries occupancy in bit 0 of byte 0."
+    },
+    {
+      "description": "Startup - power_on, occupied",
+      "input": {
+        "fPort": 3,
+        "bytes": [
+          1,
+          13,
+          0,
+          2,
+          1
+        ]
+      },
+      "expected": {
+        "data": {
+          "messageType": "startup",
+          "firmwareVersion": "1.13.0",
+          "resetCause": "power_on",
+          "action": {
+            "occupancy": {
+              "occupied": true
+            }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "derived from the TTN startup example (fw 1.13.0, reset byte 2 = power_on); byte[4] bit 0 set to 1 so occupancy reads occupied. firmwareVersion/resetCause are camelCase extras."
+    },
+    {
+      "description": "Debug - raw diagnostic bytes",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          170,
+          187,
+          204
+        ]
+      },
+      "expected": {
+        "data": {
+          "messageType": "debug",
+          "rawBytes": [
+            170,
+            187,
+            204
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "debug message carries only raw bytes (no occupancy field); rawBytes is a camelCase extra. occupancy requirement is satisfied by the parking/heartbeat/startup vectors."
+    },
+    {
+      "description": "Unsupported fPort",
+      "input": {
+        "fPort": 99,
+        "bytes": [
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "unsupported fPort"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "fPort outside the documented 1/2/3/6 set is rejected."
+    }
+  ],
+  "downlink": []
+}
