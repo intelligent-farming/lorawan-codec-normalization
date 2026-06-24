@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "atomsenses",
+          "model": "as-203",
           "batteryPercent": 75,
           "air": {
             "temperature": 27.2,
@@ -29,6 +31,8 @@
       },
       "expected": {
         "data": {
+          "make": "atomsenses",
+          "model": "as-203",
           "batteryPercent": 100,
           "air": {
             "temperature": -1,
@@ -47,6 +51,8 @@
       },
       "expected": {
         "data": {
+          "make": "atomsenses",
+          "model": "as-203",
           "air": {
             "co2": 400
           }

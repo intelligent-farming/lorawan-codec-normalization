@@ -5,6 +5,8 @@
       "input": { "fPort": 1, "bytes": [50, 8, 1, 0, 0, 0, 5, 12, 128] },
       "expected": {
         "data": {
+          "make": "atim",
+          "model": "acw-pir90-o",
           "action": { "motion": { "detected": true, "count": 5 } },
           "frameType": "motionAlarm",
           "enclosureOpen": false,
@@ -20,6 +22,8 @@
       "input": { "fPort": 1, "bytes": [50, 16, 1, 0, 0, 1, 2, 12, 0] },
       "expected": {
         "data": {
+          "make": "atim",
+          "model": "acw-pir90-o",
           "action": { "motion": { "detected": false, "count": 258 } },
           "frameType": "count",
           "enclosureOpen": false,
@@ -35,6 +39,8 @@
       "input": { "fPort": 1, "bytes": [50, 1, 0, 0, 0, 0, 0, 12, 128] },
       "expected": {
         "data": {
+          "make": "atim",
+          "model": "acw-pir90-o",
           "action": { "motion": { "detected": false, "count": 0 } },
           "frameType": "enclosureOpen",
           "enclosureOpen": true,
@@ -49,7 +55,7 @@
       "description": "legacy keep-alive (life) frame: battery voltage",
       "input": { "fPort": 1, "bytes": [1, 12, 128] },
       "expected": {
-        "data": { "battery": 3.2 }
+        "data": { "make": "atim", "model": "acw-pir90-o", "battery": 3.2 }
       },
       "source": "synthetic",
       "_note": "Synthetic in-bounds frame; byte0=0x01 selects the legacy keep-alive frame (upstream getFrameType -> 'Ancien produit' -> frame_type_ancien -> 'Trame de vie') carrying tensionc=0x0C80=3200 mV -> battery 3.2 V. Expected confirmed by running reference/upstream-codec.js (tensionc.value=3.2)."

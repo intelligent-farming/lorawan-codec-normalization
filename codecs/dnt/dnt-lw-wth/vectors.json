@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "dnt",
+          "model": "dnt-lw-wth",
           "battery": 2.88,
           "air": {
             "temperature": 21.9,
@@ -26,6 +28,8 @@
       },
       "expected": {
         "data": {
+          "make": "dnt",
+          "model": "dnt-lw-wth",
           "air": {
             "temperature": 22.5
           }
@@ -42,6 +46,8 @@
       },
       "expected": {
         "data": {
+          "make": "dnt",
+          "model": "dnt-lw-wth",
           "air": {
             "relativeHumidity": 48
           }
@@ -58,6 +64,8 @@
       },
       "expected": {
         "data": {
+          "make": "dnt",
+          "model": "dnt-lw-wth",
           "battery": 2.9,
           "setPointTemperature": 25
         }
@@ -73,6 +81,8 @@
       },
       "expected": {
         "data": {
+          "make": "dnt",
+          "model": "dnt-lw-wth",
           "setPointTemperature": 21.5
         }
       },

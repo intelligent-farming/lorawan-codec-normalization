@@ -16,7 +16,7 @@ function round(value, decimals) {
   return Math.round(value * f) / f;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
 
   if (input.fPort !== 104) {
@@ -45,4 +45,14 @@ function decodeUplink(input) {
   data.keepAlive = ((bytes[0] >> 5) & 0x01) === 0x01;
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "browan";
+    result.data.model = "tbam100";
+  }
+  return result;
 }

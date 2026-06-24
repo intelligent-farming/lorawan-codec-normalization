@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "browan",
+          "model": "tbms100",
           "battery": 3.6,
           "boardTemperature": 20,
           "timeSinceLastEvent": 4,
@@ -30,6 +32,8 @@
       },
       "expected": {
         "data": {
+          "make": "browan",
+          "model": "tbms100",
           "battery": 3.5,
           "boardTemperature": 18,
           "timeSinceLastEvent": 30,

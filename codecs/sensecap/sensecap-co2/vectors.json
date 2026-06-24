@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensecap",
+          "model": "sensecap-co2",
           "air": {
             "temperature": 23.5,
             "relativeHumidity": 45.2,
@@ -26,6 +28,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensecap",
+          "model": "sensecap-co2",
           "air": {
             "co2": 800
           }
@@ -42,6 +46,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensecap",
+          "model": "sensecap-co2",
           "batteryPercent": 100,
           "reportingInterval": 3600
         }

@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "mclimate",
+          "model": "open-close",
           "battery": 2.97,
           "thermistorProperlyConnected": true,
           "openCloseCount": 1793198,
@@ -30,6 +32,8 @@
       },
       "expected": {
         "data": {
+          "make": "mclimate",
+          "model": "open-close",
           "battery": 2.97,
           "thermistorProperlyConnected": true,
           "openCloseCount": 1793198,
@@ -53,6 +57,8 @@
       },
       "expected": {
         "data": {
+          "make": "mclimate",
+          "model": "open-close",
           "battery": 3.2,
           "thermistorProperlyConnected": false,
           "openCloseCount": 5,

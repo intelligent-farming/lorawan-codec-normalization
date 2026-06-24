@@ -37,6 +37,8 @@
       },
       "expected": {
         "data": {
+          "make": "quandify",
+          "model": "cubicmeter-1-1-plastic",
           "metering": {
             "water": {
               "total": 5342
@@ -101,6 +103,8 @@
       },
       "expected": {
         "data": {
+          "make": "quandify",
+          "model": "cubicmeter-1-1-plastic",
           "metering": {
             "water": {
               "total": 200000

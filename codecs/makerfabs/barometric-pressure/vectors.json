@@ -5,6 +5,8 @@
       "input": { "fPort": 1, "bytes": [0, 1, 36, 6, 10, 24, 200, 0, 0, 8, 86] },
       "expected": {
         "data": {
+          "make": "makerfabs",
+          "model": "barometric-pressure",
           "battery": 3.6,
           "air": { "temperature": 21.34, "pressure": 1013.25 }
         }
@@ -17,6 +19,8 @@
       "input": { "fPort": 1, "bytes": [0, 1, 41, 5, 223, 192, 240, 0, 0, 1, 244] },
       "expected": {
         "data": {
+          "make": "makerfabs",
+          "model": "barometric-pressure",
           "battery": 4.1,
           "air": { "temperature": 5, "pressure": 985.5 }
         }
@@ -29,6 +33,8 @@
       "input": { "fPort": 1, "bytes": [0, 1, 28, 6, 111, 243, 0, 0, 0, 13, 42] },
       "expected": {
         "data": {
+          "make": "makerfabs",
+          "model": "barometric-pressure",
           "battery": 2.8,
           "air": { "temperature": 33.7, "pressure": 1080 }
         }

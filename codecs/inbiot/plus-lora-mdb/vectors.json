@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "inbiot",
+          "model": "plus-lora-mdb",
           "air": { "temperature": 23.3, "relativeHumidity": 51.9, "co2": 815 },
           "hcho": 2,
           "tvoc": 0,
@@ -35,6 +37,8 @@
       },
       "expected": {
         "data": {
+          "make": "inbiot",
+          "model": "plus-lora-mdb",
           "air": { "temperature": 21.4, "relativeHumidity": 47.2, "co2": 640 },
           "hcho": 5,
           "tvoc": 120,
@@ -62,6 +66,8 @@
       },
       "expected": {
         "data": {
+          "make": "inbiot",
+          "model": "plus-lora-mdb",
           "air": { "temperature": 26.8, "relativeHumidity": 61.8, "co2": 1180 },
           "hcho": 14,
           "tvoc": 340,

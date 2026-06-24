@@ -4,19 +4,19 @@
     {
       "description": "ABM movement started -> action.motion.detected true",
       "input": { "fPort": 2, "bytes": [16, 14, 0] },
-      "expected": { "data": { "protocol": 1, "counter": 0, "messageType": "abm", "action": { "motion": { "detected": true } } } },
+      "expected": { "data": { "make": "radio-bridge", "model": "rbs301-abm", "protocol": 1, "counter": 0, "messageType": "abm", "action": { "motion": { "detected": true } } } },
       "source": "synthetic"
     },
     {
       "description": "ABM movement stopped -> action.motion.detected false (idle/cleared)",
       "input": { "fPort": 2, "bytes": [17, 14, 1] },
-      "expected": { "data": { "protocol": 1, "counter": 1, "messageType": "abm", "action": { "motion": { "detected": false } } } },
+      "expected": { "data": { "make": "radio-bridge", "model": "rbs301-abm", "protocol": 1, "counter": 1, "messageType": "abm", "action": { "motion": { "detected": false } } } },
       "source": "synthetic"
     },
     {
       "description": "Supervisory -> battery 3.6 V + tamper/error flags + accumulation",
       "input": { "fPort": 2, "bytes": [18, 1, 0, 0, 54, 0, 0, 0, 0, 0, 5] },
-      "expected": { "data": { "protocol": 1, "counter": 2, "messageType": "supervisory", "battery": 3.6, "accumulation": 5, "tamperSinceLastReset": false, "tamperState": false, "errorWithLastDownlink": false, "batteryLow": false, "radioCommError": false } },
+      "expected": { "data": { "make": "radio-bridge", "model": "rbs301-abm", "protocol": 1, "counter": 2, "messageType": "supervisory", "battery": 3.6, "accumulation": 5, "tamperSinceLastReset": false, "tamperState": false, "errorWithLastDownlink": false, "batteryLow": false, "radioCommError": false } },
       "source": "synthetic"
     },
     {

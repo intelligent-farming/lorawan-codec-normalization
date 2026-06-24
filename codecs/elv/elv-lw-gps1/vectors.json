@@ -5,6 +5,8 @@
       "input": { "fPort": 10, "bytes": [3, 1, 19, 136, 1, 32, 138, 47, 3, 110, 14, 156, 0, 216, 177, 2, 0, 1, 11] },
       "expected": {
         "data": {
+          "make": "elv",
+          "model": "elv-lw-gps1",
           "txReason": "Timer_Event",
           "battery": 5,
           "position": { "latitude": 53.4472, "longitude": 10.22731 },
@@ -19,6 +21,8 @@
       "input": { "fPort": 10, "bytes": [3, 4, 46, 224, 1, 32, 138, 47, 3, 230, 14, 156, 0, 64, 255, 252, 255, 1, 24] },
       "expected": {
         "data": {
+          "make": "elv",
+          "model": "elv-lw-gps1",
           "txReason": "Heartbeat",
           "battery": 12,
           "position": { "latitude": 53.4472, "longitude": 10.22743 },
@@ -33,6 +37,8 @@
       "input": { "fPort": 10, "bytes": [3, 2, 19, 136, 1, 152, 111, 44, 3, 204, 207, 114, 0, 212, 148, 0, 0, 1, 0] },
       "expected": {
         "data": {
+          "make": "elv",
+          "model": "elv-lw-gps1",
           "txReason": "User_Button",
           "battery": 5,
           "position": { "latitude": 53.2438, "longitude": 7.5243 },
@@ -47,6 +53,8 @@
       "input": { "fPort": 10, "bytes": [3, 7, 14, 116, 1, 8, 78, 222, 2, 184, 130, 176, 0, 128, 88, 79, 0, 0, 20] },
       "expected": {
         "data": {
+          "make": "elv",
+          "model": "elv-lw-gps1",
           "txReason": "Motion_Start",
           "battery": 3.7,
           "action": { "motion": { "detected": true } },
@@ -63,6 +71,8 @@
       "input": { "fPort": 10, "bytes": [3, 9, 12, 110, 1, 0, 52, 251, 253, 84, 69, 3, 9, 144, 208, 3, 0, 1, 5] },
       "expected": {
         "data": {
+          "make": "elv",
+          "model": "elv-lw-gps1",
           "txReason": "Motion_Stop",
           "battery": 3.182,
           "action": { "motion": { "detected": false } },

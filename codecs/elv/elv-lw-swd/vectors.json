@@ -5,6 +5,8 @@
       "input": { "fPort": 10, "bytes": [108, 1, 8, 0, 4, 12, 0, 5] },
       "expected": {
         "data": {
+          "make": "elv",
+          "model": "elv-lw-swd",
           "battery": 2.88,
           "frameType": "Device_State",
           "txReason": "Water",
@@ -24,6 +26,8 @@
       "input": { "fPort": 10, "bytes": [108, 2, 8, 0, 6, 3] },
       "expected": {
         "data": {
+          "make": "elv",
+          "model": "elv-lw-swd",
           "battery": 2.88,
           "frameType": "Sensor_Data",
           "txReason": "Water",
@@ -42,6 +46,8 @@
       "input": { "fPort": 10, "bytes": [100, 2, 6, 0, 1, 0] },
       "expected": {
         "data": {
+          "make": "elv",
+          "model": "elv-lw-swd",
           "battery": 2.72,
           "frameType": "Sensor_Data",
           "txReason": "Dryness",
@@ -60,6 +66,8 @@
       "input": { "fPort": 10, "bytes": [200, 0, 4, 1, 0, 4, 2, 3, 1, 0, 7] },
       "expected": {
         "data": {
+          "make": "elv",
+          "model": "elv-lw-swd",
           "battery": 4.16,
           "frameType": "Device_Info",
           "txReason": "Joined",
@@ -76,6 +84,8 @@
       "input": { "fPort": 10, "bytes": [150, 3, 3, 2, 30, 4, 45, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] },
       "expected": {
         "data": {
+          "make": "elv",
+          "model": "elv-lw-swd",
           "battery": 3.44,
           "frameType": "Config_Data",
           "txReason": "Settings",

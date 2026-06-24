@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "df703",
           "fillLevel": 2000,
           "tiltAngle": 0,
           "alarmLevel": false,
@@ -30,6 +32,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "df703",
           "fillLevel": 2000,
           "tiltAngle": -5,
           "alarmLevel": false,
@@ -52,6 +56,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "df703",
           "fillLevel": 1500,
           "tiltAngle": -10,
           "alarmLevel": false,
@@ -74,6 +80,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "df703",
           "fillLevel": 2000,
           "tiltAngle": 0,
           "alarmLevel": false,
@@ -95,6 +103,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "df703",
           "fillLevel": 2000,
           "tiltAngle": 0,
           "alarmLevel": true,
@@ -116,6 +126,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "df703",
           "firmware": "1.4",
           "uploadInterval": 24,
           "detectInterval": 1,

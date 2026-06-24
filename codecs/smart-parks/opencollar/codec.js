@@ -85,7 +85,7 @@ var RESET_CAUSE = {
   6: 'STANDBY'
 };
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   var port = input.fPort;
 
@@ -240,4 +240,14 @@ function decodePort11(bytes) {
   }
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "smart-parks";
+    result.data.model = "opencollar";
+  }
+  return result;
 }

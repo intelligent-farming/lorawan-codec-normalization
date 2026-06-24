@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "atomsenses",
+          "model": "as-202",
           "batteryPercent": 92,
           "no2": 8,
           "air": { "temperature": 30.8, "relativeHumidity": 50.5 }
@@ -23,6 +25,8 @@
       },
       "expected": {
         "data": {
+          "make": "atomsenses",
+          "model": "as-202",
           "batteryPercent": 80,
           "no2": 12,
           "co": 350,
@@ -40,6 +44,8 @@
       },
       "expected": {
         "data": {
+          "make": "atomsenses",
+          "model": "as-202",
           "batteryPercent": 100,
           "air": { "temperature": -5, "relativeHumidity": 33 }
         }

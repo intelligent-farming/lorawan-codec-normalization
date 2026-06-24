@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "thermokon",
+          "model": "thanos-evo-lrw",
           "voc": 120,
           "battery": 1.5,
           "setpoint": 22,
@@ -25,6 +27,8 @@
       },
       "expected": {
         "data": {
+          "make": "thermokon",
+          "model": "thanos-evo-lrw",
           "battery": 3.3,
           "air": { "temperature": -1, "relativeHumidity": 40, "co2": 500, "lightIntensity": 350 },
           "action": { "motion": { "detected": true, "count": 5 } }
@@ -41,6 +45,8 @@
       },
       "expected": {
         "data": {
+          "make": "thermokon",
+          "model": "thanos-evo-lrw",
           "voc": 120,
           "setpoint": 22,
           "fan": 2,

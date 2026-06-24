@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "mclimate",
+          "model": "wireless-thermostat",
           "air": {
             "temperature": 21.5,
             "relativeHumidity": 59.38,
@@ -29,6 +31,8 @@
       },
       "expected": {
         "data": {
+          "make": "mclimate",
+          "model": "wireless-thermostat",
           "air": {
             "temperature": 40.0,
             "relativeHumidity": 50.0,

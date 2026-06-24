@@ -10,6 +10,8 @@
       "_note": "Upstream universal_decoder DecodeSinglePoint returns the main value as a big-endian float32 in Bar (1.009334683418274) and temp '28.87'; bat 99. We normalize Bar->kPa (x100, round 3dp), temp int16/100->air.temperature, bat->batteryPercent. Verified by running reference/upstream-codec.js.",
       "expected": {
         "data": {
+          "make": "te-connectivity",
+          "model": "69xx",
           "messageCount": 15,
           "deviceStatus": ["PrelPhase"],
           "batteryPercent": 99,
@@ -35,6 +37,8 @@
       "_note": "devtype 0x1321 (Pressure/Float), cnt 0x012C=300, status 0x00=ok, bat 87%, temp int16BE 0xFE00=-512 /100=-5.12 C, pressure float32BE 0x40200000=2.5 Bar x100=250 kPa.",
       "expected": {
         "data": {
+          "make": "te-connectivity",
+          "model": "69xx",
           "messageCount": 300,
           "deviceStatus": "ok",
           "batteryPercent": 87,

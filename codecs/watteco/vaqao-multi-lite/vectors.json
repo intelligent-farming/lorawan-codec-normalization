@@ -7,7 +7,7 @@
         "fPort": 125,
         "recvTime": "2023-07-19T07:51:31.598957793Z"
       },
-      "expected": { "data": { "air": { "temperature": 29.53 } } },
+      "expected": { "data": { "make": "watteco", "model": "vaqao-multi-lite", "air": { "temperature": 29.53 } } },
       "source": "ttn-example"
     },
     {
@@ -17,7 +17,7 @@
         "fPort": 125,
         "recvTime": "2023-07-19T07:51:25.508306410Z"
       },
-      "expected": { "data": { "air": { "relativeHumidity": 37.21 } } },
+      "expected": { "data": { "make": "watteco", "model": "vaqao-multi-lite", "air": { "relativeHumidity": 37.21 } } },
       "source": "ttn-example"
     },
     {
@@ -27,7 +27,7 @@
         "fPort": 125,
         "recvTime": "2023-07-19T07:51:25.508306410Z"
       },
-      "expected": { "data": { "iaq": 25 } },
+      "expected": { "data": { "make": "watteco", "model": "vaqao-multi-lite", "iaq": 25 } },
       "source": "ttn-example"
     },
     {
@@ -37,7 +37,7 @@
         "fPort": 125,
         "recvTime": "2024-12-27T18:35:54.000Z"
       },
-      "expected": { "data": { "air": { "co2": 420 } } },
+      "expected": { "data": { "make": "watteco", "model": "vaqao-multi-lite", "air": { "co2": 420 } } },
       "source": "datasheet"
     },
     {
@@ -47,7 +47,7 @@
         "fPort": 125,
         "recvTime": "2024-12-27T18:35:54.000Z"
       },
-      "expected": { "data": { "air": { "lightIntensity": 160 } } },
+      "expected": { "data": { "make": "watteco", "model": "vaqao-multi-lite", "air": { "lightIntensity": 160 } } },
       "source": "datasheet"
     },
     {
@@ -57,7 +57,7 @@
         "fPort": 125,
         "recvTime": "2024-12-27T18:35:54.000Z"
       },
-      "expected": { "data": { "air": { "pressure": 1011 } } },
+      "expected": { "data": { "make": "watteco", "model": "vaqao-multi-lite", "air": { "pressure": 1011 } } },
       "source": "datasheet"
     },
     {
@@ -67,7 +67,7 @@
         "fPort": 125,
         "recvTime": "2024-12-27T18:15:38.000Z"
       },
-      "expected": { "data": { "action": { "motion": { "detected": true } } } },
+      "expected": { "data": { "make": "watteco", "model": "vaqao-multi-lite", "action": { "motion": { "detected": true } } } },
       "source": "datasheet"
     },
     {
@@ -77,7 +77,7 @@
         "fPort": 125,
         "recvTime": "2023-07-19T07:51:25.508306410Z"
       },
-      "expected": { "data": { "action": { "motion": { "detected": true } } } },
+      "expected": { "data": { "make": "watteco", "model": "vaqao-multi-lite", "action": { "motion": { "detected": true } } } },
       "source": "ttn-example"
     },
     {
@@ -87,7 +87,7 @@
         "fPort": 125,
         "recvTime": "2023-07-19T07:51:25.508306410Z"
       },
-      "expected": { "data": { "battery": 3.688 } },
+      "expected": { "data": { "make": "watteco", "model": "vaqao-multi-lite", "battery": 3.688 } },
       "source": "ttn-example"
     },
     {

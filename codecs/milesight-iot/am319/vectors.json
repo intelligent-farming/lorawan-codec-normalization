@@ -19,6 +19,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "am319",
           "air": {
             "temperature": 30.8,
             "relativeHumidity": 50.5,

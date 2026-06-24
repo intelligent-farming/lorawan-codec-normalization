@@ -5,6 +5,8 @@
       "input": { "fPort": 2, "bytes": [11, 32, 0, 0, 0, 217, 116, 195, 2, 9, 7, 215, 0, 58, 12, 0, 4, 28, 2, 35, 0, 120, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 60] },
       "expected": {
         "data": {
+          "make": "enginko",
+          "model": "mcf-lwws03",
           "air": { "pressure": 1012.97, "temperature": 21.5, "relativeHumidity": 58 },
           "wind": { "speed": 4.02, "direction": 215 },
           "rain": { "intensity": 2.4, "cumulative": 7 },
@@ -24,6 +26,8 @@
       "input": { "fPort": 2, "bytes": [11, 48, 0, 0, 0, 0, 0, 202, 8, 110, 205, 139, 1, 5, 0, 12, 0, 18, 0, 88] },
       "expected": {
         "data": {
+          "make": "enginko",
+          "model": "mcf-lwws03",
           "air": { "temperature": 22.5, "relativeHumidity": 55, "pressure": 1013.25 },
           "pm1": 5,
           "pm25": 12,
@@ -38,7 +42,7 @@
       "description": "PM report (0B/2/01): standalone particulate matter PM1/PM2.5/PM10",
       "input": { "fPort": 2, "bytes": [11, 32, 1, 0, 0, 0, 0, 8, 0, 15, 0, 22, 0] },
       "expected": {
-        "data": { "pm1": 8, "pm25": 15, "pm10": 22 }
+        "data": { "make": "enginko", "model": "mcf-lwws03", "pm1": 8, "pm25": 15, "pm10": 22 }
       },
       "source": "synthetic",
       "_note": "Synthetic in-bounds PM frame; expected.data derived by running reference/upstream-codec.js (parsePM). The upstream locale-string date is non-deterministic and is intentionally not emitted."

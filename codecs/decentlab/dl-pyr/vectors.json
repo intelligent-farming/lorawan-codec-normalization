@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-pyr",
           "protocolVersion": 2,
           "deviceId": 657,
           "solarRadiationRaw": 32873,
@@ -28,6 +30,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-pyr",
           "protocolVersion": 2,
           "deviceId": 657,
           "battery": 3.168
@@ -44,6 +48,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-pyr",
           "protocolVersion": 2,
           "deviceId": 657,
           "solarRadiationRaw": 40960,

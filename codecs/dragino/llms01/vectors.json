@@ -6,6 +6,8 @@
       "input": { "fPort": 2, "bytes": [13, 35, 0, 0, 2, 84, 0, 249, 0, 0, 1] },
       "expected": {
         "data": {
+          "make": "dragino",
+          "model": "llms01",
           "battery": 3.363,
           "probeTemperature": 0,
           "leaf": { "wetness": 59.6, "temperature": 24.9 },
@@ -20,6 +22,8 @@
       "input": { "fPort": 2, "bytes": [203, 196, 255, 240, 0, 125, 255, 249, 1, 0, 2] },
       "expected": {
         "data": {
+          "make": "dragino",
+          "model": "llms01",
           "battery": 3.012,
           "probeTemperature": -1.6,
           "leaf": { "wetness": 12.5, "temperature": -0.7 },

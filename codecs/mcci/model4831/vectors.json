@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "mcci",
+          "model": "model4831",
           "battery": 4.196,
           "boot": 17,
           "air": {

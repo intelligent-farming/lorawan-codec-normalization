@@ -160,7 +160,7 @@ function decodeStats(bytes) {
   };
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var port = input.fPort;
   var bytes = input.bytes;
 
@@ -194,4 +194,14 @@ function decodeUplink(input) {
   }
 
   return { errors: ['unsupported FPort (expected 1-4)'] };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "digital-matter";
+    result.data.model = "oyster";
+  }
+  return result;
 }

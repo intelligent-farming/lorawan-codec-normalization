@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "dragino",
+          "model": "sw3l",
           "metering": { "water": { "total": 200 } },
           "flowPulseTotal": 12000,
           "calculateFlag": 2,
@@ -28,6 +30,8 @@
       },
       "expected": {
         "data": {
+          "make": "dragino",
+          "model": "sw3l",
           "metering": { "water": { "total": 100 } },
           "flowPulseTotal": 36000,
           "calculateFlag": 1,
@@ -48,6 +52,8 @@
       },
       "expected": {
         "data": {
+          "make": "dragino",
+          "model": "sw3l",
           "battery": 3.3,
           "sensorModel": "SW3L",
           "firmwareVersion": "1.4.6",

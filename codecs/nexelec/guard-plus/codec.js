@@ -69,7 +69,7 @@ function humPct(code) {
   return round(code * 0.5, 1);
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length < 4) {
     return { errors: ['payload too short for a Nexelec Guard+ frame'] };
@@ -154,4 +154,14 @@ function decodeUplink(input) {
   }
 
   return { errors: ['unsupported message type (Guard+ climate frames are 0x00, 0x02, 0x03, 0x04)'] };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "nexelec";
+    result.data.model = "guard-plus";
+  }
+  return result;
 }

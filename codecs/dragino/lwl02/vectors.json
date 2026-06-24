@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "dragino",
+          "model": "lwl02",
           "battery": 2.952,
           "water": { "leak": true },
           "mod": 2,
@@ -26,6 +28,8 @@
       },
       "expected": {
         "data": {
+          "make": "dragino",
+          "model": "lwl02",
           "battery": 3,
           "water": { "leak": false },
           "mod": 2,
@@ -44,6 +48,8 @@
       },
       "expected": {
         "data": {
+          "make": "dragino",
+          "model": "lwl02",
           "battery": 2.952,
           "water": { "leak": false },
           "mod": 1,
@@ -64,6 +70,8 @@
       },
       "expected": {
         "data": {
+          "make": "dragino",
+          "model": "lwl02",
           "battery": 2.952,
           "water": { "leak": true },
           "mod": 3,

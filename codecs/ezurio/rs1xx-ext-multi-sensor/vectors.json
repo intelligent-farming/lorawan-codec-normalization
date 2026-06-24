@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "ezurio",
+          "model": "rs1xx-ext-multi-sensor",
           "msgType": "Laird_Internal_TH",
           "options": ["None"],
           "batteryCapacity": "80-100%",
@@ -30,6 +32,8 @@
       },
       "expected": {
         "data": {
+          "make": "ezurio",
+          "model": "rs1xx-ext-multi-sensor",
           "msgType": "Laird_Agg_TH",
           "options": ["None"],
           "batteryCapacity": "80-100%",
@@ -65,6 +69,8 @@
       },
       "expected": {
         "data": {
+          "make": "ezurio",
+          "model": "rs1xx-ext-multi-sensor",
           "msgType": "SendBackLogMessage",
           "options": ["None"],
           "timestamp": {
@@ -92,6 +98,8 @@
       },
       "expected": {
         "data": {
+          "make": "ezurio",
+          "model": "rs1xx-ext-multi-sensor",
           "msgType": "SendBackLogMessages",
           "options": ["Sensor request for server time"],
           "numberOfReadings": 1,
@@ -126,6 +134,8 @@
       },
       "expected": {
         "data": {
+          "make": "ezurio",
+          "model": "rs1xx-ext-multi-sensor",
           "msgType": "Laird_Simple_Config",
           "options": ["None"],
           "batteryType": "Alkaline",
@@ -146,6 +156,8 @@
       },
       "expected": {
         "data": {
+          "make": "ezurio",
+          "model": "rs1xx-ext-multi-sensor",
           "msgType": "Laird_Advanced_Config",
           "options": ["None"],
           "batteryType": "Alkaline",
@@ -172,6 +184,8 @@
       },
       "expected": {
         "data": {
+          "make": "ezurio",
+          "model": "rs1xx-ext-multi-sensor",
           "msgType": "Laird_FW_Version",
           "options": ["None"],
           "releaseDate": "20/11/5",
@@ -190,6 +204,8 @@
       },
       "expected": {
         "data": {
+          "make": "ezurio",
+          "model": "rs1xx-ext-multi-sensor",
           "msgType": "Laird_Contact_Sensor_Config",
           "options": ["Sensor request for server time"],
           "operatingMode": "Pushbutton",
@@ -211,6 +227,8 @@
       },
       "expected": {
         "data": {
+          "make": "ezurio",
+          "model": "rs1xx-ext-multi-sensor",
           "msgType": "Laird_Contact_Sensor",
           "options": ["None"],
           "operatingMode": "Door Sensor",
@@ -233,6 +251,8 @@
       },
       "expected": {
         "data": {
+          "make": "ezurio",
+          "model": "rs1xx-ext-multi-sensor",
           "msgType": "Laird_Battery_Voltage",
           "options": ["None"],
           "battery": 3.01

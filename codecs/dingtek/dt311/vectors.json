@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "dt311",
           "air": { "temperature": 26.69, "relativeHumidity": 57.62 },
           "battery": 4.2,
           "alarmHighTemperature": true,
@@ -28,6 +30,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "dt311",
           "air": { "temperature": 21.55, "relativeHumidity": 45 },
           "battery": 3,
           "alarmHighTemperature": false,
@@ -49,6 +53,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "dt311",
           "air": { "temperature": -5, "relativeHumidity": 99.99 },
           "battery": 4,
           "alarmHighTemperature": true,
@@ -70,6 +76,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "dt311",
           "firmware": "1.2",
           "uploadInterval": 24,
           "detectInterval": 10,
@@ -92,6 +100,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "dt311",
           "firmware": "1.5",
           "uploadInterval": 12,
           "detectInterval": 30,

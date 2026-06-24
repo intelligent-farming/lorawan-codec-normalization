@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "wt401",
           "batteryPercent": 100,
           "temperatureControlMode": "cool",
           "executionPlan": "plan_2",
@@ -28,6 +30,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "wt401",
           "batteryPercent": 90,
           "pirStatus": "occupied",
           "action": {
@@ -48,6 +52,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "wt401",
           "pirStatus": "vacant",
           "action": {
             "motion": {
@@ -67,6 +73,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "wt401",
           "pirStatus": "night_occupied",
           "targetTemperature1": 22.92,
           "targetTemperature2": 24.48,

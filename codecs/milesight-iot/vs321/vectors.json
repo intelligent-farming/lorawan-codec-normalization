@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs321",
           "batteryPercent": 100,
           "peopleTotalCounts": 300,
           "region1Enable": "enable",
@@ -54,6 +56,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs321",
           "batteryPercent": 80,
           "peopleTotalCounts": 0,
           "region1Enable": "enable",
@@ -99,6 +103,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs321",
           "batteryPercent": 55,
           "time": "2025-06-14T15:51:28.000Z",
           "detectionStatus": "normal",
@@ -120,6 +126,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs321",
           "history": [
             {
               "time": "2025-06-14T15:51:28.000Z",
@@ -139,6 +147,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs321",
           "history": [
             {
               "time": "2025-06-14T15:51:28.000Z",
@@ -177,6 +187,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs321",
           "temperatureSensorStatus": "read_failed",
           "humiditySensorStatus": "read_failed"
         }

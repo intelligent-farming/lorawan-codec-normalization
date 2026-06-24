@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "makerfabs",
+          "model": "soil-monitor",
           "battery": 3.3,
           "soil": { "moisture": 35, "temperature": 25, "ec": 1.5, "pH": 7 },
           "transmitInterval": 3.6
@@ -24,6 +26,8 @@
       },
       "expected": {
         "data": {
+          "make": "makerfabs",
+          "model": "soil-monitor",
           "battery": 2.8,
           "soil": { "moisture": 20, "temperature": -10, "ec": 0.3, "pH": 5.5 },
           "transmitInterval": 0.3

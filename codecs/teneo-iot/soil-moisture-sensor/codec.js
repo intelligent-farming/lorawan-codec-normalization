@@ -37,7 +37,7 @@ function round(value, decimals) {
   return Math.round(value * f) / f;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
 
   if (!bytes || bytes.length === 0) {
@@ -87,4 +87,14 @@ function decodeUplink(input) {
   data.valid = true;
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "teneo-iot";
+    result.data.model = "soil-moisture-sensor";
+  }
+  return result;
 }

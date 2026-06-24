@@ -9,6 +9,8 @@
       },
       "expected": {
         "data": {
+          "make": "rivercity-innovations",
+          "model": "txh",
           "air": {
             "temperature": 21.5,
             "relativeHumidity": 55
@@ -28,6 +30,8 @@
       },
       "expected": {
         "data": {
+          "make": "rivercity-innovations",
+          "model": "txh",
           "air": {
             "temperature": -5,
             "relativeHumidity": 80
@@ -46,6 +50,8 @@
       },
       "expected": {
         "data": {
+          "make": "rivercity-innovations",
+          "model": "txh",
           "loRaWANVersion": "1.0.3.0",
           "firmwareVersion": "1.4.0.0"
         }
@@ -60,6 +66,8 @@
       },
       "expected": {
         "data": {
+          "make": "rivercity-innovations",
+          "model": "txh",
           "temperatureLimitHigh": 25,
           "temperatureLimitLow": 5,
           "humidityLimitHigh": 90,
@@ -82,6 +90,8 @@
       },
       "expected": {
         "data": {
+          "make": "rivercity-innovations",
+          "model": "txh",
           "checkTimeSeconds": 300,
           "reportsNumChecksRegular": 60,
           "reportsNumChecksAlert": 40

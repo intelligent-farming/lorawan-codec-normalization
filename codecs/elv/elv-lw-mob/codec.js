@@ -63,7 +63,7 @@ function round(value, decimals) {
   return Math.round(value * f) / f;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   var port = input.fPort;
 
@@ -157,4 +157,14 @@ function decodeUplink(input) {
   }
 
   return { errors: ['unsupported frame type'] };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "elv";
+    result.data.model = "elv-lw-mob";
+  }
+  return result;
 }

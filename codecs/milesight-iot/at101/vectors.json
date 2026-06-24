@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "at101",
           "batteryPercent": 55,
           "air": { "temperature": 21.4 },
           "motionStatus": "moving",
@@ -27,6 +29,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "at101",
           "batteryPercent": 80,
           "wifiScanResult": "finish",
           "wifiScan": [
@@ -46,6 +50,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "at101",
           "deviceStatus": "on",
           "ipsoVersion": "v0.1",
           "sn": "6745e27566240008",
@@ -64,6 +70,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "at101",
           "locationHistory": [
             { "timestamp": 1719000000, "latitude": 40.5, "longitude": -3.7 }
           ]

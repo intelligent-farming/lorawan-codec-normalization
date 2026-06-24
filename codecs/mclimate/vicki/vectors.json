@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "mclimate",
+          "model": "vicki",
           "air": { "temperature": 18.01, "relativeHumidity": 46.88 },
           "targetTemperature": 29,
           "targetTemperatureFloat": 29,
@@ -37,6 +39,8 @@
       },
       "expected": {
         "data": {
+          "make": "mclimate",
+          "model": "vicki",
           "air": { "temperature": 10, "relativeHumidity": 50 },
           "targetTemperature": 19,
           "targetTemperatureFloat": 19,
@@ -67,6 +71,8 @@
       },
       "expected": {
         "data": {
+          "make": "mclimate",
+          "model": "vicki",
           "air": { "temperature": 24.45, "relativeHumidity": 25 },
           "targetTemperature": 18,
           "targetTemperatureFloat": 18,

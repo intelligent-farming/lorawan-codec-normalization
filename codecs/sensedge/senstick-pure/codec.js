@@ -34,7 +34,7 @@ function s16be(hi, lo) {
   return v > 0x7fff ? v - 0x10000 : v;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   if (input.fPort !== 2) {
     return { errors: ['unknown FPort ' + input.fPort] };
   }
@@ -60,4 +60,14 @@ function decodeUplink(input) {
   };
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "sensedge";
+    result.data.model = "senstick-pure";
+  }
+  return result;
 }

@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "arwin-technology",
+          "model": "lrs20310",
           "water": {
             "leak": true
           },
@@ -27,6 +29,8 @@
       },
       "expected": {
         "data": {
+          "make": "arwin-technology",
+          "model": "lrs20310",
           "water": {
             "leak": false
           },
@@ -47,6 +51,8 @@
       },
       "expected": {
         "data": {
+          "make": "arwin-technology",
+          "model": "lrs20310",
           "water": {
             "leak": true
           },
@@ -67,6 +73,8 @@
       },
       "expected": {
         "data": {
+          "make": "arwin-technology",
+          "model": "lrs20310",
           "firmwareVersion": "1.00.001"
         }
       },
@@ -80,6 +88,8 @@
       },
       "expected": {
         "data": {
+          "make": "arwin-technology",
+          "model": "lrs20310",
           "dataUploadInterval": 10,
           "numAdditionalUploads": 3,
           "additionalUploadsInterval": 1
@@ -95,6 +105,8 @@
       },
       "expected": {
         "data": {
+          "make": "arwin-technology",
+          "model": "lrs20310",
           "waterLeakAlertThreshold": 30
         }
       },

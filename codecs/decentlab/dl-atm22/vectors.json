@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-atm22",
           "wind": { "speed": 5.5, "direction": 270 },
           "air": { "temperature": 21.5 },
           "windGust": 8.25,
@@ -29,6 +31,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-atm22",
           "wind": { "speed": 2.32, "direction": 5 },
           "air": { "temperature": 10 },
           "windGust": 2.32,
@@ -49,6 +53,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-atm22",
           "battery": 3.061
         }
       },

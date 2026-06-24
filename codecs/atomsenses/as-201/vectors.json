@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "atomsenses",
+          "model": "as-201",
           "batteryPercent": 92,
           "air": { "temperature": 30.8, "relativeHumidity": 50.5, "co2": 1255 }
         }
@@ -23,6 +25,8 @@
       },
       "expected": {
         "data": {
+          "make": "atomsenses",
+          "model": "as-201",
           "batteryPercent": 80,
           "infraredAndVisible": 320,
           "infrared": 120,
@@ -40,6 +44,8 @@
       },
       "expected": {
         "data": {
+          "make": "atomsenses",
+          "model": "as-201",
           "air": { "temperature": -5, "relativeHumidity": 65, "pressure": 1013.2 }
         }
       },
@@ -54,6 +60,8 @@
       },
       "expected": {
         "data": {
+          "make": "atomsenses",
+          "model": "as-201",
           "activity": 7,
           "tvoc": 150,
           "air": { "temperature": 22.5, "relativeHumidity": 44 }

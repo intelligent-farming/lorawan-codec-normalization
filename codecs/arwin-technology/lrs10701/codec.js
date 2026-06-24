@@ -58,7 +58,7 @@ function flagList(mask, names) {
   return out;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   var data = {};
   var air = {};
@@ -135,4 +135,14 @@ function decodeUplink(input) {
     default:
       return { errors: ['unknown FPort'] };
   }
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "arwin-technology";
+    result.data.model = "lrs10701";
+  }
+  return result;
 }

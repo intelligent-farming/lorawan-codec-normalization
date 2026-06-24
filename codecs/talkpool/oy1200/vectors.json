@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "talkpool",
+          "model": "oy1200",
           "air": { "temperature": 22.23, "relativeHumidity": 25.65, "co2": 409 },
           "co2Raw": 401
         }
@@ -22,6 +24,8 @@
       },
       "expected": {
         "data": {
+          "make": "talkpool",
+          "model": "oy1200",
           "air": { "temperature": 18.5, "relativeHumidity": 42, "co2": 595 },
           "co2Raw": 600
         }
@@ -37,6 +41,8 @@
       },
       "expected": {
         "data": {
+          "make": "talkpool",
+          "model": "oy1200",
           "air": { "temperature": 25.75, "relativeHumidity": 60.1, "co2": 415 },
           "co2Raw": 410
         }

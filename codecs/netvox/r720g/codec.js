@@ -67,7 +67,7 @@ function isNoFix(b0, b1, b2, b3) {
   return b0 === 0xff && b1 === 0xff && b2 === 0xff && b3 === 0xff;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
 
   if (input.fPort !== 6) {
@@ -119,4 +119,14 @@ function decodeUplink(input) {
   }
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "netvox";
+    result.data.model = "r720g";
+  }
+  return result;
 }

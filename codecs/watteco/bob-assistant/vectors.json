@@ -4,25 +4,25 @@
     {
       "description": "Alarm frame (0x61): discrete vibration/anomaly alarm -> action.motion.detected, temperature, vibration level, 32-bin FFT",
       "input": { "fPort": 1, "bytes": [97, 50, 55, 0, 100, 50, 25, 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 125, 12, 24, 36, 48, 60, 72, 84] },
-      "expected": { "data": { "action": { "motion": { "detected": true } }, "air": { "temperature": 25 }, "reportType": "alarm", "sensor": "KX", "anomalyLevel": 39.37, "vibrationLevel": 10.58069, "fft": [0.416563, 0.833125, 1.249688, 1.666251, 2.082813, 2.499376, 2.915939, 3.332501, 3.749064, 4.165627, 4.582189, 4.998752, 5.415315, 5.831877, 6.24844, 6.665003, 7.081565, 7.498128, 7.914691, 8.331253, 8.747816, 9.164379, 9.580941, 9.997504, 10.414067, 0.99975, 1.999501, 2.999251, 3.999002, 4.998752, 5.998502, 6.998253] } },
+      "expected": { "data": { "make": "watteco", "model": "bob-assistant", "action": { "motion": { "detected": true } }, "air": { "temperature": 25 }, "reportType": "alarm", "sensor": "KX", "anomalyLevel": 39.37, "vibrationLevel": 10.58069, "fft": [0.416563, 0.833125, 1.249688, 1.666251, 2.082813, 2.499376, 2.915939, 3.332501, 3.749064, 4.165627, 4.582189, 4.998752, 5.415315, 5.831877, 6.24844, 6.665003, 7.081565, 7.498128, 7.914691, 8.331253, 8.747816, 9.164379, 9.580941, 9.997504, 10.414067, 0.99975, 1.999501, 2.999251, 3.999002, 4.998752, 5.998502, 6.998253] } },
       "source": "synthetic"
     },
     {
       "description": "Report frame (0x72): periodic machine-condition summary -> action.motion.count (NbAlarmReport), temperature, batteryPercent, anomaly/vibration extras",
       "input": { "fPort": 1, "bytes": [114, 64, 100, 80, 3, 55, 30, 0, 0, 0, 0, 7, 0, 10, 20, 30, 40, 120, 5, 6, 7, 8, 9, 10, 11, 12, 13] },
-      "expected": { "data": { "action": { "motion": { "count": 3 } }, "air": { "temperature": 25 }, "batteryPercent": 94.49, "reportType": "report", "sensor": "KX", "reportLengthMin": 30, "anomalyLevel": 50.39, "vibrationLevel": 0, "peakFrequencyIndex": 8, "operatingTime": 1.5748, "totalOperatingTimeKnown": 14.88003, "totalUnknown1020": 8.74202, "totalUnknown2040": 0.68835, "totalUnknown4060": 1.3767, "totalUnknown6080": 2.06504, "totalUnknown80100": 2.75339, "anomalyLevelTo20Last24H": 5, "anomalyLevelTo50Last24H": 6, "anomalyLevelTo80Last24H": 7, "anomalyLevelTo20Last30D": 8, "anomalyLevelTo50Last30D": 9, "anomalyLevelTo80Last30D": 10, "anomalyLevelTo20Last6Mo": 11, "anomalyLevelTo50Last6Mo": 12, "anomalyLevelTo80Last6Mo": 13 } },
+      "expected": { "data": { "make": "watteco", "model": "bob-assistant", "action": { "motion": { "count": 3 } }, "air": { "temperature": 25 }, "batteryPercent": 94.49, "reportType": "report", "sensor": "KX", "reportLengthMin": 30, "anomalyLevel": 50.39, "vibrationLevel": 0, "peakFrequencyIndex": 8, "operatingTime": 1.5748, "totalOperatingTimeKnown": 14.88003, "totalUnknown1020": 8.74202, "totalUnknown2040": 0.68835, "totalUnknown4060": 1.3767, "totalUnknown6080": 2.06504, "totalUnknown80100": 2.75339, "anomalyLevelTo20Last24H": 5, "anomalyLevelTo50Last24H": 6, "anomalyLevelTo80Last24H": 7, "anomalyLevelTo20Last30D": 8, "anomalyLevelTo50Last30D": 9, "anomalyLevelTo80Last30D": 10, "anomalyLevelTo20Last6Mo": 11, "anomalyLevelTo50Last6Mo": 12, "anomalyLevelTo80Last6Mo": 13 } },
       "source": "synthetic"
     },
     {
       "description": "Learning frame (0x6c): baseline-learning, no alarm event -> temperature + learning/vibration/FFT extras (no action.motion)",
       "input": { "fPort": 1, "bytes": [108, 42, 100, 40, 30, 7, 53, 1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64] },
-      "expected": { "data": { "air": { "temperature": 23 }, "reportType": "learning", "sensor": "KX", "learningFromScratch": 1, "learningPercentage": 42, "vibrationLevel": 10.5725, "peakFrequencyIndex": 8, "peakFrequency": 25, "fft": [0.166496, 0.332992, 0.499488, 0.665984, 0.83248, 0.998976, 1.165472, 1.331968, 1.498464, 1.66496, 1.831457, 1.997953, 2.164449, 2.330945, 2.497441, 2.663937, 2.830433, 2.996929, 3.163425, 3.329921, 3.496417, 3.662913, 3.829409, 3.995905, 4.162401, 4.328897, 4.495393, 4.661889, 4.828385, 4.994881, 5.161377, 5.327873] } },
+      "expected": { "data": { "make": "watteco", "model": "bob-assistant", "air": { "temperature": 23 }, "reportType": "learning", "sensor": "KX", "learningFromScratch": 1, "learningPercentage": 42, "vibrationLevel": 10.5725, "peakFrequencyIndex": 8, "peakFrequency": 25, "fft": [0.166496, 0.332992, 0.499488, 0.665984, 0.83248, 0.998976, 1.165472, 1.331968, 1.498464, 1.66496, 1.831457, 1.997953, 2.164449, 2.330945, 2.497441, 2.663937, 2.830433, 2.996929, 3.163425, 3.329921, 3.496417, 3.662913, 3.829409, 3.995905, 4.162401, 4.328897, 4.495393, 4.661889, 4.828385, 4.994881, 5.161377, 5.327873] } },
       "source": "synthetic"
     },
     {
       "description": "State frame (0x53): machine start transition -> state + batteryPercent extras",
       "input": { "fPort": 1, "bytes": [83, 126, 110] },
-      "expected": { "data": { "reportType": "state", "sensor": "KX", "state": "Machine start", "batteryPercent": 86.61 } },
+      "expected": { "data": { "make": "watteco", "model": "bob-assistant", "reportType": "state", "sensor": "KX", "state": "Machine start", "batteryPercent": 86.61 } },
       "source": "synthetic"
     },
     {

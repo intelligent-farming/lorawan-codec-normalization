@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "yobiiq",
+          "model": "iq-dsmr-lrw",
           "air": {
             "temperature": 23.45,
             "relativeHumidity": 47
@@ -28,6 +30,8 @@
       },
       "expected": {
         "data": {
+          "make": "yobiiq",
+          "model": "iq-dsmr-lrw",
           "battery": 3.6,
           "batteryPercent": 88,
           "deviceClass": "Class C",
@@ -45,6 +49,8 @@
       },
       "expected": {
         "data": {
+          "make": "yobiiq",
+          "model": "iq-dsmr-lrw",
           "electricityDeliveredToClientT1": { "data": 1000, "unit": "Wh" },
           "voltageL1": { "data": 230, "unit": "V" },
           "currentL1": { "data": 5, "unit": "A" },

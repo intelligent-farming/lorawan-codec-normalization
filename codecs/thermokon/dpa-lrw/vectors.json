@@ -4,13 +4,13 @@
     {
       "description": "Positive differential pressure 150 Pa (LPP_DP)",
       "input": { "fPort": 2, "bytes": [49, 0, 150] },
-      "expected": { "data": { "pressure": { "differential": 150 } } },
+      "expected": { "data": { "make": "thermokon", "model": "dpa-lrw", "pressure": { "differential": 150 } } },
       "source": "synthetic"
     },
     {
       "description": "Negative (reverse) differential pressure -50 Pa",
       "input": { "fPort": 2, "bytes": [49, 255, 206] },
-      "expected": { "data": { "pressure": { "differential": -50 } } },
+      "expected": { "data": { "make": "thermokon", "model": "dpa-lrw", "pressure": { "differential": -50 } } },
       "source": "synthetic"
     },
     {
@@ -18,6 +18,8 @@
       "input": { "fPort": 2, "bytes": [49, 1, 44, 16, 0, 230, 50, 1, 144, 84, 180] },
       "expected": {
         "data": {
+          "make": "thermokon",
+          "model": "dpa-lrw",
           "pressure": { "differential": 300 },
           "air": { "temperature": 23 },
           "volumeFlow": 400,
@@ -31,6 +33,8 @@
       "input": { "fPort": 2, "bytes": [0, 0, 1, 49, 0, 100] },
       "expected": {
         "data": {
+          "make": "thermokon",
+          "model": "dpa-lrw",
           "parserVersion": 1,
           "pressure": { "differential": 100 }
         }
@@ -42,6 +46,8 @@
       "input": { "fPort": 2, "bytes": [16, 255, 216, 49, 0, 0] },
       "expected": {
         "data": {
+          "make": "thermokon",
+          "model": "dpa-lrw",
           "air": { "temperature": -4 },
           "pressure": { "differential": 0 }
         }

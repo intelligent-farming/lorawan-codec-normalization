@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs370",
           "batteryPercent": 100,
           "action": { "motion": { "detected": true } },
           "illuminanceLevel": "dim"
@@ -23,6 +25,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs370",
           "action": { "motion": { "detected": false } },
           "illuminanceLevel": "bright"
         }
@@ -37,6 +41,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs370",
           "batteryPercent": 88
         }
       },

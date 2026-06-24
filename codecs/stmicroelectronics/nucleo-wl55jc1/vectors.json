@@ -24,6 +24,8 @@
       },
       "expected": {
         "data": {
+          "make": "stmicroelectronics",
+          "model": "nucleo-wl55jc1",
           "air": {
             "pressure": 1000,
             "temperature": 25,

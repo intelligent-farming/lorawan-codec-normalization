@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-pr36",
           "protocolVersion": 2,
           "deviceId": 811,
           "water": {
@@ -28,6 +30,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-pr36",
           "protocolVersion": 2,
           "deviceId": 811,
           "water": {
@@ -48,6 +52,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-pr36",
           "protocolVersion": 2,
           "deviceId": 811,
           "water": {
@@ -67,6 +73,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-pr36",
           "protocolVersion": 2,
           "deviceId": 811,
           "battery": 3.115

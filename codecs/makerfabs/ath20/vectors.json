@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "makerfabs",
+          "model": "ath20",
           "battery": 3.1,
           "air": {
             "temperature": 30.6,
@@ -26,6 +28,8 @@
       },
       "expected": {
         "data": {
+          "make": "makerfabs",
+          "model": "ath20",
           "battery": 2.9,
           "air": {
             "temperature": 40,
@@ -44,6 +48,8 @@
       },
       "expected": {
         "data": {
+          "make": "makerfabs",
+          "model": "ath20",
           "battery": 3.3,
           "air": {
             "temperature": -5,

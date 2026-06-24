@@ -200,7 +200,7 @@ function decodeElsysPayload(data) {
   return obj;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length === 0) {
     return { errors: ['empty payload'] };
@@ -356,4 +356,14 @@ function decodeUplink(input) {
     return { data: data };
   }
   return { errors: ['no recognized ELSYS measurements'] };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "elsys";
+    result.data.model = "ers-lite";
+  }
+  return result;
 }

@@ -328,7 +328,7 @@ function decodeLimitGps(bytes) {
   return { data: data };
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var port = input.fPort;
   var bytes = input.bytes;
 
@@ -402,4 +402,14 @@ function decodeUplink(input) {
   }
 
   return { errors: ['unsupported FPort'] };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "restotracker";
+    result.data.model = "scd18";
+  }
+  return result;
 }

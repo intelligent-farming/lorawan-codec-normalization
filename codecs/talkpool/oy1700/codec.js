@@ -33,7 +33,7 @@ function u16be(hi, lo) {
   return ((hi << 8) | lo) & 0xffff;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
 
   if (input.fPort !== 2) {
@@ -56,4 +56,14 @@ function decodeUplink(input) {
   air.pm10 = u16be(bytes[7], bytes[8]);
 
   return { data: { air: air } };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "talkpool";
+    result.data.model = "oy1700";
+  }
+  return result;
 }

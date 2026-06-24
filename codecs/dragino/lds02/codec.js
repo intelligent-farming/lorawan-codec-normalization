@@ -43,7 +43,7 @@ function u24(hi, mid, lo) {
   return ((hi << 16) | (mid << 8) | lo) >>> 0;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
 
   if (input.fPort !== 10) {
@@ -89,4 +89,14 @@ function decodeUplink(input) {
   }
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "dragino";
+    result.data.model = "lds02";
+  }
+  return result;
 }

@@ -5,6 +5,8 @@
       "input": { "fPort": 14, "bytes": [1, 1, 44, 3, 19, 0, 235, 55, 3, 32] },
       "expected": {
         "data": {
+          "make": "mutelcor",
+          "model": "mtc-co2-01",
           "battery": 3,
           "air": { "temperature": 23.5, "relativeHumidity": 55, "co2": 800 },
           "payloadVersion": 1,
@@ -19,6 +21,8 @@
       "input": { "fPort": 14, "bytes": [1, 1, 44, 3, 23, 0, 235, 55, 39, 16, 3, 32] },
       "expected": {
         "data": {
+          "make": "mutelcor",
+          "model": "mtc-co2-01",
           "battery": 3,
           "air": { "temperature": 23.5, "relativeHumidity": 55, "pressure": 1000, "co2": 800 },
           "payloadVersion": 1,
@@ -33,6 +37,8 @@
       "input": { "fPort": 14, "bytes": [1, 1, 44, 3, 19, 255, 206, 55, 3, 32] },
       "expected": {
         "data": {
+          "make": "mutelcor",
+          "model": "mtc-co2-01",
           "battery": 3,
           "air": { "temperature": -5, "relativeHumidity": 55, "co2": 800 },
           "payloadVersion": 1,
@@ -47,6 +53,8 @@
       "input": { "fPort": 8, "bytes": [1, 1, 71, 0] },
       "expected": {
         "data": {
+          "make": "mutelcor",
+          "model": "mtc-co2-01",
           "battery": 3.27,
           "payloadVersion": 1,
           "messageType": "heartbeat"
@@ -60,6 +68,8 @@
       "input": { "fPort": 14, "bytes": [1, 1, 44, 1, 1] },
       "expected": {
         "data": {
+          "make": "mutelcor",
+          "model": "mtc-co2-01",
           "battery": 3,
           "payloadVersion": 1,
           "messageType": "alarm",

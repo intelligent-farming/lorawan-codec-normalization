@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "aquascope",
+          "model": "aqm",
           "water": { "temperature": { "current": 21 } },
           "metering": { "water": { "total": 12345 } },
           "batteryPercent": 87
@@ -24,6 +26,8 @@
       },
       "expected": {
         "data": {
+          "make": "aquascope",
+          "model": "aqm",
           "metering": { "water": { "total": 60000 } }
         }
       },
@@ -38,6 +42,8 @@
       },
       "expected": {
         "data": {
+          "make": "aquascope",
+          "model": "aqm",
           "flowActive": false,
           "consumptionTime": 600,
           "consumptionLiter": 42

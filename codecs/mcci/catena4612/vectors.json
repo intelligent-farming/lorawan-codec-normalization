@@ -21,6 +21,8 @@
       },
       "expected": {
         "data": {
+          "make": "mcci",
+          "model": "catena4612",
           "battery": 4.196,
           "boot": 17,
           "raw": 20,

@@ -19,7 +19,7 @@
 // The iPERL OMS frame carries no water temperature, so water.temperature.current
 // is not produced.
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var fPort = input.fPort;
   if (fPort !== 20 && fPort !== 21 && fPort !== 22) {
     return { errors: ['unsupported fPort ' + fPort + ' (expected 20, 21 or 22)'] };
@@ -167,4 +167,14 @@ function decodeUplink(input) {
   };
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "sensus";
+    result.data.model = "iperl";
+  }
+  return result;
 }

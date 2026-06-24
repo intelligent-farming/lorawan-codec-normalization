@@ -4,19 +4,19 @@
     {
       "description": "accelerometer (ch1) + temperature (ch2) + battery voltage (ch3)",
       "input": { "fPort": 2, "bytes": [1, 113, 3, 232, 254, 12, 0, 123, 2, 103, 0, 235, 3, 116, 1, 104] },
-      "expected": { "data": { "vibration.accelerationX": 1, "vibration.accelerationY": -0.5, "vibration.accelerationZ": 0.123, "air.temperature": 23.5, "battery": 3.6 } },
+      "expected": { "data": { "make": "rakwireless", "model": "rak2270", "vibration.accelerationX": 1, "vibration.accelerationY": -0.5, "vibration.accelerationZ": 0.123, "air.temperature": 23.5, "battery": 3.6 } },
       "source": "synthetic"
     },
     {
       "description": "negative Z acceleration and negative temperature (two's-complement)",
       "input": { "fPort": 2, "bytes": [1, 113, 0, 0, 0, 0, 252, 24, 2, 103, 255, 206] },
-      "expected": { "data": { "vibration.accelerationX": 0, "vibration.accelerationY": 0, "vibration.accelerationZ": -1, "air.temperature": -5 } },
+      "expected": { "data": { "make": "rakwireless", "model": "rak2270", "vibration.accelerationX": 0, "vibration.accelerationY": 0, "vibration.accelerationZ": -1, "air.temperature": -5 } },
       "source": "synthetic"
     },
     {
       "description": "accelerometer + temperature + battery percentage (ch4 type 120)",
       "input": { "fPort": 2, "bytes": [1, 113, 0, 100, 0, 100, 3, 232, 2, 103, 1, 44, 4, 120, 87] },
-      "expected": { "data": { "vibration.accelerationX": 0.1, "vibration.accelerationY": 0.1, "vibration.accelerationZ": 1, "air.temperature": 30, "batteryPercent": 87 } },
+      "expected": { "data": { "make": "rakwireless", "model": "rak2270", "vibration.accelerationX": 0.1, "vibration.accelerationY": 0.1, "vibration.accelerationZ": 1, "air.temperature": 30, "batteryPercent": 87 } },
       "source": "synthetic"
     },
     {

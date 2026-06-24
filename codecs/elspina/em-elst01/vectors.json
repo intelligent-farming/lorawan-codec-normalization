@@ -6,6 +6,8 @@
       "input": { "fPort": 2, "bytes": [13, 72, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 245, 255, 198, 3, 157, 1, 0] },
       "expected": {
         "data": {
+          "make": "elspina",
+          "model": "em-elst01",
           "battery": 3.4,
           "action": { "contactState": "closed" },
           "switchStatus": 0,
@@ -26,6 +28,8 @@
       "input": { "fPort": 2, "bytes": [29, 82, 0, 7] },
       "expected": {
         "data": {
+          "make": "elspina",
+          "model": "em-elst01",
           "battery": 3.41,
           "action": { "contactState": "open" },
           "switchStatus": 1,
@@ -39,6 +43,8 @@
       "input": { "fPort": 2, "bytes": [29, 75, 0, 1, 44, 0, 0, 60, 1] },
       "expected": {
         "data": {
+          "make": "elspina",
+          "model": "em-elst01",
           "battery": 3.403,
           "action": { "contactState": "open" },
           "switchStatus": 1,

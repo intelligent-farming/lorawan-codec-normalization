@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718mba",
           "battery": 3,
           "action": {
             "motion": {
@@ -28,6 +30,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718mba",
           "battery": 3,
           "action": {
             "motion": {
@@ -48,6 +52,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718mba",
           "lowBattery": true,
           "battery": 3,
           "action": {

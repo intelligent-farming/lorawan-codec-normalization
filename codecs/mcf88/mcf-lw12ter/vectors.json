@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "mcf88",
+          "model": "mcf-lw12ter",
           "air": {
             "temperature": 12.75,
             "relativeHumidity": 55.5,
@@ -46,6 +48,8 @@
       },
       "expected": {
         "data": {
+          "make": "mcf88",
+          "model": "mcf-lw12ter",
           "air": {
             "temperature": 21.5,
             "relativeHumidity": 47,

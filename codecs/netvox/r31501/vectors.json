@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r31501",
           "battery": 3,
           "action": { "contactState": "closed" },
           "pirState": false,
@@ -34,6 +36,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r31501",
           "battery": 3,
           "action": { "contactState": "open" },
           "pirState": false,
@@ -60,6 +64,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r31501",
           "lowBattery": true,
           "battery": 3,
           "action": { "contactState": "open" },

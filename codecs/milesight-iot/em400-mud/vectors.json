@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "em400-mud",
           "batteryPercent": 92,
           "air": { "temperature": 25.7 },
           "distanceMm": 2116,
@@ -24,6 +26,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "em400-mud",
           "batteryPercent": 80,
           "air": { "temperature": 25.0 },
           "distanceMm": 200,
@@ -40,6 +44,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "em400-mud",
           "air": { "temperature": -1.0 },
           "temperatureAbnormal": true,
           "distanceMm": 100,

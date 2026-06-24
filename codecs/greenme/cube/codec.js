@@ -70,7 +70,7 @@ function validateMessageSize(bytes) {
   return msgSize === bodySize + extSize;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var MESSAGEV2_SHORT = 5;
   var MESSAGEV2_FULL = 6;
   var MESSAGEV2_FEEL = 7;
@@ -172,4 +172,14 @@ function decodeUplink(input) {
 
   data.air = air;
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "greenme";
+    result.data.model = "cube";
+  }
+  return result;
 }

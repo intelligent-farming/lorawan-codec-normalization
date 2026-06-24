@@ -17,7 +17,7 @@ function u32le(b0, b1, b2, b3) {
   return ((b3 << 24) | (b2 << 16) | (b1 << 8) | b0) >>> 0;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   var data = {};
   var recognized = false;
@@ -56,4 +56,14 @@ function decodeUplink(input) {
     return { errors: ['no recognized Milesight channels'] };
   }
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "milesight-iot";
+    result.data.model = "em300-mld";
+  }
+  return result;
 }

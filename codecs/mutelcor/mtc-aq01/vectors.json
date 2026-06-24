@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "mutelcor",
+          "model": "mtc-aq01",
           "air": { "temperature": 23, "relativeHumidity": 50 },
           "battery": 3.1
         }
@@ -23,6 +25,8 @@
       },
       "expected": {
         "data": {
+          "make": "mutelcor",
+          "model": "mtc-aq01",
           "air": {
             "temperature": 22.5,
             "relativeHumidity": 45,
@@ -48,6 +52,8 @@
       },
       "expected": {
         "data": {
+          "make": "mutelcor",
+          "model": "mtc-aq01",
           "air": { "temperature": -5 },
           "battery": 3.3
         }

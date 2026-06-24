@@ -7,7 +7,7 @@
         "fPort": 125,
         "recvTime": "2026-06-12T10:00:00.000Z"
       },
-      "expected": { "data": { "air": { "temperature": 24.41 } } },
+      "expected": { "data": { "make": "watteco", "model": "hygrotempo", "air": { "temperature": 24.41 } } },
       "source": "synthetic",
       "_note": "expected derived from upstream TTN decoder"
     },
@@ -18,7 +18,7 @@
         "fPort": 125,
         "recvTime": "2026-06-12T10:00:00.000Z"
       },
-      "expected": { "data": { "air": { "temperature": -12 } } },
+      "expected": { "data": { "make": "watteco", "model": "hygrotempo", "air": { "temperature": -12 } } },
       "source": "synthetic",
       "_note": "expected derived from upstream TTN decoder"
     },
@@ -29,7 +29,7 @@
         "fPort": 125,
         "recvTime": "2026-06-12T10:00:00.000Z"
       },
-      "expected": { "data": { "air": { "relativeHumidity": 54.24 } } },
+      "expected": { "data": { "make": "watteco", "model": "hygrotempo", "air": { "relativeHumidity": 54.24 } } },
       "source": "synthetic",
       "_note": "expected derived from upstream TTN decoder"
     },
@@ -40,7 +40,7 @@
         "fPort": 125,
         "recvTime": "2026-06-12T10:00:00.000Z"
       },
-      "expected": { "data": { "air": { "temperature": 22.5 } } },
+      "expected": { "data": { "make": "watteco", "model": "hygrotempo", "air": { "temperature": 22.5 } } },
       "source": "synthetic",
       "_note": "expected derived from upstream TTN decoder"
     },
@@ -51,7 +51,7 @@
         "fPort": 125,
         "recvTime": "2026-06-12T10:00:00.000Z"
       },
-      "expected": { "data": { "battery": 3.688 } },
+      "expected": { "data": { "make": "watteco", "model": "hygrotempo", "battery": 3.688 } },
       "source": "synthetic",
       "_note": "expected derived from upstream TTN decoder (upstream variable disposable_battery_voltage)"
     },

@@ -9,6 +9,8 @@
       },
       "expected": {
         "data": {
+          "make": "elv",
+          "model": "elv-lw-omo",
           "battery": 1.5,
           "frameType": "Device_State",
           "txReason": "Button Pressed",
@@ -29,6 +31,8 @@
       },
       "expected": {
         "data": {
+          "make": "elv",
+          "model": "elv-lw-omo",
           "battery": 1.2,
           "frameType": "Device_State",
           "txReason": "Inactivity",
@@ -49,6 +53,8 @@
       },
       "expected": {
         "data": {
+          "make": "elv",
+          "model": "elv-lw-omo",
           "battery": 1.5,
           "frameType": "Acceleration_Data",
           "txReason": "Acceleration",
@@ -69,6 +75,8 @@
       },
       "expected": {
         "data": {
+          "make": "elv",
+          "model": "elv-lw-omo",
           "battery": 1.5,
           "frameType": "Button_Pressed",
           "txReason": "Button Pressed",

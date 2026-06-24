@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "em300-zld",
           "batteryPercent": 95,
           "air": { "temperature": 23.5, "relativeHumidity": 61 },
           "water": { "leak": false }
@@ -24,6 +26,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "em300-zld",
           "batteryPercent": 88,
           "air": { "temperature": -3.2, "relativeHumidity": 80 },
           "water": { "leak": true }
@@ -35,14 +39,14 @@
     {
       "description": "Leak-only frame, normal (TTN example 1 bytes)",
       "input": { "fPort": 85, "bytes": [5, 0, 0] },
-      "expected": { "data": { "water": { "leak": false } } },
+      "expected": { "data": { "make": "milesight-iot", "model": "em300-zld", "water": { "leak": false } } },
       "source": "ttn-example",
       "_note": "Upstream example INPUT reused. Upstream emits water 'normal'; normalized to water.leak=false."
     },
     {
       "description": "Leak-only frame, leak detected (TTN example 2 bytes)",
       "input": { "fPort": 85, "bytes": [5, 0, 1] },
-      "expected": { "data": { "water": { "leak": true } } },
+      "expected": { "data": { "make": "milesight-iot", "model": "em300-zld", "water": { "leak": true } } },
       "source": "ttn-example",
       "_note": "Upstream example INPUT reused. Upstream emits water 'leak'; normalized to water.leak=true."
     },

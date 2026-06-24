@@ -9,6 +9,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs360",
           "batteryPercent": 100,
           "batteryNodePercent": 100,
           "totalIn": 18,
@@ -28,6 +30,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs360",
           "batteryPercent": 100,
           "totalIn": 0,
           "totalOut": 0,
@@ -44,6 +48,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs360",
           "totalIn": 5,
           "totalOut": 3,
           "totalCountAlarm": "threshold_alarm",
@@ -60,6 +66,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs360",
           "event": [{ "type": "counting_anomaly", "status": "alarm" }]
         }
       },
@@ -73,6 +81,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs360",
           "time": "2023-07-14T11:58:56.000Z",
           "totalIn": 7,
           "totalOut": 5,
@@ -89,6 +99,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs360",
           "history": [
             {
               "time": "2023-07-14T11:58:56.000Z",

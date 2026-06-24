@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "dragino",
+          "model": "laq4",
           "battery": 3.335,
           "air": {
             "location": "indoor",
@@ -29,6 +31,8 @@
       },
       "expected": {
         "data": {
+          "make": "dragino",
+          "model": "laq4",
           "battery": 3,
           "air": {
             "location": "indoor",
@@ -51,6 +55,8 @@
       },
       "expected": {
         "data": {
+          "make": "dragino",
+          "model": "laq4",
           "battery": 3,
           "workMode": "alarm",
           "tempMin": -6,

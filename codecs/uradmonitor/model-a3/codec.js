@@ -57,7 +57,7 @@ function trunc(value) {
   return value < 0 ? Math.ceil(value) : Math.floor(value);
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
 
   if (bytes.length !== 32) {
@@ -94,7 +94,7 @@ function decodeUplink(input) {
 
   var data = {
     air: air,
-    model: 'A3',
+    deviceModel: 'A3',
     hardwareVersion: 'HW' + bytes[4],
     firmwareVersion: bytes[5],
     gasResistance: gasResistance,
@@ -108,4 +108,14 @@ function decodeUplink(input) {
   };
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "uradmonitor";
+    result.data.model = "model-a3";
+  }
+  return result;
 }

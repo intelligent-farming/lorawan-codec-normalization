@@ -5,6 +5,8 @@
       "input": { "fPort": 10, "bytes": [3, 103, 1, 38, 4, 104, 51, 0, 186, 11, 209] },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t00061xx-comfort",
           "battery": 3.025,
           "air": { "temperature": 29.4, "relativeHumidity": 25.5 }
         }
@@ -16,6 +18,8 @@
       "input": { "fPort": 10, "bytes": [10, 0, 255] },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t00061xx-comfort",
           "action": { "motion": { "detected": true } }
         }
       },
@@ -25,7 +29,7 @@
       "description": "Light detection uplink (categorical flag -> camelCase extra, NOT air.lightIntensity which is lux)",
       "input": { "fPort": 10, "bytes": [2, 0, 1] },
       "expected": {
-        "data": { "lightDetected": true }
+        "data": { "make": "tektelic", "model": "t00061xx-comfort", "lightDetected": true }
       },
       "source": "ttn-example"
     },

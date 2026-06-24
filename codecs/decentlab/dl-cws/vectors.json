@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-cws",
           "surfaceTemperature": 26.79,
           "dewPoint": 18.68,
           "angle": 71,
@@ -29,6 +31,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-cws",
           "battery": 2.932
         }
       },
@@ -42,6 +46,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-cws",
           "surfaceTemperature": 5.25,
           "dewPoint": 3.1,
           "angle": 12,

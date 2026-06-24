@@ -34,7 +34,7 @@ function s8(b) {
   return b > 0x7f ? b - 0x100 : b;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
 
   if (input.fPort !== 2) {
@@ -55,4 +55,14 @@ function decodeUplink(input) {
   data.redLedOn = (bytes[0] & 0x01) === 0x01;
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "stmicroelectronics";
+    result.data.model = "nucleo-wl55jc1";
+  }
+  return result;
 }

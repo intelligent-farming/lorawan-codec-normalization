@@ -6,6 +6,8 @@
       "input": { "fPort": 10, "bytes": [155, 3, 68] },
       "expected": {
         "data": {
+          "make": "dnt",
+          "model": "dnt-lw-dis",
           "battery": 3.05,
           "sabotageNotification": 1,
           "action": { "motion": { "detected": true } },
@@ -19,6 +21,8 @@
       "input": { "fPort": 10, "bytes": [155, 3, 9] },
       "expected": {
         "data": {
+          "make": "dnt",
+          "model": "dnt-lw-dis",
           "battery": 3.05,
           "sabotageNotification": 0,
           "action": { "motion": { "detected": false } },
@@ -32,6 +36,8 @@
       "input": { "fPort": 10, "bytes": [154, 4, 0, 6, 79] },
       "expected": {
         "data": {
+          "make": "dnt",
+          "model": "dnt-lw-dis",
           "battery": 3.04,
           "reason": "button",
           "tofStatus": 0,
@@ -45,6 +51,8 @@
       "input": { "fPort": 10, "bytes": [156, 1, 0, 6, 71] },
       "expected": {
         "data": {
+          "make": "dnt",
+          "model": "dnt-lw-dis",
           "battery": 3.06,
           "reason": "cycle",
           "tofStatus": 0,
@@ -58,6 +66,8 @@
       "input": { "fPort": 10, "bytes": [155, 6, 255, 206] },
       "expected": {
         "data": {
+          "make": "dnt",
+          "model": "dnt-lw-dis",
           "battery": 3.05,
           "air": { "temperature": -5 }
         }
@@ -69,6 +79,8 @@
       "input": { "fPort": 10, "bytes": [155, 2, 1, 1, 44] },
       "expected": {
         "data": {
+          "make": "dnt",
+          "model": "dnt-lw-dis",
           "battery": 3.05,
           "temperatureNotification": 1,
           "air": { "temperature": 30 }

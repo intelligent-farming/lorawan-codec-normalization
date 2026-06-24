@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "te-connectivity",
+          "model": "8931ex",
           "batteryPercent": 70,
           "deviceStatus": {
             "rotation": "disabled",
@@ -39,6 +41,8 @@
       },
       "expected": {
         "data": {
+          "make": "te-connectivity",
+          "model": "8931ex",
           "deviceStatus": {
             "rotation": "disabled",
             "temperature": "ok",

@@ -9,6 +9,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r311fa1",
           "battery": 3.6,
           "vibration": {
             "accelerationX": 5.59375,
@@ -27,6 +29,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r311fa1",
           "lowBattery": true,
           "battery": 3.6,
           "vibration": {
@@ -46,6 +50,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r311fa1",
           "vibration": {
             "velocityX": 0.043701,
             "velocityY": 0.007813,

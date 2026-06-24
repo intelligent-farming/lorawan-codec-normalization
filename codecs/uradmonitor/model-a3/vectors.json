@@ -8,13 +8,15 @@
       },
       "expected": {
         "data": {
+          "make": "uradmonitor",
+          "model": "model-a3",
           "air": {
             "temperature": 22.76,
             "relativeHumidity": 56,
             "co2": 566,
             "pressure": 1021.15
           },
-          "model": "A3",
+          "deviceModel": "A3",
           "hardwareVersion": "HW108",
           "firmwareVersion": 78,
           "gasResistance": 208339,
@@ -37,13 +39,15 @@
       },
       "expected": {
         "data": {
+          "make": "uradmonitor",
+          "model": "model-a3",
           "air": {
             "temperature": 25.87,
             "relativeHumidity": 51,
             "co2": 618,
             "pressure": 1013.25
           },
-          "model": "A3",
+          "deviceModel": "A3",
           "hardwareVersion": "HW108",
           "firmwareVersion": 80,
           "gasResistance": 78121,
@@ -67,13 +71,15 @@
       },
       "expected": {
         "data": {
+          "make": "uradmonitor",
+          "model": "model-a3",
           "air": {
             "temperature": -5.5,
             "relativeHumidity": 88,
             "co2": 410,
             "pressure": 990
           },
-          "model": "A3",
+          "deviceModel": "A3",
           "hardwareVersion": "HW108",
           "firmwareVersion": 82,
           "gasResistance": 120000,

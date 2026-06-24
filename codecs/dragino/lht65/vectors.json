@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "dragino",
+          "model": "lht65",
           "battery": 3.062,
           "air": { "location": "indoor", "temperature": 28.29, "relativeHumidity": 88.6 },
           "externalTemperature": 27.81
@@ -23,6 +25,8 @@
       },
       "expected": {
         "data": {
+          "make": "dragino",
+          "model": "lht65",
           "battery": 2.6,
           "air": { "location": "indoor", "temperature": -1, "relativeHumidity": 58.8 }
         }

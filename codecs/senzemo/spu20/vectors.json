@@ -5,6 +5,8 @@
       "input": { "fPort": 1, "bytes": [1, 9, 41, 19, 148, 39, 148, 6, 39, 3, 74, 12, 228, 0, 0] },
       "expected": {
         "data": {
+          "make": "senzemo",
+          "model": "spu20",
           "air": {
             "temperature": 23.45,
             "relativeHumidity": 50.12,
@@ -24,6 +26,8 @@
       "input": { "fPort": 1, "bytes": [2, 254, 0, 11, 184, 37, 28, 3, 32, 1, 156, 12, 138, 0, 0] },
       "expected": {
         "data": {
+          "make": "senzemo",
+          "model": "spu20",
           "air": {
             "temperature": -5.12,
             "relativeHumidity": 30,

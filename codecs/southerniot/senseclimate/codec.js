@@ -18,7 +18,7 @@ function round(value, decimals) {
   return Math.round(value * f) / f;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   if (input.fPort !== 1) {
     return { errors: ['unknown FPort'] };
   }
@@ -29,4 +29,14 @@ function decodeUplink(input) {
   air.relativeHumidity = round(bytes[1], 1);
 
   return { data: { air: air } };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "southerniot";
+    result.data.model = "senseclimate";
+  }
+  return result;
 }

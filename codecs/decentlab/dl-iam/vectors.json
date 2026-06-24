@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-iam",
           "battery": 2.962,
           "ambientLightVisibleInfrared": 610,
           "ambientLightInfrared": 105,
@@ -34,6 +36,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-iam",
           "battery": 2.962,
           "ambientLightVisibleInfrared": 610,
           "ambientLightInfrared": 105,
@@ -57,6 +61,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-iam",
           "battery": 2.962
         }
       },

@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "dc413",
           "action": { "motion": { "detected": false } },
           "air": { "temperature": 22 },
           "level": 1700,
@@ -28,6 +30,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "dc413",
           "action": { "motion": { "detected": true } },
           "air": { "temperature": 18 },
           "level": 200,

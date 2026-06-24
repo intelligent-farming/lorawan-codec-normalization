@@ -73,7 +73,7 @@ function decodeRunTime(hex, data) {
   data.working = parseInt(runTimeBit.slice(-10), 2);
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length < 1) {
     return { errors: ['missing payload bytes'] };
@@ -130,4 +130,14 @@ function decodeUplink(input) {
   }
 
   return { errors: ['unsupported frame type (expected 0xF0, 0xF1 or 0xF2)'] };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "cotx";
+    result.data.model = "cotxpetfon";
+  }
+  return result;
 }

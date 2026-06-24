@@ -12,7 +12,7 @@
 // (fPort 3), config (fPort 4), and status (fPort 5) frames are out of scope
 // for this codec.
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
 
   if (input.fPort !== 2) {
@@ -37,4 +37,14 @@ function decodeUplink(input) {
   }
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "dragino";
+    result.data.model = "lwl03a";
+  }
+  return result;
 }

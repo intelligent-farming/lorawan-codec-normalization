@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718a",
           "battery": 3.6,
           "air": {
             "temperature": 25.38,
@@ -26,6 +28,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718a",
           "lowBattery": true,
           "battery": 3.6,
           "air": {
@@ -45,6 +49,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718a",
           "battery": 3.2,
           "air": {
             "temperature": -5.5,
@@ -63,6 +69,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718a",
           "lowBattery": true,
           "battery": 12.2,
           "air": {

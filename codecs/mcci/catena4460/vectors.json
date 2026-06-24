@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "mcci",
+          "model": "catena4460",
           "battery": 4.196,
           "boot": 17,
           "air": {
@@ -28,6 +30,8 @@
       },
       "expected": {
         "data": {
+          "make": "mcci",
+          "model": "catena4460",
           "battery": 3.7512,
           "boot": 83,
           "iaq": 92.5313,

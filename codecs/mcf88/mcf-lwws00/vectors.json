@@ -5,6 +5,8 @@
       "input": { "fPort": 2, "bytes": [11, 32, 0, 0, 0, 224, 116, 2, 3, 10, 8, 180, 0, 55, 0, 0, 4, 138, 2, 30, 0, 200, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
       "expected": {
         "data": {
+          "make": "mcf88",
+          "model": "mcf-lwws00",
           "air": { "pressure": 1013.21, "temperature": 25, "relativeHumidity": 55 },
           "wind": { "speed": 4.47, "direction": 180 },
           "rain": { "intensity": 0, "cumulative": 6 },
@@ -22,6 +24,8 @@
       "input": { "fPort": 2, "bytes": [11, 32, 0, 0, 0, 84, 111, 64, 1, 0, 0, 103, 1, 90, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
       "expected": {
         "data": {
+          "make": "mcf88",
+          "model": "mcf-lwws00",
           "air": { "pressure": 965.12, "temperature": 0, "relativeHumidity": 90 },
           "wind": { "speed": 0, "direction": 359 },
           "rain": { "intensity": 0, "cumulative": 0 },
@@ -39,6 +43,8 @@
       "input": { "fPort": 2, "bytes": [11, 32, 0, 0, 0, 224, 121, 76, 4, 45, 50, 104, 1, 20, 150, 0, 11, 176, 4, 244, 1, 132, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
       "expected": {
         "data": {
+          "make": "mcf88",
+          "model": "mcf-lwws00",
           "air": { "pressure": 1056.55, "temperature": 43.33, "relativeHumidity": 20 },
           "wind": { "speed": 20.12, "direction": 0 },
           "rain": { "intensity": 30, "cumulative": 100 },

@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "enless-wireless",
+          "model": "tx-amb-600-023",
           "air": { "temperature": 21.1, "relativeHumidity": 35.7, "co2": 60.9 },
           "tvoc": 17.3,
           "batteryPercent": 100,
@@ -37,6 +39,8 @@
       },
       "expected": {
         "data": {
+          "make": "enless-wireless",
+          "model": "tx-amb-600-023",
           "air": { "temperature": 23.5, "relativeHumidity": 65.5, "co2": 100 },
           "tvoc": 50,
           "batteryPercent": 100,
@@ -67,6 +71,8 @@
       },
       "expected": {
         "data": {
+          "make": "enless-wireless",
+          "model": "tx-amb-600-023",
           "air": { "temperature": -10.5, "relativeHumidity": 100, "co2": 200 },
           "tvoc": 0,
           "batteryPercent": 50,
@@ -97,6 +103,8 @@
       },
       "expected": {
         "data": {
+          "make": "enless-wireless",
+          "model": "tx-amb-600-023",
           "air": { "temperature": 0, "relativeHumidity": 0, "co2": 0 },
           "tvoc": 0,
           "batteryPercent": 25,

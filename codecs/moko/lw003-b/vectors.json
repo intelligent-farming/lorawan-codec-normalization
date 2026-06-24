@@ -5,6 +5,8 @@
       "input": { "fPort": 1, "bytes": [77, 15, 66, 134, 100, 0, 10, 43, 17, 126, 5] },
       "expected": {
         "data": {
+          "make": "moko",
+          "model": "lw003-b",
           "air": {
             "location": "indoor",
             "temperature": 26.03,

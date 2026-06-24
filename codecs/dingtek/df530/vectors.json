@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "df530",
           "levelMm": 30,
           "position": { "latitude": 40.038999, "longitude": 116.50743 },
           "air": { "temperature": 25 },
@@ -27,6 +29,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "df530",
           "levelMm": 120,
           "position": { "latitude": -33.865002, "longitude": 151.209308 },
           "air": { "temperature": 18 },
@@ -46,6 +50,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "df530",
           "levelMm": 15,
           "air": { "temperature": 25 },
           "empty": true,
@@ -64,6 +70,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "df530",
           "periodicUploadIntervalMinutes": 1,
           "emptyAlarmThresholdCm": 30
         }

@@ -31,6 +31,8 @@
       },
       "expected": {
         "data": {
+          "make": "moko",
+          "model": "lw001-bgpro",
           "position": {
             "latitude": 30.458075,
             "longitude": 114.4692816

@@ -43,10 +43,13 @@ device('milesight-iot', 'em500-smtc');                 // metadata: categories, 
 
 The codec output is a **single measurement object** (never a top-level array —
 ChirpStack's protobuf Struct rejects arrays). Datalog uplinks put the current
-reading at the top level and prior readings in a `history` array. The codecs are
-plain ES2017-max JavaScript with no modules, Node APIs, or async constructs
-(enforced by the conformance suite's static lint), so they run unmodified on
-either network server.
+reading at the top level and prior readings in a `history` array. Every decoded
+object also carries `make` and `model` device-identity strings (the vendor and
+device names, e.g. `{ make: "dragino", model: "lds02", ... }`); these are
+excluded from `provides`, which lists only telemetry. The codecs are plain
+ES2017-max JavaScript with no modules, Node APIs, or async constructs (enforced
+by the conformance suite's static lint), so they run unmodified on either
+network server.
 
 ### Intended consumption pattern
 

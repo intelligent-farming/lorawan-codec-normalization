@@ -80,7 +80,7 @@ function isoTime(unixSeconds) {
   return new Date(unixSeconds * 1000).toISOString();
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length === 0) {
     return { errors: ['missing payload bytes'] };
@@ -205,4 +205,14 @@ function decodeUplink(input) {
     return { data: data, warnings: warnings };
   }
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "iot-factory";
+    result.data.model = "asset-tracker";
+  }
+  return result;
 }

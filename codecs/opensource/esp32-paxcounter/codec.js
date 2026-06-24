@@ -102,7 +102,7 @@ function bmePressure(bytes, offset) {
   return round(u16le(bytes, offset) / 10, 1);
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   var fPort = input.fPort;
   if (!bytes) {
@@ -255,4 +255,14 @@ function decodeUplink(input) {
   }
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "opensource";
+    result.data.model = "esp32-paxcounter";
+  }
+  return result;
 }

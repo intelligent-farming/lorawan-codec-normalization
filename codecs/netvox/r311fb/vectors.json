@@ -9,6 +9,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r311fb",
           "battery": 3,
           "action": {
             "motion": {
@@ -28,6 +30,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r311fb",
           "battery": 3.6,
           "action": {
             "motion": {
@@ -47,6 +51,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r311fb",
           "lowBattery": true,
           "battery": 2.5,
           "action": {

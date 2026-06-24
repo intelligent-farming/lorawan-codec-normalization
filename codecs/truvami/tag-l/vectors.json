@@ -5,6 +5,8 @@
       "input": { "fPort": 10, "bytes": [9, 2, 221, 242, 160, 0, 175, 121, 224, 20, 110, 101, 83, 241, 0, 14, 116, 42, 24, 9] },
       "expected": {
         "data": {
+          "make": "truvami",
+          "model": "tag-l",
           "position": { "latitude": 48.1, "longitude": 11.5 },
           "action": { "motion": { "detected": true } },
           "battery": 3.7,
@@ -25,6 +27,8 @@
       "input": { "fPort": 110, "bytes": [0, 7, 8, 2, 221, 242, 160, 0, 175, 121, 224, 20, 110, 101, 83, 241, 0, 16, 4, 30, 16, 7] },
       "expected": {
         "data": {
+          "make": "truvami",
+          "model": "tag-l",
           "position": { "latitude": 48.1, "longitude": 11.5 },
           "action": { "motion": { "detected": false } },
           "battery": 4.1,
@@ -46,6 +50,8 @@
       "input": { "fPort": 51, "bytes": [9, 2, 221, 242, 160, 0, 175, 121, 224, 20, 110, 101, 83, 241, 0, 14, 116, 42, 24, 9, 0, 17, 34, 51, 68, 85, 192, 170, 187, 204, 221, 238, 255, 160] },
       "expected": {
         "data": {
+          "make": "truvami",
+          "model": "tag-l",
           "position": { "latitude": 48.1, "longitude": 11.5 },
           "action": { "motion": { "detected": true } },
           "battery": 3.7,
@@ -71,6 +77,8 @@
       "input": { "fPort": 151, "bytes": [0, 3, 9, 2, 221, 242, 160, 0, 175, 121, 224, 20, 110, 101, 83, 241, 0, 14, 116, 42, 24, 9, 0, 17, 34, 51, 68, 85, 192] },
       "expected": {
         "data": {
+          "make": "truvami",
+          "model": "tag-l",
           "position": { "latitude": 48.1, "longitude": 11.5 },
           "action": { "motion": { "detected": true } },
           "battery": 3.7,

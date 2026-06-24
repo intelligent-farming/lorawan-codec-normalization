@@ -54,7 +54,7 @@ function u16le(lo, hi) {
   return ((hi << 8) | lo) & 0xffff;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length < 27) {
     return { errors: ['payload too short for a LoRa Boat Monitor frame (expected 27 bytes)'] };
@@ -114,4 +114,14 @@ function decodeUplink(input) {
     return { data: data, warnings: warnings };
   }
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "open-boat-projects";
+    result.data.model = "loraboatmonitor";
+  }
+  return result;
 }

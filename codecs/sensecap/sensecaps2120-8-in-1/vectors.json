@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensecap",
+          "model": "sensecaps2120-8-in-1",
           "uvIndex": 0,
           "air": {
             "temperature": 27.7,
@@ -35,6 +37,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensecap",
+          "model": "sensecaps2120-8-in-1",
           "batteryPercent": 100,
           "uvIndex": 0,
           "air": {

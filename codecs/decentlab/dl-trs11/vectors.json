@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-trs11",
           "protocolVersion": 2,
           "deviceId": 4309,
           "dielectricPermittivity": 1.0259,
@@ -28,6 +30,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-trs11",
           "protocolVersion": 2,
           "deviceId": 4310,
           "dielectricPermittivity": 11.8464,
@@ -49,6 +53,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-trs11",
           "protocolVersion": 2,
           "deviceId": 4311,
           "battery": 3.05

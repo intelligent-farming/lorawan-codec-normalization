@@ -5,6 +5,8 @@
       "input": { "fPort": 1, "bytes": [92, 128, 1, 30, 50, 0, 32] },
       "expected": {
         "data": {
+          "make": "adeunis",
+          "model": "motion",
           "action": { "motion": { "detected": true } },
           "frameCounter": 4,
           "lowBattery": false,
@@ -22,6 +24,8 @@
       "input": { "fPort": 1, "bytes": [92, 2, 0, 0, 0] },
       "expected": {
         "data": {
+          "make": "adeunis",
+          "model": "motion",
           "action": { "motion": { "detected": false } },
           "frameCounter": 0,
           "lowBattery": true,
@@ -39,6 +43,8 @@
       "input": { "fPort": 1, "bytes": [78, 64, 0, 5, 0, 2, 60] },
       "expected": {
         "data": {
+          "make": "adeunis",
+          "model": "motion",
           "action": { "motion": { "count": 5 } },
           "frameCounter": 2,
           "lowBattery": false,
@@ -56,6 +62,8 @@
       "input": { "fPort": 1, "bytes": [79, 32, 0, 7, 0, 3] },
       "expected": {
         "data": {
+          "make": "adeunis",
+          "model": "motion",
           "action": { "motion": { "detected": true, "count": 7 } },
           "frameCounter": 1,
           "lowBattery": false,

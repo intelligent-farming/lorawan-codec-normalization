@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718ubd",
           "battery": 3.6,
           "shockEvent": 0,
           "air": {
@@ -28,6 +30,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718ubd",
           "battery": 3.7,
           "lowBattery": true,
           "shockEvent": 5,

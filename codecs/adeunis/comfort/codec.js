@@ -71,7 +71,7 @@ function hexByte(b) {
   return '0x' + (s.length < 2 ? '0' + s : s);
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length < 2) {
     return { errors: ['payload too short: expected at least a frame code and status byte'] };
@@ -132,4 +132,14 @@ function decodeUplink(input) {
   }
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "adeunis";
+    result.data.model = "comfort";
+  }
+  return result;
 }

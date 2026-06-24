@@ -52,7 +52,7 @@ function decodeTemp16(raw) {
   return { value: round(v * 0.1, 1) };
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   var port = input.fPort;
 
@@ -406,4 +406,14 @@ function lpad2(n) {
 function putChannel(data, base, ch, value) {
   var key = ch === 0 ? base : base + (ch + 1);
   data[key] = value;
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "elv";
+    result.data.model = "elv-bm-trx1";
+  }
+  return result;
 }

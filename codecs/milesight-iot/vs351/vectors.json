@@ -9,6 +9,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs351",
           "totalIn": 18,
           "totalOut": 22,
           "periodIn": 19,
@@ -26,6 +28,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs351",
           "batteryPercent": 100,
           "totalIn": 18,
           "totalOut": 22,
@@ -43,6 +47,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs351",
           "totalIn": 0,
           "totalOut": 0,
           "action": { "motion": { "count": 0, "detected": false } }
@@ -58,6 +64,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs351",
           "air": { "temperature": -10.5 }
         }
       },
@@ -71,6 +79,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs351",
           "temperatureAlarm": "high_temperature_alarm",
           "air": { "temperature": 35 }
         }
@@ -85,6 +95,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs351",
           "totalIn": 5,
           "totalOut": 3,
           "totalCountAlarm": "threshold_alarm",
@@ -101,6 +113,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs351",
           "time": "2023-07-14T11:58:56.000Z",
           "totalIn": 7,
           "totalOut": 5,
@@ -117,6 +131,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs351",
           "history": [
             {
               "time": "2023-07-14T11:58:56.000Z",

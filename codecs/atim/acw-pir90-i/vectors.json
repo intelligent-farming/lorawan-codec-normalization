@@ -4,37 +4,37 @@
     {
       "description": "measurement: PIR detection on input 0 (raw input bits, bit0 set)",
       "input": { "fPort": 2, "bytes": [160, 1, 1] },
-      "expected": { "data": { "action": { "motion": { "detected": true } } } },
+      "expected": { "data": { "make": "atim", "model": "acw-pir90-i", "action": { "motion": { "detected": true } } } },
       "source": "synthetic"
     },
     {
       "description": "measurement: no detection (raw input bits all clear)",
       "input": { "fPort": 2, "bytes": [160, 1, 0] },
-      "expected": { "data": { "action": { "motion": { "detected": false } } } },
+      "expected": { "data": { "make": "atim", "model": "acw-pir90-i", "action": { "motion": { "detected": false } } } },
       "source": "synthetic"
     },
     {
       "description": "measurement: per-channel motion state byte (>15, movement-present + state-high) on input 0",
       "input": { "fPort": 2, "bytes": [160, 1, 17] },
-      "expected": { "data": { "action": { "motion": { "detected": true } } } },
+      "expected": { "data": { "make": "atim", "model": "acw-pir90-i", "action": { "motion": { "detected": true } } } },
       "source": "synthetic"
     },
     {
       "description": "measurement: motion event counter, count = 256",
       "input": { "fPort": 2, "bytes": [160, 4, 0, 0, 1, 0] },
-      "expected": { "data": { "action": { "motion": { "count": 256 } } } },
+      "expected": { "data": { "make": "atim", "model": "acw-pir90-i", "action": { "motion": { "count": 256 } } } },
       "source": "synthetic"
     },
     {
       "description": "measurement: detection plus counter (counting mode), detected=false count=42",
       "input": { "fPort": 2, "bytes": [160, 1, 0, 4, 0, 0, 0, 42] },
-      "expected": { "data": { "action": { "motion": { "detected": false, "count": 42 } } } },
+      "expected": { "data": { "make": "atim", "model": "acw-pir90-i", "action": { "motion": { "detected": false, "count": 42 } } } },
       "source": "synthetic"
     },
     {
       "description": "life frame: battery 3.333 V, capacitor 2.56 V",
       "input": { "fPort": 2, "bytes": [128, 1, 13, 5, 10, 0] },
-      "expected": { "data": { "battery": 3.333, "capacitorVoltage": 2.56 } },
+      "expected": { "data": { "make": "atim", "model": "acw-pir90-i", "battery": 3.333, "capacitorVoltage": 2.56 } },
       "source": "synthetic"
     },
     {

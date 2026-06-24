@@ -79,7 +79,7 @@ function iaqHciLabel(code) {
   return IAQ_HCI[code];
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length < 7) {
     return { errors: ['payload too short for a Nexelec Carbon Real-Time frame'] };
@@ -154,4 +154,14 @@ function decodeUplink(input) {
   data.frameIndex = frameIndex;
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "nexelec";
+    result.data.model = "carbon";
+  }
+  return result;
 }

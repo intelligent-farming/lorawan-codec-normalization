@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r720a",
           "battery": 3.6,
           "air": { "temperature": 25.38, "relativeHumidity": 68 }
         }
@@ -22,6 +24,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r720a",
           "battery": 3,
           "air": { "temperature": 2, "relativeHumidity": 100 }
         }
@@ -37,6 +41,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r720a",
           "lowBattery": true,
           "battery": 2.6,
           "air": { "temperature": 3, "relativeHumidity": 44.64 }
@@ -53,6 +59,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r720a",
           "battery": 3.6,
           "air": { "temperature": -0.2, "relativeHumidity": 30 }
         }
@@ -68,6 +76,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r720a",
           "battery": 3.2,
           "air": { "temperature": 0, "relativeHumidity": 0 }
         }

@@ -5,6 +5,8 @@
       "input": { "fPort": 2, "bytes": [18, 8, 0, 12] },
       "expected": {
         "data": {
+          "make": "radio-bridge",
+          "model": "rbs301-wat",
           "protocol": 1,
           "counter": 2,
           "messageType": "water",
@@ -20,6 +22,8 @@
       "input": { "fPort": 2, "bytes": [18, 8, 1, 3] },
       "expected": {
         "data": {
+          "make": "radio-bridge",
+          "model": "rbs301-wat",
           "protocol": 1,
           "counter": 2,
           "messageType": "water",
@@ -35,6 +39,8 @@
       "input": { "fPort": 2, "bytes": [17, 1, 2, 0, 54, 0, 0, 0, 0, 0, 5] },
       "expected": {
         "data": {
+          "make": "radio-bridge",
+          "model": "rbs301-wat",
           "protocol": 1,
           "counter": 1,
           "messageType": "supervisory",

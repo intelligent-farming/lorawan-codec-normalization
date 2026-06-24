@@ -3,21 +3,21 @@
     {
       "description": "fPort 2 single reading, distinct b2 nibbles (high=temp LSB, low=humidity LSB)",
       "input": { "fPort": 2, "bytes": [70, 40, 90] },
-      "expected": { "data": { "air": { "temperature": 32.5, "relativeHumidity": 40 } } },
+      "expected": { "data": { "make": "talkpool", "model": "oy1110", "air": { "temperature": 32.5, "relativeHumidity": 40 } } },
       "source": "synthetic",
       "_note": "expected derived from upstream TTN decoder"
     },
     {
       "description": "fPort 2 single reading, high humidity",
       "input": { "fPort": 2, "bytes": [62, 68, 29] },
-      "expected": { "data": { "air": { "temperature": 19.3, "relativeHumidity": 85.1 } } },
+      "expected": { "data": { "make": "talkpool", "model": "oy1110", "air": { "temperature": 19.3, "relativeHumidity": 85.1 } } },
       "source": "synthetic",
       "_note": "expected derived from upstream TTN decoder"
     },
     {
       "description": "fPort 3 datalog frame, 1-byte header then one 3-byte reading",
       "input": { "fPort": 3, "bytes": [16, 64, 50, 16] },
-      "expected": { "data": { "air": { "temperature": 22.5, "relativeHumidity": 55 } } },
+      "expected": { "data": { "make": "talkpool", "model": "oy1110", "air": { "temperature": 22.5, "relativeHumidity": 55 } } },
       "source": "synthetic",
       "_note": "expected derived from upstream TTN decoder"
     },

@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r900a03o1",
           "battery": 12,
           "shockTamperAlarm": false,
           "water": {
@@ -26,6 +28,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r900a03o1",
           "lowBattery": true,
           "battery": 3.6,
           "shockTamperAlarm": true,

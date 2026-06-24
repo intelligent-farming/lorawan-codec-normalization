@@ -9,6 +9,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718db",
           "battery": 3,
           "action": { "motion": { "detected": true } }
         }
@@ -23,6 +25,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718db",
           "battery": 3.6,
           "action": { "motion": { "detected": false } }
         }
@@ -37,6 +41,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718db",
           "lowBattery": true,
           "battery": 2.5,
           "action": { "motion": { "detected": true } }

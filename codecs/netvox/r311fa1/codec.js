@@ -51,7 +51,7 @@ function bfloat16(h) {
   return (sign ? -1 : 1) * Math.pow(2, exp - 127) * (1 + (fraction / Math.pow(2, 23)));
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
 
   if (input.fPort === 7) {
@@ -93,4 +93,14 @@ function decodeUplink(input) {
     velocityZ: round(bfloat16((bytes[8] << 8) | bytes[7]), 6)
   };
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "netvox";
+    result.data.model = "r311fa1";
+  }
+  return result;
 }

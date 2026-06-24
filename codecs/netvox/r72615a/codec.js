@@ -52,7 +52,7 @@ function present(val) {
   return val !== 0xff && val !== 0xffff && val !== 0xffffffff;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
 
   if (input.fPort === 7) {
@@ -184,4 +184,14 @@ function decodeUplink(input) {
   if (hasSoil) data.soil = soil;
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "netvox";
+    result.data.model = "r72615a";
+  }
+  return result;
 }

@@ -31,7 +31,7 @@ function s16be(hi, lo) {
   return v > 0x7fff ? v - 0x10000 : v;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   var port = input.fPort;
 
@@ -82,4 +82,14 @@ function decodeUplink(input) {
       firmwareVersion: round(bytes[8] / 10, 1)
     }
   };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "senzemo";
+    result.data.model = "smc30";
+  }
+  return result;
 }

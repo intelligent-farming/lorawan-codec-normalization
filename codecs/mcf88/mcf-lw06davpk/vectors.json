@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "mcf88",
+          "model": "mcf-lw06davpk",
           "windSpeedAvg10m": 3.58,
           "uvIndex": 3,
           "solarRadiation": 650,
@@ -37,6 +39,8 @@
       },
       "expected": {
         "data": {
+          "make": "mcf88",
+          "model": "mcf-lw06davpk",
           "pm1": 12,
           "pm2_5": 8,
           "pm10": 20,
@@ -54,6 +58,8 @@
       },
       "expected": {
         "data": {
+          "make": "mcf88",
+          "model": "mcf-lw06davpk",
           "air": {
             "temperature": 25.45,
             "relativeHumidity": 55,

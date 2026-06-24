@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t0007xxx-sparrow",
           "accelerationX": 10.752,
           "accelerationY": 0.128,
           "accelerationZ": 1.476
@@ -24,6 +26,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t0007xxx-sparrow",
           "action": { "motion": { "detected": true } }
         }
       },
@@ -38,6 +42,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t0007xxx-sparrow",
           "action": { "motion": { "detected": false } }
         }
       },
@@ -52,6 +58,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t0007xxx-sparrow",
           "battery": 3.5,
           "air": {
             "temperature": 25,
@@ -75,6 +83,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t0007xxx-sparrow",
           "battery": 2.5,
           "batteryEosAlert": true
         }

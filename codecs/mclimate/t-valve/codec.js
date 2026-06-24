@@ -33,7 +33,7 @@ function round(value, decimals) {
   return Math.round(value * f) / f;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || typeof bytes.length !== 'number') {
     return { errors: ['no bytes'] };
@@ -113,4 +113,14 @@ function decodeUplink(input) {
   }
 
   return { errors: ['unrecognized payload length'] };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "mclimate";
+    result.data.model = "t-valve";
+  }
+  return result;
 }

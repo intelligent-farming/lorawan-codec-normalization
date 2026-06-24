@@ -16,6 +16,8 @@
       },
       "expected": {
         "data": {
+          "make": "mclimate",
+          "model": "co2-sensor",
           "air": {
             "co2": 625,
             "temperature": 22.7,
@@ -42,6 +44,8 @@
       },
       "expected": {
         "data": {
+          "make": "mclimate",
+          "model": "co2-sensor",
           "air": {
             "co2": 800,
             "temperature": 25,
@@ -69,6 +73,8 @@
       },
       "expected": {
         "data": {
+          "make": "mclimate",
+          "model": "co2-sensor",
           "air": {
             "co2": 420,
             "temperature": 18.3,

@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "teneo-iot",
+          "model": "co2-stoplicht",
           "battery": 3.5,
           "air": {
             "location": "indoor",
@@ -28,6 +30,8 @@
       },
       "expected": {
         "data": {
+          "make": "teneo-iot",
+          "model": "co2-stoplicht",
           "battery": 3,
           "air": {
             "location": "indoor",
@@ -48,6 +52,8 @@
       },
       "expected": {
         "data": {
+          "make": "teneo-iot",
+          "model": "co2-stoplicht",
           "battery": 2.8,
           "air": {
             "location": "indoor",
@@ -68,6 +74,8 @@
       },
       "expected": {
         "data": {
+          "make": "teneo-iot",
+          "model": "co2-stoplicht",
           "battery": 3,
           "messageType": "status",
           "trafficLightState": 10
@@ -84,6 +92,8 @@
       },
       "expected": {
         "data": {
+          "make": "teneo-iot",
+          "model": "co2-stoplicht",
           "battery": 3.5
         }
       },

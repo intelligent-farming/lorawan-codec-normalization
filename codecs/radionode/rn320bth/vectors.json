@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "radionode",
+          "model": "rn320bth",
           "time": "2025-04-22T01:55:54Z",
           "air": { "temperature": 24.84, "relativeHumidity": 39.53 },
           "frameType": "live"
@@ -23,6 +25,8 @@
       },
       "expected": {
         "data": {
+          "make": "radionode",
+          "model": "rn320bth",
           "time": "2025-04-22T01:55:54Z",
           "air": { "temperature": 24.84, "relativeHumidity": 39.53 },
           "frameType": "hold"
@@ -38,6 +42,8 @@
       },
       "expected": {
         "data": {
+          "make": "radionode",
+          "model": "rn320bth",
           "time": "2025-04-22T01:55:54Z",
           "air": { "temperature": 22.5, "relativeHumidity": 55 },
           "frameType": "live"
@@ -54,6 +60,8 @@
       },
       "expected": {
         "data": {
+          "make": "radionode",
+          "model": "rn320bth",
           "time": "2025-04-22T01:55:54Z",
           "air": { "temperature": -5.25, "relativeHumidity": 80 },
           "frameType": "hold"
@@ -70,6 +78,8 @@
       },
       "expected": {
         "data": {
+          "make": "radionode",
+          "model": "rn320bth",
           "battery": 3.6,
           "batteryLevel": 200,
           "reportInterval": 600,

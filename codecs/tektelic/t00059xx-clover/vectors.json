@@ -18,6 +18,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t00059xx-clover",
           "battery": 3.5,
           "air": {
             "lightIntensity": 300,
@@ -48,6 +50,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t00059xx-clover",
           "air": {
             "temperature": -40,
             "relativeHumidity": 77.5

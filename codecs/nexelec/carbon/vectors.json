@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "nexelec",
+          "model": "carbon",
           "air": { "co2": 600, "temperature": 22, "relativeHumidity": 45 },
           "iaqGlobal": "Excellent",
           "iaqSource": "CO2",
@@ -30,6 +32,8 @@
       },
       "expected": {
         "data": {
+          "make": "nexelec",
+          "model": "carbon",
           "air": { "co2": 660, "temperature": 22.4, "relativeHumidity": 45.5 },
           "iaqGlobal": "Good",
           "iaqSource": "Dryness Indicator",
@@ -52,6 +56,8 @@
       },
       "expected": {
         "data": {
+          "make": "nexelec",
+          "model": "carbon",
           "air": { "co2": 1500, "temperature": 30, "relativeHumidity": 65 },
           "iaqGlobal": "Bad",
           "iaqSource": "CO",

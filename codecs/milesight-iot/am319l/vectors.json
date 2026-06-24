@@ -46,6 +46,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "am319l",
           "lightLevel": 2,
           "tvoc": 0.37,
           "hcho": 0.04,

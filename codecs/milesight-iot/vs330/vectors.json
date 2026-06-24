@@ -9,6 +9,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs330",
           "batteryPercent": 98,
           "distance": 15,
           "calibrationSuccess": true,
@@ -25,6 +27,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs330",
           "batteryPercent": 90,
           "distance": 200,
           "calibrationSuccess": true,
@@ -41,6 +45,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs330",
           "action": { "motion": { "detected": true } }
         }
       },

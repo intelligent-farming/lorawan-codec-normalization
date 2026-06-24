@@ -11,6 +11,8 @@
       },
       "expected": {
         "data": {
+          "make": "moko",
+          "model": "lw004",
           "position": {
             "latitude": 30.45815,
             "longitude": 114.4691198
@@ -30,6 +32,8 @@
       },
       "expected": {
         "data": {
+          "make": "moko",
+          "model": "lw004",
           "position": {
             "latitude": -30.45815,
             "longitude": -114.4691198

@@ -5,6 +5,8 @@
       "input": { "fPort": 1, "bytes": [1, 0, 234, 2, 55, 20, 0, 15, 118, 2, 7, 14, 16] },
       "expected": {
         "data": {
+          "make": "elsys",
+          "model": "elt-2",
           "battery": 3.6,
           "air": {
             "temperature": 23.4,
@@ -21,6 +23,8 @@
       "input": { "fPort": 1, "bytes": [1, 255, 206, 2, 80, 4, 4, 176, 6, 1, 194, 5, 4, 7, 12, 228] },
       "expected": {
         "data": {
+          "make": "elsys",
+          "model": "elt-2",
           "battery": 3.3,
           "air": {
             "temperature": -5,
@@ -41,6 +45,8 @@
       "input": { "fPort": 1, "bytes": [12, 0, 187, 8, 9, 196, 13, 1, 14, 3, 82, 3, 2, 253, 63] },
       "expected": {
         "data": {
+          "make": "elsys",
+          "model": "elt-2",
           "externalTemperature": 18.7,
           "analog1": 2500,
           "digital1": 1,
@@ -58,6 +64,8 @@
       "input": { "fPort": 1, "bytes": [1, 0, 226, 2, 41, 3, 1, 39, 5, 20, 6, 1, 1, 17] },
       "expected": {
         "data": {
+          "make": "elsys",
+          "model": "elt-2",
           "pressureHpa": 100729.105,
           "air": {
             "temperature": 22.6,

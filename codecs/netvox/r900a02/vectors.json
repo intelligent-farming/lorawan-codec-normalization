@@ -5,6 +5,8 @@
       "input": { "fPort": 22, "bytes": [3, 1, 10, 1, 158, 255, 156, 0, 1] },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r900a02",
           "lowBattery": true,
           "battery": 3.0,
           "air": { "temperature": -1 },
@@ -22,6 +24,8 @@
       "input": { "fPort": 22, "bytes": [3, 1, 10, 1, 120, 7, 8, 3, 0] },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r900a02",
           "battery": 12.0,
           "air": { "temperature": 18 },
           "lowTemperatureAlarm": true,

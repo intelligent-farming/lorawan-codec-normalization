@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "mclimate",
+          "model": "ht-sensor",
           "battery": 3.5,
           "thermistorProperlyConnected": false,
           "extThermistorTemperature": 0,
@@ -28,6 +30,8 @@
       },
       "expected": {
         "data": {
+          "make": "mclimate",
+          "model": "ht-sensor",
           "battery": 3.2,
           "thermistorProperlyConnected": true,
           "extThermistorTemperature": 18,
@@ -48,6 +52,8 @@
       },
       "expected": {
         "data": {
+          "make": "mclimate",
+          "model": "ht-sensor",
           "battery": 2.9,
           "thermistorProperlyConnected": false,
           "extThermistorTemperature": 0,

@@ -56,7 +56,7 @@ function decompressDuration(compressed) {
   return result;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   var data = {};
   var dur;
@@ -146,4 +146,14 @@ function decodeUplink(input) {
   }
 
   return { errors: ['unknown FPort'] };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "nwave";
+    result.data.model = "nps405sm";
+  }
+  return result;
 }

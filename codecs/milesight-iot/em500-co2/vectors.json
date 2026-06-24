@@ -5,6 +5,8 @@
       "input": { "fPort": 85, "bytes": [1, 117, 90, 3, 103, 235, 0, 4, 104, 110, 5, 125, 32, 3, 6, 115, 148, 39] },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "em500-co2",
           "batteryPercent": 90,
           "air": {
             "temperature": 23.5,
@@ -22,6 +24,8 @@
       "input": { "fPort": 85, "bytes": [3, 103, 201, 255, 4, 104, 80, 5, 125, 244, 1, 6, 115, 132, 35] },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "em500-co2",
           "air": {
             "temperature": -5.5,
             "relativeHumidity": 40,

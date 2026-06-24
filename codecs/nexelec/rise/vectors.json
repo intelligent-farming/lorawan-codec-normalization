@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "nexelec",
+          "model": "rise",
           "air": { "temperature": 22.5, "relativeHumidity": 48.3, "co2": 650 }
         }
       },
@@ -22,6 +24,8 @@
       },
       "expected": {
         "data": {
+          "make": "nexelec",
+          "model": "rise",
           "air": { "temperature": -10, "relativeHumidity": 65, "co2": 412 }
         }
       },
@@ -36,6 +40,8 @@
       },
       "expected": {
         "data": {
+          "make": "nexelec",
+          "model": "rise",
           "air": { "relativeHumidity": 55 }
         }
       },

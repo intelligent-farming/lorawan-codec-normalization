@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "yobiiq",
+          "model": "iq-rm200-lrw",
           "battery": 3.8,
           "air": {
             "temperature": 22.85,
@@ -26,6 +28,8 @@
       },
       "expected": {
         "data": {
+          "make": "yobiiq",
+          "model": "iq-rm200-lrw",
           "channel1State": "ON",
           "channel1Counter": 8,
           "channel2State": "OFF",
@@ -48,6 +52,8 @@
       },
       "expected": {
         "data": {
+          "make": "yobiiq",
+          "model": "iq-rm200-lrw",
           "externalPowerStatus": "AC POWER ON",
           "deviceModel": "RM200",
           "firmwareVersion": "V2.1",
@@ -65,6 +71,8 @@
       },
       "expected": {
         "data": {
+          "make": "yobiiq",
+          "model": "iq-rm200-lrw",
           "downlinkAck": "DOWNLINK COMMAND SUCCEEDED"
         }
       },

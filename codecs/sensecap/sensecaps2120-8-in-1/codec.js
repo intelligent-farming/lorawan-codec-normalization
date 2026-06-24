@@ -79,7 +79,7 @@ function beSignedScaled(hex, divisor) {
   return v / divisor;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
 
   if (!bytes || bytes.length < 2) {
@@ -186,4 +186,14 @@ function decodeUplink(input) {
   }
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "sensecap";
+    result.data.model = "sensecaps2120-8-in-1";
+  }
+  return result;
 }

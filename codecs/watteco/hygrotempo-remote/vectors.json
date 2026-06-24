@@ -6,7 +6,7 @@
         "bytes": [17, 10, 4, 2, 0, 0, 41, 8, 202],
         "fPort": 125
       },
-      "expected": { "data": { "air": { "temperature": 22.5 } } },
+      "expected": { "data": { "make": "watteco", "model": "hygrotempo-remote", "air": { "temperature": 22.5 } } },
       "source": "synthetic",
       "_note": "Synthetic in-bounds standard data report (cmd 0x0A). Expected value produced by running reference/upstream-codec.js (variable 'temperature' = 22.5) and mapping cluster 0x0402 to air.temperature (signed centi-deg C / 100). Payload: 110A040200002908CA."
     },
@@ -16,7 +16,7 @@
         "bytes": [17, 10, 4, 2, 0, 0, 41, 253, 243],
         "fPort": 125
       },
-      "expected": { "data": { "air": { "temperature": -5.25 } } },
+      "expected": { "data": { "make": "watteco", "model": "hygrotempo-remote", "air": { "temperature": -5.25 } } },
       "source": "synthetic",
       "_note": "Synthetic in-bounds standard data report (cmd 0x0A) exercising the signed-16 path. Expected value produced by running reference/upstream-codec.js (variable 'temperature' = -5.25) and mapping cluster 0x0402 to air.temperature. 0xFDF3 = -525 centi-deg C. Payload: 110A04020000 29FDF3."
     },
@@ -26,7 +26,7 @@
         "bytes": [17, 1, 4, 2, 0, 0, 0, 41, 9, 146],
         "fPort": 125
       },
-      "expected": { "data": { "air": { "temperature": 24.5 } } },
+      "expected": { "data": { "make": "watteco", "model": "hygrotempo-remote", "air": { "temperature": 24.5 } } },
       "source": "ttn-example",
       "_note": "Upstream example input (read current value on cluster 0x0402, payload 11010402000000290992). cmd 0x01 inserts a status byte at index 6, so the value is at offset 8. Expected value produced by running reference/upstream-codec.js (variable 'temperature' = 24.5) and mapping to air.temperature."
     },
@@ -36,7 +36,7 @@
         "bytes": [17, 10, 4, 5, 0, 0, 33, 21, 124],
         "fPort": 125
       },
-      "expected": { "data": { "air": { "relativeHumidity": 55 } } },
+      "expected": { "data": { "make": "watteco", "model": "hygrotempo-remote", "air": { "relativeHumidity": 55 } } },
       "source": "synthetic",
       "_note": "Synthetic in-bounds standard data report (cmd 0x0A). Expected value produced by running reference/upstream-codec.js (variable 'humidity' = 55) and mapping cluster 0x0405 to air.relativeHumidity (unsigned centi-% / 100). Payload: 110A04050000 21157C."
     },
@@ -46,7 +46,7 @@
         "bytes": [17, 10, 4, 5, 0, 0, 33, 14, 137],
         "fPort": 125
       },
-      "expected": { "data": { "air": { "relativeHumidity": 37.21 } } },
+      "expected": { "data": { "make": "watteco", "model": "hygrotempo-remote", "air": { "relativeHumidity": 37.21 } } },
       "source": "ttn-example",
       "_note": "Upstream example input (humidity value, payload 110A04050000210E89). Expected value produced by running reference/upstream-codec.js (variable 'humidity' = 37.21) and mapping cluster 0x0405 to air.relativeHumidity."
     },
@@ -56,7 +56,7 @@
         "bytes": [17, 10, 0, 80, 0, 6, 65, 5, 3, 4, 14, 58],
         "fPort": 125
       },
-      "expected": { "data": { "battery": 3.642 } },
+      "expected": { "data": { "make": "watteco", "model": "hygrotempo-remote", "battery": 3.642 } },
       "source": "synthetic",
       "_note": "Synthetic in-bounds power configuration report (cmd 0x0A, cluster 0x0050 attr 6). Expected value produced by running reference/upstream-codec.js (variable 'disposable_battery_voltage' = 3.642) and mapping to battery (V). Flags byte 0x04 selects the disposable-battery 2-byte mV source (3642 mV). Payload: 110A005000064105 03040E3A."
     },

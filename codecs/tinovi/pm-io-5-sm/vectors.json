@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "tinovi",
+          "model": "pm-io-5-sm",
           "valveOpen": false,
           "batteryPercent": 72,
           "soilE25": 25,
@@ -27,6 +29,8 @@
       },
       "expected": {
         "data": {
+          "make": "tinovi",
+          "model": "pm-io-5-sm",
           "valveOpen": true,
           "batteryPercent": 55,
           "soilE25": 18,
@@ -45,6 +49,8 @@
       },
       "expected": {
         "data": {
+          "make": "tinovi",
+          "model": "pm-io-5-sm",
           "valveOpen": false,
           "batteryPercent": 80,
           "soilE25": 25,
@@ -72,6 +78,8 @@
       },
       "expected": {
         "data": {
+          "make": "tinovi",
+          "model": "pm-io-5-sm",
           "valveOpen": false,
           "batteryPercent": 60,
           "soilE25": 25,

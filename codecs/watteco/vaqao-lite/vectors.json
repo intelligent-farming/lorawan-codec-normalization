@@ -3,77 +3,77 @@
     {
       "description": "temperature standard report (cluster 0x0402, 22.50 C) | payload:110A040200002908CA",
       "input": { "fPort": 125, "bytes": [17, 10, 4, 2, 0, 0, 41, 8, 202] },
-      "expected": { "data": { "air": { "temperature": 22.5 } } },
+      "expected": { "data": { "make": "watteco", "model": "vaqao-lite", "air": { "temperature": 22.5 } } },
       "source": "synthetic",
       "_note": "Synthetic in-bounds standard report; signed centi-deg C 0x08CA=2250 -> 22.50 C. expected.data produced by running reference/upstream-codec.js (variable temperature_1) and mapping to air.temperature per the ZCL temperature cluster."
     },
     {
       "description": "humidity standard report (cluster 0x0405, 55.00 %) | payload:110A0405000021157C",
       "input": { "fPort": 125, "bytes": [17, 10, 4, 5, 0, 0, 33, 21, 124] },
-      "expected": { "data": { "air": { "relativeHumidity": 55 } } },
+      "expected": { "data": { "make": "watteco", "model": "vaqao-lite", "air": { "relativeHumidity": 55 } } },
       "source": "synthetic",
       "_note": "Synthetic in-bounds standard report; unsigned centi-% 0x157C=5500 -> 55.00 %. expected.data produced by running reference/upstream-codec.js (variable humidity_1) and mapping to air.relativeHumidity."
     },
     {
       "description": "pressure standard report (cluster 0x0403, 1013 hPa) | payload:110A040300002903F5",
       "input": { "fPort": 125, "bytes": [17, 10, 4, 3, 0, 0, 41, 3, 245] },
-      "expected": { "data": { "air": { "pressure": 1013 } } },
+      "expected": { "data": { "make": "watteco", "model": "vaqao-lite", "air": { "pressure": 1013 } } },
       "source": "synthetic",
       "_note": "Synthetic in-bounds standard report; signed16 hPa 0x03F5=1013, within atmospheric bound 900-1100. expected.data produced by running reference/upstream-codec.js (variable pressure)."
     },
     {
       "description": "CO2 standard report on endpoint 1 (cluster 0x800C, 650 ppm) | payload:210A800C000021028A",
       "input": { "fPort": 125, "bytes": [33, 10, 128, 12, 0, 0, 33, 2, 138] },
-      "expected": { "data": { "air": { "co2": 650 } } },
+      "expected": { "data": { "make": "watteco", "model": "vaqao-lite", "air": { "co2": 650 } } },
       "source": "synthetic",
       "_note": "Synthetic in-bounds standard report; byte0=0x21 -> ZCL endpoint 1, so cluster 0x800C is CO2 (not IAQ). unsigned16 0x028A=650 ppm. expected.data produced by running reference/upstream-codec.js (variable CO2) and mapping to air.co2."
     },
     {
       "description": "IAQ standard report on endpoint 0 (cluster 0x800C, index 25) | payload:110A800C0000210019",
       "input": { "fPort": 125, "bytes": [17, 10, 128, 12, 0, 0, 33, 0, 25] },
-      "expected": { "data": { "iaq": 25 } },
+      "expected": { "data": { "make": "watteco", "model": "vaqao-lite", "iaq": 25 } },
       "source": "ttn-example",
       "_note": "Upstream TTN example input; byte0=0x11 -> ZCL endpoint 0, so cluster 0x800C is the unitless IAQ index. expected.data: reference/upstream-codec.js emits variable IAQ=25; the vocabulary does not model IAQ, so it is the camelCase extra `iaq`."
     },
     {
       "description": "illuminance standard report (cluster 0x0400, 160 lux) | payload:110A040000002100A0",
       "input": { "fPort": 125, "bytes": [17, 10, 4, 0, 0, 0, 33, 0, 160] },
-      "expected": { "data": { "air": { "lightIntensity": 160 } } },
+      "expected": { "data": { "make": "watteco", "model": "vaqao-lite", "air": { "lightIntensity": 160 } } },
       "source": "synthetic",
       "_note": "Synthetic in-bounds standard report; unsigned16 0x00A0=160 lux. expected.data produced by running reference/upstream-codec.js (variable illuminance) and mapping to air.lightIntensity."
     },
     {
       "description": "occupancy standard report (cluster 0x0406, true) | payload:110A040600001001",
       "input": { "fPort": 125, "bytes": [17, 10, 4, 6, 0, 0, 16, 1] },
-      "expected": { "data": { "occupancy": true } },
+      "expected": { "data": { "make": "watteco", "model": "vaqao-lite", "occupancy": true } },
       "source": "synthetic",
       "_note": "Synthetic in-bounds standard report; boolean 0x01 -> occupied. expected.data: reference/upstream-codec.js emits variable occupancy=true; no vocabulary key models occupancy, so it is the camelCase extra `occupancy`."
     },
     {
       "description": "case violation standard report (cluster 0x000F attr 0x0055, true) | payload:110A000F00551001",
       "input": { "fPort": 125, "bytes": [17, 10, 0, 15, 0, 85, 16, 1] },
-      "expected": { "data": { "violationDetection": true } },
+      "expected": { "data": { "make": "watteco", "model": "vaqao-lite", "violationDetection": true } },
       "source": "ttn-example",
       "_note": "Upstream TTN example input (state the case). expected.data: reference/upstream-codec.js emits variable violation_detection=true; no vocabulary key, so the camelCase extra `violationDetection`."
     },
     {
       "description": "battery / power standard report (cluster 0x0050 attr 6, disposable 3.688 V) | payload:110A00500006410503040E6804",
       "input": { "fPort": 125, "bytes": [17, 10, 0, 80, 0, 6, 65, 5, 3, 4, 14, 104, 4] },
-      "expected": { "data": { "battery": 3.688 } },
+      "expected": { "data": { "make": "watteco", "model": "vaqao-lite", "battery": 3.688 } },
       "source": "ttn-example",
       "_note": "Upstream TTN example input. Flags byte selects the disposable-battery source; mV 0x0E68=3688 -> 3.688 V. expected.data produced by running reference/upstream-codec.js (variable disposable_battery_voltage) and mapping to the volts vocabulary key battery."
     },
     {
       "description": "firmware version read-attribute response (cmd 0x01, cluster 0, attr 2) | payload:110100000002000D0305020015E2",
       "input": { "fPort": 125, "bytes": [17, 1, 0, 0, 0, 2, 0, 13, 3, 5, 2, 0, 21, 226] },
-      "expected": { "data": { "firmware": "3.5.2.5602" } },
+      "expected": { "data": { "make": "watteco", "model": "vaqao-lite", "firmware": "3.5.2.5602" } },
       "source": "ttn-example",
       "_note": "Upstream TTN example input. Firmware is three decimal octets then a 24-bit build (0*65536+21*256+226=5602). expected.data produced by running reference/upstream-codec.js (variable firmware); surfaced as the camelCase extra `firmware`."
     },
     {
       "description": "message type read-attribute response (cmd 0x01, cluster 0x8004, unconfirmed) | payload:110180040000000800",
       "input": { "fPort": 125, "bytes": [17, 1, 128, 4, 0, 0, 0, 8, 0] },
-      "expected": { "data": { "messageType": "unconfirmed" } },
+      "expected": { "data": { "make": "watteco", "model": "vaqao-lite", "messageType": "unconfirmed" } },
       "source": "ttn-example",
       "_note": "Upstream TTN example input (dataup info). Value byte 0 -> unconfirmed. expected.data produced by running reference/upstream-codec.js (variable message_type); surfaced as the camelCase extra `messageType`."
     },

@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r720c",
           "battery": 3.6,
           "air": {
             "pressure": 1013.25,
@@ -26,6 +28,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r720c",
           "battery": 3.6,
           "air": {
             "pressure": 995,
@@ -44,6 +48,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r720c",
           "lowBattery": true,
           "battery": 3,
           "air": {

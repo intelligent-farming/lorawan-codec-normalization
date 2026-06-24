@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r720e",
           "battery": 3.6,
           "air": {
             "temperature": 26.3,
@@ -28,6 +30,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r720e",
           "lowBattery": true,
           "battery": 3.6,
           "air": {
@@ -49,6 +53,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r720e",
           "battery": 3.3,
           "air": {
             "temperature": 25,
@@ -69,6 +75,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r720e",
           "battery": 3.6,
           "air": {
             "temperature": 25,

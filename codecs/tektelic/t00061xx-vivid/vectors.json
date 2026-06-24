@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t00061xx-vivid",
           "battery": 3.025,
           "air": {
             "temperature": 29.4,
@@ -25,6 +27,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t00061xx-vivid",
           "action": {
             "motion": {
               "detected": true
@@ -42,6 +46,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t00061xx-vivid",
           "air": {
             "lightIntensity": 120
           }
@@ -57,6 +63,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t00061xx-vivid",
           "action": {
             "contactState": "open"
           }

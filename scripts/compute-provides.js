@@ -30,6 +30,9 @@ function isPlainObject(v) {
   return v !== null && typeof v === 'object' && !Array.isArray(v);
 }
 
+// Device-identity keys emitted on every uplink; not telemetry, so excluded from `provides`.
+const IDENTITY_KEYS = new Set(['make', 'model']);
+
 /** Add dotted leaf paths of `obj` under `prefix` to `acc` (recurse plain objects only). */
 function leaves(obj, prefix, acc) {
   for (const key of Object.keys(obj)) {
@@ -43,6 +46,7 @@ function leaves(obj, prefix, acc) {
 /** Collect emitted leaf paths from one decoded measurement object into `acc`. */
 function collectFromData(data, acc) {
   for (const key of Object.keys(data)) {
+    if (IDENTITY_KEYS.has(key)) continue; // make/model are device identity, not telemetry
     const val = data[key];
     if (key === 'history' && Array.isArray(val)) {
       for (const h of val) if (isPlainObject(h)) leaves(h, '', acc);

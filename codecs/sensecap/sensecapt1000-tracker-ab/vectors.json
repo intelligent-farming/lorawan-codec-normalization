@@ -5,6 +5,8 @@
       "input": { "fPort": 5, "bytes": [6, 0, 0, 8, 0, 100, 98, 36, 141, 6, 202, 80, 40, 1, 88, 126, 198, 0, 254, 0, 0, 87] },
       "expected": {
         "data": {
+          "make": "sensecap",
+          "model": "sensecapt1000-tracker-ab",
           "time": "2023-05-15T12:24:45.000Z",
           "eventStatus": ["shock"],
           "batteryPercent": 87,
@@ -26,6 +28,8 @@
       "input": { "fPort": 5, "bytes": [9, 0, 0, 0, 0, 100, 99, 24, 104, 6, 202, 80, 104, 1, 88, 126, 76, 86] },
       "expected": {
         "data": {
+          "make": "sensecap",
+          "model": "sensecapt1000-tracker-ab",
           "time": "2023-05-16T05:45:12.000Z",
           "batteryPercent": 86,
           "position": {

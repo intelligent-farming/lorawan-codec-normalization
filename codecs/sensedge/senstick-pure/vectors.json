@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensedge",
+          "model": "senstick-pure",
           "air": {
             "temperature": 23.45,
             "relativeHumidity": 47.18,
@@ -32,6 +34,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensedge",
+          "model": "senstick-pure",
           "air": {
             "temperature": -12.34,
             "relativeHumidity": 26,

@@ -3,13 +3,13 @@
     {
       "description": "No leak (TTN example bytes)",
       "input": { "fPort": 85, "bytes": [1, 117, 92, 5, 0, 0] },
-      "expected": { "data": { "batteryPercent": 92, "water": { "leak": false } } },
+      "expected": { "data": { "make": "milesight-iot", "model": "em300-mld", "batteryPercent": 92, "water": { "leak": false } } },
       "source": "ttn-example"
     },
     {
       "description": "Leak detected (TTN example bytes)",
       "input": { "fPort": 85, "bytes": [1, 117, 92, 5, 0, 1] },
-      "expected": { "data": { "batteryPercent": 92, "water": { "leak": true } } },
+      "expected": { "data": { "make": "milesight-iot", "model": "em300-mld", "batteryPercent": 92, "water": { "leak": true } } },
       "source": "ttn-example"
     },
     {
@@ -20,6 +20,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "em300-mld",
           "batteryPercent": 92,
           "water": { "leak": true },
           "history": [

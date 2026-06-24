@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "stmicroelectronics",
+          "model": "steval-astra1b",
           "accelerationOnX": -24,
           "accelerationOnY": -38,
           "accelerationOnZ": -963,
@@ -35,6 +37,8 @@
       },
       "expected": {
         "data": {
+          "make": "stmicroelectronics",
+          "model": "steval-astra1b",
           "altitudeM": 100.5,
           "battery": 3.7,
           "air": {

@@ -7,6 +7,8 @@
       "source": "ttn-example",
       "expected": {
         "data": {
+          "make": "nwave",
+          "model": "nps405sm",
           "messageType": "parkingStatus",
           "action": { "occupancy": { "occupied": true, "duration": 74 } },
           "previousStateDurationError": 0,
@@ -20,6 +22,8 @@
       "source": "synthetic",
       "expected": {
         "data": {
+          "make": "nwave",
+          "model": "nps405sm",
           "messageType": "parkingStatus",
           "action": { "occupancy": { "occupied": false, "duration": 660 } },
           "previousStateDurationError": null,
@@ -33,6 +37,8 @@
       "source": "ttn-example",
       "expected": {
         "data": {
+          "make": "nwave",
+          "model": "nps405sm",
           "messageType": "heartbeat",
           "action": { "occupancy": { "occupied": false } },
           "hwHealthStatus": 0,
@@ -48,6 +54,8 @@
       "source": "synthetic",
       "expected": {
         "data": {
+          "make": "nwave",
+          "model": "nps405sm",
           "messageType": "heartbeat",
           "action": { "occupancy": { "occupied": true } },
           "hwHealthStatus": 1,
@@ -63,6 +71,8 @@
       "source": "ttn-example",
       "expected": {
         "data": {
+          "make": "nwave",
+          "model": "nps405sm",
           "messageType": "startup",
           "firmwareVersion": "2.4.9",
           "resetCause": "power_on",
@@ -76,6 +86,8 @@
       "source": "ttn-example",
       "expected": {
         "data": {
+          "make": "nwave",
+          "model": "nps405sm",
           "messageType": "userRegistration",
           "action": { "occupancy": { "occupied": true, "duration": 160 } },
           "previousStateDurationError": 4,
@@ -91,6 +103,8 @@
       "source": "synthetic",
       "expected": {
         "data": {
+          "make": "nwave",
+          "model": "nps405sm",
           "messageType": "userRegistration",
           "occupancyKnown": false,
           "tagId": "1"

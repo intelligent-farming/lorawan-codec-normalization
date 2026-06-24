@@ -8,7 +8,7 @@
         "fPort": 125,
         "recvTime": "2023-07-19T07:51:25.508306410Z"
       },
-      "expected": { "data": { "tilt": { "angle": 13 } } },
+      "expected": { "data": { "make": "watteco", "model": "inclino", "tilt": { "angle": 13 } } },
       "source": "ttn-example"
     },
     {
@@ -18,7 +18,7 @@
         "fPort": 125,
         "recvTime": "2023-07-19T07:51:25.508306410Z"
       },
-      "expected": { "data": { "tilt": { "angle": 45.5 } } },
+      "expected": { "data": { "make": "watteco", "model": "inclino", "tilt": { "angle": 45.5 } } },
       "source": "synthetic"
     },
     {
@@ -28,7 +28,7 @@
         "fPort": 125,
         "recvTime": "2023-07-19T07:51:25.508306410Z"
       },
-      "expected": { "data": { "tilt": { "angle": -9 } } },
+      "expected": { "data": { "make": "watteco", "model": "inclino", "tilt": { "angle": -9 } } },
       "source": "synthetic"
     },
     {
@@ -38,7 +38,7 @@
         "fPort": 125,
         "recvTime": "2023-07-19T07:51:25.508306410Z"
       },
-      "expected": { "data": { "battery": 3.688 } },
+      "expected": { "data": { "make": "watteco", "model": "inclino", "battery": 3.688 } },
       "source": "ttn-example"
     },
     {
@@ -48,7 +48,7 @@
         "fPort": 125,
         "recvTime": "2023-07-19T07:51:25.508306410Z"
       },
-      "expected": { "data": { "firmware": "3.5.2.5602" } },
+      "expected": { "data": { "make": "watteco", "model": "inclino", "firmware": "3.5.2.5602" } },
       "source": "ttn-example"
     },
     {
@@ -58,7 +58,7 @@
         "fPort": 125,
         "recvTime": "2023-07-19T07:51:25.508306410Z"
       },
-      "expected": { "data": { "messageType": "unconfirmed" } },
+      "expected": { "data": { "make": "watteco", "model": "inclino", "messageType": "unconfirmed" } },
       "source": "ttn-example"
     },
     {

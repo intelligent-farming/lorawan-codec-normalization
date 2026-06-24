@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "em300-mcs",
           "batteryPercent": 92,
           "air": { "temperature": 30.8, "relativeHumidity": 50.5 },
           "action": { "contactState": "open" }
@@ -24,6 +26,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "em300-mcs",
           "batteryPercent": 100,
           "air": { "temperature": -1, "relativeHumidity": 45.5 },
           "action": { "contactState": "closed" }
@@ -40,6 +44,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "em300-mcs",
           "history": [
             {
               "time": "2023-11-14T22:13:20.000Z",
@@ -60,6 +66,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "em300-mcs",
           "batteryPercent": 80,
           "air": { "temperature": 21, "relativeHumidity": 55 },
           "action": { "contactState": "closed" },

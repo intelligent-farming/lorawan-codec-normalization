@@ -5,6 +5,8 @@
       "input": { "fPort": 1, "bytes": [1, 194, 0, 215, 0, 180, 0, 90] },
       "expected": {
         "data": {
+          "make": "sting",
+          "model": "pengy",
           "rpm": 18,
           "fpm": 9,
           "eaqi": "Good",
@@ -20,6 +22,8 @@
       "input": { "fPort": 1, "bytes": [1, 0, 255, 201, 0, 50, 0, 40] },
       "expected": {
         "data": {
+          "make": "sting",
+          "model": "pengy",
           "rpm": 5,
           "fpm": 4,
           "eaqi": "Good",
@@ -35,6 +39,8 @@
       "input": { "fPort": 2, "bytes": [2, 11, 0, 198, 0, 120, 0, 80, 3, 245, 0, 40, 0, 6, 0, 75, 21, 74] },
       "expected": {
         "data": {
+          "make": "sting",
+          "model": "pengy",
           "rpm": 12,
           "fpm": 8,
           "eaqi": "Good",
@@ -54,6 +60,8 @@
       "input": { "fPort": 3, "bytes": [1, 124, 0, 240, 3, 230, 0, 90, 0, 100, 0, 110, 23, 137] },
       "expected": {
         "data": {
+          "make": "sting",
+          "model": "pengy",
           "pm1": 9,
           "pm25": 10,
           "pm10": 11,

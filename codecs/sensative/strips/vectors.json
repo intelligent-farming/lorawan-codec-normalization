@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensative",
+          "model": "strips",
           "batteryPercent": 80,
           "temperatureAlarm": { "high": false, "low": false },
           "floodPercent": 0,
@@ -26,6 +28,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensative",
+          "model": "strips",
           "air": { "temperature": 21.5, "relativeHumidity": 55 }
         }
       },
@@ -39,6 +43,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensative",
+          "model": "strips",
           "air": { "temperature": -5 }
         }
       },
@@ -52,6 +58,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensative",
+          "model": "strips",
           "batteryPercent": 90,
           "air": { "lightIntensity": 1234 }
         }
@@ -66,6 +74,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensative",
+          "model": "strips",
           "batteryPercent": 77,
           "action": { "contactState": "open" }
         }
@@ -80,6 +90,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensative",
+          "model": "strips",
           "action": { "contactState": "closed" }
         }
       },
@@ -93,6 +105,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensative",
+          "model": "strips",
           "batteryPercent": 60,
           "action": { "motion": { "detected": true } }
         }

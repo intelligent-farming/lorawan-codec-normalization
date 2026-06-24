@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t00056xx-industrial-transceiver",
           "battery": 3.6,
           "air": { "temperature": 23.5, "relativeHumidity": 45 },
           "outputState1": 1,
@@ -30,6 +32,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t00056xx-industrial-transceiver",
           "battery": 3.6,
           "air": { "temperature": 23.5, "relativeHumidity": 45 }
         }
@@ -45,6 +49,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t00056xx-industrial-transceiver",
           "air": { "temperature": -5, "relativeHumidity": 50 }
         }
       },
@@ -59,6 +65,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t00056xx-industrial-transceiver",
           "outputState1": 0,
           "outputState2": 1
         }

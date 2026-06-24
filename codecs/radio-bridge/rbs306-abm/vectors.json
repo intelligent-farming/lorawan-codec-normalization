@@ -6,6 +6,8 @@
       "input": { "fPort": 2, "bytes": [17, 14, 0] },
       "expected": {
         "data": {
+          "make": "radio-bridge",
+          "model": "rbs306-abm",
           "protocol": 1,
           "counter": 1,
           "messageType": "movement",
@@ -19,6 +21,8 @@
       "input": { "fPort": 2, "bytes": [17, 14, 1] },
       "expected": {
         "data": {
+          "make": "radio-bridge",
+          "model": "rbs306-abm",
           "protocol": 1,
           "counter": 1,
           "messageType": "movement",
@@ -32,6 +36,8 @@
       "input": { "fPort": 2, "bytes": [17, 1, 0, 0, 54, 0, 0, 0, 0, 0, 42] },
       "expected": {
         "data": {
+          "make": "radio-bridge",
+          "model": "rbs306-abm",
           "protocol": 1,
           "counter": 1,
           "messageType": "supervisory",

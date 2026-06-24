@@ -483,7 +483,7 @@ function normalize(raw) {
   return data;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var APP_PORT_MIN = 1;
   var APP_PORT_MAX = 223;
 
@@ -514,4 +514,14 @@ function decodeUplink(input) {
   }
 
   return { data: normalize(raw) };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "mikrotik";
+    result.data.model = "tg-lr82";
+  }
+  return result;
 }

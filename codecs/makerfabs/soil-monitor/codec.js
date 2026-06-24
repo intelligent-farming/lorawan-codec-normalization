@@ -30,7 +30,7 @@ function round(value, decimals) {
   return Math.round(value * f) / f;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
 
   if (!bytes || bytes.length < 16) {
@@ -74,4 +74,14 @@ function decodeUplink(input) {
   data.transmitInterval = round(intervalMs / 1000, 3);
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "makerfabs";
+    result.data.model = "soil-monitor";
+  }
+  return result;
 }

@@ -41,7 +41,7 @@ function contactState(raw) {
   return raw === 1 ? 'open' : 'closed';
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
 
   if (input.fPort === 7) {
@@ -73,4 +73,14 @@ function decodeUplink(input) {
   data.contact2State = contactState(bytes[5]);
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "netvox";
+    result.data.model = "r311cc";
+  }
+  return result;
 }

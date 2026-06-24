@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "enginko",
+          "model": "mcf-lwws02",
           "air": { "pressure": 1013, "temperature": 22, "relativeHumidity": 55 },
           "wind": { "speed": 4.47, "direction": 180 },
           "rain": { "intensity": 3, "cumulative": 24 },
@@ -32,6 +34,8 @@
       },
       "expected": {
         "data": {
+          "make": "enginko",
+          "model": "mcf-lwws02",
           "air": { "pressure": 1019.3, "temperature": 0, "relativeHumidity": 80 },
           "wind": { "speed": 0, "direction": 0 },
           "rain": { "intensity": 0, "cumulative": 0 },
@@ -56,6 +60,8 @@
       },
       "expected": {
         "data": {
+          "make": "enginko",
+          "model": "mcf-lwws02",
           "air": { "pressure": 988.83, "temperature": 15, "relativeHumidity": 98 },
           "wind": { "speed": 15.65, "direction": 359 },
           "rain": { "intensity": 12, "cumulative": 108 },

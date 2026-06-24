@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "makerfabs",
+          "model": "temperature-humidity-sht31",
           "battery": 3.1,
           "air": {
             "temperature": 30.6,
@@ -26,6 +28,8 @@
       },
       "expected": {
         "data": {
+          "make": "makerfabs",
+          "model": "temperature-humidity-sht31",
           "battery": 3,
           "air": {
             "temperature": -5.5,
@@ -44,6 +48,8 @@
       },
       "expected": {
         "data": {
+          "make": "makerfabs",
+          "model": "temperature-humidity-sht31",
           "battery": 2.5,
           "air": {
             "temperature": 0,

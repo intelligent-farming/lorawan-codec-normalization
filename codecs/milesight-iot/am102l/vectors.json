@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "am102l",
           "batteryPercent": 100,
           "air": { "temperature": 28, "relativeHumidity": 54.5 }
         }
@@ -23,6 +25,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "am102l",
           "batteryPercent": 80,
           "air": { "temperature": -1, "relativeHumidity": 45 }
         }
@@ -38,6 +42,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "am102l",
           "batteryPercent": 72,
           "air": { "temperature": 22.1, "relativeHumidity": 42 }
         }
@@ -53,6 +59,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "am102l",
           "batteryPercent": 90,
           "air": { "temperature": 25, "relativeHumidity": 50 },
           "history": [

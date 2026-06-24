@@ -5,6 +5,8 @@
       "input": { "fPort": 2, "bytes": [33, 25, 83, 2, 7, 234, 6, 22, 14, 30, 15, 8, 9, 22, 131, 254, 8, 183, 8, 72, 48, 15] },
       "expected": {
         "data": {
+          "make": "restotracker",
+          "model": "scd18",
           "air": { "temperature": 25 },
           "action": { "motion": { "detected": true } },
           "battery": 2.7,
@@ -28,6 +30,8 @@
       "input": { "fPort": 12, "bytes": [33, 3, 22, 131, 254, 8, 183, 8, 72, 48, 15] },
       "expected": {
         "data": {
+          "make": "restotracker",
+          "model": "scd18",
           "workMode": "period",
           "lowPower": false,
           "tamper": false,
@@ -48,6 +52,8 @@
       "input": { "fPort": 2, "bytes": [33, 25, 83, 0, 7, 234, 6, 22, 14, 30, 15, 8, 7, 170, 187, 204, 221, 238, 255, 200] },
       "expected": {
         "data": {
+          "make": "restotracker",
+          "model": "scd18",
           "air": { "temperature": 25 },
           "action": { "motion": { "detected": true } },
           "battery": 2.7,
@@ -70,6 +76,8 @@
       "input": { "fPort": 1, "bytes": [33, 25, 83, 0, 82, 0, 0, 0, 5] },
       "expected": {
         "data": {
+          "make": "restotracker",
+          "model": "scd18",
           "air": { "temperature": 25 },
           "action": { "motion": { "detected": true } },
           "battery": 2.7,

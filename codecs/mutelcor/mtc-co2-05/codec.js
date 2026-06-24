@@ -53,7 +53,7 @@ var OPCODES = {
   128: 'scd30'
 };
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
 
   if (!bytes || bytes.length === 0) {
@@ -207,4 +207,14 @@ function decodeUplink(input) {
   }
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "mutelcor";
+    result.data.model = "mtc-co2-05";
+  }
+  return result;
 }

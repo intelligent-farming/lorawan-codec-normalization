@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r900ndc",
           "battery": 12,
           "current1": 29,
           "current2": 14,
@@ -28,6 +30,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r900ndc",
           "lowBattery": true,
           "battery": 3.2,
           "current1": 300,

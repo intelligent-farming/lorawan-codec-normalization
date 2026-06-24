@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensecap",
+          "model": "sensecaps2102-light",
           "batteryPercent": 100,
           "air": {
             "lightIntensity": 5000
@@ -24,6 +26,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensecap",
+          "model": "sensecaps2102-light",
           "air": {
             "lightIntensity": 5000
           }
@@ -39,6 +43,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensecap",
+          "model": "sensecaps2102-light",
           "air": {
             "temperature": 21.4,
             "relativeHumidity": 31.4

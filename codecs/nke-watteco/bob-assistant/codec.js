@@ -28,7 +28,7 @@ function round(value, decimals) {
   return Math.round(value * f) / f;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   var fPort = input.fPort;
 
@@ -156,4 +156,14 @@ function decodeUplink(input) {
   }
 
   return { errors: ['unrecognized report type 0x' + type.toString(16)] };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "nke-watteco";
+    result.data.model = "bob-assistant";
+  }
+  return result;
 }

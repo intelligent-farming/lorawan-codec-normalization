@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "iot-factory",
+          "model": "asset-tracker",
           "batteryPercent": 50,
           "externalPower": false,
           "position": { "latitude": -33.86, "longitude": 151.21 },
@@ -31,6 +33,8 @@
       },
       "expected": {
         "data": {
+          "make": "iot-factory",
+          "model": "asset-tracker",
           "batteryPercent": 88,
           "externalPower": false,
           "position": { "latitude": 12.5, "longitude": -3.25 },

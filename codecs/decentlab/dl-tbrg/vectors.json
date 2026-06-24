@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-tbrg",
           "intervalPrecipitation": 0.4,
           "precipitationIntervalSeconds": 600,
           "tipCount": 16538,
@@ -25,6 +27,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-tbrg",
           "battery": 3.156
         }
       },
@@ -38,6 +42,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-tbrg",
           "intervalPrecipitation": 0.2,
           "precipitationIntervalSeconds": 300,
           "tipCount": 1031,

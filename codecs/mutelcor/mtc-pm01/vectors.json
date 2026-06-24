@@ -6,6 +6,8 @@
       "input": { "fPort": 2, "bytes": [1, 1, 104, 3, 163, 0, 235, 45, 0, 120, 2, 0, 12, 0, 18, 0, 25] },
       "expected": {
         "data": {
+          "make": "mutelcor",
+          "model": "mtc-pm01",
           "battery": 3.6,
           "air": {
             "temperature": 23.5,
@@ -24,6 +26,8 @@
       "input": { "fPort": 2, "bytes": [1, 1, 44, 3, 131, 255, 204, 40, 2, 0, 8, 0, 30, 0, 55] },
       "expected": {
         "data": {
+          "make": "mutelcor",
+          "model": "mtc-pm01",
           "battery": 3,
           "air": {
             "temperature": -5.2,
@@ -41,6 +45,8 @@
       "input": { "fPort": 2, "bytes": [1, 1, 90, 3, 7, 1, 44, 55, 39, 16] },
       "expected": {
         "data": {
+          "make": "mutelcor",
+          "model": "mtc-pm01",
           "battery": 3.46,
           "air": {
             "temperature": 30,

@@ -166,7 +166,7 @@ function mapMeasurements(readings, data, extras) {
   }
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   if (!input || !input.bytes || input.bytes.length < 1) {
     return { errors: ['empty payload'] };
   }
@@ -246,4 +246,14 @@ function decodeUplink(input) {
   }
 
   return { errors: ['unsupported function code ' + func] };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "keller";
+    result.data.model = "adt1-box";
+  }
+  return result;
 }

@@ -4,37 +4,37 @@
     {
       "description": "fPort 5 switch/load state — relay on, load off",
       "input": { "fPort": 5, "bytes": [97, 168, 237, 113, 16, 1, 0] },
-      "expected": { "data": { "time": "2021-12-02T15:59:45.000Z", "relayState": "on", "loadState": "off" } },
+      "expected": { "data": { "make": "moko", "model": "lw005-mp", "time": "2021-12-02T15:59:45.000Z", "relayState": "on", "loadState": "off" } },
       "source": "synthetic"
     },
     {
       "description": "fPort 6 instantaneous voltage/current/frequency",
       "input": { "fPort": 6, "bytes": [97, 173, 108, 98, 16, 9, 45, 0, 100, 195, 101] },
-      "expected": { "data": { "time": "2021-12-06T01:50:26.000Z", "power": { "voltage": 234.9, "current": 0.1, "frequency": 50.021 } } },
+      "expected": { "data": { "make": "moko", "model": "lw005-mp", "time": "2021-12-06T01:50:26.000Z", "power": { "voltage": 234.9, "current": 0.1, "frequency": 50.021 } } },
       "source": "synthetic"
     },
     {
       "description": "fPort 7 active power and power factor (raw 98 -> 0.98)",
       "input": { "fPort": 7, "bytes": [97, 173, 108, 98, 16, 0, 0, 120, 249, 98] },
-      "expected": { "data": { "time": "2021-12-06T01:50:26.000Z", "power": { "active": 3096.9, "factor": 0.98 } } },
+      "expected": { "data": { "make": "moko", "model": "lw005-mp", "time": "2021-12-06T01:50:26.000Z", "power": { "active": 3096.9, "factor": 0.98 } } },
       "source": "synthetic"
     },
     {
       "description": "fPort 8 cumulative energy (Wh) and last-hour energy",
       "input": { "fPort": 8, "bytes": [97, 173, 108, 68, 16, 0, 180, 31, 63, 1, 103] },
-      "expected": { "data": { "time": "2021-12-06T01:49:56.000Z", "metering": { "energy": { "total": 11804479 } }, "lastHourEnergyWh": 359 } },
+      "expected": { "data": { "make": "moko", "model": "lw005-mp", "time": "2021-12-06T01:49:56.000Z", "metering": { "energy": { "total": 11804479 } }, "lastHourEnergyWh": 359 } },
       "source": "synthetic"
     },
     {
       "description": "fPort 9 over-voltage alarm carries current voltage and protect level",
       "input": { "fPort": 9, "bytes": [97, 173, 108, 68, 16, 1, 9, 96, 9, 106] },
-      "expected": { "data": { "time": "2021-12-06T01:49:56.000Z", "power": { "voltage": 240 }, "overVoltageState": 1, "protectVoltage": 241 } },
+      "expected": { "data": { "make": "moko", "model": "lw005-mp", "time": "2021-12-06T01:49:56.000Z", "power": { "voltage": 240 }, "overVoltageState": 1, "protectVoltage": 241 } },
       "source": "synthetic"
     },
     {
       "description": "fPort 12 over-power alarm carries active power and protect level",
       "input": { "fPort": 12, "bytes": [97, 173, 108, 68, 16, 1, 0, 120, 249, 7, 208] },
-      "expected": { "data": { "time": "2021-12-06T01:49:56.000Z", "power": { "active": 3096.9 }, "overPowerState": 1, "protectPower": 200 } },
+      "expected": { "data": { "make": "moko", "model": "lw005-mp", "time": "2021-12-06T01:49:56.000Z", "power": { "active": 3096.9 }, "overPowerState": 1, "protectPower": 200 } },
       "source": "synthetic"
     },
     {

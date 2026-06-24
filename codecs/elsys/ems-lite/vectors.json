@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "elsys",
+          "model": "ems-lite",
           "battery": 3.6,
           "air": {
             "temperature": 22.6,
@@ -32,6 +34,8 @@
       },
       "expected": {
         "data": {
+          "make": "elsys",
+          "model": "ems-lite",
           "battery": 3.616,
           "air": {
             "temperature": 21.5,
@@ -57,6 +61,8 @@
       },
       "expected": {
         "data": {
+          "make": "elsys",
+          "model": "ems-lite",
           "air": {
             "temperature": -10.6,
             "relativeHumidity": 38

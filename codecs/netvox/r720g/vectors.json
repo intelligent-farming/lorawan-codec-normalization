@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r720g",
           "battery": 3.6,
           "position": { "latitude": 33.135808 },
           "angleX": 37,
@@ -26,6 +28,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r720g",
           "battery": 3.8,
           "position": { "longitude": -97.584433 },
           "hdop": 12,
@@ -43,6 +47,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r720g",
           "lowBattery": true,
           "battery": 3.6,
           "position": { "latitude": 33.135808 },

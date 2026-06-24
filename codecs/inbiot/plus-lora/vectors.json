@@ -11,6 +11,8 @@
       },
       "expected": {
         "data": {
+          "make": "inbiot",
+          "model": "plus-lora",
           "type": "PLUS",
           "ch2o": 12,
           "tvoc": 145,
@@ -36,6 +38,8 @@
       "input": { "fPort": 1, "bytes": [0, 1, 1, 1, 0, 5, 255, 0, 1] },
       "expected": {
         "data": {
+          "make": "inbiot",
+          "model": "plus-lora",
           "timeToSend": 1,
           "ventilation": 1,
           "ledStatus": true,
@@ -61,8 +65,10 @@
       },
       "expected": {
         "data": {
+          "make": "inbiot",
+          "model": "plus-lora",
           "fwVersion": "2.65",
-          "model": "WELL_LORA_000_VAC",
+          "deviceModel": "WELL_LORA_000_VAC",
           "micaType": "MICA_WELL",
           "mac": "30:C9:22:60:1F:F8",
           "resetReason": "1 Reset due to power-on event",

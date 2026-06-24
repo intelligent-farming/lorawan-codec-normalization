@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-pr26",
           "water": {
             "pressure": 50,
             "temperature": { "current": 20 }
@@ -26,6 +28,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-pr26",
           "water": {
             "pressure": 0,
             "temperature": { "current": -10 }
@@ -43,6 +47,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-pr26",
           "battery": 3.05
         }
       },

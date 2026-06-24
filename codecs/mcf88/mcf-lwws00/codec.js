@@ -60,7 +60,7 @@ function inHgToHpa(inHg) {
   return inHg * 33.863886666667;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length < 1) {
     return { errors: ['empty payload'] };
@@ -133,4 +133,14 @@ function decodeUplink(input) {
   data.dayEvapotranspiration = round((u16le(w, 18) / 1000.0) * 25.4, 2);
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "mcf88";
+    result.data.model = "mcf-lwws00";
+  }
+  return result;
 }

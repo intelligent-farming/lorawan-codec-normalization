@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "pepperl-fuchs",
+          "model": "wilsen-sonic-distance",
           "air": { "temperature": 23.2 },
           "battery": 3.6,
           "position": { "latitude": 49.545327, "longitude": 8.467309 },
@@ -25,6 +27,8 @@
       },
       "expected": {
         "data": {
+          "make": "pepperl-fuchs",
+          "model": "wilsen-sonic-distance",
           "air": { "temperature": 17.5 },
           "battery": 3.6,
           "position": { "latitude": 51.123456, "longitude": -0.654321 },
@@ -43,6 +47,8 @@
       },
       "expected": {
         "data": {
+          "make": "pepperl-fuchs",
+          "model": "wilsen-sonic-distance",
           "air": { "temperature": -3.2 },
           "battery": 3.5,
           "position": { "latitude": -33.865, "longitude": 151.2099 },
@@ -61,6 +67,8 @@
       },
       "expected": {
         "data": {
+          "make": "pepperl-fuchs",
+          "model": "wilsen-sonic-distance",
           "battery": 3.6,
           "proximity": 1721,
           "amplitude": 255

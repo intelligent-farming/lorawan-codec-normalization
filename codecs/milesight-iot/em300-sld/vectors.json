@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "em300-sld",
           "batteryPercent": 90,
           "air": { "temperature": 21, "relativeHumidity": 42 },
           "water": { "leak": false }
@@ -24,6 +26,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "em300-sld",
           "batteryPercent": 40,
           "air": { "temperature": -21.8, "relativeHumidity": 65.5 },
           "water": { "leak": true }
@@ -40,6 +44,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "em300-sld",
           "water": { "leak": true }
         }
       },
@@ -54,6 +60,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "em300-sld",
           "water": { "leak": false }
         }
       },

@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "adeunis",
+          "model": "comfort-co2",
           "frameType": "0x6a data",
           "air": { "temperature": 43.5, "relativeHumidity": 62, "co2": 420 },
           "frameCounter": 4,
@@ -30,6 +32,8 @@
       },
       "expected": {
         "data": {
+          "make": "adeunis",
+          "model": "comfort-co2",
           "frameType": "0x6a data",
           "air": { "temperature": 19.8, "relativeHumidity": 45, "co2": 480 },
           "frameCounter": 1,
@@ -49,6 +53,8 @@
       },
       "expected": {
         "data": {
+          "make": "adeunis",
+          "model": "comfort-co2",
           "frameType": "0x6a data",
           "air": { "temperature": -5, "relativeHumidity": 40, "co2": 450 },
           "frameCounter": 0,
@@ -68,6 +74,8 @@
       },
       "expected": {
         "data": {
+          "make": "adeunis",
+          "model": "comfort-co2",
           "frameType": "0x6a data",
           "air": { "temperature": 22, "relativeHumidity": 55, "co2": 700 },
           "frameCounter": 0,

@@ -302,7 +302,7 @@ function decodeBatteryVoltage(b) {
   return { data: data };
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length === 0) {
     return { errors: ['Invalid message type used!'] };
@@ -331,4 +331,14 @@ function decodeUplink(input) {
     default:
       return { errors: ['Invalid message type used!'] };
   }
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "ezurio";
+    result.data.model = "rs1xx-ext-multi-sensor";
+  }
+  return result;
 }

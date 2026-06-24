@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "teneo-iot",
+          "model": "filling-degree-sensor",
           "sensorType": "fillrate",
           "settingsAllowed": true,
           "charging": false,
@@ -31,6 +33,8 @@
       },
       "expected": {
         "data": {
+          "make": "teneo-iot",
+          "model": "filling-degree-sensor",
           "sensorType": "fillrate",
           "settingsAllowed": true,
           "charging": false,
@@ -54,6 +58,8 @@
       },
       "expected": {
         "data": {
+          "make": "teneo-iot",
+          "model": "filling-degree-sensor",
           "sensorType": "fillrate",
           "settingsAllowed": true,
           "charging": false,
@@ -73,6 +79,8 @@
       },
       "expected": {
         "data": {
+          "make": "teneo-iot",
+          "model": "filling-degree-sensor",
           "sensorType": "fillrate",
           "settingsAllowed": true,
           "charging": false,
@@ -93,6 +101,8 @@
       },
       "expected": {
         "data": {
+          "make": "teneo-iot",
+          "model": "filling-degree-sensor",
           "sensorType": "fillrate",
           "settingsAllowed": true,
           "charging": false,
@@ -112,6 +122,8 @@
       },
       "expected": {
         "data": {
+          "make": "teneo-iot",
+          "model": "filling-degree-sensor",
           "sensorType": "fillrate",
           "settingsAllowed": true,
           "charging": true,

@@ -5,6 +5,8 @@
       "input": { "fPort": 1, "bytes": [2, 82, 184, 0, 3, 0, 0, 136, 66, 130, 199, 127, 99, 127, 246, 12, 92] },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-pheht",
           "protocolVersion": 2,
           "deviceId": 21176,
           "status": 0,
@@ -22,6 +24,8 @@
       "input": { "fPort": 1, "bytes": [2, 82, 184, 0, 2, 12, 92] },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-pheht",
           "protocolVersion": 2,
           "deviceId": 21176,
           "battery": 3.164
@@ -35,6 +39,8 @@
       "input": { "fPort": 1, "bytes": [2, 18, 52, 0, 1, 0, 0, 137, 196, 130, 188, 126, 12, 128, 150] },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-pheht",
           "protocolVersion": 2,
           "deviceId": 4660,
           "status": 0,

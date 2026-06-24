@@ -5,6 +5,8 @@
       "input": { "fPort": 2, "bytes": [0, 8, 107, 18, 212, 39, 148, 230] },
       "expected": {
         "data": {
+          "make": "senzemo",
+          "model": "smc30",
           "air": {
             "temperature": 21.55,
             "relativeHumidity": 48.2,
@@ -22,6 +24,8 @@
       "input": { "fPort": 1, "bytes": [1, 253, 225, 37, 28, 38, 252, 45] },
       "expected": {
         "data": {
+          "make": "senzemo",
+          "model": "smc30",
           "air": {
             "temperature": -5.43,
             "relativeHumidity": 95,
@@ -39,6 +43,8 @@
       "input": { "fPort": 3, "bytes": [0, 30, 5, 1, 2, 7, 11, 30, 21] },
       "expected": {
         "data": {
+          "make": "senzemo",
+          "model": "smc30",
           "status": 0,
           "sendPeriod": 30,
           "movementThreshold": 5,

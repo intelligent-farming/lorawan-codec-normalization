@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "talkpool",
+          "model": "oy1100",
           "air": { "temperature": 30.1, "relativeHumidity": 42.3 }
         }
       },
@@ -22,6 +24,8 @@
       },
       "expected": {
         "data": {
+          "make": "talkpool",
+          "model": "oy1100",
           "air": { "temperature": 22.5, "relativeHumidity": 55 }
         }
       },
@@ -36,6 +40,8 @@
       },
       "expected": {
         "data": {
+          "make": "talkpool",
+          "model": "oy1100",
           "air": { "temperature": 40.9, "relativeHumidity": 99 }
         }
       },

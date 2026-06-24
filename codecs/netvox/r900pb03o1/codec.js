@@ -34,7 +34,7 @@ function round(value, decimals) {
   return Math.round(value * f) / f;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
 
   if (input.fPort !== 22) {
@@ -85,4 +85,14 @@ function decodeUplink(input) {
   data.highFillLevelAlarm = flags >> 3 & 0x01 ? true : false;
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "netvox";
+    result.data.model = "r900pb03o1";
+  }
+  return result;
 }

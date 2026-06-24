@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "pallidus",
+          "model": "mr1",
           "time": "2025-03-31T00:40:01.000Z",
           "battery": 3.698,
           "boot": 9,

@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "dragino",
+          "model": "lds01",
           "battery": 3,
           "action": {
             "contactState": "closed"
@@ -28,6 +30,8 @@
       },
       "expected": {
         "data": {
+          "make": "dragino",
+          "model": "lds01",
           "battery": 3,
           "action": {
             "contactState": "open"

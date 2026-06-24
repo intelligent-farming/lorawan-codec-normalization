@@ -6,6 +6,8 @@
       "input": { "fPort": 1, "bytes": [114, 64, 100, 90, 3, 55, 30, 0, 2, 50, 40, 5, 0, 10, 20, 30, 40, 80, 1, 2, 3, 4, 5, 6, 7, 8, 9] },
       "expected": {
         "data": {
+          "make": "nke-watteco",
+          "model": "bob-assistant",
           "action": { "motion": { "count": 3 } },
           "air": { "temperature": 25 },
           "batteryPercent": 63,
@@ -38,6 +40,8 @@
       "input": { "fPort": 1, "bytes": [97, 80, 55, 0, 2, 60, 50, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5] },
       "expected": {
         "data": {
+          "make": "nke-watteco",
+          "model": "bob-assistant",
           "action": { "motion": { "detected": true } },
           "air": { "temperature": 25 },
           "vibrationLevel": 0.2606,
@@ -57,6 +61,8 @@
       "input": { "fPort": 1, "bytes": [83, 126, 120] },
       "expected": {
         "data": {
+          "make": "nke-watteco",
+          "model": "bob-assistant",
           "deviceState": "Machine start",
           "batteryPercent": 94.5
         }

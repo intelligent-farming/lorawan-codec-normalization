@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "iothings",
+          "model": "iotracker3",
           "crc": 221,
           "batteryPercent": 39.4,
           "action": { "motion": { "detected": true } },

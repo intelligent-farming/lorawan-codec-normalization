@@ -225,7 +225,7 @@ function decodeHr(bytes, acc) {
   return null;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length === 0) {
     return { errors: ['empty payload'] };
@@ -260,4 +260,14 @@ function decodeUplink(input) {
     acc.data.action = { motion: acc.motion };
   }
   return { data: acc.data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "thermokon";
+    result.data.model = "thanos-evo-lrw";
+  }
+  return result;
 }

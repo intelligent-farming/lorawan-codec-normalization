@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t0007367-pelican-ex",
           "action": {
             "motion": {
               "detected": true
@@ -26,6 +28,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t0007367-pelican-ex",
           "battery": 2.55,
           "action": {
             "motion": {
@@ -53,6 +57,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t0007367-pelican-ex",
           "action": {
             "motion": {
               "detected": false

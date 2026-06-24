@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "browan",
+          "model": "tbdw100",
           "battery": 3.6,
           "air": {
             "temperature": 21
@@ -30,6 +32,8 @@
       },
       "expected": {
         "data": {
+          "make": "browan",
+          "model": "tbdw100",
           "battery": 3.3,
           "air": {
             "temperature": 21
@@ -52,6 +56,8 @@
       },
       "expected": {
         "data": {
+          "make": "browan",
+          "model": "tbdw100",
           "battery": 4,
           "air": {
             "temperature": 38

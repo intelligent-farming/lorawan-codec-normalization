@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "atomsenses",
+          "model": "as-204",
           "batteryPercent": 92,
           "nh3": 0,
           "h2s": 0.01,
@@ -24,6 +26,8 @@
       },
       "expected": {
         "data": {
+          "make": "atomsenses",
+          "model": "as-204",
           "batteryPercent": 80,
           "nh3": 0.75,
           "h2s": 2,

@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r31505",
           "battery": 2.8,
           "air": { "temperature": 27.8, "relativeHumidity": 53 }
         }
@@ -23,6 +25,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r31505",
           "lowBattery": true,
           "battery": 2.8,
           "air": { "temperature": -5, "relativeHumidity": 40 }
@@ -39,6 +43,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r31505",
           "battery": 2.8,
           "lowTemperatureAlarm": false,
           "highTemperatureAlarm": true,

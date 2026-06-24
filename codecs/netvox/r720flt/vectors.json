@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r720flt",
           "battery": 3.6,
           "replenishWaterCount": 100,
           "fault": false,
@@ -27,6 +29,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r720flt",
           "lowBattery": true,
           "battery": 3.6,
           "replenishWaterCount": 200,

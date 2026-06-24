@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r311fc",
           "battery": 3,
           "device": { "runtime": 18489621 }
         }
@@ -23,6 +25,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r311fc",
           "lowBattery": true,
           "battery": 2.9,
           "device": { "runtime": 3600 }

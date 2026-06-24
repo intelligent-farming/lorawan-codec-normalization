@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "inbiot",
+          "model": "well-lora",
           "type": "WELL",
           "tvoc": 85,
           "pm2_5": 5,
@@ -43,6 +45,8 @@
       },
       "expected": {
         "data": {
+          "make": "inbiot",
+          "model": "well-lora",
           "type": "WELL",
           "tvoc": 0,
           "pm2_5": 1,
@@ -77,6 +81,8 @@
       },
       "expected": {
         "data": {
+          "make": "inbiot",
+          "model": "well-lora",
           "timeToSend": 1,
           "ventilation": 1,
           "ledStatus": true,
@@ -97,8 +103,10 @@
       },
       "expected": {
         "data": {
+          "make": "inbiot",
+          "model": "well-lora",
           "fwVersion": "2.65",
-          "model": "WELL_LORA_000_VAC",
+          "deviceModel": "WELL_LORA_000_VAC",
           "micaType": "MICA_WELL",
           "mac": "30:C9:22:60:1F:F8",
           "resetReason": "1 Reset due to power-on event",

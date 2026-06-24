@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "dnt",
+          "model": "dnt-lw-wsci",
           "battery": 2.94,
           "sabotageContactState": "IDLE",
           "inputClampState": "LOW",
@@ -26,6 +28,8 @@
       },
       "expected": {
         "data": {
+          "make": "dnt",
+          "model": "dnt-lw-wsci",
           "action": {
             "contactState": "open"
           }
@@ -41,6 +45,8 @@
       },
       "expected": {
         "data": {
+          "make": "dnt",
+          "model": "dnt-lw-wsci",
           "battery": 3.5,
           "sabotageContactState": "TRIGGERED",
           "inputClampState": "HIGH",
@@ -60,6 +66,8 @@
       },
       "expected": {
         "data": {
+          "make": "dnt",
+          "model": "dnt-lw-wsci",
           "battery": 2.94
         }
       },

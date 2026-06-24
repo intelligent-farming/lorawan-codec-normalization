@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "pepperl-fuchs",
+          "model": "wilsen-sonic-level",
           "distanceCm": 49,
           "fillLevelPercent": 93,
           "battery": 3.4,
@@ -24,6 +26,8 @@
       },
       "expected": {
         "data": {
+          "make": "pepperl-fuchs",
+          "model": "wilsen-sonic-level",
           "distanceMm": 1718,
           "fillLevelPercent": 60,
           "battery": 3.6,
@@ -40,6 +44,8 @@
       },
       "expected": {
         "data": {
+          "make": "pepperl-fuchs",
+          "model": "wilsen-sonic-level",
           "distanceCm": 33,
           "fillLevelPercent": 100,
           "battery": 3.8,
@@ -57,6 +63,8 @@
       },
       "expected": {
         "data": {
+          "make": "pepperl-fuchs",
+          "model": "wilsen-sonic-level",
           "serialNumber": "48000000630682",
           "loraCount": 704,
           "gpsCount": 0,
@@ -74,6 +82,8 @@
       },
       "expected": {
         "data": {
+          "make": "pepperl-fuchs",
+          "model": "wilsen-sonic-level",
           "fillLevelPercent": 42,
           "battery": 3.7,
           "air": { "temperature": 7.5 },

@@ -68,7 +68,7 @@ var IAQ_GLOBAL = ['Excellent', 'Reserved', 'Fair', 'Reserved', 'Bad', 'Reserved'
 var IAQ_SOURCE = ['None', 'Reserved', 'Reserved', 'Reserved', 'Reserved', 'CO2', 'VOC',
   'Reserved', 'Reserved', 'Reserved', 'Reserved', 'Reserved', 'Reserved', 'Reserved', 'Reserved', 'Error'];
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length < 12) {
     return { errors: ['payload too short for a Nexelec periodic frame'] };
@@ -151,4 +151,14 @@ function decodeUplink(input) {
   }
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "nexelec";
+    result.data.model = "sign";
+  }
+  return result;
 }

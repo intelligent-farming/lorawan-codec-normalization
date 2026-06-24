@@ -112,7 +112,7 @@ function decodeTiming(bytes, data) {
   data.reportsNumChecksAlert = u16be(bytes, 6, 7);
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes) {
     return { errors: ['empty payload'] };
@@ -152,4 +152,14 @@ function decodeUplink(input) {
   }
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "rivercity-innovations";
+    result.data.model = "txh";
+  }
+  return result;
 }

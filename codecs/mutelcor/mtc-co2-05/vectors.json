@@ -5,6 +5,8 @@
       "input": { "fPort": 2, "bytes": [1, 1, 74, 3, 19, 0, 234, 55, 3, 32] },
       "expected": {
         "data": {
+          "make": "mutelcor",
+          "model": "mtc-co2-05",
           "payloadVersion": 1,
           "battery": 3.3,
           "messageType": "measurements",
@@ -23,6 +25,8 @@
       "input": { "fPort": 2, "bytes": [1, 1, 200, 3, 63, 0, 210, 48, 39, 148, 1, 94, 2, 100, 0, 125] },
       "expected": {
         "data": {
+          "make": "mutelcor",
+          "model": "mtc-co2-05",
           "payloadVersion": 1,
           "battery": 4.56,
           "messageType": "measurements",
@@ -44,6 +48,8 @@
       "input": { "fPort": 2, "bytes": [1, 1, 44, 3, 1, 255, 204] },
       "expected": {
         "data": {
+          "make": "mutelcor",
+          "model": "mtc-co2-05",
           "payloadVersion": 1,
           "battery": 3,
           "messageType": "measurements",
@@ -60,6 +66,8 @@
       "input": { "fPort": 2, "bytes": [1, 1, 74, 3, 145, 0, 220, 2, 188, 3, 19, 0, 5, 0, 10, 0, 15] },
       "expected": {
         "data": {
+          "make": "mutelcor",
+          "model": "mtc-co2-05",
           "payloadVersion": 1,
           "battery": 3.3,
           "messageType": "measurements",
@@ -81,6 +89,8 @@
       "input": { "fPort": 2, "bytes": [1, 1, 200, 0] },
       "expected": {
         "data": {
+          "make": "mutelcor",
+          "model": "mtc-co2-05",
           "payloadVersion": 1,
           "battery": 4.56,
           "messageType": "heartbeat"

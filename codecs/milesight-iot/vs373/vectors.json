@@ -9,6 +9,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs373",
           "detectionStatus": "vacant",
           "targetStatus": "normal",
           "useTimeNow": 16,
@@ -35,6 +37,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs373",
           "detectionStatus": "fall",
           "targetStatus": "normal",
           "useTimeNow": 0,
@@ -56,6 +60,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs373",
           "detectionStatus": "in_bed",
           "targetStatus": "motionless",
           "useTimeNow": 16,
@@ -77,6 +83,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs373",
           "region1Occupancy": "occupied",
           "region2Occupancy": "vacant",
           "region3Occupancy": "occupied",
@@ -99,6 +107,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs373",
           "ipsoVersion": "v1.0",
           "lorawanClass": "Class C"
         }

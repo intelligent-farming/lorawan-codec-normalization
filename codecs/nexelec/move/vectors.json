@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "nexelec",
+          "model": "move",
           "air": { "temperature": 22.5, "relativeHumidity": 48.3, "lightIntensity": 350 },
           "action": { "motion": { "detected": true } },
           "occupancyPercent": 35,
@@ -27,6 +29,8 @@
       },
       "expected": {
         "data": {
+          "make": "nexelec",
+          "model": "move",
           "air": { "temperature": -10, "relativeHumidity": 65, "lightIntensity": 0 },
           "action": { "motion": { "detected": false } },
           "occupancyPercent": 0,
@@ -46,6 +50,8 @@
       },
       "expected": {
         "data": {
+          "make": "nexelec",
+          "model": "move",
           "air": { "temperature": 0, "relativeHumidity": 55 },
           "buttonPressed": false
         }

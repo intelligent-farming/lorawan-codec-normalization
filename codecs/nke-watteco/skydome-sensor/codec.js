@@ -65,7 +65,7 @@ function bytes2Float32(b0, b1, b2, b3) {
   return sign * significand * Math.pow(2, exponent);
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   var fPort = input.fPort;
 
@@ -156,4 +156,14 @@ function decodeUplink(input) {
   return {
     errors: ['unrecognized Watteco cluster ' + cluster + ' attribute ' + attr],
   };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "nke-watteco";
+    result.data.model = "skydome-sensor";
+  }
+  return result;
 }

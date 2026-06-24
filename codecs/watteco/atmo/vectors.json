@@ -6,7 +6,7 @@
         "bytes": [17, 10, 4, 2, 0, 0, 41, 8, 89],
         "fPort": 125
       },
-      "expected": { "data": { "air": { "temperature": 21.37 } } },
+      "expected": { "data": { "make": "watteco", "model": "atmo", "air": { "temperature": 21.37 } } },
       "source": "synthetic",
       "_note": "Synthetic in-bounds standard-report input; expected value produced by running reference/upstream-codec.js (variable 'temperature' = 21.37) and mapping to air.temperature. Payload: 110A04020000290859."
     },
@@ -16,7 +16,7 @@
         "bytes": [17, 10, 4, 5, 0, 0, 33, 18, 221],
         "fPort": 125
       },
-      "expected": { "data": { "air": { "relativeHumidity": 48.29 } } },
+      "expected": { "data": { "make": "watteco", "model": "atmo", "air": { "relativeHumidity": 48.29 } } },
       "source": "synthetic",
       "_note": "Synthetic in-bounds standard-report input; expected value produced by running reference/upstream-codec.js (variable 'humidity' = 48.29) and mapping to air.relativeHumidity. Payload: 110A04050000211 2DD."
     },
@@ -26,7 +26,7 @@
         "bytes": [17, 10, 4, 3, 0, 0, 41, 3, 245],
         "fPort": 125
       },
-      "expected": { "data": { "air": { "pressure": 1013 } } },
+      "expected": { "data": { "make": "watteco", "model": "atmo", "air": { "pressure": 1013 } } },
       "source": "synthetic",
       "_note": "Synthetic in-bounds standard-report input; expected value produced by running reference/upstream-codec.js (variable 'pressure' = 1013) and mapping to air.pressure (hPa, within atmospheric bound 900-1100). Payload: 110A04030000290 3F5."
     },
@@ -36,7 +36,7 @@
         "bytes": [17, 10, 128, 12, 0, 0, 41, 2, 100],
         "fPort": 125
       },
-      "expected": { "data": { "air": { "co2": 612 } } },
+      "expected": { "data": { "make": "watteco", "model": "atmo", "air": { "co2": 612 } } },
       "source": "synthetic",
       "_note": "Synthetic in-bounds standard-report input; expected value produced by running reference/upstream-codec.js (variable 'concentration' = 612) and mapping to air.co2 (ppm). Payload: 110A800C00002902 64."
     },
@@ -46,7 +46,7 @@
         "bytes": [17, 10, 0, 80, 0, 6, 65, 5, 3, 4, 14, 58],
         "fPort": 125
       },
-      "expected": { "data": { "battery": 3.642 } },
+      "expected": { "data": { "make": "watteco", "model": "atmo", "battery": 3.642 } },
       "source": "synthetic",
       "_note": "Synthetic in-bounds standard-report input; expected value produced by running reference/upstream-codec.js (variable 'disposable_battery_voltage' = 3.642) and mapping to battery (V). Flags byte 0x04 selects the disposable-battery 2-byte mV source. Payload: 110A005000064105 03040E3A."
     },

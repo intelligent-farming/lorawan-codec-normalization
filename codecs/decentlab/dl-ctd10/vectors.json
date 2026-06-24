@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-ctd10",
           "water": {
             "level": 4.232,
             "temperature": { "current": 12.9 },
@@ -27,6 +29,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-ctd10",
           "battery": 3.168
         }
       },
@@ -41,6 +45,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-ctd10",
           "water": {
             "level": 1.5,
             "temperature": { "current": 8.5 },

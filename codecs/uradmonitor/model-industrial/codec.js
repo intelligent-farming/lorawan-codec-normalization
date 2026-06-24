@@ -92,7 +92,7 @@ function gasSymbol(type) {
   return null;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length !== 50) {
     return { errors: ['expected a 50-byte uRADMonitor INDUSTRIAL frame'] };
@@ -138,4 +138,14 @@ function decodeUplink(input) {
   data.iaq = Math.floor(Math.log(data.gasResistance) + 0.04 * air.relativeHumidity);
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "uradmonitor";
+    result.data.model = "model-industrial";
+  }
+  return result;
 }

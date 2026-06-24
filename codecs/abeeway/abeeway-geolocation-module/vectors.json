@@ -11,6 +11,8 @@
       },
       "expected": {
         "data": {
+          "make": "abeeway",
+          "model": "abeeway-geolocation-module",
           "batteryPercent": 94,
           "action": { "motion": { "detected": true, "count": 0 } },
           "positionStatus": "success",
@@ -34,6 +36,8 @@
       },
       "expected": {
         "data": {
+          "make": "abeeway",
+          "model": "abeeway-geolocation-module",
           "batteryState": "charging",
           "notificationType": "motionStart",
           "action": { "motion": { "detected": true } }
@@ -49,6 +53,8 @@
       },
       "expected": {
         "data": {
+          "make": "abeeway",
+          "model": "abeeway-geolocation-module",
           "batteryPercent": 50,
           "notificationType": "temperature",
           "temperatureAlarm": "normal",
@@ -66,6 +72,8 @@
       },
       "expected": {
         "data": {
+          "make": "abeeway",
+          "model": "abeeway-geolocation-module",
           "batteryPercent": 80,
           "action": { "motion": { "detected": false, "count": 0 } },
           "positionStatus": "success",

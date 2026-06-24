@@ -5,6 +5,8 @@
       "input": { "fPort": 1, "bytes": [1, 103, 0, 235, 2, 104, 120, 3, 115, 39, 148, 4, 102, 1, 5, 101, 1, 94, 6, 116, 1, 109] },
       "expected": {
         "data": {
+          "make": "rakwireless",
+          "model": "rak2560",
           "air": {
             "temperature": 23.5,
             "relativeHumidity": 60,
@@ -23,6 +25,8 @@
       "input": { "fPort": 1, "bytes": [1, 103, 255, 204, 3, 115, 39, 3] },
       "expected": {
         "data": {
+          "make": "rakwireless",
+          "model": "rak2560",
           "air": {
             "temperature": -5.2,
             "pressure": 998.7
@@ -37,6 +41,8 @@
       "input": { "fPort": 1, "bytes": [1, 103, 0, 250, 3, 115, 39, 148, 7, 125, 1, 156, 9, 136, 6, 26, 128, 239, 250, 112, 2, 73, 240] },
       "expected": {
         "data": {
+          "make": "rakwireless",
+          "model": "rak2560",
           "air": {
             "temperature": 25,
             "pressure": 1013.2,

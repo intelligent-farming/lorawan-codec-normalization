@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "browan",
+          "model": "cd10",
           "battery": 3.6,
           "status": 1,
           "button": 0,
@@ -31,6 +33,8 @@
       },
       "expected": {
         "data": {
+          "make": "browan",
+          "model": "cd10",
           "battery": 3,
           "status": 0,
           "button": 1,
@@ -54,6 +58,8 @@
       },
       "expected": {
         "data": {
+          "make": "browan",
+          "model": "cd10",
           "battery": 2.1,
           "status": 0,
           "button": 0,

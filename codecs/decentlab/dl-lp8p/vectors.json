@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-lp8p",
           "barometerTemperature": 12.34,
           "co2ConcentrationLpf": 790,
           "co2SensorTemperature": 11.11,
@@ -36,6 +38,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-lp8p",
           "barometerTemperature": 24.05,
           "co2ConcentrationLpf": 500,
           "co2SensorTemperature": 23.95,
@@ -64,6 +68,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-lp8p",
           "battery": 3.109
         }
       },

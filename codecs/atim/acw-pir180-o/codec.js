@@ -138,7 +138,7 @@ function decodeLife(bytes, frame) {
   return { data: { battery: battery, frameType: 'life' } };
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length === 0) {
     return { errors: ['empty payload'] };
@@ -158,4 +158,14 @@ function decodeUplink(input) {
     return { errors: ['unsupported legacy ATIM frame'] };
   }
   return { errors: ['unsupported ATIM frame type'] };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "atim";
+    result.data.model = "acw-pir180-o";
+  }
+  return result;
 }

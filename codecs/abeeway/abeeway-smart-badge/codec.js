@@ -227,7 +227,7 @@ function decodeEvent(payload, data) {
   return { data: data };
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length < 1) {
     return { errors: ['payload too short for an Abeeway Asset Tracker frame'] };
@@ -251,4 +251,14 @@ function decodeUplink(input) {
     return decodePositionMessage(bytes, data);
   }
   return decodeEvent(bytes, data);
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "abeeway";
+    result.data.model = "abeeway-smart-badge";
+  }
+  return result;
 }

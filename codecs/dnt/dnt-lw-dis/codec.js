@@ -59,7 +59,7 @@ function uint16(b0, b1) {
   return ((b0 & 0xff) << 8) | (b1 & 0xff);
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
 
   if (!bytes || bytes.length < 1) {
@@ -179,4 +179,14 @@ function decodeUplink(input) {
   }
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "dnt";
+    result.data.model = "dnt-lw-dis";
+  }
+  return result;
 }

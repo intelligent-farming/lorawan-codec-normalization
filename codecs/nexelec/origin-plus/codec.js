@@ -126,7 +126,7 @@ function decodeAirQuality(hex) {
   return data;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length < 5) {
     return { errors: ['payload too short for a Nexelec Origin+ frame'] };
@@ -155,4 +155,14 @@ function decodeUplink(input) {
   }
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "nexelec";
+    result.data.model = "origin-plus";
+  }
+  return result;
 }

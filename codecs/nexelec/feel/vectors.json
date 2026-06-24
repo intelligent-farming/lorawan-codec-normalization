@@ -5,6 +5,8 @@
       "input": { "fPort": 1, "bytes": [169, 1, 132, 156, 127, 255, 255, 255, 255, 223, 255, 255, 254] },
       "expected": {
         "data": {
+          "make": "nexelec",
+          "model": "feel",
           "air": { "temperature": 23, "relativeHumidity": 45.5 },
           "buttonPressed": false
         }
@@ -17,6 +19,8 @@
       "input": { "fPort": 1, "bytes": [169, 1, 37, 178, 15, 255, 255, 255, 255, 223, 255, 255, 254] },
       "expected": {
         "data": {
+          "make": "nexelec",
+          "model": "feel",
           "air": { "temperature": -15, "relativeHumidity": 80 },
           "buttonPressed": false
         }
@@ -29,6 +33,8 @@
       "input": { "fPort": 1, "bytes": [169, 1, 175, 7, 191, 255, 255, 255, 255, 255, 255, 255, 254] },
       "expected": {
         "data": {
+          "make": "nexelec",
+          "model": "feel",
           "air": { "temperature": 40, "relativeHumidity": 12.3 },
           "buttonPressed": true
         }
@@ -41,6 +47,8 @@
       "input": { "fPort": 1, "bytes": [169, 1, 255, 95, 79, 255, 255, 255, 255, 223, 255, 255, 254] },
       "expected": {
         "data": {
+          "make": "nexelec",
+          "model": "feel",
           "air": { "relativeHumidity": 50 },
           "buttonPressed": false
         }

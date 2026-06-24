@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-pm",
           "battery": 3.3,
           "pm1": 12.3,
           "pm2_5": 20,
@@ -37,6 +39,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-pm",
           "air": {
             "temperature": 19.99,
             "relativeHumidity": 50,
@@ -55,6 +59,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-pm",
           "battery": 3.105
         }
       },

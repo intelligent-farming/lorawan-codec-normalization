@@ -60,7 +60,7 @@ function pad2(n) {
   return s.length < 2 ? '0' + s : s;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   var port = input.fPort;
 
@@ -136,4 +136,14 @@ function decodeUplink(input) {
     return { data: data, warnings: warnings };
   }
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "elv";
+    result.data.model = "elv-lw-gps2";
+  }
+  return result;
 }

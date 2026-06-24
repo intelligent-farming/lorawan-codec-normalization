@@ -9,6 +9,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t0006909-pelican",
           "battery": 3.5,
           "air": { "temperature": 25, "relativeHumidity": 50 },
           "action": { "motion": { "detected": true } },
@@ -28,6 +30,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t0006909-pelican",
           "action": { "motion": { "detected": true } }
         }
       },
@@ -41,6 +45,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t0006909-pelican",
           "battery": 3.77,
           "action": { "motion": { "detected": false } },
           "batteryEndOfService": true

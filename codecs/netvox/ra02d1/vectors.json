@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "ra02d1",
           "battery": 3,
           "air": { "gasAlarm": true, "temperature": 25 },
           "gasType": "LPG",
@@ -25,6 +27,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "ra02d1",
           "battery": 0.1,
           "air": { "gasAlarm": false, "temperature": 0.3 },
           "gasType": "LPG",
@@ -42,6 +46,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "ra02d1",
           "lowBattery": true,
           "battery": 3,
           "air": { "gasAlarm": true, "temperature": -5 },

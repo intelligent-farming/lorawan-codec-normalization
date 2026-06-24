@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "gs601",
           "batteryPercent": 80,
           "tamperStatus": "normal",
           "buzzer": "normal",
@@ -34,6 +36,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "gs601",
           "batteryPercent": 67,
           "air": {
             "temperature": 41.2,
@@ -61,6 +65,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "gs601",
           "tamperStatus": "normal",
           "buzzer": "normal",
           "air": {

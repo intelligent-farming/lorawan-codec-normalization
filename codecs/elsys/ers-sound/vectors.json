@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "elsys",
+          "model": "ers-sound",
           "soundPeak": 1,
           "soundAvg": 1,
           "air": {
@@ -33,6 +35,8 @@
       },
       "expected": {
         "data": {
+          "make": "elsys",
+          "model": "ers-sound",
           "battery": 3.6,
           "soundPeak": 84,
           "soundAvg": 47,

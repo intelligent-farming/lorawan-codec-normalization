@@ -168,7 +168,7 @@ function normalizeStatusReport(f, warnings) {
   return data;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   if (!input || !input.bytes) {
     return { errors: ['empty payload'] };
   }
@@ -241,4 +241,14 @@ function decodeUplink(input) {
   }
 
   return { errors: ['Unsupported fPort ' + fPort] };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "quandify";
+    result.data.model = "cubicmeter-1-1-copper";
+  }
+  return result;
 }

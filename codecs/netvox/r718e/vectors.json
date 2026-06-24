@@ -9,6 +9,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718e",
           "battery": 3.6,
           "vibration": {
             "accelerationX": 5.59375,
@@ -27,6 +29,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718e",
           "lowBattery": true,
           "battery": 3.6,
           "vibration": {
@@ -46,6 +50,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718e",
           "air": {
             "temperature": -10.5
           },
@@ -66,6 +72,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718e",
           "air": {
             "temperature": 25
           },

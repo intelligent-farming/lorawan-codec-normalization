@@ -53,7 +53,7 @@ function arrayToDecimal(stream, isSigned, divisor) {
   return value / divisor;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length === 0) {
     return { errors: ['empty payload'] };
@@ -126,4 +126,14 @@ function decodeUplink(input) {
   }
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "sezo";
+    result.data.model = "sezocl";
+  }
+  return result;
 }

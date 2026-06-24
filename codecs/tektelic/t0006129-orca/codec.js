@@ -107,7 +107,7 @@ function slice(bytes, start, count) {
   return out;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
 
   if (input.fPort !== 10) {
@@ -285,4 +285,14 @@ function decodeUplink(input) {
   }
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "tektelic";
+    result.data.model = "t0006129-orca";
+  }
+  return result;
 }

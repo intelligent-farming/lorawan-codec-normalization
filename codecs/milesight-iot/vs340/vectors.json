@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs340",
           "batteryPercent": 100,
           "action": { "motion": { "detected": true } }
         }
@@ -23,6 +25,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs340",
           "batteryPercent": 80,
           "action": { "motion": { "detected": false } }
         }
@@ -38,6 +42,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs340",
           "action": { "motion": { "detected": true } }
         }
       },

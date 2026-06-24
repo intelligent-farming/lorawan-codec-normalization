@@ -28,7 +28,7 @@ function bitfield(val, offset) {
   return (val >> offset) & 0x01;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   var port = input.fPort;
 
@@ -106,4 +106,14 @@ function decodeUplink(input) {
   }
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "te-connectivity";
+    result.data.model = "8931ex";
+  }
+  return result;
 }

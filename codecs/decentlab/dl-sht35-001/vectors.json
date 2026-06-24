@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-sht35-001",
           "battery": 3.168,
           "air": {
             "temperature": 23.79,
@@ -26,6 +28,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-sht35-001",
           "battery": 3.168
         }
       },
@@ -40,6 +44,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-sht35-001",
           "battery": 3.602,
           "air": {
             "temperature": -5.5,
@@ -58,6 +64,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-sht35-001",
           "battery": 3.05,
           "air": {
             "temperature": 31.2,

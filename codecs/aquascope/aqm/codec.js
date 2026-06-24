@@ -33,7 +33,7 @@
 // A leading record byte the codec does not model is reported as an error rather
 // than silently mis-walking the stream.
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   if (input.fPort !== 1) {
     return { errors: ['invalid FPort'] };
   }
@@ -119,4 +119,14 @@ function decodeUplink(input) {
   }
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "aquascope";
+    result.data.model = "aqm";
+  }
+  return result;
 }

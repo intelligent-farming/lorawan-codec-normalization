@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "dragino",
+          "model": "lse01",
           "battery": 3.625,
           "air": { "temperature": 24.1 },
           "soil": { "moisture": 19.57, "temperature": 24.59, "ec": 28.2 }
@@ -23,6 +25,8 @@
       },
       "expected": {
         "data": {
+          "make": "dragino",
+          "model": "lse01",
           "battery": 3.625,
           "air": { "temperature": -1.5 },
           "soil": { "moisture": 19.57, "temperature": -0.99, "ec": 0.1 }

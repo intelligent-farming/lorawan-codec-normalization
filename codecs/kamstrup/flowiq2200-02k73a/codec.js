@@ -277,7 +277,7 @@ function rfc3339(ms) {
   return new Date(ms).toISOString();
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var raw = input.bytes;
   var i = 0;
 
@@ -589,4 +589,14 @@ function decodeUplink(input) {
   }
 
   return { data: out };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "kamstrup";
+    result.data.model = "flowiq2200-02k73a";
+  }
+  return result;
 }

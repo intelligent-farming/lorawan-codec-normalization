@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "arwin-technology",
+          "model": "lrs10701",
           "air": { "temperature": 25, "relativeHumidity": 50, "co2": 600 },
           "event": "heartbeat/button",
           "aqi": 40,
@@ -27,6 +29,8 @@
       },
       "expected": {
         "data": {
+          "make": "arwin-technology",
+          "model": "lrs10701",
           "air": { "temperature": -5, "relativeHumidity": 33, "co2": 420 },
           "event": "heartbeat/button",
           "aqi": 10,
@@ -45,7 +49,7 @@
         "bytes": [0, 150, 0, 19, 136, 0, 48, 212, 0, 78, 32]
       },
       "expected": {
-        "data": { "tvoc": 150, "pm1_0": 5, "pm2_5": 12.5, "pm10": 20 }
+        "data": { "make": "arwin-technology", "model": "lrs10701", "tvoc": 150, "pm1_0": 5, "pm2_5": 12.5, "pm10": 20 }
       },
       "source": "synthetic",
       "_note": "Synthetic in-bounds payload; expected.data produced from reference/upstream-codec.js. Upstream emits dotted keys (pm1.0/pm2.5/pm10) which are not valid extras; normalized to camelCase/underscore (pm1_0/pm2_5/pm10) per AUTHORING extras rule."
@@ -53,7 +57,7 @@
     {
       "description": "fPort 8 firmware version 1.07.000",
       "input": { "fPort": 8, "bytes": [1, 7, 0, 0] },
-      "expected": { "data": { "firmwareVersion": "1.07.000" } },
+      "expected": { "data": { "make": "arwin-technology", "model": "lrs10701", "firmwareVersion": "1.07.000" } },
       "source": "ttn-example",
       "_note": "Upstream example input; expected.data produced by reference/upstream-codec.js. firmwareVersion has no vocabulary key -> camelCase extra."
     },
@@ -62,6 +66,8 @@
       "input": { "fPort": 12, "bytes": [0, 15, 1, 29, 29, 1, 0, 1] },
       "expected": {
         "data": {
+          "make": "arwin-technology",
+          "model": "lrs10701",
           "dataUploadInterval": 15,
           "statusLED": "on",
           "sensorType": "T/H,CO2,PMx,Gas1",
@@ -78,6 +84,8 @@
       "input": { "fPort": 13, "bytes": [0, 0, 40, 0, 10, 95, 35] },
       "expected": {
         "data": {
+          "make": "arwin-technology",
+          "model": "lrs10701",
           "highTemperatureThreshold": 40,
           "lowTemperatureThreshold": 10,
           "highHumidityThreshold": 95,
@@ -92,6 +100,8 @@
       "input": { "fPort": 13, "bytes": [1, 5, 220, 1, 179, 7, 208, 7, 208] },
       "expected": {
         "data": {
+          "make": "arwin-technology",
+          "model": "lrs10701",
           "co2Threshold": 1500,
           "tvocThreshold": 435,
           "gas1Threshold": 2,
@@ -106,6 +116,8 @@
       "input": { "fPort": 13, "bytes": [2, 0, 0, 0, 0, 0, 56, 0, 0, 254] },
       "expected": {
         "data": {
+          "make": "arwin-technology",
+          "model": "lrs10701",
           "pm1_0Threshold": 0,
           "pm2_5Threshold": 56,
           "pm10Threshold": 254

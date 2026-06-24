@@ -34,7 +34,7 @@ function u16be(hi, lo) {
   return ((hi << 8) | lo) & 0xffff;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
 
   if (!bytes || bytes.length < 5) {
@@ -106,4 +106,14 @@ function decodeUplink(input) {
   }
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "decentlab";
+    result.data.model = "dl-pr36ctd";
+  }
+  return result;
 }

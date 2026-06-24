@@ -5,6 +5,8 @@
       "input": { "fPort": 2, "bytes": [18, 3, 1] },
       "expected": {
         "data": {
+          "make": "radio-bridge",
+          "model": "rbs301-dws",
           "protocol": 1,
           "counter": 2,
           "messageType": "doorWindow",
@@ -19,6 +21,8 @@
       "input": { "fPort": 2, "bytes": [18, 3, 0] },
       "expected": {
         "data": {
+          "make": "radio-bridge",
+          "model": "rbs301-dws",
           "protocol": 1,
           "counter": 2,
           "messageType": "doorWindow",
@@ -33,6 +37,8 @@
       "input": { "fPort": 2, "bytes": [17, 1, 2, 0, 54, 0, 0, 0, 0, 0, 5] },
       "expected": {
         "data": {
+          "make": "radio-bridge",
+          "model": "rbs301-dws",
           "protocol": 1,
           "counter": 1,
           "messageType": "supervisory",

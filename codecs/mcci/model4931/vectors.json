@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "mcci",
+          "model": "model4931",
           "sdCardPresent": true,
           "sdCardWriteOk": true,
           "battery": 3.7,
@@ -39,6 +41,8 @@
       },
       "expected": {
         "data": {
+          "make": "mcci",
+          "model": "model4931",
           "sdCardPresent": true,
           "sdCardWriteOk": false,
           "battery": 3.6499,

@@ -81,7 +81,7 @@ function hexToAscii(hex) {
   return str;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length === 0) {
     return { errors: ['missing payload bytes'] };
@@ -172,4 +172,14 @@ function decodeUplink(input) {
     return { data: data, warnings: warnings };
   }
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "pepperl-fuchs";
+    result.data.model = "wilsen-node";
+  }
+  return result;
 }

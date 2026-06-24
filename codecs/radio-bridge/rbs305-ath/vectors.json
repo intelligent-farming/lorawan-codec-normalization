@@ -5,6 +5,8 @@
       "input": { "fPort": 1, "bytes": [18, 13, 0, 22, 80, 55, 48] },
       "expected": {
         "data": {
+          "make": "radio-bridge",
+          "model": "rbs305-ath",
           "protocol": 1,
           "counter": 2,
           "messageType": "ath",
@@ -20,6 +22,8 @@
       "input": { "fPort": 1, "bytes": [18, 13, 4, 130, 80, 40, 0] },
       "expected": {
         "data": {
+          "make": "radio-bridge",
+          "model": "rbs305-ath",
           "protocol": 1,
           "counter": 2,
           "messageType": "ath",
@@ -35,6 +39,8 @@
       "input": { "fPort": 1, "bytes": [17, 1, 0, 0, 54, 0, 0, 0, 0, 1, 5] },
       "expected": {
         "data": {
+          "make": "radio-bridge",
+          "model": "rbs305-ath",
           "protocol": 1,
           "counter": 1,
           "messageType": "supervisory",
@@ -55,6 +61,8 @@
       "input": { "fPort": 1, "bytes": [17, 1, 26, 0, 41, 0, 0, 0, 0, 0, 0] },
       "expected": {
         "data": {
+          "make": "radio-bridge",
+          "model": "rbs305-ath",
           "protocol": 1,
           "counter": 1,
           "messageType": "supervisory",
@@ -75,6 +83,8 @@
       "input": { "fPort": 1, "bytes": [16, 2, 0] },
       "expected": {
         "data": {
+          "make": "radio-bridge",
+          "model": "rbs305-ath",
           "protocol": 1,
           "counter": 0,
           "messageType": "tamper",
@@ -89,6 +99,8 @@
       "input": { "fPort": 1, "bytes": [16, 251, 2, 200, 7] },
       "expected": {
         "data": {
+          "make": "radio-bridge",
+          "model": "rbs305-ath",
           "protocol": 1,
           "counter": 0,
           "messageType": "linkQuality",

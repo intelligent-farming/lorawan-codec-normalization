@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718f",
           "battery": 3.6,
           "action": { "contactState": "open" }
         }
@@ -23,6 +25,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718f",
           "battery": 3.0,
           "action": { "contactState": "closed" }
         }
@@ -38,6 +42,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718f",
           "lowBattery": true,
           "battery": 2.4,
           "action": { "contactState": "open" }

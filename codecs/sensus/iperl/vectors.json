@@ -12,6 +12,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensus",
+          "model": "iperl",
           "metering.water.total": 25041978,
           "accessNo": 6,
           "statusByte": 4,
@@ -29,6 +31,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensus",
+          "model": "iperl",
           "metering.water.total": 1234567,
           "accessNo": 42,
           "statusByte": 0,
@@ -46,6 +50,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensus",
+          "model": "iperl",
           "metering.water.total": 1000000,
           "accessNo": 7,
           "statusByte": 182,

@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718da2",
           "battery": 3,
           "vibration1": 1,
           "vibration2": 0,
@@ -24,6 +26,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718da2",
           "lowBattery": true,
           "battery": 2.8,
           "vibration1": 1,
@@ -42,6 +46,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718da2",
           "battery": 3,
           "vibration1": 0,
           "vibration2": 0,

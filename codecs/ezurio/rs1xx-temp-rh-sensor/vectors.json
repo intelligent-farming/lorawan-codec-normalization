@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "ezurio",
+          "model": "rs1xx-temp-rh-sensor",
           "messageType": "tempRh",
           "air": {
             "relativeHumidity": 58.2,
@@ -30,6 +32,8 @@
       },
       "expected": {
         "data": {
+          "make": "ezurio",
+          "model": "rs1xx-temp-rh-sensor",
           "messageType": "aggregatedTempRh",
           "air": {
             "relativeHumidity": 60.5,
@@ -63,6 +67,8 @@
       },
       "expected": {
         "data": {
+          "make": "ezurio",
+          "model": "rs1xx-temp-rh-sensor",
           "messageType": "backlog",
           "air": {
             "relativeHumidity": 55,
@@ -83,6 +89,8 @@
       },
       "expected": {
         "data": {
+          "make": "ezurio",
+          "model": "rs1xx-temp-rh-sensor",
           "messageType": "backlogMultiple",
           "air": {
             "relativeHumidity": 60.5,
@@ -113,6 +121,8 @@
       },
       "expected": {
         "data": {
+          "make": "ezurio",
+          "model": "rs1xx-temp-rh-sensor",
           "messageType": "batteryVoltage",
           "battery": 3.62,
           "options": []

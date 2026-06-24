@@ -38,7 +38,7 @@ function signed16(hi, lo) {
   return value;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || (bytes.length !== 4 && bytes.length !== 9 && bytes.length !== 19)) {
     return { errors: ['unsupported payload length'] };
@@ -79,4 +79,14 @@ function decodeUplink(input) {
   data.air = { temperature: temp };
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "elspina";
+    result.data.model = "em-elst01";
+  }
+  return result;
 }

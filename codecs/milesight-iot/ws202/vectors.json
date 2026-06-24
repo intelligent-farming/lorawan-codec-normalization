@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "ws202",
           "action": {
             "motion": {
               "detected": true
@@ -25,6 +27,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "ws202",
           "lightLevel": "dark"
         }
       },
@@ -38,6 +42,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "ws202",
           "action": {
             "motion": {
               "detected": false
@@ -55,6 +61,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "ws202",
           "lightLevel": "light"
         }
       },
@@ -68,6 +76,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "ws202",
           "batteryPercent": 90,
           "action": {
             "motion": {

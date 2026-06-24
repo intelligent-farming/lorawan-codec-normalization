@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "elsys",
+          "model": "ers-voc",
           "air": {
             "temperature": 22.6,
             "relativeHumidity": 41,
@@ -31,6 +33,8 @@
       },
       "expected": {
         "data": {
+          "make": "elsys",
+          "model": "ers-voc",
           "battery": 3.6,
           "tvoc": 75,
           "air": {

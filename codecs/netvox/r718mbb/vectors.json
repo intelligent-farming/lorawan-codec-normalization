@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718mbb",
           "battery": 3,
           "action": { "motion": { "detected": true, "count": 18489621 } }
         }
@@ -23,6 +25,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718mbb",
           "battery": 3.6,
           "action": { "motion": { "detected": false, "count": 0 } }
         }
@@ -38,6 +42,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718mbb",
           "lowBattery": true,
           "battery": 3,
           "action": { "motion": { "detected": true, "count": 7 } }

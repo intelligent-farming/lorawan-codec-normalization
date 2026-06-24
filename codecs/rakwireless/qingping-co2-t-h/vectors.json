@@ -9,6 +9,8 @@
       },
       "expected": {
         "data": {
+          "make": "rakwireless",
+          "model": "qingping-co2-t-h",
           "deviceAddress": 1,
           "timestamp": 305419896,
           "batteryPercent": 85,
@@ -25,6 +27,8 @@
       },
       "expected": {
         "data": {
+          "make": "rakwireless",
+          "model": "qingping-co2-t-h",
           "deviceAddress": 2,
           "timestamp": 256,
           "batteryPercent": 100,
@@ -41,6 +45,8 @@
       },
       "expected": {
         "data": {
+          "make": "rakwireless",
+          "model": "qingping-co2-t-h",
           "deviceAddress": 3,
           "timestamp": 5,
           "batteryPercent": 20,

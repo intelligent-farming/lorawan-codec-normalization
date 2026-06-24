@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "elv",
+          "model": "elv-lw-gps2",
           "appVersion": "V1.0.1",
           "blVersion": "V2.3.7",
           "txReason": "TIMER_EVENT",
@@ -30,6 +32,8 @@
       },
       "expected": {
         "data": {
+          "make": "elv",
+          "model": "elv-lw-gps2",
           "appVersion": "V1.0.1",
           "blVersion": "V2.3.7",
           "txReason": "USER_BUTTON_EVENT",
@@ -52,6 +56,8 @@
       },
       "expected": {
         "data": {
+          "make": "elv",
+          "model": "elv-lw-gps2",
           "txReason": "MOTION_START_EVENT",
           "action": {
             "motion": {

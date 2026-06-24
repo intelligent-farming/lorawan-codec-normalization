@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "ws303",
           "batteryPercent": 100,
           "water": { "leak": true }
         }
@@ -22,6 +24,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "ws303",
           "batteryPercent": 72,
           "water": { "leak": false }
         }

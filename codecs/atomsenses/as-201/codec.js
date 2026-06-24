@@ -29,7 +29,7 @@ function s16le(lo, hi) {
   return v > 0x7fff ? v - 0x10000 : v;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   var data = {};
   var air = {};
@@ -102,4 +102,14 @@ function decodeUplink(input) {
   }
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "atomsenses";
+    result.data.model = "as-201";
+  }
+  return result;
 }

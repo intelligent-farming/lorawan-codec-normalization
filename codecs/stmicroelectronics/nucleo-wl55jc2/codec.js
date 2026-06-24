@@ -34,7 +34,7 @@ function s8(b) {
   return b > 0x7f ? b - 0x100 : b;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   if (input.fPort !== 2) {
     return { errors: ['unknown FPort'] };
   }
@@ -55,4 +55,14 @@ function decodeUplink(input) {
   data.redLedStatus = (bytes[0] & 0x01) ? 'ON' : 'OFF';
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "stmicroelectronics";
+    result.data.model = "nucleo-wl55jc2";
+  }
+  return result;
 }

@@ -14,6 +14,8 @@
       },
       "expected": {
         "data": {
+          "make": "browan",
+          "model": "tbwl100",
           "battery": 3.6,
           "boardTemperature": 22,
           "relativeHumidity": 40,
@@ -44,6 +46,8 @@
       },
       "expected": {
         "data": {
+          "make": "browan",
+          "model": "tbwl100",
           "battery": 3,
           "boardTemperature": 26,
           "relativeHumidity": 45,

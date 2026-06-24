@@ -47,7 +47,7 @@ function iaqAccuracy(index) {
   return null;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
 
   // assert frame port 1 (ported verbatim)
@@ -115,4 +115,14 @@ function decodeUplink(input) {
   data.txPower = bytes[0] >> 2 & 0x0f; // rp002 index
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "n-fuse";
+    result.data.model = "ste";
+  }
+  return result;
 }

@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "enginko",
+          "model": "mcf-lw12terwp",
           "air": {
             "temperature": 21.05,
             "relativeHumidity": 50,
@@ -46,6 +48,8 @@
       },
       "expected": {
         "data": {
+          "make": "enginko",
+          "model": "mcf-lw12terwp",
           "air": {
             "temperature": -9.75,
             "relativeHumidity": 77,

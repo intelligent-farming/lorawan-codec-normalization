@@ -48,7 +48,7 @@ var REGIONS = [
   'RU864'
 ];
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   var fPort = input.fPort;
 
@@ -119,4 +119,14 @@ function decodeDeviceInfo(bytes) {
     data.region = region;
   }
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "moko";
+    result.data.model = "lw003-b";
+  }
+  return result;
 }

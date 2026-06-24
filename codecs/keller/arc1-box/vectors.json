@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "keller",
+          "model": "arc1-box",
           "water": {
             "pressure": 150,
             "temperature": { "current": 18.5 },
@@ -27,6 +29,8 @@
       },
       "expected": {
         "data": {
+          "make": "keller",
+          "model": "arc1-box",
           "water": {
             "pressure": 200,
             "temperature": { "current": 21.8 }
@@ -49,6 +53,8 @@
       },
       "expected": {
         "data": {
+          "make": "keller",
+          "model": "arc1-box",
           "battery": 5.084,
           "batteryPercent": 47,
           "enclosureHumidity": 58,

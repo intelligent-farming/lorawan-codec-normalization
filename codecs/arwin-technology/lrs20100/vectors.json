@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "arwin-technology",
+          "model": "lrs20100",
           "event": "heartbeat",
           "batteryPercent": 88,
           "air": {
@@ -27,6 +29,8 @@
       },
       "expected": {
         "data": {
+          "make": "arwin-technology",
+          "model": "lrs20100",
           "event": "temperature_low,humidity_low",
           "batteryPercent": 47,
           "air": {
@@ -46,6 +50,8 @@
       },
       "expected": {
         "data": {
+          "make": "arwin-technology",
+          "model": "lrs20100",
           "firmwareVersion": "2.01.005"
         }
       },
@@ -60,6 +66,8 @@
       },
       "expected": {
         "data": {
+          "make": "arwin-technology",
+          "model": "lrs20100",
           "dataUploadInterval": 30
         }
       },
@@ -74,6 +82,8 @@
       },
       "expected": {
         "data": {
+          "make": "arwin-technology",
+          "model": "lrs20100",
           "highTemperatureThreshold": 45,
           "lowTemperatureThreshold": 5,
           "highHumidityThreshold": 90,

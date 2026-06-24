@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r72616a",
           "battery": 3.6,
           "air": { "temperature": 25.38, "relativeHumidity": 68 },
           "pm2_5": 300
@@ -23,6 +25,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r72616a",
           "battery": 3,
           "air": { "temperature": 2, "relativeHumidity": 100 },
           "pm2_5": 1000
@@ -39,6 +43,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r72616a",
           "lowBattery": true,
           "battery": 2.6,
           "air": { "temperature": 3, "relativeHumidity": 44.64 },
@@ -56,6 +62,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r72616a",
           "battery": 3.6,
           "air": { "temperature": -0.2, "relativeHumidity": 30 },
           "pm2_5": 0
@@ -72,6 +80,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r72616a",
           "battery": 3.2,
           "air": { "temperature": 0, "relativeHumidity": 0 },
           "pm2_5": 0

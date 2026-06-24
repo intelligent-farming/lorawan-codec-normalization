@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718wa",
           "battery": 3,
           "water": { "leak": true }
         }
@@ -23,6 +25,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718wa",
           "battery": 3,
           "water": { "leak": false }
         }
@@ -38,6 +42,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718wa",
           "lowBattery": true,
           "battery": 3,
           "water": { "leak": false }

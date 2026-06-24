@@ -6,6 +6,8 @@
       "input": { "fPort": 1, "bytes": [1] },
       "expected": {
         "data": {
+          "make": "bosch",
+          "model": "tps110",
           "messageType": "parking status",
           "action": { "occupancy": { "occupied": true } }
         }
@@ -17,6 +19,8 @@
       "input": { "fPort": 1, "bytes": [0] },
       "expected": {
         "data": {
+          "make": "bosch",
+          "model": "tps110",
           "messageType": "parking status",
           "action": { "occupancy": { "occupied": false } }
         }
@@ -28,6 +32,8 @@
       "input": { "fPort": 2, "bytes": [1, 255] },
       "expected": {
         "data": {
+          "make": "bosch",
+          "model": "tps110",
           "messageType": "heartbeat",
           "action": { "occupancy": { "occupied": true } },
           "air": { "temperature": -1 }
@@ -40,6 +46,8 @@
       "input": { "fPort": 2, "bytes": [0, 23] },
       "expected": {
         "data": {
+          "make": "bosch",
+          "model": "tps110",
           "messageType": "heartbeat",
           "action": { "occupancy": { "occupied": false } },
           "air": { "temperature": 23 }
@@ -55,6 +63,8 @@
       },
       "expected": {
         "data": {
+          "make": "bosch",
+          "model": "tps110",
           "messageType": "startup",
           "debugCodes": [804, 885],
           "firmwareVersion": "0.29.2",

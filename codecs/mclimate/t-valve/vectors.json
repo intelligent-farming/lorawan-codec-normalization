@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "mclimate",
+          "model": "t-valve",
           "water": { "leak": true },
           "battery": 2,
           "reason": "floodDetected",
@@ -32,6 +34,8 @@
       },
       "expected": {
         "data": {
+          "make": "mclimate",
+          "model": "t-valve",
           "water": { "leak": false },
           "battery": 2.4,
           "reason": "keepalive",
@@ -56,6 +60,8 @@
       },
       "expected": {
         "data": {
+          "make": "mclimate",
+          "model": "t-valve",
           "water": { "temperature": { "current": 22 } },
           "air": { "temperature": 22 },
           "reason": "keepalive",
@@ -73,6 +79,8 @@
       },
       "expected": {
         "data": {
+          "make": "mclimate",
+          "model": "t-valve",
           "water": { "temperature": { "current": 20 } },
           "air": { "temperature": 18 },
           "reason": "keepalive",

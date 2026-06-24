@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-pr21",
           "water": {
             "pressure": 24.6094,
             "temperature": { "current": 25.6719 }
@@ -26,6 +28,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-pr21",
           "water": {
             "pressure": 200.0092,
             "temperature": { "current": 20 }
@@ -44,6 +48,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-pr21",
           "waterPressureKpa": -50.0153,
           "water": {
             "temperature": { "current": -5 }
@@ -62,6 +68,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-pr21",
           "battery": 3.199
         }
       },

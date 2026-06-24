@@ -24,6 +24,8 @@
       },
       "expected": {
         "data": {
+          "make": "dragino",
+          "model": "lgt92",
           "battery": 3.36,
           "action": {
             "motion": {
@@ -65,6 +67,8 @@
       },
       "expected": {
         "data": {
+          "make": "dragino",
+          "model": "lgt92",
           "battery": 3.36,
           "action": {
             "motion": {
@@ -110,6 +114,8 @@
       },
       "expected": {
         "data": {
+          "make": "dragino",
+          "model": "lgt92",
           "battery": 3.36,
           "action": {
             "motion": {

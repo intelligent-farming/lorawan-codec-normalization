@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "browan",
+          "model": "tbhv110",
           "battery": 3.6,
           "air": {
             "relativeHumidity": 30,
@@ -32,6 +34,8 @@
       },
       "expected": {
         "data": {
+          "make": "browan",
+          "model": "tbhv110",
           "battery": 3.4,
           "air": {
             "relativeHumidity": 45,

@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "te-connectivity",
+          "model": "8911ex",
           "batteryPercent": 76,
           "air": { "temperature": 25.9 },
           "preset": 0,
@@ -35,6 +37,8 @@
       },
       "expected": {
         "data": {
+          "make": "te-connectivity",
+          "model": "8911ex",
           "batteryPercent": 88,
           "preset": 1,
           "deviceStatus": { "acc": "ok", "temp": "ok", "rotEn": "disabled", "com": "ok", "battery": "ok" },

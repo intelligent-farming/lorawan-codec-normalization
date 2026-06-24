@@ -19,6 +19,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t00078xx-smart-room-sensor-co2",
           "battery": 3.601,
           "batteryPercent": 87,
           "displayBatteryPercent": 90,
@@ -47,6 +49,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t00078xx-smart-room-sensor-co2",
           "air": {
             "temperature": -5.2
           },

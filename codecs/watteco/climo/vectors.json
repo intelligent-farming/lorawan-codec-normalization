@@ -6,7 +6,7 @@
         "bytes": [17, 10, 4, 2, 0, 0, 41, 11, 137],
         "fPort": 125
       },
-      "expected": { "data": { "air": { "temperature": 29.53 } } },
+      "expected": { "data": { "make": "watteco", "model": "climo", "air": { "temperature": 29.53 } } },
       "source": "ttn-example",
       "_note": "Upstream example input (payload 110A04020000290B89). expected.data authored here; value 29.53 C confirmed by running reference/upstream-codec.js (variable 'temperature' = 29.53)."
     },
@@ -16,7 +16,7 @@
         "bytes": [17, 1, 4, 2, 0, 0, 0, 41, 9, 146],
         "fPort": 125
       },
-      "expected": { "data": { "air": { "temperature": 24.5 } } },
+      "expected": { "data": { "make": "watteco", "model": "climo", "air": { "temperature": 24.5 } } },
       "source": "ttn-example",
       "_note": "Upstream example input (payload 11010402000000290992). Exercises the cmd 0x01 read-response path where the status byte sits at index 6 and the value at index 8. Value 24.5 C confirmed by running reference/upstream-codec.js."
     },
@@ -26,7 +26,7 @@
         "bytes": [17, 10, 4, 5, 0, 0, 33, 14, 137],
         "fPort": 125
       },
-      "expected": { "data": { "air": { "relativeHumidity": 37.21 } } },
+      "expected": { "data": { "make": "watteco", "model": "climo", "air": { "relativeHumidity": 37.21 } } },
       "source": "ttn-example",
       "_note": "Upstream example input (payload 110A04050000210E89). expected.data authored here; value 37.21 % confirmed by running reference/upstream-codec.js (variable 'humidity' = 37.21)."
     },
@@ -36,7 +36,7 @@
         "bytes": [17, 10, 0, 80, 0, 6, 65, 5, 3, 4, 14, 58],
         "fPort": 125
       },
-      "expected": { "data": { "battery": 3.642 } },
+      "expected": { "data": { "make": "watteco", "model": "climo", "battery": 3.642 } },
       "source": "synthetic",
       "_note": "Synthetic in-bounds standard-report input (payload 110A005000064105 03040E3A). Flags byte 0x04 selects the disposable-battery 2-byte mV source (0x0E3A = 3642 mV). Value confirmed by running reference/upstream-codec.js (variable 'disposable_battery_voltage' = 3.642), mapped to battery (V)."
     },
@@ -46,7 +46,7 @@
         "bytes": [17, 10, 0, 15, 0, 85, 16, 1],
         "fPort": 125
       },
-      "expected": { "data": { "caseViolation": true } },
+      "expected": { "data": { "make": "watteco", "model": "climo", "caseViolation": true } },
       "source": "ttn-example",
       "_note": "Upstream example input (payload 110A000F00551001). The pin state is the case-tamper input; upstream names it 'violation_detection' (= true). Not a vocabulary measurement, surfaced as the camelCase extra caseViolation."
     },
@@ -56,7 +56,7 @@
         "bytes": [17, 10, 0, 15, 4, 2, 35, 0, 0, 0, 0],
         "fPort": 125
       },
-      "expected": { "data": { "pulseIndex": 0 } },
+      "expected": { "data": { "make": "watteco", "model": "climo", "pulseIndex": 0 } },
       "source": "ttn-example",
       "_note": "Upstream example input (payload 110A000F04022300000000). The 32-bit pulse counter; upstream names it 'index' (= 0). Not a vocabulary measurement, surfaced as the camelCase extra pulseIndex."
     },

@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "mclimate",
+          "model": "fan-coil-thermostat",
           "air": {
             "temperature": 24.8,
             "relativeHumidity": 45.7
@@ -30,6 +32,8 @@
       },
       "expected": {
         "data": {
+          "make": "mclimate",
+          "model": "fan-coil-thermostat",
           "air": {
             "temperature": 40.0,
             "relativeHumidity": 50.0

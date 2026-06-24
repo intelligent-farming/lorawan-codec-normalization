@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718wb2",
           "battery": 3,
           "leak1": true,
           "leak2": false,
@@ -25,6 +27,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718wb2",
           "battery": 2.8,
           "leak1": false,
           "leak2": false,
@@ -42,6 +46,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718wb2",
           "lowBattery": true,
           "battery": 2.8,
           "leak1": true,

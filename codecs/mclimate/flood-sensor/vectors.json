@@ -5,6 +5,8 @@
       "input": { "fPort": 2, "bytes": [8, 201] },
       "expected": {
         "data": {
+          "make": "mclimate",
+          "model": "flood-sensor",
           "water": { "leak": false },
           "battery": 3.216,
           "boxTamper": true,
@@ -19,6 +21,8 @@
       "input": { "fPort": 2, "bytes": [66, 180, 22] },
       "expected": {
         "data": {
+          "make": "mclimate",
+          "model": "flood-sensor",
           "water": { "leak": true, "temperature": { "current": 22 } },
           "battery": 2.88,
           "boxTamper": false,

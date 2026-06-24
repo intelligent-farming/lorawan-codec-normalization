@@ -3,56 +3,56 @@
     {
       "description": "standard report: temperature (cluster 0x0402) -> air.temperature",
       "input": { "fPort": 125, "bytes": [17, 10, 4, 2, 0, 0, 41, 8, 102] },
-      "expected": { "data": { "air": { "temperature": 21.5 } } },
+      "expected": { "data": { "make": "watteco", "model": "vaqao", "air": { "temperature": 21.5 } } },
       "source": "synthetic",
       "_note": "Synthetic in-bounds standard report: signed centi-degC 0x0866=2150 -> 21.50. expected.data verified by running reference/upstream-codec.js (variable temperature_1 = 21.5)."
     },
     {
       "description": "standard report: relative humidity (cluster 0x0405) -> air.relativeHumidity",
       "input": { "fPort": 125, "bytes": [17, 10, 4, 5, 0, 0, 33, 21, 124] },
-      "expected": { "data": { "air": { "relativeHumidity": 55 } } },
+      "expected": { "data": { "make": "watteco", "model": "vaqao", "air": { "relativeHumidity": 55 } } },
       "source": "synthetic",
       "_note": "Synthetic in-bounds standard report: unsigned centi-% 0x157C=5500 -> 55.00. expected.data verified by running reference/upstream-codec.js (variable humidity_1 = 55)."
     },
     {
       "description": "standard report: CO2 on endpoint 1 (cluster 0x800C) -> air.co2",
       "input": { "fPort": 125, "bytes": [33, 10, 128, 12, 0, 0, 33, 2, 138] },
-      "expected": { "data": { "air": { "co2": 650 } } },
+      "expected": { "data": { "make": "watteco", "model": "vaqao", "air": { "co2": 650 } } },
       "source": "synthetic",
       "_note": "Synthetic in-bounds standard report on ZCL endpoint 1 (frame-control 0x21): concentration 0x028A=650 ppm. Upstream labels cluster 0x800C as CO2 only when endpoint==1; expected.data verified by running reference/upstream-codec.js (variable CO2 = 650)."
     },
     {
       "description": "standard report: IAQ index on endpoint 0 (cluster 0x800C) -> iaq extra",
       "input": { "fPort": 125, "bytes": [17, 10, 128, 12, 0, 0, 33, 0, 80] },
-      "expected": { "data": { "iaq": 80 } },
+      "expected": { "data": { "make": "watteco", "model": "vaqao", "iaq": 80 } },
       "source": "synthetic",
       "_note": "Synthetic in-bounds standard report on ZCL endpoint 0 (frame-control 0x11): concentration 0x0050=80. Upstream labels cluster 0x800C as IAQ when endpoint==0; the vocabulary does not model IAQ, so it is surfaced as the camelCase extra `iaq`. Value verified by running reference/upstream-codec.js (variable IAQ = 80)."
     },
     {
       "description": "standard report: barometric pressure (cluster 0x0403) -> air.pressure",
       "input": { "fPort": 125, "bytes": [17, 10, 4, 3, 0, 0, 41, 3, 245] },
-      "expected": { "data": { "air": { "pressure": 1013 } } },
+      "expected": { "data": { "make": "watteco", "model": "vaqao", "air": { "pressure": 1013 } } },
       "source": "synthetic",
       "_note": "Synthetic in-bounds standard report: signed16 hPa 0x03F5=1013 (atmospheric, vocabulary bound 900-1100). expected.data verified by running reference/upstream-codec.js (variable pressure = 1013)."
     },
     {
       "description": "standard report: power config disposable source (cluster 0x0050 attr 6) -> battery volts",
       "input": { "fPort": 125, "bytes": [17, 10, 0, 80, 0, 6, 65, 5, 4, 4, 14, 16, 4] },
-      "expected": { "data": { "battery": 3.6 } },
+      "expected": { "data": { "make": "watteco", "model": "vaqao", "battery": 3.6 } },
       "source": "synthetic",
       "_note": "Synthetic in-bounds power report: presence flags 0x04 (disposable), mV 0x0E10=3600 -> 3.6 V. expected.data value verified by running reference/upstream-codec.js (disposable_battery_voltage = 3.6)."
     },
     {
       "description": "config frame: firmware version (command 0x01, cluster 0x0000 attr 2) -> firmware extra",
       "input": { "fPort": 125, "bytes": [17, 1, 0, 0, 0, 2, 0, 13, 3, 5, 2, 0, 21, 226] },
-      "expected": { "data": { "firmware": "3.5.2.5602" } },
+      "expected": { "data": { "make": "watteco", "model": "vaqao", "firmware": "3.5.2.5602" } },
       "source": "synthetic",
       "_note": "TTN-example-shaped config frame (payload 110100000002000D0305020015E2): three decimal octets 3.5.2 then 24-bit build 0x0015E2=5602. Verified by running reference/upstream-codec.js (firmware = '3.5.2.5602')."
     },
     {
       "description": "config frame: dataup message type (command 0x01, cluster 0x8004 attr 0) -> messageType extra",
       "input": { "fPort": 125, "bytes": [17, 1, 128, 4, 0, 0, 0, 8, 0] },
-      "expected": { "data": { "messageType": "unconfirmed" } },
+      "expected": { "data": { "make": "watteco", "model": "vaqao", "messageType": "unconfirmed" } },
       "source": "synthetic",
       "_note": "TTN-example-shaped config frame (payload 110180040000000800): value byte 0 -> unconfirmed. Verified by running reference/upstream-codec.js (message_type = 'unconfirmed')."
     },

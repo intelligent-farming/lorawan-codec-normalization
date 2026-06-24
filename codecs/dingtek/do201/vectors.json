@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "do201",
           "fillLevel": 1250,
           "alarmPark": false,
           "alarmLevel": false,
@@ -35,6 +37,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "do201",
           "fillLevel": 300,
           "alarmPark": true,
           "alarmLevel": true,
@@ -62,6 +66,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "do201",
           "firmware": "2.5",
           "uploadInterval": 12,
           "detectInterval": 15,

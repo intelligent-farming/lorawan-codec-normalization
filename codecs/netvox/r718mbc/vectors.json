@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718mbc",
           "battery": 3,
           "device": { "runtime": 18489621 }
         }
@@ -23,6 +25,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718mbc",
           "lowBattery": true,
           "battery": 2.9,
           "device": { "runtime": 3600 }

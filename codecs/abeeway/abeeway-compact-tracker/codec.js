@@ -155,7 +155,7 @@ function decodeMacScan(payload, separator) {
   return entries;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length < 1) {
     return { errors: ['payload too short for an Abeeway uplink'] };
@@ -238,4 +238,14 @@ function decodeUplink(input) {
   data.messageType = 'OTHER';
   data.messageTypeCode = messageType;
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "abeeway";
+    result.data.model = "abeeway-compact-tracker";
+  }
+  return result;
 }

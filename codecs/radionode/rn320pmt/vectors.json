@@ -33,6 +33,8 @@
       },
       "expected": {
         "data": {
+          "make": "radionode",
+          "model": "rn320pmt",
           "air": {
             "temperature": 25.71,
             "relativeHumidity": 20.09,
@@ -80,6 +82,8 @@
       },
       "expected": {
         "data": {
+          "make": "radionode",
+          "model": "rn320pmt",
           "air": {
             "temperature": 25.71,
             "relativeHumidity": 20.09,

@@ -44,7 +44,7 @@ function kPaFactor(unitCode) {
   }
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
 
   if (input.fPort !== 1) {
@@ -73,4 +73,14 @@ function decodeUplink(input) {
   };
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "moirelabs";
+    result.data.model = "p1ap";
+  }
+  return result;
 }

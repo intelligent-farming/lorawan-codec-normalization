@@ -6,6 +6,8 @@
       "input": { "fPort": 85, "bytes": [5, 142, 0, 6, 1, 1, 7, 1, 0, 8, 144, 16, 14, 0, 0] },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "gs101",
           "valveState": "open",
           "relayState": "close",
           "sensorLifeRemaining": 3600,
@@ -19,6 +21,8 @@
       "input": { "fPort": 85, "bytes": [5, 142, 1, 255, 63, 4] },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "gs101",
           "sensorAlarm": "sensorAboutToFail",
           "air": { "gasAlarm": true }
         }

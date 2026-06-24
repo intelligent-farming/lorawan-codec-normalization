@@ -52,7 +52,7 @@ function athEventLabel(eventType) {
   }
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length < 2) {
     return { errors: ['payload too short'] };
@@ -107,4 +107,14 @@ function decodeUplink(input) {
   }
 
   return { errors: ['unsupported RadioBridge event type 0x' + payloadType.toString(16)] };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "radio-bridge";
+    result.data.model = "rbs306-ath-ext";
+  }
+  return result;
 }

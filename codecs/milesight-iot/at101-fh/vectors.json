@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "at101-fh",
           "motionStatus": "moving",
           "geofenceStatus": "inside",
           "position": { "latitude": 37.123456, "longitude": -122.123456 },
@@ -25,6 +27,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "at101-fh",
           "batteryPercent": 77,
           "motionStatus": "stop",
           "geofenceStatus": "outside",
@@ -44,6 +48,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "at101-fh",
           "deviceStatus": "on",
           "ipsoVersion": "v0.1",
           "sn": "6745e27566240008",

@@ -40,7 +40,7 @@ function u16le(lo, hi) {
   return ((hi << 8) | lo) & 0xffff;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length < 1) {
     return { errors: ['empty payload'] };
@@ -113,4 +113,14 @@ function decodeUplink(input) {
   data.barTrend = d(29);
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "mcf88";
+    result.data.model = "mcf-lwws01";
+  }
+  return result;
 }

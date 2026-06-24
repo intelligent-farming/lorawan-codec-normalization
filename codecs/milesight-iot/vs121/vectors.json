@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs121",
           "regionCount": 3,
           "regions": [
             { "index": 0, "count": 1 },
@@ -33,6 +35,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs121",
           "regionCount": 0,
           "regions": [],
           "action": {
@@ -54,6 +58,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs121",
           "regionCount": 4,
           "regions": [
             { "index": 0, "count": 1 },

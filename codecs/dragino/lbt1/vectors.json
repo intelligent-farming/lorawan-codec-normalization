@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "dragino",
+          "model": "lbt1",
           "battery": 4.039,
           "action": { "motion": { "detected": false, "count": 0 } },
           "bleUuid": "EEFF0",
@@ -29,6 +31,8 @@
       },
       "expected": {
         "data": {
+          "make": "dragino",
+          "model": "lbt1",
           "battery": 4.096,
           "action": { "motion": { "detected": true, "count": 65541 } },
           "bleUuid": "ABCDE",

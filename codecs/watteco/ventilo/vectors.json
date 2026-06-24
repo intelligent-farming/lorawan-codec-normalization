@@ -4,43 +4,43 @@
     {
       "description": "standard report, differential pressure 0x0018 = 24 Pa | payload:110A80080000290018",
       "input": { "bytes": [17, 10, 128, 8, 0, 0, 41, 0, 24], "fPort": 125, "recvTime": "2023-07-19T07:51:25.508306410Z" },
-      "expected": { "data": { "pressure": { "differential": 24 } } },
+      "expected": { "data": { "make": "watteco", "model": "ventilo", "pressure": { "differential": 24 } } },
       "source": "ttn-example"
     },
     {
       "description": "standard report, differential pressure 0x0190 = 400 Pa (synthetic)",
       "input": { "bytes": [17, 10, 128, 8, 0, 0, 41, 1, 144], "fPort": 125, "recvTime": "2023-07-19T07:51:25.508306410Z" },
-      "expected": { "data": { "pressure": { "differential": 400 } } },
+      "expected": { "data": { "make": "watteco", "model": "ventilo", "pressure": { "differential": 400 } } },
       "source": "synthetic"
     },
     {
       "description": "standard report, temperature 0x0B89 = 29.53 degC | payload:110A04020000290B89",
       "input": { "bytes": [17, 10, 4, 2, 0, 0, 41, 11, 137], "fPort": 125, "recvTime": "2023-07-19T07:51:31.598957793Z" },
-      "expected": { "data": { "air": { "temperature": 29.53 } } },
+      "expected": { "data": { "make": "watteco", "model": "ventilo", "air": { "temperature": 29.53 } } },
       "source": "ttn-example"
     },
     {
       "description": "standard report, temperature 0xFEC0 = -3.20 degC (synthetic)",
       "input": { "bytes": [17, 10, 4, 2, 0, 0, 41, 254, 192], "fPort": 125, "recvTime": "2023-07-19T07:51:31.598957793Z" },
-      "expected": { "data": { "air": { "temperature": -3.2 } } },
+      "expected": { "data": { "make": "watteco", "model": "ventilo", "air": { "temperature": -3.2 } } },
       "source": "synthetic"
     },
     {
       "description": "standard report, disposable battery 0x0E68 mV = 3.688 V | payload:110A00500006410503040E6804",
       "input": { "bytes": [17, 10, 0, 80, 0, 6, 65, 5, 3, 4, 14, 104, 4], "fPort": 125, "recvTime": "2023-07-19T07:51:25.508306410Z" },
-      "expected": { "data": { "battery": 3.688 } },
+      "expected": { "data": { "make": "watteco", "model": "ventilo", "battery": 3.688 } },
       "source": "ttn-example"
     },
     {
       "description": "config report, firmware version | payload:110100000002000D0305020015E2",
       "input": { "bytes": [17, 1, 0, 0, 0, 2, 0, 13, 3, 5, 2, 0, 21, 226], "fPort": 125, "recvTime": "2023-07-19T07:51:25.508306410Z" },
-      "expected": { "data": { "firmware": "3.5.2.5602" } },
+      "expected": { "data": { "make": "watteco", "model": "ventilo", "firmware": "3.5.2.5602" } },
       "source": "ttn-example"
     },
     {
       "description": "config report, dataup message type | payload:110180040000000800",
       "input": { "bytes": [17, 1, 128, 4, 0, 0, 0, 8, 0], "fPort": 125, "recvTime": "2023-07-19T07:51:25.508306410Z" },
-      "expected": { "data": { "messageType": "unconfirmed" } },
+      "expected": { "data": { "make": "watteco", "model": "ventilo", "messageType": "unconfirmed" } },
       "source": "ttn-example"
     },
     {

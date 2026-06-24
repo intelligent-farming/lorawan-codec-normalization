@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "keller",
+          "model": "arc1-tube",
           "water": {
             "pressure": 150,
             "temperature": { "current": 14.2 }
@@ -27,6 +29,8 @@
       },
       "expected": {
         "data": {
+          "make": "keller",
+          "model": "arc1-tube",
           "water": {
             "pressure": 234.5,
             "temperature": { "current": 11.7 },
@@ -45,6 +49,8 @@
       },
       "expected": {
         "data": {
+          "make": "keller",
+          "model": "arc1-tube",
           "battery": 5.084,
           "batteryPercent": 47,
           "enclosureHumidity": 58,

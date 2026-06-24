@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-wrm",
           "surfaceTemperature": -1.5,
           "headTemperature": 5,
           "battery": 3.55,
@@ -28,6 +30,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-wrm",
           "surfaceTemperature": 27.3,
           "headTemperature": 22,
           "battery": 3.168,

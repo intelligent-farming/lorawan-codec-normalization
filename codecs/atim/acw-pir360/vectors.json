@@ -6,6 +6,8 @@
       "input": { "fPort": 2, "bytes": [160, 1, 1] },
       "expected": {
         "data": {
+          "make": "atim",
+          "model": "acw-pir360",
           "action": { "motion": { "detected": true } },
           "frameType": "measurement"
         }
@@ -17,6 +19,8 @@
       "input": { "fPort": 2, "bytes": [160, 1, 0] },
       "expected": {
         "data": {
+          "make": "atim",
+          "model": "acw-pir360",
           "action": { "motion": { "detected": false } },
           "frameType": "measurement"
         }
@@ -28,6 +32,8 @@
       "input": { "fPort": 2, "bytes": [160, 1, 17] },
       "expected": {
         "data": {
+          "make": "atim",
+          "model": "acw-pir360",
           "action": { "motion": { "detected": true } },
           "frameType": "measurement"
         }
@@ -39,6 +45,8 @@
       "input": { "fPort": 2, "bytes": [160, 4, 0, 0, 1, 44] },
       "expected": {
         "data": {
+          "make": "atim",
+          "model": "acw-pir360",
           "action": { "motion": { "count": 300 } },
           "frameType": "measurement"
         }
@@ -50,6 +58,8 @@
       "input": { "fPort": 2, "bytes": [129, 12, 228, 11, 184] },
       "expected": {
         "data": {
+          "make": "atim",
+          "model": "acw-pir360",
           "battery": 3.3,
           "chargeVoltage": 3.0,
           "frameType": "life"

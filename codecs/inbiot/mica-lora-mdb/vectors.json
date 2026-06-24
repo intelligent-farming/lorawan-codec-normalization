@@ -11,6 +11,8 @@
       },
       "expected": {
         "data": {
+          "make": "inbiot",
+          "model": "mica-lora-mdb",
           "air": {
             "temperature": 21.3,
             "relativeHumidity": 45.5,
@@ -42,6 +44,8 @@
       },
       "expected": {
         "data": {
+          "make": "inbiot",
+          "model": "mica-lora-mdb",
           "air": {
             "temperature": 18.5,
             "relativeHumidity": 62.3,

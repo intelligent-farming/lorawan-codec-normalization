@@ -119,8 +119,18 @@ function codecStub(vendor, device, ttnRef) {
 // Normalized payload codec for ${vendor}/${device}. STUB — not yet authored.
 ${derivation}
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   return { errors: ['not implemented'] };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = ${JSON.stringify(vendor)};
+    result.data.model = ${JSON.stringify(device)};
+  }
+  return result;
 }
 `;
 }

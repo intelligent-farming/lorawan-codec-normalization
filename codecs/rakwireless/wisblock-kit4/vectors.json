@@ -5,6 +5,8 @@
       "input": { "fPort": 2, "bytes": [1, 103, 0, 225, 1, 104, 90, 1, 115, 39, 148, 1, 138, 0, 75, 1, 116, 1, 109] },
       "expected": {
         "data": {
+          "make": "rakwireless",
+          "model": "wisblock-kit4",
           "air": {
             "temperature": 22.5,
             "relativeHumidity": 45,
@@ -22,6 +24,8 @@
       "input": { "fPort": 2, "bytes": [1, 103, 0, 198, 1, 104, 120, 1, 115, 38, 252, 1, 125, 3, 32, 1, 101, 1, 94, 1, 120, 88] },
       "expected": {
         "data": {
+          "make": "rakwireless",
+          "model": "wisblock-kit4",
           "air": {
             "temperature": 19.8,
             "relativeHumidity": 60,
@@ -40,6 +44,8 @@
       "input": { "fPort": 2, "bytes": [1, 103, 0, 50, 1, 104, 20, 1, 115, 35, 40, 1, 138, 1, 144] },
       "expected": {
         "data": {
+          "make": "rakwireless",
+          "model": "wisblock-kit4",
           "air": {
             "temperature": 5,
             "relativeHumidity": 10,

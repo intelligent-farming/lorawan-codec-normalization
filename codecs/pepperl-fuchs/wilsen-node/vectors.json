@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "pepperl-fuchs",
+          "model": "wilsen-node",
           "sensor1Detected": false,
           "sensor2Detected": false,
           "battery": 3.6,
@@ -25,6 +27,8 @@
       },
       "expected": {
         "data": {
+          "make": "pepperl-fuchs",
+          "model": "wilsen-node",
           "battery": 3.6,
           "position": { "latitude": -33.865143, "longitude": 151.2099 }
         }

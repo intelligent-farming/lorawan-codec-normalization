@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "elsys",
+          "model": "ers-co2",
           "air": {
             "temperature": 22.6,
             "relativeHumidity": 41,

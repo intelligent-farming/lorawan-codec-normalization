@@ -38,7 +38,7 @@ function decodeTemperature(hi, lo) {
   return round(raw / 10, 1);
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
 
   if (input.fPort !== 6) {
@@ -73,4 +73,14 @@ function decodeUplink(input) {
   data.highTempAlarm = bytes[5] !== 0x00;
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "netvox";
+    result.data.model = "ra02d1";
+  }
+  return result;
 }

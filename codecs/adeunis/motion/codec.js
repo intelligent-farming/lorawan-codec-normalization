@@ -40,7 +40,7 @@ function parseStatusByte(b) {
   };
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length < 2) {
     return { errors: ['payload too short'] };
@@ -115,4 +115,14 @@ function decodeUplink(input) {
   }
 
   return { errors: ['unsupported frame code 0x' + frameCode.toString(16)] };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "adeunis";
+    result.data.model = "motion";
+  }
+  return result;
 }

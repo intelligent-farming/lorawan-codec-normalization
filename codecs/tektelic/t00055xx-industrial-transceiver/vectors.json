@@ -19,6 +19,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t00055xx-industrial-transceiver",
           "battery": 3,
           "input1": 1,
           "input2": 0.01,
@@ -46,6 +48,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t00055xx-industrial-transceiver",
           "air": {
             "temperature": 23.1,
             "relativeHumidity": 42.5
@@ -63,6 +67,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t00055xx-industrial-transceiver",
           "changeOutputStates": {
             "output1": 0,
             "output2": 1

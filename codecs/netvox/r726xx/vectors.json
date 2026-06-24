@@ -3,28 +3,28 @@
     {
       "description": "CO2 report (reportType 0x07): CO2 500 ppm, battery 9.0 V; NH3/Noise absent (0xFFFF)",
       "input": { "fPort": 6, "bytes": [1, 9, 7, 90, 19, 136, 255, 255, 255, 255, 0] },
-      "expected": { "data": { "battery": 9, "air": { "co2": 500 } } },
+      "expected": { "data": { "make": "netvox", "model": "r726xx", "battery": 9, "air": { "co2": 500 } } },
       "source": "ttn-example",
       "_note": "TTN 'Status report - 7' example input. ORACLE: upstream ra0715_r72615_ra0715y_r72615a.js decodes Volt 9.0, CO2 500 (slot1 0x1388=5000, /10 ppm); NH3/Noise 0xFFFF (NoSensor, dropped)."
     },
     {
       "description": "Temperature/Humidity report (reportType 0x0C): -20 C, 10 %, battery 9.0 V; WindSpeed absent",
       "input": { "fPort": 6, "bytes": [1, 9, 12, 90, 248, 48, 3, 232, 255, 255, 0] },
-      "expected": { "data": { "battery": 9, "air": { "temperature": -20, "relativeHumidity": 10 } } },
+      "expected": { "data": { "make": "netvox", "model": "r726xx", "battery": 9, "air": { "temperature": -20, "relativeHumidity": 10 } } },
       "source": "ttn-example",
       "_note": "TTN 'Status report - 12' example input. ORACLE: upstream decodes Temperature -20 (slot1 0xF830=63536, two's-complement -2000, /100), Humidity 10 (slot2 0x03E8=1000, /100); WindSpeed 0xFFFF (dropped)."
     },
     {
       "description": "Temperature/Humidity report (reportType 0x0C) with positive temperature: 23.5 C, 55.2 %",
       "input": { "fPort": 6, "bytes": [1, 9, 12, 36, 9, 46, 21, 144, 255, 255, 0] },
-      "expected": { "data": { "battery": 3.6, "air": { "temperature": 23.5, "relativeHumidity": 55.2 } } },
+      "expected": { "data": { "make": "netvox", "model": "r726xx", "battery": 3.6, "air": { "temperature": 23.5, "relativeHumidity": 55.2 } } },
       "source": "synthetic",
       "_note": "ORACLE: synthetic in-bounds input; upstream decodes Volt 3.6, Temperature 23.5 (slot1 0x092E=2350, /100), Humidity 55.2 (slot2 0x1590=5520, /100)."
     },
     {
       "description": "CO2 report (reportType 0x07) with low-battery flag: battery 3.0 V, lowBattery, CO2 450 ppm",
       "input": { "fPort": 6, "bytes": [1, 9, 7, 158, 17, 148, 255, 255, 255, 255, 0] },
-      "expected": { "data": { "lowBattery": true, "battery": 3, "air": { "co2": 450 } } },
+      "expected": { "data": { "make": "netvox", "model": "r726xx", "lowBattery": true, "battery": 3, "air": { "co2": 450 } } },
       "source": "synthetic",
       "_note": "ORACLE: synthetic in-bounds input; byte3 0x9E has high bit set (upstream emits Volt '3(low battery)'), low 7 bits 0x1E=30 -> 3.0 V; CO2 450 (slot1 0x1194=4500, /10)."
     },

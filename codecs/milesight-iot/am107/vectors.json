@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "am107",
           "batteryPercent": 92,
           "air": {
             "temperature": 30.8,
@@ -30,6 +32,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "am107",
           "air": {
             "lightIntensity": 28,
             "infraredAndVisible": 121,
@@ -47,6 +51,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "am107",
           "air": {
             "co2": 1255,
             "tvoc": 7,

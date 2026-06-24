@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "dnt",
+          "model": "dnt-lw-ats",
           "battery": 4.06,
           "reason": "Cycle",
           "position": { "latitude": 53.24352, "longitude": 7.525063 },
@@ -27,6 +29,8 @@
       },
       "expected": {
         "data": {
+          "make": "dnt",
+          "model": "dnt-lw-ats",
           "battery": 4.06,
           "reason": "Start trip",
           "position": { "latitude": 53.24352, "longitude": 7.525063 },
@@ -47,6 +51,8 @@
       },
       "expected": {
         "data": {
+          "make": "dnt",
+          "model": "dnt-lw-ats",
           "battery": 4.06,
           "reason": "Heartbeat",
           "gpsActivations": 11,
@@ -65,6 +71,8 @@
       },
       "expected": {
         "data": {
+          "make": "dnt",
+          "model": "dnt-lw-ats",
           "battery": 4.06,
           "reason": "Start-up",
           "hardwareRevision": "B",
@@ -83,6 +91,8 @@
       },
       "expected": {
         "data": {
+          "make": "dnt",
+          "model": "dnt-lw-ats",
           "battery": 4.06,
           "reason": "Cycle",
           "gnssTimeout": true,

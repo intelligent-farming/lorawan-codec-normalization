@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "teneo-iot",
+          "model": "soil-moisture-sensor",
           "soil": {
             "moisture": 40,
             "temperature": -1
@@ -30,6 +32,8 @@
       },
       "expected": {
         "data": {
+          "make": "teneo-iot",
+          "model": "soil-moisture-sensor",
           "soil": {
             "moisture": 35,
             "temperature": 2
@@ -52,6 +56,8 @@
       },
       "expected": {
         "data": {
+          "make": "teneo-iot",
+          "model": "soil-moisture-sensor",
           "soil": {
             "moisture": 40
           },

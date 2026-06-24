@@ -6,6 +6,8 @@
       "input": { "fPort": 10, "bytes": [108, 2, 9, 5, 20] },
       "expected": {
         "data": {
+          "make": "elv",
+          "model": "elv-lw-mob",
           "battery": 2.88,
           "frameType": "Acceleration_Data",
           "txReason": "Short App Button Pressed",
@@ -23,6 +25,8 @@
       "input": { "fPort": 10, "bytes": [108, 1, 2, 5, 20, 0, 1] },
       "expected": {
         "data": {
+          "make": "elv",
+          "model": "elv-lw-mob",
           "battery": 2.88,
           "frameType": "Device_State",
           "txReason": "Cyclic Timer",
@@ -40,6 +44,8 @@
       "input": { "fPort": 10, "bytes": [192, 1, 8, 0, 0, 1, 2] },
       "expected": {
         "data": {
+          "make": "elv",
+          "model": "elv-lw-mob",
           "battery": 4,
           "frameType": "Device_State",
           "txReason": "Inactivity",
@@ -57,6 +63,8 @@
       "input": { "fPort": 10, "bytes": [108, 3, 9, 3] },
       "expected": {
         "data": {
+          "make": "elv",
+          "model": "elv-lw-mob",
           "battery": 2.88,
           "frameType": "Button_Pressed",
           "txReason": "Short App Button Pressed",

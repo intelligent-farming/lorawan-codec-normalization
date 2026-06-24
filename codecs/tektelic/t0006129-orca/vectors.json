@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t0006129-orca",
           "action": { "motion": { "detected": true } },
           "air": { "temperature": 34.6 },
           "accelerationAlarm": 1
@@ -23,6 +25,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t0006129-orca",
           "battery": 3,
           "position": { "latitude": 45.12345, "longitude": -93.654321 },
           "air": { "temperature": 22.3 },
@@ -44,6 +48,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t0006129-orca",
           "action": { "motion": { "detected": true } },
           "battery": 3.1,
           "air": { "temperature": 22.3 },
@@ -65,6 +71,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t0006129-orca",
           "position": { "latitude": -12.5, "longitude": 130.25 },
           "air": { "temperature": -5.7 },
           "altitude": 0,

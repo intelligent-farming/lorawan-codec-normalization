@@ -19,6 +19,8 @@
       },
       "expected": {
         "data": {
+          "make": "mclimate",
+          "model": "co2-display-lite",
           "air": {
             "temperature": 21.1,
             "relativeHumidity": 52.73,

@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "the-things-industries",
+          "model": "generic-node-sensor-edition",
           "air": {
             "temperature": 22.8,
             "relativeHumidity": 25
@@ -26,6 +28,8 @@
       },
       "expected": {
         "data": {
+          "make": "the-things-industries",
+          "model": "generic-node-sensor-edition",
           "air": {
             "temperature": 20,
             "relativeHumidity": 58.1
@@ -45,6 +49,8 @@
       },
       "expected": {
         "data": {
+          "make": "the-things-industries",
+          "model": "generic-node-sensor-edition",
           "air": {
             "temperature": -4.4,
             "relativeHumidity": 100
@@ -64,6 +70,8 @@
       },
       "expected": {
         "data": {
+          "make": "the-things-industries",
+          "model": "generic-node-sensor-edition",
           "air": {
             "temperature": -10,
             "relativeHumidity": 40

@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r711",
           "battery": 3,
           "air": { "temperature": 25.38, "relativeHumidity": 68 }
         }
@@ -23,6 +25,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r711",
           "battery": 3,
           "air": { "temperature": -0.2, "relativeHumidity": 44.64 }
         }
@@ -38,6 +42,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r711",
           "lowBattery": true,
           "battery": 3,
           "air": { "temperature": 21, "relativeHumidity": 32 }
@@ -54,6 +60,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r711",
           "battery": 2.8,
           "air": { "temperature": 30, "relativeHumidity": 100 }
         }
@@ -69,6 +77,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r711",
           "battery": 2.8,
           "air": { "temperature": 0, "relativeHumidity": 0 }
         }

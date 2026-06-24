@@ -3,25 +3,25 @@
     {
       "description": "Light intensity telemetry (measurementId 4199): 12345.6 lux -> air.lightIntensity",
       "input": { "fPort": 1, "bytes": [1, 103, 16, 0, 97, 188, 0, 170, 124] },
-      "expected": { "data": { "air": { "lightIntensity": 12345.6 } } },
+      "expected": { "data": { "make": "sensecap", "model": "sensecap-light", "air": { "lightIntensity": 12345.6 } } },
       "source": "captured"
     },
     {
       "description": "Light intensity 850 lux + battery 88% in one uplink -> air.lightIntensity + batteryPercent",
       "input": { "fPort": 1, "bytes": [1, 103, 16, 80, 248, 12, 0, 1, 7, 0, 88, 0, 60, 0, 100, 17] },
-      "expected": { "data": { "batteryPercent": 88, "air": { "lightIntensity": 850 } } },
+      "expected": { "data": { "make": "sensecap", "model": "sensecap-light", "batteryPercent": 88, "air": { "lightIntensity": 850 } } },
       "source": "captured"
     },
     {
       "description": "Shared SenseCAP telemetry example: 4097 air temperature 21.4 C, 4098 air humidity 31.4 %",
       "input": { "fPort": 1, "bytes": [1, 1, 16, 152, 83, 0, 0, 1, 2, 16, 168, 122, 0, 0, 175, 81] },
-      "expected": { "data": { "air": { "temperature": 21.4, "relativeHumidity": 31.4 } } },
+      "expected": { "data": { "make": "sensecap", "model": "sensecap-light", "air": { "temperature": 21.4, "relativeHumidity": 31.4 } } },
       "source": "ttn-example"
     },
     {
       "description": "End device's properties: battery 100% (special dataID 7) -> batteryPercent; version/interval/remove-sensor frames ignored",
       "input": { "fPort": 1, "bytes": [0, 0, 0, 1, 1, 0, 1, 0, 7, 0, 100, 0, 60, 0, 1, 32, 1, 0, 0, 0, 0, 40, 144] },
-      "expected": { "data": { "batteryPercent": 100 } },
+      "expected": { "data": { "make": "sensecap", "model": "sensecap-light", "batteryPercent": 100 } },
       "source": "ttn-example"
     },
     {

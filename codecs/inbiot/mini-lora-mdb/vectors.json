@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "inbiot",
+          "model": "mini-lora-mdb",
           "air": { "temperature": 21.3, "relativeHumidity": 45.5, "co2": 612 },
           "ventilationIndex": 40,
           "thermalIndex": 55,
@@ -29,6 +31,8 @@
       },
       "expected": {
         "data": {
+          "make": "inbiot",
+          "model": "mini-lora-mdb",
           "air": { "temperature": 19.8, "relativeHumidity": 62, "co2": 1180 },
           "ventilationIndex": 0,
           "thermalIndex": 0,
@@ -50,6 +54,8 @@
       },
       "expected": {
         "data": {
+          "make": "inbiot",
+          "model": "mini-lora-mdb",
           "air": { "temperature": 26.5, "relativeHumidity": 38, "co2": 415 },
           "ventilationIndex": 88,
           "thermalIndex": 90,

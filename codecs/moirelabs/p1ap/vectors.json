@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "moirelabs",
+          "model": "p1ap",
           "pressure": { "absolute": 25 },
           "pressureAbsoluteMin": 22.5903,
           "pressureAbsoluteMax": 24.875,
@@ -25,6 +27,8 @@
       },
       "expected": {
         "data": {
+          "make": "moirelabs",
+          "model": "p1ap",
           "pressure": { "absolute": 25000 },
           "pressureAbsoluteMin": 22590.2805,
           "pressureAbsoluteMax": 24875,
@@ -42,6 +46,8 @@
       },
       "expected": {
         "data": {
+          "make": "moirelabs",
+          "model": "p1ap",
           "pressure": { "absolute": 0.025 },
           "pressureAbsoluteMin": 0.0226,
           "pressureAbsoluteMax": 0.0249,

@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "rivercity-innovations",
+          "model": "lynx",
           "battery": 4,
           "action": { "motion": { "detected": true } },
           "headingDeg": 314.823529,
@@ -26,6 +28,8 @@
       },
       "expected": {
         "data": {
+          "make": "rivercity-innovations",
+          "model": "lynx",
           "battery": 6.4,
           "action": { "motion": { "detected": false } },
           "headingDeg": 180.705882,
@@ -45,6 +49,8 @@
       },
       "expected": {
         "data": {
+          "make": "rivercity-innovations",
+          "model": "lynx",
           "battery": 3,
           "action": { "motion": { "detected": true } },
           "headingDeg": 282.352941,

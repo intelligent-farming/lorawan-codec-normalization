@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "open-boat-projects",
+          "model": "loraboatmonitor",
           "counter": 10,
           "dewpoint": 10.4,
           "air": {
@@ -40,6 +42,8 @@
       },
       "expected": {
         "data": {
+          "make": "open-boat-projects",
+          "model": "loraboatmonitor",
           "counter": 99,
           "dewpoint": 3.2,
           "air": {

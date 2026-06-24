@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-pr36ctd",
           "electronicsTemperature": 24,
           "battery": 3.115,
           "water": {
@@ -28,6 +30,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-pr36ctd",
           "electronicsTemperature": 23.5234,
           "battery": 3.115,
           "water": {
@@ -48,6 +52,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-pr36ctd",
           "battery": 3.115
         }
       },

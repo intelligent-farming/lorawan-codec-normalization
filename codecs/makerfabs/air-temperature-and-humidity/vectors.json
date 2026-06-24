@@ -5,6 +5,8 @@
       "input": { "fPort": 2, "bytes": [0, 1, 36, 1, 244, 0, 250] },
       "expected": {
         "data": {
+          "make": "makerfabs",
+          "model": "air-temperature-and-humidity",
           "battery": 3.6,
           "air": { "temperature": 25, "relativeHumidity": 50 }
         }
@@ -17,6 +19,8 @@
       "input": { "fPort": 2, "bytes": [0, 2, 31, 2, 188, 255, 136] },
       "expected": {
         "data": {
+          "make": "makerfabs",
+          "model": "air-temperature-and-humidity",
           "battery": 3.1,
           "air": { "temperature": -12, "relativeHumidity": 70 }
         }

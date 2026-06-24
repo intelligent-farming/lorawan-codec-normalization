@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-atm41",
           "solarRadiation": 10,
           "lightningStrikeCount": 0,
           "lightningAverageDistance": 0,
@@ -44,6 +46,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-atm41",
           "battery": 3.061
         }
       },

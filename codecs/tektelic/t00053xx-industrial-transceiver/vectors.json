@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t00053xx-industrial-transceiver",
           "battery": 3.6,
           "air": {
             "temperature": 23.5,
@@ -26,6 +28,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t00053xx-industrial-transceiver",
           "battery": 3.6,
           "input1": 1,
           "input2": 0.01,

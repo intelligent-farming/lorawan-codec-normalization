@@ -29,7 +29,7 @@ function s8(b) {
   return b > 127 ? b - 256 : b;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
 
   if (input.fPort != 3) {
@@ -73,4 +73,14 @@ function decodeUplink(input) {
   }
 
   return { errors: ['wrong length'] };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "dingtek";
+    result.data.model = "do201";
+  }
+  return result;
 }

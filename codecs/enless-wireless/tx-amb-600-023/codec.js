@@ -44,7 +44,7 @@ function bit(value, n) {
 // EN304 device type byte (TX CO2/VOC/T&H AMB 600-023).
 var EN304 = 0x06;
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
 
   if (!bytes || bytes.length < 18) {
@@ -117,4 +117,14 @@ function decodeUplink(input) {
       alarms: alarms
     }
   };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "enless-wireless";
+    result.data.model = "tx-amb-600-023";
+  }
+  return result;
 }

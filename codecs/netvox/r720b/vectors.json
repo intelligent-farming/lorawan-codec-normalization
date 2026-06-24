@@ -5,6 +5,8 @@
       "input": { "fPort": 6, "bytes": [1, 111, 1, 36, 9, 234, 26, 144, 0, 0, 0] },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r720b",
           "battery": 3.6,
           "air": { "temperature": 25.38, "relativeHumidity": 68 },
           "alarm": false
@@ -18,6 +20,8 @@
       "input": { "fPort": 6, "bytes": [1, 111, 1, 30, 7, 208, 19, 136, 1, 0, 0] },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r720b",
           "battery": 3,
           "air": { "temperature": 20, "relativeHumidity": 50 },
           "alarm": true
@@ -31,6 +35,8 @@
       "input": { "fPort": 6, "bytes": [1, 111, 1, 160, 255, 156, 0, 0, 0, 0, 0] },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r720b",
           "lowBattery": true,
           "battery": 3.2,
           "air": { "temperature": -1, "relativeHumidity": 0 },

@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensecap",
+          "model": "sensecap-air-th",
           "air": {
             "temperature": 22.5,
             "relativeHumidity": 48.6
@@ -25,6 +27,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensecap",
+          "model": "sensecap-air-th",
           "batteryPercent": 95,
           "air": {
             "temperature": -5.25,

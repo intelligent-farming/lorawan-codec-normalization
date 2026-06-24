@@ -28,7 +28,7 @@ function hex2dec(hex) {
   return dec;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   switch (input.fPort) {
     case 10: // sensor data
@@ -102,4 +102,14 @@ function decodeUplink(input) {
     default:
       return { errors: ['unknown FPort'] };
   }
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "arwin-technology";
+    result.data.model = "lrs20310";
+  }
+  return result;
 }

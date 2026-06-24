@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "elsys",
+          "model": "ers-eye",
           "air": {
             "temperature": 22.6,
             "relativeHumidity": 41,
@@ -31,6 +33,8 @@
       },
       "expected": {
         "data": {
+          "make": "elsys",
+          "model": "ers-eye",
           "air": {
             "temperature": 21.5,
             "relativeHumidity": 55,
@@ -54,6 +58,8 @@
       },
       "expected": {
         "data": {
+          "make": "elsys",
+          "model": "ers-eye",
           "battery": 3.6,
           "air": {
             "temperature": 22.6,

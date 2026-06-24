@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-rhc",
           "sensorId": 20228605,
           "battery": 3.168,
           "air": {
@@ -26,6 +28,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-rhc",
           "sensorId": 16842753,
           "battery": 3.3,
           "air": {

@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "dragino",
+          "model": "lds02",
           "battery": 2.952,
           "mode": 1,
           "action": { "contactState": "closed" },
@@ -27,6 +29,8 @@
       },
       "expected": {
         "data": {
+          "make": "dragino",
+          "model": "lds02",
           "battery": 2.952,
           "mode": 1,
           "action": { "contactState": "open" },
@@ -46,6 +50,8 @@
       },
       "expected": {
         "data": {
+          "make": "dragino",
+          "model": "lds02",
           "battery": 2.952,
           "mode": 2,
           "water": { "leak": true },
@@ -64,6 +70,8 @@
       },
       "expected": {
         "data": {
+          "make": "dragino",
+          "model": "lds02",
           "battery": 2.952,
           "mode": 2,
           "water": { "leak": false },
@@ -82,6 +90,8 @@
       },
       "expected": {
         "data": {
+          "make": "dragino",
+          "model": "lds02",
           "battery": 2.952,
           "mode": 3,
           "action": { "contactState": "open" },

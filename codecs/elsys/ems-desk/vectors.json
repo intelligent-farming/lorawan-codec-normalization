@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "elsys",
+          "model": "ems-desk",
           "accelerationX": 1,
           "accelerationY": 39,
           "accelerationZ": 5,
@@ -34,6 +36,8 @@
       },
       "expected": {
         "data": {
+          "make": "elsys",
+          "model": "ems-desk",
           "battery": 3.6,
           "air": {
             "temperature": -5.3,

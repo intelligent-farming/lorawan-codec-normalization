@@ -19,7 +19,7 @@
 // The Nwave wire format parsed here contains no temperature or battery field,
 // so air.temperature and battery are not emitted.
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length === 0) {
     return { errors: ['empty payload'] };
@@ -69,4 +69,14 @@ function decodeUplink(input) {
   }
 
   return { errors: ['unsupported fPort ' + input.fPort] };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "nwave";
+    result.data.model = "nps310sm";
+  }
+  return result;
 }

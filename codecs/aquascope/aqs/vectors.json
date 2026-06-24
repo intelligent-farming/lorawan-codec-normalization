@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "aquascope",
+          "model": "aqs",
           "water": { "temperature": { "current": 18.5 } },
           "waterPressureKpa": 350,
           "metering": { "water": { "total": 12345 } },
@@ -25,6 +27,8 @@
       },
       "expected": {
         "data": {
+          "make": "aquascope",
+          "model": "aqs",
           "flow": 0,
           "consumptionTime": 30,
           "consumptionLiter": 200

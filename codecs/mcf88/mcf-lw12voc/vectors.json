@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "mcf88",
+          "model": "mcf-lw12voc",
           "air": {
             "temperature": 27.38,
             "relativeHumidity": 33,
@@ -42,6 +44,8 @@
       },
       "expected": {
         "data": {
+          "make": "mcf88",
+          "model": "mcf-lw12voc",
           "air": {
             "temperature": 27.38,
             "relativeHumidity": 33,
@@ -76,6 +80,8 @@
       },
       "expected": {
         "data": {
+          "make": "mcf88",
+          "model": "mcf-lw12voc",
           "air": {
             "temperature": 27.38,
             "relativeHumidity": 33,

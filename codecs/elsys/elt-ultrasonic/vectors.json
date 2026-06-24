@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "elsys",
+          "model": "elt-ultrasonic",
           "x": 1,
           "y": 39,
           "z": 5,
@@ -30,6 +32,8 @@
       },
       "expected": {
         "data": {
+          "make": "elsys",
+          "model": "elt-ultrasonic",
           "battery": 3.6,
           "distance": 1200,
           "air": {
@@ -50,6 +54,8 @@
       },
       "expected": {
         "data": {
+          "make": "elsys",
+          "model": "elt-ultrasonic",
           "air": {
             "temperature": 21.5
           }

@@ -9,6 +9,8 @@
       },
       "expected": {
         "data": {
+          "make": "micropelt",
+          "model": "mlrtps1",
           "air": { "temperature": 27.25 },
           "action": { "motion": { "detected": true } },
           "battery": 3.62,
@@ -30,6 +32,8 @@
       },
       "expected": {
         "data": {
+          "make": "micropelt",
+          "model": "mlrtps1",
           "air": { "temperature": 22 },
           "action": { "motion": { "detected": false } },
           "battery": 3,
@@ -51,6 +55,8 @@
       },
       "expected": {
         "data": {
+          "make": "micropelt",
+          "model": "mlrtps1",
           "air": { "temperature": 19 },
           "action": { "motion": { "detected": true } },
           "battery": 2.64,
@@ -72,6 +78,8 @@
       },
       "expected": {
         "data": {
+          "make": "micropelt",
+          "model": "mlrtps1",
           "air": { "temperature": 20 },
           "action": { "motion": { "detected": false } },
           "battery": 2,

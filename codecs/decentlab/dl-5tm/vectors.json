@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-5tm",
           "deviceId": 571,
           "dielectricPermittivity": 18,
           "soil": {
@@ -28,6 +30,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-5tm",
           "deviceId": 571,
           "dielectricPermittivity": 15,
           "soil": {
@@ -47,6 +51,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-5tm",
           "deviceId": 571,
           "battery": 3.3
         }

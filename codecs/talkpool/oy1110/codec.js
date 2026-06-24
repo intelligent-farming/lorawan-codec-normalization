@@ -38,7 +38,7 @@ function decodeReading(b0, b1, b2) {
   };
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   var fPort = input.fPort;
 
@@ -57,4 +57,14 @@ function decodeUplink(input) {
   }
 
   return { errors: ['unsupported fPort ' + fPort + ' (expected 2 or 3)'] };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "talkpool";
+    result.data.model = "oy1110";
+  }
+  return result;
 }

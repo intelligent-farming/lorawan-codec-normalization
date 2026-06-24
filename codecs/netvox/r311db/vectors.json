@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r311db",
           "battery": 3,
           "action": { "motion": { "detected": true } }
         }
@@ -22,6 +24,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r311db",
           "lowBattery": true,
           "battery": 2.9,
           "action": { "motion": { "detected": false } }

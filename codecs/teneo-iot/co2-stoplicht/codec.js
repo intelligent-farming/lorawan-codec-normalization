@@ -30,7 +30,7 @@ function round(value, decimals) {
   return Math.round(value * f) / f;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length < 1) {
     return { errors: ['empty payload'] };
@@ -79,4 +79,14 @@ function decodeUplink(input) {
   // Any other fPort carries only the battery nibble (matches upstream, which
   // always decodes battery and returns the rest empty).
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "teneo-iot";
+    result.data.model = "co2-stoplicht";
+  }
+  return result;
 }

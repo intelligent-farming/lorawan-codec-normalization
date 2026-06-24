@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "elsys",
+          "model": "ers-co2-lite",
           "battery": 3.6,
           "air": {
             "temperature": 22.6,
@@ -27,6 +29,8 @@
       },
       "expected": {
         "data": {
+          "make": "elsys",
+          "model": "ers-co2-lite",
           "air": {
             "temperature": 20.1,
             "relativeHumidity": 55,
@@ -46,6 +50,8 @@
       },
       "expected": {
         "data": {
+          "make": "elsys",
+          "model": "ers-co2-lite",
           "air": {
             "temperature": -10,
             "relativeHumidity": 20,

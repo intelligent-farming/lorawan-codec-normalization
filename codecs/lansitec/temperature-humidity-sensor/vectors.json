@@ -5,6 +5,8 @@
       "input": { "fPort": 2, "bytes": [33, 62, 85, 0, 120, 22, 53, 55, 18, 52] },
       "expected": {
         "data": {
+          "make": "lansitec",
+          "model": "temperature-humidity-sensor",
           "messageType": "heartbeat",
           "protocolVersion": 1,
           "batteryPercent": 62,
@@ -22,6 +24,8 @@
       "input": { "fPort": 2, "bytes": [33, 30, 110, 0, 0, 133, 75, 88, 0, 9] },
       "expected": {
         "data": {
+          "make": "lansitec",
+          "model": "temperature-humidity-sensor",
           "messageType": "heartbeat",
           "protocolVersion": 1,
           "batteryPercent": 30,
@@ -39,6 +43,8 @@
       "input": { "fPort": 2, "bytes": [30, 32, 64, 24, 0, 6, 18, 52] },
       "expected": {
         "data": {
+          "make": "lansitec",
+          "model": "temperature-humidity-sensor",
           "messageType": "register",
           "adrEnabled": true,
           "region": "EU868",
@@ -58,6 +64,8 @@
       "input": { "fPort": 2, "bytes": [243, 7] },
       "expected": {
         "data": {
+          "make": "lansitec",
+          "model": "temperature-humidity-sensor",
           "messageType": "acknowledge",
           "result": 3,
           "messageId": 7

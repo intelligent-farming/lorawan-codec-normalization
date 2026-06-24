@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "adeunis",
+          "model": "deltap",
           "frameType": "0x53 periodic",
           "pressure": { "differential": -500 },
           "frameCounter": 1,
@@ -28,6 +30,8 @@
       },
       "expected": {
         "data": {
+          "make": "adeunis",
+          "model": "deltap",
           "frameType": "0x53 periodic",
           "pressure": { "differential": 250 },
           "frameCounter": 1,
@@ -47,6 +51,8 @@
       },
       "expected": {
         "data": {
+          "make": "adeunis",
+          "model": "deltap",
           "frameType": "0x54 alarm",
           "pressure": { "differential": 250 },
           "alarmStatus": "active",
@@ -67,6 +73,8 @@
       },
       "expected": {
         "data": {
+          "make": "adeunis",
+          "model": "deltap",
           "frameType": "0x55 periodic 0-10 V",
           "voltage": [1000, 500],
           "frameCounter": 1,

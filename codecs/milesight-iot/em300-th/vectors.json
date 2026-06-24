@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "em300-th",
           "batteryPercent": 50,
           "air": { "temperature": 20, "relativeHumidity": 30 }
         }
@@ -22,6 +24,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "em300-th",
           "batteryPercent": 100,
           "air": { "temperature": -1, "relativeHumidity": 45.5 }
         }

@@ -33,7 +33,7 @@ function s16be(hi, lo) {
   return v > 0x7fff ? v - 0x10000 : v;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
 
   if (!bytes || bytes.length < 2) {
@@ -160,4 +160,14 @@ function decodeUplink(input) {
   }
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "watteco";
+    result.data.model = "vaqao-plus";
+  }
+  return result;
 }

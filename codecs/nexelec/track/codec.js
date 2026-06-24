@@ -216,7 +216,7 @@ function decodePosition(hex) {
   return data;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length < 2) {
     return { errors: ['payload too short for a Nexelec TRACK+ frame'] };
@@ -245,4 +245,14 @@ function decodeUplink(input) {
   }
 
   return { errors: ['unsupported message type (expected 0x01-0x04)'] };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "nexelec";
+    result.data.model = "track";
+  }
+  return result;
 }

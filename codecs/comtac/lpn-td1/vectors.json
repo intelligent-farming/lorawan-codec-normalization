@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "comtac",
+          "model": "lpn-td1",
           "battery": 3.6,
           "air": { "temperature": 22 },
           "position": { "latitude": 47.123456, "longitude": 8.654321 },
@@ -28,6 +30,8 @@
       },
       "expected": {
         "data": {
+          "make": "comtac",
+          "model": "lpn-td1",
           "battery": 3.97,
           "air": { "temperature": 10 },
           "position": { "latitude": 47.688976, "longitude": 8.631881 },
@@ -54,6 +58,8 @@
       },
       "expected": {
         "data": {
+          "make": "comtac",
+          "model": "lpn-td1",
           "battery": 3.975,
           "air": { "temperature": 26 },
           "posStatus": "NONE",
@@ -71,6 +77,8 @@
       },
       "expected": {
         "data": {
+          "make": "comtac",
+          "model": "lpn-td1",
           "battery": 3.97,
           "air": { "temperature": 9 },
           "configStatus": "/CFG GET",

@@ -5,6 +5,8 @@
       "input": { "fPort": 2, "bytes": [50, 8, 1, 0, 0, 0, 5, 11, 184] },
       "expected": {
         "data": {
+          "make": "atim",
+          "model": "acw-ilb100",
           "action": { "motion": { "count": 5, "detected": true } },
           "frameType": "alarm",
           "enclosureOpen": false,
@@ -20,6 +22,8 @@
       "input": { "fPort": 2, "bytes": [50, 16, 1, 0, 0, 1, 44, 11, 184] },
       "expected": {
         "data": {
+          "make": "atim",
+          "model": "acw-ilb100",
           "action": { "motion": { "count": 300 } },
           "frameType": "counting",
           "enclosureOpen": false,
@@ -35,6 +39,8 @@
       "input": { "fPort": 2, "bytes": [50, 1, 0, 0, 1, 0, 0, 11, 184] },
       "expected": {
         "data": {
+          "make": "atim",
+          "model": "acw-ilb100",
           "action": { "motion": { "count": 0 } },
           "frameType": "boxOpening",
           "enclosureOpen": true,

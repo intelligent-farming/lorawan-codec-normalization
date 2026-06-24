@@ -45,7 +45,7 @@ function s8(v) {
   return v > 0x7f ? v - 0x100 : v;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length === 0) {
     return { errors: ['empty payload'] };
@@ -158,4 +158,14 @@ function decodeUplink(input) {
     data.action = { motion: motion };
   }
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "thermokon";
+    result.data.model = "mcs-lrw";
+  }
+  return result;
 }

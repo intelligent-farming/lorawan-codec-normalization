@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "smart-parks",
+          "model": "opencollar",
           "position": { "latitude": 45.00001, "longitude": -89.99999 },
           "gpsAltitude": 400,
           "gpsSatellites": 7,
@@ -31,6 +33,8 @@
       },
       "expected": {
         "data": {
+          "make": "smart-parks",
+          "model": "opencollar",
           "resetCause": "EXTERNAL",
           "systemStateTimeout": 1,
           "battery": 3.5,
@@ -68,6 +72,8 @@
       },
       "expected": {
         "data": {
+          "make": "smart-parks",
+          "model": "opencollar",
           "time": "2020-09-14T05:06:40.000Z",
           "position": { "latitude": 45.00001, "longitude": -89.99999 },
           "action": { "motion": { "detected": true } },

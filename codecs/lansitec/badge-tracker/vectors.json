@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "lansitec",
+          "model": "badge-tracker",
           "position": { "latitude": 37.5, "longitude": -122.25 },
           "time": "2024-06-21T00:00:00.000Z"
         }
@@ -23,6 +25,8 @@
       },
       "expected": {
         "data": {
+          "make": "lansitec",
+          "model": "badge-tracker",
           "batteryPercent": 85,
           "rssi": -70,
           "snr": 6,
@@ -42,6 +46,8 @@
       },
       "expected": {
         "data": {
+          "make": "lansitec",
+          "model": "badge-tracker",
           "movementLevel": 3,
           "bleBeacons": [
             { "major": "1234", "minor": "5678", "rssi": -56 }
@@ -58,7 +64,7 @@
         "bytes": [128, 1]
       },
       "expected": {
-        "data": { "alarm": "sos" }
+        "data": { "make": "lansitec", "model": "badge-tracker", "alarm": "sos" }
       },
       "source": "synthetic",
       "_note": "Synthetic alarm frame. bytes[0]=0x80 (type 8), bytes[1]=1 -> SOS alarm. expected.data emits the alarm string as a camelCase extra."

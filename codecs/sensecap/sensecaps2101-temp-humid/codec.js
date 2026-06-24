@@ -78,7 +78,7 @@ function decodeTelemetryValue(hex8) {
   return raw / 1000;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
 
   if (!bytes || bytes.length < 9) {
@@ -144,4 +144,14 @@ function decodeUplink(input) {
   }
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "sensecap";
+    result.data.model = "sensecaps2101-temp-humid";
+  }
+  return result;
 }

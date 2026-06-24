@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "uradmonitor",
+          "model": "model-industrial",
           "air": { "temperature": 18.42, "pressure": 1002.46, "relativeHumidity": 65 },
           "hardwareVersion": "HW6",
           "firmwareVersion": 78,
@@ -33,6 +35,8 @@
       },
       "expected": {
         "data": {
+          "make": "uradmonitor",
+          "model": "model-industrial",
           "air": { "temperature": 22.5, "pressure": 1013.25, "relativeHumidity": 50 },
           "hardwareVersion": "HW6",
           "firmwareVersion": 78,
@@ -57,6 +61,8 @@
       },
       "expected": {
         "data": {
+          "make": "uradmonitor",
+          "model": "model-industrial",
           "air": { "temperature": -5, "pressure": 980, "relativeHumidity": 80 },
           "hardwareVersion": "HW6",
           "firmwareVersion": 78,
@@ -83,6 +89,8 @@
       },
       "expected": {
         "data": {
+          "make": "uradmonitor",
+          "model": "model-industrial",
           "air": { "temperature": 30, "pressure": 1000, "relativeHumidity": 100 },
           "hardwareVersion": "HW6",
           "firmwareVersion": 78,

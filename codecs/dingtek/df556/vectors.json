@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "df556",
           "level": 300,
           "gpsEnabled": true,
           "alarmLevel": false,
@@ -31,6 +33,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "df556",
           "level": 613,
           "gpsEnabled": false,
           "alarmLevel": false,
@@ -50,6 +54,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "df556",
           "firmware": "4.5",
           "uploadInterval": 60,
           "detectInterval": 10,

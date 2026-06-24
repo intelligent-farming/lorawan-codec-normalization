@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "em500-smt",
           "batteryPercent": 92,
           "soil": { "temperature": 30.8, "moisture": 50.5 }
         }
@@ -23,6 +25,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "em500-smt",
           "batteryPercent": 80,
           "soil": { "temperature": -1.5, "moisture": 20 }
         }
@@ -38,6 +42,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "em500-smt",
           "batteryPercent": 100,
           "soil": { "moisture": 56.5 }
         }

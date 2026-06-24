@@ -7,7 +7,7 @@
         "fPort": 125,
         "recvTime": "2023-07-19T07:51:25.508306410Z"
       },
-      "expected": { "data": { "water": { "pressure": 16.875 } } },
+      "expected": { "data": { "make": "nke-watteco", "model": "levo-plus-sensor", "water": { "pressure": 16.875 } } },
       "source": "ttn-example",
       "_note": "Oracle: upstream Decoder() endpoint 0, cluster 0x000C attr 0x0055. Bytes2Float32(0x41500000)=13 mA; DeltaPressure=(13*0.01875-0.075)*100000=16875 Pa; water.pressure = 16875/1000 = 16.875 kPa."
     },
@@ -18,7 +18,7 @@
         "fPort": 125,
         "recvTime": "2023-07-19T07:51:25.508306410Z"
       },
-      "expected": { "data": { "water": { "level": 1.7254 } } },
+      "expected": { "data": { "make": "nke-watteco", "model": "levo-plus-sensor", "water": { "level": 1.7254 } } },
       "source": "synthetic",
       "_note": "byte0 0x21 sets bit0 (standard frame) and yields endpoint 1 via ((b0&0xE0)>>5)|((b0&0x06)<<2). Oracle: upstream FluidLevel = DeltaPressure/(9.81*997) = 16875/9762.57 = 1.72536...; rounded to 4 dp = 1.7254 m. Reproduces upstream when both endpoints carry the same loop current."
     },
@@ -29,7 +29,7 @@
         "fPort": 125,
         "recvTime": "2023-07-19T07:51:25.508306410Z"
       },
-      "expected": { "data": { "battery": 3.688 } },
+      "expected": { "data": { "make": "nke-watteco", "model": "levo-plus-sensor", "battery": 3.688 } },
       "source": "ttn-example",
       "_note": "cluster 0x0050 attr 0x0006. Flags byte (index 9) = 0x04 -> disposable battery present; 2-byte millivolts 0x0E68 = 3688 mV -> battery = 3.688 V. Matches upstream disposable_battery_voltage."
     },
@@ -40,7 +40,7 @@
         "fPort": 125,
         "recvTime": "2023-07-19T07:51:25.508306410Z"
       },
-      "expected": { "data": { "messageType": "unconfirmed" } },
+      "expected": { "data": { "make": "nke-watteco", "model": "levo-plus-sensor", "messageType": "unconfirmed" } },
       "source": "synthetic",
       "_note": "cluster 0x8004 attr 0x0000, value byte (index 7) = 0 -> unconfirmed. Carries no measurement; surfaced as the camelCase extra messageType (mirrors upstream message_type)."
     },

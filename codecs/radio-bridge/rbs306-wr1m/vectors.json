@@ -5,6 +5,8 @@
       "input": { "fPort": 1, "bytes": [17, 8, 0, 200] },
       "expected": {
         "data": {
+          "make": "radio-bridge",
+          "model": "rbs306-wr1m",
           "protocol": 1,
           "counter": 1,
           "messageType": "water",
@@ -20,6 +22,8 @@
       "input": { "fPort": 1, "bytes": [17, 8, 1, 0] },
       "expected": {
         "data": {
+          "make": "radio-bridge",
+          "model": "rbs306-wr1m",
           "protocol": 1,
           "counter": 1,
           "messageType": "water",
@@ -35,6 +39,8 @@
       "input": { "fPort": 1, "bytes": [17, 1, 0, 0, 54, 0, 0, 0, 0, 0, 5] },
       "expected": {
         "data": {
+          "make": "radio-bridge",
+          "model": "rbs306-wr1m",
           "protocol": 1,
           "counter": 1,
           "messageType": "supervisory",

@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "ra02c",
           "battery": 3,
           "air": { "gasAlarm": true },
           "gasType": "CO",
@@ -25,6 +27,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "ra02c",
           "battery": 3,
           "air": { "gasAlarm": false },
           "gasType": "CO",
@@ -42,6 +46,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "ra02c",
           "lowBattery": true,
           "battery": 3,
           "air": { "gasAlarm": true },

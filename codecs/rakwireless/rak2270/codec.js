@@ -104,7 +104,7 @@ function lppDecode(bytes) {
   return sensors;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || typeof bytes.length !== 'number') {
     return { errors: ['no bytes in uplink'] };
@@ -149,4 +149,14 @@ function decodeUplink(input) {
     return { errors: ['no decodable fields in payload'] };
   }
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "rakwireless";
+    result.data.model = "rak2270";
+  }
+  return result;
 }

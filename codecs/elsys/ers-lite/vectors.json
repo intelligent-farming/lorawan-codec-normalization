@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "elsys",
+          "model": "ers-lite",
           "air": {
             "temperature": 22.6,
             "relativeHumidity": 41
@@ -25,6 +27,8 @@
       },
       "expected": {
         "data": {
+          "make": "elsys",
+          "model": "ers-lite",
           "battery": 3.458,
           "air": {
             "temperature": 22.6,
@@ -43,6 +47,8 @@
       },
       "expected": {
         "data": {
+          "make": "elsys",
+          "model": "ers-lite",
           "air": {
             "temperature": -10,
             "relativeHumidity": 50
@@ -60,6 +66,8 @@
       },
       "expected": {
         "data": {
+          "make": "elsys",
+          "model": "ers-lite",
           "air": {
             "lightIntensity": 500,
             "co2": 800
@@ -77,6 +85,8 @@
       },
       "expected": {
         "data": {
+          "make": "elsys",
+          "model": "ers-lite",
           "action": {
             "motion": {
               "detected": true,
@@ -96,6 +106,8 @@
       },
       "expected": {
         "data": {
+          "make": "elsys",
+          "model": "ers-lite",
           "air": {
             "pressure": 1017.92
           }

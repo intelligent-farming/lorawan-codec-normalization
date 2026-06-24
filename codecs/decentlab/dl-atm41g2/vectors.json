@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-atm41g2",
           "air": {
             "temperature": 23.1,
             "relativeHumidity": 47,
@@ -43,6 +45,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-atm41g2",
           "battery": 2.78
         }
       },

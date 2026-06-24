@@ -5,6 +5,8 @@
       "input": { "fPort": 22, "bytes": [3, 1, 9, 1, 120, 7, 8, 4, 76, 0, 0] },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r900a01",
           "battery": 12,
           "air": { "temperature": 18, "relativeHumidity": 11 },
           "lowTemperatureAlarm": false,
@@ -23,6 +25,8 @@
       "input": { "fPort": 22, "bytes": [3, 1, 9, 1, 118, 9, 16, 11, 184, 15, 1] },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r900a01",
           "battery": 11.8,
           "air": { "temperature": 23.2, "relativeHumidity": 30 },
           "lowTemperatureAlarm": true,
@@ -41,6 +45,8 @@
       "input": { "fPort": 22, "bytes": [3, 1, 9, 1, 200, 255, 236, 1, 144, 0, 0] },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r900a01",
           "lowBattery": true,
           "battery": 7.2,
           "air": { "temperature": -0.2, "relativeHumidity": 4 },

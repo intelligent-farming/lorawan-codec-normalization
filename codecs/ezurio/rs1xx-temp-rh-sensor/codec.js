@@ -95,7 +95,7 @@ function decodeOptions(b) {
 
 var BATTERY_CAPACITY = ['0-5%', '5-20%', '20-40%', '40-60%', '60-80%', '80-100%'];
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length < 1) {
     return { errors: ['empty payload'] };
@@ -240,4 +240,14 @@ function decodeUplink(input) {
   }
 
   return { errors: ['Invalid message type used!'] };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "ezurio";
+    result.data.model = "rs1xx-temp-rh-sensor";
+  }
+  return result;
 }

@@ -42,7 +42,7 @@ function bit(value, n) {
 // EN302 device type byte (TX T&H AMB 600-021).
 var EN302 = 0x04;
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
 
   if (!bytes || bytes.length < 18) {
@@ -104,4 +104,14 @@ function decodeUplink(input) {
       alarms: alarms
     }
   };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "enless-wireless";
+    result.data.model = "tx-trh-amb-600-021";
+  }
+  return result;
 }

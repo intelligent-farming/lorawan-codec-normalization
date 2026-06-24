@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "nexelec",
+          "model": "origin-plus",
           "air": { "temperature": 22.5, "relativeHumidity": 45 }
         }
       },
@@ -22,6 +24,8 @@
       },
       "expected": {
         "data": {
+          "make": "nexelec",
+          "model": "origin-plus",
           "air": { "temperature": -10, "relativeHumidity": 65 }
         }
       },
@@ -36,6 +40,8 @@
       },
       "expected": {
         "data": {
+          "make": "nexelec",
+          "model": "origin-plus",
           "air": { "relativeHumidity": 55 }
         }
       },
@@ -50,6 +56,8 @@
       },
       "expected": {
         "data": {
+          "make": "nexelec",
+          "model": "origin-plus",
           "air": { "temperature": 22.5 }
         }
       },
@@ -64,6 +72,8 @@
       },
       "expected": {
         "data": {
+          "make": "nexelec",
+          "model": "origin-plus",
           "air": { "temperature": 58.5, "relativeHumidity": 24.5 },
           "temperatureMinC": 20.6,
           "temperatureMaxC": 49.2,

@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "dc600",
           "water": {
             "leak": false,
             "temperature": { "current": 25 }
@@ -32,6 +34,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "dc600",
           "water": {
             "leak": true,
             "temperature": { "current": 18 }

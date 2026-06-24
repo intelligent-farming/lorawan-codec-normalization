@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "laird",
+          "model": "rs1xx-ext-multi-sensor",
           "messageType": "tempRh",
           "air": {
             "relativeHumidity": 45.5,
@@ -30,6 +32,8 @@
       },
       "expected": {
         "data": {
+          "make": "laird",
+          "model": "rs1xx-ext-multi-sensor",
           "messageType": "aggregatedTempRh",
           "air": {
             "relativeHumidity": 31.2,
@@ -63,6 +67,8 @@
       },
       "expected": {
         "data": {
+          "make": "laird",
+          "model": "rs1xx-ext-multi-sensor",
           "messageType": "backlog",
           "air": {
             "relativeHumidity": 45.5,
@@ -83,6 +89,8 @@
       },
       "expected": {
         "data": {
+          "make": "laird",
+          "model": "rs1xx-ext-multi-sensor",
           "messageType": "backlogMultiple",
           "air": {
             "relativeHumidity": 31.2,
@@ -113,6 +121,8 @@
       },
       "expected": {
         "data": {
+          "make": "laird",
+          "model": "rs1xx-ext-multi-sensor",
           "messageType": "contactSensor",
           "action": {
             "contactState": "open"
@@ -134,6 +144,8 @@
       },
       "expected": {
         "data": {
+          "make": "laird",
+          "model": "rs1xx-ext-multi-sensor",
           "messageType": "batteryVoltage",
           "battery": 3.3,
           "options": []

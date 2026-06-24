@@ -56,7 +56,7 @@ function be32(bytes, offset) {
   );
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes) {
     return { errors: ['missing payload bytes'] };
@@ -123,4 +123,14 @@ function decodeUplink(input) {
   }
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "makerfabs";
+    result.data.model = "gps-tracker-pa1010d";
+  }
+  return result;
 }

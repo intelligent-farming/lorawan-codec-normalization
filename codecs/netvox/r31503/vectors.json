@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r31503",
           "battery": 2.8,
           "air": { "temperature": 23.5, "relativeHumidity": 55 }
         }
@@ -23,6 +25,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r31503",
           "battery": 2.8,
           "air": { "temperature": -5, "relativeHumidity": 40 }
         }
@@ -38,6 +42,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r31503",
           "lowBattery": true,
           "battery": 2.8,
           "air": { "temperature": 23.5, "relativeHumidity": 55 }
@@ -54,6 +60,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r31503",
           "battery": 2.8,
           "lowTemperatureAlarm": false,
           "highTemperatureAlarm": false,
@@ -75,6 +83,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r31503",
           "battery": 2.8,
           "lowTemperatureAlarm": false,
           "highTemperatureAlarm": true,

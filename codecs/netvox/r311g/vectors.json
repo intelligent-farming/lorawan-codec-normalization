@@ -3,14 +3,14 @@
     {
       "description": "Illuminance report (TTN example bytes)",
       "input": { "fPort": 6, "bytes": [1, 4, 1, 30, 0, 120, 0, 0, 0, 0, 0] },
-      "expected": { "data": { "battery": 3, "air": { "lightIntensity": 120 } } },
+      "expected": { "data": { "make": "netvox", "model": "r311g", "battery": 3, "air": { "lightIntensity": 120 } } },
       "source": "ttn-example"
     },
     {
       "description": "Low-battery report with higher illuminance (synthetic)",
       "input": { "fPort": 6, "bytes": [1, 4, 1, 156, 1, 44, 0, 0, 0, 0, 0] },
       "expected": {
-        "data": { "lowBattery": true, "battery": 2.8, "air": { "lightIntensity": 300 } }
+        "data": { "make": "netvox", "model": "r311g", "lowBattery": true, "battery": 2.8, "air": { "lightIntensity": 300 } }
       },
       "source": "synthetic"
     },

@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "df555",
           "level": 2000,
           "air": { "temperature": 25 },
           "frameCounter": 1,
@@ -29,6 +31,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "df555",
           "level": 2000,
           "air": { "temperature": 25 },
           "frameCounter": 1,
@@ -46,6 +50,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "df555",
           "firmware": "1.4",
           "uploadInterval": 24,
           "detectInterval": 1,
@@ -63,6 +69,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "df555",
           "level": 400,
           "air": { "temperature": 30 },
           "frameCounter": 5,

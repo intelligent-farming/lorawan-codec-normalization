@@ -38,7 +38,7 @@ function s8(b) {
   return b & 0x80 ? b - 0x100 : b;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
 
   if (input.fPort !== 99) {
@@ -137,4 +137,14 @@ function decodeUplink(input) {
   }
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "stmicroelectronics";
+    result.data.model = "steval-astra1b";
+  }
+  return result;
 }

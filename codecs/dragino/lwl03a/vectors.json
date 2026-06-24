@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "dragino",
+          "model": "lwl03a",
           "water": { "leak": true },
           "alarm": false,
           "leakEvents": 10,
@@ -25,6 +27,8 @@
       },
       "expected": {
         "data": {
+          "make": "dragino",
+          "model": "lwl03a",
           "water": { "leak": false },
           "alarm": false,
           "leakEvents": 0,

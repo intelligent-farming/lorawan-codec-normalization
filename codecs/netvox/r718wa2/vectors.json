@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718wa2",
           "battery": 3.6,
           "water": { "leak": false, "leak1": false, "leak2": false }
         }
@@ -23,6 +25,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718wa2",
           "battery": 3.6,
           "water": { "leak": true, "leak1": true, "leak2": false }
         }
@@ -38,6 +42,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718wa2",
           "battery": 3.6,
           "water": { "leak": true, "leak1": false, "leak2": true }
         }
@@ -53,6 +59,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718wa2",
           "battery": 3.6,
           "water": { "leak": true, "leak1": true, "leak2": true }
         }
@@ -68,6 +76,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718wa2",
           "lowBattery": true,
           "battery": 3.6,
           "water": { "leak": false, "leak1": false, "leak2": false }

@@ -103,7 +103,7 @@ function setMotion(data, moving) {
   data.action.motion.detected = moving;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length < 2) {
     return { errors: ['payload too short for an IoT Factory tracker frame'] };
@@ -283,4 +283,14 @@ function decodeUplink(input) {
     return { data: data, warnings: warnings };
   }
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "iot-factory";
+    result.data.model = "personal-tracker";
+  }
+  return result;
 }

@@ -3,21 +3,21 @@
     {
       "description": "weather report (0B/2/00): 1013 hPa, 20C, 55% RH, 4.47 m/s wind @180deg, 3 mm/h rain, 8 mm day rain, UV 4, 650 W/m2 solar",
       "input": { "fPort": 2, "bytes": [11, 32, 0, 0, 0, 218, 116, 168, 2, 10, 8, 180, 0, 55, 15, 0, 4, 138, 2, 40, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 20] },
-      "expected": { "data": { "air": { "temperature": 20, "relativeHumidity": 55, "pressure": 1013 }, "wind": { "speed": 4.47, "direction": 180 }, "rain": { "intensity": 3, "cumulative": 8 }, "windSpeedAvg10min": 3.58, "uvIndex": 4, "solarRadiation": 650, "evapotranspiration": 2.54, "forecastIcons": 8, "barometerTrend": 20 } },
+      "expected": { "data": { "make": "mcf88", "model": "mcf-lwws02", "air": { "temperature": 20, "relativeHumidity": 55, "pressure": 1013 }, "wind": { "speed": 4.47, "direction": 180 }, "rain": { "intensity": 3, "cumulative": 8 }, "windSpeedAvg10min": 3.58, "uvIndex": 4, "solarRadiation": 650, "evapotranspiration": 2.54, "forecastIcons": 8, "barometerTrend": 20 } },
       "source": "synthetic",
       "_note": "Synthetic in-bounds payload; expected.data derived from running reference/upstream-codec.js parseWeather over these bytes (imperial->metric conversions reproduced as numbers; upstream emits the same values as strings)."
     },
     {
       "description": "weather report: calm cold low-pressure case (969.96 hPa, -5C, 90% RH, zero wind/rain, direction 0)",
       "input": { "fPort": 2, "bytes": [11, 32, 0, 0, 0, 227, 111, 230, 0, 0, 0, 0, 0, 90, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
-      "expected": { "data": { "air": { "temperature": -5, "relativeHumidity": 90, "pressure": 969.96 }, "wind": { "speed": 0, "direction": 0 }, "rain": { "intensity": 0, "cumulative": 0 }, "windSpeedAvg10min": 0, "uvIndex": 0, "solarRadiation": 0, "evapotranspiration": 0, "forecastIcons": 0, "barometerTrend": 0 } },
+      "expected": { "data": { "make": "mcf88", "model": "mcf-lwws02", "air": { "temperature": -5, "relativeHumidity": 90, "pressure": 969.96 }, "wind": { "speed": 0, "direction": 0 }, "rain": { "intensity": 0, "cumulative": 0 }, "windSpeedAvg10min": 0, "uvIndex": 0, "solarRadiation": 0, "evapotranspiration": 0, "forecastIcons": 0, "barometerTrend": 0 } },
       "source": "synthetic",
       "_note": "Synthetic in-bounds payload; expected.data derived from running reference/upstream-codec.js parseWeather over these bytes."
     },
     {
       "description": "weather report: hot high-wind high-pressure case (1030 hPa, 40C, 20% RH, 15.65 m/s wind @359deg, 12 mm/h rain, 51 mm day rain, UV 11, 1200 W/m2 solar)",
       "input": { "fPort": 2, "bytes": [11, 32, 0, 0, 0, 208, 118, 16, 4, 35, 30, 103, 1, 20, 60, 0, 11, 176, 4, 255, 0, 44, 1, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0] },
-      "expected": { "data": { "air": { "temperature": 40, "relativeHumidity": 20, "pressure": 1030 }, "wind": { "speed": 15.65, "direction": 359 }, "rain": { "intensity": 12, "cumulative": 51 }, "windSpeedAvg10min": 13.41, "uvIndex": 11, "solarRadiation": 1200, "evapotranspiration": 7.62, "forecastIcons": 7, "barometerTrend": 0 } },
+      "expected": { "data": { "make": "mcf88", "model": "mcf-lwws02", "air": { "temperature": 40, "relativeHumidity": 20, "pressure": 1030 }, "wind": { "speed": 15.65, "direction": 359 }, "rain": { "intensity": 12, "cumulative": 51 }, "windSpeedAvg10min": 13.41, "uvIndex": 11, "solarRadiation": 1200, "evapotranspiration": 7.62, "forecastIcons": 7, "barometerTrend": 0 } },
       "source": "synthetic",
       "_note": "Synthetic in-bounds payload; expected.data derived from running reference/upstream-codec.js parseWeather over these bytes."
     },

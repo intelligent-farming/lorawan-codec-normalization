@@ -38,7 +38,7 @@ function u32be(b0, b1, b2, b3) {
   return (b0 * 16777216 + (b1 << 16) + (b2 << 8) + b3) >>> 0;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
 
   if (!bytes || bytes.length < 13) {
@@ -66,4 +66,14 @@ function decodeUplink(input) {
   }
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "rakwireless";
+    result.data.model = "wisblock-kit1";
+  }
+  return result;
 }

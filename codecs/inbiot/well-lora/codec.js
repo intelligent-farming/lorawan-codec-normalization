@@ -191,7 +191,7 @@ function decodeInfo(bytes) {
   return {
     data: {
       fwVersion: firmwareVersion(bytes, 1),
-      model: textSlice(bytes, 4, 21),
+      deviceModel: textSlice(bytes, 4, 21),
       micaType: textSlice(bytes, 21, 30),
       mac: macString(bytes, 30),
       resetReason: resetReason(bytes[42]),
@@ -202,7 +202,7 @@ function decodeInfo(bytes) {
   };
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length === 0) {
     return { errors: ['empty payload'] };
@@ -217,4 +217,14 @@ function decodeUplink(input) {
     default:
       return { errors: ['unrecognized message type ' + bytes[0]] };
   }
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "inbiot";
+    result.data.model = "well-lora";
+  }
+  return result;
 }

@@ -45,7 +45,7 @@ function s16be(bytes, i) {
 
 var EN311 = 0x0e; /* TX T&H 600-034 */
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length < 14) {
     return { errors: ['payload too short: expected at least 14 bytes'] };
@@ -99,4 +99,14 @@ function decodeUplink(input) {
   };
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "enless-wireless";
+    result.data.model = "tx-temp-cont2-600-034";
+  }
+  return result;
 }

@@ -5,6 +5,8 @@
       "input": { "fPort": 2, "bytes": [1, 103, 0, 235, 2, 104, 130, 3, 115, 39, 148, 4, 101, 2, 31, 5, 206, 0, 87] },
       "expected": {
         "data": {
+          "make": "sezo",
+          "model": "sezocl",
           "air": {
             "temperature": 23.5,
             "relativeHumidity": 65,
@@ -22,6 +24,8 @@
       "input": { "fPort": 2, "bytes": [1, 103, 255, 206, 2, 104, 160, 3, 115, 38, 172, 6, 200, 1, 61] },
       "expected": {
         "data": {
+          "make": "sezo",
+          "model": "sezocl",
           "air": {
             "temperature": -5,
             "relativeHumidity": 80,
@@ -38,6 +42,8 @@
       "input": { "fPort": 2, "bytes": [4, 101, 0, 200] },
       "expected": {
         "data": {
+          "make": "sezo",
+          "model": "sezocl",
           "air": {
             "lightIntensity": 200
           }

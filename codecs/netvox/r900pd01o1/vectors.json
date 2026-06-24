@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r900pd01o1",
           "water": {
             "ph": 7.2,
             "turbidity": 5,
@@ -40,6 +42,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r900pd01o1",
           "water": {
             "ph": 6.85,
             "turbidity": 123.4,
@@ -72,6 +76,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r900pd01o1",
           "dryContactOut": {
             "type": "NormallyHighLevel",
             "pulseTimeSeconds": 30,

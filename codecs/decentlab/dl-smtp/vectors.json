@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-smtp",
           "protocolVersion": 2,
           "deviceId": 2896,
           "soilMoistureProfile": [
@@ -48,6 +50,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-smtp",
           "protocolVersion": 2,
           "deviceId": 2896,
           "battery": 3.6

@@ -47,7 +47,7 @@ function decodeTempC(v) {
   return v * 0.5 - 20.0;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   var fPort = input.fPort;
 
@@ -128,4 +128,14 @@ function decodeUplink(input) {
     return { data: data, warnings: warnings };
   }
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "quandify";
+    result.data.model = "cubicmeter-1-1-plastic";
+  }
+  return result;
 }

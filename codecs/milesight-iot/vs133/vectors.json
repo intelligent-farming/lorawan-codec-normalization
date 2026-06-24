@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs133",
           "line1TotalIn": 72,
           "line1TotalOut": 200,
           "line2TotalIn": 0,
@@ -30,6 +32,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs133",
           "line1TotalIn": 40,
           "line1TotalOut": 37,
           "line1PeriodIn": 5,
@@ -48,6 +52,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs133",
           "line1TotalIn": 256,
           "line1TotalOut": 65536,
           "line3TotalIn": 16,
@@ -66,6 +72,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs133",
           "line1TotalIn": 0,
           "line1TotalOut": 0,
           "action": { "motion": { "count": 0, "detected": false } }

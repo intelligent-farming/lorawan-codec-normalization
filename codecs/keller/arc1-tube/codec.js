@@ -26,7 +26,7 @@
 //   info humidity_percentage         -> extra enclosureHumidity
 //   anything else                    -> camelCase extra
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length < 1) {
     return { errors: ['empty payload'] };
@@ -205,3 +205,13 @@ var CHANNEL_TABLE = {
   11: ['P1', 'TOB1', 'Conductivity Tc', 'T (Conductivity)', 'P1 (2)', 'TOB1 (2)', 'Conductivity Tc (2)', 'T (Conductivity) (2)', 'P1 (3)', 'TOB1 (3)', 'Conductivity Tc (3)', 'T (Conductivity) (3)', 'PBaro', 'TBaro', 'Counter input'],
   13: ['P1', 'P2', 'TOB1', 'TOB2', 'P1 (2)', 'P2 (2)', 'TOB1 (2)', 'TOB2 (2)', 'PBaro', 'TBaro', 'Volt Inp. 1', 'Volt Inp. 2', 'Counter input']
 };
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "keller";
+    result.data.model = "arc1-tube";
+  }
+  return result;
+}

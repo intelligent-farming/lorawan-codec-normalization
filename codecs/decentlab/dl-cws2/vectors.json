@@ -13,6 +13,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-cws2",
           "airTemperatureRadiationShield": 21,
           "airHumidityRadiationShield": 54,
           "surfaceTemperature": 18.25,
@@ -42,6 +44,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-cws2",
           "airTemperatureRadiationShield": 3.17,
           "airHumidityRadiationShield": 97.67,
           "surfaceTemperature": 4.57,
@@ -66,6 +70,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-cws2",
           "battery": 3.225
         }
       },

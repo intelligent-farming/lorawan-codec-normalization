@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "lansitec",
+          "model": "container-tracker",
           "messageType": "gnssPosition",
           "position": { "latitude": 31.25, "longitude": 121.5 },
           "time": "2023-11-14T22:13:20.000Z"
@@ -24,6 +26,8 @@
       },
       "expected": {
         "data": {
+          "make": "lansitec",
+          "model": "container-tracker",
           "messageType": "heartbeat",
           "battery": 3.7,
           "rssi": -95,
@@ -46,6 +50,8 @@
       },
       "expected": {
         "data": {
+          "make": "lansitec",
+          "model": "container-tracker",
           "messageType": "positionBeacon",
           "bleBeacons": [
             { "major": "1234", "minor": "5678", "rssi": -56 },
@@ -64,6 +70,8 @@
       },
       "expected": {
         "data": {
+          "make": "lansitec",
+          "model": "container-tracker",
           "messageType": "assetBeacon",
           "bleBeacons": [
             { "major": "AABB", "minor": "CCDD", "rssi": -46 }
@@ -81,6 +89,8 @@
       },
       "expected": {
         "data": {
+          "make": "lansitec",
+          "model": "container-tracker",
           "messageType": "alarm",
           "alarm": "magnetRemoved"
         }
@@ -96,6 +106,8 @@
       },
       "expected": {
         "data": {
+          "make": "lansitec",
+          "model": "container-tracker",
           "messageType": "shockDetection",
           "shockCount": 5
         }

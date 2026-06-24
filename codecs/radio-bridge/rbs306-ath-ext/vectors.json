@@ -5,6 +5,8 @@
       "input": { "fPort": 1, "bytes": [16, 13, 0, 22, 80, 55, 80] },
       "expected": {
         "data": {
+          "make": "radio-bridge",
+          "model": "rbs306-ath-ext",
           "air": { "temperature": 22.5, "relativeHumidity": 55.5 },
           "messageType": "ath",
           "event": "Periodic Report",
@@ -19,6 +21,8 @@
       "input": { "fPort": 1, "bytes": [16, 13, 0, 131, 80, 40, 0] },
       "expected": {
         "data": {
+          "make": "radio-bridge",
+          "model": "rbs306-ath-ext",
           "air": { "temperature": -3.5, "relativeHumidity": 40 },
           "messageType": "ath",
           "event": "Periodic Report",
@@ -33,6 +37,8 @@
       "input": { "fPort": 1, "bytes": [33, 13, 3, 18, 112, 60, 48] },
       "expected": {
         "data": {
+          "make": "radio-bridge",
+          "model": "rbs306-ath-ext",
           "air": { "temperature": 18.7, "relativeHumidity": 60.3 },
           "messageType": "ath",
           "event": "Temperature Report-on-Change Increase",
@@ -47,6 +53,8 @@
       "input": { "fPort": 1, "bytes": [16, 1, 0, 0, 54, 0, 0, 0, 0, 0, 5] },
       "expected": {
         "data": {
+          "make": "radio-bridge",
+          "model": "rbs306-ath-ext",
           "battery": 3.6,
           "messageType": "supervisory",
           "batteryLow": false,
@@ -66,6 +74,8 @@
       "input": { "fPort": 1, "bytes": [16, 1, 2, 0, 50, 0, 0, 0, 0, 1, 0] },
       "expected": {
         "data": {
+          "make": "radio-bridge",
+          "model": "rbs306-ath-ext",
           "battery": 3.2,
           "messageType": "supervisory",
           "batteryLow": true,

@@ -55,7 +55,7 @@ var ATH_EVENTS = [
   'Humidity Report-on-Change Decrease'
 ];
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length < 2) {
     return { errors: ['payload too short'] };
@@ -123,4 +123,14 @@ function decodeUplink(input) {
   }
 
   return { errors: ['unsupported message type 0x' + type.toString(16)] };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "radio-bridge";
+    result.data.model = "rbs305-ath";
+  }
+  return result;
 }

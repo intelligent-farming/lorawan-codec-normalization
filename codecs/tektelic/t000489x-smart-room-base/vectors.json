@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t000489x-smart-room-base",
           "air": {
             "temperature": 1,
             "relativeHumidity": 20
@@ -24,6 +26,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t000489x-smart-room-base",
           "battery": 3.54,
           "action": {
             "contactState": "closed",

@@ -60,6 +60,8 @@
       },
       "expected": {
         "data": {
+          "make": "kamstrup",
+          "model": "flowiq2200-02k73a",
           "metering": {
             "water": {
               "total": 3
@@ -435,6 +437,8 @@
       },
       "expected": {
         "data": {
+          "make": "kamstrup",
+          "model": "flowiq2200-02k73a",
           "infoDry": false,
           "infoReverse": false,
           "infoLeak": false,
@@ -486,6 +490,8 @@
       },
       "expected": {
         "data": {
+          "make": "kamstrup",
+          "model": "flowiq2200-02k73a",
           "moduleConfigNumber": 7362751
         }
       },
@@ -547,6 +553,8 @@
       },
       "expected": {
         "data": {
+          "make": "kamstrup",
+          "model": "flowiq2200-02k73a",
           "metering": {
             "water": {
               "total": 7842497

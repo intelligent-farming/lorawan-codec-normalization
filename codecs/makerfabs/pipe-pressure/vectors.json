@@ -6,6 +6,8 @@
       "input": { "fPort": 2, "bytes": [0, 5, 36, 2, 150, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 147, 224] },
       "expected": {
         "data": {
+          "make": "makerfabs",
+          "model": "pipe-pressure",
           "battery": 3.6,
           "pressure": { "gauge": 44.75 },
           "sampleCount": 5,
@@ -19,6 +21,8 @@
       "input": { "fPort": 2, "bytes": [1, 0, 40, 4, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 27, 119, 64] },
       "expected": {
         "data": {
+          "make": "makerfabs",
+          "model": "pipe-pressure",
           "battery": 4,
           "pressure": { "gauge": 139.75 },
           "sampleCount": 256,

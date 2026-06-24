@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "talkpool",
+          "model": "oy1210",
           "air": {
             "temperature": 19.3,
             "relativeHumidity": 85.1,
@@ -26,6 +28,8 @@
       },
       "expected": {
         "data": {
+          "make": "talkpool",
+          "model": "oy1210",
           "air": {
             "temperature": -3.2,
             "relativeHumidity": 64.6,
@@ -44,6 +48,8 @@
       },
       "expected": {
         "data": {
+          "make": "talkpool",
+          "model": "oy1210",
           "air": {
             "temperature": 11.3,
             "relativeHumidity": 80.6,
@@ -62,6 +68,8 @@
       },
       "expected": {
         "data": {
+          "make": "talkpool",
+          "model": "oy1210",
           "air": {
             "temperature": 10.1,
             "relativeHumidity": 97.1,

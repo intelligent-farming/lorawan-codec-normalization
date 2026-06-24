@@ -33,7 +33,7 @@ function s16be(hi, lo) {
   return v > 0x7fff ? v - 0x10000 : v;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
 
   if (bytes.length !== 15) {
@@ -59,4 +59,14 @@ function decodeUplink(input) {
   data.status = bytes[0];
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "senzemo";
+    result.data.model = "spu20b";
+  }
+  return result;
 }

@@ -57,7 +57,7 @@ function s32be(b3, b2, b1, b0) {
   return (b3 << 24) | (b2 << 16) | (b1 << 8) | b0;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length === 0) {
     return { errors: ['empty payload'] };
@@ -243,6 +243,16 @@ function decodeUplink(input) {
   var result = { data: data };
   if (unknownType) {
     result.warnings = ['stopped at unrecognized Elsys type; later fields skipped'];
+  }
+  return result;
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "elsys";
+    result.data.model = "elt-ultrasonic";
   }
   return result;
 }

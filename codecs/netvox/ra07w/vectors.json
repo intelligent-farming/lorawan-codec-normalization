@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "ra07w",
           "battery": 11.8,
           "leakLocation": 2570,
           "water": { "leak": true }
@@ -23,6 +25,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "ra07w",
           "battery": 11.8,
           "leakLocation": 0,
           "water": { "leak": false }
@@ -39,6 +43,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "ra07w",
           "lowBattery": true,
           "battery": 11.8,
           "leakLocation": 5120,

@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "adeunis",
+          "model": "breath",
           "frameType": "0x6d periodic",
           "air": { "pm1_0": 20, "pm2_5": 30, "pm10": 62 },
           "tvocMassConcentration": 435,
@@ -33,6 +35,8 @@
       },
       "expected": {
         "data": {
+          "make": "adeunis",
+          "model": "breath",
           "frameType": "0x6d periodic",
           "air": { "pm1_0": 20, "pm2_5": 30, "pm10": 62 },
           "tvocMassConcentration": 435,
@@ -54,6 +58,8 @@
       },
       "expected": {
         "data": {
+          "make": "adeunis",
+          "model": "breath",
           "frameType": "0x6e alarm",
           "air": { "pm1_0": 20, "pm2_5": 30, "pm10": 62 },
           "tvocMassConcentration": 435,
@@ -76,6 +82,8 @@
       },
       "expected": {
         "data": {
+          "make": "adeunis",
+          "model": "breath",
           "frameType": "0x30 daily",
           "daily": {
             "tvocMassConcentration": { "min": 1, "max": 5, "average": 10, "durationMin": 3 },

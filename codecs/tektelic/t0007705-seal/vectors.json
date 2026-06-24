@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t0007705-seal",
           "time": "2026-06-22T14:30:15Z",
           "position": { "latitude": 44.9999949, "longitude": -74.999998 },
           "air": { "temperature": 23.5, "pressure": 1013.2 },
@@ -38,6 +40,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t0007705-seal",
           "position": { "latitude": 44.9999949, "longitude": -74.999998 },
           "action": { "motion": { "detected": true } },
           "altitudeMeters": 99.98,
@@ -63,6 +67,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t0007705-seal",
           "position": { "latitude": 44.9999949, "longitude": -74.999998 },
           "action": { "motion": { "detected": false } },
           "altitudeMeters": 99.98,
@@ -85,6 +91,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t0007705-seal",
           "batteryPercent": 100,
           "batteryDaysRemaining": 409
         }

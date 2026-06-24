@@ -50,7 +50,7 @@ function present10(code) {
   return code < 1021;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length < 12) {
     return { errors: ['payload too short for a Nexelec periodic frame'] };
@@ -88,4 +88,14 @@ function decodeUplink(input) {
   data.buttonPressed = buttonCode === 1;
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "nexelec";
+    result.data.model = "feel";
+  }
+  return result;
 }

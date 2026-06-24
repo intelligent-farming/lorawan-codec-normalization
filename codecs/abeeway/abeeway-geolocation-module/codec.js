@@ -269,7 +269,7 @@ function decodeNotification(bytes) {
   return { errors: ['notification class ' + classValue + ' carries no normalized measurement'] };
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length < 4) {
     return { errors: ['payload too short for an Abeeway uplink header'] };
@@ -293,4 +293,14 @@ function decodeUplink(input) {
   }
 
   return { errors: ['unsupported Abeeway message type (' + messageType + ')'] };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "abeeway";
+    result.data.model = "abeeway-geolocation-module";
+  }
+  return result;
 }

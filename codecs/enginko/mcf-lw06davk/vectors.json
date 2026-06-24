@@ -5,6 +5,8 @@
       "input": { "fPort": 2, "bytes": [11, 32, 0, 0, 0, 218, 116, 2, 3, 10, 8, 180, 0, 55, 10, 0, 3, 138, 2, 25, 0, 79, 0, 10, 12, 14, 16, 1, 2, 3, 4, 8, 20] },
       "expected": {
         "data": {
+          "make": "enginko",
+          "model": "mcf-lw06davk",
           "air": { "temperature": 25, "relativeHumidity": 55, "pressure": 1013 },
           "wind": { "speed": 4.47, "direction": 180 },
           "rain": { "intensity": 2, "cumulative": 5 },
@@ -26,6 +28,8 @@
       "input": { "fPort": 2, "bytes": [11, 32, 0, 0, 0, 148, 117, 64, 1, 0, 2, 103, 1, 88, 0, 0, 0, 5, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0] },
       "expected": {
         "data": {
+          "make": "enginko",
+          "model": "mcf-lw06davk",
           "air": { "temperature": 0, "relativeHumidity": 88, "pressure": 1019.3 },
           "wind": { "speed": 0, "direction": 359 },
           "rain": { "intensity": 0, "cumulative": 0.2 },

@@ -5,6 +5,8 @@
       "input": { "fPort": 85, "bytes": [1, 117, 90, 3, 103, 245, 0, 5, 204, 5, 0, 3, 0] },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs350",
           "batteryPercent": 90,
           "air": { "temperature": 24.5 },
           "action": { "motion": { "count": 8, "detected": true } }
@@ -18,6 +20,8 @@
       "input": { "fPort": 85, "bytes": [1, 117, 88, 5, 204, 0, 0, 0, 0] },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs350",
           "batteryPercent": 88,
           "action": { "motion": { "count": 0, "detected": false } }
         }
@@ -30,6 +34,8 @@
       "input": { "fPort": 85, "bytes": [132, 204, 1, 17, 8, 17, 1, 133, 204, 232, 3, 233, 3, 1] },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "vs350",
           "totalIn": 4353,
           "totalOut": 4360,
           "totalCountAlarm": "threshold alarm",

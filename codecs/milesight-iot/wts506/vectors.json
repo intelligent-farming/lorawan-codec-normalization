@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "wts506",
           "batteryPercent": 87,
           "air": {
             "temperature": 21.5,
@@ -35,6 +37,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "wts506",
           "batteryPercent": 100,
           "air": {
             "temperature": -4.2,
@@ -62,6 +66,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "wts506",
           "air": {
             "temperature": 35.8,
             "pressure": 1095.5

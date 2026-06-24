@@ -5,6 +5,8 @@
       "input": { "fPort": 1, "bytes": [64, 95, 90, 12, 250, 88, 10, 248, 194, 55, 208, 7] },
       "expected": {
         "data": {
+          "make": "n-fuse",
+          "model": "stx",
           "air": { "temperature": 22.52, "relativeHumidity": 55, "lightIntensity": 2000 },
           "battery": 2.95,
           "formatVersion": 1,
@@ -21,6 +23,8 @@
       "input": { "fPort": 1, "bytes": [70, 58, 0, 0, 128, 5, 5, 130, 217, 70, 255, 63] },
       "expected": {
         "data": {
+          "make": "n-fuse",
+          "model": "stx",
           "air": { "temperature": 29.93, "relativeHumidity": 70, "lightIntensity": 16383 },
           "battery": 2.58,
           "formatVersion": 1,

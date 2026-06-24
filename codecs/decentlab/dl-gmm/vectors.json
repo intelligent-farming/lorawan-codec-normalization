@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-gmm",
           "photosyntheticallyActiveRadiation": 183,
           "vaporPressureDeficit": 2.07,
           "dewPoint": 3.68,
@@ -30,6 +32,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-gmm",
           "battery": 3.004
         }
       },

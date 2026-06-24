@@ -57,6 +57,13 @@ suite stays red until you author the codec.
   case-insensitively collide with a vocabulary key (`Battery`, `soil.Moisture`,
   `soil.ph` all fail). Extras are for genuine device data the vocabulary does not
   model (status flags, raw counters, vendor diagnostics).
+- Every successful `data` object carries `make` and `model` device-identity
+  strings equal to the `<vendor>` and `<device>` folder names (e.g.
+  `{ make: "dragino", model: "lds02" }`). The scaffold seeds this via a thin
+  wrapper around `decodeUplinkCore`; keep that wrapper and put your decoding in
+  `decodeUplinkCore`. The conformance suite enforces both keys, and they are
+  excluded from the generated `provides`. If a device reports its own hardware
+  model string, name that extra `deviceModel` (not `model`) to avoid the clash.
 
 ## Console-compatibility rules (statically linted)
 

@@ -5,6 +5,8 @@
       "input": { "fPort": 2, "bytes": [12, 228, 1, 44, 8, 152] },
       "expected": {
         "data": {
+          "make": "the-things-products",
+          "model": "the-things-node",
           "air": { "lightIntensity": 300, "temperature": 22 },
           "battery": 3.3,
           "event": "interval"
@@ -18,6 +20,8 @@
       "input": { "fPort": 3, "bytes": [12, 28, 0, 0, 255, 156] },
       "expected": {
         "data": {
+          "make": "the-things-products",
+          "model": "the-things-node",
           "air": { "lightIntensity": 0, "temperature": -1 },
           "battery": 3.1,
           "event": "motion",
@@ -32,6 +36,8 @@
       "input": { "fPort": 4, "bytes": [11, 184, 39, 16, 11, 184] },
       "expected": {
         "data": {
+          "make": "the-things-products",
+          "model": "the-things-node",
           "air": { "lightIntensity": 10000, "temperature": 30 },
           "battery": 3,
           "event": "button",
@@ -46,6 +52,8 @@
       "input": { "fPort": 1, "bytes": [13, 5, 0, 100, 6, 64] },
       "expected": {
         "data": {
+          "make": "the-things-products",
+          "model": "the-things-node",
           "air": { "lightIntensity": 100, "temperature": 16 },
           "battery": 3.333,
           "event": "setup"

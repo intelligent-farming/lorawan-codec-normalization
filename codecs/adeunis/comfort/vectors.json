@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "adeunis",
+          "model": "comfort",
           "air": {
             "location": "indoor",
             "temperature": 19.7,
@@ -33,6 +35,8 @@
       },
       "expected": {
         "data": {
+          "make": "adeunis",
+          "model": "comfort",
           "air": {
             "location": "indoor",
             "temperature": 22,
@@ -56,6 +60,8 @@
       },
       "expected": {
         "data": {
+          "make": "adeunis",
+          "model": "comfort",
           "air": {
             "location": "indoor",
             "temperature": -5,
@@ -81,6 +87,8 @@
       },
       "expected": {
         "data": {
+          "make": "adeunis",
+          "model": "comfort",
           "air": {
             "location": "indoor",
             "temperature": 26.5,

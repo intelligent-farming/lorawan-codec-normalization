@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r311w",
           "battery": 3,
           "water": { "leak": false },
           "leak1": false,
@@ -25,6 +27,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r311w",
           "battery": 3,
           "water": { "leak": true },
           "leak1": false,
@@ -42,6 +46,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r311w",
           "lowBattery": true,
           "battery": 3,
           "water": { "leak": true },

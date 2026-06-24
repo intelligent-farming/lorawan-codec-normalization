@@ -20,7 +20,7 @@ function round(value, decimals) {
   return Math.round(value * f) / f;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
 
   if (input.fPort !== 2) {
@@ -119,4 +119,14 @@ function decodeUplink(input) {
   data.alarmFlag = alarm;
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "dragino";
+    result.data.model = "lbt1";
+  }
+  return result;
 }

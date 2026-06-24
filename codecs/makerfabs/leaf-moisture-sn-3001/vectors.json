@@ -5,6 +5,8 @@
       "input": { "fPort": 1, "bytes": [0, 0, 37, 1, 2, 88, 0, 234, 0, 9, 39, 192] },
       "expected": {
         "data": {
+          "make": "makerfabs",
+          "model": "leaf-moisture-sn-3001",
           "air": { "temperature": 23.4, "relativeHumidity": 60 },
           "battery": 3.7,
           "intervalSeconds": 600
@@ -18,6 +20,8 @@
       "input": { "fPort": 1, "bytes": [0, 0, 30, 1, 3, 32, 255, 206, 0, 18, 79, 128] },
       "expected": {
         "data": {
+          "make": "makerfabs",
+          "model": "leaf-moisture-sn-3001",
           "air": { "temperature": -5, "relativeHumidity": 80 },
           "battery": 3,
           "intervalSeconds": 1200

@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r31502",
           "battery": 2.8,
           "air": { "temperature": 27.8, "relativeHumidity": 53 }
         }
@@ -22,6 +24,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r31502",
           "battery": 2.8,
           "lowTemperatureAlarm": true,
           "highTemperatureAlarm": false,

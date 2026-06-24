@@ -12,6 +12,8 @@
       },
       "expected": {
         "data": {
+          "make": "inbiot",
+          "model": "mini-lora",
           "type": "MINI",
           "vIndex": 40,
           "tIndex": 55,
@@ -42,6 +44,8 @@
       },
       "expected": {
         "data": {
+          "make": "inbiot",
+          "model": "mini-lora",
           "type": "MINI",
           "vIndex": 10,
           "tIndex": 12,
@@ -72,6 +76,8 @@
       },
       "expected": {
         "data": {
+          "make": "inbiot",
+          "model": "mini-lora",
           "type": "MINI",
           "vIndex": 80,
           "tIndex": 88,

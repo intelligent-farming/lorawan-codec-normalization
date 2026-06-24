@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "ewattch",
+          "model": "ambiance",
           "secondsSinceMotion": 30,
           "batteryPercent": 88,
           "air": {
@@ -34,6 +36,8 @@
       },
       "expected": {
         "data": {
+          "make": "ewattch",
+          "model": "ambiance",
           "air": {
             "temperature": -3.12,
             "relativeHumidity": 65,
@@ -52,6 +56,8 @@
       },
       "expected": {
         "data": {
+          "make": "ewattch",
+          "model": "ambiance",
           "secondsSinceMotion": 0,
           "air": {
             "lightIntensity": 20000

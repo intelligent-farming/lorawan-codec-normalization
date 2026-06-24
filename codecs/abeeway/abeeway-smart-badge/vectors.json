@@ -9,6 +9,8 @@
       },
       "expected": {
         "data": {
+          "make": "abeeway",
+          "model": "abeeway-smart-badge",
           "messageType": "POSITION_MESSAGE",
           "trackingMode": "MOTION_START_END_TRACKING",
           "sosFlag": 0,
@@ -36,6 +38,8 @@
       },
       "expected": {
         "data": {
+          "make": "abeeway",
+          "model": "abeeway-smart-badge",
           "messageType": "POSITION_MESSAGE",
           "trackingMode": "MOTION_TRACKING",
           "sosFlag": 0,
@@ -64,6 +68,8 @@
       },
       "expected": {
         "data": {
+          "make": "abeeway",
+          "model": "abeeway-smart-badge",
           "messageType": "POSITION_MESSAGE",
           "trackingMode": "MOTION_TRACKING",
           "sosFlag": 0,
@@ -92,6 +98,8 @@
       },
       "expected": {
         "data": {
+          "make": "abeeway",
+          "model": "abeeway-smart-badge",
           "messageType": "EVENT",
           "trackingMode": "STAND_BY",
           "sosFlag": 0,

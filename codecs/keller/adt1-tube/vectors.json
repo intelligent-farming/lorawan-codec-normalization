@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "keller",
+          "model": "adt1-tube",
           "water": {
             "pressure": 150,
             "temperature": {
@@ -30,6 +32,8 @@
       },
       "expected": {
         "data": {
+          "make": "keller",
+          "model": "adt1-tube",
           "water": {
             "pressure": 201.3,
             "temperature": {
@@ -50,6 +54,8 @@
       },
       "expected": {
         "data": {
+          "make": "keller",
+          "model": "adt1-tube",
           "battery": 5.084,
           "batteryPercent": 47,
           "enclosureHumidity": 58,

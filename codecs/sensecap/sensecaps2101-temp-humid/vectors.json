@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensecap",
+          "model": "sensecaps2101-temp-humid",
           "batteryPercent": 87,
           "air": {
             "temperature": 23.5,
@@ -26,6 +28,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensecap",
+          "model": "sensecaps2101-temp-humid",
           "air": {
             "temperature": 21.4,
             "relativeHumidity": 31.4
@@ -43,6 +47,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensecap",
+          "model": "sensecaps2101-temp-humid",
           "air": {
             "temperature": -12.3,
             "relativeHumidity": 88

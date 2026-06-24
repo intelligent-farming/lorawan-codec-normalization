@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r311cc",
           "battery": 3,
           "action": { "contactState": "open" },
           "contact2State": "closed"
@@ -24,6 +26,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r311cc",
           "battery": 3,
           "action": { "contactState": "closed" },
           "contact2State": "closed"
@@ -40,6 +44,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r311cc",
           "lowBattery": true,
           "battery": 3,
           "action": { "contactState": "closed" },

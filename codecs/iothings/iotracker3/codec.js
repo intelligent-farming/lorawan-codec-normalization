@@ -40,7 +40,7 @@ function s32be(b1, b2, b3, b4) {
   return (b1 << 24) | (b2 << 16) | (b3 << 8) | b4;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length < 3) {
     return { errors: ['payload too short: need at least the 3-byte header'] };
@@ -209,4 +209,14 @@ function decodeUplink(input) {
   }
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "iothings";
+    result.data.model = "iotracker3";
+  }
+  return result;
 }

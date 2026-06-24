@@ -21,7 +21,7 @@ function u16le(lo, hi) {
   return ((hi << 8) | lo) & 0xffff;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
 
   if (input.fPort !== 103) {
@@ -76,4 +76,14 @@ function decodeUplink(input) {
   data.iaqChanged = (bytes[0] >> 5) & 0x01;
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "browan";
+    result.data.model = "tbhv110";
+  }
+  return result;
 }

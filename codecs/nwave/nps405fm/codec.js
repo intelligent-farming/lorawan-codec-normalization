@@ -71,7 +71,7 @@ var RESET_CAUSES = [
   'other'
 ];
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length === 0) {
     return { errors: ['empty payload'] };
@@ -164,4 +164,14 @@ function decodeUplink(input) {
   }
 
   return { errors: ['unsupported fPort ' + fPort] };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "nwave";
+    result.data.model = "nps405fm";
+  }
+  return result;
 }

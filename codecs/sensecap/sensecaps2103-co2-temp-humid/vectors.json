@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensecap",
+          "model": "sensecaps2103-co2-temp-humid",
           "air": {
             "temperature": 22.5,
             "relativeHumidity": 55.3,
@@ -26,6 +28,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensecap",
+          "model": "sensecaps2103-co2-temp-humid",
           "air": {
             "temperature": -8.4,
             "relativeHumidity": 91.2,
@@ -44,6 +48,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensecap",
+          "model": "sensecaps2103-co2-temp-humid",
           "air": {
             "co2": 800
           }
@@ -60,6 +66,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensecap",
+          "model": "sensecaps2103-co2-temp-humid",
           "batteryPercent": 100,
           "reportingInterval": 3600
         }

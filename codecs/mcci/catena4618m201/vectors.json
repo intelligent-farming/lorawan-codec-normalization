@@ -20,6 +20,8 @@
       },
       "expected": {
         "data": {
+          "make": "mcci",
+          "model": "catena4618m201",
           "battery": 2.5059,
           "boot": 17,
           "air": {

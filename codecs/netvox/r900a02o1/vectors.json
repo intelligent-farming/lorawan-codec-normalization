@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r900a02o1",
           "battery": 12,
           "air": { "temperature": 18 },
           "lowTemperatureAlarm": false,
@@ -26,6 +28,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r900a02o1",
           "battery": 12,
           "air": { "temperature": 18 },
           "lowTemperatureAlarm": false,
@@ -44,6 +48,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r900a02o1",
           "lowBattery": true,
           "battery": 7.2,
           "air": { "temperature": -1 },

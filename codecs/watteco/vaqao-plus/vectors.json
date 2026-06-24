@@ -9,6 +9,8 @@
       },
       "expected": {
         "data": {
+          "make": "watteco",
+          "model": "vaqao-plus",
           "air": {
             "temperature": 29.53
           }
@@ -25,6 +27,8 @@
       },
       "expected": {
         "data": {
+          "make": "watteco",
+          "model": "vaqao-plus",
           "air": {
             "relativeHumidity": 37.21
           }
@@ -41,6 +45,8 @@
       },
       "expected": {
         "data": {
+          "make": "watteco",
+          "model": "vaqao-plus",
           "iaq": 25
         }
       },
@@ -55,6 +61,8 @@
       },
       "expected": {
         "data": {
+          "make": "watteco",
+          "model": "vaqao-plus",
           "battery": 3.688
         }
       },

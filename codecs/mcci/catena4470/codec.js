@@ -314,7 +314,7 @@ function finalize(st) {
   return { data: st.data };
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   var port = input.fPort;
 
@@ -335,4 +335,14 @@ function decodeUplink(input) {
     return decodePort3(bytes);
   }
   return { errors: ['unsupported fPort ' + port] };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "mcci";
+    result.data.model = "catena4470";
+  }
+  return result;
 }

@@ -5,6 +5,8 @@
       "input": { "fPort": 129, "bytes": [128, 22, 55, 3, 82] },
       "expected": {
         "data": {
+          "make": "mikrotik",
+          "model": "tg-lr82",
           "majorAxisOrientation": "YH",
           "activityState": "HIGH",
           "magSwitchCount": 3,
@@ -19,7 +21,7 @@
       "description": "chained last-temp (frame 10) + last-humid (frame 12): temperature 22.5C, humidity 60%",
       "input": { "fPort": 138, "bytes": [128, 22, 130, 60] },
       "expected": {
-        "data": { "air": { "temperature": 22.5, "relativeHumidity": 60 } }
+        "data": { "make": "mikrotik", "model": "tg-lr82", "air": { "temperature": 22.5, "relativeHumidity": 60 } }
       },
       "source": "synthetic",
       "_note": "Synthetic multi-frame uplink. fPort 138 = frame type 10 (last-temp), then frame-type delta byte 130 (0x82, LAST_BLOCK value 2) advances 10->12 (last-humid). expected.data from running reference/upstream-codec.js (temperature 22.5, humidity 60)."
@@ -28,7 +30,7 @@
       "description": "negative temperature (last-temp frame 10): -5.5C",
       "input": { "fPort": 138, "bytes": [128, 250] },
       "expected": {
-        "data": { "air": { "temperature": -5.5 } }
+        "data": { "make": "mikrotik", "model": "tg-lr82", "air": { "temperature": -5.5 } }
       },
       "source": "synthetic",
       "_note": "Synthetic in-bounds frame exercising signed f8.8 temperature. 0xFA80 little-endian = -1408 / 256 = -5.5C. expected.data from running reference/upstream-codec.js."
@@ -38,6 +40,8 @@
       "input": { "fPort": 135, "bytes": [5, 0, 0, 0, 2, 0, 0, 0] },
       "expected": {
         "data": {
+          "make": "mikrotik",
+          "model": "tg-lr82",
           "freeFallCount": 2,
           "action": { "motion": { "count": 5 } }
         }
@@ -49,7 +53,7 @@
       "description": "dev-health frame (frame 21): battery 2952 mV",
       "input": { "fPort": 149, "bytes": [136, 11] },
       "expected": {
-        "data": { "battery": 2.952 }
+        "data": { "make": "mikrotik", "model": "tg-lr82", "battery": 2.952 }
       },
       "source": "synthetic",
       "_note": "Synthetic in-bounds frame. fPort 149 = frame type 21 (dev-health): battery_mv u16 = 0x0B88 = 2952 mV. expected.data from running reference/upstream-codec.js, normalized to volts (battery = 2.952)."

@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r900a01o1",
           "battery": 3,
           "air": {
             "temperature": 23.45,
@@ -36,6 +38,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r900a01o1",
           "lowBattery": true,
           "battery": 2.5,
           "air": {

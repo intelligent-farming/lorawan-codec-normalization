@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "am103l",
           "batteryPercent": 88,
           "air": {
             "temperature": 23,
@@ -27,6 +29,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "am103l",
           "air": {
             "temperature": -10,
             "relativeHumidity": 35
@@ -44,6 +48,8 @@
       },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "am103l",
           "activity": 5,
           "infraredAndVisible": 32,
           "infrared": 8,

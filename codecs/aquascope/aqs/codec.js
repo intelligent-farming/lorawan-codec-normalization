@@ -30,7 +30,7 @@ function u16(bytes, index) {
   return ((bytes[index] << 8) + bytes[index + 1]) >>> 0;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   var fPort = input.fPort;
 
@@ -174,4 +174,14 @@ function decodeUplink(input) {
   }
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "aquascope";
+    result.data.model = "aqs";
+  }
+  return result;
 }

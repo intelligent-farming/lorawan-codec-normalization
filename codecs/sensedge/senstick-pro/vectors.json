@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensedge",
+          "model": "senstick-pro",
           "status": 0,
           "air": { "temperature": 22.5, "relativeHumidity": 48 },
           "airPressureRaw": 13,
@@ -26,6 +28,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensedge",
+          "model": "senstick-pro",
           "status": 2,
           "air": { "temperature": -5, "relativeHumidity": 40 },
           "airPressureRaw": 5,

@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t00059xx-kiwi",
           "battery": 3,
           "batteryEndOfShelfLifeAlert": false,
           "air": {
@@ -27,6 +29,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t00059xx-kiwi",
           "air": {
             "temperature": 30,
             "relativeHumidity": 50,
@@ -45,6 +49,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t00059xx-kiwi",
           "air": {
             "temperature": -10,
             "relativeHumidity": 35
@@ -62,6 +68,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t00059xx-kiwi",
           "lightAlarm": true,
           "mcuTemperature": 26.5,
           "air": {
@@ -81,6 +89,8 @@
       },
       "expected": {
         "data": {
+          "make": "tektelic",
+          "model": "t00059xx-kiwi",
           "battery": 3,
           "batteryEndOfShelfLifeAlert": true,
           "air": {

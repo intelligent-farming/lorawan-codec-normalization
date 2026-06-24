@@ -225,6 +225,19 @@ for (const { vendor, device, dir } of DEVICES) {
       }
     });
 
+    // 6b. Every successful decode carries make/model device identity matching the folder.
+    itUnlessDraft('emits make/model device identity on every data vector', isDraft, () => {
+      assert.ok(source !== null, 'codec.js required');
+      const dataVectors = vectors.uplink.filter((v) => v.expected && v.expected.data);
+      assert.ok(dataVectors.length > 0, 'need >=1 data vector');
+      for (const vec of dataVectors) {
+        const label = vec.description || JSON.stringify(vec.input);
+        const r = runDecodeUplink(source, vec.input);
+        assert.equal(r.data.make, vendor, `vector "${label}": make must equal vendor folder "${vendor}"`);
+        assert.equal(r.data.model, device, `vector "${label}": model must equal device folder "${device}"`);
+      }
+    });
+
     // 7. Union of data-vector paths covers each category's requires.
     itUnlessDraft('data vectors cover each declared category requires set', isDraft, () => {
       assert.ok(meta, 'device.json required');

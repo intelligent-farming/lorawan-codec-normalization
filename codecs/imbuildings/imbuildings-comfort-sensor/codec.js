@@ -40,7 +40,7 @@ function toHexString(bytes, index, length) {
   return s;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
 
   // Canonical comfort-sensor uplink: IMBuildings header, payload type 0x01
@@ -76,4 +76,14 @@ function decodeUplink(input) {
   };
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "imbuildings";
+    result.data.model = "imbuildings-comfort-sensor";
+  }
+  return result;
 }

@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "mcci",
+          "model": "model4933",
           "battery": 3.3,
           "vBus": 4.7,
           "boot": 12,
@@ -33,6 +35,8 @@
       },
       "expected": {
         "data": {
+          "make": "mcci",
+          "model": "model4933",
           "battery": 3,
           "vCO": 0.5,
           "vNO2": 0.5,
@@ -58,6 +62,8 @@
       },
       "expected": {
         "data": {
+          "make": "mcci",
+          "model": "model4933",
           "coPpm": 0.7324,
           "no2Ppm": 0,
           "o3Ppm": 0.0146,
@@ -79,6 +85,8 @@
       },
       "expected": {
         "data": {
+          "make": "mcci",
+          "model": "model4933",
           "battery": 2,
           "vBus": 3.7,
           "boot": 45,

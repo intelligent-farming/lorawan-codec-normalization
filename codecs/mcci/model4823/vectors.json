@@ -22,6 +22,8 @@
       "source": "ttn-example",
       "expected": {
         "data": {
+          "make": "mcci",
+          "model": "model4823",
           "battery": 4.196,
           "boot": 17,
           "air": {

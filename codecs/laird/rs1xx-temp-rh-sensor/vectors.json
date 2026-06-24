@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "laird",
+          "model": "rs1xx-temp-rh-sensor",
           "air": {
             "temperature": 22.5,
             "relativeHumidity": 45.25
@@ -30,6 +32,8 @@
       },
       "expected": {
         "data": {
+          "make": "laird",
+          "model": "rs1xx-temp-rh-sensor",
           "time": "2015-01-01T00:01:00.000Z",
           "air": {
             "temperature": 23.19,
@@ -63,6 +67,8 @@
       },
       "expected": {
         "data": {
+          "make": "laird",
+          "model": "rs1xx-temp-rh-sensor",
           "time": "2015-01-01T00:02:00.000Z",
           "air": {
             "temperature": 22.5,
@@ -83,6 +89,8 @@
       },
       "expected": {
         "data": {
+          "make": "laird",
+          "model": "rs1xx-temp-rh-sensor",
           "time": "2015-01-01T00:00:20.000Z",
           "air": {
             "temperature": 23.19,
@@ -113,6 +121,8 @@
       },
       "expected": {
         "data": {
+          "make": "laird",
+          "model": "rs1xx-temp-rh-sensor",
           "messageType": "Laird_Simple_Config",
           "options": ["None"],
           "batteryType": "Alkaline",
@@ -133,6 +143,8 @@
       },
       "expected": {
         "data": {
+          "make": "laird",
+          "model": "rs1xx-temp-rh-sensor",
           "messageType": "Laird_Advanced_Config",
           "options": ["None"],
           "batteryType": "Alkaline",
@@ -159,6 +171,8 @@
       },
       "expected": {
         "data": {
+          "make": "laird",
+          "model": "rs1xx-temp-rh-sensor",
           "messageType": "Laird_FW_Version",
           "options": ["None"],
           "releaseDate": "20/11/5",
@@ -177,6 +191,8 @@
       },
       "expected": {
         "data": {
+          "make": "laird",
+          "model": "rs1xx-temp-rh-sensor",
           "battery": 3.01,
           "messageType": "Laird_Battery_Voltage",
           "options": ["None"]

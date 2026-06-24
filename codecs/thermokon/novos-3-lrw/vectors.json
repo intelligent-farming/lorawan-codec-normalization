@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "thermokon",
+          "model": "novos-3-lrw",
           "voc": 12,
           "setpoint": 128,
           "battery": 1.5,
@@ -29,6 +31,8 @@
       },
       "expected": {
         "data": {
+          "make": "thermokon",
+          "model": "novos-3-lrw",
           "air": {
             "temperature": 23.5,
             "relativeHumidity": 48

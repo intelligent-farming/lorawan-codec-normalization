@@ -31,7 +31,7 @@ function s8(b) {
 
 var RESET_CAUSES = [null, 'watchdog', 'power on', 'system request', 'other'];
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length === 0) {
     return { errors: ['empty payload'] };
@@ -106,4 +106,14 @@ function decodeUplink(input) {
     default:
       return { errors: ['unsupported fPort: ' + input.fPort] };
   }
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "bosch";
+    result.data.model = "tps110";
+  }
+  return result;
 }

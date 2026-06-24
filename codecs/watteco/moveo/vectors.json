@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "watteco",
+          "model": "moveo",
           "air": {
             "temperature": 29.53
           }
@@ -23,6 +25,8 @@
       },
       "expected": {
         "data": {
+          "make": "watteco",
+          "model": "moveo",
           "air": {
             "relativeHumidity": 37.21
           }
@@ -38,6 +42,8 @@
       },
       "expected": {
         "data": {
+          "make": "watteco",
+          "model": "moveo",
           "air": {
             "lightIntensity": 1861
           }
@@ -53,6 +59,8 @@
       },
       "expected": {
         "data": {
+          "make": "watteco",
+          "model": "moveo",
           "action": {
             "motion": {
               "detected": true
@@ -70,6 +78,8 @@
       },
       "expected": {
         "data": {
+          "make": "watteco",
+          "model": "moveo",
           "action": {
             "motion": {
               "detected": true
@@ -87,6 +97,8 @@
       },
       "expected": {
         "data": {
+          "make": "watteco",
+          "model": "moveo",
           "battery": 3.688
         }
       },
@@ -100,6 +112,8 @@
       },
       "expected": {
         "data": {
+          "make": "watteco",
+          "model": "moveo",
           "firmware": "3.5.2.5602"
         }
       },
@@ -113,6 +127,8 @@
       },
       "expected": {
         "data": {
+          "make": "watteco",
+          "model": "moveo",
           "messageType": "unconfirmed"
         }
       },

@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r900pb03o1",
           "battery": 3.6,
           "action": {
             "contactState": "open",
@@ -33,6 +35,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r900pb03o1",
           "lowBattery": true,
           "battery": 3.6,
           "action": {

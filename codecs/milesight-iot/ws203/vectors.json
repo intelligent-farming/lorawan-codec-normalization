@@ -5,6 +5,8 @@
       "input": { "fPort": 85, "bytes": [1, 117, 88, 3, 103, 225, 0, 4, 104, 95, 5, 0, 1] },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "ws203",
           "batteryPercent": 88,
           "air": { "temperature": 22.5, "relativeHumidity": 47.5 },
           "occupancy": "occupied",
@@ -19,6 +21,8 @@
       "input": { "fPort": 85, "bytes": [1, 117, 73, 3, 103, 222, 255, 4, 104, 80, 5, 0, 0] },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "ws203",
           "batteryPercent": 73,
           "air": { "temperature": -3.4, "relativeHumidity": 40 },
           "occupancy": "vacant",
@@ -33,6 +37,8 @@
       "input": { "fPort": 85, "bytes": [131, 103, 154, 1, 1] },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "ws203",
           "air": { "temperature": 41 },
           "temperatureAbnormal": "abnormal"
         }
@@ -45,6 +51,8 @@
       "input": { "fPort": 85, "bytes": [32, 206, 64, 116, 29, 106, 3, 1, 198, 0, 104] },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "ws203",
           "history": [
             {
               "time": "2026-06-01T12:00:00Z",

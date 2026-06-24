@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r900nac1",
           "battery": 3.6,
           "current1Ma": 771,
           "lowCurrentAlarm": false,
@@ -26,6 +28,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r900nac1",
           "lowBattery": true,
           "battery": 3.6,
           "current1Ma": 100,

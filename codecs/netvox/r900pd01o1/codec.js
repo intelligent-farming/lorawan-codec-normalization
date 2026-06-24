@@ -136,7 +136,7 @@ function decodeConfig(bytes) {
   return { data: { dryContactOut: out } };
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
 
   if (input.fPort === 22) {
@@ -154,4 +154,14 @@ function decodeUplink(input) {
   }
 
   return { errors: ['unsupported fPort ' + input.fPort + ' (expected 22 data report or 23 config)'] };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "netvox";
+    result.data.model = "r900pd01o1";
+  }
+  return result;
 }

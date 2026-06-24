@@ -162,7 +162,7 @@ function decodeAlarm(bytes) {
   return { data: data };
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length < 1) {
     return { errors: ['missing payload bytes'] };
@@ -199,4 +199,14 @@ function decodeUplink(input) {
   }
 
   return { errors: ['unsupported message type (high nibble of byte 0)'] };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "lansitec";
+    result.data.model = "badge-tracker";
+  }
+  return result;
 }

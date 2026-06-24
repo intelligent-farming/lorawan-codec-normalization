@@ -14,6 +14,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-sdd",
           "protocolVersion": 2,
           "deviceId": 17379,
           "soilMoistureProfile": [
@@ -64,6 +66,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-sdd",
           "protocolVersion": 2,
           "deviceId": 17379,
           "soilMoistureProfile": [
@@ -123,6 +127,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-sdd",
           "protocolVersion": 2,
           "deviceId": 17379,
           "battery": 2.531

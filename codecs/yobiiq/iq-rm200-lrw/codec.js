@@ -237,7 +237,7 @@ function decodeRaw(fPort, bytes) {
   return { raw: {}, error: ERR_FPORT };
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   var fPort = input.fPort;
 
@@ -292,4 +292,14 @@ function decodeUplink(input) {
     out.warnings = warnings;
   }
   return out;
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "yobiiq";
+    result.data.model = "iq-rm200-lrw";
+  }
+  return result;
 }

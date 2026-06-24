@@ -6,7 +6,7 @@
         "bytes": [17, 10, 4, 2, 0, 0, 41, 11, 137],
         "fPort": 125
       },
-      "expected": { "data": { "air": { "temperature": 29.53 } } },
+      "expected": { "data": { "make": "watteco", "model": "indoor-temperature-humidity", "air": { "temperature": 29.53 } } },
       "source": "ttn-example"
     },
     {
@@ -15,7 +15,7 @@
         "bytes": [17, 10, 4, 2, 0, 0, 41, 8, 102],
         "fPort": 125
       },
-      "expected": { "data": { "air": { "temperature": 21.5 } } },
+      "expected": { "data": { "make": "watteco", "model": "indoor-temperature-humidity", "air": { "temperature": 21.5 } } },
       "source": "synthetic",
       "_note": "Synthetic in-bounds standard report (centi-deg 0x0866=2150). expected.data confirmed by running reference/upstream-codec.js (normalisation_standard) -> temperature 21.5."
     },
@@ -25,7 +25,7 @@
         "bytes": [17, 10, 4, 5, 0, 0, 33, 14, 137],
         "fPort": 125
       },
-      "expected": { "data": { "air": { "relativeHumidity": 37.21 } } },
+      "expected": { "data": { "make": "watteco", "model": "indoor-temperature-humidity", "air": { "relativeHumidity": 37.21 } } },
       "source": "ttn-example"
     },
     {
@@ -34,7 +34,7 @@
         "bytes": [17, 10, 4, 5, 0, 0, 33, 21, 124],
         "fPort": 125
       },
-      "expected": { "data": { "air": { "relativeHumidity": 55 } } },
+      "expected": { "data": { "make": "watteco", "model": "indoor-temperature-humidity", "air": { "relativeHumidity": 55 } } },
       "source": "synthetic",
       "_note": "Synthetic in-bounds standard report (centi-% 0x157C=5500). expected.data confirmed by running reference/upstream-codec.js -> humidity 55."
     },
@@ -44,7 +44,7 @@
         "bytes": [17, 10, 4, 3, 0, 0, 41, 3, 245],
         "fPort": 125
       },
-      "expected": { "data": { "air": { "pressure": 1013 } } },
+      "expected": { "data": { "make": "watteco", "model": "indoor-temperature-humidity", "air": { "pressure": 1013 } } },
       "source": "synthetic",
       "_note": "Synthetic in-bounds standard report (s16 0x03F5=1013 hPa, within atmospheric 900-1100). expected.data confirmed by running reference/upstream-codec.js -> pressure 1013."
     },
@@ -54,7 +54,7 @@
         "bytes": [17, 10, 0, 80, 0, 6, 0, 0, 0, 4, 14, 37],
         "fPort": 125
       },
-      "expected": { "data": { "battery": 3.621 } },
+      "expected": { "data": { "make": "watteco", "model": "indoor-temperature-humidity", "battery": 3.621 } },
       "source": "synthetic",
       "_note": "Synthetic power-source report: flags byte 0x04 (disposable battery) then 2-byte mV 0x0E25=3621 -> 3.621 V. Upstream normalisation_standard crashes on the power-cluster alarm path (multistate attribute lookup); the volts extraction is verified against the in-repo Watteco reference codec codecs/nke-watteco/atmo-sensor/codec.js (same byte layout) -> battery 3.621."
     },

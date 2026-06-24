@@ -5,6 +5,8 @@
       "input": { "fPort": 1, "bytes": [160, 8, 9, 196, 9, 19, 136] },
       "expected": {
         "data": {
+          "make": "atim",
+          "model": "acw-thx",
           "frameType": "measurement",
           "channel": 0,
           "air": { "temperature": 25, "relativeHumidity": 50 }
@@ -18,6 +20,8 @@
       "input": { "fPort": 1, "bytes": [160, 8, 8, 87, 9, 19, 8] },
       "expected": {
         "data": {
+          "make": "atim",
+          "model": "acw-thx",
           "frameType": "measurement",
           "channel": 0,
           "air": { "temperature": 21.35, "relativeHumidity": 48.72 }
@@ -31,6 +35,8 @@
       "input": { "fPort": 1, "bytes": [160, 8, 254, 12, 9, 19, 136] },
       "expected": {
         "data": {
+          "make": "atim",
+          "model": "acw-thx",
           "frameType": "measurement",
           "channel": 0,
           "air": { "temperature": -5, "relativeHumidity": 50 }
@@ -44,6 +50,8 @@
       "input": { "fPort": 1, "bytes": [160, 24, 9, 196, 25, 19, 136] },
       "expected": {
         "data": {
+          "make": "atim",
+          "model": "acw-thx",
           "frameType": "measurement",
           "channel": 1,
           "air": { "temperature": 25, "relativeHumidity": 50 }
@@ -56,7 +64,7 @@
       "description": "life frame: battery 3.55 V, supply rail 5.000 V",
       "input": { "fPort": 1, "bytes": [129, 13, 222, 19, 136] },
       "expected": {
-        "data": { "frameType": "life", "battery": 3.55, "supplyVoltage": 5 }
+        "data": { "make": "atim", "model": "acw-thx", "frameType": "life", "battery": 3.55, "supplyVoltage": 5 }
       },
       "source": "synthetic",
       "_note": "Synthetic 0x81 'Trame de vie': tensionv 0x0DDE=3550/1000=3.55 V -> battery; tensionc 0x1388=5000/1000=5 V -> supplyVoltage. Verified against reference/upstream-codec.js (tensionv.value=3.55, tensionc.value=5)."
@@ -66,6 +74,8 @@
       "input": { "fPort": 1, "bytes": [160, 8, 128, 0, 9, 19, 136] },
       "expected": {
         "data": {
+          "make": "atim",
+          "model": "acw-thx",
           "frameType": "measurement",
           "channel": 0,
           "air": { "relativeHumidity": 50 }

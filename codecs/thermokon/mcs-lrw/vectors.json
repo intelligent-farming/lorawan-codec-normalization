@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "thermokon",
+          "model": "mcs-lrw",
           "voc": 11,
           "air": {
             "temperature": 16.6,

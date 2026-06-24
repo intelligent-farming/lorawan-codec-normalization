@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "enless-wireless",
+          "model": "tx-trh-amb-600-021",
           "air": { "temperature": -2.7, "relativeHumidity": 28.8 },
           "batteryPercent": 100,
           "deviceId": 109,
@@ -32,6 +34,8 @@
       },
       "expected": {
         "data": {
+          "make": "enless-wireless",
+          "model": "tx-trh-amb-600-021",
           "air": { "temperature": 23.5, "relativeHumidity": 65.5 },
           "batteryPercent": 100,
           "deviceId": 1193046,
@@ -57,6 +61,8 @@
       },
       "expected": {
         "data": {
+          "make": "enless-wireless",
+          "model": "tx-trh-amb-600-021",
           "air": { "temperature": -10.5, "relativeHumidity": 100 },
           "batteryPercent": 50,
           "deviceId": 1,
@@ -82,6 +88,8 @@
       },
       "expected": {
         "data": {
+          "make": "enless-wireless",
+          "model": "tx-trh-amb-600-021",
           "air": { "temperature": 0, "relativeHumidity": 0 },
           "batteryPercent": 25,
           "deviceId": 11259375,

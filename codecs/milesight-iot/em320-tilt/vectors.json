@@ -6,6 +6,8 @@
       "input": { "fPort": 85, "bytes": [1, 117, 92, 3, 212, 0, 0, 1, 0, 80, 70] },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "em320-tilt",
           "batteryPercent": 92,
           "angleX": 0,
           "angleY": 0,
@@ -20,6 +22,8 @@
       "input": { "fPort": 85, "bytes": [1, 117, 80, 3, 212, 200, 0, 144, 1, 80, 70] },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "em320-tilt",
           "batteryPercent": 80,
           "angleX": 1,
           "angleY": 2,
@@ -34,6 +38,8 @@
       "input": { "fPort": 85, "bytes": [3, 212, 216, 220, 0, 0, 0, 0] },
       "expected": {
         "data": {
+          "make": "milesight-iot",
+          "model": "em320-tilt",
           "angleX": -45,
           "angleY": 0,
           "angleZ": 0,
@@ -45,7 +51,7 @@
     {
       "description": "Battery-only uplink (no angle channel, no motion emitted)",
       "input": { "fPort": 85, "bytes": [1, 117, 55] },
-      "expected": { "data": { "batteryPercent": 55 } },
+      "expected": { "data": { "make": "milesight-iot", "model": "em320-tilt", "batteryPercent": 55 } },
       "source": "synthetic"
     },
     {

@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "pepperl-fuchs",
+          "model": "wilsen-valve",
           "valve1State": "Open",
           "valve2State": "Not connected",
           "sensor1Details": "High",
@@ -28,6 +30,8 @@
       },
       "expected": {
         "data": {
+          "make": "pepperl-fuchs",
+          "model": "wilsen-valve",
           "valve1State": "Open",
           "valve2State": "Not connected",
           "sensor1Details": "High",
@@ -49,6 +53,8 @@
       },
       "expected": {
         "data": {
+          "make": "pepperl-fuchs",
+          "model": "wilsen-valve",
           "serialNumber": "48000000639999",
           "loraCount": 158,
           "gpsCount": 2,
@@ -66,6 +72,8 @@
       },
       "expected": {
         "data": {
+          "make": "pepperl-fuchs",
+          "model": "wilsen-valve",
           "battery": 3.8,
           "position": { "latitude": 10.5, "longitude": -20.25 }
         }

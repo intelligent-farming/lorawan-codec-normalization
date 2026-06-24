@@ -5,6 +5,8 @@
       "input": { "fPort": 1, "bytes": [160, 1, 1] },
       "expected": {
         "data": {
+          "make": "atim",
+          "model": "acw-pir180-o",
           "action": { "motion": { "detected": true } },
           "frameType": "measurement"
         }
@@ -17,6 +19,8 @@
       "input": { "fPort": 1, "bytes": [160, 1, 0] },
       "expected": {
         "data": {
+          "make": "atim",
+          "model": "acw-pir180-o",
           "action": { "motion": { "detected": false } },
           "frameType": "measurement"
         }
@@ -29,6 +33,8 @@
       "input": { "fPort": 1, "bytes": [160, 1, 1, 4, 0, 0, 1, 44] },
       "expected": {
         "data": {
+          "make": "atim",
+          "model": "acw-pir180-o",
           "action": { "motion": { "detected": true, "count": 300 } },
           "frameType": "measurement"
         }
@@ -41,6 +47,8 @@
       "input": { "fPort": 1, "bytes": [160, 4, 0, 0, 0, 7] },
       "expected": {
         "data": {
+          "make": "atim",
+          "model": "acw-pir180-o",
           "action": { "motion": { "count": 7 } },
           "frameType": "measurement"
         }
@@ -52,7 +60,7 @@
       "description": "life (keep-alive) frame: battery voltage",
       "input": { "fPort": 1, "bytes": [129, 12, 128, 12, 0] },
       "expected": {
-        "data": { "battery": 3.2, "frameType": "life" }
+        "data": { "make": "atim", "model": "acw-pir180-o", "battery": 3.2, "frameType": "life" }
       },
       "source": "synthetic",
       "_note": "Synthetic in-bounds frame; byte0=0x81 selects a non-timestamped life frame, then tensionv=0x0C80=3200 mV (-> 3.2 V) and tensionc=0x0C00. Expected produced by running reference/upstream-codec.js (tensionv.value=3.2)."

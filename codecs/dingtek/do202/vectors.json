@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "do202",
           "battery": 3.65,
           "air": {
             "temperature": 22,
@@ -34,6 +36,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "do202",
           "firmware": "1.1",
           "uploadInterval": 24,
           "detectInterval": 30,

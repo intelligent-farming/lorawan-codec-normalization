@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "ra0716",
           "battery": 3.6,
           "air": {
             "temperature": 22.5,
@@ -27,6 +29,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "ra0716",
           "lowBattery": true,
           "battery": 2.7,
           "air": {
@@ -47,6 +51,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "ra0716",
           "battery": 3,
           "air": {
             "temperature": 0,

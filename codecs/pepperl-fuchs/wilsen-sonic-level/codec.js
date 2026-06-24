@@ -94,7 +94,7 @@ function hexToString(hex) {
   return str;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length < 3) {
     return { errors: ['payload too short for a WILSEN.sonic.level frame'] };
@@ -181,4 +181,14 @@ function decodeUplink(input) {
   }
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "pepperl-fuchs";
+    result.data.model = "wilsen-sonic-level";
+  }
+  return result;
 }

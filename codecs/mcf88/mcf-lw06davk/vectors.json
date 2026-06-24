@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "mcf88",
+          "model": "mcf-lw06davk",
           "air": { "pressure": 1013.21, "temperature": 21.11, "relativeHumidity": 55 },
           "wind": { "speed": 4.47, "direction": 180 },
           "rain": { "intensity": 1, "cumulative": 2.4 },
@@ -32,6 +34,8 @@
       },
       "expected": {
         "data": {
+          "make": "mcf88",
+          "model": "mcf-lw06davk",
           "air": { "pressure": 1019.3, "temperature": -2.22, "relativeHumidity": 88 },
           "wind": { "speed": 11.18, "direction": 355 },
           "rain": { "intensity": 8, "cumulative": 40 },
@@ -56,6 +60,8 @@
       },
       "expected": {
         "data": {
+          "make": "mcf88",
+          "model": "mcf-lw06davk",
           "air": { "pressure": 1000, "temperature": 40, "relativeHumidity": 50 },
           "wind": { "speed": 0, "direction": 0 },
           "rain": { "intensity": 0, "cumulative": 0 },

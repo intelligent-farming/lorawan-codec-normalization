@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "mcci",
+          "model": "model4841",
           "battery": 3.7,
           "vsys": 3.3,
           "vbus": 5,
@@ -31,6 +33,8 @@
       },
       "expected": {
         "data": {
+          "make": "mcci",
+          "model": "model4841",
           "battery": 3.6499,
           "pm": { "10": 15, "1.0": 8, "2.5": 11 },
           "aqiPartial": { "10": 14, "1.0": 34, "2.5": 46 },

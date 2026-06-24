@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensecap",
+          "model": "sensecaps2105-soll-moisture-temp-ec",
           "soil": {
             "temperature": 18.5,
             "moisture": 42.3,
@@ -26,6 +28,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensecap",
+          "model": "sensecaps2105-soll-moisture-temp-ec",
           "soil": {
             "temperature": -5.5
           }
@@ -42,6 +46,8 @@
       },
       "expected": {
         "data": {
+          "make": "sensecap",
+          "model": "sensecaps2105-soll-moisture-temp-ec",
           "batteryPercent": 100,
           "reportingInterval": 3600
         }

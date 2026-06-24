@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "comtac",
+          "model": "lpn-cm4",
           "batteryPercent": 75.5,
           "air": {
             "temperature": 27.01,
@@ -25,6 +27,8 @@
       },
       "expected": {
         "data": {
+          "make": "comtac",
+          "model": "lpn-cm4",
           "batteryPercent": 45,
           "air": {
             "temperature": -5.12,
@@ -43,6 +47,8 @@
       },
       "expected": {
         "data": {
+          "make": "comtac",
+          "model": "lpn-cm4",
           "batteryPercent": 75.5,
           "air": {
             "temperature": 27.23,
@@ -70,6 +76,8 @@
       },
       "expected": {
         "data": {
+          "make": "comtac",
+          "model": "lpn-cm4",
           "batteryPercent": 74.5,
           "measRate": 10,
           "historyTrigger": 1,
@@ -92,6 +100,8 @@
       },
       "expected": {
         "data": {
+          "make": "comtac",
+          "model": "lpn-cm4",
           "batteryPercent": 72.5,
           "appMainVersion": 1,
           "appMinorVersion": 3

@@ -9,6 +9,8 @@
       },
       "expected": {
         "data": {
+          "make": "elsys",
+          "model": "ems-door",
           "x": 1,
           "y": 39,
           "z": 5,
@@ -26,6 +28,8 @@
       },
       "expected": {
         "data": {
+          "make": "elsys",
+          "model": "ems-door",
           "action": {
             "contactState": "open",
             "motion": { "detected": true, "count": 3 }
@@ -42,6 +46,8 @@
       },
       "expected": {
         "data": {
+          "make": "elsys",
+          "model": "ems-door",
           "action": {
             "contactState": "closed",
             "motion": { "detected": false, "count": 0 }

@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718ubb",
           "battery": 3.6,
           "air": {
             "temperature": 25.38,
@@ -27,6 +29,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718ubb",
           "battery": 3.6,
           "air": {
             "pressure": 1013.25,
@@ -44,6 +48,8 @@
       },
       "expected": {
         "data": {
+          "make": "netvox",
+          "model": "r718ubb",
           "battery": 3.6,
           "pm2_5": 273,
           "pm10": 291,

@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "df702",
           "fillDistanceMm": 2000,
           "air": { "temperature": 25 },
           "tiltAngle": 0,
@@ -29,6 +31,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "df702",
           "fillDistanceMm": 1500,
           "air": { "temperature": 22 },
           "tiltAngle": 30,
@@ -50,6 +54,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "df702",
           "fillDistanceMm": 2000,
           "air": { "temperature": 25 },
           "tiltAngle": 0,
@@ -70,6 +76,8 @@
       },
       "expected": {
         "data": {
+          "make": "dingtek",
+          "model": "df702",
           "fillDistanceMm": 800,
           "air": { "temperature": 18 },
           "tiltAngle": -12,

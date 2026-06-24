@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "twtg",
+          "model": "ds-vb-01-xx",
           "action": { "motion": { "detected": true, "count": 3 } },
           "air": { "temperature": 80 },
           "temperatureMin": -39.99,
@@ -36,6 +38,8 @@
       },
       "expected": {
         "data": {
+          "make": "twtg",
+          "model": "ds-vb-01-xx",
           "action": { "motion": { "detected": false, "count": 0 } },
           "air": { "temperature": 3 },
           "temperatureMin": 24.04,
@@ -64,6 +68,8 @@
       },
       "expected": {
         "data": {
+          "make": "twtg",
+          "model": "ds-vb-01-xx",
           "battery": 3.65,
           "air": { "temperature": 25 },
           "batteryLow": 3.6,

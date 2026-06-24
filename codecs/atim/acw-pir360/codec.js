@@ -84,7 +84,7 @@ var ERR_TEXT = {
   159: 'Sensor data corrupted'
 };
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length === 0) {
     return { errors: ['empty payload'] };
@@ -221,4 +221,14 @@ function decodeError(bytes, timestamped) {
     return { errors: ['device error: ' + text + ' (battery ' + round(mv / 1000, 3) + ' V)'] };
   }
   return { errors: ['device error: ' + text] };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "atim";
+    result.data.model = "acw-pir360";
+  }
+  return result;
 }

@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "elv",
+          "model": "elv-bm-trx1",
           "txReason": "User_Button_Event",
           "battery": 3.018,
           "temperatureSensor": 20.9,
@@ -28,6 +30,8 @@
       },
       "expected": {
         "data": {
+          "make": "elv",
+          "model": "elv-bm-trx1",
           "txReason": "Cyclic_Event",
           "battery": 3.6,
           "air": {
@@ -47,6 +51,8 @@
       },
       "expected": {
         "data": {
+          "make": "elv",
+          "model": "elv-bm-trx1",
           "txReason": "Cyclic_Event",
           "battery": 3.6,
           "tiltArea2": false,
@@ -80,6 +86,8 @@
       },
       "expected": {
         "data": {
+          "make": "elv",
+          "model": "elv-bm-trx1",
           "txReason": "Cyclic_Event",
           "battery": 3.6,
           "air": {

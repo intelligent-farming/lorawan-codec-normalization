@@ -167,7 +167,7 @@ function decodeDaily(bytes) {
   return { data: data };
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length < 2) {
     return { errors: ['payload too short'] };
@@ -190,4 +190,14 @@ function decodeUplink(input) {
         ' (only the 0x6d periodic, 0x6e alarm and 0x30 daily frames are normalized)'
     ]
   };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "adeunis";
+    result.data.model = "breath";
+  }
+  return result;
 }

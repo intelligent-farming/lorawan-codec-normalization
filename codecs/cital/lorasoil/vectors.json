@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "cital",
+          "model": "lorasoil",
           "soil": { "temperature": 22.5 },
           "soilWaterPotential": -45,
           "batteryPercent": 87,
@@ -29,6 +31,8 @@
       },
       "expected": {
         "data": {
+          "make": "cital",
+          "model": "lorasoil",
           "soil": { "temperature": -3.25 },
           "soilWaterPotential": -120.5,
           "batteryPercent": 100,

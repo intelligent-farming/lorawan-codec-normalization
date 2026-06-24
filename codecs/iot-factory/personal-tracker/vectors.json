@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "iot-factory",
+          "model": "personal-tracker",
           "powerSource": "battery",
           "batteryPercent": 72,
           "position": { "latitude": 40.12345, "longitude": -74.05678 },
@@ -29,6 +31,8 @@
       },
       "expected": {
         "data": {
+          "make": "iot-factory",
+          "model": "personal-tracker",
           "powerSource": "external",
           "batteryPercent": 50,
           "serialNumber": 123456,
@@ -52,6 +56,8 @@
       },
       "expected": {
         "data": {
+          "make": "iot-factory",
+          "model": "personal-tracker",
           "powerSource": "battery",
           "batteryPercent": 97,
           "action": { "motion": { "detected": false } },

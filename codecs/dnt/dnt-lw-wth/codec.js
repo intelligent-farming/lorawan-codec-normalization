@@ -92,7 +92,7 @@ function roomTempC(hi, lo) {
   return round((((hi << 8) | lo) & 0xffff) / 10, 1);
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var payload = input.bytes;
   if (!payload || payload.length === 0) {
     return { errors: ['empty payload'] };
@@ -294,4 +294,14 @@ function decodeUplink(input) {
   }
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "dnt";
+    result.data.model = "dnt-lw-wth";
+  }
+  return result;
 }

@@ -47,7 +47,7 @@ function round(value, decimals) {
   return Math.round(value * f) / f;
 }
 
-function decodeUplink(input) {
+function decodeUplinkCore(input) {
   var bytes = input.bytes;
   if (!bytes || bytes.length < 4) {
     return { errors: ['truncated payload: frame header needs 4 bytes'] };
@@ -106,4 +106,14 @@ function decodeUplink(input) {
   };
 
   return { data: data };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "rakwireless";
+    result.data.model = "qingping-t-h";
+  }
+  return result;
 }

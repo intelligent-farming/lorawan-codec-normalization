@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-trs12",
           "dielectricPermittivity": 11.8522,
           "soil": {
             "moisture": 25.01,
@@ -28,6 +30,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-trs12",
           "dielectricPermittivity": 2.8075,
           "soil": {
             "moisture": 4.9944,
@@ -48,6 +52,8 @@
       },
       "expected": {
         "data": {
+          "make": "decentlab",
+          "model": "dl-trs12",
           "battery": 3.2
         }
       },

@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "digital-matter",
+          "model": "oyster",
           "battery": 4,
           "action": { "motion": { "detected": true } },
           "headingDeg": 90,
@@ -27,6 +29,8 @@
       },
       "expected": {
         "data": {
+          "make": "digital-matter",
+          "model": "oyster",
           "battery": 5.55,
           "action": { "motion": { "detected": false } },
           "headingDeg": 0,
@@ -46,6 +50,8 @@
       },
       "expected": {
         "data": {
+          "make": "digital-matter",
+          "model": "oyster",
           "battery": 3.7,
           "action": { "motion": { "detected": true } },
           "headingDeg": 90,
@@ -66,6 +72,8 @@
       },
       "expected": {
         "data": {
+          "make": "digital-matter",
+          "model": "oyster",
           "battery": 4.75,
           "action": { "motion": { "detected": true } },
           "headingDeg": 0,
@@ -87,6 +95,8 @@
       },
       "expected": {
         "data": {
+          "make": "digital-matter",
+          "model": "oyster",
           "battery": 5,
           "txCount": 2592,
           "tripCount": 1024,
@@ -110,6 +120,8 @@
       },
       "expected": {
         "data": {
+          "make": "digital-matter",
+          "model": "oyster",
           "sequence": 3,
           "accepted": true,
           "firmwareMajor": 2,

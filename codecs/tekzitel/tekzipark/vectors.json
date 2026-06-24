@@ -8,6 +8,8 @@
       },
       "expected": {
         "data": {
+          "make": "tekzitel",
+          "model": "tekzipark",
           "action": { "occupancy": { "occupied": true } },
           "air": { "temperature": 45 },
           "parkingId": 99,
@@ -33,6 +35,8 @@
       },
       "expected": {
         "data": {
+          "make": "tekzitel",
+          "model": "tekzipark",
           "action": { "occupancy": { "occupied": true } },
           "air": { "temperature": 45 },
           "parkingId": 99,
@@ -56,6 +60,8 @@
       },
       "expected": {
         "data": {
+          "make": "tekzitel",
+          "model": "tekzipark",
           "action": { "occupancy": { "occupied": false } },
           "air": { "temperature": 46 },
           "parkingId": 98,
@@ -79,6 +85,8 @@
       },
       "expected": {
         "data": {
+          "make": "tekzitel",
+          "model": "tekzipark",
           "action": { "occupancy": { "occupied": true } },
           "air": { "temperature": -10 },
           "parkingId": 7,
