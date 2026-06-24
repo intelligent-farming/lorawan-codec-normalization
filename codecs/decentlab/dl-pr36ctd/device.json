@@ -11,6 +11,13 @@
     "conductivity",
     "battery"
   ],
+  "provides": [
+    "battery",
+    "electronicsTemperature",
+    "water.ec",
+    "water.pressure",
+    "water.temperature.current"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

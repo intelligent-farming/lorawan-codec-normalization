@@ -17,6 +17,20 @@
     "light",
     "sound"
   ],
+  "provides": [
+    "action.motion.detected",
+    "air.co2",
+    "air.lightIntensity",
+    "air.relativeHumidity",
+    "air.temperature",
+    "averageNoiseDb",
+    "buttonPressed",
+    "iaqGlobal",
+    "iaqSource",
+    "occupancyPercent",
+    "peakNoiseDb",
+    "tvocUgM3"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

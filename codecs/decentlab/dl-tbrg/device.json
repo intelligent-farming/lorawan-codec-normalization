@@ -9,6 +9,13 @@
     "precipitation",
     "battery"
   ],
+  "provides": [
+    "battery",
+    "intervalPrecipitation",
+    "precipitationIntervalSeconds",
+    "rain.cumulative",
+    "tipCount"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

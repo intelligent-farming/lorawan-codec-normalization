@@ -11,6 +11,23 @@
     "temperature",
     "humidity"
   ],
+  "provides": [
+    "air.co2",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "lowBattery",
+    "nh3",
+    "noise",
+    "pm10",
+    "pm1_0",
+    "pm2_5",
+    "soil.ec",
+    "soil.moisture",
+    "soil.temperature",
+    "tvoc",
+    "wind.speed"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

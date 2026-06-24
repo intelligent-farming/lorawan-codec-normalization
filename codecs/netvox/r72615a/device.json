@@ -11,6 +11,16 @@
     "temperature",
     "humidity"
   ],
+  "provides": [
+    "air.co2",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "lowBattery",
+    "nh3",
+    "noise",
+    "wind.speed"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

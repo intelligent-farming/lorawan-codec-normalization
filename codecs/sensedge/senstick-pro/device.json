@@ -11,6 +11,14 @@
     "motion",
     "battery"
   ],
+  "provides": [
+    "action.motion.detected",
+    "air.relativeHumidity",
+    "air.temperature",
+    "airPressureRaw",
+    "battery",
+    "status"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

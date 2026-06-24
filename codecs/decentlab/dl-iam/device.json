@@ -19,6 +19,21 @@
     "pir",
     "battery"
   ],
+  "provides": [
+    "action.motion.count",
+    "action.motion.detected",
+    "air.co2",
+    "air.lightIntensity",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "ambientLightInfrared",
+    "ambientLightVisibleInfrared",
+    "battery",
+    "co2SensorStatus",
+    "rawIrReading",
+    "totalVoc"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

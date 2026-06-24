@@ -14,6 +14,27 @@
     "temperature",
     "moisture"
   ],
+  "provides": [
+    "air.lightIntensity",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "batteryPercent",
+    "leafHumidity",
+    "leafTemperature",
+    "pressureChannel",
+    "pulseCount",
+    "soil.ec",
+    "soil.moisture",
+    "soil.temperature",
+    "soil1E25",
+    "soil1Ec",
+    "soil1Moisture",
+    "soil1Temperature",
+    "soilE25",
+    "valveOpen",
+    "water.leak"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

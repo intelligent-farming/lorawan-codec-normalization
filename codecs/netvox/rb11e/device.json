@@ -11,6 +11,13 @@
     "temperature",
     "occupancy"
   ],
+  "provides": [
+    "action.motion.detected",
+    "air.lightIntensity",
+    "air.temperature",
+    "battery",
+    "tamperAlarm"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

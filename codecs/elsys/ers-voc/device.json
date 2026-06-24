@@ -15,6 +15,16 @@
     "motion",
     "tvoc"
   ],
+  "provides": [
+    "action.motion.count",
+    "action.motion.detected",
+    "air.co2",
+    "air.lightIntensity",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "tvoc"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

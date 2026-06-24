@@ -18,6 +18,23 @@
     "buzzer",
     "radar"
   ],
+  "provides": [
+    "air.pm1",
+    "air.pm10",
+    "air.pm25",
+    "air.relativeHumidity",
+    "air.temperature",
+    "air.temperatureAlarm.temperature",
+    "air.temperatureAlarm.type",
+    "air.tvoc",
+    "air.vapingIndex",
+    "air.vapingIndexAlarm.type",
+    "air.vapingIndexAlarm.vapingIndex",
+    "batteryPercent",
+    "buzzer",
+    "occupancyStatus",
+    "tamperStatus"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

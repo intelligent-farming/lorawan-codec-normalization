@@ -12,6 +12,13 @@
     "humidity",
     "digital input"
   ],
+  "provides": [
+    "action.contactState",
+    "air.relativeHumidity",
+    "air.temperature",
+    "batteryPercent",
+    "time"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

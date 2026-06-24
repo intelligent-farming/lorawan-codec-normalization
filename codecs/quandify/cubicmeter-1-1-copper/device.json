@@ -11,6 +11,26 @@
     "temperature",
     "water"
   ],
+  "provides": [
+    "air.temperature",
+    "appState",
+    "battery",
+    "batteryActiveV",
+    "errorCode",
+    "firmwareVersion",
+    "hardwareVersion",
+    "isSensing",
+    "leakState",
+    "metering.water.total",
+    "pipeId",
+    "pipeType",
+    "responseStatus",
+    "responseType",
+    "water.leak",
+    "water.temperature.current",
+    "water.temperature.max",
+    "water.temperature.min"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

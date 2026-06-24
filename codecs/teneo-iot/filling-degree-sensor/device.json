@@ -10,6 +10,17 @@
     "temperature",
     "humidity"
   ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "charging",
+    "distance",
+    "errorCode",
+    "sensorType",
+    "settingsAllowed",
+    "valid"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

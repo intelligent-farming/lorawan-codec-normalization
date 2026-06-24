@@ -11,6 +11,24 @@
     "accelerometer",
     "temperature"
   ],
+  "provides": [
+    "accelerationAlarm",
+    "accelerationX",
+    "accelerationY",
+    "accelerationZ",
+    "action.motion.detected",
+    "air.temperature",
+    "altitude",
+    "battery",
+    "battery2",
+    "battery2EndOfService",
+    "batteryEndOfService",
+    "gpsFixPosition",
+    "gpsFixUtc",
+    "groundSpeed",
+    "position.latitude",
+    "position.longitude"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

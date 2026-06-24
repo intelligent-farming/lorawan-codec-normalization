@@ -10,6 +10,11 @@
     "pir",
     "light"
   ],
+  "provides": [
+    "action.motion.detected",
+    "batteryPercent",
+    "lightLevel"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

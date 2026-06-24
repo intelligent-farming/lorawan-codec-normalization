@@ -17,6 +17,23 @@
     "uv",
     "dust"
   ],
+  "provides": [
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "batteryPercent",
+    "pm1",
+    "pm10",
+    "pm2_5",
+    "rain.cumulative",
+    "rain.intensity",
+    "solarRadiation",
+    "time",
+    "uvIndex",
+    "wind.direction",
+    "wind.speed",
+    "windSpeedAvg10m"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

@@ -13,6 +13,25 @@
     "voltage",
     "pulse count"
   ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "batteryPercent",
+    "currentL1.data",
+    "currentL1.unit",
+    "deviceClass",
+    "deviceTimestamp",
+    "electricityDeliveredToClientT1.data",
+    "electricityDeliveredToClientT1.unit",
+    "internalCircuitHumidity",
+    "internalCircuitTemperature",
+    "lastReadingOnChannel1.timestamp",
+    "lastReadingOnChannel1.value",
+    "powerEvent",
+    "voltageL1.data",
+    "voltageL1.unit"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

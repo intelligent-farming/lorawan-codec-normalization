@@ -17,6 +17,16 @@
     "iaq",
     "co2"
   ],
+  "provides": [
+    "air.bvoc",
+    "air.co2",
+    "air.lightIntensity",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "batteryPercent",
+    "time"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

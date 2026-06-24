@@ -14,6 +14,13 @@
     "co2",
     "pressure"
   ],
+  "provides": [
+    "air.co2",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "batteryPercent"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

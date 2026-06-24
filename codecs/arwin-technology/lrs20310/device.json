@@ -8,6 +8,18 @@
   "sensors": [
     "water"
   ],
+  "provides": [
+    "additionalUploadsInterval",
+    "batteryPercent",
+    "cableBreak",
+    "dataUploadInterval",
+    "event",
+    "firmwareVersion",
+    "numAdditionalUploads",
+    "water.leak",
+    "waterLeakAlertThreshold",
+    "waterLeakLevel"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

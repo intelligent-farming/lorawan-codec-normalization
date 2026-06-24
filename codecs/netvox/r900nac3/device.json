@@ -8,6 +8,21 @@
   "sensors": [
     "shock"
   ],
+  "provides": [
+    "action.motion.detected",
+    "battery",
+    "current1",
+    "current2",
+    "current3",
+    "highCurrent1Alarm",
+    "highCurrent2Alarm",
+    "highCurrent3Alarm",
+    "lowBattery",
+    "lowCurrent1Alarm",
+    "lowCurrent2Alarm",
+    "lowCurrent3Alarm",
+    "tamperAlarm"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

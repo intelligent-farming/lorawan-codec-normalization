@@ -10,6 +10,17 @@
     "gps",
     "accelerometer"
   ],
+  "provides": [
+    "action.motion.detected",
+    "altitudeMeters",
+    "appVersion",
+    "battery",
+    "blVersion",
+    "hdop",
+    "position.latitude",
+    "position.longitude",
+    "txReason"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

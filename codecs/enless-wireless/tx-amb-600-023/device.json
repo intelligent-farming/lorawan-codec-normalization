@@ -13,6 +13,25 @@
     "co2",
     "battery"
   ],
+  "provides": [
+    "air.co2",
+    "air.relativeHumidity",
+    "air.temperature",
+    "alarms.co2High",
+    "alarms.co2Low",
+    "alarms.humidityHigh",
+    "alarms.humidityLow",
+    "alarms.temperatureHigh",
+    "alarms.temperatureLow",
+    "alarms.vocHigh",
+    "alarms.vocLow",
+    "batteryPercent",
+    "deviceId",
+    "firmwareVersion",
+    "messageType",
+    "sequenceCounter",
+    "tvoc"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

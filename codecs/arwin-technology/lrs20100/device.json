@@ -9,6 +9,18 @@
     "temperature",
     "humidity"
   ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "batteryPercent",
+    "dataUploadInterval",
+    "event",
+    "firmwareVersion",
+    "highHumidityThreshold",
+    "highTemperatureThreshold",
+    "lowHumidityThreshold",
+    "lowTemperatureThreshold"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

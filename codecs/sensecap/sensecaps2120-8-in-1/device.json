@@ -19,6 +19,17 @@
     "uv",
     "rainfall"
   ],
+  "provides": [
+    "air.lightIntensity",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "batteryPercent",
+    "rain.cumulative",
+    "uvIndex",
+    "wind.direction",
+    "wind.speed"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

@@ -9,6 +9,24 @@
     "temperature",
     "humidity"
   ],
+  "provides": [
+    "accumulation",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "batteryLow",
+    "counter",
+    "errorWithLastDownlink",
+    "event",
+    "messageType",
+    "protocol",
+    "radioCommError",
+    "rssi",
+    "snr",
+    "subband",
+    "tamperSinceLastReset",
+    "tamperState"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

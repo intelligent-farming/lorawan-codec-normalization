@@ -11,6 +11,13 @@
     "temperature",
     "battery"
   ],
+  "provides": [
+    "battery",
+    "freezingFlag",
+    "water.ec",
+    "water.level",
+    "water.temperature.current"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

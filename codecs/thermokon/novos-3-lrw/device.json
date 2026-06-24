@@ -13,6 +13,14 @@
     "humidity",
     "potentiometer"
   ],
+  "provides": [
+    "air.co2",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "setpoint",
+    "voc"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

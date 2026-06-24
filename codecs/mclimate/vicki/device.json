@@ -10,6 +10,26 @@
     "temperature",
     "humidity"
   ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "antiFreezeProtection",
+    "attachedBackplate",
+    "battery",
+    "brokenSensor",
+    "calibrationFailed",
+    "childLock",
+    "highMotorConsumption",
+    "lowMotorConsumption",
+    "motorPosition",
+    "motorRange",
+    "openWindow",
+    "perceiveAsOnline",
+    "reason",
+    "targetTemperature",
+    "targetTemperatureFloat",
+    "valveOpenness"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

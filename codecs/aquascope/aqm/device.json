@@ -9,6 +9,14 @@
     "temperature",
     "water"
   ],
+  "provides": [
+    "batteryPercent",
+    "consumptionLiter",
+    "consumptionTime",
+    "flowActive",
+    "metering.water.total",
+    "water.temperature.current"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

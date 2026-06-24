@@ -10,6 +10,12 @@
     "humidity",
     "iaq"
   ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "iaq"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

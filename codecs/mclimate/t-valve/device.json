@@ -9,6 +9,22 @@
     "temperature",
     "water"
   ],
+  "provides": [
+    "air.temperature",
+    "alarmValidated",
+    "battery",
+    "boxTamper",
+    "closeTime",
+    "floodDetectionWireState",
+    "magnet",
+    "manualCloseIndicator",
+    "manualOpenIndicator",
+    "openTime",
+    "reason",
+    "valveOpen",
+    "water.leak",
+    "water.temperature.current"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

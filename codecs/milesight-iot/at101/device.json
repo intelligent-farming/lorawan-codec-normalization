@@ -13,6 +13,23 @@
     "temperature",
     "tilt"
   ],
+  "provides": [
+    "action.motion.detected",
+    "air.temperature",
+    "batteryPercent",
+    "deviceStatus",
+    "firmwareVersion",
+    "geofenceStatus",
+    "hardwareVersion",
+    "ipsoVersion",
+    "locationHistory",
+    "motionStatus",
+    "position.latitude",
+    "position.longitude",
+    "sn",
+    "wifiScan",
+    "wifiScanResult"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

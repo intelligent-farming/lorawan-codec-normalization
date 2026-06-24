@@ -19,6 +19,18 @@
     "pir",
     "light"
   ],
+  "provides": [
+    "action.motion.count",
+    "air.co2",
+    "air.infrared",
+    "air.infraredAndVisible",
+    "air.lightIntensity",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "air.tvoc",
+    "batteryPercent"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

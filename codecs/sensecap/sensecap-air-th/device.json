@@ -9,6 +9,11 @@
     "humidity",
     "temperature"
   ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "batteryPercent"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

@@ -10,6 +10,14 @@
     "temperature",
     "battery"
   ],
+  "provides": [
+    "battery",
+    "deviceId",
+    "dielectricPermittivity",
+    "protocolVersion",
+    "soil.moisture",
+    "soil.temperature"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

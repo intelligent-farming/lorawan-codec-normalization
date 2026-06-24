@@ -13,6 +13,22 @@
     "barometer",
     "battery"
   ],
+  "provides": [
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "pm0_5NumberConcentration",
+    "pm1",
+    "pm10",
+    "pm10NumberConcentration",
+    "pm1NumberConcentration",
+    "pm2_5",
+    "pm2_5NumberConcentration",
+    "pm4",
+    "pm4NumberConcentration",
+    "typicalParticleSize"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

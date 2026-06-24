@@ -12,6 +12,21 @@
     "pressure",
     "battery"
   ],
+  "provides": [
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "dataRate",
+    "familyId",
+    "firmwareVersion",
+    "hardwareVersion",
+    "movementThreshold",
+    "packetConfirm",
+    "productId",
+    "sendPeriod",
+    "status"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

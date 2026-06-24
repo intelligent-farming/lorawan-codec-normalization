@@ -15,6 +15,19 @@
     "button",
     "water"
   ],
+  "provides": [
+    "air.lightIntensity",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "highHumidityAlarm",
+    "highIlluminanceAlarm",
+    "highTemperatureAlarm",
+    "lowBattery",
+    "lowHumidityAlarm",
+    "lowIlluminanceAlarm",
+    "lowTemperatureAlarm"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

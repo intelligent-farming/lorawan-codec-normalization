@@ -13,6 +13,17 @@
     "co2",
     "pressure"
   ],
+  "provides": [
+    "action.motion.detected",
+    "air.co2",
+    "air.lightIntensity",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "messageType",
+    "tvoc"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

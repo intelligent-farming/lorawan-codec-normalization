@@ -10,6 +10,17 @@
     "gps",
     "temperature"
   ],
+  "provides": [
+    "air.temperature",
+    "fillDistanceMm",
+    "fire",
+    "full",
+    "lowBattery",
+    "position.latitude",
+    "position.longitude",
+    "tilt",
+    "tiltAngle"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

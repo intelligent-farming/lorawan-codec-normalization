@@ -9,6 +9,19 @@
     "temperature",
     "humidity"
   ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "alarmStatus.relativeHumidity.high",
+    "alarmStatus.relativeHumidity.low",
+    "alarmStatus.temperature.high",
+    "alarmStatus.temperature.low",
+    "batteryPercent",
+    "deviceId",
+    "firmwareVersion",
+    "messageType",
+    "sequenceCounter"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

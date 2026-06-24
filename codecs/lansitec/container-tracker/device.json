@@ -14,6 +14,23 @@
     "battery",
     "rssi"
   ],
+  "provides": [
+    "action.motion.detected",
+    "alarm",
+    "battery",
+    "bleBeacons",
+    "gpsState",
+    "messageType",
+    "movementSeconds",
+    "position.latitude",
+    "position.longitude",
+    "rssi",
+    "shockCount",
+    "snr",
+    "temperatureC",
+    "time",
+    "vibrationLevel"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

@@ -10,6 +10,27 @@
     "accelerometer",
     "gps"
   ],
+  "provides": [
+    "action.motion.detected",
+    "altitudeM",
+    "averageTimeToFixS",
+    "battery",
+    "bootloaderVersion",
+    "falseActivations",
+    "firmwareVersion",
+    "gnssActiveTimeS",
+    "gnssTimeout",
+    "gpsActivations",
+    "gpsTimeouts",
+    "hardwareRevision",
+    "hdop",
+    "position.latitude",
+    "position.longitude",
+    "qosState",
+    "reason",
+    "satellitesInView",
+    "timeToFixS"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

@@ -23,6 +23,26 @@
     "pm2.5",
     "pm10"
   ],
+  "provides": [
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "barometricTrend",
+    "batteryPercent",
+    "evapotranspirationDay",
+    "forecastIcons",
+    "pm1",
+    "pm10",
+    "pm25",
+    "rain.cumulative",
+    "rain.intensity",
+    "solarRadiation",
+    "time",
+    "uv",
+    "wind.direction",
+    "wind.speed",
+    "windSpeedAvgTenMinutes"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

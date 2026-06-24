@@ -13,6 +13,22 @@
     "gas",
     "sound"
   ],
+  "provides": [
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "co",
+    "eaqi",
+    "fpm",
+    "nh3",
+    "no2",
+    "noise",
+    "pm1",
+    "pm10",
+    "pm25",
+    "rpm",
+    "version"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

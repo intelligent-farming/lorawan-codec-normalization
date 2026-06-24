@@ -22,6 +22,26 @@
     "pm2.5",
     "pm10"
   ],
+  "provides": [
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "cl2",
+    "co",
+    "firmwareVersion",
+    "gasResistance",
+    "h2s",
+    "hardwareVersion",
+    "iaq",
+    "nh3",
+    "no2",
+    "noise",
+    "o3",
+    "pm1",
+    "pm10",
+    "pm25",
+    "so2"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

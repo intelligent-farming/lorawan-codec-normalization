@@ -18,6 +18,28 @@
     "o3",
     "co"
   ],
+  "provides": [
+    "air.ch2o",
+    "air.co",
+    "air.co2",
+    "air.no2",
+    "air.o3",
+    "air.pm1",
+    "air.pm10",
+    "air.pm25",
+    "air.pm4",
+    "air.relativeHumidity",
+    "air.temperature",
+    "air.tvoc",
+    "counter",
+    "iaqIndex",
+    "moldIndex",
+    "noiseDb",
+    "tIndex",
+    "type",
+    "vIndex",
+    "virusIndex"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

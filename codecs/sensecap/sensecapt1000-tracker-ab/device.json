@@ -11,6 +11,15 @@
     "temperature",
     "light"
   ],
+  "provides": [
+    "air.lightIntensity",
+    "air.temperature",
+    "batteryPercent",
+    "eventStatus",
+    "position.latitude",
+    "position.longitude",
+    "time"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

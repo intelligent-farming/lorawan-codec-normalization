@@ -8,6 +8,17 @@
   "sensors": [
     "gps"
   ],
+  "provides": [
+    "altitude",
+    "angleX",
+    "angleY",
+    "angleZ",
+    "battery",
+    "hdop",
+    "lowBattery",
+    "position.latitude",
+    "position.longitude"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

@@ -14,6 +14,15 @@
     "light",
     "motion"
   ],
+  "provides": [
+    "action.contactState",
+    "action.motion.count",
+    "action.motion.detected",
+    "air.lightIntensity",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

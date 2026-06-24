@@ -2,10 +2,26 @@
   "vendor": "dragino",
   "device": "lht65",
   "name": "LHT65 - Temperature & Humidity Sensor",
-  "categories": ["climate"],
-  "sensors": ["battery", "temperature", "humidity"],
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "battery",
+    "temperature",
+    "humidity"
+  ],
+  "provides": [
+    "air.location",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "externalTemperature"
+  ],
   "variantOf": null,
-  "downlink": { "encode": false, "decode": false },
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
   "ttn": {
     "vendor": "dragino",
     "device": "lht65",

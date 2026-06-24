@@ -8,6 +8,12 @@
   "sensors": [
     "hall effect"
   ],
+  "provides": [
+    "action.contactState",
+    "battery",
+    "contactState2",
+    "lowBattery"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

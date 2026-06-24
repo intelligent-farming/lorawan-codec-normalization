@@ -16,6 +16,14 @@
     "co2",
     "pir"
   ],
+  "provides": [
+    "action.motion.count",
+    "action.motion.detected",
+    "air.co2",
+    "air.lightIntensity",
+    "air.relativeHumidity",
+    "air.temperature"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

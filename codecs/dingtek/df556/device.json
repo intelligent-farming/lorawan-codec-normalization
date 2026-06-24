@@ -10,6 +10,23 @@
     "gps",
     "battery"
   ],
+  "provides": [
+    "alarmBattery",
+    "alarmLevel",
+    "battery",
+    "batteryThreshold",
+    "density",
+    "detectInterval",
+    "firmware",
+    "frameCounter",
+    "gpsEnabled",
+    "level",
+    "levelThreshold",
+    "position.latitude",
+    "position.longitude",
+    "uploadInterval",
+    "workMode"
+  ],
   "variantOf": "dingtek/df555",
   "downlink": {
     "encode": false,

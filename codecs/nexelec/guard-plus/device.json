@@ -10,6 +10,15 @@
     "humidity",
     "battery"
   ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "relativeHumidityMaxPercent",
+    "relativeHumidityMinPercent",
+    "temperatureMaxC",
+    "temperatureMinC"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

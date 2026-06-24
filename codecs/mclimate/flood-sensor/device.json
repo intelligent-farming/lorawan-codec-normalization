@@ -9,6 +9,13 @@
     "temperature",
     "water"
   ],
+  "provides": [
+    "battery",
+    "boxTamper",
+    "reason",
+    "water.leak",
+    "water.temperature.current"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

@@ -12,6 +12,22 @@
     "temperature",
     "digital input"
   ],
+  "provides": [
+    "air.co2",
+    "air.lightIntensity",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "digitalInputs.input1",
+    "digitalInputs.input2",
+    "messageType",
+    "payloadVersion",
+    "pm10",
+    "pm1_0",
+    "pm2_5",
+    "tvoc"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

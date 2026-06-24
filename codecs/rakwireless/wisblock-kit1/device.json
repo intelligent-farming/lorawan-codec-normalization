@@ -13,6 +13,15 @@
     "gas",
     "accelerometer"
   ],
+  "provides": [
+    "acceleration.x",
+    "acceleration.y",
+    "acceleration.z",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "gasResistance"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

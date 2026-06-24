@@ -9,6 +9,14 @@
     "temperature",
     "magnetometer"
   ],
+  "provides": [
+    "action.contactState",
+    "air.temperature",
+    "battery",
+    "eventStatus",
+    "openCloseCount",
+    "thermistorProperlyConnected"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

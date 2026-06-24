@@ -10,6 +10,13 @@
     "humidity",
     "pm2.5"
   ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "lowBattery",
+    "pm2_5"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

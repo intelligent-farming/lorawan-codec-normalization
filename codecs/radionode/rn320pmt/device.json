@@ -17,6 +17,16 @@
     "co2",
     "co"
   ],
+  "provides": [
+    "air.co2",
+    "air.lightIntensity",
+    "air.relativeHumidity",
+    "air.temperature",
+    "co",
+    "hcho",
+    "pm10",
+    "pm25"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

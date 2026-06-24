@@ -9,6 +9,21 @@
   "sensors": [
     "soil"
   ],
+  "provides": [
+    "action.motion.detected",
+    "battery",
+    "highEcAlarm",
+    "highMoistureAlarm",
+    "highTemperatureAlarm",
+    "lowBattery",
+    "lowEcAlarm",
+    "lowMoistureAlarm",
+    "lowTemperatureAlarm",
+    "soil.ec",
+    "soil.moisture",
+    "soil.temperature",
+    "tamperAlarm"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

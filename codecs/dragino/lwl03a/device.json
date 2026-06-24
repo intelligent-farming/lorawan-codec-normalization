@@ -2,10 +2,25 @@
   "vendor": "dragino",
   "device": "lwl03a",
   "name": "LWL03A - Water Leak Sensor",
-  "categories": ["water-leak"],
-  "sensors": ["water", "leak"],
+  "categories": [
+    "water-leak"
+  ],
+  "sensors": [
+    "water",
+    "leak"
+  ],
+  "provides": [
+    "alarm",
+    "lastLeakDuration",
+    "leakEvents",
+    "time",
+    "water.leak"
+  ],
   "variantOf": null,
-  "downlink": { "encode": false, "decode": false },
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
   "ttn": {
     "vendor": "dragino",
     "device": "lwl03a",

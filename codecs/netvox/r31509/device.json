@@ -11,6 +11,18 @@
     "humidity",
     "light"
   ],
+  "provides": [
+    "air.lightIntensity",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "highHumidityAlarm",
+    "highIlluminanceAlarm",
+    "highTemperatureAlarm",
+    "lowHumidityAlarm",
+    "lowIlluminanceAlarm",
+    "lowTemperatureAlarm"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

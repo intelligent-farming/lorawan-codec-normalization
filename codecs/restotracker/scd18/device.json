@@ -16,6 +16,26 @@
     "vibration",
     "wifi ssid"
   ],
+  "provides": [
+    "action.motion.detected",
+    "air.temperature",
+    "battery",
+    "downlinkCount",
+    "firmwareVersion",
+    "fixTech",
+    "fixType",
+    "idle",
+    "lowPower",
+    "motionCount",
+    "pdop",
+    "position.latitude",
+    "position.longitude",
+    "restartReason",
+    "tamper",
+    "time",
+    "wifiScans",
+    "workMode"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

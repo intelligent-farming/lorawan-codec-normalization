@@ -16,6 +16,15 @@
     "light",
     "co2"
   ],
+  "provides": [
+    "action.motion.detected",
+    "air.co2",
+    "air.lightIntensity",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "powerSourceStatus"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

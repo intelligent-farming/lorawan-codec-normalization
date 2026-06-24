@@ -9,6 +9,15 @@
     "accelerometer",
     "temperature"
   ],
+  "provides": [
+    "action.motion.detected",
+    "air.temperature",
+    "battery",
+    "highTemperatureAlarm",
+    "lowBattery",
+    "lowTemperatureAlarm",
+    "tamperAlarm"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

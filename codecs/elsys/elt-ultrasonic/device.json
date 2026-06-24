@@ -12,6 +12,17 @@
     "pressure",
     "distance"
   ],
+  "provides": [
+    "air.lightIntensity",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "distance",
+    "pressure",
+    "x",
+    "y",
+    "z"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

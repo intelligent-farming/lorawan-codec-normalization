@@ -11,6 +11,16 @@
     "humidity",
     "temperature"
   ],
+  "provides": [
+    "air.co2",
+    "air.location",
+    "air.relativeHumidity",
+    "air.temperature",
+    "air.temperatureValid",
+    "battery",
+    "messageType",
+    "trafficLightState"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

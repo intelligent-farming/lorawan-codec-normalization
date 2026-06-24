@@ -11,6 +11,14 @@
     "conductivity",
     "battery"
   ],
+  "provides": [
+    "battery",
+    "soil.ec",
+    "soil.moisture",
+    "soil.pH",
+    "soil.temperature",
+    "transmitInterval"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

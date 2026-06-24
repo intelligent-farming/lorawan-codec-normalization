@@ -13,6 +13,17 @@
     "tilt",
     "battery"
   ],
+  "provides": [
+    "air.temperature",
+    "battery",
+    "wind.direction",
+    "wind.speed",
+    "windGust",
+    "windSpeedEast",
+    "windSpeedNorth",
+    "xOrientationAngle",
+    "yOrientationAngle"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

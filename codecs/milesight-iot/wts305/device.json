@@ -16,6 +16,16 @@
     "pressure",
     "rainfall"
   ],
+  "provides": [
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "batteryPercent",
+    "rain.cumulative",
+    "rainfallCounter",
+    "wind.direction",
+    "wind.speed"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

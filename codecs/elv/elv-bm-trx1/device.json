@@ -17,6 +17,23 @@
     "pressure",
     "motion"
   ],
+  "provides": [
+    "acceleration",
+    "action.motion.detected",
+    "air.co2",
+    "air.lightIntensity",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "batteryIndicator",
+    "temperatureSensor",
+    "tiltAngle",
+    "tiltArea0",
+    "tiltArea1",
+    "tiltArea2",
+    "txReason"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

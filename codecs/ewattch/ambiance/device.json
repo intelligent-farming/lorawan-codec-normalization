@@ -17,6 +17,15 @@
     "motion",
     "temperature"
   ],
+  "provides": [
+    "action.motion.detected",
+    "air.co2",
+    "air.lightIntensity",
+    "air.relativeHumidity",
+    "air.temperature",
+    "batteryPercent",
+    "secondsSinceMotion"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

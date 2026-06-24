@@ -17,6 +17,16 @@
     "co2",
     "battery"
   ],
+  "provides": [
+    "air.co2",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "dewPoint",
+    "photosyntheticallyActiveRadiation",
+    "vaporPressureDeficit"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

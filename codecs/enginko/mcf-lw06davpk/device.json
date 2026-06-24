@@ -21,6 +21,24 @@
     "pm2.5",
     "pm10"
   ],
+  "provides": [
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "batteryPercent",
+    "evapotranspiration",
+    "pm1",
+    "pm10",
+    "pm2_5",
+    "rain.cumulative",
+    "rain.intensity",
+    "solarRadiation",
+    "tenMinutesAvgWindSpeed",
+    "time",
+    "uvIndex",
+    "wind.direction",
+    "wind.speed"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

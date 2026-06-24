@@ -12,6 +12,16 @@
     "barometer",
     "dust"
   ],
+  "provides": [
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "batteryPercent",
+    "pm1",
+    "pm10",
+    "pm2_5",
+    "time"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

@@ -10,6 +10,16 @@
     "accelerometer",
     "battery"
   ],
+  "provides": [
+    "battery",
+    "gSensorEnabled",
+    "gSensorSensitivity",
+    "gSensorState",
+    "messageCounter",
+    "position.latitude",
+    "position.longitude",
+    "time"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

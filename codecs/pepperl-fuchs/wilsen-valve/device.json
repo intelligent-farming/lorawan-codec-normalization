@@ -11,6 +11,22 @@
     "temperature",
     "battery"
   ],
+  "provides": [
+    "air.temperature",
+    "battery",
+    "gpsCount",
+    "loraCount",
+    "position.latitude",
+    "position.longitude",
+    "sensingCount",
+    "sensor1Details",
+    "sensor2Details",
+    "sensor3Details",
+    "sensor4Details",
+    "serialNumber",
+    "valve1State",
+    "valve2State"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

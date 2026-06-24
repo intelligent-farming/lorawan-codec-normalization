@@ -13,6 +13,21 @@
     "accelerometer",
     "light"
   ],
+  "provides": [
+    "acceleration.x",
+    "acceleration.xReference",
+    "acceleration.y",
+    "acceleration.yReference",
+    "acceleration.z",
+    "acceleration.zReference",
+    "air.lightIntensity",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "formatVersion",
+    "triggerReason",
+    "txPower"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

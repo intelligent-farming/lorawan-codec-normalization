@@ -8,6 +8,12 @@
   "sensors": [
     "reed switch"
   ],
+  "provides": [
+    "action.contactState",
+    "battery",
+    "contact2State",
+    "lowBattery"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

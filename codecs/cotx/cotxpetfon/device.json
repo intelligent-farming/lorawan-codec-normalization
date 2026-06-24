@@ -8,6 +8,13 @@
   "sensors": [
     "gps"
   ],
+  "provides": [
+    "batteryLevel",
+    "paws",
+    "position.latitude",
+    "position.longitude",
+    "working"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

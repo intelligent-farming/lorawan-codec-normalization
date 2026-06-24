@@ -9,6 +9,10 @@
     "battery",
     "light"
   ],
+  "provides": [
+    "air.lightIntensity",
+    "batteryPercent"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

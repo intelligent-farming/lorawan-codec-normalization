@@ -10,6 +10,18 @@
     "temperature",
     "humidity"
   ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "changeOutputStates.output1",
+    "changeOutputStates.output2",
+    "input1",
+    "input1Count",
+    "input2",
+    "input3",
+    "mcuTemperature"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

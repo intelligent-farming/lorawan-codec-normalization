@@ -13,6 +13,26 @@
     "button",
     "rssi"
   ],
+  "provides": [
+    "action.motion.detected",
+    "alarm",
+    "batteryPercent",
+    "bleAssetBeacons",
+    "bleBeacons",
+    "bleState",
+    "chargeSeconds",
+    "gpsFixSuccess",
+    "gpsState",
+    "movementLevel",
+    "position.latitude",
+    "position.longitude",
+    "pressureRaw",
+    "rssi",
+    "snr",
+    "time",
+    "wearSeconds",
+    "wearing"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

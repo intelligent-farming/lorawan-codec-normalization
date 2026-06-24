@@ -11,6 +11,19 @@
     "accelerometer",
     "battery"
   ],
+  "provides": [
+    "accelerometerX",
+    "accelerometerY",
+    "accelerometerZ",
+    "action.motion.detected",
+    "batteryPercent",
+    "eventStatus",
+    "motionId",
+    "position.latitude",
+    "position.longitude",
+    "time",
+    "wifiScan"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

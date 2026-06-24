@@ -20,6 +20,20 @@
     "pm10",
     "o3"
   ],
+  "provides": [
+    "air.co2",
+    "air.h2s",
+    "air.hcho",
+    "air.nh3",
+    "air.no2",
+    "air.o3",
+    "air.pm10",
+    "air.pm2_5",
+    "air.relativeHumidity",
+    "air.temperature",
+    "air.tvoc",
+    "batteryPercent"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

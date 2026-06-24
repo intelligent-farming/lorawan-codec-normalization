@@ -10,6 +10,22 @@
     "humidity",
     "proximity"
   ],
+  "provides": [
+    "action.contactState",
+    "air.relativeHumidity",
+    "air.temperature",
+    "alarmMsgCount",
+    "alertCancellation",
+    "backlogMsgCount",
+    "battery",
+    "batteryCapacityRange",
+    "contactCounter",
+    "messageType",
+    "numberOfReadings",
+    "operatingMode",
+    "options",
+    "time"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

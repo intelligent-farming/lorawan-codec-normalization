@@ -11,6 +11,12 @@
     "button",
     "gps"
   ],
+  "provides": [
+    "alarm",
+    "batteryPercent",
+    "position.latitude",
+    "position.longitude"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

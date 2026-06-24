@@ -11,6 +11,15 @@
     "humidity",
     "light"
   ],
+  "provides": [
+    "air.lightIntensity",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "batteryEndOfShelfLifeAlert",
+    "lightAlarm",
+    "mcuTemperature"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

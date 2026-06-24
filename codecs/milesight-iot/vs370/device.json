@@ -8,6 +8,11 @@
   "sensors": [
     "motion"
   ],
+  "provides": [
+    "action.motion.detected",
+    "batteryPercent",
+    "illuminanceLevel"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

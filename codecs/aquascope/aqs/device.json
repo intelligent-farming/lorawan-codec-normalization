@@ -10,6 +10,15 @@
     "pressure",
     "water"
   ],
+  "provides": [
+    "battery",
+    "consumptionLiter",
+    "consumptionTime",
+    "flow",
+    "metering.water.total",
+    "water.temperature.current",
+    "waterPressureKpa"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

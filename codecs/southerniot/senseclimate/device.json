@@ -9,6 +9,10 @@
     "temperature",
     "humidity"
   ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

@@ -11,6 +11,20 @@
     "temperature",
     "water"
   ],
+  "provides": [
+    "air.temperature",
+    "battery",
+    "batteryActiveMv",
+    "batteryRecoveredMv",
+    "errorCode",
+    "isSensing",
+    "leakState",
+    "metering.water.total",
+    "water.leak",
+    "water.temperature.current",
+    "water.temperature.max",
+    "water.temperature.min"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

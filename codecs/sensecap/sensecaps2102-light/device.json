@@ -9,6 +9,12 @@
   "sensors": [
     "light"
   ],
+  "provides": [
+    "air.lightIntensity",
+    "air.relativeHumidity",
+    "air.temperature",
+    "batteryPercent"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

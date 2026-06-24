@@ -10,6 +10,14 @@
     "humidity",
     "tvoc"
   ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "lowBattery",
+    "tvoc",
+    "tvocUnit"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

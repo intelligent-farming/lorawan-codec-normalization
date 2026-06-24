@@ -12,6 +12,16 @@
     "accelerometer",
     "occupancy"
   ],
+  "provides": [
+    "accelerationX",
+    "accelerationY",
+    "accelerationZ",
+    "action.motion.count",
+    "action.motion.detected",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

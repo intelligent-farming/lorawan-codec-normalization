@@ -21,6 +21,25 @@
     "vapor pressure",
     "battery"
   ],
+  "provides": [
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "internalTemperature",
+    "lightningAverageDistance",
+    "lightningStrikeCount",
+    "maxWindSpeed",
+    "precipitationElectricalConductivity",
+    "rain.cumulative",
+    "rain.intensity",
+    "solarRadiation",
+    "tiltAngleX",
+    "tiltAngleY",
+    "vaporPressure",
+    "wind.direction",
+    "wind.speed"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

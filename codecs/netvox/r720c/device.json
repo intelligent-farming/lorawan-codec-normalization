@@ -9,6 +9,12 @@
     "pressure",
     "temperature"
   ],
+  "provides": [
+    "air.pressure",
+    "air.temperature",
+    "battery",
+    "lowBattery"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

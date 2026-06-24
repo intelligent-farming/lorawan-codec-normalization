@@ -15,6 +15,21 @@
     "rainfall",
     "uv"
   ],
+  "provides": [
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "barometerTrend",
+    "evapotranspiration",
+    "forecastIcons",
+    "rain.cumulative",
+    "rain.intensity",
+    "solarRadiation",
+    "uvIndex",
+    "wind.direction",
+    "wind.speed",
+    "windSpeedAvg10min"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

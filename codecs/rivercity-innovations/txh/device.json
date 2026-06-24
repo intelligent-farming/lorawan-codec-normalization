@@ -9,6 +9,28 @@
     "temperature",
     "humidity"
   ],
+  "provides": [
+    "adrOn",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "checkTimeSeconds",
+    "confirmedUplinks",
+    "dataAverageNumber",
+    "firmwareVersion",
+    "humidityAlertActive",
+    "humidityAlertsEnabled",
+    "humidityLimitHigh",
+    "humidityLimitLow",
+    "isAlertsConfirmed",
+    "loRaWANVersion",
+    "reportsNumChecksAlert",
+    "reportsNumChecksRegular",
+    "temperatureAlertActive",
+    "temperatureAlertsEnabled",
+    "temperatureLimitHigh",
+    "temperatureLimitLow"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

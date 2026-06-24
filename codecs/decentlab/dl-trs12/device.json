@@ -11,6 +11,13 @@
     "conductivity",
     "battery"
   ],
+  "provides": [
+    "battery",
+    "dielectricPermittivity",
+    "soil.ec",
+    "soil.moisture",
+    "soil.temperature"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

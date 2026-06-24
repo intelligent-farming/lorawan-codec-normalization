@@ -9,6 +9,16 @@
     "temperature",
     "humidity"
   ],
+  "provides": [
+    "action.motion.count",
+    "action.motion.detected",
+    "air.co2",
+    "air.lightIntensity",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

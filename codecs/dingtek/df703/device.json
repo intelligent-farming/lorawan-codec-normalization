@@ -11,6 +11,26 @@
     "temperature",
     "tilt"
   ],
+  "provides": [
+    "air.temperature",
+    "alarmBattery",
+    "alarmFall",
+    "alarmFire",
+    "alarmLevel",
+    "detectInterval",
+    "fallEnable",
+    "fallThreshold",
+    "fillLevel",
+    "fireThreshold",
+    "firmware",
+    "frameCounter",
+    "levelThreshold",
+    "position.latitude",
+    "position.longitude",
+    "tiltAngle",
+    "uploadInterval",
+    "workMode"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

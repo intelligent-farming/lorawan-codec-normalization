@@ -16,6 +16,20 @@
     "door",
     "leak detection"
   ],
+  "provides": [
+    "accelerationX",
+    "accelerationY",
+    "accelerationZ",
+    "action.contactState",
+    "action.motion.count",
+    "action.motion.detected",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "digital",
+    "water.leak",
+    "waterLeakLevel"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

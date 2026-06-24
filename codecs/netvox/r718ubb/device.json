@@ -15,6 +15,18 @@
     "light",
     "vibration"
   ],
+  "provides": [
+    "air.co2",
+    "air.lightIntensity",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "pm10",
+    "pm2_5",
+    "shockEvent",
+    "tvoc"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

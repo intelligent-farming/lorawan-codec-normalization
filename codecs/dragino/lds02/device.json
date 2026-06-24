@@ -10,6 +10,17 @@
     "magnetometer",
     "leak"
   ],
+  "provides": [
+    "action.contactState",
+    "alarm",
+    "battery",
+    "doorOpenTimes",
+    "lastDoorOpenDuration",
+    "lastWaterLeakDuration",
+    "mode",
+    "water.leak",
+    "waterLeakTimes"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

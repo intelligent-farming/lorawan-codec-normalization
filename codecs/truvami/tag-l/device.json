@@ -12,6 +12,22 @@
     "hall effect",
     "gps"
   ],
+  "provides": [
+    "accessPoints",
+    "action.motion.detected",
+    "altitude",
+    "battery",
+    "bufferLevel",
+    "confChangeId",
+    "confSuccess",
+    "gnssTimestamp",
+    "numSatellites",
+    "pdop",
+    "position.latitude",
+    "position.longitude",
+    "ttf",
+    "wifiTimestamp"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

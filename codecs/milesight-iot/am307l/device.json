@@ -18,6 +18,21 @@
     "pir",
     "light"
   ],
+  "provides": [
+    "action.motion.detected",
+    "air.co2",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "batteryPercent",
+    "beep",
+    "hcho",
+    "lightLevel",
+    "o3",
+    "pm10",
+    "pm2_5",
+    "tvoc"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

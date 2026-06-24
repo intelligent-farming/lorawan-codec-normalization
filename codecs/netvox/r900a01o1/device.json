@@ -10,6 +10,18 @@
     "air",
     "shock"
   ],
+  "provides": [
+    "action.motion.detected",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "highHumidityAlarm",
+    "highTemperatureAlarm",
+    "lowBattery",
+    "lowHumidityAlarm",
+    "lowTemperatureAlarm",
+    "tamperAlarm"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

@@ -12,6 +12,17 @@
     "pressure",
     "tvoc"
   ],
+  "provides": [
+    "air.co2",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "breathVoc",
+    "iaq",
+    "iaqAccuracy",
+    "staticIaq",
+    "status"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

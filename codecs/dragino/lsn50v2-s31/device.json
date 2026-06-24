@@ -10,6 +10,17 @@
     "temperature",
     "humidity"
   ],
+  "provides": [
+    "action.contactState",
+    "adcCh0V",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "digitalInputStatus",
+    "extiTrigger",
+    "temperatureC1",
+    "workMode"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

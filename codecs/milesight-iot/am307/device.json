@@ -18,6 +18,16 @@
     "pir",
     "light"
   ],
+  "provides": [
+    "action.motion.count",
+    "action.motion.detected",
+    "air.co2",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "batteryPercent",
+    "tvoc"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

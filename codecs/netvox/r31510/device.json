@@ -11,6 +11,12 @@
     "humidity",
     "light"
   ],
+  "provides": [
+    "air.lightIntensity",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

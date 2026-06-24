@@ -13,6 +13,15 @@
     "light",
     "motion"
   ],
+  "provides": [
+    "action.motion.detected",
+    "air.lightIntensity",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "firmware",
+    "messageType"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

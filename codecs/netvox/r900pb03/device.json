@@ -11,6 +11,18 @@
     "shock",
     "distance"
   ],
+  "provides": [
+    "action.contactState",
+    "action.motion.detected",
+    "battery",
+    "distanceMm",
+    "fillLevelPercent",
+    "highDistanceAlarm",
+    "highFillLevelAlarm",
+    "lowBattery",
+    "lowDistanceAlarm",
+    "lowFillLevelAlarm"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

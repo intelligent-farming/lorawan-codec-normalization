@@ -8,6 +8,11 @@
   "sensors": [
     "hall-effect open/close"
   ],
+  "provides": [
+    "action.contactState",
+    "battery",
+    "lowBattery"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

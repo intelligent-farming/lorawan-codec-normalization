@@ -11,6 +11,12 @@
     "humidity",
     "barometer"
   ],
+  "provides": [
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "time"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

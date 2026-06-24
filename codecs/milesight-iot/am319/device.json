@@ -19,6 +19,19 @@
     "pm2.5",
     "pm10"
   ],
+  "provides": [
+    "action.motion.count",
+    "action.motion.detected",
+    "air.co2",
+    "air.hcho",
+    "air.lightLevel",
+    "air.pm10",
+    "air.pm25",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "air.tvoc"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

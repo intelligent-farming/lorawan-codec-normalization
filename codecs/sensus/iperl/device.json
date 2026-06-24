@@ -8,6 +8,12 @@
   "sensors": [
     "water"
   ],
+  "provides": [
+    "accessNo",
+    "alarms",
+    "metering.water.total",
+    "statusByte"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

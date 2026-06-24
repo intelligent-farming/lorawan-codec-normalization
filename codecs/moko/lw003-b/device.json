@@ -10,6 +10,17 @@
     "humidity",
     "temperature"
   ],
+  "provides": [
+    "accelerometerSensitivity",
+    "air.location",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "batteryPercent",
+    "firmwareVersion",
+    "region",
+    "tamperAlarm"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

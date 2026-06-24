@@ -16,6 +16,23 @@
     "precipitation",
     "uv"
   ],
+  "provides": [
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "barometerTrend",
+    "dayEvapotranspiration",
+    "forecastIcons",
+    "leafWetness",
+    "rain.cumulative",
+    "rain.intensity",
+    "soilMoisture",
+    "solarRadiation",
+    "uv",
+    "wind.direction",
+    "wind.speed",
+    "windSpeedTenMinAvg"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

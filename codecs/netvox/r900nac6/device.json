@@ -8,6 +8,11 @@
   "sensors": [
     "shock"
   ],
+  "provides": [
+    "action.motion.detected",
+    "battery",
+    "lowBattery"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

@@ -8,6 +8,21 @@
   "sensors": [
     "water"
   ],
+  "provides": [
+    "alarm",
+    "battery",
+    "calculateFlag",
+    "firmwareVersion",
+    "flowPulseTotal",
+    "frequencyBand",
+    "lastPulse",
+    "metering.water.total",
+    "mod",
+    "sensorModel",
+    "subBand",
+    "time",
+    "totalPulse"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

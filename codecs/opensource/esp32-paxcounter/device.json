@@ -17,6 +17,26 @@
     "pm2.5",
     "pm10"
   ],
+  "provides": [
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "airQuality",
+    "altitude",
+    "battery",
+    "ble",
+    "cpuTemperature",
+    "freeMemory",
+    "hdop",
+    "lastResetCause",
+    "pax",
+    "position.latitude",
+    "position.longitude",
+    "restarts",
+    "sats",
+    "uptime",
+    "wifi"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

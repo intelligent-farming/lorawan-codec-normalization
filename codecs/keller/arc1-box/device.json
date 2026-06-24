@@ -13,6 +13,21 @@
     "battery",
     "humidity"
   ],
+  "provides": [
+    "battery",
+    "batteryPercent",
+    "channels.barometerTemperature",
+    "channels.barometricPressureKpa",
+    "classGroup",
+    "connectionType",
+    "deviceDatetime",
+    "enclosureHumidity",
+    "serialNumber",
+    "swVersion",
+    "water.ec",
+    "water.pressure",
+    "water.temperature.current"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

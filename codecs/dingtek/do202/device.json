@@ -10,6 +10,24 @@
     "temperature",
     "humidity"
   ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "alarmBattery",
+    "alarmLevel",
+    "alarmMagnet",
+    "alarmPark",
+    "battery",
+    "batteryThreshold",
+    "detectInterval",
+    "firmware",
+    "frameCounter",
+    "magnetThreshold",
+    "uploadInterval",
+    "xMagnet",
+    "yMagnet",
+    "zMagnet"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

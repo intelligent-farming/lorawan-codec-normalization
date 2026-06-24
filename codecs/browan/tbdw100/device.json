@@ -8,6 +8,13 @@
   "sensors": [
     "magnetometer"
   ],
+  "provides": [
+    "action.contactState",
+    "air.temperature",
+    "battery",
+    "openCount",
+    "openTimeSeconds"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

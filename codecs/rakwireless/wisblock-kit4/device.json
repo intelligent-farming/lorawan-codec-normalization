@@ -14,6 +14,16 @@
     "pressure",
     "iaq"
   ],
+  "provides": [
+    "air.co2",
+    "air.lightIntensity",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "batteryPercent",
+    "iaq"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

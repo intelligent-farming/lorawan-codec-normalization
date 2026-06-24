@@ -9,6 +9,26 @@
     "humidity",
     "temperature"
   ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "alarmBattery",
+    "alarmHighHumidity",
+    "alarmHighTemperature",
+    "alarmLowHumidity",
+    "alarmLowTemperature",
+    "battery",
+    "batteryThreshold",
+    "detectInterval",
+    "firmware",
+    "frameCounter",
+    "highHumidityThreshold",
+    "highTemperatureThreshold",
+    "lowHumidityThreshold",
+    "lowTemperatureThreshold",
+    "uploadInterval",
+    "workMode"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

@@ -10,6 +10,22 @@
     "temperature",
     "battery"
   ],
+  "provides": [
+    "additionalSamples",
+    "air.relativeHumidity",
+    "air.temperature",
+    "appMainVersion",
+    "appMinorVersion",
+    "batteryPercent",
+    "historyTrigger",
+    "humMax",
+    "humMin",
+    "humOffset",
+    "measRate",
+    "tempMax",
+    "tempMin",
+    "tempOffset"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

@@ -16,6 +16,17 @@
     "light",
     "moisture"
   ],
+  "provides": [
+    "action.contactState",
+    "action.motion.count",
+    "action.motion.detected",
+    "air.lightIntensity",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "lightDetected",
+    "soil.moisture"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

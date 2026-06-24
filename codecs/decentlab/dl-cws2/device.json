@@ -13,6 +13,17 @@
     "dew point",
     "battery"
   ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "airHumidityRadiationShield",
+    "airTemperatureRadiationShield",
+    "angle",
+    "battery",
+    "dewPoint",
+    "sensorTemperature",
+    "surfaceTemperature"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

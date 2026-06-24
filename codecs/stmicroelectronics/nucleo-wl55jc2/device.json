@@ -11,6 +11,13 @@
     "temperature",
     "humidity"
   ],
+  "provides": [
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "redLedStatus"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

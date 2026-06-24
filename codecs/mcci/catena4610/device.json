@@ -13,6 +13,14 @@
     "light",
     "battery"
   ],
+  "provides": [
+    "air.lightIntensity",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "boot"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

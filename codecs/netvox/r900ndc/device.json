@@ -8,6 +8,17 @@
   "sensors": [
     "motion"
   ],
+  "provides": [
+    "action.motion.detected",
+    "battery",
+    "current1",
+    "current2",
+    "highCurrent1Alarm",
+    "highCurrent2Alarm",
+    "lowBattery",
+    "lowCurrent1Alarm",
+    "lowCurrent2Alarm"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

@@ -11,6 +11,16 @@
     "temperature",
     "battery"
   ],
+  "provides": [
+    "battery",
+    "deviceId",
+    "phMv",
+    "protocolVersion",
+    "redox",
+    "soil.pH",
+    "soil.temperature",
+    "status"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

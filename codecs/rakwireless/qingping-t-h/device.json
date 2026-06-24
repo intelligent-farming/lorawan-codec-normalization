@@ -9,6 +9,14 @@
     "temperature",
     "humidity"
   ],
+  "provides": [
+    "air.co2",
+    "air.relativeHumidity",
+    "air.temperature",
+    "batteryPercent",
+    "deviceAddress",
+    "timestamp"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

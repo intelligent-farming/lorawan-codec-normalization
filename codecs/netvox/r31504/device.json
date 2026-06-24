@@ -13,6 +13,18 @@
     "reed switch",
     "occupancy"
   ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "highHumidityAlarm",
+    "highIlluminanceAlarm",
+    "highTemperatureAlarm",
+    "lowBattery",
+    "lowHumidityAlarm",
+    "lowIlluminanceAlarm",
+    "lowTemperatureAlarm"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

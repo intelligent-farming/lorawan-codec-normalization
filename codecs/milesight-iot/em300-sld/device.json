@@ -12,6 +12,12 @@
     "humidity",
     "water"
   ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "batteryPercent",
+    "water.leak"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

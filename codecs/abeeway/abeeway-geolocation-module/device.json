@@ -11,6 +11,26 @@
     "gps",
     "temperature"
   ],
+  "provides": [
+    "action.motion.count",
+    "action.motion.detected",
+    "air.temperature",
+    "altitudeM",
+    "batteryPercent",
+    "batteryState",
+    "courseDeg",
+    "fixQuality",
+    "gpsAccuracyM",
+    "notificationType",
+    "position.latitude",
+    "position.longitude",
+    "positionStatus",
+    "positionType",
+    "satellites",
+    "speedMS",
+    "temperatureAlarm",
+    "wifiScan"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

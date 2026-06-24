@@ -11,6 +11,14 @@
     "temperature",
     "battery"
   ],
+  "provides": [
+    "air.temperature",
+    "battery",
+    "position.latitude",
+    "position.longitude",
+    "sensor1Detected",
+    "sensor2Detected"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

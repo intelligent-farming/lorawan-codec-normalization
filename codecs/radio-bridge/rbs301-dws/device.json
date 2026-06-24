@@ -8,6 +8,19 @@
   "sensors": [
     "reed switch"
   ],
+  "provides": [
+    "accumulation",
+    "action.contactState",
+    "battery",
+    "batteryLow",
+    "counter",
+    "errorWithLastDownlink",
+    "messageType",
+    "protocol",
+    "radioCommError",
+    "tamperSinceLastReset",
+    "tamperState"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

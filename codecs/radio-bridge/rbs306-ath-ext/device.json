@@ -10,6 +10,20 @@
     "humidity",
     "battery"
   ],
+  "provides": [
+    "accumulationCount",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "batteryLow",
+    "counter",
+    "errorWithLastDownlink",
+    "event",
+    "messageType",
+    "radioCommError",
+    "tamperSinceLastReset",
+    "tamperState"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

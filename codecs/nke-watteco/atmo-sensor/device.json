@@ -12,6 +12,12 @@
     "barometer",
     "battery"
   ],
+  "provides": [
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

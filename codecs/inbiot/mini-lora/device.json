@@ -12,6 +12,19 @@
     "co2",
     "sound"
   ],
+  "provides": [
+    "air.co2",
+    "air.relativeHumidity",
+    "air.temperature",
+    "counter",
+    "dB",
+    "iaqIndex",
+    "moldIndex",
+    "tIndex",
+    "type",
+    "vIndex",
+    "virusIndex"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

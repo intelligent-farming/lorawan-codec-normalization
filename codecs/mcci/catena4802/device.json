@@ -13,6 +13,16 @@
     "analog input",
     "battery"
   ],
+  "provides": [
+    "air.co2",
+    "air.lightIntensity",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "boot",
+    "vBus"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

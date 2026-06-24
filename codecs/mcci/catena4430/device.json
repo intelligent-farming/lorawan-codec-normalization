@@ -17,6 +17,19 @@
     "barometer",
     "time"
   ],
+  "provides": [
+    "activity",
+    "air.lightIntensity",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "boot",
+    "pellets",
+    "time",
+    "vBus",
+    "vSys"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

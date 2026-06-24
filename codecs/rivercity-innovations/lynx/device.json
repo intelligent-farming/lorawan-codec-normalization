@@ -11,6 +11,17 @@
     "gps",
     "temperature"
   ],
+  "provides": [
+    "action.motion.detected",
+    "air.temperature",
+    "battery",
+    "cachedLatitude",
+    "cachedLongitude",
+    "fixFailed",
+    "headingDeg",
+    "position.latitude",
+    "position.longitude"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

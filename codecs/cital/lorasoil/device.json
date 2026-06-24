@@ -13,6 +13,19 @@
     "gps",
     "battery"
   ],
+  "provides": [
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "batteryPercent",
+    "firmware",
+    "position.latitude",
+    "position.longitude",
+    "soil.temperature",
+    "soilResistance",
+    "soilWaterPotential",
+    "time"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

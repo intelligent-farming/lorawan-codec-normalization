@@ -10,6 +10,14 @@
     "shock",
     "shock tamper"
   ],
+  "provides": [
+    "action.motion.detected",
+    "air.temperature",
+    "battery",
+    "highTemperatureAlarm",
+    "lowBattery",
+    "lowTemperatureAlarm"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

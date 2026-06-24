@@ -13,6 +13,13 @@
     "motion",
     "reed switch"
   ],
+  "provides": [
+    "action.motion.detected",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "lightDetected"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

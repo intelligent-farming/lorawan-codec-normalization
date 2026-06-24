@@ -18,6 +18,16 @@
     "light",
     "motion"
   ],
+  "provides": [
+    "action.motion.detected",
+    "air.co2",
+    "air.lightIntensity",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "iaq"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

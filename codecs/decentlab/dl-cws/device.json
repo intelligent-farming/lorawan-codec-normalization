@@ -12,6 +12,15 @@
     "humidity",
     "battery"
   ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "angle",
+    "battery",
+    "dewPoint",
+    "sensorTemperature",
+    "surfaceTemperature"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

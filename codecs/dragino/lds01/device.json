@@ -8,6 +8,13 @@
   "sensors": [
     "magnetometer"
   ],
+  "provides": [
+    "action.contactState",
+    "alarm",
+    "battery",
+    "lastOpenDurationMinutes",
+    "openCount"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

@@ -13,6 +13,16 @@
     "battery",
     "time"
   ],
+  "provides": [
+    "activity",
+    "air.lightIntensity",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "boot",
+    "pellets",
+    "time"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

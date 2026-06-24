@@ -11,6 +11,16 @@
     "temperature",
     "humidity"
   ],
+  "provides": [
+    "air.co2",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "button",
+    "co2Calibration",
+    "co2Threshold",
+    "status"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

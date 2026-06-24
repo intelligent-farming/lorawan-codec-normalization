@@ -11,6 +11,16 @@
     "salinity",
     "battery"
   ],
+  "provides": [
+    "battery",
+    "deviceId",
+    "protocolVersion",
+    "soil.moisture",
+    "soil.temperature",
+    "soilMoistureProfile",
+    "soilSalinityProfile",
+    "soilTemperatureProfile"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

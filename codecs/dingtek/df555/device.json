@@ -10,6 +10,20 @@
     "gps",
     "temperature"
   ],
+  "provides": [
+    "air.temperature",
+    "alarmBattery",
+    "alarmLevel",
+    "detectInterval",
+    "firmware",
+    "frameCounter",
+    "level",
+    "levelThreshold",
+    "position.latitude",
+    "position.longitude",
+    "uploadInterval",
+    "workMode"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

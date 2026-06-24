@@ -16,6 +16,16 @@
     "iaq",
     "battery"
   ],
+  "provides": [
+    "air.iaq",
+    "air.lightIntensity",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "air.tvoc",
+    "batteryPercent",
+    "time"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

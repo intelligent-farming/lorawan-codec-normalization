@@ -12,6 +12,12 @@
     "humidity",
     "temperature"
   ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "button"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

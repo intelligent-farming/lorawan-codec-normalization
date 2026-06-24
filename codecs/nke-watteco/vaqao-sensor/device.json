@@ -12,6 +12,13 @@
     "voc",
     "co2"
   ],
+  "provides": [
+    "air.co2",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "voc"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

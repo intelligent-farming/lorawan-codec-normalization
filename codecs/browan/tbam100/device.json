@@ -8,6 +8,15 @@
   "sensors": [
     "light"
   ],
+  "provides": [
+    "air.lightIntensity",
+    "battery",
+    "boardTemperature",
+    "darker",
+    "keepAlive",
+    "lighter",
+    "statusChange"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

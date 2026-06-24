@@ -10,6 +10,14 @@
     "temperature",
     "battery"
   ],
+  "provides": [
+    "battery",
+    "externalTemperature",
+    "interruptFlag",
+    "messageType",
+    "soil.pH",
+    "soil.temperature"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

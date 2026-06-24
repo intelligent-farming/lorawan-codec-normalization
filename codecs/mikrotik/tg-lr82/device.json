@@ -19,6 +19,17 @@
     "rssi",
     "snr"
   ],
+  "provides": [
+    "action.motion.count",
+    "action.motion.detected",
+    "activityState",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "freeFallCount",
+    "magSwitchCount",
+    "majorAxisOrientation"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

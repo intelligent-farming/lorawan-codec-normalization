@@ -13,6 +13,22 @@
     "humidity",
     "tvoc"
   ],
+  "provides": [
+    "air.co2",
+    "air.location",
+    "air.relativeHumidity",
+    "air.temperature",
+    "alarmStatus",
+    "battery",
+    "co2Max",
+    "co2Min",
+    "humidityMax",
+    "humidityMin",
+    "tempMax",
+    "tempMin",
+    "tvoc",
+    "workMode"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

@@ -10,6 +10,21 @@
     "humidity",
     "battery"
   ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "batteryPercent",
+    "channel1Counter",
+    "channel1State",
+    "channel2State",
+    "deviceModel",
+    "downlinkAck",
+    "externalPowerStatus",
+    "firmwareVersion",
+    "internalCircuitHumidity",
+    "internalCircuitTemperature"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

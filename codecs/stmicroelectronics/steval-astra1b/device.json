@@ -15,6 +15,19 @@
     "gps",
     "battery"
   ],
+  "provides": [
+    "accelerationOnX",
+    "accelerationOnY",
+    "accelerationOnZ",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "altitudeM",
+    "battery",
+    "ledStatus",
+    "position.latitude",
+    "position.longitude"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

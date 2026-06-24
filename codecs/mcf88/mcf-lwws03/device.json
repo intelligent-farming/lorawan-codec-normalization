@@ -16,6 +16,28 @@
     "uv",
     "dust"
   ],
+  "provides": [
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "barometerTrend",
+    "batteryPercent",
+    "evapotranspirationDay",
+    "forecastIcons",
+    "leafWetnessChannels",
+    "pm10",
+    "pm1p0",
+    "pm2p5",
+    "rain.cumulative",
+    "rain.intensity",
+    "soilMoistureChannels",
+    "solarRadiation",
+    "time",
+    "uvIndex",
+    "wind.direction",
+    "wind.speed",
+    "windSpeedAvg10min"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

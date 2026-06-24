@@ -11,6 +11,25 @@
     "battery",
     "rssi"
   ],
+  "provides": [
+    "adrEnabled",
+    "air.relativeHumidity",
+    "air.temperature",
+    "batteryPercent",
+    "crc",
+    "dataRate",
+    "loraTxPower",
+    "messageId",
+    "messageType",
+    "protocolVersion",
+    "region",
+    "repeating",
+    "result",
+    "rssi",
+    "snr",
+    "supportedRegion",
+    "transmitInterval"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

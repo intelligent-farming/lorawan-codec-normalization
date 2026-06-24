@@ -9,6 +9,19 @@
     "temperature",
     "humidity"
   ],
+  "provides": [
+    "air.location",
+    "air.relativeHumidity",
+    "air.temperature",
+    "configurationDone",
+    "configurationInconsistency",
+    "frameCounter",
+    "frameType",
+    "humidityHistory",
+    "lowBattery",
+    "temperatureHistory",
+    "time"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

@@ -9,6 +9,11 @@
     "temperature",
     "humidity"
   ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "buttonPressed"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

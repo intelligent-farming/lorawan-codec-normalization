@@ -12,6 +12,19 @@
     "temperature",
     "battery"
   ],
+  "provides": [
+    "air.temperature",
+    "battery",
+    "distanceCm",
+    "distanceMm",
+    "fillLevelPercent",
+    "gpsCount",
+    "loraCount",
+    "position.latitude",
+    "position.longitude",
+    "serialNumber",
+    "usMeasurementCount"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

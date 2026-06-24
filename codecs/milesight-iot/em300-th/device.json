@@ -2,10 +2,24 @@
   "vendor": "milesight-iot",
   "device": "em300-th",
   "name": "EM300-TH - Temperature & Humidity Sensor",
-  "categories": ["climate"],
-  "sensors": ["battery", "temperature", "humidity"],
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "battery",
+    "temperature",
+    "humidity"
+  ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "batteryPercent"
+  ],
   "variantOf": null,
-  "downlink": { "encode": false, "decode": false },
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
   "ttn": {
     "vendor": "milesight-iot",
     "device": "em300-th",

@@ -10,6 +10,12 @@
     "hall sensor",
     "digital input"
   ],
+  "provides": [
+    "action.contactState",
+    "battery",
+    "inputClampState",
+    "sabotageContactState"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

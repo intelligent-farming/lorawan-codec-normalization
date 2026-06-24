@@ -9,6 +9,10 @@
     "co2",
     "battery"
   ],
+  "provides": [
+    "air.co2",
+    "battery"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

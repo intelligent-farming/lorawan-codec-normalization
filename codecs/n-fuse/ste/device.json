@@ -15,6 +15,18 @@
     "bvoc",
     "pressure"
   ],
+  "provides": [
+    "air.co2",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "formatVersion",
+    "iaq",
+    "iaqAccuracy",
+    "txPower",
+    "voc"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

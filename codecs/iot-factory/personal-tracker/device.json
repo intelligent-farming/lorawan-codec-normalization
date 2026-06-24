@@ -13,6 +13,20 @@
     "button",
     "temperature"
   ],
+  "provides": [
+    "action.motion.detected",
+    "air.temperature",
+    "altitude",
+    "batteryPercent",
+    "hdop",
+    "position.latitude",
+    "position.longitude",
+    "powerSource",
+    "satellites",
+    "serialNumber",
+    "speedKmh",
+    "wifiAccessPoints"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

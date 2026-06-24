@@ -9,6 +9,12 @@
     "moisture",
     "temperature"
   ],
+  "provides": [
+    "batteryPercent",
+    "reportingInterval",
+    "soil.moisture",
+    "soil.temperature"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

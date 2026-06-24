@@ -11,6 +11,12 @@
     "temperature",
     "humidity"
   ],
+  "provides": [
+    "air.co2",
+    "air.relativeHumidity",
+    "air.temperature",
+    "co2Raw"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

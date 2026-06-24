@@ -8,6 +8,15 @@
   "sensors": [
     "water"
   ],
+  "provides": [
+    "battery",
+    "boardTemperature",
+    "humidityChanged",
+    "relativeHumidity",
+    "temperatureChanged",
+    "water.leak",
+    "water.temperature.current"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

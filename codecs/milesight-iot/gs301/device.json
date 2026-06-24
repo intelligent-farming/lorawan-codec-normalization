@@ -12,6 +12,17 @@
     "nh3",
     "h2s"
   ],
+  "provides": [
+    "air.h2s",
+    "air.h2sSensorStatus",
+    "air.nh3",
+    "air.nh3SensorStatus",
+    "air.relativeHumidity",
+    "air.temperature",
+    "batteryPercent",
+    "deviceStatus",
+    "ipsoVersion"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

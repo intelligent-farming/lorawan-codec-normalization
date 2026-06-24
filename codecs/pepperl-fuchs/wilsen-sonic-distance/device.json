@@ -12,6 +12,17 @@
     "temperature",
     "battery"
   ],
+  "provides": [
+    "air.temperature",
+    "amplitude",
+    "battery",
+    "distanceMm",
+    "fillingLevelPercent",
+    "position.latitude",
+    "position.longitude",
+    "proximity",
+    "waterBodyLevelMm"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

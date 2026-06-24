@@ -11,6 +11,20 @@
     "gps",
     "temperature"
   ],
+  "provides": [
+    "action.motion.detected",
+    "air.temperature",
+    "batteryLevel",
+    "bleBssids",
+    "fixAge",
+    "horizontalAccuracy",
+    "messageType",
+    "position.latitude",
+    "position.longitude",
+    "rawPositionType",
+    "trackingMode",
+    "wifiBssids"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

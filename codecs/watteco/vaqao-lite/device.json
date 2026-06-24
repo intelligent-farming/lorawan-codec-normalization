@@ -11,6 +11,19 @@
     "humidity",
     "co2"
   ],
+  "provides": [
+    "air.co2",
+    "air.lightIntensity",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "firmware",
+    "iaq",
+    "messageType",
+    "occupancy",
+    "violationDetection"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

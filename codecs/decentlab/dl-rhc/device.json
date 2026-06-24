@@ -10,6 +10,12 @@
     "humidity",
     "battery"
   ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "sensorId"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

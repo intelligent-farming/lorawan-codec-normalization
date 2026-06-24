@@ -13,6 +13,16 @@
     "pir",
     "motion"
   ],
+  "provides": [
+    "action.motion.detected",
+    "air.relativeHumidity",
+    "air.temperature",
+    "batteryPercent",
+    "occupancy",
+    "reportType",
+    "temperatureAbnormal",
+    "time"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

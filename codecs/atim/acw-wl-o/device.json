@@ -8,6 +8,13 @@
   "sensors": [
     "water"
   ],
+  "provides": [
+    "battery",
+    "chargeVoltage",
+    "digitalInputs",
+    "water.leak",
+    "water.temperature.current"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

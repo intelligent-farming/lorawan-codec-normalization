@@ -9,6 +9,20 @@
     "gps",
     "temperature"
   ],
+  "provides": [
+    "action.motion.detected",
+    "air.temperature",
+    "altitude",
+    "batteryPercent",
+    "externalPower",
+    "hdop",
+    "position.latitude",
+    "position.longitude",
+    "satellites",
+    "speed",
+    "speedKmph",
+    "time"
+  ],
   "variantOf": "iot-factory/personal-tracker",
   "downlink": {
     "encode": false,

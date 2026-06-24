@@ -17,6 +17,19 @@
     "humidity",
     "infrared"
   ],
+  "provides": [
+    "action.contactState",
+    "action.motion.detected",
+    "air.lightIntensity",
+    "air.relativeHumidity",
+    "air.temperature",
+    "batteryPercent",
+    "floodPercent",
+    "temperatureAlarm.high",
+    "temperatureAlarm.low",
+    "userSwitch1Alarm",
+    "water.leak"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

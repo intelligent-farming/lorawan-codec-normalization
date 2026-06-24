@@ -8,6 +8,11 @@
   "sensors": [
     "water"
   ],
+  "provides": [
+    "battery",
+    "lowBattery",
+    "water.leak"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

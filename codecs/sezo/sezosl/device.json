@@ -16,6 +16,15 @@
     "iaq",
     "pir"
   ],
+  "provides": [
+    "action.motion.detected",
+    "air.iaq",
+    "air.lightIntensity",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

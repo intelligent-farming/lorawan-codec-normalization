@@ -17,6 +17,18 @@
     "barometer",
     "tvoc"
   ],
+  "provides": [
+    "air.lightIntensity",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "boot",
+    "iaq",
+    "iaqQuality",
+    "logRGas",
+    "rGas"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

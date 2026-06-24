@@ -11,6 +11,26 @@
     "gps",
     "temperature"
   ],
+  "provides": [
+    "ackToken",
+    "action.motion.detected",
+    "age",
+    "air.temperature",
+    "appState",
+    "batteryLevel",
+    "batteryStatus",
+    "eventType",
+    "horizontalAccuracy",
+    "messageType",
+    "onDemand",
+    "periodicPosition",
+    "position.latitude",
+    "position.longitude",
+    "rawPositionType",
+    "scans",
+    "sosFlag",
+    "trackingMode"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

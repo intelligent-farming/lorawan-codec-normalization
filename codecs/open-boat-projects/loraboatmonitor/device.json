@@ -16,6 +16,21 @@
     "level",
     "voltage"
   ],
+  "provides": [
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "batteryTemperature",
+    "counter",
+    "dewpoint",
+    "level1",
+    "level2",
+    "position.latitude",
+    "position.longitude",
+    "relay",
+    "water.leak"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

@@ -9,6 +9,15 @@
     "moisture",
     "temperature"
   ],
+  "provides": [
+    "battery",
+    "charging",
+    "sensorType",
+    "settingsAllowed",
+    "soil.moisture",
+    "soil.temperature",
+    "valid"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

@@ -9,6 +9,16 @@
     "temperature",
     "humidity"
   ],
+  "provides": [
+    "actualFanSpeed",
+    "air.relativeHumidity",
+    "air.temperature",
+    "deviceStatus",
+    "displayedFanSpeed",
+    "operationalMode",
+    "targetTemperature",
+    "valveStatus"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

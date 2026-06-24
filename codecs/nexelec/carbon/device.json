@@ -12,6 +12,19 @@
     "humidity",
     "iaq"
   ],
+  "provides": [
+    "air.co2",
+    "air.relativeHumidity",
+    "air.temperature",
+    "frameIndex",
+    "iaqCo2",
+    "iaqComfort",
+    "iaqDryness",
+    "iaqDustMites",
+    "iaqGlobal",
+    "iaqMould",
+    "iaqSource"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

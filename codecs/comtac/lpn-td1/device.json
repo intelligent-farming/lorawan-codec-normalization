@@ -11,6 +11,26 @@
     "temperature",
     "battery"
   ],
+  "provides": [
+    "air.temperature",
+    "appMainVersion",
+    "appMinorVersion",
+    "battery",
+    "configStatus",
+    "gpsEpe",
+    "gpsFixes",
+    "gpsSatellites",
+    "longRangeTrigger",
+    "midRangeTrigger",
+    "minWifiDetects",
+    "pingInterval",
+    "pingType",
+    "posStatus",
+    "position.latitude",
+    "position.longitude",
+    "rejoinTrigger",
+    "wifiAccessPoints"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

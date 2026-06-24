@@ -19,6 +19,22 @@
     "iaq",
     "pir"
   ],
+  "provides": [
+    "action.motion.detected",
+    "air.accelerometer.x",
+    "air.accelerometer.y",
+    "air.accelerometer.z",
+    "air.iaq",
+    "air.lightIntensity",
+    "air.loudness",
+    "air.magnetometer.x",
+    "air.magnetometer.y",
+    "air.magnetometer.z",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

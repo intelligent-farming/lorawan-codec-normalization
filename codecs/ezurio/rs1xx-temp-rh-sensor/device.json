@@ -9,6 +9,18 @@
     "temperature",
     "humidity"
   ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "alarmMsgCount",
+    "backlogMsgCount",
+    "battery",
+    "batteryCapacityRange",
+    "messageType",
+    "numberOfReadings",
+    "options",
+    "time"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

@@ -8,6 +8,20 @@
   "sensors": [
     "water"
   ],
+  "provides": [
+    "accumulation",
+    "battery",
+    "batteryLow",
+    "counter",
+    "errorWithLastDownlink",
+    "messageType",
+    "protocol",
+    "radioCommError",
+    "tamperSinceLastReset",
+    "tamperState",
+    "water.leak",
+    "waterRelative"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

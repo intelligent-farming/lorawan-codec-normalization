@@ -10,6 +10,17 @@
     "level",
     "temperature"
   ],
+  "provides": [
+    "air.temperature",
+    "batteryLow",
+    "empty",
+    "emptyAlarmThresholdCm",
+    "frameCounter",
+    "levelMm",
+    "periodicUploadIntervalMinutes",
+    "position.latitude",
+    "position.longitude"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

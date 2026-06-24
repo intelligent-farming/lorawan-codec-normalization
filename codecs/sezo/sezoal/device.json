@@ -20,6 +20,20 @@
     "pm10",
     "pir"
   ],
+  "provides": [
+    "action.motion.detected",
+    "air.iaq",
+    "air.lightIntensity",
+    "air.loudness",
+    "air.pm1",
+    "air.pm10",
+    "air.pm2p5",
+    "air.pm4",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

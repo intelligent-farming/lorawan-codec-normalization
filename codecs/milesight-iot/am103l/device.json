@@ -12,6 +12,18 @@
     "humidity",
     "co2"
   ],
+  "provides": [
+    "activity",
+    "air.co2",
+    "air.lightIntensity",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "air.tvoc",
+    "batteryPercent",
+    "infrared",
+    "infraredAndVisible"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

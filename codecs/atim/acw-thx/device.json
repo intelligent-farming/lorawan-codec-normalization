@@ -9,6 +9,14 @@
     "temperature",
     "humidity"
   ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "channel",
+    "frameType",
+    "supplyVoltage"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

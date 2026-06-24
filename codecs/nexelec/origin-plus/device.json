@@ -9,6 +9,14 @@
     "temperature",
     "humidity"
   ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "humidityMaxPercent",
+    "humidityMinPercent",
+    "temperatureMaxC",
+    "temperatureMinC"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

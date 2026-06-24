@@ -11,6 +11,13 @@
     "humidity",
     "battery"
   ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "headTemperature",
+    "surfaceTemperature"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

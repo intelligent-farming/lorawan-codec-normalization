@@ -11,6 +11,13 @@
     "temperature",
     "humidity"
   ],
+  "provides": [
+    "air.co2",
+    "air.relativeHumidity",
+    "air.temperature",
+    "batteryPercent",
+    "reportingInterval"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

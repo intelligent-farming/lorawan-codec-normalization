@@ -9,6 +9,17 @@
     "temperature",
     "humidity"
   ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "batteryLevel",
+    "frameType",
+    "freqBand",
+    "reportInterval",
+    "subBand",
+    "time"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

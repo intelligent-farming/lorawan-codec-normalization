@@ -11,6 +11,22 @@
     "water",
     "reed switch"
   ],
+  "provides": [
+    "action.contactState",
+    "battery",
+    "emergencyButtonAlarm",
+    "externalDryContactInState",
+    "externalShockState",
+    "glassBreak1State",
+    "glassBreak2State",
+    "internalShockState",
+    "lowBattery",
+    "pirState",
+    "seatState",
+    "tiltState",
+    "waterLeak1State",
+    "waterLeak2State"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

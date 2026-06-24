@@ -9,6 +9,22 @@
     "water",
     "temperature"
   ],
+  "provides": [
+    "aldLastDay",
+    "infoBurst",
+    "infoDry",
+    "infoHighAmbientTemperature",
+    "infoLeak",
+    "infoLowAmbientTemperature",
+    "infoLowBattery",
+    "infoReverse",
+    "infoTamper",
+    "metering.water.total",
+    "moduleConfigNumber",
+    "time",
+    "volumeFlowMax",
+    "volumeFlowMin"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

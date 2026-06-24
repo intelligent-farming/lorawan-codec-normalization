@@ -9,6 +9,12 @@
     "temperature",
     "humidity"
   ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "setPointTemperature"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

@@ -11,6 +11,13 @@
     "pm2.5",
     "pm10"
   ],
+  "provides": [
+    "air.pm10",
+    "air.pm1_0",
+    "air.pm2_5",
+    "air.relativeHumidity",
+    "air.temperature"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

@@ -9,6 +9,11 @@
     "battery",
     "water"
   ],
+  "provides": [
+    "batteryPercent",
+    "time",
+    "water.leak"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

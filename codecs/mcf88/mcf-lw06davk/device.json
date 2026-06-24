@@ -18,6 +18,23 @@
     "solar radiation",
     "uv"
   ],
+  "provides": [
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "barometricTrend",
+    "dayET",
+    "forecastIcons",
+    "leafWetness",
+    "rain.cumulative",
+    "rain.intensity",
+    "soilMoistureCentibar",
+    "solarRadiation",
+    "uvIndex",
+    "wind.direction",
+    "wind.speed",
+    "windSpeedAvg10Min"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,
