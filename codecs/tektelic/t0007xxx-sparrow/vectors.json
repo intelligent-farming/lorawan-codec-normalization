@@ -1,0 +1,111 @@
+{
+  "uplink": [
+    {
+      "description": "Acceleration vector uplink (TTN example input) -> acceleration extras",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 113, 42, 0, 0, 128, 5, 196]
+      },
+      "expected": {
+        "data": {
+          "accelerationX": 10.752,
+          "accelerationY": 0.128,
+          "accelerationZ": 1.476
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Header 0x00 0x71, three signed16 BE * 0.001 g. Bytes after header: X=[2A,00]=0x2A00=10752->10.752, Y=[00,80]=0x0080=128->0.128, Z=[05,C4]=0x05C4=1476->1.476. Matches upstream acceleration {x,y,z}; raw axes are not a motion event, so surfaced as camelCase extras."
+    },
+    {
+      "description": "Accelerometer motion alarm asserted -> action.motion.detected true",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Header 0x00 0x00, uint8 accel_alarm_status=1 (non-zero) -> motion detected. This is the genuine real-time motion event that satisfies the motion category."
+    },
+    {
+      "description": "Accelerometer motion alarm cleared -> action.motion.detected false",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "action": { "motion": { "detected": false } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Header 0x00 0x00, accel_alarm_status=0 -> no motion."
+    },
+    {
+      "description": "Full data frame: motion alarm + acceleration + battery + temperature + humidity",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 0, 1, 0, 113, 42, 0, 0, 128, 5, 196, 0, 186, 100, 0, 103, 0, 250, 4, 104, 100]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.5,
+          "air": {
+            "temperature": 25,
+            "relativeHumidity": 50
+          },
+          "action": { "motion": { "detected": true } },
+          "accelerationX": 10.752,
+          "accelerationY": 0.128,
+          "accelerationZ": 1.476,
+          "batteryEosAlert": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Concatenated TLVs. Battery 0x64=100: eos bit7=0, life=(100*0.01)+2.5=3.5 V. Temp 0x00FA=250*0.1=25.0 C. Humidity 0x64=100*0.5=50 %. Covers action.motion plus battery and air."
+    },
+    {
+      "description": "Battery end-of-service alert set -> batteryEosAlert true, low voltage",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 186, 128]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.5,
+          "batteryEosAlert": true
+        }
+      },
+      "source": "synthetic",
+      "_note": "0x80: bit7=1 (EOS alert), life bits6-0=0 -> (0*0.01)+2.5=2.5 V."
+    },
+    {
+      "description": "Unrecognized channel/type header -> error",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 153, 1]
+      },
+      "expected": {
+        "errors": ["unrecognized channel/type 0x00 0x99 at byte 0"]
+      },
+      "source": "synthetic",
+      "_note": "Header 0x00 0x99 is not a known SPARROW field; decoder must reject rather than silently mis-parse."
+    },
+    {
+      "description": "Wrong fPort (config/other port) -> error",
+      "input": {
+        "fPort": 100,
+        "bytes": [0, 1]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 100"]
+      },
+      "source": "synthetic",
+      "_note": "fPort 100 carries configuration registers, not normalized measurements; only fPort 10 data uplinks are decoded."
+    }
+  ],
+  "downlink": []
+}

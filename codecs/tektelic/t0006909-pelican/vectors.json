@@ -1,0 +1,75 @@
+{
+  "_note": "Synthetic vectors authored against the device wire format (Tektelic channel/type TLV on fPort 10). Inputs are constructed from the known register layout in reference/upstream-codec.js; expected.data is authored here per the normalized vocabulary, not copied from upstream normalizeUplink. Battery is decoded as volts ((level & 0x7f)*0.01+2.5); accel_alarm_status (header 0x00 0x00) is the accelerometer move alarm -> action.motion.detected.",
+  "uplink": [
+    {
+      "description": "Full data uplink: battery, on-board temp/humidity, acceleration vector, and accelerometer move alarm (motion detected)",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 186, 100, 0, 103, 0, 250, 4, 104, 100, 0, 113, 3, 232, 255, 56, 0, 0, 0, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.5,
+          "air": { "temperature": 25, "relativeHumidity": 50 },
+          "action": { "motion": { "detected": true } },
+          "batteryEndOfService": false,
+          "accelerationX": 1,
+          "accelerationY": -0.2,
+          "accelerationZ": 0
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Standalone accelerometer move alarm uplink (motion detected, no other channels)",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Battery at end-of-service (max level + EOS flag) with move alarm clear (no motion)",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 186, 255, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.77,
+          "action": { "motion": { "detected": false } },
+          "batteryEndOfService": true
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Non-data port (BLE scan results on fPort 25) is rejected",
+      "input": {
+        "fPort": 25,
+        "bytes": [10, 1, 2]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 25"]
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unrecognized channel/type on the data port is rejected",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 170, 1]
+      },
+      "expected": {
+        "errors": ["unrecognized channel/type"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

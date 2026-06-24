@@ -1,0 +1,34 @@
+{
+  "vendor": "tektelic",
+  "device": "t0007367-pelican-ex",
+  "name": "T0007367 - PELICAN EX Enterprise ATEX Outdoor Tracker",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "accelerometer"
+  ],
+  "provides": [
+    "accelerationX",
+    "accelerationY",
+    "accelerationZ",
+    "action.motion.detected",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "batteryEndOfServiceAlert"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "tektelic",
+    "device": "t0007367-pelican-ex",
+    "codecId": "t0007367-codec",
+    "codecFile": "decoder_ble_tracker.js",
+    "codecSha256": "9a8e0125ab98c06153a2c5597dd8ada3ab49e25ec3fbb88e517e5c3f7fadba18",
+    "referencedAt": "2026-06-24"
+  }
+}

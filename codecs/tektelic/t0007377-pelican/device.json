@@ -1,0 +1,36 @@
+{
+  "vendor": "tektelic",
+  "device": "t0007377-pelican",
+  "name": "T0007377 - PELICAN Enterprise Outdoor Tracker",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "accelerometer",
+    "temperature",
+    "humidity"
+  ],
+  "provides": [
+    "accelerationX",
+    "accelerationY",
+    "accelerationZ",
+    "action.motion.detected",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "batteryEndOfService"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "tektelic",
+    "device": "t0007377-pelican",
+    "codecId": "t0007377-codec",
+    "codecFile": "decoder_ble_tracker.js",
+    "codecSha256": "9a8e0125ab98c06153a2c5597dd8ada3ab49e25ec3fbb88e517e5c3f7fadba18",
+    "referencedAt": "2026-06-24"
+  }
+}

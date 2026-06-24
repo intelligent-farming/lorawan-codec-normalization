@@ -1,0 +1,39 @@
+{
+  "vendor": "elspina",
+  "device": "em-elst01",
+  "name": "EM-ELST01",
+  "categories": [
+    "contact"
+  ],
+  "sensors": [
+    "accelerometer",
+    "conductivity",
+    "temperature"
+  ],
+  "provides": [
+    "accelX",
+    "accelY",
+    "accelZ",
+    "action.contactState",
+    "air.temperature",
+    "alarm",
+    "battery",
+    "lastOpenDuration",
+    "openCount",
+    "switchStatus",
+    "totalOpenDuration"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "elspina",
+    "device": "em-elst01",
+    "codecId": "em-elst01-codec",
+    "codecFile": "em-elst01.js",
+    "codecSha256": "554b10935b26c68d38e562b0f88f35b88ea262ecd89f9751e570649c11dd3ff5",
+    "referencedAt": "2026-06-24"
+  }
+}

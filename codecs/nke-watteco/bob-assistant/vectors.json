@@ -1,0 +1,80 @@
+{
+  "_note": "Synthetic vectors authored by the ORACLE method (expected.data derived from this repo's codec.js, cross-checked against reference/upstream-codec.js arithmetic). The upstream codec ships no examples. fPort is always 1; bytes[0] selects the report type. Report (0x72/0x52) -> action.motion.count (NbAlarmReport); Alarm (0x61) -> action.motion.detected. Together they satisfy the motion category requires(action.motion).",
+  "uplink": [
+    {
+      "description": "Report (0x72): periodic machine-condition summary, 3 alarm reports -> action.motion.count, temperature, batteryPercent, vibration/anomaly extras",
+      "input": { "fPort": 1, "bytes": [114, 64, 100, 90, 3, 55, 30, 0, 2, 50, 40, 5, 0, 10, 20, 30, 40, 80, 1, 2, 3, 4, 5, 6, 7, 8, 9] },
+      "expected": {
+        "data": {
+          "action": { "motion": { "count": 3 } },
+          "air": { "temperature": 25 },
+          "batteryPercent": 63,
+          "anomalyLevel": 50.39,
+          "vibrationLevel": 0.2523,
+          "peakFrequencyIndex": 6,
+          "operatingTime": 1.5748,
+          "totalOperatingTimeKnown": 16.74,
+          "totalUnknown1020": 6.882,
+          "totalUnknown2040": 0.5419,
+          "totalUnknown4060": 1.0838,
+          "totalUnknown6080": 1.6257,
+          "totalUnknown80100": 2.1676,
+          "anomalyLevelTo20Last24H": 1,
+          "anomalyLevelTo50Last24H": 2,
+          "anomalyLevelTo80Last24H": 3,
+          "anomalyLevelTo20Last30D": 4,
+          "anomalyLevelTo50Last30D": 5,
+          "anomalyLevelTo80Last30D": 6,
+          "anomalyLevelTo20Last6Mo": 7,
+          "anomalyLevelTo50Last6Mo": 8,
+          "anomalyLevelTo80Last6Mo": 9,
+          "reportLength": 30
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Alarm (0x61): discrete vibration alarm event -> action.motion.detected=true, temperature, vibrationLevel, anomalyLevel, fft[] extras",
+      "input": { "fPort": 1, "bytes": [97, 80, 55, 0, 2, 60, 50, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 4, 5] },
+      "expected": {
+        "data": {
+          "action": { "motion": { "detected": true } },
+          "air": { "temperature": 25 },
+          "vibrationLevel": 0.2606,
+          "anomalyLevel": 62.99,
+          "fft": [
+            0.016416, 0.018468, 0.02052, 0.022572, 0.024624, 0.026676, 0.028728, 0.03078,
+            0.032832, 0, 0.002052, 0.004104, 0.006156, 0.008208, 0.01026, 0.012312,
+            0.014364, 0.016416, 0.018468, 0.02052, 0.022572, 0.024624, 0.026676, 0.028728,
+            0.03078, 0.032832, 0, 0.002052, 0.004104, 0.006156, 0.008208, 0.01026
+          ]
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "State (0x53): machine start transition -> deviceState extra + batteryPercent (no motion key)",
+      "input": { "fPort": 1, "bytes": [83, 126, 120] },
+      "expected": {
+        "data": {
+          "deviceState": "Machine start",
+          "batteryPercent": 94.5
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Error: wrong fPort",
+      "input": { "fPort": 2, "bytes": [114] },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "synthetic"
+    },
+    {
+      "description": "Error: unrecognized report type byte",
+      "input": { "fPort": 1, "bytes": [153, 1, 2] },
+      "expected": { "errors": ["unrecognized report type"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

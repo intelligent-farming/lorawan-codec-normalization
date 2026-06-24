@@ -1,0 +1,73 @@
+{
+  "_note": "Synthetic vectors authored by the ORACLE method: byte streams are constructed against the Tektelic channel/type TLV wire format for the PELICAN data uplink (fPort 10), documented in reference/decoder_ble_tracker.js (Apache-2.0). Expected outputs are derived from this repo's authored normalization, not copied from upstream. The single upstream TTN example is a fPort 100 BLE-config/register frame (not a data measurement) and is covered as an unsupported-fPort error vector. fPort 10 carries the genuine accelerometer movement alarm (action.motion.detected).",
+  "uplink": [
+    {
+      "description": "Moving asset: motion alarm set, battery, ambient temperature/humidity, acceleration vector",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 186, 100, 0, 0, 1, 0, 103, 0, 250, 4, 104, 128, 0, 113, 3, 232, 252, 24, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.5,
+          "air": { "temperature": 25, "relativeHumidity": 64 },
+          "action": { "motion": { "detected": true } },
+          "batteryEndOfService": false,
+          "accelerationX": 1,
+          "accelerationY": -1,
+          "accelerationZ": 0
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Stationary asset: motion alarm clear, battery with end-of-service alert set",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 0, 0, 0, 186, 230]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.52,
+          "action": { "motion": { "detected": false } },
+          "batteryEndOfService": true
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "BLE mode/number-of-devices config frame on fPort 100 (upstream TTN example) is not a data measurement",
+      "input": {
+        "fPort": 100,
+        "bytes": [80, 133]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 100"]
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Unrecognized channel/type on data fPort 10",
+      "input": {
+        "fPort": 10,
+        "bytes": [255, 255, 0]
+      },
+      "expected": {
+        "errors": ["unrecognized channel/type 0xff 0xff"]
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Empty payload on data fPort 10",
+      "input": {
+        "fPort": 10,
+        "bytes": []
+      },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

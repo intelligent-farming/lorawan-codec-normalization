@@ -1,0 +1,53 @@
+{
+  "vendor": "nke-watteco",
+  "device": "bob-assistant",
+  "name": "Bob Assistant - Vibration Sensor",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "accelerometer",
+    "temperature"
+  ],
+  "provides": [
+    "action.motion.count",
+    "action.motion.detected",
+    "air.temperature",
+    "anomalyLevel",
+    "anomalyLevelTo20Last24H",
+    "anomalyLevelTo20Last30D",
+    "anomalyLevelTo20Last6Mo",
+    "anomalyLevelTo50Last24H",
+    "anomalyLevelTo50Last30D",
+    "anomalyLevelTo50Last6Mo",
+    "anomalyLevelTo80Last24H",
+    "anomalyLevelTo80Last30D",
+    "anomalyLevelTo80Last6Mo",
+    "batteryPercent",
+    "deviceState",
+    "fft",
+    "operatingTime",
+    "peakFrequencyIndex",
+    "reportLength",
+    "totalOperatingTimeKnown",
+    "totalUnknown1020",
+    "totalUnknown2040",
+    "totalUnknown4060",
+    "totalUnknown6080",
+    "totalUnknown80100",
+    "vibrationLevel"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "nke-watteco",
+    "device": "bob-assistant",
+    "codecId": "bob-assistant-codec",
+    "codecFile": "bob-assistant.js",
+    "codecSha256": "b239aa2edd1cf526c6be787fde299dda15b7d986552ff3b09719ce6d8dce531c",
+    "referencedAt": "2026-06-24"
+  }
+}

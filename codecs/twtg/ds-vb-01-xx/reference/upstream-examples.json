@@ -1,0 +1,130 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/twtg/ds-vb-01-xx-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Sensor Event Example",
+      "input": {
+        "fPort": 15,
+        "bytes": [
+          35,
+          1,
+          1,
+          0,
+          210,
+          4,
+          136,
+          19,
+          2,
+          0,
+          211,
+          4,
+          135,
+          19,
+          3,
+          0,
+          212,
+          4,
+          134,
+          19,
+          4,
+          0,
+          213,
+          4,
+          133,
+          19,
+          5,
+          0,
+          214,
+          4,
+          132,
+          19,
+          6,
+          0,
+          215,
+          4,
+          131,
+          19,
+          97,
+          240,
+          210,
+          4,
+          64,
+          31,
+          21
+        ]
+      },
+      "output": {
+        "data": {
+          "header": {
+            "message_type": "sensor_event",
+            "protocol_version": 2
+          },
+          "sensor_event": {
+            "trigger": "button",
+            "rms_velocity": {
+              "x": {
+                "min": 0.01,
+                "max": 12.34,
+                "avg": 50
+              },
+              "y": {
+                "min": 0.02,
+                "max": 12.35,
+                "avg": 49.99
+              },
+              "z": {
+                "min": 0.03,
+                "max": 12.36,
+                "avg": 49.98
+              }
+            },
+            "acceleration": {
+              "x": {
+                "min": 0.04,
+                "max": 12.37,
+                "avg": 49.97
+              },
+              "y": {
+                "min": 0.05,
+                "max": 12.38,
+                "avg": 49.96
+              },
+              "z": {
+                "min": 0.06,
+                "max": 12.39,
+                "avg": 49.95
+              }
+            },
+            "temperature": {
+              "min": -39.99,
+              "max": 12.34,
+              "avg": 80
+            },
+            "condition_0": 1,
+            "condition_1": 0,
+            "condition_2": 1,
+            "condition_3": 0,
+            "condition_4": 1,
+            "condition_5": 0
+          }
+        }
+      }
+    },
+    {
+      "description": "Unsupported protocol",
+      "input": {
+        "fPort": 15,
+        "bytes": [
+          52,
+          86,
+          120
+        ]
+      },
+      "output": {
+        "errors": [
+          "Unsupported protocol version!"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "vendor": "twtg",
+  "device": "ds-vb-01-xx",
+  "name": "NEON Vibration Sensor",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "battery",
+    "temperature",
+    "vibration",
+    "accelerometer",
+    "velocity"
+  ],
+  "provides": [
+    "acceleration.x.avg",
+    "acceleration.x.max",
+    "acceleration.x.min",
+    "acceleration.y.avg",
+    "acceleration.y.max",
+    "acceleration.y.min",
+    "acceleration.z.avg",
+    "acceleration.z.max",
+    "acceleration.z.min",
+    "action.motion.count",
+    "action.motion.detected",
+    "air.temperature",
+    "battery",
+    "batteryHigh",
+    "batteryLow",
+    "conditionFlags",
+    "rmsVelocity.x.avg",
+    "rmsVelocity.x.max",
+    "rmsVelocity.x.min",
+    "rmsVelocity.y.avg",
+    "rmsVelocity.y.max",
+    "rmsVelocity.y.min",
+    "rmsVelocity.z.avg",
+    "rmsVelocity.z.max",
+    "rmsVelocity.z.min",
+    "temperatureMax",
+    "temperatureMin"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "twtg",
+    "device": "ds-vb-01-xx",
+    "codecId": "ds-vb-01-xx-codec",
+    "codecFile": "decoder_vb_doc-e_rev-4.js",
+    "codecSha256": "523d91bab3a62554204b58403ea7dcc359fa5b5a07f5f4dd1d6f06ce5ba3e414",
+    "referencedAt": "2026-06-24"
+  }
+}

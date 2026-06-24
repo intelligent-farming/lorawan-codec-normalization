@@ -1,0 +1,95 @@
+{
+  "uplink": [
+    {
+      "description": "Accelerometer motion-alarm event only (channel 0x00 0x00)",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "action": {
+            "motion": {
+              "detected": true
+            }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Single accelerometer alarm channel asserting motion; expected derived from the upstream accel_alarm_status field (port 10, header 0x00 0x00, uint8>0) per reference/upstream-codec.js."
+    },
+    {
+      "description": "Full data uplink: battery+EOS, motion alarm, temperature, humidity, acceleration vector",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 186, 133, 0, 0, 1, 0, 103, 0, 215, 4, 104, 90, 0, 113, 3, 232, 252, 24, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 2.55,
+          "action": {
+            "motion": {
+              "detected": true
+            }
+          },
+          "air": {
+            "temperature": 21.5,
+            "relativeHumidity": 45
+          },
+          "batteryEndOfServiceAlert": true,
+          "accelerationX": 1,
+          "accelerationY": -1,
+          "accelerationZ": 0
+        }
+      },
+      "source": "synthetic",
+      "_note": "Composite of all fPort-10 channels. battery 0x85: bit7 EOS alert, low7=5 -> 5*0.01+2.5=2.55 V. motion 0x01 -> detected. temp 0x00D7=215 ->21.5C. hum 90*0.5=45%. accel x=0x03E8(1000)->1.000g, y=0xFC18(-1000)->-1.000g, z=0 ->0.000g. Expected hand-computed from reference/upstream-codec.js field definitions."
+    },
+    {
+      "description": "No-motion state with negative on-board temperature (two's complement)",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 0, 0, 0, 103, 255, 236]
+      },
+      "expected": {
+        "data": {
+          "action": {
+            "motion": {
+              "detected": false
+            }
+          },
+          "air": {
+            "temperature": -2
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "accel_alarm_status 0x00 -> motion not detected; temperature 0xFFEC = -20 counts * 0.1 = -2.0 C (signed16 two's complement)."
+    },
+    {
+      "description": "BLE scan uplink on fPort 100 is not a motion uplink (rejected)",
+      "input": {
+        "fPort": 100,
+        "bytes": [80, 133]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 100"]
+      },
+      "source": "ttn-example",
+      "_note": "Upstream TTN example input (BLE mode/device-count). Carries BLE-scan data, not motion; this motion codec only decodes the fPort-10 accelerometer data uplink."
+    },
+    {
+      "description": "Unrecognized channel/type header on the data port",
+      "input": {
+        "fPort": 10,
+        "bytes": [153, 153, 0]
+      },
+      "expected": {
+        "errors": ["unrecognized channel/type"]
+      },
+      "source": "synthetic",
+      "_note": "0x99 0x99 is not a defined fPort-10 channel/type pair."
+    }
+  ],
+  "downlink": []
+}

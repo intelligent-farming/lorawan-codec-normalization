@@ -115,8 +115,8 @@ of the listed paths present).
 | `wind` | `wind.speed` | 12 |
 | `rain-gauge` | `rain.cumulative` | 10 |
 | `water-meter` | `metering.water.total` | 7 |
-| `motion` | `action.motion` | 134 |
-| `contact` | `action.contactState` | 23 |
+| `motion` | `action.motion` | 141 |
+| `contact` | `action.contactState` | 24 |
 | `gps-tracker` | `position.latitude`, `position.longitude` | 47 |
 | `water-leak` | `water.leak` | 36 |
 | `groundwater` | `atLeastOne`: `water.level` / `water.pressure` | 7 |

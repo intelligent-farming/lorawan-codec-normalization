@@ -1,0 +1,46 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/elspina/em-elst01-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Device to capture state changes through its accelerometer and switch sensor.",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          13,
+          72,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          255,
+          245,
+          255,
+          198,
+          3,
+          157,
+          1,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "ALARM": 0,
+          "Bat": 3.4,
+          "LDOD": 0,
+          "TNOMD": 0,
+          "TODE": 0,
+          "X": "-0.10",
+          "Y": "-0.57",
+          "Z": "9.25",
+          "status": 0,
+          "temp_ds": "25.6"
+        }
+      }
+    }
+  ]
+}

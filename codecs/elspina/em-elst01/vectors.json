@@ -1,0 +1,60 @@
+{
+  "_note": "Oracle vectors for elspina/em-elst01 (Dragino LDS01-family door/switch sensor with accelerometer + DS18B20). Inputs: the TTN example is reproduced verbatim; the 4-byte and 9-byte frames are synthetic, constructed to exercise the open-door state, alarm, timers and open count. Expected data is authored from this repo's codec against the shared vocabulary (status -> action.contactState), NOT copied from upstream. Covers contact's required action.contactState across all data vectors, plus >=1 error input.",
+  "uplink": [
+    {
+      "description": "19-byte full frame, door closed (TTN example)",
+      "input": { "fPort": 2, "bytes": [13, 72, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 245, 255, 198, 3, 157, 1, 0] },
+      "expected": {
+        "data": {
+          "battery": 3.4,
+          "action": { "contactState": "closed" },
+          "switchStatus": 0,
+          "totalOpenDuration": 0,
+          "lastOpenDuration": 0,
+          "alarm": 0,
+          "openCount": 0,
+          "accelX": -0.1,
+          "accelY": -0.57,
+          "accelZ": 9.25,
+          "air": { "temperature": 25.6 }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "4-byte status frame, door open with open count",
+      "input": { "fPort": 2, "bytes": [29, 82, 0, 7] },
+      "expected": {
+        "data": {
+          "battery": 3.41,
+          "action": { "contactState": "open" },
+          "switchStatus": 1,
+          "openCount": 7
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "9-byte timer frame, door open, alarm set",
+      "input": { "fPort": 2, "bytes": [29, 75, 0, 1, 44, 0, 0, 60, 1] },
+      "expected": {
+        "data": {
+          "battery": 3.403,
+          "action": { "contactState": "open" },
+          "switchStatus": 1,
+          "totalOpenDuration": 300,
+          "lastOpenDuration": 60,
+          "alarm": 1
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "unsupported payload length is rejected",
+      "input": { "fPort": 2, "bytes": [1, 2, 3] },
+      "expected": { "errors": ["unsupported payload length"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,34 @@
+{
+  "vendor": "tektelic",
+  "device": "t0007xxx-sparrow",
+  "name": "SPARROW Enterprise Asset Tracker",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "accelerometer"
+  ],
+  "provides": [
+    "accelerationX",
+    "accelerationY",
+    "accelerationZ",
+    "action.motion.detected",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "batteryEosAlert"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "tektelic",
+    "device": "t0007xxx-sparrow",
+    "codecId": "t0007xxx-codec",
+    "codecFile": "decoder_sparrow_enterprise_asset_tracker.js",
+    "codecSha256": "49a30a3ea36d29fc03775528ee5ddb67170247cf6e132f8f9eb698db744ad076",
+    "referencedAt": "2026-06-24"
+  }
+}
