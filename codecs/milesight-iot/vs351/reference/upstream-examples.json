@@ -1,0 +1,33 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/milesight-iot/vs351-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Mini AI Thermopile People Counter - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          4,
+          204,
+          18,
+          0,
+          22,
+          0,
+          5,
+          204,
+          19,
+          0,
+          20,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "total_in": 18,
+          "total_out": 22,
+          "period_in": 19,
+          "period_out": 20
+        }
+      }
+    }
+  ]
+}

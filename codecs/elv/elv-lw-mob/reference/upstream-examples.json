@@ -1,0 +1,86 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/elv/elv-lw-mob-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "acceleration data trough short button pressed",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          108,
+          2,
+          9,
+          5,
+          20
+        ]
+      },
+      "output": {
+        "data": {
+          "Accelerated": true,
+          "Angle": 20,
+          "Supply_Voltage": 2.88,
+          "TX_Reason": "Short App Button Pressed",
+          "Tilt_Area_0": false,
+          "Tilt_Area_1": true,
+          "Tilt_Area_2": false,
+          "frame_type": "Acceleration_Data"
+        }
+      }
+    },
+    {
+      "description": "cyclic acceleration data (Tilt_Area_1)",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          108,
+          1,
+          2,
+          5,
+          20,
+          0,
+          1
+        ]
+      },
+      "output": {
+        "data": {
+          "Accelerated": true,
+          "Activation_count": 1,
+          "Angle": 20,
+          "Supply_Voltage": 2.88,
+          "TX_Reason": "Cyclic Timer",
+          "Tilt_Area_0": false,
+          "Tilt_Area_1": true,
+          "Tilt_Area_2": false,
+          "frame_type": "Device_State"
+        }
+      }
+    },
+    {
+      "description": "cyclic acceleration data (Tilt_Area_2)",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          108,
+          1,
+          2,
+          9,
+          20,
+          0,
+          1
+        ]
+      },
+      "output": {
+        "data": {
+          "Accelerated": true,
+          "Activation_count": 1,
+          "Angle": 20,
+          "Supply_Voltage": 2.88,
+          "TX_Reason": "Cyclic Timer",
+          "Tilt_Area_0": false,
+          "Tilt_Area_1": false,
+          "Tilt_Area_2": true,
+          "frame_type": "Device_State"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "uplink": [
+    {
+      "description": "BLE tracker, mode 1, idle (no alarm, no steps)",
+      "input": {
+        "fPort": 2,
+        "bytes": [15, 199, 0, 0, 0, 1, 69, 69, 70, 70, 48]
+      },
+      "expected": {
+        "data": {
+          "battery": 4.039,
+          "action": { "motion": { "detected": false, "count": 0 } },
+          "bleUuid": "EEFF0",
+          "bleAddr": "",
+          "bleMajor": 1,
+          "bleMinor": 1,
+          "bleRssi": 0,
+          "alarmFlag": 0
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream TTN example input; expected.data authored here via the oracle method (run reference/upstream-codec.js, then map: batV->battery, alarm->action.motion.detected, step_count->action.motion.count, BLE scan fields->camelCase extras). bytes[5]=1 selects mode 1; uuid = chars of bytes 6-10 = 'EEFF0'."
+    },
+    {
+      "description": "Mode 1 with alarm asserted and non-zero step count",
+      "input": {
+        "fPort": 2,
+        "bytes": [16, 0, 33, 0, 5, 1, 65, 66, 67, 68, 69]
+      },
+      "expected": {
+        "data": {
+          "battery": 4.096,
+          "action": { "motion": { "detected": true, "count": 65541 } },
+          "bleUuid": "ABCDE",
+          "bleAddr": "",
+          "bleMajor": 1,
+          "bleMinor": 1,
+          "bleRssi": 0,
+          "alarmFlag": 2
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: byte2=0x21 -> alarm high nibble = 2 (detected true), low nibble 1 combines with bytes 3-4 (0x000005) for step_count = (1<<16)|5 = 65541. battery = 0x1000/1000 = 4.096."
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [15, 199, 0, 0, 0, 1, 69, 69, 70, 70, 48]
+      },
+      "expected": {
+        "errors": ["unsupported fPort"]
+      },
+      "source": "ttn-example",
+      "_note": "Error path: only fPort 2 carries tracker uplinks."
+    }
+  ],
+  "downlink": []
+}

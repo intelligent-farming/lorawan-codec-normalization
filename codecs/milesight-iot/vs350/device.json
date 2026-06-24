@@ -1,0 +1,35 @@
+{
+  "vendor": "milesight-iot",
+  "device": "vs350",
+  "name": "Passage People Counter",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "temperature",
+    "motion"
+  ],
+  "provides": [
+    "action.motion.count",
+    "action.motion.detected",
+    "air.temperature",
+    "batteryPercent",
+    "periodCountAlarm",
+    "totalCountAlarm",
+    "totalIn",
+    "totalOut"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "vs350",
+    "codecId": "vs350-codec",
+    "codecFile": "vs350.js",
+    "codecSha256": "27f78b24d2b94b5f9c2d1f49a394a292632655f98b2f93147cdc7d388a7cf86b",
+    "referencedAt": "2026-06-24"
+  }
+}

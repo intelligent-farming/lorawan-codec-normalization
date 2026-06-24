@@ -1,0 +1,77 @@
+{
+  "_note": "Oracle vectors. Wire-format byte alignment (Elsys typed-TLV) is taken from reference/upstream-codec.js (DecodeElsysPayload); expected.data is the authored normalization to the shared vocabulary (action.contactState for the reed/door switch, action.motion for the accelerometer movement count). Vector 1 uses the upstream TTN example input (ACC + PULSE1 + PULSE1_ABS -> extras only, no door/motion fields present in that capture). Vectors 2-3 are synthetic door + motion captures; vectors 4-5 are error inputs.",
+  "uplink": [
+    {
+      "description": "EMS Door accelerometer (raw X/Y/Z) and pulse counters -> extras only",
+      "input": {
+        "fPort": 1,
+        "bytes": [3, 1, 39, 5, 10, 17, 1, 11, 0, 10, 0, 17]
+      },
+      "expected": {
+        "data": {
+          "x": 1,
+          "y": 39,
+          "z": 5,
+          "pulse1": 4353,
+          "pulseAbs": 655377
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Door open (reed digital=1) with 3 movement events",
+      "input": {
+        "fPort": 1,
+        "bytes": [13, 1, 5, 3]
+      },
+      "expected": {
+        "data": {
+          "action": {
+            "contactState": "open",
+            "motion": { "detected": true, "count": 3 }
+          }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Door closed (reed digital=0) with no movement",
+      "input": {
+        "fPort": 1,
+        "bytes": [13, 0, 5, 0]
+      },
+      "expected": {
+        "data": {
+          "action": {
+            "contactState": "closed",
+            "motion": { "detected": false, "count": 0 }
+          }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Empty payload -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": []
+      },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unrecognized leading type byte -> no recognized fields",
+      "input": {
+        "fPort": 1,
+        "bytes": [255, 0]
+      },
+      "expected": {
+        "errors": ["no recognized Elsys fields"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

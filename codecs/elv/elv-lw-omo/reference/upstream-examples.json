@@ -1,0 +1,58 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/elv/elv-lw-omo-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "device status information",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          150,
+          1,
+          1,
+          0,
+          0,
+          0,
+          16
+        ]
+      },
+      "output": {
+        "data": {
+          "Supply_Voltage": 1500,
+          "frame_type": "Device_State",
+          "TX_Reason": "Button Pressed",
+          "Accelerated": false,
+          "Tilt_Area_0": false,
+          "Tilt_Area_1": false,
+          "Tilt_Area_2": false,
+          "Angle": 0,
+          "Activation_count": 16
+        }
+      }
+    },
+    {
+      "description": "device acceleration",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          150,
+          2,
+          5,
+          1,
+          45
+        ]
+      },
+      "output": {
+        "data": {
+          "Supply_Voltage": 1500,
+          "frame_type": "Acceleration_Data",
+          "TX_Reason": "Acceleration",
+          "Accelerated": true,
+          "Tilt_Area_0": false,
+          "Tilt_Area_1": false,
+          "Tilt_Area_2": false,
+          "Angle": 45
+        }
+      }
+    }
+  ]
+}

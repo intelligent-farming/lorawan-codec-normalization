@@ -1,0 +1,37 @@
+{
+  "vendor": "elv",
+  "device": "elv-lw-omo",
+  "name": "Outdoor Motion Sensor for LoRaWAN®",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "accelerometer",
+    "button"
+  ],
+  "provides": [
+    "action.motion.count",
+    "action.motion.detected",
+    "angle",
+    "battery",
+    "buttonCount",
+    "frameType",
+    "tiltArea0",
+    "tiltArea1",
+    "tiltArea2",
+    "txReason"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "elv",
+    "device": "elv-lw-omo",
+    "codecId": "elv-lw-omo-codec",
+    "codecFile": "elv-lw-omo.js",
+    "codecSha256": "5b16adf842bcdcb5fb88fd60646f1f27d7e85d6ceb5e452dd7894f4790064911",
+    "referencedAt": "2026-06-24"
+  }
+}

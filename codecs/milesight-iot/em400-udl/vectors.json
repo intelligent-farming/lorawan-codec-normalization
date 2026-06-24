@@ -1,0 +1,51 @@
+{
+  "uplink": [
+    {
+      "description": "battery + temperature + distance + position=tilt (motion detected)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 92, 3, 103, 1, 1, 4, 130, 68, 8, 5, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 92,
+          "distance": 2116,
+          "air": { "temperature": 25.7 },
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream EM400-TLD example input. Authored expected: position byte 1 = tilt -> action.motion.detected=true; battery is a percent extra; distance (mm) is an extra; temperature s16le(1,1)=257 -> 25.7 C."
+    },
+    {
+      "description": "battery + temperature + distance + position=normal (no motion)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 88, 3, 103, 246, 255, 4, 130, 244, 1, 5, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 88,
+          "distance": 500,
+          "air": { "temperature": -1 },
+          "action": { "motion": { "detected": false } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: position byte 0 = normal -> action.motion.detected=false. temperature s16le(246,255)=-10 -> -1.0 C; distance u16le(244,1)=500 mm."
+    },
+    {
+      "description": "unrecognized channel id yields an error",
+      "input": {
+        "fPort": 85,
+        "bytes": [255, 255, 0]
+      },
+      "expected": {
+        "errors": ["no recognized Milesight channels"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: channel 0xff is not a known Milesight channel; loop breaks before recognizing anything."
+    }
+  ],
+  "downlink": []
+}

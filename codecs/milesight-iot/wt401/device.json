@@ -1,0 +1,40 @@
+{
+  "vendor": "milesight-iot",
+  "device": "wt401",
+  "name": "Wireless Smart Thermostat - WT401",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "pir",
+    "occupancy",
+    "temperature",
+    "humidity",
+    "smart thermostat valve"
+  ],
+  "provides": [
+    "action.motion.detected",
+    "air.relativeHumidity",
+    "air.temperature",
+    "batteryPercent",
+    "executionPlan",
+    "fanMode",
+    "pirStatus",
+    "targetTemperature1",
+    "targetTemperature2",
+    "temperatureControlMode"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "wt401",
+    "codecId": "wt401-codec",
+    "codecFile": "wt401.js",
+    "codecSha256": "ebc777d1a612a62635982f2d8e561490bb7f367a68299815dc2a4ecf0882ad1f",
+    "referencedAt": "2026-06-24"
+  }
+}

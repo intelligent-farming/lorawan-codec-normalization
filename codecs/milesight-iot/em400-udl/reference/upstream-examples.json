@@ -1,0 +1,35 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/milesight-iot/em400-udl-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "ToF Laser Distance Sensor - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          1,
+          117,
+          92,
+          3,
+          103,
+          1,
+          1,
+          4,
+          130,
+          68,
+          8,
+          5,
+          0,
+          1
+        ]
+      },
+      "output": {
+        "data": {
+          "battery": 92,
+          "temperature": 25.7,
+          "distance": 2116,
+          "position": "tilt"
+        }
+      }
+    }
+  ]
+}

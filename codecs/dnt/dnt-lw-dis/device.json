@@ -1,0 +1,37 @@
+{
+  "vendor": "dnt",
+  "device": "dnt-lw-dis",
+  "name": "LoRaWAN® distance sensor 1",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "distance",
+    "accelerometer",
+    "temperature"
+  ],
+  "provides": [
+    "action.motion.detected",
+    "air.temperature",
+    "battery",
+    "deviceOrientation",
+    "distanceMm",
+    "reason",
+    "sabotageNotification",
+    "temperatureNotification",
+    "tofStatus"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dnt",
+    "device": "dnt-lw-dis",
+    "codecId": "dnt-lw-dis-codec",
+    "codecFile": "dnt-lw-dis.js",
+    "codecSha256": "e7245ba60c5e4a4f6cb90d8abb8f37f246f1d141f3c6c9e64d897d693812c22c",
+    "referencedAt": "2026-06-24"
+  }
+}

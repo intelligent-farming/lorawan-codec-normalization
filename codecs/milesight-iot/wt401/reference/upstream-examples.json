@@ -1,0 +1,34 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/milesight-iot/wt401-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Wireless Smart Thermostat - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          0,
+          100,
+          1,
+          16,
+          14,
+          2,
+          48,
+          2,
+          3,
+          2,
+          5,
+          1
+        ]
+      },
+      "output": {
+        "data": {
+          "battery": 100,
+          "temperature": 36,
+          "humidity": 56,
+          "temperature_control_mode": "cool",
+          "execution_plan": "plan_2"
+        }
+      }
+    }
+  ]
+}

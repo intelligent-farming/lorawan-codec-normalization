@@ -1,0 +1,40 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/milesight-iot/em410-rdl-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Radar Distance/Level Sensor  - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          1,
+          117,
+          100,
+          3,
+          103,
+          16,
+          1,
+          4,
+          130,
+          44,
+          1,
+          5,
+          0,
+          1,
+          6,
+          199,
+          32,
+          3
+        ]
+      },
+      "output": {
+        "data": {
+          "battery": 100,
+          "temperature": 27.2,
+          "distance": 300,
+          "position": "tilt",
+          "radar_signal_rssi": 8
+        }
+      }
+    }
+  ]
+}

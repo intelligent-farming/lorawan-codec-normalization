@@ -1,0 +1,38 @@
+{
+  "vendor": "milesight-iot",
+  "device": "vs133",
+  "name": "AI ToF People Counting Sensor",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "motion"
+  ],
+  "provides": [
+    "action.motion.count",
+    "action.motion.detected",
+    "line1PeriodIn",
+    "line1PeriodOut",
+    "line1TotalIn",
+    "line1TotalOut",
+    "line2PeriodIn",
+    "line2PeriodOut",
+    "line2TotalIn",
+    "line2TotalOut",
+    "line3TotalIn",
+    "line3TotalOut"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "vs133",
+    "codecId": "vs133-codec",
+    "codecFile": "vs133.js",
+    "codecSha256": "49da69840b2a9844fc00a9d58968d9c84cc0abf94483d833535427c8eb7af0c2",
+    "referencedAt": "2026-06-24"
+  }
+}

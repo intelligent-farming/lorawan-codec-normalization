@@ -1,0 +1,38 @@
+{
+  "vendor": "milesight-iot",
+  "device": "vs373",
+  "name": "Milesight VS373 Radar Fall Detection / Occupancy Sensor",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "motion"
+  ],
+  "provides": [
+    "action.motion.count",
+    "action.motion.detected",
+    "detectionStatus",
+    "ipsoVersion",
+    "lorawanClass",
+    "region1Occupancy",
+    "region2Occupancy",
+    "region3Occupancy",
+    "region4Occupancy",
+    "targetStatus",
+    "useTimeNow",
+    "useTimeToday"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "vs373",
+    "codecId": "vs373-codec",
+    "codecFile": "vs373.js",
+    "codecSha256": "eb689d9374805e515e53fe243168ac0288086cb3a3c1f8e9892f84e2e163d6b8",
+    "referencedAt": "2026-06-24"
+  }
+}

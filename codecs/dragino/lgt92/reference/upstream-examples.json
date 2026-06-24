@@ -1,0 +1,102 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/dragino/lgt92-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Distance Detection",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          1,
+          90,
+          120,
+          84,
+          6,
+          207,
+          51,
+          216,
+          13,
+          32,
+          96,
+          0,
+          75,
+          1,
+          144
+        ]
+      },
+      "output": {
+        "data": {
+          "ALARM_status": false,
+          "BatV": 3.36,
+          "FW": 160,
+          "LON": true,
+          "latitude": 22.70626,
+          "longitude": 114.24252,
+          "MD": "Move",
+          "Pitch": 4,
+          "Roll": 0.75
+        }
+      }
+    },
+    {
+      "description": "Most Significant Byte zero",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          2,
+          250,
+          203,
+          48,
+          0,
+          128,
+          236,
+          249,
+          12,
+          46,
+          100
+        ]
+      },
+      "output": {
+        "data": {
+          "latitude": 49.990448,
+          "longitude": 8.449273,
+          "ALARM_status": false,
+          "BatV": 3.118,
+          "MD": "Move",
+          "LON": true,
+          "FW": 164
+        }
+      }
+    },
+    {
+      "description": "No Location",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          12,
+          46,
+          100
+        ]
+      },
+      "output": {
+        "data": {
+          "ALARM_status": false,
+          "BatV": 3.118,
+          "MD": "Move",
+          "LON": true,
+          "FW": 164
+        },
+        "warnings": [
+          "GPS failed to obtain location"
+        ]
+      }
+    }
+  ]
+}

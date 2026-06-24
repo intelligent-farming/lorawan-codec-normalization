@@ -1,0 +1,105 @@
+{
+  "_note": "Expected outputs authored by the ORACLE method: synthetic inputs built to the Milesight channel/type TLV wire format, with expected.data computed from the upstream Apache-2.0 reference decoder (reference/upstream-codec.js) and normalized per this module's contract (people counts -> action.motion.count = sum of all master-line in+out; detected = count>0; line/period/region/dwell raw counters -> camelCase extras; datalog -> history[] with RFC3339 time). The first vector reuses the upstream TTN example INPUT; its decoded line totals match the upstream example output exactly.",
+  "uplink": [
+    {
+      "description": "Four line-crossing total in/out counters (upstream TTN example input): line totals preserved as extras, action.motion.count = sum of all in+out",
+      "input": {
+        "fPort": 85,
+        "bytes": [3, 210, 72, 0, 0, 0, 4, 210, 200, 0, 0, 0, 6, 210, 0, 0, 0, 0, 7, 210, 0, 0, 0, 0, 9, 210, 0, 0, 0, 0, 10, 210, 0, 0, 0, 0, 12, 210, 180, 20, 0, 0, 13, 210, 141, 26, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "line1TotalIn": 72,
+          "line1TotalOut": 200,
+          "line2TotalIn": 0,
+          "line2TotalOut": 0,
+          "line3TotalIn": 0,
+          "line3TotalOut": 0,
+          "line4TotalIn": 5300,
+          "line4TotalOut": 6797,
+          "action": { "motion": { "count": 12369, "detected": true } }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Zero total counts: action.motion.detected is false when count is 0",
+      "input": {
+        "fPort": 85,
+        "bytes": [3, 210, 0, 0, 0, 0, 4, 210, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "line1TotalIn": 0,
+          "line1TotalOut": 0,
+          "action": { "motion": { "count": 0, "detected": false } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Line-1 period in/out, region occupancy counts, and region dwell time (avg/max) as camelCase extras (no total channels, so no action.motion)",
+      "input": {
+        "fPort": 85,
+        "bytes": [5, 204, 10, 0, 3, 0, 15, 227, 2, 1, 0, 0, 16, 228, 1, 30, 0, 200, 0]
+      },
+      "expected": {
+        "data": {
+          "line1PeriodIn": 10,
+          "line1PeriodOut": 3,
+          "region1Count": 2,
+          "region2Count": 1,
+          "region3Count": 0,
+          "region4Count": 0,
+          "region1AvgDwell": 30,
+          "region1MaxDwell": 200
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Device info frame: IPSO, hardware, firmware versions and serial number as extras",
+      "input": {
+        "fPort": 85,
+        "bytes": [255, 1, 16, 255, 9, 1, 5, 255, 31, 1, 2, 3, 4, 255, 22, 1, 2, 3, 4, 5, 6, 7, 8]
+      },
+      "expected": {
+        "data": {
+          "ipsoVersion": "v1.0",
+          "hardwareVersion": "v1.5",
+          "firmwareVersion": "v1.2.3.4",
+          "sn": "0102030405060708"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Datalog/history frame: one line-1 total-in record carrying an RFC3339 time",
+      "input": {
+        "fPort": 85,
+        "bytes": [32, 206, 0, 92, 76, 101, 3, 50, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "history": [
+            { "time": "2023-11-09T04:11:44.000Z", "line1TotalIn": 50 }
+          ]
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Empty payload is rejected",
+      "input": { "fPort": 85, "bytes": [] },
+      "expected": { "errors": ["empty payload"] },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unrecognized leading channel/type is rejected",
+      "input": { "fPort": 85, "bytes": [153, 153, 1] },
+      "expected": { "errors": ["no recognized Milesight channels"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

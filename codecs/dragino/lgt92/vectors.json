@@ -1,0 +1,164 @@
+{
+  "uplink": [
+    {
+      "description": "Position fix + movement (FW 1.5 frame with roll/pitch)",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          1,
+          90,
+          120,
+          84,
+          6,
+          207,
+          51,
+          216,
+          13,
+          32,
+          96,
+          0,
+          75,
+          1,
+          144
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.36,
+          "action": {
+            "motion": {
+              "detected": true
+            }
+          },
+          "alarm": false,
+          "movement": "Move",
+          "gpsOn": true,
+          "firmwareVersion": 160,
+          "position": {
+            "latitude": 22.70626,
+            "longitude": 114.24252
+          },
+          "roll": 0.75,
+          "pitch": 4
+        }
+      },
+      "source": "synthetic",
+      "_note": "Oracle: expected.data produced by running the authored codec.js. lat/lon in range, movement=Move => action.motion.detected and position.* both present (covers motion + gps-tracker)."
+    },
+    {
+      "description": "Collide event, GPS failed to obtain location (motion only)",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          13,
+          32,
+          160
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.36,
+          "action": {
+            "motion": {
+              "detected": true
+            }
+          },
+          "alarm": false,
+          "movement": "Collide",
+          "gpsOn": true,
+          "firmwareVersion": 160
+        },
+        "warnings": [
+          "GPS failed to obtain location"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Oracle: lat==0 && lon==0 suppresses position.* (warning emitted, not asserted by deepStrictEqual on data); movement=Collide keeps action.motion.detected true."
+    },
+    {
+      "description": "Southern/western fix, full GW 1.6 frame (hdop + altitude)",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          254,
+          7,
+          2,
+          73,
+          255,
+          114,
+          69,
+          113,
+          13,
+          32,
+          96,
+          255,
+          156,
+          0,
+          200,
+          30,
+          4,
+          210
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.36,
+          "action": {
+            "motion": {
+              "detected": true
+            }
+          },
+          "alarm": false,
+          "movement": "Move",
+          "gpsOn": true,
+          "firmwareVersion": 160,
+          "position": {
+            "latitude": -33.095095,
+            "longitude": -9.288335
+          },
+          "roll": -1,
+          "pitch": 2,
+          "hdop": 0.3,
+          "altitude": 12.34
+        }
+      },
+      "source": "synthetic",
+      "_note": "Oracle: negative (southern/western) coordinates exercise signed int32 decode; covers position.latitude/longitude (gps-tracker) and action.motion.detected (motion)."
+    },
+    {
+      "description": "Unsupported FPort",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          13,
+          32,
+          160
+        ]
+      },
+      "expected": {
+        "errors": [
+          "unsupported fPort"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "LGT-92 only emits uplinks on fPort 2; any other port is an error."
+    }
+  ],
+  "downlink": []
+}

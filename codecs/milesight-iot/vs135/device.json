@@ -1,0 +1,50 @@
+{
+  "vendor": "milesight-iot",
+  "device": "vs135",
+  "name": "4D AI ToF People Counting Sensor",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "motion",
+    "distance"
+  ],
+  "provides": [
+    "action.motion.count",
+    "action.motion.detected",
+    "firmwareVersion",
+    "hardwareVersion",
+    "ipsoVersion",
+    "line1PeriodIn",
+    "line1PeriodOut",
+    "line1TotalIn",
+    "line1TotalOut",
+    "line2TotalIn",
+    "line2TotalOut",
+    "line3TotalIn",
+    "line3TotalOut",
+    "line4TotalIn",
+    "line4TotalOut",
+    "region1AvgDwell",
+    "region1Count",
+    "region1MaxDwell",
+    "region2Count",
+    "region3Count",
+    "region4Count",
+    "sn",
+    "time"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "vs135",
+    "codecId": "vs135-codec",
+    "codecFile": "vs135.js",
+    "codecSha256": "fe4f82bad0dfa6f017c355472f73d9175e333205504285e76265e60a80d5ef69",
+    "referencedAt": "2026-06-24"
+  }
+}

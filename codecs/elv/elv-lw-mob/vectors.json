@@ -1,0 +1,77 @@
+{
+  "_note": "Synthetic-from-reference: inputs taken from the upstream TTN examples (and minor hand-built variants); expected.data re-authored to the normalized vocabulary by tracing reference/upstream-codec.js (Decoder). action.motion.detected comes from the Accelerated bit, action.motion.count from the Device_State 16-bit activation count; button/tilt/angle fields are camelCase extras. Last vector is a port error.",
+  "uplink": [
+    {
+      "description": "Acceleration_Data via short button press: moving, tilt area 1",
+      "input": { "fPort": 10, "bytes": [108, 2, 9, 5, 20] },
+      "expected": {
+        "data": {
+          "battery": 2.88,
+          "frameType": "Acceleration_Data",
+          "txReason": "Short App Button Pressed",
+          "action": { "motion": { "detected": true } },
+          "tiltArea0": false,
+          "tiltArea1": true,
+          "tiltArea2": false,
+          "angle": 20
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Device_State cyclic: moving, activation count 1, tilt area 1",
+      "input": { "fPort": 10, "bytes": [108, 1, 2, 5, 20, 0, 1] },
+      "expected": {
+        "data": {
+          "battery": 2.88,
+          "frameType": "Device_State",
+          "txReason": "Cyclic Timer",
+          "action": { "motion": { "detected": true, "count": 1 } },
+          "tiltArea0": false,
+          "tiltArea1": true,
+          "tiltArea2": false,
+          "angle": 20
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Device_State inactivity: at rest, activation count 258",
+      "input": { "fPort": 10, "bytes": [192, 1, 8, 0, 0, 1, 2] },
+      "expected": {
+        "data": {
+          "battery": 4,
+          "frameType": "Device_State",
+          "txReason": "Inactivity",
+          "action": { "motion": { "detected": false, "count": 258 } },
+          "tiltArea0": false,
+          "tiltArea1": false,
+          "tiltArea2": false,
+          "angle": 0
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Button_Pressed: counter 3",
+      "input": { "fPort": 10, "bytes": [108, 3, 9, 3] },
+      "expected": {
+        "data": {
+          "battery": 2.88,
+          "frameType": "Button_Pressed",
+          "txReason": "Short App Button Pressed",
+          "buttonCount": 3,
+          "buttonPressed": true
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "wrong FPort is rejected",
+      "input": { "fPort": 1, "bytes": [108, 2, 9, 5, 20] },
+      "expected": { "errors": ["unsupported FPort"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

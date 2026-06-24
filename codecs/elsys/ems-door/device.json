@@ -1,0 +1,35 @@
+{
+  "vendor": "elsys",
+  "device": "ems-door",
+  "name": "EMS DOOR but more than just doors",
+  "categories": [
+    "contact",
+    "motion"
+  ],
+  "sensors": [
+    "accelerometer"
+  ],
+  "provides": [
+    "action.contactState",
+    "action.motion.count",
+    "action.motion.detected",
+    "pulse1",
+    "pulseAbs",
+    "x",
+    "y",
+    "z"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "elsys",
+    "device": "ems-door",
+    "codecId": "ems-door-codec",
+    "codecFile": "elsys.js",
+    "codecSha256": "b2ed840ebd22065c17c4401d7675ecb16959e0cb73c5db8a9b481e17c0154282",
+    "referencedAt": "2026-06-24"
+  }
+}

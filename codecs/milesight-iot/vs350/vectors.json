@@ -1,0 +1,59 @@
+{
+  "uplink": [
+    {
+      "description": "Period passage counts with motion, plus battery and temperature",
+      "input": { "fPort": 85, "bytes": [1, 117, 90, 3, 103, 245, 0, 5, 204, 5, 0, 3, 0] },
+      "expected": {
+        "data": {
+          "batteryPercent": 90,
+          "air": { "temperature": 24.5 },
+          "action": { "motion": { "count": 8, "detected": true } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "0x01/0x75 battery=90%; 0x03/0x67 temp=0x00f5=245 -> 24.5C; 0x05/0xcc period_in=5, period_out=3 -> count=8, detected=true."
+    },
+    {
+      "description": "Period passage counts of zero -> motion detected false",
+      "input": { "fPort": 85, "bytes": [1, 117, 88, 5, 204, 0, 0, 0, 0] },
+      "expected": {
+        "data": {
+          "batteryPercent": 88,
+          "action": { "motion": { "count": 0, "detected": false } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "0x05/0xcc period_in=0, period_out=0 -> count=0, detected=false; no temperature channel so no air."
+    },
+    {
+      "description": "Passage People Counter total + period alarm (TTN example input)",
+      "input": { "fPort": 85, "bytes": [132, 204, 1, 17, 8, 17, 1, 133, 204, 232, 3, 233, 3, 1] },
+      "expected": {
+        "data": {
+          "totalIn": 4353,
+          "totalOut": 4360,
+          "totalCountAlarm": "threshold alarm",
+          "periodCountAlarm": "threshold alarm",
+          "action": { "motion": { "count": 2001, "detected": true } }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "0x84/0xcc total_in=0x1101=4353, total_out=0x1108=4360, alarm=1; 0x85/0xcc period_in=1000, period_out=1001 -> count=2001, detected=true, alarm=1."
+    },
+    {
+      "description": "Empty payload",
+      "input": { "fPort": 85, "bytes": [] },
+      "expected": { "errors": ["empty payload"] },
+      "source": "synthetic",
+      "_note": "no bytes -> error."
+    },
+    {
+      "description": "Unrecognized leading channel",
+      "input": { "fPort": 85, "bytes": [171, 205, 1] },
+      "expected": { "errors": ["no recognized Milesight channels"] },
+      "source": "synthetic",
+      "_note": "0xab/0xcd is not a decoded uplink channel; nothing recognized before break -> error."
+    }
+  ],
+  "downlink": []
+}

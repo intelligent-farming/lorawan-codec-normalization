@@ -1,0 +1,58 @@
+{
+  "_note": "Synthetic vectors authored via the oracle method: inputs are valid RadioBridge frames for the RBS306-ABM (proto 1 / counter 1 in byte[0]); expected.data is derived by reasoning through the upstream Apache-2.0 Generic_Decoder (reference/upstream-codec.js) and mapping to our vocabulary. The RBS306-ABM has no upstream example payloads, so all vectors are synthetic. Covers action.motion (moving + idle via the 0x0E ABM event, count via the 0x01 supervisory accumulation), battery, and an unsupported-type error.",
+  "uplink": [
+    {
+      "description": "ABM movement started -> action.motion.detected=true",
+      "input": { "fPort": 2, "bytes": [17, 14, 0] },
+      "expected": {
+        "data": {
+          "protocol": 1,
+          "counter": 1,
+          "messageType": "movement",
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "ABM movement stopped -> action.motion.detected=false (idle)",
+      "input": { "fPort": 2, "bytes": [17, 14, 1] },
+      "expected": {
+        "data": {
+          "protocol": 1,
+          "counter": 1,
+          "messageType": "movement",
+          "action": { "motion": { "detected": false } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Supervisory -> battery 3.6V + action.motion.count from accumulation",
+      "input": { "fPort": 2, "bytes": [17, 1, 0, 0, 54, 0, 0, 0, 0, 0, 42] },
+      "expected": {
+        "data": {
+          "protocol": 1,
+          "counter": 1,
+          "messageType": "supervisory",
+          "battery": 3.6,
+          "action": { "motion": { "count": 42 } },
+          "accumulation": 42,
+          "tamperSinceLastReset": false,
+          "tamperState": false,
+          "errorWithLastDownlink": false,
+          "batteryLow": false,
+          "radioCommError": false
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unsupported message type 0x99 -> error",
+      "input": { "fPort": 2, "bytes": [17, 153] },
+      "expected": { "errors": ["unsupported message type"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

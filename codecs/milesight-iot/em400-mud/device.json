@@ -1,0 +1,35 @@
+{
+  "vendor": "milesight-iot",
+  "device": "em400-mud",
+  "name": "EM400-MUD - Multifunctional Ultrasonic Distance Sensor",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "battery",
+    "temperature",
+    "accelerometer",
+    "distance"
+  ],
+  "provides": [
+    "action.motion.detected",
+    "air.temperature",
+    "batteryPercent",
+    "distanceAlarming",
+    "distanceMm",
+    "temperatureAbnormal"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "em400-mud",
+    "codecId": "em400-mud-codec",
+    "codecFile": "em400-mud.js",
+    "codecSha256": "2ddb34484c6e88c282200f8999b91374e38dade7ee8509fa07566e7e762912bd",
+    "referencedAt": "2026-06-24"
+  }
+}

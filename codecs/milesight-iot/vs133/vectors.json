@@ -1,0 +1,93 @@
+{
+  "uplink": [
+    {
+      "description": "TTN example: line 1 in=72/out=200, line 2 zero, periods zero -> action.motion.count 272",
+      "input": {
+        "fPort": 85,
+        "bytes": [3, 210, 72, 0, 0, 0, 4, 210, 200, 0, 0, 0, 6, 210, 0, 0, 0, 0, 7, 210, 0, 0, 0, 0, 5, 204, 0, 0, 0, 0, 8, 204, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "line1TotalIn": 72,
+          "line1TotalOut": 200,
+          "line2TotalIn": 0,
+          "line2TotalOut": 0,
+          "line1PeriodIn": 0,
+          "line1PeriodOut": 0,
+          "line2PeriodIn": 0,
+          "line2PeriodOut": 0,
+          "action": { "motion": { "count": 272, "detected": true } }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Wire format from upstream vs133.js: line1 total_in ch0x03 type0xD2 uint32=72, total_out ch0x04=200; line2 total_in ch0x06=0, total_out ch0x07=0; line1 period ch0x05 type0xCC in=0/out=0; line2 period ch0x08 in=0/out=0. count = sum of all total_in + total_out = 72+200+0+0 = 272; detected = count>0. Expected authored against reference/upstream-codec.js channel decode."
+    },
+    {
+      "description": "Single line 1 with period traffic in=5/out=3, total in=40/out=37 -> count 77",
+      "input": {
+        "fPort": 85,
+        "bytes": [3, 210, 40, 0, 0, 0, 4, 210, 37, 0, 0, 0, 5, 204, 5, 0, 3, 0]
+      },
+      "expected": {
+        "data": {
+          "line1TotalIn": 40,
+          "line1TotalOut": 37,
+          "line1PeriodIn": 5,
+          "line1PeriodOut": 3,
+          "action": { "motion": { "count": 77, "detected": true } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic. line1 total_in 0x03/0xD2 uint32 LE [40,0,0,0]=40; total_out 0x04/0xD2=37; period 0x05/0xCC in uint16 [5,0]=5, out [3,0]=3. count = 40+37 = 77 (period counts are NOT added to the running total, only totals are). detected = true."
+    },
+    {
+      "description": "Multi-byte uint32 totals across two lines -> large count",
+      "input": {
+        "fPort": 85,
+        "bytes": [3, 210, 0, 1, 0, 0, 4, 210, 0, 0, 1, 0, 9, 210, 16, 0, 0, 0, 10, 210, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "line1TotalIn": 256,
+          "line1TotalOut": 65536,
+          "line3TotalIn": 16,
+          "line3TotalOut": 0,
+          "action": { "motion": { "count": 65808, "detected": true } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic uint32-LE exercise. line1 total_in [0,1,0,0]=256; total_out [0,0,1,0]=65536. line3 total_in ch0x09 [16,0,0,0]=16; total_out ch0x0A=0. count = 256+65536+16+0 = 65808; detected true."
+    },
+    {
+      "description": "Zero counts everywhere -> detected false",
+      "input": {
+        "fPort": 85,
+        "bytes": [3, 210, 0, 0, 0, 0, 4, 210, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "line1TotalIn": 0,
+          "line1TotalOut": 0,
+          "action": { "motion": { "count": 0, "detected": false } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic boundary case. All totals zero -> count 0 -> detected false. Confirms detected is strictly count>0."
+    },
+    {
+      "description": "Empty payload -> error",
+      "input": { "fPort": 85, "bytes": [] },
+      "expected": { "errors": ["empty payload"] },
+      "source": "synthetic",
+      "_note": "Synthetic. Empty byte array is rejected before the channel walk."
+    },
+    {
+      "description": "Unrecognized leading channel -> no recognized channels error",
+      "input": { "fPort": 85, "bytes": [255, 1, 2, 3] },
+      "expected": { "errors": ["no recognized Milesight channels"] },
+      "source": "synthetic",
+      "_note": "Synthetic. Channel 0xFF is not a VS133 counting channel; walk breaks immediately, nothing recognized."
+    }
+  ],
+  "downlink": []
+}

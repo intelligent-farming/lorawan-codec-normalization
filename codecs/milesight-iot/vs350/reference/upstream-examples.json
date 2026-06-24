@@ -1,0 +1,37 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/milesight-iot/vs350-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Passage People Counter - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          132,
+          204,
+          1,
+          17,
+          8,
+          17,
+          1,
+          133,
+          204,
+          232,
+          3,
+          233,
+          3,
+          1
+        ]
+      },
+      "output": {
+        "data": {
+          "total_in": 4353,
+          "total_out": 4360,
+          "total_count_alarm": "threshold alarm",
+          "period_in": 1000,
+          "period_out": 1001,
+          "period_count_alarm": "threshold alarm"
+        }
+      }
+    }
+  ]
+}

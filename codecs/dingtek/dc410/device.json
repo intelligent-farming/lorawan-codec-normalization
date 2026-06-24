@@ -1,0 +1,36 @@
+{
+  "vendor": "dingtek",
+  "device": "dc410",
+  "name": "DC410 - Manhole Sensor",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "level",
+    "gps",
+    "motion",
+    "temperature"
+  ],
+  "provides": [
+    "action.motion.detected",
+    "air.temperature",
+    "batteryLow",
+    "frameCounter",
+    "full",
+    "levelMm",
+    "tiltAngle"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dingtek",
+    "device": "dc410",
+    "codecId": "dc410-codec",
+    "codecFile": "dc410.js",
+    "codecSha256": "771d91eb4c539a224a0011fa9cf76d44826cf14b8905a3f0b094598467d12ac7",
+    "referencedAt": "2026-06-24"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/milesight-iot/vs373-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Radar Fall Detection Sensor- Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          3,
+          248,
+          1,
+          0,
+          16,
+          0,
+          32,
+          0,
+          4,
+          249,
+          1,
+          0,
+          1,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "detection_status": "vacant",
+          "target_status": "normal",
+          "use_time_now": 16,
+          "use_time_today": 32,
+          "region_1_occupancy": "vacant",
+          "region_2_occupancy": "occupied",
+          "region_3_occupancy": "vacant",
+          "region_4_occupancy": "occupied"
+        }
+      }
+    }
+  ]
+}

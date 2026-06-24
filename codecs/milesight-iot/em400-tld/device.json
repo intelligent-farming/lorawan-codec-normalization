@@ -1,0 +1,35 @@
+{
+  "vendor": "milesight-iot",
+  "device": "em400-tld",
+  "name": "EM400-TLD - ToF Laser Distance Sensor",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "battery",
+    "temperature",
+    "accelerometer",
+    "distance"
+  ],
+  "provides": [
+    "action.motion.detected",
+    "air.temperature",
+    "batteryPercent",
+    "distance",
+    "distanceAlarming",
+    "temperatureAbnormal"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "em400-tld",
+    "codecId": "em400-tld-codec",
+    "codecFile": "em400-tld.js",
+    "codecSha256": "afc5bc528940a2cf4f713bee946d795ea0787c4c8bdfa0433ffcf224c0d388c4",
+    "referencedAt": "2026-06-24"
+  }
+}

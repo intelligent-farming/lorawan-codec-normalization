@@ -1,0 +1,31 @@
+{
+  "vendor": "milesight-iot",
+  "device": "vs121",
+  "name": "Milesight VS121 AI Workplace Occupancy Sensor",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "occupancy",
+    "people-counter"
+  ],
+  "provides": [
+    "action.motion.count",
+    "action.motion.detected",
+    "regionCount",
+    "regions"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "vs121",
+    "codecId": "vs121-codec",
+    "codecFile": "vs121.js",
+    "codecSha256": "79169a04b02c79b17bb10f359a5cef30c4875298eed8c5f95cd088595fe8c5c1",
+    "referencedAt": "2026-06-24"
+  }
+}

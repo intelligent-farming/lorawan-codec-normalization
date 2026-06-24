@@ -1,0 +1,39 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/milesight-iot/vs121-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "AI Workplace Sensor (example 1) - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          4,
+          201,
+          3,
+          3,
+          0,
+          2
+        ]
+      },
+      "output": {
+        "data": {
+          "people_counter_all": 3,
+          "region_count": 3,
+          "regions": [
+            {
+              "count": 1,
+              "index": 0
+            },
+            {
+              "count": 1,
+              "index": 1
+            },
+            {
+              "count": 0,
+              "index": 2
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

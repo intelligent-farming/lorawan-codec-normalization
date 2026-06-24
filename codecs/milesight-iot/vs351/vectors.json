@@ -1,0 +1,168 @@
+{
+  "_note": "Synthetic vectors authored for the Intelligent Farming normalized VS351 codec. The first input is the upstream TTN example; remaining inputs are synthetic, built from the documented Milesight channel/type TLV format. Every expected.data was produced with the ORACLE method: run reference/upstream-codec.js to confirm the wire interpretation (channels, offsets, endianness, int16 temperature), then author the normalized expectation here (action.motion.count = total_in + total_out, .detected = count > 0; temperature -> air.temperature; battery % -> batteryPercent; directional/period counts and alarms -> camelCase extras). Covers action.motion true and false plus error inputs.",
+  "uplink": [
+    {
+      "description": "People counter: total in/out + period in/out (TTN example) -> motion detected",
+      "input": {
+        "fPort": 85,
+        "bytes": [4, 204, 18, 0, 22, 0, 5, 204, 19, 0, 20, 0]
+      },
+      "expected": {
+        "data": {
+          "totalIn": 18,
+          "totalOut": 22,
+          "periodIn": 19,
+          "periodOut": 20,
+          "action": { "motion": { "count": 40, "detected": true } }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Battery + temperature + total in/out -> air.temperature + motion count",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 100, 3, 103, 221, 0, 4, 204, 18, 0, 22, 0]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 100,
+          "totalIn": 18,
+          "totalOut": 22,
+          "air": { "temperature": 22.1 },
+          "action": { "motion": { "count": 40, "detected": true } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Zero total counts -> motion not detected (count 0, detected false)",
+      "input": {
+        "fPort": 85,
+        "bytes": [4, 204, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "totalIn": 0,
+          "totalOut": 0,
+          "action": { "motion": { "count": 0, "detected": false } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Negative temperature (-10.5 °C) -> air.temperature, no motion this frame",
+      "input": {
+        "fPort": 85,
+        "bytes": [3, 103, 151, 255]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": -10.5 }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Temperature alarm (high temperature, 35.0 °C) -> air.temperature + temperatureAlarm extra",
+      "input": {
+        "fPort": 85,
+        "bytes": [131, 103, 94, 1, 3]
+      },
+      "expected": {
+        "data": {
+          "temperatureAlarm": "high_temperature_alarm",
+          "air": { "temperature": 35 }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Total in/out threshold alarm -> motion detected + totalCountAlarm extra",
+      "input": {
+        "fPort": 85,
+        "bytes": [132, 204, 5, 0, 3, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "totalIn": 5,
+          "totalOut": 3,
+          "totalCountAlarm": "threshold_alarm",
+          "action": { "motion": { "count": 8, "detected": true } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Timestamp + total in/out -> time (RFC3339) + motion count",
+      "input": {
+        "fPort": 85,
+        "bytes": [10, 239, 128, 56, 177, 100, 4, 204, 7, 0, 5, 0]
+      },
+      "expected": {
+        "data": {
+          "time": "2023-07-14T11:58:56.000Z",
+          "totalIn": 7,
+          "totalOut": 5,
+          "action": { "motion": { "count": 12, "detected": true } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Datalog history mode 1 (period + total) -> history[] each with time",
+      "input": {
+        "fPort": 85,
+        "bytes": [32, 206, 128, 56, 177, 100, 1, 5, 0, 3, 0, 10, 0, 12, 0]
+      },
+      "expected": {
+        "data": {
+          "history": [
+            {
+              "time": "2023-07-14T11:58:56.000Z",
+              "periodIn": 5,
+              "periodOut": 3,
+              "totalIn": 10,
+              "totalOut": 12
+            }
+          ]
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Datalog with unknown mode byte -> error",
+      "input": {
+        "fPort": 85,
+        "bytes": [32, 206, 128, 56, 177, 100, 9, 5, 0, 3, 0]
+      },
+      "expected": {
+        "errors": ["unknown datalog mode"]
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unrecognized channel/type -> error",
+      "input": {
+        "fPort": 85,
+        "bytes": [200, 200, 1]
+      },
+      "expected": {
+        "errors": ["no recognized Milesight channels"]
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Empty payload -> error",
+      "input": {
+        "fPort": 85,
+        "bytes": []
+      },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

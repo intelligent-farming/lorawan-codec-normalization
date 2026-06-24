@@ -1,0 +1,73 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/milesight-iot/vs135-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "AI ToF People Counting Sensor - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          3,
+          210,
+          72,
+          0,
+          0,
+          0,
+          4,
+          210,
+          200,
+          0,
+          0,
+          0,
+          6,
+          210,
+          0,
+          0,
+          0,
+          0,
+          7,
+          210,
+          0,
+          0,
+          0,
+          0,
+          9,
+          210,
+          0,
+          0,
+          0,
+          0,
+          10,
+          210,
+          0,
+          0,
+          0,
+          0,
+          12,
+          210,
+          180,
+          20,
+          0,
+          0,
+          13,
+          210,
+          141,
+          26,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "line_1_total_in": 72,
+          "line_1_total_out": 200,
+          "line_2_total_in": 0,
+          "line_2_total_out": 0,
+          "line_3_total_in": 0,
+          "line_3_total_out": 0,
+          "line_4_total_in": 5300,
+          "line_4_total_out": 6797
+        }
+      }
+    }
+  ]
+}

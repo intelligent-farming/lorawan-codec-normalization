@@ -1,0 +1,40 @@
+{
+  "vendor": "dragino",
+  "device": "lgt92",
+  "name": "LGT92 - GPS Location Tracker",
+  "categories": [
+    "motion",
+    "gps-tracker"
+  ],
+  "sensors": [
+    "motion",
+    "gps"
+  ],
+  "provides": [
+    "action.motion.detected",
+    "alarm",
+    "altitude",
+    "battery",
+    "firmwareVersion",
+    "gpsOn",
+    "hdop",
+    "movement",
+    "pitch",
+    "position.latitude",
+    "position.longitude",
+    "roll"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "lgt92",
+    "codecId": "lgt92-codec",
+    "codecFile": "lgt92.js",
+    "codecSha256": "04e708dcb30bdd473490f9b47db8ec13528ddaea77290deac29238c17f816dcf",
+    "referencedAt": "2026-06-24"
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "uplink": [
+    {
+      "description": "People counter: 3 people across 3 regions (occupied)",
+      "input": {
+        "fPort": 85,
+        "bytes": [4, 201, 3, 3, 0, 2]
+      },
+      "expected": {
+        "data": {
+          "regionCount": 3,
+          "regions": [
+            { "index": 0, "count": 1 },
+            { "index": 1, "count": 1 },
+            { "index": 2, "count": 0 }
+          ],
+          "action": {
+            "motion": {
+              "count": 3,
+              "detected": true
+            }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Reuses upstream example input bytes; expected.data authored to the normalized vocabulary. Raw field values cross-checked against reference/upstream-codec.js (people_counter_all -> action.motion.count; per-region bitmap -> regions[])."
+    },
+    {
+      "description": "People counter: vacant workplace (0 people, 0 regions)",
+      "input": {
+        "fPort": 85,
+        "bytes": [4, 201, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "regionCount": 0,
+          "regions": [],
+          "action": {
+            "motion": {
+              "count": 0,
+              "detected": false
+            }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds vacant case; expected.data derived from reference/upstream-codec.js raw output (people_counter_all 0 -> count 0, detected false)."
+    },
+    {
+      "description": "People counter: 5 people across 4 occupied regions",
+      "input": {
+        "fPort": 85,
+        "bytes": [4, 201, 5, 4, 0, 7]
+      },
+      "expected": {
+        "data": {
+          "regionCount": 4,
+          "regions": [
+            { "index": 0, "count": 1 },
+            { "index": 1, "count": 1 },
+            { "index": 2, "count": 1 },
+            { "index": 3, "count": 1 }
+          ],
+          "action": {
+            "motion": {
+              "count": 5,
+              "detected": true
+            }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds case; expected.data derived from reference/upstream-codec.js raw output for these bytes."
+    },
+    {
+      "description": "Unrecognized channel yields an error",
+      "input": {
+        "fPort": 85,
+        "bytes": [255, 255, 0]
+      },
+      "expected": {
+        "errors": ["no recognized Milesight channels"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: channel/type 0xFF/0xFF is not a VS121 uplink channel, so the codec reports no recognized channels."
+    }
+  ],
+  "downlink": []
+}

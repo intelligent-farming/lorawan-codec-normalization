@@ -1,0 +1,35 @@
+{
+  "vendor": "dragino",
+  "device": "lbt1",
+  "name": "LBT1 - Bluetooth Tracker",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "motion"
+  ],
+  "provides": [
+    "action.motion.count",
+    "action.motion.detected",
+    "alarmFlag",
+    "battery",
+    "bleAddr",
+    "bleMajor",
+    "bleMinor",
+    "bleRssi",
+    "bleUuid"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "lbt1",
+    "codecId": "lbt1-codec",
+    "codecFile": "lbt1.js",
+    "codecSha256": "240e5860e098ab03a09bf98dc56ff34f1b8fef546920627fb2424f49b114300e",
+    "referencedAt": "2026-06-24"
+  }
+}

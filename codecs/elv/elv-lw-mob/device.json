@@ -1,0 +1,38 @@
+{
+  "vendor": "elv",
+  "device": "elv-lw-mob",
+  "name": "Motion Button for LoRaWAN®",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "accelerometer",
+    "button"
+  ],
+  "provides": [
+    "action.motion.count",
+    "action.motion.detected",
+    "angle",
+    "battery",
+    "buttonCount",
+    "buttonPressed",
+    "frameType",
+    "tiltArea0",
+    "tiltArea1",
+    "tiltArea2",
+    "txReason"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "elv",
+    "device": "elv-lw-mob",
+    "codecId": "elv-lw-mob-codec",
+    "codecFile": "elv-lw-mob.js",
+    "codecSha256": "2546131847b10427f40d781c9c334bc8659bfa80fba7baa315f8a37dd614fd77",
+    "referencedAt": "2026-06-24"
+  }
+}

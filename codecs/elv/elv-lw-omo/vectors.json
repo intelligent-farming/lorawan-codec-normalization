@@ -1,0 +1,93 @@
+{
+  "_note": "Synthetic vectors. Inputs derived from the upstream TTN examples (Apache-2.0); expected.data authored to the normalized vocabulary and cross-checked against reference/upstream-codec.js field extraction. Battery = bytes[0] * 10 mV / 1000 -> V. The Device_State frame supplies action.motion.detected + action.motion.count; the Acceleration_Data frame supplies action.motion.detected; together they cover the `motion` category requires path (action.motion).",
+  "uplink": [
+    {
+      "description": "Device_State: accelerated with 16-bit activation count (motion detected + count)",
+      "input": {
+        "fPort": 10,
+        "bytes": [150, 1, 1, 1, 0, 0, 16]
+      },
+      "expected": {
+        "data": {
+          "battery": 1.5,
+          "frameType": "Device_State",
+          "txReason": "Button Pressed",
+          "action": { "motion": { "detected": true, "count": 16 } },
+          "tiltArea0": false,
+          "tiltArea1": false,
+          "tiltArea2": false,
+          "angle": 0
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Device_State at rest with larger activation count (motion not detected)",
+      "input": {
+        "fPort": 10,
+        "bytes": [120, 1, 8, 0, 30, 1, 44]
+      },
+      "expected": {
+        "data": {
+          "battery": 1.2,
+          "frameType": "Device_State",
+          "txReason": "Inactivity",
+          "action": { "motion": { "detected": false, "count": 300 } },
+          "tiltArea0": false,
+          "tiltArea1": false,
+          "tiltArea2": false,
+          "angle": 30
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Acceleration_Data: movement event with angle (motion detected)",
+      "input": {
+        "fPort": 10,
+        "bytes": [150, 2, 5, 1, 45]
+      },
+      "expected": {
+        "data": {
+          "battery": 1.5,
+          "frameType": "Acceleration_Data",
+          "txReason": "Acceleration",
+          "action": { "motion": { "detected": true } },
+          "tiltArea0": false,
+          "tiltArea1": false,
+          "tiltArea2": false,
+          "angle": 45
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Button_Pressed frame (button count extra, no motion)",
+      "input": {
+        "fPort": 10,
+        "bytes": [150, 3, 1, 7]
+      },
+      "expected": {
+        "data": {
+          "battery": 1.5,
+          "frameType": "Button_Pressed",
+          "txReason": "Button Pressed",
+          "buttonCount": 7
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "wrong FPort is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [150, 1, 1, 1, 0, 0, 16]
+      },
+      "expected": {
+        "errors": ["unsupported FPort"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,77 @@
+{
+  "uplink": [
+    {
+      "description": "TTN example: battery, temperature, distance, position=tilt -> motion detected",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 92, 3, 103, 1, 1, 4, 130, 68, 8, 5, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 92,
+          "air": { "temperature": 25.7 },
+          "distanceMm": 2116,
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Synthetic: position=normal -> motion not detected, with battery/temp/distance",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 80, 3, 103, 250, 0, 4, 130, 200, 0, 5, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 80,
+          "air": { "temperature": 25.0 },
+          "distanceMm": 200,
+          "action": { "motion": { "detected": false } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Synthetic: abnormal-temperature and alarming-distance variants, position=tilt",
+      "input": {
+        "fPort": 85,
+        "bytes": [131, 103, 246, 255, 1, 132, 130, 100, 0, 1, 5, 0, 2]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": -1.0 },
+          "temperatureAbnormal": true,
+          "distanceMm": 100,
+          "distanceAlarming": true,
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Synthetic error: empty payload",
+      "input": {
+        "fPort": 85,
+        "bytes": []
+      },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Synthetic error: unrecognized channel/type",
+      "input": {
+        "fPort": 85,
+        "bytes": [255, 255, 0]
+      },
+      "expected": {
+        "errors": ["no recognized Milesight channels"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": [],
+  "_note": "expected.data authored via the ORACLE method: synthetic inputs decoded by the normalized codec.js (expected derived from reference/upstream-codec.js semantics, not its output shape). Covers action.motion.detected true (tilt) and false (normal), the abnormal/alarming TLV variants, plus >=1 error vector. position (accelerometer tilt status) is the motion-defining event; distance is in mm (no vocab key) -> distanceMm extra; temperature -> air.temperature; battery % -> batteryPercent extra."
+}

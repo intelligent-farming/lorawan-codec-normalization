@@ -1,0 +1,57 @@
+{
+  "uplink": [
+    {
+      "description": "data frame, no motion (TTN example input)",
+      "input": {
+        "fPort": 3,
+        "bytes": [128, 0, 1, 2, 17, 6, 164, 0, 22, 1, 0, 0, 0, 0, 1, 0, 129]
+      },
+      "expected": {
+        "data": {
+          "action": { "motion": { "detected": false } },
+          "air": { "temperature": 22 },
+          "levelMm": 1700,
+          "tiltAngle": 0,
+          "full": false,
+          "batteryLow": false,
+          "frameCounter": 1
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream input reused; expected.data authored from reference/upstream-codec.js field extraction (level mm big-endian, temp bytes[8], motion=bytes[12]>>4, full=bytes[11]>>4, batteryLow=bytes[12]&0x0f, frameCounter=bytes[13..14]). Angle sign byte bytes[9]=1 (low nibble set) -> -0 = 0; upstream sign bug corrected per AUTHORING.md."
+    },
+    {
+      "description": "data frame, motion detected (full + low-battery flags set, +30 deg tilt)",
+      "input": {
+        "fPort": 3,
+        "bytes": [128, 0, 1, 2, 17, 0, 200, 0, 18, 0, 30, 16, 17, 0, 5, 0, 129]
+      },
+      "expected": {
+        "data": {
+          "action": { "motion": { "detected": true } },
+          "air": { "temperature": 18 },
+          "levelMm": 200,
+          "tiltAngle": 30,
+          "full": true,
+          "batteryLow": true,
+          "frameCounter": 5
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic frame to exercise action.motion.detected=true. bytes[12]=0x11 -> motion high nibble set (true), low nibble set (batteryLow true); bytes[11]=0x10 -> full true; bytes[9]=0 sign nibble clear -> positive, bytes[10]=30 -> +30 deg; level=(0<<8)+200=200 mm; temp=bytes[8]=18; frameCounter=(0<<8)+5=5."
+    },
+    {
+      "description": "parameter-report / command-confirmation frame (25 bytes, bytes[3]=0x03) -> error",
+      "input": {
+        "fPort": 3,
+        "bytes": [128, 0, 1, 3, 25, 3, 2, 6, 60, 30, 75, 20, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 129]
+      },
+      "expected": {
+        "errors": ["parameter report frame carries no normalized measurement"]
+      },
+      "source": "ttn-example",
+      "_note": "Upstream emits device settings (intervals/thresholds/motion-enable/ultrasonic-range), not a measurement; normalized as an error."
+    }
+  ],
+  "downlink": []
+}

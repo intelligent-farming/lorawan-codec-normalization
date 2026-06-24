@@ -1,0 +1,65 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/milesight-iot/vs133-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "LoRaWAN Insertion Temperature Sensor - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          3,
+          210,
+          72,
+          0,
+          0,
+          0,
+          4,
+          210,
+          200,
+          0,
+          0,
+          0,
+          6,
+          210,
+          0,
+          0,
+          0,
+          0,
+          7,
+          210,
+          0,
+          0,
+          0,
+          0,
+          5,
+          204,
+          0,
+          0,
+          0,
+          0,
+          8,
+          204,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "line_1": {
+            "total_in": 72,
+            "total_out": 200,
+            "period_in": 0,
+            "period_out": 0
+          },
+          "line_2": {
+            "total_in": 0,
+            "total_out": 0,
+            "period_in": 0,
+            "period_out": 0
+          }
+        }
+      }
+    }
+  ]
+}

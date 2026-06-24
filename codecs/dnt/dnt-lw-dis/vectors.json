@@ -1,0 +1,93 @@
+{
+  "_note": "Synthetic vectors authored from the wire format of the upstream Apache-2.0 reference (reference/upstream-codec.js + upstream-examples.json). The distance/cycle/button/sabotage inputs are upstream example inputs; expected.data is re-authored to the normalized vocabulary (voltage->battery V, sabotage event->action.motion.detected, temperature->air.temperature, distance->distanceMm extra). Temperature, notification and error inputs are synthetic, decoded by the same wire layout.",
+  "uplink": [
+    {
+      "description": "Sabotage Message — Sideways, notification 1 (tamper/movement detected)",
+      "input": { "fPort": 10, "bytes": [155, 3, 68] },
+      "expected": {
+        "data": {
+          "battery": 3.05,
+          "sabotageNotification": 1,
+          "action": { "motion": { "detected": true } },
+          "deviceOrientation": "Sideways"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Sabotage Message — Up|Tilted, no notification (no movement event)",
+      "input": { "fPort": 10, "bytes": [155, 3, 9] },
+      "expected": {
+        "data": {
+          "battery": 3.05,
+          "sabotageNotification": 0,
+          "action": { "motion": { "detected": false } },
+          "deviceOrientation": "Up|Tilted"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Button Message — ToF distance reading",
+      "input": { "fPort": 10, "bytes": [154, 4, 0, 6, 79] },
+      "expected": {
+        "data": {
+          "battery": 3.04,
+          "reason": "button",
+          "tofStatus": 0,
+          "distanceMm": 1615
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Cyclic Message — ToF distance reading",
+      "input": { "fPort": 10, "bytes": [156, 1, 0, 6, 71] },
+      "expected": {
+        "data": {
+          "battery": 3.06,
+          "reason": "cycle",
+          "tofStatus": 0,
+          "distanceMm": 1607
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Temperature frame — -5.0 °C (two's-complement int16)",
+      "input": { "fPort": 10, "bytes": [155, 6, 255, 206] },
+      "expected": {
+        "data": {
+          "battery": 3.05,
+          "air": { "temperature": -5 }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Temperature-notification frame — flag set, 30.0 °C",
+      "input": { "fPort": 10, "bytes": [155, 2, 1, 1, 44] },
+      "expected": {
+        "data": {
+          "battery": 3.05,
+          "temperatureNotification": 1,
+          "air": { "temperature": 30 }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Empty payload — no bytes",
+      "input": { "fPort": 10, "bytes": [] },
+      "expected": { "errors": ["missing payload bytes"] },
+      "source": "synthetic"
+    },
+    {
+      "description": "Truncated distance record — status byte present, distance missing",
+      "input": { "fPort": 10, "bytes": [154, 4, 0] },
+      "expected": { "errors": ["distance record requires 3 bytes"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

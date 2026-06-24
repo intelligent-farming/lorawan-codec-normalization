@@ -1,0 +1,60 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/dragino/lbt1-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Bluetooth Tracker",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          15,
+          199,
+          0,
+          0,
+          0,
+          1,
+          69,
+          69,
+          70,
+          70,
+          48
+        ]
+      },
+      "output": {
+        "data": {
+          "addr": "",
+          "alarm": 0,
+          "batV": 4.039,
+          "major": 1,
+          "minor": 1,
+          "rssi": 0,
+          "step_count": 0,
+          "uuid": "EEFF0"
+        }
+      }
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [
+          15,
+          199,
+          0,
+          0,
+          0,
+          1,
+          69,
+          69,
+          70,
+          70,
+          48
+        ]
+      },
+      "output": {
+        "errors": [
+          "unknown FPort"
+        ]
+      }
+    }
+  ]
+}

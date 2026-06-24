@@ -1,0 +1,30 @@
+{
+  "_note": "Synthetic vectors: the RBS301-ABM upstream codec ships no examples. Inputs are hand-built RadioBridge frames (byte[0]=protocol/counter, byte[1]=event type, then event-specific bytes); expected.data is the authored normalization, cross-checked against the upstream radio_bridge_packet_decoder.js (Generic_Decoder) as an oracle. ABM event 0x0E byte[2]: 0=Movement Started (moving), else=Movement Stopped (idle/cleared) -> action.motion.detected. Supervisory 0x01 byte[4] nibbles 0x36 -> 3.6 V battery.",
+  "uplink": [
+    {
+      "description": "ABM movement started -> action.motion.detected true",
+      "input": { "fPort": 2, "bytes": [16, 14, 0] },
+      "expected": { "data": { "protocol": 1, "counter": 0, "messageType": "abm", "action": { "motion": { "detected": true } } } },
+      "source": "synthetic"
+    },
+    {
+      "description": "ABM movement stopped -> action.motion.detected false (idle/cleared)",
+      "input": { "fPort": 2, "bytes": [17, 14, 1] },
+      "expected": { "data": { "protocol": 1, "counter": 1, "messageType": "abm", "action": { "motion": { "detected": false } } } },
+      "source": "synthetic"
+    },
+    {
+      "description": "Supervisory -> battery 3.6 V + tamper/error flags + accumulation",
+      "input": { "fPort": 2, "bytes": [18, 1, 0, 0, 54, 0, 0, 0, 0, 0, 5] },
+      "expected": { "data": { "protocol": 1, "counter": 2, "messageType": "supervisory", "battery": 3.6, "accumulation": 5, "tamperSinceLastReset": false, "tamperState": false, "errorWithLastDownlink": false, "batteryLow": false, "radioCommError": false } },
+      "source": "synthetic"
+    },
+    {
+      "description": "ABM frame truncated (missing state byte) -> error",
+      "input": { "fPort": 2, "bytes": [16, 14] },
+      "expected": { "errors": ["abm payload too short"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

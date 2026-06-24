@@ -1,0 +1,108 @@
+{
+  "uplink": [
+    {
+      "description": "Periodic report: battery, ambient temp/humidity, control mode, plan (upstream example input; expected re-authored to vocabulary)",
+      "input": {
+        "fPort": 85,
+        "bytes": [0, 100, 1, 16, 14, 2, 48, 2, 3, 2, 5, 1]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 100,
+          "temperatureControlMode": "cool",
+          "executionPlan": "plan_2",
+          "air": {
+            "temperature": 36,
+            "relativeHumidity": 56
+          }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Ambient 0x01 temperature is s16/100 (0x0E10=3600 -> 36.00 C); humidity 0x02 is u16/10 (0x0230=560 -> 56.0 %). 0x03 mode 2='cool', 0x05 plan 1='plan_2'. Battery % -> batteryPercent extra (vocab battery is volts)."
+    },
+    {
+      "description": "PIR occupancy detected (occupied) with battery — satisfies action.motion",
+      "input": {
+        "fPort": 85,
+        "bytes": [0, 90, 8, 1]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 90,
+          "pirStatus": "occupied",
+          "action": {
+            "motion": {
+              "detected": true
+            }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "0x08 pir_status=1 -> occupied -> action.motion.detected=true; raw three-state preserved in pirStatus extra."
+    },
+    {
+      "description": "PIR vacant (no occupancy) — action.motion.detected false",
+      "input": {
+        "fPort": 85,
+        "bytes": [8, 0]
+      },
+      "expected": {
+        "data": {
+          "pirStatus": "vacant",
+          "action": {
+            "motion": {
+              "detected": false
+            }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "0x08 pir_status=0 -> vacant -> detected=false."
+    },
+    {
+      "description": "Night occupancy plus valve setpoint targets and fan mode (setpoints stay as camelCase extras, never air.temperature)",
+      "input": {
+        "fPort": 85,
+        "bytes": [8, 2, 6, 244, 8, 7, 144, 9, 4, 3]
+      },
+      "expected": {
+        "data": {
+          "pirStatus": "night_occupied",
+          "targetTemperature1": 22.92,
+          "targetTemperature2": 24.48,
+          "fanMode": "low",
+          "action": {
+            "motion": {
+              "detected": true
+            }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "0x08=2 night_occupied -> detected=true. 0x06=0x08F4=2292/100=22.92, 0x07=0x0990=2448/100=24.48 (valve targets -> extras). 0x04=3 fan 'low'."
+    },
+    {
+      "description": "Empty payload — error",
+      "input": {
+        "fPort": 85,
+        "bytes": []
+      },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unrecognized command id — error",
+      "input": {
+        "fPort": 85,
+        "bytes": [255, 0]
+      },
+      "expected": {
+        "errors": ["unknown command: 255"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

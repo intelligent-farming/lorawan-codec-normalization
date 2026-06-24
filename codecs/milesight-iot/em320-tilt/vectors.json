@@ -1,0 +1,59 @@
+{
+  "_note": "Synthetic vectors authored by the ORACLE method: inputs are real Milesight EM320-TILT channel/type TLV frames (battery 0x01/0x75, angle 0x03/0xd4); expected.data is derived from the faithful port in codec.js (a re-author of the upstream Apache-2.0 decoder) and cross-checked against the upstream example output. The 0x03/0xd4 angle channel carries a per-axis tilt threshold-CHANGE alarm in the low bit of each raw word -> action.motion.detected; angle (raw>>1)/100 deg -> angleX/angleY/angleZ extras; battery percent -> batteryPercent extra.",
+  "uplink": [
+    {
+      "description": "Battery + angle with Y-axis tilt alarm triggered (upstream example input)",
+      "input": { "fPort": 85, "bytes": [1, 117, 92, 3, 212, 0, 0, 1, 0, 80, 70] },
+      "expected": {
+        "data": {
+          "batteryPercent": 92,
+          "angleX": 0,
+          "angleY": 0,
+          "angleZ": 90,
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Battery + angle, no axis triggered (motion.detected false)",
+      "input": { "fPort": 85, "bytes": [1, 117, 80, 3, 212, 200, 0, 144, 1, 80, 70] },
+      "expected": {
+        "data": {
+          "batteryPercent": 80,
+          "angleX": 1,
+          "angleY": 2,
+          "angleZ": 90,
+          "action": { "motion": { "detected": false } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Angle channel only, negative X tilt angle, no alarm",
+      "input": { "fPort": 85, "bytes": [3, 212, 216, 220, 0, 0, 0, 0] },
+      "expected": {
+        "data": {
+          "angleX": -45,
+          "angleY": 0,
+          "angleZ": 0,
+          "action": { "motion": { "detected": false } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Battery-only uplink (no angle channel, no motion emitted)",
+      "input": { "fPort": 85, "bytes": [1, 117, 55] },
+      "expected": { "data": { "batteryPercent": 55 } },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unrecognized channel -> error",
+      "input": { "fPort": 85, "bytes": [9, 9, 9] },
+      "expected": { "errors": ["no recognized Milesight channels"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

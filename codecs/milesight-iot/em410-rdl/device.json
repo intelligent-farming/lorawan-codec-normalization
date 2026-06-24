@@ -1,0 +1,34 @@
+{
+  "vendor": "milesight-iot",
+  "device": "em410-rdl",
+  "name": "EM410-RDL - Radar Distance/Level Sensor",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "battery",
+    "temperature",
+    "accelerometer",
+    "distance"
+  ],
+  "provides": [
+    "action.motion.detected",
+    "air.temperature",
+    "batteryPercent",
+    "distance",
+    "radarSignalRssi"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "em410-rdl",
+    "codecId": "em410-rdl-codec",
+    "codecFile": "em410-rdl.js",
+    "codecSha256": "493d828c9f22c5430978b63a42c649973a15797e6b309f0ced39b673c9c65f15",
+    "referencedAt": "2026-06-24"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "vendor": "milesight-iot",
+  "device": "em320-tilt",
+  "name": "EM320-TILT - Tilt Sensor",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "battery",
+    "tilt",
+    "accelerometer"
+  ],
+  "provides": [
+    "action.motion.detected",
+    "angleX",
+    "angleY",
+    "angleZ",
+    "batteryPercent"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "em320-tilt",
+    "codecId": "em320-tilt-codec",
+    "codecFile": "em320-tilt.js",
+    "codecSha256": "0e95be19b6456ed71e1cb7e5d876ea0a66317c3138c485fd5f4688843023653d",
+    "referencedAt": "2026-06-24"
+  }
+}

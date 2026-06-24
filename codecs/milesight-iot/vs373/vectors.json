@@ -1,0 +1,132 @@
+{
+  "_note": "Synthetic vectors authored for the normalized codec. Inputs are valid Milesight VS373 channel/type TLV frames (the combined detection+region frame is the upstream vs373-codec.yaml example); expected.data is authored to the normalized vocabulary, NOT copied from upstream output. action.motion.detected is true whenever the detection target status is anything other than 'vacant'; action.motion.count is the number of occupied regions. Verified against reference/upstream-codec.js wire format via the oracle method.",
+  "uplink": [
+    {
+      "description": "v1.0.1 detection target (vacant) + region occupancy (2 of 4 occupied)",
+      "input": {
+        "fPort": 85,
+        "bytes": [3, 248, 1, 0, 16, 0, 32, 0, 4, 249, 1, 0, 1, 0]
+      },
+      "expected": {
+        "data": {
+          "detectionStatus": "vacant",
+          "targetStatus": "normal",
+          "useTimeNow": 16,
+          "useTimeToday": 32,
+          "region1Occupancy": "vacant",
+          "region2Occupancy": "occupied",
+          "region3Occupancy": "vacant",
+          "region4Occupancy": "occupied",
+          "action": {
+            "motion": {
+              "detected": false,
+              "count": 2
+            }
+          }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "v1.0.1 detection target reporting a fall (target present -> motion detected)",
+      "input": {
+        "fPort": 85,
+        "bytes": [3, 248, 4, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "detectionStatus": "fall",
+          "targetStatus": "normal",
+          "useTimeNow": 0,
+          "useTimeToday": 0,
+          "action": {
+            "motion": {
+              "detected": true
+            }
+          }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "v1.0.2 detection target (in_bed, motionless) with 24-bit usage timers",
+      "input": {
+        "fPort": 85,
+        "bytes": [7, 176, 2, 1, 16, 0, 0, 32, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "detectionStatus": "in_bed",
+          "targetStatus": "motionless",
+          "useTimeNow": 16,
+          "useTimeToday": 32,
+          "action": {
+            "motion": {
+              "detected": true
+            }
+          }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "v1.0.2 region occupy bitmask (4 regions, regions 1 and 3 occupied)",
+      "input": {
+        "fPort": 85,
+        "bytes": [10, 179, 4, 5, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "region1Occupancy": "occupied",
+          "region2Occupancy": "vacant",
+          "region3Occupancy": "occupied",
+          "region4Occupancy": "vacant",
+          "action": {
+            "motion": {
+              "count": 2,
+              "detected": true
+            }
+          }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "device info frame: IPSO version + LoRaWAN class (no motion measurement)",
+      "input": {
+        "fPort": 85,
+        "bytes": [255, 1, 16, 255, 15, 2]
+      },
+      "expected": {
+        "data": {
+          "ipsoVersion": "v1.0",
+          "lorawanClass": "Class C"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "empty payload -> error",
+      "input": {
+        "fPort": 85,
+        "bytes": []
+      },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "unrecognized channel -> error",
+      "input": {
+        "fPort": 85,
+        "bytes": [171, 205, 1]
+      },
+      "expected": {
+        "errors": ["no recognized Milesight channels"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

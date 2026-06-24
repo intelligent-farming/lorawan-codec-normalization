@@ -1,0 +1,84 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/dingtek/dc410-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "heartbeat upload without gps",
+      "input": {
+        "fPort": 3,
+        "bytes": [
+          128,
+          0,
+          1,
+          2,
+          17,
+          6,
+          164,
+          0,
+          22,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          129
+        ]
+      },
+      "output": {
+        "data": {
+          "level": "1700 mm",
+          "full": false,
+          "motion": false,
+          "battery": false,
+          "angle": "0 °",
+          "temperature": "22 ℃",
+          "frame_counter": 1
+        }
+      }
+    },
+    {
+      "description": "Command confirmation",
+      "input": {
+        "fPort": 3,
+        "bytes": [
+          128,
+          0,
+          1,
+          3,
+          25,
+          3,
+          2,
+          6,
+          60,
+          30,
+          75,
+          20,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          129
+        ]
+      },
+      "output": {
+        "data": {
+          "periodic_upload_interval": "6 hours",
+          "periodic_detection_interval": "60 minutes",
+          "full_alarm_threshold": "30 cm",
+          "motion_alarm_threshold": "20 °",
+          "motion_alarm_enable": true,
+          "ultrasonic_range": "5000 mm"
+        }
+      }
+    }
+  ]
+}

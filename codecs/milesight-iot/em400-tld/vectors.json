@@ -1,0 +1,66 @@
+{
+  "uplink": [
+    {
+      "description": "TTN example: battery, temperature, distance, position=tilt -> action.motion.detected true",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 92, 3, 103, 1, 1, 4, 130, 68, 8, 5, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 92,
+          "air": { "temperature": 25.7 },
+          "distance": 2116,
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Synthetic: position=normal -> action.motion.detected false, negative temperature, distance",
+      "_note": "Oracle from reference wire format: battery 0x55=85; temp s16le(0x9C,0xFF)=0xFF9C=-100/10=-10.0; distance u16le(0xE8,0x03)=1000; position byte 0 -> normal -> detected false.",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 85, 3, 103, 156, 255, 4, 130, 232, 3, 5, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 85,
+          "air": { "temperature": -10 },
+          "distance": 1000,
+          "action": { "motion": { "detected": false } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Synthetic: temperature-with-abnormal (0x83) and distance-with-alarming (0x84) status channels",
+      "_note": "Oracle: temp s16le(0x2C,0x01)=0x012C=300/10=30.0, abnormal byte 1 -> true; distance u16le(0x90,0x01)=400, alarming byte 1 -> true.",
+      "input": {
+        "fPort": 85,
+        "bytes": [131, 103, 44, 1, 1, 132, 130, 144, 1, 1]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 30 },
+          "temperatureAbnormal": true,
+          "distance": 400,
+          "distanceAlarming": true
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Error: unrecognized channel/type yields no recognized channels",
+      "input": {
+        "fPort": 85,
+        "bytes": [255, 255, 0]
+      },
+      "expected": {
+        "errors": ["no recognized Milesight channels"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

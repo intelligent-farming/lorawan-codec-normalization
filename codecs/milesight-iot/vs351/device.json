@@ -1,0 +1,38 @@
+{
+  "vendor": "milesight-iot",
+  "device": "vs351",
+  "name": "Mini AI Thermopile People Counter",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "people-counting",
+    "temperature"
+  ],
+  "provides": [
+    "action.motion.count",
+    "action.motion.detected",
+    "air.temperature",
+    "batteryPercent",
+    "periodIn",
+    "periodOut",
+    "temperatureAlarm",
+    "time",
+    "totalCountAlarm",
+    "totalIn",
+    "totalOut"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "vs351",
+    "codecId": "vs351-codec",
+    "codecFile": "vs351.js",
+    "codecSha256": "89132205747d8ec735238d551e3f797ecd6a89dcfb4bbe8d907172bbd12a6889",
+    "referencedAt": "2026-06-24"
+  }
+}

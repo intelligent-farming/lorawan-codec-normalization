@@ -1,0 +1,34 @@
+{
+  "vendor": "dingtek",
+  "device": "dc413",
+  "name": "DC413 - Manhole Sensor",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "level",
+    "motion"
+  ],
+  "provides": [
+    "action.motion.detected",
+    "air.temperature",
+    "alarmLevel",
+    "batteryLow",
+    "frameCounter",
+    "level",
+    "tiltAngle"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dingtek",
+    "device": "dc413",
+    "codecId": "dc413-codec",
+    "codecFile": "dc413.js",
+    "codecSha256": "da749a5795971f87cad4a0f922b36fc847296a7e876146a18b7519d2dca25355",
+    "referencedAt": "2026-06-24"
+  }
+}

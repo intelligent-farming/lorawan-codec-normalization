@@ -1,0 +1,71 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/dnt/dnt-lw-dis-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Button Message",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          154,
+          4,
+          0,
+          6,
+          79
+        ]
+      },
+      "output": {
+        "data": {
+          "ToF": {
+            "distance": 1615,
+            "status": 0
+          },
+          "distance": 1615,
+          "reason": "button",
+          "voltage": 3040
+        }
+      }
+    },
+    {
+      "description": "Cyclic Message",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          156,
+          1,
+          0,
+          6,
+          71
+        ]
+      },
+      "output": {
+        "data": {
+          "ToF": {
+            "distance": 1607,
+            "status": 0
+          },
+          "distance": 1607,
+          "reason": "cycle",
+          "voltage": 3060
+        }
+      }
+    },
+    {
+      "description": "Sabotage Message",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          155,
+          3,
+          68
+        ]
+      },
+      "output": {
+        "data": {
+          "device_orientation": "Sideways",
+          "sabotage_notification": 1,
+          "voltage": 3050
+        }
+      }
+    }
+  ]
+}

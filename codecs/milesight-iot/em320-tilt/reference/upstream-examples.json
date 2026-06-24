@@ -1,0 +1,35 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/milesight-iot/em320-tilt-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Temperature & Humidity Sensor - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          1,
+          117,
+          92,
+          3,
+          212,
+          0,
+          0,
+          1,
+          0,
+          80,
+          70
+        ]
+      },
+      "output": {
+        "data": {
+          "battery": 92,
+          "angle_x": 0,
+          "angle_y": 0,
+          "angle_z": 90,
+          "threshold_x": "normal",
+          "threshold_y": "trigger",
+          "threshold_z": "normal"
+        }
+      }
+    }
+  ]
+}
