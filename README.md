@@ -23,6 +23,12 @@ Requires Node.js >= 18. The package has runtime dependencies `ajv`,
 `ajv-formats`, and `yaml`. The sync features (see below) additionally need the
 optional peer `@intelligent-farming/ttn-to-chirpstack`.
 
+## API reference
+
+The sections below cover the common entry points. The complete, generated API
+reference (every export, with full type signatures) lives in
+[docs/api-doc.md](docs/api-doc.md); regenerate it with `npm run docs`.
+
 ## Get a codec for a device
 
 `codecScript` returns the exact, dependency-free `codec.js` text to install in a

@@ -86,6 +86,15 @@ Public description of a category, loaded from `definitions/categories/`.
 
 #### Properties
 
+##### atLeastOne?
+
+> `optional` **atLeastOne?**: `string`[]
+
+Dotted paths where a member must report AT LEAST ONE — used instead of
+`requires` for categories defined by a family of interchangeable
+measurements rather than a fixed mandatory set (e.g. a soil probe that may
+report any of moisture / temperature / pH / EC / NPK).
+
 ##### description
 
 > **description**: `string`
@@ -116,11 +125,12 @@ Authoring notes (units, gotchas).
 
 Documented typical optional paths (informational).
 
-##### requires
+##### requires?
 
-> **requires**: `string`[]
+> `optional` **requires?**: `string`[]
 
-Dotted paths every member device reports in ≥1 uplink.
+Dotted paths every member device reports across its uplinks (ALL required).
+A category defines membership with either `requires` or [atLeastOne](#atleastone).
 
 ***
 
@@ -163,6 +173,15 @@ vector/decode checks rather than failing them.
 ##### name
 
 > **name**: `string`
+
+##### provides?
+
+> `optional` **provides?**: `string`[]
+
+Dotted output paths this device's codec emits across its data vectors —
+vocabulary keys (e.g. `air.temperature`, `metering.water.total`) plus
+device-specific camelCase extras (e.g. `lowBattery`). Used by
+[devicesProviding](#devicesproviding). Absent on scaffolded drafts.
 
 ##### sensors
 
@@ -818,6 +837,61 @@ Include `draft: true` devices (default false).
 
 ***
 
+### devicesProviding()
+
+> **devicesProviding**(`query`, `opts?`): [`DeviceInfo`](#deviceinfo)[]
+
+List devices whose `provides` includes a path matching `query` (segment-aware,
+case-insensitive — see providedPathMatches).
+
+A bare segment query returns devices providing it at any namespace depth:
+`devicesProviding('temperature')` returns devices providing `temperature`,
+`air.temperature`, `soil.temperature`, `water.temperature.current`, etc. A
+dotted query narrows to that exact path run: `devicesProviding('air.temperature')`
+excludes a device that only provides `soil.temperature`.
+
+Pass an array to require **all** of its queries (AND): a device is returned only
+if every query matches one of its provided paths, so
+`devicesProviding(['air.temperature', 'air.relativeHumidity'])` returns devices
+providing both. An empty or all-blank array returns `[]`; blank entries within a
+non-empty array are ignored.
+
+Authored devices only by default; honours the same `category`/`includeDrafts`
+filters as [devices](#devices). Returns `[]` for a blank query. Result order matches
+[devices](#devices) (vendor then device).
+
+#### Parameters
+
+##### query
+
+`string` \| `string`[]
+
+A vocabulary path or segment (e.g. `'temperature'`, `'co2'`,
+  `'metering.water.total'`), or an array of them to require all (AND).
+
+##### opts?
+
+###### category?
+
+`string`
+
+###### includeDrafts?
+
+`boolean`
+
+#### Returns
+
+[`DeviceInfo`](#deviceinfo)[]
+
+#### Example
+
+```ts
+devicesProviding('co2').map((d) => `${d.vendor}/${d.device}`);
+devicesProviding(['air.temperature', 'air.relativeHumidity']); // both required
+```
+
+***
+
 ### findMissingDevices()
 
 > **findMissingDevices**(`opts?`): [`MissingDevice`](#missingdevice)[]
@@ -926,8 +1000,10 @@ path written. Requires the optional peer.
 Validate a measurement (or array of measurements) against a category.
 
 Bounds and key legality come from the global vocabulary; the category only
-adds its `requires` set, enforced when `opts.requireAll` is true. The default
-(`requireAll: false`) keeps fPort-variant, config, and partial uplinks legal.
+adds its membership contract, enforced when `opts.requireAll` is true: every
+`requires` path must be present, and/or at least one `atLeastOne` path must be
+present. The default (`requireAll: false`) keeps fPort-variant, config, and
+partial uplinks legal.
 
 #### Parameters
 
@@ -949,7 +1025,7 @@ One measurement or a TTN-style array of measurements.
 
 `boolean`
 
-Require every `requires` path to be present.
+Enforce the category's `requires` / `atLeastOne` contract.
 
 #### Returns
 
