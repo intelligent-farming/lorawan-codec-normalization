@@ -122,7 +122,24 @@ of the listed paths present).
 | `groundwater` | `atLeastOne`: `water.level` / `water.pressure` | 6 |
 
 `devices()` / `devices({ category })` enumerate registered devices;
-`device(vendor, device)` returns one device's metadata.
+`device(vendor, device)` returns one device's metadata. Each device's metadata
+includes a `provides` array — the dotted output paths its codec emits
+(vocabulary keys plus device-specific camelCase extras).
+
+`devicesProviding(value)` finds devices by what they output, matching whole
+dotted segments case-insensitively:
+
+```js
+const { devicesProviding } = require('@intelligent-farming/lorawan-codec-normalization');
+
+devicesProviding('temperature'); // anything providing air./soil./water. temperature
+devicesProviding('air.temperature'); // narrower: only that exact path
+devicesProviding('co2', { category: 'air-quality' }); // honours the devices() filters
+```
+
+A bare segment (`'temperature'`) matches that value at any depth; a dotted query
+(`'air.temperature'`) matches only that exact run. Segments match whole, not as
+substrings — `'battery'` does not match the `batteryPercent` extra.
 
 ## Units and conventions
 

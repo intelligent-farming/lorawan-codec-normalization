@@ -204,6 +204,56 @@ test('devices() and device() enumerate the registry', () => {
   assert.throws(() => lib.device('nope', 'nope'), /unknown device/);
 });
 
+test('devicesProviding() searches devices by provided value, segment-aware', () => {
+  const all = lib.devices();
+  assert.ok(
+    all.every((d) => Array.isArray(d.provides) && d.provides.length > 0),
+    'every authored device should declare a non-empty provides',
+  );
+
+  // A bare segment matches the value at any namespace depth.
+  const temp = lib.devicesProviding('temperature');
+  const tempIds = temp.map((d) => `${d.vendor}/${d.device}`);
+  assert.ok(tempIds.includes('dragino/lse01'), 'lse01 provides air/soil temperature');
+  assert.ok(
+    temp.every((d) => d.provides.some((p) => p.split('.').includes('temperature'))),
+    'every result must actually provide a temperature segment',
+  );
+
+  // A dotted query is strictly narrower than the bare segment.
+  const airTemp = lib.devicesProviding('air.temperature');
+  assert.ok(airTemp.every((d) => d.provides.includes('air.temperature')));
+  const airTempIds = new Set(airTemp.map((d) => `${d.vendor}/${d.device}`));
+  assert.ok([...airTempIds].every((id) => tempIds.includes(id)), 'air.temperature ⊆ temperature');
+  assert.ok(temp.length > airTemp.length, 'soil/water-temperature-only devices broaden the bare query');
+
+  // 'co2' returns (at least) every air-quality device, since they require air.co2.
+  const co2 = new Set(lib.devicesProviding('co2').map((d) => `${d.vendor}/${d.device}`));
+  for (const d of lib.devices({ category: 'air-quality' })) {
+    assert.ok(co2.has(`${d.vendor}/${d.device}`), `air-quality ${d.device} should be found by 'co2'`);
+  }
+
+  // Segments match whole, not as substrings: 'battery' must not match 'batteryPercent'.
+  const pctOnly = all.find(
+    (d) => d.provides.includes('batteryPercent') && !d.provides.some((p) => p.split('.').includes('battery')),
+  );
+  if (pctOnly) {
+    const id = `${pctOnly.vendor}/${pctOnly.device}`;
+    const has = (list) => list.some((d) => `${d.vendor}/${d.device}` === id);
+    assert.ok(!has(lib.devicesProviding('battery')), "'battery' must not match 'batteryPercent'");
+    assert.ok(has(lib.devicesProviding('batteryPercent')), "exact extra name should match");
+  }
+
+  // Filters and edge cases.
+  assert.ok(
+    lib.devicesProviding('temperature', { category: 'soil-monitor' }).every((d) =>
+      d.categories.includes('soil-monitor'),
+    ),
+  );
+  assert.deepEqual(lib.devicesProviding(''), []);
+  assert.deepEqual(lib.devicesProviding('   '), []);
+});
+
 test('devices() returns only authored devices; the draft mechanism holds', () => {
   const authored = lib.devices();
   assert.ok(authored.length > 0);

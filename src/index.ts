@@ -16,7 +16,7 @@ export const VERSION = '0.1.0';
 
 export { categories, categorySchema } from './categories';
 export { validate } from './validate';
-export { devices, device, codecScript } from './registry';
+export { devices, devicesProviding, device, codecScript } from './registry';
 export { lintCodec } from './lint';
 export {
   updateDeviceList,

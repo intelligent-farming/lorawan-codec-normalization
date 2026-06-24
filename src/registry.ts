@@ -115,6 +115,63 @@ export function devices(opts?: {
 }
 
 /**
+ * True when a provided path matches a query, segment-aware and case-insensitive.
+ *
+ * Both are split on `.`; the query matches when its segment run appears as a
+ * contiguous run of whole segments in the path. So `"temperature"` matches
+ * `"temperature"`, `"air.temperature"`, `"soil.temperature"`, and
+ * `"water.temperature.current"`, but not the camelCase extra `"boardTemperature"`
+ * (segments are matched whole, not as substrings). A dotted query like
+ * `"air.temperature"` matches only paths containing that exact adjacent run.
+ */
+function providedPathMatches(providedPath: string, query: string): boolean {
+  const pSegs = providedPath.toLowerCase().split('.');
+  const qSegs = query.toLowerCase().split('.');
+  if (qSegs.length === 0 || qSegs[0] === '') return false;
+  for (let i = 0; i + qSegs.length <= pSegs.length; i++) {
+    let ok = true;
+    for (let j = 0; j < qSegs.length; j++) {
+      if (pSegs[i + j] !== qSegs[j]) {
+        ok = false;
+        break;
+      }
+    }
+    if (ok) return true;
+  }
+  return false;
+}
+
+/**
+ * List devices whose `provides` includes a path matching `query` (segment-aware,
+ * case-insensitive — see {@link providedPathMatches}).
+ *
+ * A bare segment query returns devices providing it at any namespace depth:
+ * `devicesProviding('temperature')` returns devices providing `temperature`,
+ * `air.temperature`, `soil.temperature`, `water.temperature.current`, etc. A
+ * dotted query narrows to that exact path run: `devicesProviding('air.temperature')`
+ * excludes a device that only provides `soil.temperature`.
+ *
+ * Authored devices only by default; honours the same `category`/`includeDrafts`
+ * filters as {@link devices}. Returns `[]` for a blank query. Result order matches
+ * {@link devices} (vendor then device).
+ *
+ * @param query - A vocabulary path or segment (e.g. `'temperature'`, `'co2'`,
+ *   `'metering.water.total'`).
+ * @example
+ * devicesProviding('co2').map((d) => `${d.vendor}/${d.device}`);
+ */
+export function devicesProviding(
+  query: string,
+  opts?: { category?: string; includeDrafts?: boolean },
+): DeviceInfo[] {
+  if (!query || !query.trim()) return [];
+  const q = query.trim();
+  return devices(opts).filter((d) =>
+    (d.provides ?? []).some((p) => providedPathMatches(p, q)),
+  );
+}
+
+/**
  * Raw `codec.js` text for a device (console-ready). Throws if the device is
  * unknown, or if it is a draft (scaffolded but not yet authored) — a draft has
  * only a stub, so callers should treat it as "not available here" and fall back

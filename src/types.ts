@@ -230,6 +230,13 @@ export interface DeviceInfo {
   name: string;
   categories: string[];
   sensors: string[];
+  /**
+   * Dotted output paths this device's codec emits across its data vectors —
+   * vocabulary keys (e.g. `air.temperature`, `metering.water.total`) plus
+   * device-specific camelCase extras (e.g. `lowBattery`). Used by
+   * {@link devicesProviding}. Absent on scaffolded drafts.
+   */
+  provides?: string[];
   /** `<vendor>/<device>` of the base variant, or null. */
   variantOf: string | null;
   downlink: { encode: boolean; decode: boolean };
