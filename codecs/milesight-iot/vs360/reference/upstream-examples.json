@@ -1,0 +1,41 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/milesight-iot/vs360-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "People Counter - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          1,
+          117,
+          100,
+          2,
+          117,
+          100,
+          4,
+          204,
+          18,
+          0,
+          22,
+          0,
+          5,
+          204,
+          19,
+          0,
+          20,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_main": 100,
+          "battery_node": 100,
+          "total_in": 18,
+          "total_out": 22,
+          "period_in": 19,
+          "period_out": 20
+        }
+      }
+    }
+  ]
+}

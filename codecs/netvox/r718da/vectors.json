@@ -1,0 +1,89 @@
+{
+  "uplink": [
+    {
+      "description": "Status report — vibration detected (status=1)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 26, 1, 30, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "action": {
+            "motion": {
+              "detected": true,
+              "count": 1
+            }
+          }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Status report — no vibration (status=0, synthetic)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 26, 1, 30, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "action": {
+            "motion": {
+              "detected": false,
+              "count": 0
+            }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Expected derived from reference/upstream-codec.js fPort 6 status decode: byte4=0 => no vibration; authored as action.motion.detected=false / count=0."
+    },
+    {
+      "description": "Status report — low battery flag set (synthetic)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 26, 1, 158, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3,
+          "action": {
+            "motion": {
+              "detected": true,
+              "count": 1
+            }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "byte3=0x9E: high bit (0x80) set => lowBattery, low 7 bits 0x1E=30 => 3.0 V, matching upstream '(low battery)' branch."
+    },
+    {
+      "description": "Startup version report (device info, no measurement)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 26, 0, 100, 11, 32, 32, 4, 36, 0, 0]
+      },
+      "expected": {
+        "errors": ["device info frame"]
+      },
+      "source": "ttn-example",
+      "_note": "reportType byte2=0x00 is a SWver/HWver/Datecode frame; carries no measurement."
+    },
+    {
+      "description": "Configure report response (fPort 7, no measurement)",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 26, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 7"]
+      },
+      "source": "ttn-example",
+      "_note": "Config command responses arrive on fPort 7 and carry no measurement."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,73 @@
+{
+  "_note": "Expected outputs authored by the ORACLE method: synthetic inputs (TTN example input plus hand-built variants) run through this folder's authored codec.js, which faithfully ports the upstream Milesight channel/type TLV wire format. Covers action.motion.detected true and false, the camelCase extras (batteryPercent, distance, calibrationSuccess), an unrecognized-channel error, and an empty-payload error.",
+  "uplink": [
+    {
+      "description": "Occupied: battery 98%, distance 15mm, occupancy=occupied, calibration=success (TTN example input)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 98, 2, 130, 15, 0, 3, 142, 1, 4, 142, 1]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 98,
+          "distance": 15,
+          "calibrationSuccess": true,
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Vacant: battery 90%, distance 200mm, occupancy=vacant, calibration=success",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 90, 2, 130, 200, 0, 3, 142, 0, 4, 142, 1]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 90,
+          "distance": 200,
+          "calibrationSuccess": true,
+          "action": { "motion": { "detected": false } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Occupancy-only uplink: motion detected, no other channels",
+      "input": {
+        "fPort": 85,
+        "bytes": [3, 142, 1]
+      },
+      "expected": {
+        "data": {
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unrecognized channel/type yields an error",
+      "input": {
+        "fPort": 85,
+        "bytes": [255, 255, 0]
+      },
+      "expected": {
+        "errors": ["no recognized Milesight channels"]
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Empty payload yields an error",
+      "input": {
+        "fPort": 85,
+        "bytes": []
+      },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

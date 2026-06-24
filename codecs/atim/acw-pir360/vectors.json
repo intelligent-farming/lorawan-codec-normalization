@@ -1,0 +1,80 @@
+{
+  "_note": "ATIM has no upstream example payloads (codecpir uses the shared decodeur.js with an empty examples set), so these vectors are synthetic: inputs hand-built against the ATIM ACW frame format and expected outputs computed from reference/upstream-codec.js (the ORACLE). byte0 0xA0 = new-product measurement frame (bit3 new-product + bit1 measurement); a new-product non-measurement frame is typed by byte0's low nibble (0x_1 life, 0x_e error), e.g. 0x81 life, 0x8E error. Channel markers: 0x01 digital input (PIR alarm line, bit0 = input 0), 0x04 = 4-byte counter (PIR event count). Across the data vectors the union of paths covers action.motion.detected, action.motion.count and battery.",
+  "uplink": [
+    {
+      "description": "alarm mode, motion detected on PIR input 0",
+      "input": { "fPort": 2, "bytes": [160, 1, 1] },
+      "expected": {
+        "data": {
+          "action": { "motion": { "detected": true } },
+          "frameType": "measurement"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "alarm mode, no motion (PIR input 0 low)",
+      "input": { "fPort": 2, "bytes": [160, 1, 0] },
+      "expected": {
+        "data": {
+          "action": { "motion": { "detected": false } },
+          "frameType": "measurement"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "alarm mode, state-change frame: input 0 changed to high",
+      "input": { "fPort": 2, "bytes": [160, 1, 17] },
+      "expected": {
+        "data": {
+          "action": { "motion": { "detected": true } },
+          "frameType": "measurement"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "counting mode, PIR event counter = 300",
+      "input": { "fPort": 2, "bytes": [160, 4, 0, 0, 1, 44] },
+      "expected": {
+        "data": {
+          "action": { "motion": { "count": 300 } },
+          "frameType": "measurement"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "life frame: node battery 3.3 V, capacitor 3.0 V",
+      "input": { "fPort": 2, "bytes": [129, 12, 228, 11, 184] },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "chargeVoltage": 3.0,
+          "frameType": "life"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "empty payload is rejected",
+      "input": { "fPort": 2, "bytes": [] },
+      "expected": { "errors": ["empty payload"] },
+      "source": "synthetic"
+    },
+    {
+      "description": "error frame: enclosure opened (no measurement)",
+      "input": { "fPort": 2, "bytes": [142, 1, 156] },
+      "expected": { "errors": ["device error: Enclosure opened"] },
+      "source": "synthetic"
+    },
+    {
+      "description": "legacy ATIM product frame is unsupported",
+      "input": { "fPort": 2, "bytes": [50, 1, 0, 0, 0] },
+      "expected": { "errors": ["legacy ATIM product frame not supported"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,29 @@
+{
+  "vendor": "milesight-iot",
+  "device": "vs341",
+  "name": "VS341 - Desk&Seat Occupancy Sensor",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "pir",
+    "motion"
+  ],
+  "provides": [
+    "action.motion.detected",
+    "batteryPercent"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "vs341",
+    "codecId": "vs341-codec",
+    "codecFile": "vs341.js",
+    "codecSha256": "2e37e0e70105d9a7005bb3ca7a0647c82d02e7d72b0ec8f698439b8117b14801",
+    "referencedAt": "2026-06-24"
+  }
+}

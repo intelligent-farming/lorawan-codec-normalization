@@ -1,0 +1,52 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/adeunis/motion-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "0x5c Motion data",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          92,
+          128,
+          1,
+          30,
+          50,
+          0,
+          32
+        ]
+      },
+      "output": {
+        "data": {
+          "bytes": {
+            "type": "0x5c Motion data",
+            "status": {
+              "frameCounter": 4,
+              "hardwareError": false,
+              "lowBattery": false,
+              "configurationDone": false,
+              "configurationInconsistency": false
+            },
+            "presenceDetectedWhenSending": true,
+            "decodingInfo": "values: [t=0, t-1, t-2, ...]",
+            "presence": {
+              "unit": "%",
+              "values": [
+                30,
+                0
+              ]
+            },
+            "luminosity": {
+              "unit": "%",
+              "values": [
+                50,
+                32
+              ]
+            }
+          }
+        },
+        "warnings": [],
+        "errors": []
+      }
+    }
+  ]
+}

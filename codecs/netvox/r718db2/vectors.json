@@ -1,0 +1,96 @@
+{
+  "uplink": [
+    {
+      "description": "Status report, no vibration on either gang (upstream example input)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 61, 1, 30, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "action": {
+            "motion": {
+              "detected": false,
+              "count": 0,
+              "gang1": 0,
+              "gang2": 0
+            }
+          }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream Status report input (status1=0, status2=0). Battery byte 30 (0x1e) => 3.0 V, no low-battery flag. Both gangs idle -> motion not detected, count 0. expected.data authored here from reference/upstream-codec.js wire semantics, NOT copied from upstream normalizeUplink."
+    },
+    {
+      "description": "Synthetic: gang 1 detecting vibration only",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 61, 1, 30, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "action": {
+            "motion": {
+              "detected": true,
+              "count": 1,
+              "gang1": 1,
+              "gang2": 0
+            }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "status1=1 (gang 1 vibration), status2=0. One channel active -> detected true, count 1."
+    },
+    {
+      "description": "Synthetic: both gangs detecting vibration, low battery flagged",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 61, 1, 158, 1, 1, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3,
+          "action": {
+            "motion": {
+              "detected": true,
+              "count": 2,
+              "gang1": 1,
+              "gang2": 1
+            }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Battery byte 158 (0x9e): high bit 0x80 set -> lowBattery true; lower 7 bits 0x1e=30 => 3.0 V. status1=1, status2=1 -> both gangs active, count 2."
+    },
+    {
+      "description": "Startup/device-info frame carries no measurement (upstream example input)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 61, 0, 100, 11, 32, 32, 4, 36, 0, 0]
+      },
+      "expected": {
+        "errors": ["device info frame"]
+      },
+      "source": "ttn-example",
+      "_note": "reportType byte 0x00 is the SW/HW version + datecode startup frame; no measurement, reported as an error."
+    },
+    {
+      "description": "Config response on fPort 7 carries no measurement",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 61, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 7"]
+      },
+      "source": "ttn-example",
+      "_note": "fPort 7 is config request/response (ConfigReportRsp); not a data report."
+    }
+  ],
+  "downlink": []
+}

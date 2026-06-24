@@ -1,0 +1,25 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/milesight-iot/vs340-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Desk&Seat Occupancy Sensor - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          1,
+          117,
+          100,
+          3,
+          0,
+          1
+        ]
+      },
+      "output": {
+        "data": {
+          "battery": 100,
+          "occupancy": "occupied"
+        }
+      }
+    }
+  ]
+}

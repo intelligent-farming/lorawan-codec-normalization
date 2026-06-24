@@ -1,0 +1,34 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/milesight-iot/vs330-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "LoRaWAN Bathroom Occupancy Sensor - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          1,
+          117,
+          98,
+          2,
+          130,
+          15,
+          0,
+          3,
+          142,
+          1,
+          4,
+          142,
+          1
+        ]
+      },
+      "output": {
+        "data": {
+          "battery": 98,
+          "distance": 15,
+          "occupancy": "occupied",
+          "calibration": "success"
+        }
+      }
+    }
+  ]
+}

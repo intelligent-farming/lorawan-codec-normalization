@@ -1,0 +1,76 @@
+{
+  "uplink": [
+    {
+      "description": "0x11 sensor-state report: PIR detected, button and dry-input clear",
+      "input": { "fPort": 6, "bytes": [1, 210, 17, 28, 0, 0, 0, 0, 1, 0, 0] },
+      "expected": {
+        "data": {
+          "battery": 2.8,
+          "action": { "motion": { "detected": true } },
+          "buttonPressed": false,
+          "digitalInput": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "PIRSensorState = BinarySensorReport bit0; bytes[8]=1. battery byte 28=0x1C -> 2.8V. expected.data produced by running reference/upstream-codec.js (Volt 2.8, PIRSensorState 1, all others 0) and renormalizing."
+    },
+    {
+      "description": "0x11 sensor-state report: external shock/vibration detected",
+      "input": { "fPort": 6, "bytes": [1, 210, 17, 28, 0, 0, 0, 0, 128, 0, 0] },
+      "expected": {
+        "data": {
+          "battery": 2.8,
+          "action": { "motion": { "detected": true } },
+          "buttonPressed": false,
+          "digitalInput": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "ExternalShockSensorState = BinarySensorReport bit7; bytes[8]=128. Vibration counts as motion. Verified against reference (ExternalShockSensorState 1)."
+    },
+    {
+      "description": "0x11 sensor-state report: all motion clear, button pressed and dry input active",
+      "input": { "fPort": 6, "bytes": [1, 210, 17, 28, 0, 0, 0, 1, 2, 0, 0] },
+      "expected": {
+        "data": {
+          "battery": 2.8,
+          "action": { "motion": { "detected": false } },
+          "buttonPressed": true,
+          "digitalInput": true
+        }
+      },
+      "source": "synthetic",
+      "_note": "BinarySensorReport=(bytes[7]<<8|bytes[8])=0x0102. bit1 (button)=1, bit8 (dry contact in)=1, all motion bits (0,6,7)=0. Verified against reference (EmergenceButtonaLAlarmState 1, ExternalDryContactPointINState 1, PIR/shock states 0)."
+    },
+    {
+      "description": "0x11 sensor-state report: low battery, internal shock detected",
+      "input": { "fPort": 6, "bytes": [1, 210, 17, 156, 0, 0, 0, 0, 64, 0, 0] },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 2.8,
+          "action": { "motion": { "detected": true } },
+          "buttonPressed": false,
+          "digitalInput": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "battery byte 156=0x9C: high bit set (low battery), low 7 bits 0x1C -> 2.8V. InternalShockSensorState = bit6; bytes[8]=64. Verified against reference (Volt '2.8(low battery)', InternalShockSensorState 1)."
+    },
+    {
+      "description": "Startup version report (0x00) carries no measurement",
+      "input": { "fPort": 6, "bytes": [1, 210, 0, 100, 2, 32, 32, 8, 17, 0, 0] },
+      "expected": { "errors": ["carries no motion measurement"] },
+      "source": "ttn-example",
+      "_note": "reportType 0x00 device-info frame (upstream emits Device/SWver/HWver/Datecode); no motion -> error."
+    },
+    {
+      "description": "Config response on fPort 7 is not a data report",
+      "input": { "fPort": 7, "bytes": [129, 210, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+      "expected": { "errors": ["unsupported fPort 7"] },
+      "source": "ttn-example",
+      "_note": "fPort 7 carries config responses (upstream ConfigReportRsp), not measurements."
+    }
+  ],
+  "downlink": []
+}

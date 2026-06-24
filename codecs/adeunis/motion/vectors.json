@@ -1,0 +1,79 @@
+{
+  "uplink": [
+    {
+      "description": "0x5c Motion data — presence detected when sending (action.motion.detected true)",
+      "input": { "fPort": 1, "bytes": [92, 128, 1, 30, 50, 0, 32] },
+      "expected": {
+        "data": {
+          "action": { "motion": { "detected": true } },
+          "frameCounter": 4,
+          "lowBattery": false,
+          "configurationDone": false,
+          "configurationInconsistency": false,
+          "presencePercent": [30, 0],
+          "luminosityPercent": [50, 32]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; expected.data derived by running reference/upstream-codec.js (presenceDetectedWhenSending=true, status frameCounter=4, presence/luminosity sample %)."
+    },
+    {
+      "description": "0x5c Motion data — no presence, low battery flag set (action.motion.detected false)",
+      "input": { "fPort": 1, "bytes": [92, 2, 0, 0, 0] },
+      "expected": {
+        "data": {
+          "action": { "motion": { "detected": false } },
+          "frameCounter": 0,
+          "lowBattery": true,
+          "configurationDone": false,
+          "configurationInconsistency": false,
+          "presencePercent": [0],
+          "luminosityPercent": [0]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; status byte 0x02 sets lowBattery; presence byte 0 => detected false. Derived via reference/upstream-codec.js."
+    },
+    {
+      "description": "0x4e Motion data — global motion counter (action.motion.count)",
+      "input": { "fPort": 1, "bytes": [78, 64, 0, 5, 0, 2, 60] },
+      "expected": {
+        "data": {
+          "action": { "motion": { "count": 5 } },
+          "frameCounter": 2,
+          "lowBattery": false,
+          "configurationDone": false,
+          "configurationInconsistency": false,
+          "counterSamples": [2],
+          "luminosityPercent": [60]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; globalCounterValue=5 => action.motion.count. Derived via reference/upstream-codec.js."
+    },
+    {
+      "description": "0x4f Motion presence alarm — alarm implies detection plus counter",
+      "input": { "fPort": 1, "bytes": [79, 32, 0, 7, 0, 3] },
+      "expected": {
+        "data": {
+          "action": { "motion": { "detected": true, "count": 7 } },
+          "frameCounter": 1,
+          "lowBattery": false,
+          "configurationDone": false,
+          "configurationInconsistency": false,
+          "alarmCounterValue": 3
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; presence alarm => detected true, globalCounterValue=7 => count. Derived via reference/upstream-codec.js."
+    },
+    {
+      "description": "Unsupported frame code — error vector",
+      "input": { "fPort": 1, "bytes": [48, 0] },
+      "expected": { "errors": ["unsupported frame code"] },
+      "source": "synthetic",
+      "_note": "Synthetic; 0x30 keep-alive carries no motion measurement, so this normalized codec rejects it."
+    }
+  ],
+  "downlink": []
+}

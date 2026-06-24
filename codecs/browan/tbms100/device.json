@@ -1,0 +1,32 @@
+{
+  "vendor": "browan",
+  "device": "tbms100",
+  "name": "Motion Sensor",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "motion",
+    "pir"
+  ],
+  "provides": [
+    "action.motion.count",
+    "action.motion.detected",
+    "battery",
+    "boardTemperature",
+    "timeSinceLastEvent"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "browan",
+    "device": "tbms100",
+    "codecId": "tbms100-codec",
+    "codecFile": "tbms100.js",
+    "codecSha256": "9cf5fbb6a7a12b35b06a2a699aae605e55200b716a0dd45bd15552400dea8fb5",
+    "referencedAt": "2026-06-24"
+  }
+}

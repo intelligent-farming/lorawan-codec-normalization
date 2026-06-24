@@ -1,0 +1,75 @@
+{
+  "uplink": [
+    {
+      "description": "Status report — vibration detected, 3.0 V",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 139, 1, 30, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "TTN example input; expected.data authored from reference/upstream-codec.js fPort 6 status frame: bytes[3]=30 -> 3.0 V battery, bytes[4]=1 (status) -> vibration alarm => action.motion.detected. Upstream emits Volt/status; we normalize to vocabulary keys."
+    },
+    {
+      "description": "Status report — no vibration, 3.5 V",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 139, 1, 35, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.5,
+          "action": { "motion": { "detected": false } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: bytes[3]=35 -> 3.5 V, bytes[4]=0 -> no vibration => action.motion.detected false. Confirms the cleared-alarm branch."
+    },
+    {
+      "description": "Status report — vibration detected, low-battery flag set",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 139, 1, 158, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3,
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: bytes[3]=158=0x9E, high bit set -> lowBattery extra true and battery (0x1E=30)/10 = 3.0 V; bytes[4]=1 -> vibration detected."
+    },
+    {
+      "description": "Startup/device-info frame carries no measurement",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 139, 0, 100, 11, 32, 32, 4, 36, 0, 0]
+      },
+      "expected": {
+        "errors": ["device info frame"]
+      },
+      "source": "ttn-example",
+      "_note": "TTN example input; bytes[2]=0 is the version/datecode frame (no measurement) per reference/upstream-codec.js => error."
+    },
+    {
+      "description": "Config response on fPort 7 is not a data report",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 139, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort"]
+      },
+      "source": "ttn-example",
+      "_note": "TTN example input; fPort 7 carries config request/response frames, not measurements => error."
+    }
+  ],
+  "downlink": []
+}

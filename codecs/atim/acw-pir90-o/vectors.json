@@ -1,0 +1,66 @@
+{
+  "uplink": [
+    {
+      "description": "PIR motion alarm frame: motion detected, count and PIR supply reported",
+      "input": { "fPort": 1, "bytes": [50, 8, 1, 0, 0, 0, 5, 12, 128] },
+      "expected": {
+        "data": {
+          "action": { "motion": { "detected": true, "count": 5 } },
+          "frameType": "motionAlarm",
+          "enclosureOpen": false,
+          "sensorState": "active",
+          "pirSensorVoltage": 3.2
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; byte0=0x32 selects the legacy 'Produit PIR' frame (upstream getFrameType -> 'Ancien produit' -> frame_type_ancien -> 'Produit PIR'). type_trame=0x08 is the motion-alarm frame (upstream 'Trame alarme') -> action.motion.detected=true. ouverture_boitier=0x01 -> enclosure closed; capteur_dq[1]=bytes[4]=0x00 -> 'Active'; compteur_pir=0x0005=5 -> action.motion.count; temperature_pir=0x0C80=3200 mV -> pirSensorVoltage 3.2 V. Expected confirmed by running reference/upstream-codec.js (compteur_pir.value=5, temperature_pir.value=3200, type_trame='Trame alarme')."
+    },
+    {
+      "description": "PIR periodic count frame: no alarm, cumulative count reported",
+      "input": { "fPort": 1, "bytes": [50, 16, 1, 0, 0, 1, 2, 12, 0] },
+      "expected": {
+        "data": {
+          "action": { "motion": { "detected": false, "count": 258 } },
+          "frameType": "count",
+          "enclosureOpen": false,
+          "sensorState": "active",
+          "pirSensorVoltage": 3.072
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; byte0=0x32 'Produit PIR', type_trame=0x10 periodic count frame (upstream 'Trame de comptage') -> detected=false; compteur_pir=0x0102=258 -> action.motion.count; temperature_pir=0x0C00=3072 mV -> pirSensorVoltage 3.072 V. Expected confirmed by running reference/upstream-codec.js (compteur_pir.value=258, temperature_pir.value=3072, type_trame='Trame de comptage')."
+    },
+    {
+      "description": "PIR enclosure-open event: enclosure opened, no motion",
+      "input": { "fPort": 1, "bytes": [50, 1, 0, 0, 0, 0, 0, 12, 128] },
+      "expected": {
+        "data": {
+          "action": { "motion": { "detected": false, "count": 0 } },
+          "frameType": "enclosureOpen",
+          "enclosureOpen": true,
+          "sensorState": "active",
+          "pirSensorVoltage": 3.2
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; byte0=0x32 'Produit PIR', type_trame=0x01 enclosure-open event (upstream 'Trame d'ourture boitier') -> detected=false; ouverture_boitier=0x00 -> enclosure open; compteur_pir=0x0000=0. Expected confirmed by running reference/upstream-codec.js (ouverture_boitier='boitier ouvert', compteur_pir.value=0)."
+    },
+    {
+      "description": "legacy keep-alive (life) frame: battery voltage",
+      "input": { "fPort": 1, "bytes": [1, 12, 128] },
+      "expected": {
+        "data": { "battery": 3.2 }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame; byte0=0x01 selects the legacy keep-alive frame (upstream getFrameType -> 'Ancien produit' -> frame_type_ancien -> 'Trame de vie') carrying tensionc=0x0C80=3200 mV -> battery 3.2 V. Expected confirmed by running reference/upstream-codec.js (tensionc.value=3.2)."
+    },
+    {
+      "description": "device error frame yields an error",
+      "input": { "fPort": 1, "bytes": [142, 142, 138] },
+      "expected": { "errors": ["device error frame"] },
+      "source": "synthetic",
+      "_note": "Synthetic frame; byte0=0x8E has high bit set (new-product) and byte1=0x8E has low nibble 0xE, which upstream getFrameType classifies as 'Trame d'erreur'. byte2=0x8A is ERR_BATTERY_LEVEL_DEAD. The frame carries no measurement, so we surface it as a decode error rather than data."
+    }
+  ],
+  "downlink": []
+}

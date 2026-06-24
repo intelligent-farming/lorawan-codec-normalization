@@ -1,0 +1,71 @@
+{
+  "_note": "Expected outputs authored against the upstream Apache-2.0 reference decoder (reference/upstream-codec.js) using the ORACLE method: TTN example inputs are reused, but the normalized expected.data is authored here (vibration status byte -> action.motion.detected, Volt/10 -> battery V, low-battery high bit -> lowBattery extra). Synthetic vectors cover the detected/not-detected motion states and the low-battery flag. Device-info and config frames carry no measurement and are reported as errors.",
+  "uplink": [
+    {
+      "description": "Status report, vibration detected (status byte = 1, battery 3.0 V)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 27, 1, 30, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Synthetic: status report, no vibration (status byte = 0, battery 3.6 V)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 27, 1, 36, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "action": { "motion": { "detected": false } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Synthetic: status report, vibration detected with low-battery flag (high bit of byte 3 set, 2.5 V)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 27, 1, 153, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 2.5,
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Startup / device-info frame (reportType 0x00) carries no measurement",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 27, 0, 100, 11, 32, 32, 4, 36, 0, 0]
+      },
+      "expected": {
+        "errors": ["device info frame"]
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Config response on fPort 7 carries no measurement",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 27, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 7"]
+      },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

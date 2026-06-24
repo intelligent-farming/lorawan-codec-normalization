@@ -1,0 +1,60 @@
+{
+  "_note": "Synthetic vectors authored via the oracle method: the ATIM upstream codecpir.yaml ships no example payloads, so inputs are hand-built per the upstream ACW frame format (vendor/atim/decodeur.js) and expected.data is the normalized output this codec must produce. byte0 0xA0 = new-product measurement frame; channel marker low nibble selects type (0x01 digital input = PIR detection line, 0x04 = 32-bit motion counter). 0x80/0x01 = life frame (battery), 0x80/0x0E = error frame.",
+  "uplink": [
+    {
+      "description": "measurement: PIR detection on input 0 (raw input bits, bit0 set)",
+      "input": { "fPort": 2, "bytes": [160, 1, 1] },
+      "expected": { "data": { "action": { "motion": { "detected": true } } } },
+      "source": "synthetic"
+    },
+    {
+      "description": "measurement: no detection (raw input bits all clear)",
+      "input": { "fPort": 2, "bytes": [160, 1, 0] },
+      "expected": { "data": { "action": { "motion": { "detected": false } } } },
+      "source": "synthetic"
+    },
+    {
+      "description": "measurement: per-channel motion state byte (>15, movement-present + state-high) on input 0",
+      "input": { "fPort": 2, "bytes": [160, 1, 17] },
+      "expected": { "data": { "action": { "motion": { "detected": true } } } },
+      "source": "synthetic"
+    },
+    {
+      "description": "measurement: motion event counter, count = 256",
+      "input": { "fPort": 2, "bytes": [160, 4, 0, 0, 1, 0] },
+      "expected": { "data": { "action": { "motion": { "count": 256 } } } },
+      "source": "synthetic"
+    },
+    {
+      "description": "measurement: detection plus counter (counting mode), detected=false count=42",
+      "input": { "fPort": 2, "bytes": [160, 1, 0, 4, 0, 0, 0, 42] },
+      "expected": { "data": { "action": { "motion": { "detected": false, "count": 42 } } } },
+      "source": "synthetic"
+    },
+    {
+      "description": "life frame: battery 3.333 V, capacitor 2.56 V",
+      "input": { "fPort": 2, "bytes": [128, 1, 13, 5, 10, 0] },
+      "expected": { "data": { "battery": 3.333, "capacitorVoltage": 2.56 } },
+      "source": "synthetic"
+    },
+    {
+      "description": "error frame: critical battery (ERR_BATTERY_LEVEL_DEAD 0x8A) with appended voltage 3.2 V",
+      "input": { "fPort": 2, "bytes": [128, 14, 138, 12, 128] },
+      "expected": { "errors": ["Battery level critical", "3.2 V"] },
+      "source": "synthetic"
+    },
+    {
+      "description": "empty payload is rejected",
+      "input": { "fPort": 2, "bytes": [] },
+      "expected": { "errors": ["empty payload"] },
+      "source": "synthetic"
+    },
+    {
+      "description": "legacy ATIM product frame (byte0 high bit clear) is rejected",
+      "input": { "fPort": 2, "bytes": [50, 1, 0, 0, 0, 0] },
+      "expected": { "errors": ["legacy ATIM product frame"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

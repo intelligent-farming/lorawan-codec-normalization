@@ -1,0 +1,71 @@
+{
+  "_note": "Synthetic expected.data authored per AUTHORING.md (ORACLE method): inputs taken from the upstream TTN examples (reference/upstream-examples.json), expected outputs derived by hand from the wire format documented in reference/upstream-codec.js and normalized to the vocabulary. The R730MBA upstream decoder only models device-info/battery/status (fPort 6) and config (fPort 7); the byte[4] status is the vibration alarm and maps to action.motion. Vectors cover action.motion.detected (true/false), action.motion.count, battery, the lowBattery extra, and several no-measurement frames reported as errors.",
+  "uplink": [
+    {
+      "description": "Vibration detected status report (battery 3.0 V, status 1)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 130, 1, 30, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "action": { "motion": { "detected": true, "count": 1 } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "No vibration status report (battery 3.0 V, status 0)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 130, 1, 30, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "action": { "motion": { "detected": false, "count": 0 } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Vibration detected with multi-event count and low-battery flag (raw 0x80|30 = 158, status 5)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 130, 1, 158, 5, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3,
+          "action": { "motion": { "detected": true, "count": 5 } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Startup/device-info frame on fPort 6 (no measurement)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 130, 0, 100, 11, 32, 32, 4, 36, 0, 0]
+      },
+      "expected": {
+        "errors": ["device info frame"]
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Configure report response on fPort 7 (no measurement)",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 130, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 7"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

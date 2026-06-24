@@ -1,0 +1,59 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/browan/tbms100-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Occupied",
+      "input": {
+        "fPort": 102,
+        "bytes": [
+          1,
+          187,
+          52,
+          4,
+          0,
+          220,
+          120,
+          1
+        ]
+      },
+      "output": {
+        "data": {
+          "battery": 3.6,
+          "count": 96476,
+          "status": 1,
+          "temperatureBoard": 20,
+          "time": 4
+        }
+      },
+      "normalizedOutput": {
+        "data": [
+          {
+            "action": {
+              "motion": {
+                "detected": true
+              }
+            },
+            "air": {
+              "temperature": 20
+            },
+            "battery": 3.6
+          }
+        ]
+      }
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [
+          1
+        ]
+      },
+      "output": {
+        "errors": [
+          "unknown FPort"
+        ]
+      }
+    }
+  ]
+}

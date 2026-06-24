@@ -1,0 +1,80 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/micropelt/mlrtps1-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "MLRTPS Example 1",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          109,
+          32,
+          181,
+          3
+        ]
+      },
+      "output": {
+        "data": {
+          "Ambient_Temperature": 27.25,
+          "Ambient_Temperature_Failure": 0,
+          "Energy_Storage_Low": 0,
+          "PIR_Sensor_Failure": 0,
+          "PIR_Status": 1,
+          "Radio_Communication_Error": 0,
+          "Radio_Signal_Strength": 0,
+          "Set_Point_Temperature_Value": "+3",
+          "Storage_Voltage": 3.62
+        }
+      }
+    },
+    {
+      "description": "MLRTPS Example 2",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          88,
+          0,
+          150,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Ambient_Temperature": 22,
+          "Ambient_Temperature_Failure": 0,
+          "Energy_Storage_Low": 0,
+          "PIR_Sensor_Failure": 0,
+          "PIR_Status": 0,
+          "Radio_Communication_Error": 0,
+          "Radio_Signal_Strength": 0,
+          "Set_Point_Temperature_Value": "0",
+          "Storage_Voltage": 3
+        }
+      }
+    },
+    {
+      "description": "MLRTPS Example 3",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          76,
+          32,
+          132,
+          255
+        ]
+      },
+      "output": {
+        "data": {
+          "Ambient_Temperature": 19,
+          "Ambient_Temperature_Failure": 0,
+          "Energy_Storage_Low": 0,
+          "PIR_Sensor_Failure": 0,
+          "PIR_Status": 1,
+          "Radio_Communication_Error": 0,
+          "Radio_Signal_Strength": 0,
+          "Set_Point_Temperature_Value": "Freeze Protection 6°",
+          "Storage_Voltage": 2.64
+        }
+      }
+    }
+  ]
+}

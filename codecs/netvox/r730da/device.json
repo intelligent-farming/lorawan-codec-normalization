@@ -1,0 +1,30 @@
+{
+  "vendor": "netvox",
+  "device": "r730da",
+  "name": "R730DA - Wireless Vibration Sensor",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "vibration"
+  ],
+  "provides": [
+    "action.motion.count",
+    "action.motion.detected",
+    "battery",
+    "lowBattery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r730da",
+    "codecId": "r730da-codec",
+    "codecFile": "payload/r718da_r718db_r718j_r718lb_r718mba.js",
+    "codecSha256": "e9bc7cc99a2db42fdb784f0a9375b5a1225234723052a67a2fc1576471862747",
+    "referencedAt": "2026-06-24"
+  }
+}

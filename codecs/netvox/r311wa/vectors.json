@@ -1,0 +1,78 @@
+{
+  "uplink": [
+    {
+      "description": "Status report, seat clear (no motion) - upstream Status_1 OFF",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 90, 1, 30, 0, 1, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "action": { "motion": { "detected": false } },
+          "status2": true
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream TTN example status frame. byte3=30 -> battery 3.0 V, byte4=0 -> motion clear, byte5=1 -> status2 true. expected.data authored per AUTHORING.md (occupancy/PIR -> action.motion.detected)."
+    },
+    {
+      "description": "Status report, seat occupied (motion detected)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 90, 1, 30, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "action": { "motion": { "detected": true } },
+          "status2": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic occupied frame (byte4=1). Oracle-confirmed against reference/upstream-codec.js: Status_1 ON. expected.data authored: action.motion.detected = true."
+    },
+    {
+      "description": "Status report, occupied with low-battery flag set",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 90, 1, 158, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3,
+          "action": { "motion": { "detected": true } },
+          "status2": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic low-battery frame. byte3=158 (0x80|30): high bit -> lowBattery true, low 7 bits -> battery 3.0 V. Oracle-confirmed: upstream renders '3(low battery)'."
+    },
+    {
+      "description": "Startup version / device-info report (no measurement)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 90, 0, 100, 11, 32, 25, 17, 18, 0, 0]
+      },
+      "expected": {
+        "errors": ["device info frame"]
+      },
+      "source": "ttn-example",
+      "_note": "Upstream TTN example. reportType byte2=0x00 is a SW/HW version + datecode frame; carries no measurement -> error."
+    },
+    {
+      "description": "Configure report response on fPort 7 (no measurement)",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 90, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 7"]
+      },
+      "source": "ttn-example",
+      "_note": "Upstream TTN example config response. Config traffic lives on fPort 7 and carries no measurement -> error."
+    }
+  ],
+  "downlink": []
+}

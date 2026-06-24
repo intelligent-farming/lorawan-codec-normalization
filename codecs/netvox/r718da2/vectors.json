@@ -1,0 +1,74 @@
+{
+  "uplink": [
+    {
+      "description": "Status report, gang 1 vibrating (TTN example bytes; report type 0x01)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 47, 1, 30, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "vibration1": 1,
+          "vibration2": 0,
+          "action": { "motion": { "detected": true, "count": 1 } }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Status report, both gangs vibrating, low battery flag set (synthetic)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 47, 1, 156, 1, 1, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 2.8,
+          "vibration1": 1,
+          "vibration2": 1,
+          "action": { "motion": { "detected": true, "count": 2 } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "byte[3]=0x9C -> high bit set (lowBattery), 0x1C=28 -> 2.8 V; status1=status2=1 -> both channels vibrating, count 2"
+    },
+    {
+      "description": "Status report, no vibration on either gang (synthetic)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 47, 1, 30, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "vibration1": 0,
+          "vibration2": 0,
+          "action": { "motion": { "detected": false, "count": 0 } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "both status bytes zero -> no motion detected, count 0; still a valid measurement frame"
+    },
+    {
+      "description": "Startup version report carries no measurement (TTN example bytes; report type 0x00)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 47, 0, 100, 11, 32, 32, 4, 36, 0, 0]
+      },
+      "expected": { "errors": ["no measurement"] },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Config response on fPort 7 is unsupported (TTN example bytes)",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 47, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

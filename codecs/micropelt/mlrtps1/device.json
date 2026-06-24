@@ -1,0 +1,37 @@
+{
+  "vendor": "micropelt",
+  "device": "mlrtps1",
+  "name": "MLRTPS1 - Thermostat",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "temperature",
+    "pir",
+    "potentiometer"
+  ],
+  "provides": [
+    "action.motion.detected",
+    "air.temperature",
+    "ambientTemperatureFailure",
+    "battery",
+    "energyStorageLow",
+    "pirSensorFailure",
+    "radioCommunicationError",
+    "radioSignalStrength",
+    "setPointTemperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "micropelt",
+    "device": "mlrtps1",
+    "codecId": "mlrtps1-codec",
+    "codecFile": "mlrtps1.js",
+    "codecSha256": "24760100e6c0dad7ffc4146bbb1b8723e833e2b0b85e2b7867e504c825260733",
+    "referencedAt": "2026-06-24"
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "uplink": [
+    {
+      "description": "PIR alarm frame: detection event, count=7, sensor active, enclosure closed, 3.0 V sensor rail",
+      "input": { "fPort": 2, "bytes": [50, 8, 1, 0, 0, 0, 7, 11, 184] },
+      "expected": {
+        "data": {
+          "action": { "motion": { "count": 7, "detected": true } },
+          "frameType": "alarm",
+          "enclosureOpen": false,
+          "sensorState": "active",
+          "sensorVoltage": 3.0
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds bytes; expected fields derived from upstream decodeur.js (Produit PIR / postProcessAncienPir) run as the oracle: compteur_pir=7, type_trame=0x08 (Trame alarme) -> detection, capteur_dq Active, ouverture closed, temperature_pir=3000 mV."
+    },
+    {
+      "description": "PIR counting frame: running count=512, no fresh detection asserted",
+      "input": { "fPort": 2, "bytes": [50, 16, 1, 0, 0, 2, 0, 11, 184] },
+      "expected": {
+        "data": {
+          "action": { "motion": { "count": 512 } },
+          "frameType": "counting",
+          "enclosureOpen": false,
+          "sensorState": "active",
+          "sensorVoltage": 3.0
+        }
+      },
+      "source": "synthetic",
+      "_note": "Oracle: type_trame=0x10 (Trame de comptage), compteur_pir=0x0200=512; counting frame reports count without a detection boolean."
+    },
+    {
+      "description": "PIR box-opening frame: enclosure open, sensor disabled, count=0",
+      "input": { "fPort": 2, "bytes": [50, 1, 0, 0, 1, 0, 0, 11, 184] },
+      "expected": {
+        "data": {
+          "action": { "motion": { "count": 0 } },
+          "frameType": "boxOpening",
+          "enclosureOpen": true,
+          "sensorState": "disabled",
+          "sensorVoltage": 3.0
+        }
+      },
+      "source": "synthetic",
+      "_note": "Oracle: type_trame=0x01 (Trame d'ouverture boitier), ouverture_boitier=0x00 open, capteur_dq[1]=0x01 disabled."
+    },
+    {
+      "description": "Non-PIR frame type rejected",
+      "input": { "fPort": 2, "bytes": [160, 1, 1] },
+      "expected": { "errors": ["unsupported ATIM frame type"] },
+      "source": "synthetic",
+      "_note": "byte0=0xA0 is not the 0x32 PIR frame this device emits; codec returns an error."
+    },
+    {
+      "description": "Truncated PIR frame rejected",
+      "input": { "fPort": 2, "bytes": [50, 8, 1, 0] },
+      "expected": { "errors": ["truncated PIR frame"] },
+      "source": "synthetic",
+      "_note": "0x32 header but fewer than 9 bytes."
+    }
+  ],
+  "downlink": []
+}

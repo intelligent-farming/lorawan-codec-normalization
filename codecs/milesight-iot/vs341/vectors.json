@@ -1,0 +1,58 @@
+{
+  "_note": "Synthetic vectors. Inputs follow the Milesight channel/type TLV wire format observed in the upstream Apache-2.0 reference (vendor/milesight-iot/vs340.js, shared VS340/VS341); the lone upstream example covers only the occupied case. Each expected.data was produced by running reference/upstream-codec.js over the input and re-shaping its fields to the normalized vocabulary by hand (battery percent -> batteryPercent extra; occupancy string -> action.motion.detected boolean). Cases cover occupied (detected true) and vacant (detected false), plus an unrecognized-channel error.",
+  "uplink": [
+    {
+      "description": "Occupied - battery + occupancy (upstream example input)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 100, 3, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 100,
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Vacant - battery + occupancy (no motion)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 80, 3, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 80,
+          "action": { "motion": { "detected": false } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Occupancy channel only (no battery)",
+      "input": {
+        "fPort": 85,
+        "bytes": [3, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unrecognized channel - no Milesight channels recognized",
+      "input": {
+        "fPort": 85,
+        "bytes": [9, 9, 9]
+      },
+      "expected": {
+        "errors": ["no recognized Milesight channels"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

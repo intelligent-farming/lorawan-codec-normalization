@@ -1,0 +1,38 @@
+{
+  "vendor": "adeunis",
+  "device": "motion",
+  "name": "Motion - Motion Sensor",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "pir",
+    "luminosity",
+    "digital input"
+  ],
+  "provides": [
+    "action.motion.count",
+    "action.motion.detected",
+    "alarmCounterValue",
+    "configurationDone",
+    "configurationInconsistency",
+    "counterSamples",
+    "frameCounter",
+    "lowBattery",
+    "luminosityPercent",
+    "presencePercent"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "adeunis",
+    "device": "motion",
+    "codecId": "motion-codec",
+    "codecFile": "motion_lib.js",
+    "codecSha256": "e3f5181b94bb168447c77578b2582451a3c0d7feb088ab41a6ec60719a16b561",
+    "referencedAt": "2026-06-24"
+  }
+}

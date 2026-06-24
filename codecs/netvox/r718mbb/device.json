@@ -1,0 +1,30 @@
+{
+  "vendor": "netvox",
+  "device": "r718mbb",
+  "name": "R718MBB - Wireless Activity Event Counter",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "vibration"
+  ],
+  "provides": [
+    "action.motion.count",
+    "action.motion.detected",
+    "battery",
+    "lowBattery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r718mbb",
+    "codecId": "r718mbb-codec",
+    "codecFile": "payload/r311fb_r718mbb_r730mbb.js",
+    "codecSha256": "4a625e8d5ce27f7c203010762d4ef48f75157b263face23a47a8fde13b7ffafb",
+    "referencedAt": "2026-06-24"
+  }
+}

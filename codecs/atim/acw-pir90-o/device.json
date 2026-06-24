@@ -1,0 +1,33 @@
+{
+  "vendor": "atim",
+  "device": "acw-pir90-o",
+  "name": "ACW-PIR90-O - 90° Outdoor Wall Motion Sensor",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "pir"
+  ],
+  "provides": [
+    "action.motion.count",
+    "action.motion.detected",
+    "battery",
+    "enclosureOpen",
+    "frameType",
+    "pirSensorVoltage",
+    "sensorState"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "atim",
+    "device": "acw-pir90-o",
+    "codecId": "codecpir",
+    "codecFile": "decodeur.js",
+    "codecSha256": "b86b0c72a7ee43f4caa766c25057326897faafe3a98f98fe3cf17d12627d8758",
+    "referencedAt": "2026-06-24"
+  }
+}

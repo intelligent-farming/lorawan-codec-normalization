@@ -1,0 +1,57 @@
+{
+  "uplink": [
+    {
+      "description": "Status report - vibration detected, battery 3.0 V",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 169, 1, 30, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Status report - no vibration, low battery (high bit set, 2.9 V)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 169, 1, 157, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 2.9,
+          "action": { "motion": { "detected": false } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: bytes[3]=0x9D sets the low-battery high bit over 29 (2.9 V); bytes[4]=0 means no vibration. Exercises lowBattery extra and action.motion.detected=false. Expected authored from the upstream wire layout (battery 0.1 V, status byte)."
+    },
+    {
+      "description": "Device info / startup frame (no measurement) -> error",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 169, 0, 100, 11, 32, 32, 4, 36, 0, 0]
+      },
+      "expected": {
+        "errors": ["device info"]
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Config report response on fPort 7 (no measurement) -> error",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 169, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["fPort 7"]
+      },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

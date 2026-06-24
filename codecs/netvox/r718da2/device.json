@@ -1,0 +1,32 @@
+{
+  "vendor": "netvox",
+  "device": "r718da2",
+  "name": "R718DA2 - Wireless 2-Gang Vibration Sensor",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "vibration"
+  ],
+  "provides": [
+    "action.motion.count",
+    "action.motion.detected",
+    "battery",
+    "lowBattery",
+    "vibration1",
+    "vibration2"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r718da2",
+    "codecId": "r718da2-codec",
+    "codecFile": "payload/r718da2_r718db2_r718f2.js",
+    "codecSha256": "abc850a575db243c63a6f437e62a6916931b081d18adc283bb3ce9da261ede69",
+    "referencedAt": "2026-06-24"
+  }
+}

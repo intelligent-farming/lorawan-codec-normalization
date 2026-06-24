@@ -1,0 +1,86 @@
+{
+  "_note": "Expected outputs authored from the upstream wire format (reference/upstream-codec.js, Apache-2.0): fPort 6 status frame = battery (byte 3, 0.1 V, high bit = low battery) + WorkCount (bytes 4..7, 32-bit BE) mapped to action.motion.count with detected = count > 0. Inputs taken from upstream examples where available; the low-battery and zero-count vectors are synthetic. Device-info frames (reportType 0x00) and config responses (fPort 7) carry no measurement and return errors. downlink unimplemented.",
+  "uplink": [
+    {
+      "description": "Status report - 18489621 activity events, battery 3.0 V",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 80, 1, 30, 1, 26, 33, 21, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "action": {
+            "motion": {
+              "detected": true,
+              "count": 18489621
+            }
+          }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Status report - zero events (no vibration detected yet), battery 3.6 V",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 80, 1, 36, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "action": {
+            "motion": {
+              "detected": false,
+              "count": 0
+            }
+          }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Status report - low battery flag set (high bit), 5 events, 2.5 V",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 80, 1, 153, 0, 0, 0, 5, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 2.5,
+          "action": {
+            "motion": {
+              "detected": true,
+              "count": 5
+            }
+          }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Startup / device-info frame (reportType 0x00) - no measurement",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 80, 0, 100, 11, 32, 32, 4, 36, 0, 0]
+      },
+      "expected": {
+        "errors": ["device info frame"]
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Config report response on fPort 7 - no measurement",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 80, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort"]
+      },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

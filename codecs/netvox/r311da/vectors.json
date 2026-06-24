@@ -1,0 +1,60 @@
+{
+  "uplink": [
+    {
+      "description": "Status report - vibration detected, 3.0 V battery",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 168, 1, 30, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream example input (status byte[4]=1 => vibration). Upstream emits Volt:3, status:1; we normalize battery=3.0 V and action.motion.detected=true. Battery byte 30 = 3.0 V (0.1 V units)."
+    },
+    {
+      "description": "Status report - no vibration, low battery",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 168, 1, 158, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3,
+          "action": { "motion": { "detected": false } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Battery byte 158 = 0x9E: high bit (0x80) set => lowBattery, low 7 bits 0x1E = 30 => 3.0 V. status byte[4]=0 => no vibration => action.motion.detected=false."
+    },
+    {
+      "description": "Startup version report (no measurement)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 168, 0, 100, 11, 32, 32, 4, 36, 0, 0]
+      },
+      "expected": {
+        "errors": ["device info frame"]
+      },
+      "source": "ttn-example",
+      "_note": "Upstream example input: reportType byte[2]=0x00 is a device-info/startup frame (SWver/HWver/Datecode) with no measurement -> error."
+    },
+    {
+      "description": "Config report response on fPort 7 (no measurement)",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 168, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 7"]
+      },
+      "source": "ttn-example",
+      "_note": "Upstream example input: fPort 7 carries config responses (ConfigReportRsp), not a measurement -> error."
+    }
+  ],
+  "downlink": []
+}

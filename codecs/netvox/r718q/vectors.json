@@ -1,0 +1,87 @@
+{
+  "uplink": [
+    {
+      "description": "Status report, motion detected (battery 3.0 V)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 91, 1, 30, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream status report (bytes[2]!=0): bytes[3]=30 -> 3.0 V, bytes[4]=1 occupancy -> action.motion.detected true."
+    },
+    {
+      "description": "Status report, clear / no motion (battery 3.0 V)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 91, 1, 30, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "action": { "motion": { "detected": false } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "bytes[4]=0 occupancy clear -> action.motion.detected false. Covers the false branch."
+    },
+    {
+      "description": "Status report, motion detected with low-battery flag",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 91, 1, 158, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3,
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "bytes[3]=158 (0x9E): high bit 0x80 set -> lowBattery true; low 7 bits 0x1E=30 -> 3.0 V."
+    },
+    {
+      "description": "Startup / device-info frame (no measurement)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 91, 0, 100, 11, 32, 32, 4, 36, 0, 0]
+      },
+      "expected": {
+        "errors": ["device info frame"]
+      },
+      "source": "ttn-example",
+      "_note": "bytes[2]=0 device-info frame (SWver/HWver/Datecode); carries no measurement -> error."
+    },
+    {
+      "description": "Configure report response (fPort 7, no measurement)",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 91, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 7"]
+      },
+      "source": "ttn-example",
+      "_note": "fPort 7 config response carries no measurement -> error."
+    },
+    {
+      "description": "Read configure report response (fPort 7, no measurement)",
+      "input": {
+        "fPort": 7,
+        "bytes": [130, 91, 3, 132, 7, 8, 1, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 7"]
+      },
+      "source": "ttn-example",
+      "_note": "fPort 7 read-config response carries no measurement -> error."
+    }
+  ],
+  "downlink": []
+}

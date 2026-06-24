@@ -1,0 +1,73 @@
+{
+  "uplink": [
+    {
+      "description": "Occupancy occupied + battery 100% (TTN example input)",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 100, 3, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 100,
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream decodes this to {battery:100, occupancy:'occupied'}; re-authored to the normalized vocabulary: battery percent -> batteryPercent extra, occupancy occupied -> action.motion.detected=true."
+    },
+    {
+      "description": "Occupancy vacant + battery 80%",
+      "input": {
+        "fPort": 85,
+        "bytes": [1, 117, 80, 3, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 80,
+          "action": { "motion": { "detected": false } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic from the TTN example structure: occupancy byte 0 -> vacant -> action.motion.detected=false. Confirmed against reference/upstream-codec.js which yields occupancy='vacant' for the same bytes."
+    },
+    {
+      "description": "Occupancy only, occupied (no battery channel)",
+      "input": {
+        "fPort": 85,
+        "bytes": [3, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "action": { "motion": { "detected": true } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic single-channel occupancy uplink. Confirms action.motion is emitted independently of the battery channel."
+    },
+    {
+      "description": "Empty payload -> error",
+      "input": {
+        "fPort": 85,
+        "bytes": []
+      },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic",
+      "_note": "Zero-length payload is rejected before the channel walk."
+    },
+    {
+      "description": "Unknown channel -> no recognized channels error",
+      "input": {
+        "fPort": 85,
+        "bytes": [9, 153, 1]
+      },
+      "expected": {
+        "errors": ["no recognized Milesight channels"]
+      },
+      "source": "synthetic",
+      "_note": "First channel/type pair (0x09/0x99) matches no VS340 channel; the walk breaks with nothing recognized."
+    }
+  ],
+  "downlink": []
+}

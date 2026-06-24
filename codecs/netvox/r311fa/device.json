@@ -1,0 +1,29 @@
+{
+  "vendor": "netvox",
+  "device": "r311fa",
+  "name": "R311FA - Wireless Activity Detection",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "accelerometer"
+  ],
+  "provides": [
+    "action.motion.detected",
+    "battery",
+    "lowBattery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r311fa",
+    "codecId": "r311fa-codec",
+    "codecFile": "payload/r718da_r718db_r718j_r718lb_r718mba.js",
+    "codecSha256": "e9bc7cc99a2db42fdb784f0a9375b5a1225234723052a67a2fc1576471862747",
+    "referencedAt": "2026-06-24"
+  }
+}

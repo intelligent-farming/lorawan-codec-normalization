@@ -1,0 +1,30 @@
+{
+  "vendor": "netvox",
+  "device": "r311wa",
+  "name": "R311WA - Wireless Seat Sensor",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "occupancy"
+  ],
+  "provides": [
+    "action.motion.detected",
+    "battery",
+    "lowBattery",
+    "status2"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r311wa",
+    "codecId": "r311wa-codec",
+    "codecFile": "payload/r311wa.js",
+    "codecSha256": "b9884dddc519c7cc58de3abbe75a2d0cbcae1d9d6f3d6abae31c0d49d1787fbd",
+    "referencedAt": "2026-06-24"
+  }
+}

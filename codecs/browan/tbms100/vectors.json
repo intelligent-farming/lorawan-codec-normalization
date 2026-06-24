@@ -1,0 +1,73 @@
+{
+  "uplink": [
+    {
+      "description": "Occupied — PIR motion detected",
+      "input": {
+        "fPort": 102,
+        "bytes": [1, 187, 52, 4, 0, 220, 120, 1]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "boardTemperature": 20,
+          "timeSinceLastEvent": 4,
+          "action": {
+            "motion": {
+              "detected": true,
+              "count": 96476
+            }
+          }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Raw fields cross-checked against reference/upstream-codec.js decodeUplink: status=1, battery=3.6, temperatureBoard=20, time=4, count=96476. detected=(status>0). boardTemperature kept as an extra (internal board sensor, not ambient air). timeSinceLastEvent is upstream's `time` (seconds since last event). count = cumulative motion-event total."
+    },
+    {
+      "description": "Idle — no motion, non-zero counters",
+      "input": {
+        "fPort": 102,
+        "bytes": [0, 186, 50, 30, 0, 200, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.5,
+          "boardTemperature": 18,
+          "timeSinceLastEvent": 30,
+          "action": {
+            "motion": {
+              "detected": false,
+              "count": 200
+            }
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload, oracle from reference/upstream-codec.js: status=0, battery=3.5, temperatureBoard=18, time=30, count=200. Exercises action.motion.detected=false."
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [1]
+      },
+      "expected": {
+        "errors": ["unknown FPort"]
+      },
+      "source": "ttn-example",
+      "_note": "Upstream returns {errors:['unknown FPort']} for any non-102 FPort on a non-empty payload."
+    },
+    {
+      "description": "Empty (all-zero) payload",
+      "input": {
+        "fPort": 102,
+        "bytes": [0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic",
+      "_note": "Upstream returns a bare {} here; our contract forbids that, so we report an error instead."
+    }
+  ],
+  "downlink": []
+}

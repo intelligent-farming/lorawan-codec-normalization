@@ -1,0 +1,112 @@
+{
+  "_note": "Uplink inputs are TTN-provided examples (Apache-2.0, see reference/). Expected.data is our own normalization, generated via the oracle method by running the upstream reference decoder and re-mapping to vocabulary keys, then verified against codec.js. The synthetic and error vectors are authored to cover the status bitfield and the FPort/length guards.",
+  "uplink": [
+    {
+      "description": "PIR detected, +3 setpoint, 27.25C, 3.62V (TTN example 1)",
+      "input": {
+        "fPort": 1,
+        "bytes": [109, 32, 181, 3]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 27.25 },
+          "action": { "motion": { "detected": true } },
+          "battery": 3.62,
+          "setPointTemperature": "+3",
+          "energyStorageLow": false,
+          "radioCommunicationError": false,
+          "radioSignalStrength": false,
+          "pirSensorFailure": false,
+          "ambientTemperatureFailure": false
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "No motion, neutral setpoint, 22C, 3.00V (TTN example 2)",
+      "input": {
+        "fPort": 1,
+        "bytes": [88, 0, 150, 0]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 22 },
+          "action": { "motion": { "detected": false } },
+          "battery": 3,
+          "setPointTemperature": "0",
+          "energyStorageLow": false,
+          "radioCommunicationError": false,
+          "radioSignalStrength": false,
+          "pirSensorFailure": false,
+          "ambientTemperatureFailure": false
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "PIR detected, freeze protection, 19C, 2.64V (TTN example 3)",
+      "input": {
+        "fPort": 1,
+        "bytes": [76, 32, 132, 255]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 19 },
+          "action": { "motion": { "detected": true } },
+          "battery": 2.64,
+          "setPointTemperature": "Freeze Protection 6°",
+          "energyStorageLow": false,
+          "radioCommunicationError": false,
+          "radioSignalStrength": false,
+          "pirSensorFailure": false,
+          "ambientTemperatureFailure": false
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Synthetic: no motion, all diagnostic/failure flags set, -3 setpoint, 20C, 2.00V",
+      "input": {
+        "fPort": 1,
+        "bytes": [80, 31, 100, 13]
+      },
+      "expected": {
+        "data": {
+          "air": { "temperature": 20 },
+          "action": { "motion": { "detected": false } },
+          "battery": 2,
+          "setPointTemperature": "-3",
+          "energyStorageLow": true,
+          "radioCommunicationError": true,
+          "radioSignalStrength": true,
+          "pirSensorFailure": true,
+          "ambientTemperatureFailure": true
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Error: unsupported FPort",
+      "input": {
+        "fPort": 2,
+        "bytes": [1, 2, 3, 4]
+      },
+      "expected": {
+        "errors": ["unknown FPort"]
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Error: truncated payload on FPort 1",
+      "input": {
+        "fPort": 1,
+        "bytes": [10, 20]
+      },
+      "expected": {
+        "errors": ["expected 4 bytes"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

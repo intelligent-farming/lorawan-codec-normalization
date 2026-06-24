@@ -1,0 +1,32 @@
+{
+  "vendor": "milesight-iot",
+  "device": "vs330",
+  "name": "LoRaWAN Bathroom Occupancy Sensor",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "motion",
+    "pir",
+    "distance"
+  ],
+  "provides": [
+    "action.motion.detected",
+    "batteryPercent",
+    "calibrationSuccess",
+    "distance"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "vs330",
+    "codecId": "vs330-codec",
+    "codecFile": "vs330.js",
+    "codecSha256": "e7b0e4bf08ef6b672be3d94978e6c731880aea48bf8037e5eae906cf7400009e",
+    "referencedAt": "2026-06-24"
+  }
+}

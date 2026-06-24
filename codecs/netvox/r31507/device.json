@@ -1,0 +1,34 @@
+{
+  "vendor": "netvox",
+  "device": "r31507",
+  "name": "R31507 - Wireless PIR / Emergency Button / Dry Contact Input / Digital Output / Glass Break Sensor",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "pir",
+    "button",
+    "digital input",
+    "vibration"
+  ],
+  "provides": [
+    "action.motion.detected",
+    "battery",
+    "buttonPressed",
+    "digitalInput",
+    "lowBattery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r31507",
+    "codecId": "r315-codec",
+    "codecFile": "payload/r315.js",
+    "codecSha256": "f72c534f51a6013134a63e9be777e31bcc9045767c80546f8e01bb8a5a91481c",
+    "referencedAt": "2026-06-24"
+  }
+}

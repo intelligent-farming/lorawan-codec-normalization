@@ -1,0 +1,37 @@
+{
+  "vendor": "milesight-iot",
+  "device": "vs360",
+  "name": "IR BreakBeam People Counter",
+  "categories": [
+    "motion"
+  ],
+  "sensors": [
+    "people-counting"
+  ],
+  "provides": [
+    "action.motion.count",
+    "action.motion.detected",
+    "batteryNodePercent",
+    "batteryPercent",
+    "event",
+    "periodIn",
+    "periodOut",
+    "time",
+    "totalCountAlarm",
+    "totalIn",
+    "totalOut"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "vs360",
+    "codecId": "vs360-codec",
+    "codecFile": "vs360.js",
+    "codecSha256": "0b990d7abab6f1b86645b53e56e43645abd5b8ae18ed0c9c3a6a00ff9e2c14cc",
+    "referencedAt": "2026-06-24"
+  }
+}
