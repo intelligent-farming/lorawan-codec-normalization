@@ -1,0 +1,59 @@
+{
+  "vendor": "adeunis",
+  "device": "breath",
+  "name": "Breath - Indoor Air Quality Sensor",
+  "categories": [
+    "particulate"
+  ],
+  "sensors": [
+    "pm1.0",
+    "pm2.5",
+    "pm10",
+    "tvoc"
+  ],
+  "provides": [
+    "air.pm10",
+    "air.pm1_0",
+    "air.pm2_5",
+    "alarms.pm10",
+    "alarms.pm1_0",
+    "alarms.pm2_5",
+    "alarms.tvocMassConcentration",
+    "configurationDone",
+    "configurationInconsistency",
+    "daily.pm10.average",
+    "daily.pm10.durationMin",
+    "daily.pm10.max",
+    "daily.pm10.min",
+    "daily.pm1_0.average",
+    "daily.pm1_0.max",
+    "daily.pm1_0.min",
+    "daily.pm2_5.average",
+    "daily.pm2_5.durationMin",
+    "daily.pm2_5.max",
+    "daily.pm2_5.min",
+    "daily.tvocMassConcentration.average",
+    "daily.tvocMassConcentration.durationMin",
+    "daily.tvocMassConcentration.max",
+    "daily.tvocMassConcentration.min",
+    "frameCounter",
+    "frameType",
+    "lowBattery",
+    "samples",
+    "sensorError",
+    "tvocMassConcentration"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "adeunis",
+    "device": "breath",
+    "codecId": "breath-codec",
+    "codecFile": "breath_lib.js",
+    "codecSha256": "b56431c0e76bfc4a3373181c097587a83e27da4673aedb0b146586171641c228",
+    "referencedAt": "2026-06-24"
+  }
+}

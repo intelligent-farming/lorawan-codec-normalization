@@ -1,0 +1,42 @@
+{
+  "_note": "Synthetic Cayenne LPP vectors for RAK2270 (3-axis accelerometer + temperature). Expected values derived by the ORACLE method: each input was run through reference/upstream-codec.js and its raw per-axis/temperature values mapped to the normalized vocabulary (accelerometer.{x,y,z} g -> vibration.acceleration{X,Y,Z}; temperature 0.1 C -> air.temperature; voltage 0.01 V -> battery; percentage -> batteryPercent). No upstream TTN examples exist for this device (upstream-examples.json empty), so all vectors are synthetic. bytes are decimal integers.",
+  "uplink": [
+    {
+      "description": "accelerometer (ch1) + temperature (ch2) + battery voltage (ch3)",
+      "input": { "fPort": 2, "bytes": [1, 113, 3, 232, 254, 12, 0, 123, 2, 103, 0, 235, 3, 116, 1, 104] },
+      "expected": { "data": { "vibration.accelerationX": 1, "vibration.accelerationY": -0.5, "vibration.accelerationZ": 0.123, "air.temperature": 23.5, "battery": 3.6 } },
+      "source": "synthetic"
+    },
+    {
+      "description": "negative Z acceleration and negative temperature (two's-complement)",
+      "input": { "fPort": 2, "bytes": [1, 113, 0, 0, 0, 0, 252, 24, 2, 103, 255, 206] },
+      "expected": { "data": { "vibration.accelerationX": 0, "vibration.accelerationY": 0, "vibration.accelerationZ": -1, "air.temperature": -5 } },
+      "source": "synthetic"
+    },
+    {
+      "description": "accelerometer + temperature + battery percentage (ch4 type 120)",
+      "input": { "fPort": 2, "bytes": [1, 113, 0, 100, 0, 100, 3, 232, 2, 103, 1, 44, 4, 120, 87] },
+      "expected": { "data": { "vibration.accelerationX": 0.1, "vibration.accelerationY": 0.1, "vibration.accelerationZ": 1, "air.temperature": 30, "batteryPercent": 87 } },
+      "source": "synthetic"
+    },
+    {
+      "description": "empty payload is rejected",
+      "input": { "fPort": 2, "bytes": [] },
+      "expected": { "errors": ["empty payload"] },
+      "source": "synthetic"
+    },
+    {
+      "description": "unsupported LPP type byte is rejected",
+      "input": { "fPort": 2, "bytes": [1, 199, 0, 0] },
+      "expected": { "errors": ["unsupported LPP type"] },
+      "source": "synthetic"
+    },
+    {
+      "description": "truncated accelerometer payload is rejected",
+      "input": { "fPort": 2, "bytes": [1, 113, 3, 232] },
+      "expected": { "errors": ["truncated payload"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

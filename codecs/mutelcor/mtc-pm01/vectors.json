@@ -1,0 +1,74 @@
+{
+  "_note": "Inputs are synthetic OpCode-3 Measurements frames exercising the configurable measurement bitmask (Mutelcor LoRaButton framing). expected.data values were produced by running reference/upstream-codec.js (the source of truth) over each input and re-shaping to the normalized vocabulary: voltage->battery (V), signed16/10 deg C->air.temperature, 1-byte %->air.relativeHumidity, 16-bit ppb->air.tvoc, 16-bit /10 hPa->air.pressure, three 16-bit ug/m3->air.pm1_0/pm2_5/pm10. The codec never emits warnings, so none are declared. Vectors 1-2 satisfy the particulate atLeastOne (PM/TVOC); vectors 1 and 3 satisfy the climate requires (temperature + relativeHumidity).",
+  "uplink": [
+    {
+      "description": "OpCode 3 Measurements: temperature + relative humidity + TVOC + particulate matter (satisfies both particulate and climate)",
+      "input": { "fPort": 2, "bytes": [1, 1, 104, 3, 163, 0, 235, 45, 0, 120, 2, 0, 12, 0, 18, 0, 25] },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "air": {
+            "temperature": 23.5,
+            "relativeHumidity": 45,
+            "tvoc": 120,
+            "pm1_0": 12,
+            "pm2_5": 18,
+            "pm10": 25
+          }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "OpCode 3 Measurements: negative temperature + relative humidity + particulate matter (two's-complement temp, particulate)",
+      "input": { "fPort": 2, "bytes": [1, 1, 44, 3, 131, 255, 204, 40, 2, 0, 8, 0, 30, 0, 55] },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "air": {
+            "temperature": -5.2,
+            "relativeHumidity": 40,
+            "pm1_0": 8,
+            "pm2_5": 30,
+            "pm10": 55
+          }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "OpCode 3 Measurements: temperature + relative humidity + pressure (climate requires, no particulate)",
+      "input": { "fPort": 2, "bytes": [1, 1, 90, 3, 7, 1, 44, 55, 39, 16] },
+      "expected": {
+        "data": {
+          "battery": 3.46,
+          "air": {
+            "temperature": 30,
+            "relativeHumidity": 55,
+            "pressure": 1000
+          }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Empty payload",
+      "input": { "fPort": 2, "bytes": [] },
+      "expected": { "errors": ["empty payload"] },
+      "source": "synthetic"
+    },
+    {
+      "description": "OpCode 3 but no measurement bitmask byte",
+      "input": { "fPort": 2, "bytes": [1, 1, 104, 3] },
+      "expected": { "errors": ["Measurements requires a measurement bitmask"] },
+      "source": "synthetic"
+    },
+    {
+      "description": "Particulate matter declared in extended bitmask but truncated",
+      "input": { "fPort": 2, "bytes": [1, 1, 104, 3, 128, 2, 0, 12] },
+      "expected": { "errors": ["incomplete Particulate Matter"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

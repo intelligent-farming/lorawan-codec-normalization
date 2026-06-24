@@ -1,0 +1,95 @@
+{
+  "_note": "Inputs are upstream TTN examples (Apache-2.0) plus synthetic frames; expected.data was authored against the device wire format and cross-checked by running reference/upstream-codec.js (the ORACLE). The Inclino reports its inclination as an IEEE754 float32 in degrees (cluster 0x000C attr 0x0055); upstream surfaces the same number under the generic name 'analog'/'angle'. Batch frames need per-device coding tables and the two prior reference frames, so this stateless codec rejects them rather than mis-decode.",
+  "uplink": [
+    {
+      "description": "standard report, inclination angle 0x41500000 = 13.0 deg | payload:110A000C00553941500000",
+      "input": {
+        "bytes": [17, 10, 0, 12, 0, 85, 57, 65, 80, 0, 0],
+        "fPort": 125,
+        "recvTime": "2023-07-19T07:51:25.508306410Z"
+      },
+      "expected": { "data": { "tilt": { "angle": 13 } } },
+      "source": "ttn-example"
+    },
+    {
+      "description": "standard report, inclination angle 0x42360000 = 45.5 deg (synthetic)",
+      "input": {
+        "bytes": [17, 10, 0, 12, 0, 85, 0, 66, 54, 0, 0],
+        "fPort": 125,
+        "recvTime": "2023-07-19T07:51:25.508306410Z"
+      },
+      "expected": { "data": { "tilt": { "angle": 45.5 } } },
+      "source": "synthetic"
+    },
+    {
+      "description": "standard report, negative inclination angle 0xC1100000 = -9.0 deg (synthetic)",
+      "input": {
+        "bytes": [17, 10, 0, 12, 0, 85, 0, 193, 16, 0, 0],
+        "fPort": 125,
+        "recvTime": "2023-07-19T07:51:25.508306410Z"
+      },
+      "expected": { "data": { "tilt": { "angle": -9 } } },
+      "source": "synthetic"
+    },
+    {
+      "description": "standard report, disposable battery 0x0E68 mV = 3.688 V | payload:110A00500006410503040E6804",
+      "input": {
+        "bytes": [17, 10, 0, 80, 0, 6, 65, 5, 3, 4, 14, 104, 4],
+        "fPort": 125,
+        "recvTime": "2023-07-19T07:51:25.508306410Z"
+      },
+      "expected": { "data": { "battery": 3.688 } },
+      "source": "ttn-example"
+    },
+    {
+      "description": "config report, firmware version | payload:110100000002000D0305020015E2",
+      "input": {
+        "bytes": [17, 1, 0, 0, 0, 2, 0, 13, 3, 5, 2, 0, 21, 226],
+        "fPort": 125,
+        "recvTime": "2023-07-19T07:51:25.508306410Z"
+      },
+      "expected": { "data": { "firmware": "3.5.2.5602" } },
+      "source": "ttn-example"
+    },
+    {
+      "description": "config report, dataup message type | payload:110180040000000800",
+      "input": {
+        "bytes": [17, 1, 128, 4, 0, 0, 0, 8, 0],
+        "fPort": 125,
+        "recvTime": "2023-07-19T07:51:25.508306410Z"
+      },
+      "expected": { "data": { "messageType": "unconfirmed" } },
+      "source": "ttn-example"
+    },
+    {
+      "description": "occupancy cluster 0x0406 is not present on the Inclino | payload:110A040600001801",
+      "input": {
+        "bytes": [17, 10, 4, 6, 0, 0, 24, 1],
+        "fPort": 125,
+        "recvTime": "2023-07-19T07:51:25.508306410Z"
+      },
+      "expected": { "errors": ["unrecognized Watteco cluster 1030"] },
+      "source": "ttn-example"
+    },
+    {
+      "description": "batch report cannot be decoded statelessly | payload:1002000080ad837582816e33c01db3ea91ed581ae21d31398b1d29f0f10eb11d10",
+      "input": {
+        "bytes": [16, 2, 0, 0, 128, 173, 131, 117, 130, 129, 110, 51, 192, 29, 179, 234, 145, 237, 88, 26, 226, 29, 49, 57, 139, 29, 41, 240, 241, 14, 177, 29, 16],
+        "fPort": 125,
+        "recvTime": "2023-07-19T07:51:25.508306410Z"
+      },
+      "expected": { "errors": ["batch report not supported"] },
+      "source": "ttn-example"
+    },
+    {
+      "description": "wrong fPort is rejected (synthetic)",
+      "input": {
+        "bytes": [17, 10, 0, 12, 0, 85, 0, 66, 54, 0, 0],
+        "fPort": 2
+      },
+      "expected": { "errors": ["unsupported fPort 2"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

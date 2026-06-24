@@ -1,0 +1,33 @@
+{
+  "vendor": "netvox",
+  "device": "ra02d1",
+  "name": "RA02D1 - Wireless LPG / Combustible-Gas Detector",
+  "categories": [
+    "gas-detector"
+  ],
+  "sensors": [
+    "gas",
+    "temperature"
+  ],
+  "provides": [
+    "air.gasAlarm",
+    "air.temperature",
+    "battery",
+    "gasType",
+    "highTempAlarm",
+    "lowBattery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "ra02d1",
+    "codecId": "ra02d1-codec",
+    "codecFile": "payload/ra02d1.js",
+    "codecSha256": "877c89c78613d8b9a5de4170770ea8981c4ff0eead3b402c5b1a65443a405886",
+    "referencedAt": "2026-06-24"
+  }
+}

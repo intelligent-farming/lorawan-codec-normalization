@@ -1,0 +1,248 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/netvox/r718e-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Startup version report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          28,
+          0,
+          100,
+          2,
+          32,
+          32,
+          18,
+          8,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R718E",
+          "SWver": 10,
+          "HWver": 2,
+          "Datecode": "20201208"
+        }
+      }
+    },
+    {
+      "description": "Status report - 1",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          28,
+          1,
+          36,
+          179,
+          64,
+          178,
+          192,
+          106,
+          62,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R718E",
+          "Volt": 3.6,
+          "AccelerationX": 5.59375,
+          "AccelerationY": -5.5625,
+          "AccelerationZ": 0.228516
+        }
+      }
+    },
+    {
+      "description": "Status report - 2",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          28,
+          2,
+          51,
+          61,
+          0,
+          60,
+          179,
+          64,
+          255,
+          151
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R718E",
+          "VelocityX": 0.043701,
+          "VelocityY": 0.007813,
+          "VelocityZ": 5.59375,
+          "Temp": -10.5
+        }
+      }
+    },
+    {
+      "description": "Configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          129,
+          28,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ConfigReportRsp",
+          "Device": "R718E",
+          "Status": "Success"
+        }
+      }
+    },
+    {
+      "description": "Read configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          130,
+          28,
+          3,
+          132,
+          7,
+          8,
+          1,
+          0,
+          3,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ReadConfigReportRsp",
+          "Device": "R718E",
+          "MinTime": 900,
+          "MaxTime": 1800,
+          "BatteryChange": 0.1,
+          "AccelerationChange": 3
+        }
+      }
+    },
+    {
+      "description": "Set active threshold response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          131,
+          28,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "SetActiveThresholdRsp",
+          "Device": "R718E",
+          "Status": "Success"
+        }
+      }
+    },
+    {
+      "description": "Get active threshold response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          132,
+          28,
+          0,
+          3,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "GetActiveThresholdRsp",
+          "Device": "R718E",
+          "ActiveThreshold": 3,
+          "InActiveThreshold": 2
+        }
+      }
+    },
+    {
+      "description": "Set restore report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          135,
+          28,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "SetRestoreReportRsp",
+          "Device": "R718E",
+          "Status": "Success"
+        }
+      }
+    },
+    {
+      "description": "Get restore report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          136,
+          28,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "GetRestoreReportRsp",
+          "Device": "R718E",
+          "RestoreReportSet": 1
+        }
+      }
+    }
+  ]
+}

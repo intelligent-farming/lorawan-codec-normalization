@@ -1,0 +1,39 @@
+{
+  "vendor": "mutelcor",
+  "device": "mtc-pm01",
+  "name": "LoRa PM2.5 Sensor",
+  "categories": [
+    "particulate",
+    "climate"
+  ],
+  "sensors": [
+    "dust",
+    "particulate matter",
+    "pm2.5",
+    "pm10",
+    "digital input"
+  ],
+  "provides": [
+    "air.pm10",
+    "air.pm1_0",
+    "air.pm2_5",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "air.tvoc",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "mutelcor",
+    "device": "mtc-pm01",
+    "codecId": "mutelcor-codec",
+    "codecFile": "mutelcor.js",
+    "codecSha256": "988ab94685a68c414f87b3b9873c2195134ad878b6a730db76572085f9807846",
+    "referencedAt": "2026-06-24"
+  }
+}

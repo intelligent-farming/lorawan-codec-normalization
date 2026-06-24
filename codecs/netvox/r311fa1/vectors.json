@@ -1,0 +1,93 @@
+{
+  "_note": "Inputs are upstream TTN examples (Apache-2.0) plus synthetic frames; expected.data is authored to this module's vocabulary by running the upstream reference decoder as an oracle and mapping its fields to vibration.* keys. Acceleration frame (report 0x01) -> vibration.accelerationX/Y/Z (g) + battery (V); velocity frame (report 0x02) -> vibration.velocityX/Y/Z (mm/s); low-battery high bit -> lowBattery extra. Device-info, short payloads, and fPort 7 config responses carry no measurement and are errors.",
+  "uplink": [
+    {
+      "description": "Acceleration report (report type 0x01) - X/Y/Z in g, battery 3.6 V",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 199, 1, 36, 179, 64, 178, 192, 106, 62, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "vibration": {
+            "accelerationX": 5.59375,
+            "accelerationY": -5.5625,
+            "accelerationZ": 0.228516
+          }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Acceleration report with low-battery flag (bytes[3] high bit set)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 199, 1, 164, 179, 64, 178, 192, 106, 62, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3.6,
+          "vibration": {
+            "accelerationX": 5.59375,
+            "accelerationY": -5.5625,
+            "accelerationZ": 0.228516
+          }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Velocity report (report type 0x02) - X/Y/Z in mm/s",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 199, 2, 51, 61, 0, 60, 179, 64, 255, 151]
+      },
+      "expected": {
+        "data": {
+          "vibration": {
+            "velocityX": 0.043701,
+            "velocityY": 0.007813,
+            "velocityZ": 5.59375
+          }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Startup / device-info frame (report type 0x00) carries no measurement",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 199, 0, 100, 2, 32, 32, 18, 8, 0, 0]
+      },
+      "expected": {
+        "errors": ["device info frame"]
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Configure report response on fPort 7 carries no measurement",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 199, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["fPort 7"]
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Truncated data frame on fPort 6 is rejected",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 199, 1, 36, 179]
+      },
+      "expected": {
+        "errors": ["expected at least 10 bytes"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

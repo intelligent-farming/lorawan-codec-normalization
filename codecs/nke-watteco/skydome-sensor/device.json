@@ -1,0 +1,30 @@
+{
+  "vendor": "nke-watteco",
+  "device": "skydome-sensor",
+  "name": "Skydome - Window Position Sensor",
+  "categories": [
+    "tilt"
+  ],
+  "sensors": [
+    "accelerometer",
+    "tilt"
+  ],
+  "provides": [
+    "battery",
+    "messageType",
+    "tilt.angle"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "nke-watteco",
+    "device": "skydome-sensor",
+    "codecId": "skydome-sensor-codec",
+    "codecFile": "skydome-sensor.js",
+    "codecSha256": "fd751893abcc53701b6600d3b344de79802a9ed7994e4fc8cb8d2e455e662e39",
+    "referencedAt": "2026-06-24"
+  }
+}

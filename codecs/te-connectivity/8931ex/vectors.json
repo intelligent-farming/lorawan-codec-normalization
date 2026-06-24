@@ -1,0 +1,77 @@
+{
+  "uplink": [
+    {
+      "description": "8931EX data frame (fPort 5): Z-axis, 2 FFT peaks, 70% battery, 26C",
+      "input": {
+        "fPort": 5,
+        "bytes": [0, 7, 132, 0, 130, 11, 1, 33, 102, 52, 8]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 70,
+          "deviceStatus": {
+            "rotation": "disabled",
+            "temperature": "ok",
+            "accelerometer": "ok"
+          },
+          "presetId": 0,
+          "air": { "temperature": 26 },
+          "bandwidthMode": 0,
+          "vibration": {
+            "accelerationRms": 0.00527,
+            "peakFrequency": 9
+          },
+          "axis": "Z",
+          "peaks": [
+            { "freq": 9, "mag": 0.00527 },
+            { "freq": 397, "mag": 0.0038 }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Oracle vector. fPort-5 frame hand-built to upstream Decode8931EX layout; expected.data computed by running reference/upstream-codec.js (SigRms = dBDecompression(0x0B), peak mags dB-decompressed) and normalizing per the category map. Battery 0xF nibble would mean an error reading (omitted); here low nibble 7 -> 70%."
+    },
+    {
+      "description": "8931EX data frame (fPort 5): X-axis, single peak, battery-read error nibble (0xF -> omitted)",
+      "input": {
+        "fPort": 5,
+        "bytes": [1, 15, 100, 0, 1, 60, 15, 6, 64]
+      },
+      "expected": {
+        "data": {
+          "deviceStatus": {
+            "rotation": "disabled",
+            "temperature": "ok",
+            "accelerometer": "ok"
+          },
+          "presetId": 1,
+          "air": { "temperature": 10 },
+          "bandwidthMode": 0,
+          "vibration": {
+            "accelerationRms": 0.03115,
+            "peakFrequency": 120
+          },
+          "axis": "X",
+          "peaks": [
+            { "freq": 120, "mag": 0.02167 }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Oracle vector. Battery nibble 0xF means the device could not read SoC, so batteryPercent is omitted (matches upstream 'err'). accelerationRms = dBDecompression(60), peak mag = dBDecompression(50)."
+    },
+    {
+      "description": "Unsupported fPort (only the 8931EX data frame on fPort 5 is decoded)",
+      "input": {
+        "fPort": 99,
+        "bytes": [1, 2, 3]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 99"]
+      },
+      "source": "synthetic",
+      "_note": "Upstream falls through to a catch-all 'Unknown frame' data object; we surface non-data frames as a proper error per the output contract."
+    }
+  ],
+  "downlink": []
+}

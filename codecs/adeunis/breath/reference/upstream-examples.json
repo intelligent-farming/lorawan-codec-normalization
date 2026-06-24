@@ -1,0 +1,77 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/adeunis/breath-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "0x6d Breath periodic data",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          109,
+          128,
+          1,
+          179,
+          0,
+          62,
+          0,
+          30,
+          0,
+          20,
+          1,
+          179,
+          0,
+          62,
+          0,
+          30,
+          0,
+          20
+        ]
+      },
+      "output": {
+        "data": {
+          "bytes": {
+            "type": "0x6d Breath periodic data",
+            "status": {
+              "frameCounter": 4,
+              "hardwareError": false,
+              "lowBattery": false,
+              "configurationDone": false,
+              "configurationInconsistency": false,
+              "sensorError": false
+            },
+            "decodingInfo": "values: [t=0, t-1, t-2, ...]",
+            "tvoc": {
+              "unit": "µg/m3",
+              "values": [
+                435,
+                435
+              ]
+            },
+            "pm10": {
+              "unit": "µg/m3",
+              "values": [
+                62,
+                62
+              ]
+            },
+            "pm25": {
+              "unit": "µg/m3",
+              "values": [
+                30,
+                30
+              ]
+            },
+            "pm1": {
+              "unit": "µg/m3",
+              "values": [
+                20,
+                20
+              ]
+            }
+          }
+        },
+        "warnings": [],
+        "errors": []
+      }
+    }
+  ]
+}

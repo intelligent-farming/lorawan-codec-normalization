@@ -1,0 +1,54 @@
+{
+  "_note": "Synthetic vectors: nke-watteco Skydome ships no TTN upstream examples, so payloads were hand-built to the Watteco ZCL standard-report wire format and expected.data was produced via the ORACLE method (decoded with reference/upstream-codec.js, then normalized to vocabulary keys). Angle = cluster 0x000C attr 0x0055 IEEE754 float32 big-endian (degrees); battery = cluster 0x0050 attr 0x0006 power descriptor (mV/1000 V). All on fPort 125.",
+  "uplink": [
+    {
+      "description": "standard analog-input report, angle 13.0 deg (float32 0x41500000)",
+      "input": { "fPort": 125, "bytes": [17, 10, 0, 12, 0, 85, 0, 65, 80, 0, 0] },
+      "expected": { "data": { "tilt": { "angle": 13 } } },
+      "source": "synthetic"
+    },
+    {
+      "description": "standard analog-input report, angle 45.5 deg (float32 0x42360000)",
+      "input": { "fPort": 125, "bytes": [17, 10, 0, 12, 0, 85, 0, 66, 54, 0, 0] },
+      "expected": { "data": { "tilt": { "angle": 45.5 } } },
+      "source": "synthetic"
+    },
+    {
+      "description": "standard analog-input report, negative angle -12.25 deg (float32 0xC1440000)",
+      "input": { "fPort": 125, "bytes": [17, 10, 0, 12, 0, 85, 0, 193, 68, 0, 0] },
+      "expected": { "data": { "tilt": { "angle": -12.25 } } },
+      "source": "synthetic"
+    },
+    {
+      "description": "power-descriptor report, disposable battery 3.688 V (bit2 flag, 0x0E68 mV)",
+      "input": { "fPort": 125, "bytes": [17, 10, 0, 80, 0, 6, 0, 0, 0, 4, 14, 104] },
+      "expected": { "data": { "battery": 3.688 } },
+      "source": "synthetic"
+    },
+    {
+      "description": "lorawan-configuration report, message type confirmed (cluster 0x8004 attr 0)",
+      "input": { "fPort": 125, "bytes": [17, 10, 128, 4, 0, 0, 0, 1] },
+      "expected": { "data": { "messageType": "confirmed" } },
+      "source": "synthetic"
+    },
+    {
+      "description": "Huffman batch frame (byte0 bit0 clear) is not decoded",
+      "input": { "fPort": 125, "bytes": [16, 2, 0, 0, 128, 173, 131, 117] },
+      "expected": { "errors": ["Huffman batch frames are not supported"] },
+      "source": "synthetic"
+    },
+    {
+      "description": "wrong fPort is rejected",
+      "input": { "fPort": 2, "bytes": [17, 10, 0, 12, 0, 85, 0, 65, 80, 0, 0] },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "synthetic"
+    },
+    {
+      "description": "unrecognized cluster/attribute is reported",
+      "input": { "fPort": 125, "bytes": [17, 10, 4, 2, 0, 0, 0, 1, 44] },
+      "expected": { "errors": ["unrecognized Watteco cluster"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

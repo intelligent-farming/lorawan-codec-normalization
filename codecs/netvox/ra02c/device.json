@@ -1,0 +1,31 @@
+{
+  "vendor": "netvox",
+  "device": "ra02c",
+  "name": "RA02C - Wireless CO Detector",
+  "categories": [
+    "gas-detector"
+  ],
+  "sensors": [
+    "co"
+  ],
+  "provides": [
+    "air.gasAlarm",
+    "battery",
+    "gasType",
+    "highTempAlarm",
+    "lowBattery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "ra02c",
+    "codecId": "ra02c-codec",
+    "codecFile": "payload/ra02c.js",
+    "codecSha256": "abf058d3c5bee0bcba84623c93b3854bcd8a4d40fee81b293b3a47848f4b457d",
+    "referencedAt": "2026-06-24"
+  }
+}

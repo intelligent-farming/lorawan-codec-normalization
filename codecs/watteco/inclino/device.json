@@ -1,0 +1,32 @@
+{
+  "vendor": "watteco",
+  "device": "inclino",
+  "name": "Inclino - Vertical angle measurement Sensor",
+  "categories": [
+    "tilt"
+  ],
+  "sensors": [
+    "accelerometer",
+    "vibration",
+    "tilt"
+  ],
+  "provides": [
+    "battery",
+    "firmware",
+    "messageType",
+    "tilt.angle"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "watteco",
+    "device": "inclino",
+    "codecId": "inclino-codec",
+    "codecFile": "inclino.js",
+    "codecSha256": "903b3c1c6eb4bfd483bf993c6048d1400eda85b5a9b1d020b44db3506d4a8f56",
+    "referencedAt": "2026-06-24"
+  }
+}

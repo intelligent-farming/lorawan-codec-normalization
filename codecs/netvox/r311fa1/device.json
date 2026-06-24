@@ -1,0 +1,35 @@
+{
+  "vendor": "netvox",
+  "device": "r311fa1",
+  "name": "R311FA1 - Wireless 3-axis Accelerometer Sensor",
+  "categories": [
+    "vibration"
+  ],
+  "sensors": [
+    "accelerometer",
+    "velocity"
+  ],
+  "provides": [
+    "battery",
+    "lowBattery",
+    "vibration.accelerationX",
+    "vibration.accelerationY",
+    "vibration.accelerationZ",
+    "vibration.velocityX",
+    "vibration.velocityY",
+    "vibration.velocityZ"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r311fa1",
+    "codecId": "r311fa1-codec",
+    "codecFile": "payload/r718e.js",
+    "codecSha256": "b0891dd9dd6a3eb6adc1f16ae1e23698eb3c52b821779eab987b9a33799bc269",
+    "referencedAt": "2026-06-24"
+  }
+}

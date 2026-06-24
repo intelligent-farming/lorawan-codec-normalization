@@ -1,0 +1,38 @@
+{
+  "vendor": "te-connectivity",
+  "device": "8931ex",
+  "name": "8931EX - Triaxis Vibration Sensor",
+  "categories": [
+    "vibration"
+  ],
+  "sensors": [
+    "vibration",
+    "temperature"
+  ],
+  "provides": [
+    "air.temperature",
+    "axis",
+    "bandwidthMode",
+    "batteryPercent",
+    "deviceStatus.accelerometer",
+    "deviceStatus.rotation",
+    "deviceStatus.temperature",
+    "peaks",
+    "presetId",
+    "vibration.accelerationRms",
+    "vibration.peakFrequency"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "te-connectivity",
+    "device": "8931ex",
+    "codecId": "89xxex-codec",
+    "codecFile": "universal_decoder.js",
+    "codecSha256": "b78ea55344c5e52ddbf5f9ccb5ea06997ef89c99dc606e1007a522eb9ed75678",
+    "referencedAt": "2026-06-24"
+  }
+}

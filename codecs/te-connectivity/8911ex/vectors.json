@@ -1,0 +1,65 @@
+{
+  "uplink": [
+    {
+      "description": "8911EX vibration frame (fPort 1): RMS acceleration, FFT peak list, temperature, battery",
+      "input": {
+        "fPort": 1,
+        "bytes": [76, 8, 235, 4, 11, 0, 0, 0, 9, 0, 8, 0, 63, 141, 1, 0, 0, 2, 122, 0, 0, 0, 1, 226, 0, 0, 0, 0, 206, 3, 0, 0, 0, 9, 45, 0, 0, 0, 11, 57, 0, 0, 0, 194, 7, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 76,
+          "air": { "temperature": 25.9 },
+          "preset": 0,
+          "deviceStatus": { "acc": "ok", "temp": "ok", "rotEn": "disabled", "com": "ok", "battery": "ok" },
+          "peaks": [
+            { "freq": 9, "mag": 0.008, "ratio": 63 },
+            { "freq": 397, "mag": 0, "ratio": 2 },
+            { "freq": 122, "mag": 0, "ratio": 1 },
+            { "freq": 226, "mag": 0, "ratio": 0 },
+            { "freq": 974, "mag": 0, "ratio": 0 },
+            { "freq": 11529, "mag": 0, "ratio": 0 },
+            { "freq": 14603, "mag": 0, "ratio": 0 }
+          ],
+          "vibration": { "accelerationRms": 0.011, "peakFrequency": 9 }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream-example input (TheThingsNetwork 89xxex-codec.yaml, Apache-2.0); expected.data authored here by running reference/upstream-codec.js (oracle method) and mapping to the vocabulary. Although peak_nb=8, the upstream peak loop guard ((i*5+5) < (bytes.length-8)) emits only 7 peaks for this 48-byte frame; reproduced faithfully. sig_rms 0.011 g -> vibration.accelerationRms (satisfies the vibration atLeastOne)."
+    },
+    {
+      "description": "8911EX frame with temperature-sensor error (0x7FFF) and peak count clamped by frame length",
+      "input": {
+        "fPort": 1,
+        "bytes": [88, 2, 255, 127, 200, 0, 1, 0, 50, 0, 30, 0, 90, 100, 0, 5, 0, 12]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 88,
+          "preset": 1,
+          "deviceStatus": { "acc": "ok", "temp": "ok", "rotEn": "disabled", "com": "ok", "battery": "ok" },
+          "peaks": [
+            { "freq": 50, "mag": 0.03, "ratio": 90 }
+          ],
+          "vibration": { "accelerationRms": 0.2, "peakFrequency": 50 }
+        },
+        "warnings": ["temperature sensor reported error (0x7FFF)"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; expected from running reference/upstream-codec.js. temp uint16 LE = 0x7FFF -> sensor error: air.temperature is omitted and a warning is emitted (warnings not asserted by the suite). peak_nb=2 but the upstream length guard yields only 1 peak from this 18-byte frame; reproduced faithfully. accelerationRms 0.2 g satisfies the vibration atLeastOne."
+    },
+    {
+      "description": "Unsupported fPort (firmware-revision frame, fPort 2) -> error, no normalized measurement",
+      "input": {
+        "fPort": 2,
+        "bytes": [49, 46, 50, 46, 51]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 2"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; the upstream universal_decoder routes fPort 2 to DecodeFwRevision (a non-measurement frame). We do not normalize non-vibration frames, so we return an error rather than fabricating measurement keys."
+    }
+  ],
+  "downlink": []
+}

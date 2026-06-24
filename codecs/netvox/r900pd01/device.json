@@ -1,0 +1,40 @@
+{
+  "vendor": "netvox",
+  "device": "r900pd01",
+  "name": "R900PD01 - Wireless Water Quality Sensor (pH / Turbidity / Residual Chlorine)",
+  "categories": [
+    "water-quality"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "highPhAlarm",
+    "highResidualChlorineAlarm",
+    "highTempWithPhAlarm",
+    "highTurbidityAlarm",
+    "lowPhAlarm",
+    "lowResidualChlorineAlarm",
+    "lowTempWithPhAlarm",
+    "lowTurbidityAlarm",
+    "tamperAlarm",
+    "temperatureNtu",
+    "water.ph",
+    "water.residualChlorine",
+    "water.temperature.current",
+    "water.turbidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r900pd01",
+    "codecId": "r900pd01-codec",
+    "codecFile": "payload/r900pd01.js",
+    "codecSha256": "e2032943963f693b15a022fb16d402025b5025b00a30968eb37f156077ef16b9",
+    "referencedAt": "2026-06-24"
+  }
+}

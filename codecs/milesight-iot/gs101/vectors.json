@@ -1,0 +1,42 @@
+{
+  "_note": "Synthetic vectors. The GS101 upstream snapshot ships no examples, so inputs were hand-built to exercise every channel in the upstream channel/type TLV (0x05/0x8e gas, 0x06/0x01 valve, 0x07/0x01 relay, 0x08/0x90 sensor life, 0xff/0x3f alarm). expected.data was produced by running reference/upstream-codec.js and re-shaping its output to the normalized vocabulary: state normal/abnormal -> air.gasAlarm false/true, valve/relay -> valveState/relayState extras, life_remain '3600s' -> sensorLifeRemaining 3600 (number, seconds), alarm 'sensor about to fail' -> sensorAlarm 'sensorAboutToFail'. Covers air.gasAlarm true and false plus two error inputs.",
+  "uplink": [
+    {
+      "description": "gas normal, valve open, relay close, sensor life 3600s (air.gasAlarm false)",
+      "input": { "fPort": 85, "bytes": [5, 142, 0, 6, 1, 1, 7, 1, 0, 8, 144, 16, 14, 0, 0] },
+      "expected": {
+        "data": {
+          "valveState": "open",
+          "relayState": "close",
+          "sensorLifeRemaining": 3600,
+          "air": { "gasAlarm": false }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "gas abnormal with sensor about-to-fail alarm (air.gasAlarm true)",
+      "input": { "fPort": 85, "bytes": [5, 142, 1, 255, 63, 4] },
+      "expected": {
+        "data": {
+          "sensorAlarm": "sensorAboutToFail",
+          "air": { "gasAlarm": true }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "empty payload is rejected",
+      "input": { "fPort": 85, "bytes": [] },
+      "expected": { "errors": ["empty payload"] },
+      "source": "synthetic"
+    },
+    {
+      "description": "unrecognized channels yield no recognized data",
+      "input": { "fPort": 85, "bytes": [153, 153, 0] },
+      "expected": { "errors": ["no recognized Milesight channels"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

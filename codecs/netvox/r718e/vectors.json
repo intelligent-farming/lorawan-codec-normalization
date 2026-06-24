@@ -1,0 +1,105 @@
+{
+  "_note": "Synthetic ORACLE vectors: inputs are upstream TTN example payloads (Apache-2.0) plus hand-constructed edge cases; every expected.data was produced by running reference/upstream-codec.js and re-mapping its fields onto the normalized vibration vocabulary (AccelerationX/Y/Z -> vibration.accelerationX/Y/Z, VelocityX/Y/Z -> vibration.velocityX/Y/Z, Temp -> air.temperature, Volt -> battery V, low-battery bit -> extra lowBattery). Per-axis floats reproduce the device's custom binary16 encoding exactly.",
+  "uplink": [
+    {
+      "description": "Acceleration report (fPort 6, type 0x01): per-axis acceleration in g + battery",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 28, 1, 36, 179, 64, 178, 192, 106, 62, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "vibration": {
+            "accelerationX": 5.59375,
+            "accelerationY": -5.5625,
+            "accelerationZ": 0.228516
+          }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Acceleration report with low-battery flag set (byte3 high bit) -> lowBattery extra",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 28, 1, 164, 179, 64, 178, 192, 106, 62, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3.6,
+          "vibration": {
+            "accelerationX": 5.59375,
+            "accelerationY": -5.5625,
+            "accelerationZ": 0.228516
+          }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Velocity report (fPort 6, type 0x02): per-axis velocity in mm/s + negative NTC temperature",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 28, 2, 51, 61, 0, 60, 179, 64, 255, 151]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": -10.5
+          },
+          "vibration": {
+            "velocityX": 0.043701,
+            "velocityY": 0.007813,
+            "velocityZ": 5.59375
+          }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Velocity report with positive NTC temperature (25.0 C)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 28, 2, 51, 61, 0, 60, 179, 64, 0, 250]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 25
+          },
+          "vibration": {
+            "velocityX": 0.043701,
+            "velocityY": 0.007813,
+            "velocityZ": 5.59375
+          }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Startup / device-info frame (type 0x00) carries no measurement",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 28, 0, 100, 2, 32, 32, 18, 8, 0, 0]
+      },
+      "expected": {
+        "errors": ["device info frame"]
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Config report response on fPort 7 is not a measurement uplink",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 28, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 7"]
+      },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

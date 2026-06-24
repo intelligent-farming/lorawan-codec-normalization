@@ -1,0 +1,81 @@
+{
+  "uplink": [
+    {
+      "description": "Status report, LPG alarm active, no high-temp alarm, +25.0 C, normal battery (3.0 V)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 214, 1, 30, 1, 0, 0, 250, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "air": { "gasAlarm": true, "temperature": 25 },
+          "gasType": "LPG",
+          "highTempAlarm": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Oracle: upstream returns LPGAlarm 'alarm' (-> air.gasAlarm true), HighTempAlarm 'noalarm' (-> highTempAlarm false), Temp 25, Volt 3. bytes[4]=1 LPG alarm, bytes[5]=0 no high-temp alarm, bytes[6..7]=0x00FA=250 -> 25.0 C. Covers air.gasAlarm true (gas-detector required key) plus air.temperature and battery."
+    },
+    {
+      "description": "Status report, no LPG alarm, high-temperature alarm active, +0.3 C, battery 0.1 V",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 214, 1, 1, 0, 1, 0, 3, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 0.1,
+          "air": { "gasAlarm": false, "temperature": 0.3 },
+          "gasType": "LPG",
+          "highTempAlarm": true
+        }
+      },
+      "source": "synthetic",
+      "_note": "Oracle: upstream returns LPGAlarm 'noalarm' (-> air.gasAlarm false), HighTempAlarm 'alarm' (-> highTempAlarm true), Temp 0.3, Volt 0.1. This is the TTN status-report example input. Covers air.gasAlarm false."
+    },
+    {
+      "description": "Status report, LPG alarm active, low-battery flag set (byte3 high bit), negative temp -5.0 C",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 214, 1, 158, 1, 0, 255, 206, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3,
+          "air": { "gasAlarm": true, "temperature": -5 },
+          "gasType": "LPG",
+          "highTempAlarm": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Oracle: upstream returns Volt '3(low battery)' for byte3=158 (0x80|30) and Temp -5 for bytes[6..7]=0xFFCE (two's-complement -50 -> -5.0 C); we surface battery 3.0 V plus the camelCase extra lowBattery true. bytes[4]=1 LPG alarm."
+    },
+    {
+      "description": "Device-info / startup frame (bytes[2]=0x00) carries no measurement",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 214, 0, 100, 11, 32, 25, 17, 18, 0, 0]
+      },
+      "expected": {
+        "errors": ["device info frame"]
+      },
+      "source": "synthetic",
+      "_note": "TTN startup-version-report example input. Upstream emits Device/SWver/HWver/Datecode (no measurement); we report an error since gas-detector needs air.gasAlarm."
+    },
+    {
+      "description": "Config-response frame on fPort 7 carries no measurement",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 214, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 7"]
+      },
+      "source": "synthetic",
+      "_note": "TTN ConfigReportRsp example input. Upstream emits Cmd/Device/Status config metadata, not a measurement; we reject any non-6 fPort."
+    }
+  ],
+  "downlink": []
+}

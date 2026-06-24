@@ -1,0 +1,56 @@
+{
+  "vendor": "netvox",
+  "device": "r900pd01o1",
+  "name": "R900PD01O1 - Wireless Water Quality Sensor with Dry Contact Output",
+  "categories": [
+    "water-quality"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "dryContactOut.boundAlarms.highPh",
+    "dryContactOut.boundAlarms.highResidualChlorine",
+    "dryContactOut.boundAlarms.highTemperatureWithNtu",
+    "dryContactOut.boundAlarms.highTemperatureWithPh",
+    "dryContactOut.boundAlarms.highTurbidity",
+    "dryContactOut.boundAlarms.lowPh",
+    "dryContactOut.boundAlarms.lowResidualChlorine",
+    "dryContactOut.boundAlarms.lowTemperatureWithNtu",
+    "dryContactOut.boundAlarms.lowTemperatureWithPh",
+    "dryContactOut.boundAlarms.lowTurbidity",
+    "dryContactOut.channel",
+    "dryContactOut.pulseTimeSeconds",
+    "dryContactOut.type",
+    "highPhAlarm",
+    "highResidualChlorineAlarm",
+    "highTemperatureWithNtuAlarm",
+    "highTemperatureWithPhAlarm",
+    "highTurbidityAlarm",
+    "lowPhAlarm",
+    "lowResidualChlorineAlarm",
+    "lowTemperatureWithNtuAlarm",
+    "lowTemperatureWithPhAlarm",
+    "lowTurbidityAlarm",
+    "tamperAlarm",
+    "temperatureWithNtu",
+    "temperatureWithPh",
+    "water.ph",
+    "water.residualChlorine",
+    "water.temperature.current",
+    "water.turbidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r900pd01o1",
+    "codecId": "r900pd01o1-codec",
+    "codecFile": "payload/r900pd01.js",
+    "codecSha256": "e2032943963f693b15a022fb16d402025b5025b00a30968eb37f156077ef16b9",
+    "referencedAt": "2026-06-24"
+  }
+}

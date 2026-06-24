@@ -1,0 +1,93 @@
+{
+  "uplink": [
+    {
+      "description": "Status report: pH 7.1, turbidity 12.5 NTU, residual chlorine 1.5 mg/L, pH-probe temp 21.5 C, no alarms",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 6, 1, 2, 198, 8, 102, 0, 125, 7, 208, 0, 150, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "water": {
+            "ph": 7.1,
+            "turbidity": 12.5,
+            "residualChlorine": 1.5,
+            "temperature": { "current": 21.5 }
+          },
+          "temperatureNtu": 20,
+          "lowPhAlarm": false,
+          "highPhAlarm": false,
+          "lowTurbidityAlarm": false,
+          "highTurbidityAlarm": false,
+          "lowResidualChlorineAlarm": false,
+          "highResidualChlorineAlarm": false,
+          "lowTempWithPhAlarm": false,
+          "highTempWithPhAlarm": false,
+          "tamperAlarm": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic. Expected derived via the oracle method: ran reference/upstream-codec.js on this input (PH 7.1pH, NTU 12.5ntu, Residual 1.5mg/L, TemperaturewithPH 21.5 C, TemperaturewithNTU 20 C, ShockTamperAlarm NoAlarm) and renormalized to vocabulary keys. Device-type bytes [1,6] = 262 = R900PD01."
+    },
+    {
+      "description": "Status report: pH 6.85, negative pH-probe temp -3.2 C, high-pH alarm and shock/tamper alarm set",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 6, 1, 2, 173, 254, 192, 0, 20, 1, 144, 0, 75, 0, 2, 1]
+      },
+      "expected": {
+        "data": {
+          "water": {
+            "ph": 6.85,
+            "turbidity": 2,
+            "residualChlorine": 0.75,
+            "temperature": { "current": -3.2 }
+          },
+          "temperatureNtu": 4,
+          "lowPhAlarm": false,
+          "highPhAlarm": true,
+          "lowTurbidityAlarm": false,
+          "highTurbidityAlarm": false,
+          "lowResidualChlorineAlarm": false,
+          "highResidualChlorineAlarm": false,
+          "lowTempWithPhAlarm": false,
+          "highTempWithPhAlarm": false,
+          "tamperAlarm": true
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic. Oracle: upstream gives PH 6.85pH, TemperaturewithPH -3.2 C (two's-complement 0xFEC0), NTU 2ntu, TemperaturewithNTU 4 C, Residual 0.75mg/L, HighPHAlarm 1 (bit 1 of bytes[15]=2), ShockTamperAlarm Alarm. Exercises negative temperature and alarm-bitmap mapping."
+    },
+    {
+      "description": "Startup / device-info frame (bytes[3] == 0x00, no measurement)",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 6, 0, 100, 11, 32, 25, 17, 18]
+      },
+      "expected": { "errors": ["expected at least 17 bytes"] },
+      "source": "ttn-example",
+      "_note": "Upstream example input; the 10-byte device-info/startup frame emits SWver/HWver/Datecode only, no measurement. Too short for a 17-byte status frame, so it is rejected by the length guard -> error."
+    },
+    {
+      "description": "Device-info frame padded to status-frame length (bytes[3] == 0x00, no measurement)",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 6, 0, 100, 11, 32, 25, 17, 18, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": { "errors": ["device info frame"] },
+      "source": "synthetic",
+      "_note": "Synthetic. Exercises the reportType == 0x00 branch when the frame is long enough to pass the length guard; upstream treats bytes[3] == 0x00 as the device-info report (no measurement)."
+    },
+    {
+      "description": "Config report response on fPort 23 (no measurement)",
+      "input": {
+        "fPort": 23,
+        "bytes": [129, 1, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": { "errors": ["unsupported fPort 23"] },
+      "source": "ttn-example",
+      "_note": "Upstream example input; config-response frames carry no measurement -> error."
+    }
+  ],
+  "downlink": []
+}

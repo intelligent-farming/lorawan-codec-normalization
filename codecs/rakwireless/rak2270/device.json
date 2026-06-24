@@ -1,0 +1,33 @@
+{
+  "vendor": "rakwireless",
+  "device": "rak2270",
+  "name": "RAK2270 WisNode Sticker Tracker",
+  "categories": [
+    "vibration"
+  ],
+  "sensors": [
+    "temperature",
+    "accelerometer"
+  ],
+  "provides": [
+    "air.temperature",
+    "battery",
+    "batteryPercent",
+    "vibration.accelerationX",
+    "vibration.accelerationY",
+    "vibration.accelerationZ"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "rakwireless",
+    "device": "rak2270",
+    "codecId": "rak2270-codec",
+    "codecFile": "decoder-rakwireless-standardized-payload.js",
+    "codecSha256": "c4b76a59475c5d05c070262b7926efb03d19331e2b312dbe3b0111510baba538",
+    "referencedAt": "2026-06-24"
+  }
+}

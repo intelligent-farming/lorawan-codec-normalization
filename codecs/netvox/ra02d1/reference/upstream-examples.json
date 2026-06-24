@@ -1,0 +1,113 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/netvox/ra02d1-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Startup version report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          214,
+          0,
+          100,
+          11,
+          32,
+          25,
+          17,
+          18,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "RA02D1",
+          "SWver": 10,
+          "HWver": 11,
+          "Datecode": "20191112"
+        }
+      }
+    },
+    {
+      "description": "Status report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          214,
+          1,
+          1,
+          0,
+          1,
+          0,
+          3,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "RA02D1",
+          "Volt": 0.1,
+          "LPGAlarm": "noalarm",
+          "HighTempAlarm": "alarm",
+          "Temp": 0.3
+        }
+      }
+    },
+    {
+      "description": "Configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          129,
+          214,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ConfigReportRsp",
+          "Device": "RA02D1",
+          "Status": "Success"
+        }
+      }
+    },
+    {
+      "description": "Read configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          130,
+          214,
+          3,
+          132,
+          7,
+          8,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ReadConfigReportRsp",
+          "Device": "RA02D1",
+          "MinTime": 900,
+          "MaxTime": 1800
+        }
+      }
+    }
+  ]
+}

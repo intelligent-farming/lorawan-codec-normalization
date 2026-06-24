@@ -1,0 +1,81 @@
+{
+  "uplink": [
+    {
+      "description": "Status report, CO alarm active, normal battery (3.0 V), no high-temp alarm",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 17, 1, 30, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "air": { "gasAlarm": true },
+          "gasType": "CO",
+          "highTempAlarm": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Oracle: upstream returns COAlarm 'Alarm' (-> air.gasAlarm true), HighTempAlarm 'No Alarm' (-> highTempAlarm false), Volt 3. bytes[4]=1 CO alarm, bytes[5]=0 no high-temp alarm. Covers air.gasAlarm true (gas-detector required key)."
+    },
+    {
+      "description": "Status report, no CO alarm, high-temperature alarm active, normal battery (3.0 V)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 17, 1, 30, 0, 1, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "air": { "gasAlarm": false },
+          "gasType": "CO",
+          "highTempAlarm": true
+        }
+      },
+      "source": "synthetic",
+      "_note": "Oracle: upstream returns COAlarm 'No Alarm' (-> air.gasAlarm false), HighTempAlarm 'Alarm' (-> highTempAlarm true), Volt 3. This is the TTN status-report example input. Covers air.gasAlarm false plus highTempAlarm extra."
+    },
+    {
+      "description": "Status report, CO alarm active, low-battery flag set (byte3 high bit), 3.0 V",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 17, 1, 158, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "lowBattery": true,
+          "battery": 3,
+          "air": { "gasAlarm": true },
+          "gasType": "CO",
+          "highTempAlarm": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Oracle: upstream returns Volt '3(low battery)' for byte3=158 (0x80|30); we surface battery 3.0 V plus the camelCase extra lowBattery true. bytes[4]=1 CO alarm."
+    },
+    {
+      "description": "Device-info / startup frame (bytes[2]=0x00) carries no measurement",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 17, 0, 100, 21, 32, 32, 8, 17, 0, 0]
+      },
+      "expected": {
+        "errors": ["device info frame"]
+      },
+      "source": "synthetic",
+      "_note": "TTN startup-version-report example input. Upstream emits Device/SWver/HWver/Datecode (no measurement); we report an error since gas-detector needs air.gasAlarm."
+    },
+    {
+      "description": "Config-response frame on fPort 7 carries no measurement",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 17, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 7"]
+      },
+      "source": "synthetic",
+      "_note": "TTN ConfigReportRsp example input. Upstream emits Cmd/Device/Status config metadata, not a measurement; we reject any non-6 fPort."
+    }
+  ],
+  "downlink": []
+}

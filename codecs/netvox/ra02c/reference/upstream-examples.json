@@ -1,0 +1,165 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/netvox/ra02c-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Startup version report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          17,
+          0,
+          100,
+          21,
+          32,
+          32,
+          8,
+          17,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "RA02C",
+          "SWver": 10,
+          "HWver": 21,
+          "Datecode": "20200811"
+        }
+      }
+    },
+    {
+      "description": "Status report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          17,
+          1,
+          30,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "RA02C",
+          "Volt": 3,
+          "COAlarm": "No Alarm",
+          "HighTempAlarm": "Alarm"
+        }
+      }
+    },
+    {
+      "description": "Configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          129,
+          17,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ConfigReportRsp",
+          "Device": "RA02C",
+          "Status": "Success"
+        }
+      }
+    },
+    {
+      "description": "Read configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          130,
+          17,
+          3,
+          132,
+          7,
+          8,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ReadConfigReportRsp",
+          "Device": "RA02C",
+          "MinTime": 900,
+          "MaxTime": 1800,
+          "BatteryChange": 0.1
+        }
+      }
+    },
+    {
+      "description": "Set alarm threshold response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          131,
+          17,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "SetAlarmThresholdRsp",
+          "Device": "RA02C",
+          "Status": "Success"
+        }
+      }
+    },
+    {
+      "description": "Get alarm threshold response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          132,
+          17,
+          100,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "GetAlarmThresholdRsp",
+          "Device": "RA02C",
+          "AlarmThreshold": 100
+        }
+      }
+    }
+  ]
+}

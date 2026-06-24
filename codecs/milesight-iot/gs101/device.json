@@ -1,0 +1,33 @@
+{
+  "vendor": "milesight-iot",
+  "device": "gs101",
+  "name": "GS101 - LoRaWAN Gas Detector",
+  "categories": [
+    "gas-detector"
+  ],
+  "sensors": [
+    "gas",
+    "smart valve",
+    "relay"
+  ],
+  "provides": [
+    "air.gasAlarm",
+    "relayState",
+    "sensorAlarm",
+    "sensorLifeRemaining",
+    "valveState"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "gs101",
+    "codecId": "gs101-codec",
+    "codecFile": "gs101.js",
+    "codecSha256": "dc68f6fae65c532eddebea1e6004d2c5e1d8afe65a5bc97f9638b8bce473b806",
+    "referencedAt": "2026-06-24"
+  }
+}

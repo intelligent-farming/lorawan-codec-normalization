@@ -1,0 +1,135 @@
+{
+  "uplink": [
+    {
+      "description": "Status report: pH 7.20, water temp 25.00 C, turbidity 5.0 NTU, residual chlorine 0.75 mg/L, high-pH + shock/tamper alarm",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 14, 1, 2, 208, 9, 196, 0, 50, 255, 56, 0, 75, 0, 2, 1]
+      },
+      "expected": {
+        "data": {
+          "water": {
+            "ph": 7.2,
+            "turbidity": 5,
+            "residualChlorine": 0.75,
+            "temperature": { "current": 25 }
+          },
+          "temperatureWithPh": 25,
+          "temperatureWithNtu": -2,
+          "lowPhAlarm": false,
+          "highPhAlarm": true,
+          "lowTurbidityAlarm": false,
+          "highTurbidityAlarm": false,
+          "lowResidualChlorineAlarm": false,
+          "highResidualChlorineAlarm": false,
+          "lowTemperatureWithPhAlarm": false,
+          "highTemperatureWithPhAlarm": false,
+          "lowTemperatureWithNtuAlarm": false,
+          "highTemperatureWithNtuAlarm": false,
+          "tamperAlarm": true
+        }
+      },
+      "source": "synthetic",
+      "_note": "Expected derived via the ORACLE method: reference/upstream-codec.js decodes this frame to PH 7.2pH, TemperaturewithPH 25C, NTU 5ntu, TemperaturewithNTU -2C (two's complement 0xFF38), Residual 0.75mg/L, HighPHAlarm 1, ShockTamperAlarm Alarm. Synthetic input; bytes[1..2]=0x010E (270 == R900PD01O1)."
+    },
+    {
+      "description": "Status report: pH 6.85, water temp -1.50 C, turbidity 123.4 NTU, residual chlorine 2.50 mg/L, low-turbidity alarm, no tamper",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 14, 1, 2, 173, 255, 106, 4, 210, 255, 106, 0, 250, 0, 4, 0]
+      },
+      "expected": {
+        "data": {
+          "water": {
+            "ph": 6.85,
+            "turbidity": 123.4,
+            "residualChlorine": 2.5,
+            "temperature": { "current": -1.5 }
+          },
+          "temperatureWithPh": -1.5,
+          "temperatureWithNtu": -1.5,
+          "lowPhAlarm": false,
+          "highPhAlarm": false,
+          "lowTurbidityAlarm": true,
+          "highTurbidityAlarm": false,
+          "lowResidualChlorineAlarm": false,
+          "highResidualChlorineAlarm": false,
+          "lowTemperatureWithPhAlarm": false,
+          "highTemperatureWithPhAlarm": false,
+          "lowTemperatureWithNtuAlarm": false,
+          "highTemperatureWithNtuAlarm": false,
+          "tamperAlarm": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "ORACLE method: upstream decodes PH 6.85pH, TemperaturewithPH -1.5C (0xFF6A two's complement), NTU 123.4ntu (0x04D2 /10), Residual 2.5mg/L, LowNTUAlarm 1. Exercises negative temperature and multi-digit turbidity."
+    },
+    {
+      "description": "Dry-contact output config readback: NormallyHighLevel, 30 s pulse, bound to low-pH + low-turbidity alarms, Channel2",
+      "input": {
+        "fPort": 23,
+        "bytes": [134, 1, 14, 1, 30, 0, 5, 1]
+      },
+      "expected": {
+        "data": {
+          "dryContactOut": {
+            "type": "NormallyHighLevel",
+            "pulseTimeSeconds": 30,
+            "boundAlarms": {
+              "lowPh": true,
+              "highPh": false,
+              "lowTurbidity": true,
+              "highTurbidity": false,
+              "lowResidualChlorine": false,
+              "highResidualChlorine": false,
+              "lowTemperatureWithPh": false,
+              "highTemperatureWithPh": false,
+              "lowTemperatureWithNtu": false,
+              "highTemperatureWithNtu": false
+            },
+            "channel": "Channel2"
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "ORACLE method: reference decodes cmd 0x86 (ReadConfigDryContactPointOutRsp) to DryContactPointOutType NormallyHighLevel, OutPluseTime 30s, LowPHAlarm 1 + LowNTUAlarm 1. We diverge intentionally on Channel: upstream has a copy-paste bug (reads bytes[8] instead of bytes[7] for the channel, so it omits it); our codec reads bytes[7]=0x01 -> Channel2, the datasheet-correct field. dry-contact output state -> extra dryContactOut."
+    },
+    {
+      "description": "Device-info / startup frame (fPort 22, reportType 0) carries no measurement",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 14, 0, 100, 11, 32, 25, 17, 18]
+      },
+      "expected": {
+        "errors": ["device info frame"]
+      },
+      "source": "synthetic",
+      "_note": "ORACLE method: upstream returns sw/hw version + datecode (no measurement). reportType byte[3]=0 -> error per output contract (never emit a measurement-less data object)."
+    },
+    {
+      "description": "Config acknowledgement (ConfigReportRsp) on fPort 23 carries no measurement",
+      "input": {
+        "fPort": 23,
+        "bytes": [129, 1, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["config response"]
+      },
+      "source": "synthetic",
+      "_note": "ORACLE method: upstream returns Cmd ConfigReportRsp / Status Success (an ack, no measurement). Only cmd 0x86 readback is surfaced; everything else on fPort 23 -> error."
+    },
+    {
+      "description": "Unsupported fPort",
+      "input": {
+        "fPort": 99,
+        "bytes": [0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort"]
+      },
+      "source": "synthetic",
+      "_note": "ORACLE method: upstream returns errors ['unknown FPort'] for unknown ports. Our message names the supported ports."
+    }
+  ],
+  "downlink": []
+}
