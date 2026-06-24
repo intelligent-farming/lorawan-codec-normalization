@@ -119,7 +119,7 @@ of the listed paths present).
 | `contact` | `action.contactState` | 22 |
 | `gps-tracker` | `position.latitude`, `position.longitude` | 46 |
 | `water-leak` | `water.leak` | 36 |
-| `groundwater` | `atLeastOne`: `water.level` / `water.pressure` | 6 |
+| `groundwater` | `atLeastOne`: `water.level` / `water.pressure` | 7 |
 
 `devices()` / `devices({ category })` enumerate registered devices;
 `device(vendor, device)` returns one device's metadata. Each device's metadata

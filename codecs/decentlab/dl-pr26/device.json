@@ -1,0 +1,31 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-pr26",
+  "name": "DL-PR26 - Pressure / Liquid Level and Temperature Sensor",
+  "categories": [
+    "groundwater"
+  ],
+  "sensors": [
+    "pressure",
+    "temperature",
+    "battery"
+  ],
+  "provides": [
+    "battery",
+    "water.pressure",
+    "water.temperature.current"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-pr26",
+    "codecId": "dl-pr26-0-1-codec",
+    "codecFile": "dl-pr26-0-1.js",
+    "codecSha256": "658564ca157197e8426e0eedc6d0d6a21b70365ed1d34385769fcbb0119b5099",
+    "referencedAt": "2026-06-24"
+  }
+}
