@@ -9,10 +9,7 @@ This module **provides codec JavaScript** to install into a ChirpStack device
 profile (or a TTN payload formatter); the network server runs the codec, so its
 output is decoded and normalized automatically. The module does **not** decode
 payloads itself. Each codec is a self-contained, console-paste-able `codec.js`
-whose `decodeUplink(input)` returns normalized data directly. The codecs are
-original works; upstream [TheThingsNetwork/lorawan-devices][ttn] codecs are used
-only as reference for each device's wire format (see [NOTICE](NOTICE) and
-[AUTHORING.md](AUTHORING.md)).
+whose `decodeUplink(input)` returns normalized data directly.
 
 [ttn]: https://github.com/TheThingsNetwork/lorawan-devices
 
@@ -132,16 +129,6 @@ of the listed paths present).
 | `solar-radiation` | `atLeastOne`: `air.solarIrradiance` / `air.par` | 2 |
 | `leaf-wetness` | `leaf.wetness` | 1 |
 | `runtime-meter` | `device.runtime` | 2 |
-
-The 12 categories below `groundwater` are newly defined (vocabulary extended for
-process/differential pressure, particulate/VOC, gas alarm, vibration, tilt,
-occupancy, water-quality, power, solar radiation, leaf wetness, and runtime).
-They hold devices that decode those quantities but fit none of the original
-categories. Some candidates were deliberately left out: a device whose upstream
-codec emits only a raw ADC count or loop current — with no engineering-unit
-conversion in the payload (e.g. the Ellenex 4-20 mA pressure/level transmitters,
-whose range is per-deployment config) — cannot produce a vocabulary-conformant
-value and is not shipped.
 
 `devices()` / `devices({ category })` enumerate registered devices;
 `device(vendor, device)` returns one device's metadata. Each device's metadata
