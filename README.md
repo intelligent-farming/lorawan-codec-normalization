@@ -144,11 +144,15 @@ const { devicesProviding } = require('@intelligent-farming/lorawan-codec-normali
 devicesProviding('temperature'); // anything providing air./soil./water. temperature
 devicesProviding('air.temperature'); // narrower: only that exact path
 devicesProviding('co2', { category: 'air-quality' }); // honours the devices() filters
+devicesProviding(['air.temperature', 'air.relativeHumidity']); // both required (AND)
 ```
 
 A bare segment (`'temperature'`) matches that value at any depth; a dotted query
 (`'air.temperature'`) matches only that exact run. Segments match whole, not as
-substrings — `'battery'` does not match the `batteryPercent` extra.
+substrings — `'battery'` does not match the `batteryPercent` extra. Pass an array
+to require **all** of its queries; a device is returned only when every query
+matches one of its provided paths (blank entries are ignored, an empty array
+returns `[]`).
 
 ## Units and conventions
 

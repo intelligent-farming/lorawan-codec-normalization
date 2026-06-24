@@ -264,6 +264,45 @@ test('devicesProviding() searches devices by provided value, segment-aware', () 
   );
   assert.deepEqual(lib.devicesProviding(''), []);
   assert.deepEqual(lib.devicesProviding('   '), []);
+
+  // Array query requires ALL items (AND), equivalent to intersecting per-query results.
+  const both = lib.devicesProviding(['air.temperature', 'air.relativeHumidity']);
+  const bothIds = new Set(both.map((d) => `${d.vendor}/${d.device}`));
+  assert.ok(
+    both.every((d) => d.provides.includes('air.temperature') && d.provides.includes('air.relativeHumidity')),
+    'every AND result must provide both queried paths',
+  );
+  const rh = new Set(
+    lib.devicesProviding('air.relativeHumidity').map((d) => `${d.vendor}/${d.device}`),
+  );
+  const intersection = [...airTempIds].filter((id) => rh.has(id));
+  assert.deepEqual(
+    [...bothIds].sort(),
+    intersection.sort(),
+    'array query equals the intersection of the single-query results',
+  );
+  assert.ok(both.length <= airTemp.length, 'AND of two queries cannot exceed either alone');
+
+  // A single-element array behaves like the bare string.
+  assert.deepEqual(
+    lib.devicesProviding(['co2']).map((d) => `${d.vendor}/${d.device}`),
+    [...co2],
+  );
+  // Blank entries inside a non-empty array are ignored, not treated as "match nothing".
+  assert.deepEqual(
+    lib.devicesProviding(['co2', '  ']).map((d) => `${d.vendor}/${d.device}`),
+    [...co2],
+  );
+  // Empty / all-blank arrays return [].
+  assert.deepEqual(lib.devicesProviding([]), []);
+  assert.deepEqual(lib.devicesProviding(['', '   ']), []);
+
+  // Array query honours the same filters.
+  assert.ok(
+    lib
+      .devicesProviding(['air.temperature', 'air.relativeHumidity'], { category: 'climate' })
+      .every((d) => d.categories.includes('climate')),
+  );
 });
 
 test('devices() returns only authored devices; the draft mechanism holds', () => {

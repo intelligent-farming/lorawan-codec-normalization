@@ -151,24 +151,34 @@ function providedPathMatches(providedPath: string, query: string): boolean {
  * dotted query narrows to that exact path run: `devicesProviding('air.temperature')`
  * excludes a device that only provides `soil.temperature`.
  *
+ * Pass an array to require **all** of its queries (AND): a device is returned only
+ * if every query matches one of its provided paths, so
+ * `devicesProviding(['air.temperature', 'air.relativeHumidity'])` returns devices
+ * providing both. An empty or all-blank array returns `[]`; blank entries within a
+ * non-empty array are ignored.
+ *
  * Authored devices only by default; honours the same `category`/`includeDrafts`
  * filters as {@link devices}. Returns `[]` for a blank query. Result order matches
  * {@link devices} (vendor then device).
  *
  * @param query - A vocabulary path or segment (e.g. `'temperature'`, `'co2'`,
- *   `'metering.water.total'`).
+ *   `'metering.water.total'`), or an array of them to require all (AND).
  * @example
  * devicesProviding('co2').map((d) => `${d.vendor}/${d.device}`);
+ * devicesProviding(['air.temperature', 'air.relativeHumidity']); // both required
  */
 export function devicesProviding(
-  query: string,
+  query: string | string[],
   opts?: { category?: string; includeDrafts?: boolean },
 ): DeviceInfo[] {
-  if (!query || !query.trim()) return [];
-  const q = query.trim();
-  return devices(opts).filter((d) =>
-    (d.provides ?? []).some((p) => providedPathMatches(p, q)),
-  );
+  const queries = (Array.isArray(query) ? query : [query])
+    .filter((q): q is string => typeof q === 'string' && q.trim() !== '')
+    .map((q) => q.trim());
+  if (queries.length === 0) return [];
+  return devices(opts).filter((d) => {
+    const provided = d.provides ?? [];
+    return queries.every((q) => provided.some((p) => providedPathMatches(p, q)));
+  });
 }
 
 /**
