@@ -35,10 +35,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: npm
 
+      # No package-lock.json is committed, so `npm ci` and setup-node's npm cache
+      # (both of which require a lockfile) are not used. `npm install` resolves
+      # from package.json against the registry; the dependency set is small and
+      # uses caret ranges, so this is reproducible enough for CI.
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       # Verify committed device.json `provides` matches what the codecs emit.
       # Must run before `npm test`, whose build step regenerates `provides` in
