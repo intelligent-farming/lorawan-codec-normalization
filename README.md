@@ -195,6 +195,13 @@ npm run scaffold -- <vendor> <device> <category[,category]> [--ttn <v>/<d> | --n
 npm test   # the conformance suite tests every codecs/<vendor>/<device>/ automatically
 ```
 
+Each device.json's `provides` array is generated, not hand-edited: the scaffold
+seeds it, and `npm run build` (which `npm test` runs first) recomputes it from
+each codec's output over its vectors. After changing a codec or its vectors,
+`npm run build` keeps `provides` in sync; `npm run provides` regenerates it on
+demand, and `npm run provides:check` verifies it is current (non-zero exit on
+drift — suitable for CI).
+
 ## License
 
 GNU AGPL-3.0-or-later. See [LICENSE](LICENSE). TTN-derived material (vector

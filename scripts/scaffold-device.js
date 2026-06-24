@@ -25,6 +25,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
 const YAML = require('yaml');
+const { writeProvides } = require('./compute-provides');
 
 const REPO_ROOT = path.join(__dirname, '..');
 const CODECS_DIR = path.join(REPO_ROOT, 'codecs');
@@ -256,6 +257,11 @@ function main() {
     path.join(targetDir, 'codec.js'),
     codecStub(vendor, device, ttnRef),
   );
+
+  // Seed `provides` (empty for the stub) and place it after `sensors`. It is
+  // recomputed from the codec on every build (`npm run build`), so it stays in
+  // sync once the codec and vectors are authored.
+  writeProvides(targetDir);
 
   console.log(`scaffolded ${vendor}/${device} -> ${path.relative(REPO_ROOT, targetDir)}`);
   console.log('next: author codec.js, fill expected.data in vectors.json, then `npm test`.');

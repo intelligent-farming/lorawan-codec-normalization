@@ -142,7 +142,9 @@ codec. Verified upstream bugs already encountered in this repo:
 2. Author `codec.js` (output contract + console rules + correct units).
 3. Fill `device.json`: `categories`, `sensors`, `variantOf`, `downlink` (set
    `encode`/`decode` true **only** if you implement those functions — the suite
-   checks both directions), and `ttn` provenance (or `ttn: null`).
+   checks both directions), and `ttn` provenance (or `ttn: null`). Do **not**
+   hand-edit `provides` — it is generated from your codec's output by
+   `npm run build` (`npm run provides` to regenerate on demand).
 4. Write `vectors.json` covering all `requires` plus ≥1 error input.
 5. `npm test` until green. The suite tests your folder automatically — there is
    no registration file.

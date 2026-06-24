@@ -16,7 +16,9 @@
   "files": ["dist/", "definitions/", "codecs/", "!codecs/**/reference"],
   "engines": { "node": ">=18" },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && node scripts/compute-provides.js",
+    "provides": "node scripts/compute-provides.js",
+    "provides:check": "node scripts/compute-provides.js --check",
     "scaffold": "node scripts/scaffold-device.js",
     "test": "npm run build && node --test --test-reporter=spec test/smoke.js test/conformance.js",
     "docs": "typedoc && mv docs/README.md docs/api-doc.md"
