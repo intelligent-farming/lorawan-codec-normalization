@@ -1,0 +1,28 @@
+{
+  "vendor": "tektelic",
+  "device": "t00067xx-tundra-sensor",
+  "name": "T00067xx - TUNDRA Temperature Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "tektelic",
+    "device": "t00067xx-tundra-sensor",
+    "codecId": "t00067xx-codec",
+    "codecFile": "decoder_tundra_sensor.js",
+    "codecSha256": "9be86b309100950c01e310fc1ec8d84adf0917d1a8ebe47fee3a110d5d7777ea",
+    "referencedAt": "2026-06-25"
+  }
+}

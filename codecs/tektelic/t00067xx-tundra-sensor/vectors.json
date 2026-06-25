@@ -1,0 +1,49 @@
+{
+  "uplink": [
+    {
+      "description": "Ambient temperature + humidity frame -> climate",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          3,
+          103,
+          0,
+          247,
+          4,
+          104,
+          29
+        ]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 24.7,
+            "relativeHumidity": 14.5
+          },
+          "make": "tektelic",
+          "model": "t00067xx-tundra-sensor"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic Tektelic TLV frame (0x03 0x67 temperature, 0x04 0x68 humidity); expected.data via the ported upstream decoder (oracle). ambient_temperature->air.temperature, relative_humidity->air.relativeHumidity. Satisfies climate."
+    },
+    {
+      "description": "Unparseable header -> error",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          255,
+          255
+        ]
+      },
+      "expected": {
+        "errors": [
+          "Couldn"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Header not in decoder."
+    }
+  ],
+  "downlink": []
+}
