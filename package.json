@@ -1,6 +1,6 @@
 {
   "name": "@intelligent-farming/lorawan-codec-normalization",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Curated, standalone normalized LoRaWAN payload codecs for agriculture sensors, grouped by device category so every codec in a category emits the same shared keys.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
