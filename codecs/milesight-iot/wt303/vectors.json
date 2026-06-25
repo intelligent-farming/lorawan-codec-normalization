@@ -1,0 +1,42 @@
+{
+  "uplink": [
+    {
+      "description": "Thermostat uplink: temperature + humidity -> climate (+ setpoint/valve extras)",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          1,
+          16,
+          14,
+          2,
+          48,
+          2,
+          3,
+          32,
+          14,
+          5,
+          33,
+          6,
+          1
+        ]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 36,
+            "relativeHumidity": 56
+          },
+          "targetTemperature": 36.16,
+          "temperatureControlStatus": "heating",
+          "temperatureControlMode": "cooling",
+          "valveStatus": "unknown",
+          "make": "milesight-iot",
+          "model": "wt303"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream-example input (TTN milesight-iot wt303 codec yaml, Apache-2.0). expected.data via the ported Milesight TLV decoder (oracle). temperature->air.temperature, humidity->air.relativeHumidity (climate); target temperature / control / valve status as camelCase extras."
+    }
+  ],
+  "downlink": []
+}

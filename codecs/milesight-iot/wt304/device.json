@@ -1,0 +1,32 @@
+{
+  "vendor": "milesight-iot",
+  "device": "wt304",
+  "name": "Smart Fan Coil Thermostat -WT304",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "smart valve"
+  ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "targetTemperature",
+    "temperatureControlMode",
+    "temperatureControlStatus",
+    "valveStatus"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "wt304",
+    "codecId": "wt304-codec",
+    "codecFile": "wt304.js",
+    "codecSha256": "9b22174a8361db71fab44c069103d10ebb79a68ba7e535b1061023f0ce10eb96",
+    "referencedAt": "2026-06-25"
+  }
+}
