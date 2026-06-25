@@ -1,0 +1,36 @@
+{
+  "vendor": "dragino",
+  "device": "wsc2-compact-ls",
+  "name": "WSC2-Compact-LS Weather Station (with DR-RG-6P rain gauge)",
+  "categories": [
+    "rain-gauge",
+    "climate",
+    "weather-station",
+    "light"
+  ],
+  "sensors": [
+    "rainfall",
+    "temperature",
+    "humidity",
+    "barometer",
+    "light"
+  ],
+  "provides": [
+    "air.lightIntensity",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "payloadVersion",
+    "probeTemperature",
+    "rain.cumulative",
+    "rainTipCount",
+    "sensorFlags"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

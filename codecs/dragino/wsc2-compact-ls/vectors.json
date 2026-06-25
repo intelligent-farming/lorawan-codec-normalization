@@ -1,0 +1,75 @@
+{
+  "uplink": [
+    {
+      "description": "Weather + rain frame (fPort 2): rainfall, temperature, humidity, pressure, illuminance",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          12,
+          228,
+          1,
+          0,
+          0,
+          0,
+          50,
+          0,
+          0,
+          0,
+          235,
+          2,
+          88,
+          39,
+          146,
+          19,
+          136,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "rain": {
+            "cumulative": 10
+          },
+          "rainTipCount": 50,
+          "air": {
+            "temperature": 23.5,
+            "relativeHumidity": 60,
+            "pressure": 1013,
+            "lightIntensity": 5000
+          },
+          "probeTemperature": 0,
+          "payloadVersion": 1,
+          "sensorFlags": 0,
+          "make": "dragino",
+          "model": "wsc2-compact-ls"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic frame built to the Dragino WSC2-Compact-LS byte layout (rain-gauge configuration); expected.data computed by this codec. rain = 4-byte tip count x 0.2 mm/tip (DR-RG-6P) -> rain.cumulative; ambient temperature/humidity -> air.*; barometric pressure (device kPa) x10 -> air.pressure (hPa); illuminance -> air.lightIntensity. No TTN/upstream examples exist for this device; wire format per Dragino published decoder/manual."
+    },
+    {
+      "description": "Device-information frame (fPort 5) -> error",
+      "input": {
+        "fPort": 5,
+        "bytes": [
+          74,
+          1,
+          6,
+          1,
+          255,
+          12,
+          228
+        ]
+      },
+      "expected": {
+        "errors": [
+          "device information frame"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "fPort 5 carries firmware/band info, not a measurement."
+    }
+  ],
+  "downlink": []
+}
