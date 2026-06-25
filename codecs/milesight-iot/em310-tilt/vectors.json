@@ -1,0 +1,42 @@
+{
+  "uplink": [
+    {
+      "description": "Tilt frame: 3-axis angles -> tilt.x/y/z (+ battery)",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          1,
+          117,
+          100,
+          3,
+          207,
+          150,
+          0,
+          200,
+          0,
+          156,
+          255,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 100,
+          "tilt": {
+            "x": 1.5,
+            "y": 2,
+            "z": -1
+          },
+          "thresholdX": "normal",
+          "thresholdY": "normal",
+          "thresholdZ": "normal",
+          "make": "milesight-iot",
+          "model": "em310-tilt"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic Milesight TLV frame (battery 0x0175; angle 0x03cf: x=1.50, y=2.00, z=-1.00 deg). Decoder is the verbatim upstream parse (milesightDecode); angle_x/y/z -> tilt.x/y/z; battery % -> batteryPercent; threshold flags as extras. Satisfies tilt."
+    }
+  ],
+  "downlink": []
+}

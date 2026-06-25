@@ -1,0 +1,34 @@
+{
+  "vendor": "milesight-iot",
+  "device": "em310-tilt",
+  "name": "EM310 - Tilt Sensor",
+  "categories": [
+    "tilt"
+  ],
+  "sensors": [
+    "battery",
+    "tilt"
+  ],
+  "provides": [
+    "batteryPercent",
+    "thresholdX",
+    "thresholdY",
+    "thresholdZ",
+    "tilt.x",
+    "tilt.y",
+    "tilt.z"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "em310-tilt",
+    "codecId": "em310-tilt-codec",
+    "codecFile": "em310-tilt.js",
+    "codecSha256": "7abfb0871ee0543bf7cc1c72f18beea5ddbbe5c8f4d8040a4774cf8191f79f27",
+    "referencedAt": "2026-06-25"
+  }
+}
