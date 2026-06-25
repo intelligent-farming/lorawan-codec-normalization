@@ -1,0 +1,46 @@
+{
+  "uplink": [
+    {
+      "description": "Periodic uplink (fPort 4): box temperature + humidity -> climate",
+      "input": {
+        "fPort": 4,
+        "bytes": [
+          51,
+          49,
+          56,
+          56,
+          50,
+          35,
+          99,
+          61,
+          119,
+          219
+        ]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 74,
+          "actuator": "0",
+          "tamper": "1",
+          "cable": "0",
+          "dI0": "0",
+          "dI1": "0",
+          "leak": "0",
+          "fraud": "0",
+          "class": "0",
+          "powerState": "0",
+          "vt": "10",
+          "air": {
+            "temperature": 23.96,
+            "relativeHumidity": 46.82
+          },
+          "make": "strega",
+          "model": "smart-valve"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream-example input (TTN strega smart-valve codec yaml, Apache-2.0). expected.data via the ported upstream decoder (oracle: Temp 23.96 C, Hygro 46.82 %). Temp->air.temperature, Hygro->air.relativeHumidity (climate); Bat->batteryPercent; Power->powerState and valve/leak/fraud/DI status as camelCase extras."
+    }
+  ],
+  "downlink": []
+}

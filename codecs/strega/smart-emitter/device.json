@@ -1,0 +1,39 @@
+{
+  "vendor": "strega",
+  "device": "smart-emitter",
+  "name": "Smart Emitter",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "smart valve"
+  ],
+  "provides": [
+    "actuator",
+    "air.relativeHumidity",
+    "air.temperature",
+    "batteryPercent",
+    "cable",
+    "class",
+    "dI0",
+    "dI1",
+    "fraud",
+    "leak",
+    "powerState",
+    "tamper",
+    "vt"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "strega",
+    "device": "smart-emitter",
+    "codecId": "smart-emitter-codec",
+    "codecFile": "smart-valve.js",
+    "codecSha256": "5d7083489f74f6a2001314aafd6289dfa4b531420f982427bce27b4e65b642ad",
+    "referencedAt": "2026-06-25"
+  }
+}
