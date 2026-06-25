@@ -1,0 +1,26 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/tektelic/t000589x-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Voltmeter and Apparent Power Uplink",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          0,
+          116,
+          0,
+          17
+        ]
+      },
+      "output": {
+        "data": {
+          "port": "10",
+          "raw": "[00, 74, 00, 11]",
+          "rms_voltage": 1.7
+        },
+        "errors": [],
+        "warnings": []
+      }
+    }
+  ]
+}

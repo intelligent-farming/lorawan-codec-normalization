@@ -1,0 +1,49 @@
+{
+  "uplink": [
+    {
+      "description": "climate measurement frame",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          3,
+          103,
+          0,
+          247,
+          4,
+          104,
+          29
+        ]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 25,
+            "relativeHumidity": 14.5
+          },
+          "make": "tektelic",
+          "model": "t0008375-stork"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Tektelic TLV frame; expected.data via the ported upstream decoder (oracle). Mapped per the codec header."
+    },
+    {
+      "description": "Unparseable frame -> error",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          255,
+          255
+        ]
+      },
+      "expected": {
+        "errors": [
+          "Couldn't find head"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Header not in this sensor decoder."
+    }
+  ],
+  "downlink": []
+}

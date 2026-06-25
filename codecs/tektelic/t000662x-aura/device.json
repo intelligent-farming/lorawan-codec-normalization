@@ -1,0 +1,28 @@
+{
+  "vendor": "tektelic",
+  "device": "t000662x-aura",
+  "name": "AURA Smart AC Switch",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "switch"
+  ],
+  "provides": [
+    "power.current",
+    "power.voltage"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "tektelic",
+    "device": "t000662x-aura",
+    "codecId": "t000662x-codec",
+    "codecFile": "decoder_ac_outlet_switch.js",
+    "codecSha256": "9cfe5a4deafcc5cb083c9b5015404eff3aa9dac4cb46d210e3e81f6fd086c813",
+    "referencedAt": "2026-06-25"
+  }
+}

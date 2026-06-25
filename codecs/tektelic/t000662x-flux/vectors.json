@@ -1,0 +1,52 @@
+{
+  "uplink": [
+    {
+      "description": "power-meter measurement frame",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          0,
+          116,
+          8,
+          252,
+          0,
+          117,
+          0,
+          100
+        ]
+      },
+      "expected": {
+        "data": {
+          "power": {
+            "voltage": 230,
+            "current": 10
+          },
+          "make": "tektelic",
+          "model": "t000662x-flux"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Tektelic TLV frame; expected.data via the ported upstream decoder (oracle). Mapped per the codec header."
+    },
+    {
+      "description": "Unparseable frame -> error",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          0,
+          115,
+          0,
+          100
+        ]
+      },
+      "expected": {
+        "errors": [
+          "Couldn't find head"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Header not in this sensor decoder."
+    }
+  ],
+  "downlink": []
+}

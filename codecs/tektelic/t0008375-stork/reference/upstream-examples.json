@@ -1,0 +1,30 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/tektelic/t0008375-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Transducer Data Uplink",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          3,
+          103,
+          0,
+          247,
+          4,
+          104,
+          29
+        ]
+      },
+      "output": {
+        "data": {
+          "temperature": 25,
+          "relative_humidity": 14.5,
+          "port": "10",
+          "raw": "[03, 67, 00, F7, 04, 68, 1D]"
+        },
+        "errors": [],
+        "warnings": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "vendor": "tektelic",
+  "device": "t000589x-ac-switch-gen1",
+  "name": "Smart AC Switch Generation 1",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "switch"
+  ],
+  "provides": [
+    "power.current",
+    "power.voltage"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "tektelic",
+    "device": "t000589x-ac-switch-gen1",
+    "codecId": "t000589x-codec",
+    "codecFile": "decoder_ac_outlet_switch_gen1.js",
+    "codecSha256": "f24971903b7b97a78647d3467b36b0bd15fd4edd01bb96164c286cffa20080a9",
+    "referencedAt": "2026-06-25"
+  }
+}

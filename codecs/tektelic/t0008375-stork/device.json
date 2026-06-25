@@ -1,0 +1,29 @@
+{
+  "vendor": "tektelic",
+  "device": "t0008375-stork",
+  "name": "Stork Outdoor & Indoor Asset Tracker",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "gps",
+    "accelerometer"
+  ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "tektelic",
+    "device": "t0008375-stork",
+    "codecId": "t0008375-codec",
+    "codecFile": "decoder_stork.js",
+    "codecSha256": "f45aa44a74979d582858e5694783575137a64248451b125500a760ff069e7b71",
+    "referencedAt": "2026-06-25"
+  }
+}
