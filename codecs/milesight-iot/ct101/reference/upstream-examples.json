@@ -1,0 +1,35 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/milesight-iot/ct101-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Smart Current Transformer - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          132,
+          152,
+          184,
+          11,
+          208,
+          7,
+          196,
+          9,
+          5
+        ]
+      },
+      "output": {
+        "data": {
+          "current_max": 30,
+          "current_min": 20,
+          "current": 25,
+          "current_alarm": {
+            "current_threshold_alarm": "yes",
+            "current_threshold_alarm_release": "no",
+            "current_over_range_alarm": "yes",
+            "current_over_range_alarm_release": "no"
+          }
+        }
+      }
+    }
+  ]
+}

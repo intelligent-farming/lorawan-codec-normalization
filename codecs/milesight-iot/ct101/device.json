@@ -1,0 +1,33 @@
+{
+  "vendor": "milesight-iot",
+  "device": "ct101",
+  "name": "Smart Current Transformer - CT101",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "current"
+  ],
+  "provides": [
+    "currentAlarm.current_over_range_alarm",
+    "currentAlarm.current_over_range_alarm_release",
+    "currentAlarm.current_threshold_alarm",
+    "currentAlarm.current_threshold_alarm_release",
+    "currentMax",
+    "currentMin",
+    "power.current"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "ct101",
+    "codecId": "ct101-codec",
+    "codecFile": "ct101.js",
+    "codecSha256": "ca97590dc4ffb5deef3c7e643e759b5b2bc13c226cd5a09ef0623840f9cfa0ae",
+    "referencedAt": "2026-06-25"
+  }
+}

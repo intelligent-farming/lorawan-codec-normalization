@@ -1,0 +1,41 @@
+{
+  "uplink": [
+    {
+      "description": "Current-transformer uplink: measured current -> power.current",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          132,
+          153,
+          184,
+          11,
+          208,
+          7,
+          196,
+          9,
+          5
+        ]
+      },
+      "expected": {
+        "data": {
+          "currentChn1Max": 300,
+          "currentChn1Min": 200,
+          "power": {
+            "current": 250
+          },
+          "currentChn1Alarm": {
+            "current_threshold_alarm": "yes",
+            "current_threshold_alarm_release": "no",
+            "current_over_range_alarm": "yes",
+            "current_over_range_alarm_release": "no"
+          },
+          "make": "milesight-iot",
+          "model": "ct305"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream-example input (TTN milesight-iot ct305 codec yaml, Apache-2.0). expected.data via the ported Milesight TLV decoder (oracle). Measured current (A) -> power.current; per-channel min/max and alarm fields as camelCase extras. Satisfies power-meter."
+    }
+  ],
+  "downlink": []
+}
