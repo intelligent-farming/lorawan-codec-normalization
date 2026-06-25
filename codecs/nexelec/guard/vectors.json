@@ -1,0 +1,33 @@
+{
+  "uplink": [
+    {
+      "description": "Real-Time message -> air.temperature + air.relativeHumidity",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          180,
+          4,
+          137,
+          136,
+          136,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "typeOfProduct": "Guard LoRa",
+          "typeOfMessage": "Real Time",
+          "air": {
+            "temperature": 25,
+            "relativeHumidity": 17
+          },
+          "make": "nexelec",
+          "model": "guard"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic Nexelec Real-Time frame (product byte + message type 0x04 + packed temp/humidity); expected.data via the ported upstream decoder (oracle). temperature/humidity -> air.*; no upstream examples published. Satisfies climate."
+    }
+  ],
+  "downlink": []
+}
