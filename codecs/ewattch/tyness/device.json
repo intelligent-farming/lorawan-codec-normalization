@@ -1,0 +1,39 @@
+{
+  "vendor": "ewattch",
+  "device": "tyness",
+  "name": "tyness",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "4-20 ma",
+    "analog input",
+    "auxiliary",
+    "battery",
+    "current",
+    "digital input",
+    "pulse count",
+    "temperature"
+  ],
+  "provides": [
+    "channel",
+    "metering.energy.total",
+    "power.active",
+    "power.current",
+    "power.voltage",
+    "socket"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "ewattch",
+    "device": "tyness",
+    "codecId": "tyness-codec",
+    "codecFile": "ewattchlorawandecoder.js",
+    "codecSha256": "008a1985794b4e6f53a9f5e5cc66f6609305d6257644968e9510f26dd04f76de",
+    "referencedAt": "2026-06-25"
+  }
+}

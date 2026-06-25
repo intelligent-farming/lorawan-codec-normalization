@@ -1,0 +1,31 @@
+{
+  "uplink": [
+    {
+      "description": "Clamp metering frame: current, voltage, active power and consumed-energy index for one clamp",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 19, 64, 17, 136, 19, 0, 64, 26, 252, 8, 64, 20, 220, 5, 0, 64, 19, 160, 134, 1]
+      },
+      "expected": {
+        "data": {
+          "power": { "voltage": 230, "current": 5, "active": 1500 },
+          "metering": { "energy": { "total": 1000000 } },
+          "socket": 0,
+          "channel": 0,
+          "make": "ewattch",
+          "model": "tyness"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic clamp frame built to the upstream object-stream layout (header 0x00 + declared length, then type-0x40 clamp objects with measure codes 1=current, 10=voltage, 4=power, 3=consumedActiveEnergyIndex). expected.data derived via reference/upstream-codec.js (oracle: 5000 mA, 230 V, 1500 W, 1000000 Wh) and mapped to power.current/voltage/active and metering.energy.total. Satisfies power-meter."
+    },
+    {
+      "description": "Declared payload length does not match actual length -> error",
+      "input": { "fPort": 1, "bytes": [0, 99, 64, 17] },
+      "expected": { "errors": ["Payload size indicated"] },
+      "source": "synthetic",
+      "_note": "The header's declared length must equal total length - 2 (upstream guard)."
+    }
+  ],
+  "downlink": []
+}
