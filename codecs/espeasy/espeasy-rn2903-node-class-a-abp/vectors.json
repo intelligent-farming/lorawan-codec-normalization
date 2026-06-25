@@ -1,0 +1,207 @@
+{
+  "uplink": [
+    {
+      "description": "SenseAir S8 CO2 ppm (upstream example)",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          52,
+          0,
+          0,
+          218,
+          1,
+          0,
+          145,
+          80,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "co2": 528
+          },
+          "make": "espeasy",
+          "model": "espeasy-rn2903-node-class-a-abp"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream codec yaml uplinkDecoder example; SenseAir (plugin_id 52) val_1 = int32 LE /1e4 = 528 ppm -> air.co2. Verified against reference/upstream-codec.js (ppm:528)."
+    },
+    {
+      "description": "SenseAir CO2 ppm + sensor temperature",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          52,
+          0,
+          0,
+          218,
+          2,
+          64,
+          98,
+          93,
+          0,
+          216,
+          71,
+          3,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "co2": 612
+          },
+          "sensorTemperature": 21.5,
+          "make": "espeasy",
+          "model": "espeasy-rn2903-node-class-a-abp"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic 2-value SenseAir frame; upstream decodes ppm:612, temp:21.5. co2 -> air.co2; companion temp carried as extra sensorTemperature (no temperature-only vocabulary home)."
+    },
+    {
+      "description": "MHZ19 CO2 ppm + temperature + sensor U",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          49,
+          0,
+          0,
+          10,
+          3,
+          0,
+          18,
+          122,
+          0,
+          56,
+          181,
+          3,
+          0,
+          160,
+          143,
+          62,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "co2": 800
+          },
+          "sensorTemperature": 24.3,
+          "mhz19U": 410,
+          "make": "espeasy",
+          "model": "espeasy-rn2903-node-class-a-abp"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic MHZ19 (plugin_id 49) frame; upstream decodes ppm:800, temp:24.3, U:410. co2 -> air.co2; temp and U as extras."
+    },
+    {
+      "description": "CCS811 TVOC + equivalent CO2 (eCO2)",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          90,
+          0,
+          0,
+          5,
+          2,
+          208,
+          18,
+          19,
+          0,
+          160,
+          46,
+          99,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "tvoc": 125,
+          "air": {
+            "co2": 650
+          },
+          "make": "espeasy",
+          "model": "espeasy-rn2903-node-class-a-abp"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic CCS811 (plugin_id 90) frame; upstream decodes TVOC:125, eCO2:650. eCO2 -> air.co2; TVOC as extra (vocabulary does not model TVOC)."
+    },
+    {
+      "description": "non-CO2 sensor frame (DHT temp+humidity) — no air-quality value",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          5,
+          0,
+          0,
+          10,
+          2,
+          0,
+          107,
+          3,
+          0,
+          112,
+          100,
+          8,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "no air-quality (CO2) value"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic DHT (plugin_id 5) frame (temp 22.4, hum 55.0 upstream). This generic node reports no CO2 here, so there is no air-quality vocabulary value; rejected."
+    },
+    {
+      "description": "wrong fPort",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          52,
+          0,
+          0,
+          218,
+          1,
+          0,
+          145,
+          80,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "unsupported fPort"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "PACKED uplinks are sent on fPort 1; any other port is rejected."
+    },
+    {
+      "description": "payload too short for header",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          52,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "payload too short"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Fewer than the 5 header bytes; rejected."
+    }
+  ],
+  "downlink": []
+}
