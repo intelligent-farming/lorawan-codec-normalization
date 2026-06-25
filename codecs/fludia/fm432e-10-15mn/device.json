@@ -1,0 +1,33 @@
+{
+  "vendor": "fludia",
+  "device": "fm432e-10-15mn",
+  "name": "FM432e - Electricity consumption sensor - 10/15 min",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "power",
+    "energy"
+  ],
+  "provides": [
+    "increments",
+    "messageType",
+    "metering.energy.total",
+    "power.active",
+    "powers",
+    "timeStep"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "fludia",
+    "device": "fm432e-10-15mn",
+    "codecId": "fm432e-10-15mn-codec",
+    "codecFile": "fm432e-10-15mn-decode.js",
+    "codecSha256": "6bd6d82b847e122cfab77e70b332a76f19e826fe782a559327cdeed9b3cbafad",
+    "referencedAt": "2026-06-25"
+  }
+}

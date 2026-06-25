@@ -1,0 +1,88 @@
+{
+  "uplink": [
+    {
+      "description": "T1_10MN frame: cumulative index + 10-min increments -> metering.energy.total + power.active",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          32,
+          1,
+          134,
+          160,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          250
+        ]
+      },
+      "expected": {
+        "data": {
+          "metering": {
+            "energy": {
+              "total": 100000
+            }
+          },
+          "power": {
+            "active": 1500
+          },
+          "powers": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1500
+          ],
+          "increments": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            250
+          ],
+          "messageType": "T1_10MN",
+          "timeStep": 10,
+          "make": "fludia",
+          "model": "fm432e-10-15mn"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic T1_10MN frame (header 0x20, 20 bytes): 3-byte big-endian index then 8 uint16 increments. expected.data via the ported upstream decoder (oracle): index Wh -> metering.energy.total; power = increment*60/step; most-recent power -> power.active. Satisfies power-meter."
+    },
+    {
+      "description": "Unrecognized frame -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          255,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "Invalid payl"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Header not recognized."
+    }
+  ],
+  "downlink": []
+}
