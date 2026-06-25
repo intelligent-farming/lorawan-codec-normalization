@@ -1,0 +1,30 @@
+{
+  "vendor": "acrios",
+  "device": "acr-cv-101l-m-eac",
+  "name": "M-Bus to LoRaWAN converter, externally powered",
+  "categories": [
+    "water-meter"
+  ],
+  "sensors": [],
+  "provides": [
+    "accessNumber",
+    "deviceType",
+    "manufacturerId",
+    "meterId",
+    "metering.water.total",
+    "statusByte"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "acrios",
+    "device": "acr-cv-101l-m-eac",
+    "codecId": "acr-cv-101l-m-x-codec",
+    "codecFile": "acr-cv-101l-m-x.js",
+    "codecSha256": "1ab7fafa781d13634a5fc29411702c085ed47073d6c81daf7afae06036cbb71b",
+    "referencedAt": "2026-06-25"
+  }
+}

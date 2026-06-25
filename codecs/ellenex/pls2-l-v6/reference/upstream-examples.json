@@ -1,0 +1,33 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/ellenex/pls2-l-v6-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "payload BF614CFA3FCEC8C86176190CF8FF -> Level(m) 1.6155023574829102 m, Battery_Voltage(mv) 3320mV",
+      "input": {
+        "fPort": 15,
+        "bytes": [
+          191,
+          97,
+          76,
+          250,
+          63,
+          206,
+          200,
+          200,
+          97,
+          118,
+          25,
+          12,
+          248,
+          255
+        ]
+      },
+      "output": {
+        "data": {
+          "Level(m)": 1.6155023574829102,
+          "Battery_Voltage(mv)": 3320
+        }
+      }
+    }
+  ]
+}

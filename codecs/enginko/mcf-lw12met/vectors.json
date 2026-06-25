@@ -1,0 +1,62 @@
+{
+  "uplink": [
+    {
+      "description": "Full metering frame 0x09 (33 bytes): energy + instantaneous power, voltage, current, frequency",
+      "input": { "fPort": 2, "bytes": [9, 212, 115, 217, 52, 64, 226, 1, 0, 208, 7, 0, 0, 96, 228, 1, 0, 252, 8, 150, 0, 1, 9, 253, 8, 16, 39, 32, 78, 128, 81, 1, 0] },
+      "expected": {
+        "data": {
+          "time": "2026-06-25T14:30:40Z",
+          "metering": { "energy": { "total": 123456 } },
+          "reactiveEnergy": 2000,
+          "apparentEnergy": 124000,
+          "power": {
+            "active": 2300,
+            "apparent": 2305,
+            "voltage": 230.1,
+            "current": 10,
+            "frequency": 50
+          },
+          "reactivePower": 150,
+          "periodMicroseconds": 20000,
+          "activationSeconds": 86400,
+          "make": "enginko",
+          "model": "mcf-lw12met"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Oracle: expected.data derived by running reference/upstream-codec.js on this input; voltage 2301 dV -> 230.1 V, current 10000 mA -> 10 A, period 20000 us -> 50 Hz. Covers all four power-meter atLeastOne keys."
+    },
+    {
+      "description": "Short metering frame 0x09 (21 bytes): cumulative energy + activation only",
+      "input": { "fPort": 2, "bytes": [9, 212, 115, 217, 52, 64, 226, 1, 0, 208, 7, 0, 0, 96, 228, 1, 0, 128, 81, 1, 0] },
+      "expected": {
+        "data": {
+          "time": "2026-06-25T14:30:40Z",
+          "metering": { "energy": { "total": 123456 } },
+          "reactiveEnergy": 2000,
+          "apparentEnergy": 124000,
+          "activationSeconds": 86400,
+          "make": "enginko",
+          "model": "mcf-lw12met"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Oracle: expected.data derived by running reference/upstream-codec.js; short variant has no instantaneous power block. Satisfies power-meter via metering.energy.total."
+    },
+    {
+      "description": "Unsupported frame id (0x04 TER frame routed to this power codec)",
+      "input": { "fPort": 2, "bytes": [4, 89, 211, 197, 13, 0, 0, 100, 0, 0] },
+      "expected": { "errors": ["unsupported frame id"] },
+      "source": "synthetic",
+      "_note": "The MCF-LW12MET emits metering frame 0x09; a non-0x09 id is rejected."
+    },
+    {
+      "description": "Truncated metering frame 0x09 (too short)",
+      "input": { "fPort": 2, "bytes": [9, 89, 211, 197, 13, 64, 226, 1, 0] },
+      "expected": { "errors": ["too short"] },
+      "source": "synthetic",
+      "_note": "Frame shorter than the 21-byte minimum is rejected."
+    }
+  ],
+  "downlink": []
+}

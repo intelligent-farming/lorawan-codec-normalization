@@ -1,0 +1,43 @@
+{
+  "vendor": "enginko",
+  "device": "egk-lw22plg",
+  "name": "EGK-LW22PLG - Smart Plug",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "voltage",
+    "current",
+    "energy",
+    "power",
+    "time",
+    "button"
+  ],
+  "provides": [
+    "activation",
+    "apparentEnergy",
+    "metering.energy.total",
+    "period",
+    "power.active",
+    "power.apparent",
+    "power.current",
+    "power.frequency",
+    "power.voltage",
+    "reactiveEnergy",
+    "reactivePower",
+    "time"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "enginko",
+    "device": "egk-lw22plg",
+    "codecId": "mcf-power-codec",
+    "codecFile": "decoder-power.js",
+    "codecSha256": "139eda8196e316ebcf173bd1db137c5a8c720c465e98444b6f7a6dee2a987bd1",
+    "referencedAt": "2026-06-25"
+  }
+}

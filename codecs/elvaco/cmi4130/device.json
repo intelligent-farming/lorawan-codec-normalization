@@ -1,0 +1,33 @@
+{
+  "vendor": "elvaco",
+  "device": "cmi4130",
+  "name": "CMi4130",
+  "categories": [
+    "power-meter",
+    "water-meter"
+  ],
+  "sensors": [],
+  "provides": [
+    "errorFlag",
+    "flow",
+    "metering.energy.total",
+    "metering.water.total",
+    "power.active",
+    "returnTemperature",
+    "serial",
+    "water.temperature.current"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "elvaco",
+    "device": "cmi4130",
+    "codecId": "cmi4130-codec",
+    "codecFile": "cmi4130.js",
+    "codecSha256": "ef5640edc2918b81039670bbd785167fc6a3e19ccb3b493056b37ea2865303f7",
+    "referencedAt": "2026-06-25"
+  }
+}

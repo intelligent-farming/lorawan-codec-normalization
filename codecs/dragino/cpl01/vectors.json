@@ -1,0 +1,115 @@
+{
+  "uplink": [
+    {
+      "description": "fPort 2 real-time status, dry contact open (PIN_STATUS DISCONNECT)",
+      "input": { "fPort": 2, "bytes": [1, 0, 0, 5, 0, 0, 10, 97, 142, 87, 64] },
+      "expected": {
+        "data": {
+          "action": { "contactState": "open" },
+          "alarm": false,
+          "calculateFlag": 0,
+          "totalPulse": 5,
+          "disconnectDuration": 10,
+          "time": "2021-11-12T12:00:00Z",
+          "make": "dragino",
+          "model": "cpl01"
+        }
+      },
+      "source": "synthetic",
+      "_note": "bytes[0]=0x01 -> bit0 set => DISCONNECT => contact open; oracle from upstream cpl01.js PIN_STATUS."
+    },
+    {
+      "description": "fPort 2 real-time status, dry contact closed (CONNECT) with alarm",
+      "input": { "fPort": 2, "bytes": [6, 0, 18, 52, 0, 0, 0, 97, 142, 87, 64] },
+      "expected": {
+        "data": {
+          "action": { "contactState": "closed" },
+          "alarm": true,
+          "calculateFlag": 1,
+          "totalPulse": 4660,
+          "disconnectDuration": 0,
+          "time": "2021-11-12T12:00:00Z",
+          "make": "dragino",
+          "model": "cpl01"
+        }
+      },
+      "source": "synthetic",
+      "_note": "bytes[0]=0x06 -> bit0 clear => CONNECT => closed; bit1 set => ALARM TRUE; CALCULATE_FLAG=(0x06&0xfc)>>2=1."
+    },
+    {
+      "description": "fPort 3 datalog: newest record at top level, older record in history",
+      "input": { "fPort": 3, "bytes": [1, 0, 0, 5, 0, 0, 10, 97, 142, 87, 64, 0, 0, 0, 6, 0, 0, 0, 97, 142, 88, 64] },
+      "expected": {
+        "data": {
+          "action": { "contactState": "open" },
+          "alarm": false,
+          "calculateFlag": 0,
+          "totalPulse": 5,
+          "disconnectDuration": 10,
+          "time": "2021-11-12T12:00:00Z",
+          "history": [
+            {
+              "action": { "contactState": "closed" },
+              "alarm": false,
+              "calculateFlag": 0,
+              "totalPulse": 6,
+              "disconnectDuration": 0,
+              "time": "2021-11-12T12:04:16Z"
+            }
+          ],
+          "make": "dragino",
+          "model": "cpl01"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Two 11-byte records; upstream datalog() emits per-record OPEN/CLOSE; we map to action.contactState with the older record under history (each carries time)."
+    },
+    {
+      "description": "fPort 4 read-config reply (TDC/DISALARM/KEEP/TRIGGER) -- device config, no contact state",
+      "input": { "fPort": 4, "bytes": [49, 97, 142, 87, 64, 97, 142, 129] },
+      "expected": {
+        "data": {
+          "tdc": 3236238,
+          "disalarm": true,
+          "keepStatus": false,
+          "keepTime": 24974,
+          "triggerMode": 1,
+          "make": "dragino",
+          "model": "cpl01"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream cpl01-codec.yaml example input (fPort 4); oracle TDC=3236238, DISALARM=1, KEEP_STATUS=0, KEEP_TIME=24974, TRIGGER_MODE=1 mapped to camelCase extras (booleans for 0/1 flags)."
+    },
+    {
+      "description": "fPort 5 device status: model, firmware, battery volts",
+      "input": { "fPort": 5, "bytes": [14, 1, 69, 1, 255, 12, 128] },
+      "expected": {
+        "data": {
+          "deviceModel": "CPL01",
+          "firmwareVersion": "1.4.5",
+          "battery": 3.2,
+          "make": "dragino",
+          "model": "cpl01"
+        }
+      },
+      "source": "synthetic",
+      "_note": "bytes[0]=0x0e => model CPL01; FW=(1).(4).(5); BAT=((0x0c<<8)|0x80)/1000=3.2 V."
+    },
+    {
+      "description": "fPort 2 too short -> error",
+      "input": { "fPort": 2, "bytes": [1, 0] },
+      "expected": { "errors": ["expected 11 bytes on fPort 2"] },
+      "source": "synthetic",
+      "_note": "Length guard for the 11-byte status frame."
+    },
+    {
+      "description": "Unknown fPort -> error",
+      "input": { "fPort": 42, "bytes": [49, 97, 142, 87, 64, 97, 142, 129, 112, 5, 0] },
+      "expected": { "errors": ["unknown FPort"] },
+      "source": "ttn-example",
+      "_note": "Upstream cpl01-codec.yaml 'Unknown FPort' example; we return an error with the same 'unknown FPort' substring."
+    }
+  ],
+  "downlink": []
+}

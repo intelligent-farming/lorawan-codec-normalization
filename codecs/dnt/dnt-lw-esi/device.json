@@ -1,0 +1,39 @@
+{
+  "vendor": "dnt",
+  "device": "dnt-lw-esi",
+  "name": "LoRaWAN® energy sensor interface",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "energy",
+    "power"
+  ],
+  "provides": [
+    "battery",
+    "bootloaderVersion",
+    "energyConsumptionNt",
+    "energyDelivery",
+    "energyStatus",
+    "errorMsg",
+    "firmwareVersion",
+    "frameType",
+    "hwRevision",
+    "metering.energy.total",
+    "power.active",
+    "txReason"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dnt",
+    "device": "dnt-lw-esi",
+    "codecId": "dnt-lw-esi-codec",
+    "codecFile": "dnt-lw-esi.js",
+    "codecSha256": "9266fcd905bef0d9a072b7eebecc7e5b580839516aafbc51aeb02de4c1da6323",
+    "referencedAt": "2026-06-25"
+  }
+}

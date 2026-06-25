@@ -1,0 +1,31 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-trs21",
+  "name": "DL-TRS21 - Soil Water Potential and Temperature Sensor",
+  "categories": [
+    "soil-monitor"
+  ],
+  "sensors": [
+    "water potential",
+    "temperature",
+    "battery"
+  ],
+  "provides": [
+    "battery",
+    "soil.temperature",
+    "soilWaterPotential"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-trs21",
+    "codecId": "dl-trs21-codec",
+    "codecFile": "dl-trs21.js",
+    "codecSha256": "e4839d76802ec07eb03d09079c0b90dbedbdc9210f5d2d1c6bc722f903a9144e",
+    "referencedAt": "2026-06-25"
+  }
+}

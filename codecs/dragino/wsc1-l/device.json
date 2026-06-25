@@ -1,0 +1,56 @@
+{
+  "vendor": "dragino",
+  "device": "wsc1-l",
+  "name": "WSC1-L - Weather Station Process Unit",
+  "categories": [
+    "climate",
+    "weather-station",
+    "wind",
+    "rain-gauge",
+    "light",
+    "air-quality",
+    "particulate",
+    "solar-radiation"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "air.co2",
+    "air.lightIntensity",
+    "air.location",
+    "air.par",
+    "air.pm10",
+    "air.pm2_5",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.solarIrradiance",
+    "air.temperature",
+    "batteryRaw",
+    "batteryVoltage",
+    "deviceNode",
+    "firmwareVersion",
+    "frequencyBand",
+    "rain.cumulative",
+    "rainSnow",
+    "subBand",
+    "weatherSensorTypes",
+    "wind.direction",
+    "wind.speed",
+    "windDirectionCardinal",
+    "windSpeedLevel"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "wsc1-l",
+    "codecId": "wsc1-l-codec",
+    "codecFile": "wsc1-l.js",
+    "codecSha256": "e8464d5059bc5337dfbc9bd0307ca713c389e1e45b8b61bad44833f3912c15af",
+    "referencedAt": "2026-06-25"
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/adeunis/tic-pme-pmi-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "0x49 TIC data",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          73,
+          96,
+          21,
+          4,
+          20,
+          13,
+          43,
+          5,
+          0,
+          0,
+          2,
+          195,
+          0,
+          0,
+          0,
+          152,
+          0,
+          0,
+          0,
+          2,
+          0,
+          0,
+          2,
+          235,
+          72,
+          80,
+          69,
+          0,
+          6,
+          146,
+          204,
+          0,
+          2,
+          92,
+          170,
+          0,
+          0,
+          5,
+          55,
+          0,
+          6,
+          141,
+          184,
+          0,
+          2,
+          91,
+          130,
+          0,
+          0,
+          5,
+          40
+        ]
+      },
+      "output": {
+        "data": {
+          "bytes": {
+            "type": "0x49 TIC data",
+            "status": {
+              "frameCounter": 3,
+              "hardwareError": false,
+              "lowBattery": false,
+              "configurationDone": false,
+              "configurationInconsistency": false,
+              "readError": false
+            },
+            "DATE": "2020-04-21T13:43:05",
+            "EA_s": {
+              "unit": "Wh",
+              "value": 707
+            },
+            "ER+_s": {
+              "unit": "varh",
+              "value": 152
+            },
+            "ER-_s": {
+              "unit": "varh",
+              "value": 2
+            },
+            "EAPP_s": {
+              "unit": "VAh",
+              "value": 747
+            },
+            "PTCOUR1": "HPE",
+            "EAP_s": {
+              "unit": "kWh",
+              "value": 430796
+            },
+            "ER+P_s": {
+              "unit": "kvarh",
+              "value": 154794
+            },
+            "ER-P_s": {
+              "unit": "kvarh",
+              "value": 1335
+            },
+            "EaP-1_s": {
+              "unit": "kWh",
+              "value": 429496
+            },
+            "ER+P-1_s": {
+              "unit": "kvarh",
+              "value": 154498
+            },
+            "ER-P-1_s": {
+              "unit": "kvarh",
+              "value": 1320
+            }
+          }
+        },
+        "warnings": [],
+        "errors": []
+      }
+    }
+  ]
+}

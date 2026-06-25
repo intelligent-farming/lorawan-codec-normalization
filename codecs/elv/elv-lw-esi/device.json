@@ -1,0 +1,37 @@
+{
+  "vendor": "elv",
+  "device": "elv-lw-esi",
+  "name": "LoRaWAN® Energy Sensing Interface",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "energy"
+  ],
+  "provides": [
+    "battery",
+    "consumptionType",
+    "counterOverflow",
+    "counterUnit",
+    "flowRateM3h",
+    "metering.energy.total",
+    "power.active",
+    "powerSign",
+    "powerUnit",
+    "txReason",
+    "volumeM3"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "elv",
+    "device": "elv-lw-esi",
+    "codecId": "elv-lw-esi-codec",
+    "codecFile": "elv-lw-esi.js",
+    "codecSha256": "11ff0e0349da5b8ca693a7217a0564cdd62ac352c8b49afa401ed81e935cf686",
+    "referencedAt": "2026-06-25"
+  }
+}

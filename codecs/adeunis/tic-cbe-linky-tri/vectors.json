@@ -1,0 +1,104 @@
+{
+  "uplink": [
+    {
+      "description": "0x49 TIC data (three-phase) — BASE energy, IINST1/2/3 currents, IMAX1/2/3, PMAX active power, PAPP apparent",
+      "input": {
+        "fPort": 1,
+        "bytes": [73, 64, 48, 50, 49, 55, 50, 56, 48, 51, 49, 56, 49, 57, 0, 0, 18, 52, 0, 0, 0, 43, 0, 0, 0, 44, 0, 0, 0, 45, 0, 0, 0, 17, 0, 0, 0, 18, 0, 0, 0, 19, 0, 0, 0, 32, 0, 0, 0, 16]
+      },
+      "expected": {
+        "data": {
+          "frameType": "0x49 TIC data",
+          "metering": { "energy": { "total": 4660 } },
+          "power": { "current": 43, "active": 32, "apparent": 16 },
+          "meterId": "021728031819",
+          "currentL2A": 44,
+          "currentL3A": 45,
+          "maxCurrentL1A": 17,
+          "maxCurrentL2A": 18,
+          "maxCurrentL3A": 19,
+          "frameCounter": 2,
+          "lowBattery": false,
+          "configurationDone": false,
+          "configurationInconsistency": false,
+          "readError": false,
+          "make": "adeunis",
+          "model": "tic-cbe-linky-tri"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream codec example (tic-cbe-linky-tri-codec.yaml). expected.data derived by running reference/upstream-codec.js: BASE 0x1234=4660 Wh, IINST1 0x2B=43 A, IINST2 0x2C=44, IINST3 0x2D=45, IMAX1/2/3 17/18/19 A, PMAX 0x20=32 W, PAPP 0x10=16 VA. status byte 0x40 -> frameCounter 2, all flags false. Maps metering.energy.total/power.current/power.active/power.apparent; phases 2-3 + IMAX as extras."
+    },
+    {
+      "description": "0x49 TIC data — second sample with low-battery and config flags set",
+      "input": {
+        "fPort": 1,
+        "bytes": [73, 99, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 49, 0, 1, 134, 160, 0, 0, 0, 12, 0, 0, 0, 10, 0, 0, 0, 8, 0, 0, 0, 30, 0, 0, 0, 28, 0, 0, 0, 25, 0, 0, 11, 184, 0, 0, 9, 196]
+      },
+      "expected": {
+        "data": {
+          "frameType": "0x49 TIC data",
+          "metering": { "energy": { "total": 100000 } },
+          "power": { "current": 12, "active": 3000, "apparent": 2500 },
+          "meterId": "012345678901",
+          "currentL2A": 10,
+          "currentL3A": 8,
+          "maxCurrentL1A": 30,
+          "maxCurrentL2A": 28,
+          "maxCurrentL3A": 25,
+          "frameCounter": 3,
+          "lowBattery": true,
+          "configurationDone": true,
+          "configurationInconsistency": false,
+          "readError": false,
+          "make": "adeunis",
+          "model": "tic-cbe-linky-tri"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds three-phase frame, cross-checked against reference/upstream-codec.js. BASE 0x000186A0=100000 Wh, IINST1/2/3 12/10/8 A, IMAX1/2/3 30/28/25 A, PMAX 0x0BB8=3000 W, PAPP 0x09C4=2500 VA. status 0x63 -> frameCounter 3, lowBattery+configurationDone true."
+    },
+    {
+      "description": "0x49 TIC data with BASE register absent (sentinel 0x80000000) — emits warning, still satisfies power-meter via current/active",
+      "input": {
+        "fPort": 1,
+        "bytes": [73, 64, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 49, 128, 0, 0, 0, 0, 0, 0, 15, 0, 0, 0, 14, 0, 0, 0, 13, 0, 0, 0, 20, 0, 0, 0, 21, 0, 0, 0, 22, 0, 0, 0, 64, 0, 0, 0, 50]
+      },
+      "expected": {
+        "data": {
+          "frameType": "0x49 TIC data",
+          "power": { "current": 15, "active": 64, "apparent": 50 },
+          "meterId": "012345678901",
+          "currentL2A": 14,
+          "currentL3A": 13,
+          "maxCurrentL1A": 20,
+          "maxCurrentL2A": 21,
+          "maxCurrentL3A": 22,
+          "frameCounter": 2,
+          "lowBattery": false,
+          "configurationDone": false,
+          "configurationInconsistency": false,
+          "readError": false,
+          "make": "adeunis",
+          "model": "tic-cbe-linky-tri"
+        },
+        "warnings": ["no cumulative energy index on the TIC bus (BASE absent)"]
+      },
+      "source": "synthetic",
+      "_note": "BASE set to the upstream not-found sentinel 0x80000000 so no metering.energy.total is emitted; warning declared. IINST1 15 A -> power.current, PMAX 0x40=64 W -> power.active, PAPP 0x32=50 VA. Confirmed reg32 returns null on sentinel."
+    },
+    {
+      "description": "unsupported frame code 0x99 — error vector",
+      "input": {
+        "fPort": 1,
+        "bytes": [153, 64, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported frame code 0x99"]
+      },
+      "source": "synthetic",
+      "_note": "Frame code 0x99 is not one of the normalized Adeunis TIC frames (0x10/0x20/0x30/0x49/0x4a), so decodeUplinkCore returns an error."
+    }
+  ],
+  "downlink": []
+}

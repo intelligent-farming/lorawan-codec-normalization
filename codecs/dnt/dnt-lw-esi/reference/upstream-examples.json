@@ -1,0 +1,184 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/dnt/dnt-lw-esi-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "startup message",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          4,
+          111,
+          255,
+          1,
+          0,
+          0,
+          1,
+          0,
+          3,
+          0,
+          2
+        ]
+      },
+      "output": {
+        "data": {
+          "Bootloader_Version": "1.0.0",
+          "Firmware_Version": "1.0.3",
+          "Frame_Type": "Device_Info",
+          "Hw_Revision": 2,
+          "Supply_Voltage": 2.94,
+          "TX_Reason": "Joined"
+        },
+        "errors": [],
+        "warnings": []
+      }
+    },
+    {
+      "description": "cyclic energy data message (1)",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          2,
+          111,
+          1,
+          0,
+          1,
+          1,
+          92,
+          18,
+          0,
+          16,
+          2,
+          147,
+          2,
+          92,
+          0,
+          0,
+          16,
+          3,
+          0,
+          0,
+          0,
+          0,
+          0,
+          16,
+          4,
+          12,
+          11,
+          10,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Energy_Data": {
+            "Channel": [
+              "Power",
+              "Energy Counter Consumption HT",
+              "Energy Counter Consumption NT",
+              "Energy Counter Delivery"
+            ],
+            "Type": [
+              "Power",
+              "Energy Counter",
+              "Energy Counter",
+              "Energy Counter"
+            ],
+            "Unit": [
+              "W",
+              "Wh",
+              "Wh",
+              "Wh"
+            ],
+            "Value": [
+              47,
+              602997.1,
+              0,
+              65818.8
+            ]
+          },
+          "Error_Msg": "No_Error",
+          "Frame_Type": "Sensor_Data",
+          "Supply_Voltage": 2.94,
+          "TX_Reason": "Cyclic_Timer"
+        },
+        "errors": [],
+        "warnings": []
+      }
+    },
+    {
+      "description": "cyclic energy data message (2)",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          2,
+          111,
+          1,
+          0,
+          1,
+          1,
+          16,
+          39,
+          0,
+          16,
+          2,
+          187,
+          2,
+          92,
+          0,
+          0,
+          16,
+          3,
+          0,
+          0,
+          0,
+          0,
+          0,
+          16,
+          4,
+          12,
+          11,
+          10,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Energy_Data": {
+            "Channel": [
+              "Power",
+              "Energy Counter Consumption HT",
+              "Energy Counter Consumption NT",
+              "Energy Counter Delivery"
+            ],
+            "Type": [
+              "Power",
+              "Energy Counter",
+              "Energy Counter",
+              "Energy Counter"
+            ],
+            "Unit": [
+              "W",
+              "Wh",
+              "Wh",
+              "Wh"
+            ],
+            "Value": [
+              100,
+              603001.1,
+              0,
+              65818.8
+            ]
+          },
+          "Error_Msg": "No_Error",
+          "Frame_Type": "Sensor_Data",
+          "Supply_Voltage": 2.94,
+          "TX_Reason": "Cyclic_Timer"
+        },
+        "errors": [],
+        "warnings": []
+      }
+    }
+  ]
+}

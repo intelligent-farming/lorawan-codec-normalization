@@ -1,0 +1,30 @@
+{
+  "vendor": "espeasy",
+  "device": "espeasy-rn2483-node-class-a-otaa",
+  "name": "RN2483 (Class A OTAA)",
+  "categories": [
+    "air-quality"
+  ],
+  "sensors": [],
+  "provides": [
+    "air.co2",
+    "air.temperature",
+    "deviceIdx",
+    "plugin",
+    "sampleSetCount",
+    "valueCount"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "espeasy",
+    "device": "espeasy-rn2483-node-class-a-otaa",
+    "codecId": "espeasy-codec",
+    "codecFile": "packed-decode-uplink.js",
+    "codecSha256": "374959d7a5a832806ac15bed8568e18e42901ed76123085c42d944e3a439661d",
+    "referencedAt": "2026-06-25"
+  }
+}

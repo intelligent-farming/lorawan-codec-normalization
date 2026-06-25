@@ -1,0 +1,91 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/decentlab/dl-mes5-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Example 1",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          78,
+          3,
+          0,
+          3,
+          0,
+          0,
+          136,
+          230,
+          33,
+          8,
+          0,
+          242,
+          35,
+          101,
+          10,
+          245
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 2.805
+          },
+          "device_id": 19971,
+          "protocol_version": 2,
+          "sludge_blanket": {
+            "displayName": "Sludge blanket",
+            "unit": "%",
+            "value": 84.56
+          },
+          "status": {
+            "displayName": "Status",
+            "value": 0
+          },
+          "suspended_solid": {
+            "displayName": "Suspended solid",
+            "unit": "g⋅L⁻¹",
+            "value": 2.42
+          },
+          "temperature": {
+            "displayName": "Temperature",
+            "unit": "°C",
+            "value": 22.78
+          },
+          "turbidity": {
+            "displayName": "Turbidity",
+            "unit": "FAU",
+            "value": 906.1
+          }
+        }
+      }
+    },
+    {
+      "description": "Example 2",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          78,
+          3,
+          0,
+          2,
+          10,
+          245
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 2.805
+          },
+          "device_id": 19971,
+          "protocol_version": 2
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "uplink": [
+    {
+      "description": "AC current frame: isecCurrent 178.9 mA -> power.current 0.1789 A, with vsys diagnostics and +23.5 C enclosure temp",
+      "input": { "fPort": 1, "bytes": [1, 2, 3, 15, 8, 46, 224, 46, 24, 47, 68, 9, 196, 69, 226, 68, 92, 68, 192, 58, 152, 78, 32, 0, 42, 2, 88, 0, 235, 0] },
+      "expected": {
+        "data": {
+          "make": "dezem",
+          "model": "harvy-lr-36",
+          "power": { "current": 0.1789 },
+          "firmwareVersion": "v1.2.3",
+          "shuntValueOhm": 1.5,
+          "amplifierGain": 8,
+          "vsysCurrentMv": 1200,
+          "vsysMinMv": 1180,
+          "vsysMaxMv": 1210,
+          "vampRmsMv": 250,
+          "isecAvgLongMa": 175,
+          "isecAvgShortMa": 176,
+          "isecMinMa": 150,
+          "isecMaxMa": 200,
+          "measurementsCounter": 42,
+          "lastUploadSec": 600,
+          "temperature": 23.5,
+          "powerLost": 0
+        }
+      },
+      "source": "synthetic",
+      "_note": "Built by hand and verified by running reference/upstream-codec.js (Decoder) on the bytes: isecCurrent_mA 178.9 -> A /1000; temperature 23.5; powerlost 0."
+    },
+    {
+      "description": "Low DC current frame: isecCurrent 5.03 mA -> power.current 0.00503 A, negative enclosure temp -5.0 C, powerLost flag set",
+      "input": { "fPort": 1, "bytes": [1, 2, 1, 25, 4, 31, 114, 31, 64, 31, 164, 4, 210, 1, 247, 1, 234, 1, 239, 0, 0, 4, 176, 0, 7, 1, 44, 255, 206, 1] },
+      "expected": {
+        "data": {
+          "make": "dezem",
+          "model": "harvy-lr-36",
+          "power": { "current": 0.00503 },
+          "firmwareVersion": "v1.2.1",
+          "shuntValueOhm": 2.5,
+          "amplifierGain": 4,
+          "vsysCurrentMv": 805,
+          "vsysMinMv": 800,
+          "vsysMaxMv": 810,
+          "vampRmsMv": 123.4,
+          "isecAvgLongMa": 4.9,
+          "isecAvgShortMa": 4.95,
+          "isecMinMa": 0,
+          "isecMaxMa": 12,
+          "measurementsCounter": 7,
+          "lastUploadSec": 300,
+          "temperature": -5,
+          "powerLost": 1
+        }
+      },
+      "source": "synthetic",
+      "_note": "Verified against upstream Decoder: isecCurrent_mA 5.03 -> A /1000; int16 temp 0xFFCE -> -50 /10 = -5.0; powerlost 1."
+    },
+    {
+      "description": "Truncated frame (8 bytes) is rejected — the HarvyLR frame is a fixed 30 bytes",
+      "input": { "fPort": 1, "bytes": [1, 2, 3, 15, 8, 46, 224, 46] },
+      "expected": { "errors": ["frame too short"] },
+      "source": "synthetic",
+      "_note": "Below the fixed 30-byte length; codec returns an error rather than decoding garbage. Upstream would emit NaN-laden fields here."
+    }
+  ],
+  "downlink": []
+}

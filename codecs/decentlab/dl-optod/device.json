@@ -1,0 +1,35 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-optod",
+  "name": "DL-OPTOD - Optical Dissolved Oxygen and Temperature Sensor",
+  "categories": [
+    "water-quality"
+  ],
+  "sensors": [
+    "temperature",
+    "dissolved oxygen"
+  ],
+  "provides": [
+    "battery",
+    "deviceId",
+    "oxygenConcentrationPpm",
+    "oxygenSaturation",
+    "protocolVersion",
+    "status",
+    "water.dissolvedOxygen",
+    "water.temperature.current"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-optod",
+    "codecId": "dl-optod-codec",
+    "codecFile": "dl-optod.js",
+    "codecSha256": "7473cc7aff31aa41210fc6ae643a38b386e36d4e843feb4ed21cec064549cfb4",
+    "referencedAt": "2026-06-25"
+  }
+}

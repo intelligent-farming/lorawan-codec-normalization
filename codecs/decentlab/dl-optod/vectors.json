@@ -1,0 +1,64 @@
+{
+  "uplink": [
+    {
+      "description": "Oxygen probe + battery: temp 21.46 C, DO 8.69 mg/L, saturation 97.52%, battery 3.168 V",
+      "input": { "fPort": 1, "bytes": [2, 24, 108, 0, 3, 0, 0, 136, 98, 166, 24, 131, 101, 131, 101, 12, 96] },
+      "expected": {
+        "data": {
+          "make": "decentlab",
+          "model": "dl-optod",
+          "protocolVersion": 2,
+          "deviceId": 6252,
+          "status": 0,
+          "oxygenSaturation": 97.52,
+          "oxygenConcentrationPpm": 8.69,
+          "battery": 3.168,
+          "water": { "temperature": { "current": 21.46 }, "dissolvedOxygen": 8.69 }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Input from the upstream TTN codec example 1 (Apache-2.0). expected.data authored by running reference/upstream-codec.js and mapping temperature->water.temperature.current, oxygen_concentration->water.dissolvedOxygen, with saturation and the ppm alt as extras."
+    },
+    {
+      "description": "Battery only (flags bit1): battery 3.168 V",
+      "input": { "fPort": 1, "bytes": [2, 24, 108, 0, 2, 12, 96] },
+      "expected": {
+        "data": {
+          "make": "decentlab",
+          "model": "dl-optod",
+          "protocolVersion": 2,
+          "deviceId": 6252,
+          "battery": 3.168
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Input from the upstream TTN codec example 2 (Apache-2.0); expected.data derived by running reference/upstream-codec.js."
+    },
+    {
+      "description": "Oxygen probe only (flags bit0): temp 25.0 C, DO 8.0 mg/L, saturation 90.0%",
+      "input": { "fPort": 1, "bytes": [2, 18, 52, 0, 1, 0, 0, 137, 196, 163, 40, 131, 32, 131, 32] },
+      "expected": {
+        "data": {
+          "make": "decentlab",
+          "model": "dl-optod",
+          "protocolVersion": 2,
+          "deviceId": 4660,
+          "status": 0,
+          "oxygenSaturation": 90,
+          "oxygenConcentrationPpm": 8,
+          "water": { "temperature": { "current": 25 }, "dissolvedOxygen": 8 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input (DO 8.0 mg/L >= 0); expected.data derived by running reference/upstream-codec.js and mapping to the normalized vocabulary."
+    },
+    {
+      "description": "Protocol version mismatch (version byte 1, not 2)",
+      "input": { "fPort": 1, "bytes": [1, 24, 108, 0, 2, 12, 96] },
+      "expected": { "errors": ["protocol version 1 doesn't match v2"] },
+      "source": "synthetic",
+      "_note": "Synthetic error input; upstream returns the same protocol-version error."
+    }
+  ],
+  "downlink": []
+}

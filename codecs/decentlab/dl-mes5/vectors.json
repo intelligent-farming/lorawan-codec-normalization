@@ -1,0 +1,78 @@
+{
+  "uplink": [
+    {
+      "description": "Full uplink: both sensor blocks (status/temperature/sludge/suspended/turbidity + battery)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 78, 3, 0, 3, 0, 0, 136, 230, 33, 8, 0, 242, 35, 101, 10, 245]
+      },
+      "expected": {
+        "data": {
+          "make": "decentlab",
+          "model": "dl-mes5",
+          "status": 0,
+          "sludgeBlanket": 84.56,
+          "suspendedSolids": 2.42,
+          "water": {
+            "temperature": { "current": 22.78 },
+            "turbidity": 906.1
+          },
+          "battery": 2.805
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream example input. Derived by running reference/upstream-codec.js: temp 22.78 degC -> water.temperature.current; turbidity 906.1 FAU == NTU -> water.turbidity; sludge 84.56% and suspended 2.42 g/L -> extras; battery 2.805 V."
+    },
+    {
+      "description": "Sensor block only (no battery block): status/temperature/sludge/suspended/turbidity",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 78, 3, 0, 1, 0, 0, 133, 220, 19, 136, 0, 150, 11, 184]
+      },
+      "expected": {
+        "data": {
+          "make": "decentlab",
+          "model": "dl-mes5",
+          "status": 0,
+          "sludgeBlanket": 50,
+          "suspendedSolids": 1.5,
+          "water": {
+            "temperature": { "current": 15 },
+            "turbidity": 300
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input (flags bit0 only). Verified against reference/upstream-codec.js: temp 15.00 degC, turbidity 300.0 FAU, sludge 50.00%, suspended 1.50 g/L."
+    },
+    {
+      "description": "Battery-only uplink (flags bit1 only)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 78, 3, 0, 2, 10, 245]
+      },
+      "expected": {
+        "data": {
+          "make": "decentlab",
+          "model": "dl-mes5",
+          "battery": 2.805
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream example input. Verified against reference/upstream-codec.js: only the battery block is flagged -> battery 2.805 V, no water keys."
+    },
+    {
+      "description": "Wrong protocol version -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["protocol version 1 doesn't match v2"]
+      },
+      "source": "synthetic",
+      "_note": "First byte is not protocol v2; upstream and this codec both reject it."
+    }
+  ],
+  "downlink": []
+}

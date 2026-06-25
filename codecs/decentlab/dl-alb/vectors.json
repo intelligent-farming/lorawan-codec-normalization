@@ -1,0 +1,80 @@
+{
+  "uplink": [
+    {
+      "description": "TTN example 1: radiation block + battery flagged",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 82, 133, 0, 3, 128, 153, 128, 34, 11, 211]
+      },
+      "expected": {
+        "data": {
+          "make": "decentlab",
+          "model": "dl-alb",
+          "protocolVersion": 2,
+          "deviceId": 21125,
+          "reflectedRadiation": 3.4,
+          "albedo": 0.2222222222222222,
+          "battery": 3.027,
+          "air": {
+            "solarIrradiance": 15.3
+          }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "expected.data from running reference/upstream-codec.js (oracle): incoming 0x8099=32921 -> (32921-32768)/10=15.3 W/m² -> air.solarIrradiance; reflected 0x8022=32802 -> 3.4 W/m² -> reflectedRadiation; albedo 34/153=0.2222222222222222; battery 0x0BD3=3027 mV -> 3.027 V."
+    },
+    {
+      "description": "TTN example 2: battery only (radiation flag clear)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 82, 133, 0, 2, 11, 211]
+      },
+      "expected": {
+        "data": {
+          "make": "decentlab",
+          "model": "dl-alb",
+          "protocolVersion": 2,
+          "deviceId": 21125,
+          "battery": 3.027
+        }
+      },
+      "source": "ttn-example",
+      "_note": "flags=0x0002 -> only bit1 (battery) set; upstream oracle emits no radiation keys. battery 0x0BD3=3027 mV -> 3.027 V."
+    },
+    {
+      "description": "Synthetic: radiation block only, large irradiance values",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 82, 133, 0, 1, 143, 160, 128, 100]
+      },
+      "expected": {
+        "data": {
+          "make": "decentlab",
+          "model": "dl-alb",
+          "protocolVersion": 2,
+          "deviceId": 21125,
+          "reflectedRadiation": 10,
+          "albedo": 0.025,
+          "air": {
+            "solarIrradiance": 400
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "flags=0x0001 -> only radiation block. incoming 0x8FA0=36768 -> (36768-32768)/10=400 W/m²; reflected 0x8064=32868 -> 10 W/m²; albedo 100/4000=0.025. Matches upstream oracle exactly."
+    },
+    {
+      "description": "Error: wrong protocol version byte",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 82, 133, 0, 3, 128, 153, 128, 34, 11, 211]
+      },
+      "expected": {
+        "errors": ["protocol version 1 doesn't match v2"]
+      },
+      "source": "synthetic",
+      "_note": "version byte 1 != 2; mirrors upstream guard which returns an error string."
+    }
+  ],
+  "downlink": []
+}

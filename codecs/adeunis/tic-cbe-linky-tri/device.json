@@ -1,0 +1,43 @@
+{
+  "vendor": "adeunis",
+  "device": "tic-cbe-linky-tri",
+  "name": "TIC CBE/LINKY TRI - Electricity Meter Interface",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "power",
+    "metering"
+  ],
+  "provides": [
+    "configurationDone",
+    "configurationInconsistency",
+    "currentL2A",
+    "currentL3A",
+    "frameCounter",
+    "frameType",
+    "lowBattery",
+    "maxCurrentL1A",
+    "maxCurrentL2A",
+    "maxCurrentL3A",
+    "meterId",
+    "metering.energy.total",
+    "power.active",
+    "power.apparent",
+    "power.current",
+    "readError"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "adeunis",
+    "device": "tic-cbe-linky-tri",
+    "codecId": "tic-cbe-linky-tri-codec",
+    "codecFile": "tic_cbe_linky_tri_lib.js",
+    "codecSha256": "80203c4caaab49dad42dde63eb34ec871e16dc7401050007cc25cc255d54f07e",
+    "referencedAt": "2026-06-25"
+  }
+}

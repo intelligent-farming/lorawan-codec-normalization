@@ -1,0 +1,137 @@
+{
+  "uplink": [
+    {
+      "description": "dry contact input reading, input open, battery 90%, triggers since last trigger 5",
+      "input": {
+        "fPort": 10,
+        "bytes": [4, 0, 90, 0, 0, 5]
+      },
+      "expected": {
+        "data": {
+          "make": "arwin-technology",
+          "model": "lrs20600",
+          "action": {
+            "contactState": "open"
+          },
+          "batteryPercent": 90,
+          "event": "",
+          "eventCount": 5
+        }
+      },
+      "source": "ttn-example",
+      "_note": "upstream example input; expected produced by running reference/upstream-codec.js (inputStatus 'open') and normalized to action.contactState"
+    },
+    {
+      "description": "dry contact input reading, input closed, heartbeat event, battery 80%, count 3",
+      "input": {
+        "fPort": 10,
+        "bytes": [4, 1, 80, 1, 0, 3]
+      },
+      "expected": {
+        "data": {
+          "make": "arwin-technology",
+          "model": "lrs20600",
+          "action": {
+            "contactState": "closed"
+          },
+          "batteryPercent": 80,
+          "event": "heartbeat",
+          "eventCount": 3
+        }
+      },
+      "source": "synthetic",
+      "_note": "synthetic in-bounds: bytes[3]!=0 -> upstream inputStatus 'close', normalized to vocabulary enum 'closed'; bit0 heartbeat set; expected from reference/upstream-codec.js"
+    },
+    {
+      "description": "firmware version 1.00.001",
+      "input": {
+        "fPort": 8,
+        "bytes": [1, 0, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "make": "arwin-technology",
+          "model": "lrs20600",
+          "firmwareVersion": "1.00.001"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "upstream example; expected from reference/upstream-codec.js"
+    },
+    {
+      "description": "device settings, data upload interval = 60 min, trigger mode 3, deaf time 2 s",
+      "input": {
+        "fPort": 12,
+        "bytes": [4, 0, 60, 3, 0, 2, 1]
+      },
+      "expected": {
+        "data": {
+          "make": "arwin-technology",
+          "model": "lrs20600",
+          "dataUploadInterval": 60,
+          "triggerMode": 3,
+          "triggerDeafTime": 2
+        }
+      },
+      "source": "ttn-example",
+      "_note": "upstream example; expected from reference/upstream-codec.js"
+    },
+    {
+      "description": "input settings, dry contact input enabled",
+      "input": {
+        "fPort": 13,
+        "bytes": [4, 1]
+      },
+      "expected": {
+        "data": {
+          "make": "arwin-technology",
+          "model": "lrs20600",
+          "inputEnabled": "enable"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "upstream example; expected from reference/upstream-codec.js"
+    },
+    {
+      "description": "input settings, dry contact input disabled",
+      "input": {
+        "fPort": 13,
+        "bytes": [4, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "arwin-technology",
+          "model": "lrs20600",
+          "inputEnabled": "disable"
+        }
+      },
+      "source": "synthetic",
+      "_note": "synthetic: bytes[1]==0 -> disable; expected from reference/upstream-codec.js"
+    },
+    {
+      "description": "unknown sensor type on sensor-data port",
+      "input": {
+        "fPort": 10,
+        "bytes": [9, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unknown sensor type"]
+      },
+      "source": "synthetic",
+      "_note": "synthetic: bytes[0] != 4 triggers unknown sensor type error path"
+    },
+    {
+      "description": "unknown FPort",
+      "input": {
+        "fPort": 99,
+        "bytes": [0]
+      },
+      "expected": {
+        "errors": ["unknown FPort"]
+      },
+      "source": "synthetic",
+      "_note": "synthetic: unsupported fPort triggers error path"
+    }
+  ],
+  "downlink": []
+}

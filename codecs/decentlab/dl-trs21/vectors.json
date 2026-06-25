@@ -1,0 +1,73 @@
+{
+  "uplink": [
+    {
+      "description": "TTN Example 1: soil probe (water potential, temperature) + battery",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 1, 146, 0, 3, 0, 117, 128, 161, 12, 37]
+      },
+      "expected": {
+        "data": {
+          "make": "decentlab",
+          "model": "dl-trs21",
+          "soilWaterPotential": -11.7,
+          "soil": {
+            "temperature": 16.1
+          },
+          "battery": 3.109
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream uplinkDecoder Example 1 input (Decentlab v2, device id 402, flags 0x0003). Upstream reference decoder yields water_potential -11.7 kPa, soil_temperature 16.1 C, battery_voltage 3.109 V; expected = normalized mapping (water_potential -> soilWaterPotential extra in kPa, soil_temperature -> soil.temperature, battery_voltage -> battery V)."
+    },
+    {
+      "description": "TTN Example 2: battery-only uplink (flags 0x0002)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 1, 146, 0, 2, 12, 37]
+      },
+      "expected": {
+        "data": {
+          "make": "decentlab",
+          "model": "dl-trs21",
+          "battery": 3.109
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream uplinkDecoder Example 2 input (flags 0x0002, battery word 0x0c25 = 3109 -> 3.109 V). No soil block present, so no soil.* keys or soilWaterPotential are emitted."
+    },
+    {
+      "description": "Synthetic full uplink: drier soil, warmer temperature, lower battery",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 1, 146, 0, 3, 0, 250, 128, 123, 11, 184]
+      },
+      "expected": {
+        "data": {
+          "make": "decentlab",
+          "model": "dl-trs21",
+          "soilWaterPotential": -25,
+          "soil": {
+            "temperature": 12.3
+          },
+          "battery": 3
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload (flags 0x0003) at water-potential word 250 -> -25 kPa, soil-temp word 32891 -> 12.3 C, battery word 3000 -> 3.0 V; expected = normalized mapping of the upstream reference decoder output."
+    },
+    {
+      "description": "Wrong protocol version is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 146, 0, 3, 0, 117, 128, 161, 12, 37]
+      },
+      "expected": {
+        "errors": ["protocol version 1 doesn't match v2"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic negative case: version byte 1 instead of 2; the decoder rejects non-v2 protocol payloads."
+    }
+  ],
+  "downlink": []
+}

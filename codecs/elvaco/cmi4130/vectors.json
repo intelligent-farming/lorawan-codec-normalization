@@ -1,0 +1,87 @@
+{
+  "uplink": [
+    {
+      "description": "Standard format (fPort 2): energy, volume, power, flow, flow/return temperature, serial and error flag.",
+      "input": {
+        "fPort": 2,
+        "bytes": [15, 4, 7, 225, 4, 2, 0, 4, 21, 17, 162, 76, 0, 2, 45, 62, 0, 2, 59, 12, 3, 2, 90, 166, 2, 2, 94, 96, 2, 12, 120, 25, 103, 144, 16, 2, 253, 23, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "metering.energy.total": 1323210000,
+          "metering.water.total": 502222500,
+          "power.active": 6200,
+          "water.temperature.current": 67.8,
+          "returnTemperature": 60.8,
+          "flow": 0.78,
+          "serial": 277899033,
+          "errorFlag": 0,
+          "make": "elvaco",
+          "model": "cmi4130"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream cmi4130.js example: energy 1323210 kWh, volume 502222.5 m3, power 6.2 kW, flow 0.78 m3/h, flow_temperature 67.8 C, return_temperature 60.8 C, serial 277899033, error_flag 0. Normalized: kWh->Wh x1000, m3->L x1000, kW->W x1000, flow temp -> water.temperature.current."
+    },
+    {
+      "description": "Synthetic 40-byte standard payload exercising decimal=0 scales for every record type.",
+      "input": {
+        "fPort": 2,
+        "bytes": [15, 4, 6, 232, 3, 0, 0, 4, 22, 50, 0, 0, 0, 2, 46, 5, 0, 2, 62, 2, 0, 2, 91, 70, 0, 2, 95, 45, 0, 12, 120, 57, 48, 0, 0, 2, 253, 23, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "metering.energy.total": 1000000,
+          "metering.water.total": 50000,
+          "power.active": 5000,
+          "water.temperature.current": 70,
+          "returnTemperature": 45,
+          "flow": 2,
+          "serial": 12345,
+          "errorFlag": 0,
+          "make": "elvaco",
+          "model": "cmi4130"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Oracle: upstream decode_cmi4130_standard yields energy 1000 kWh, volume 50 m3, power 5 kW, flow 2 m3/h, flow_temperature 70 C, return_temperature 45 C, serial 12345, error_flag 0. All records use decimal exponent 0 (VIFs 06/16/2e/3e/5b/5f). Covers metering.energy.total + metering.water.total + power.active in one frame."
+    },
+    {
+      "description": "Wrong fPort is rejected.",
+      "input": {
+        "fPort": 1,
+        "bytes": [15, 4, 7, 225, 4, 2, 0, 4, 21, 17, 162, 76, 0, 2, 45, 62, 0, 2, 59, 12, 3, 2, 90, 166, 2, 2, 94, 96, 2, 12, 120, 25, 103, 144, 16, 2, 253, 23, 0, 0]
+      },
+      "expected": {
+        "errors": ["unknown FPort"]
+      },
+      "source": "synthetic",
+      "_note": "Upstream switch default branch returns 'unknown FPort' for any fPort other than 2."
+    },
+    {
+      "description": "Payload shorter than 40 bytes is rejected.",
+      "input": {
+        "fPort": 2,
+        "bytes": [15, 4, 7]
+      },
+      "expected": {
+        "errors": ["payload length < 40"]
+      },
+      "source": "synthetic",
+      "_note": "Upstream gates on hex_array.length < 40 before parsing records."
+    },
+    {
+      "description": "Unknown format header byte is rejected.",
+      "input": {
+        "fPort": 2,
+        "bytes": [16, 4, 7, 225, 4, 2, 0, 4, 21, 17, 162, 76, 0, 2, 45, 62, 0, 2, 59, 12, 3, 2, 90, 166, 2, 2, 94, 96, 2, 12, 120, 25, 103, 144, 16, 2, 253, 23, 0, 0]
+      },
+      "expected": {
+        "errors": ["Payload type unknown, currently standard format supported"]
+      },
+      "source": "synthetic",
+      "_note": "Upstream requires hex_array[0] == '0f'; byte[0]=0x10 triggers the unknown-format error."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,32 @@
+{
+  "vendor": "dragino",
+  "device": "lsn50v2-d20",
+  "name": "LSN50v2-D20 - Temperature Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "air.lightIntensity",
+    "air.location",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "probeTemperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "lsn50v2-d20",
+    "codecId": "lsn50v2-d20-codec",
+    "codecFile": "lsn50v2-d20.js",
+    "codecSha256": "0e21e8c8bac44e475babaade75936bd1828ba4a3e15353ca30e5d58f2a0bb3d1",
+    "referencedAt": "2026-06-25"
+  }
+}

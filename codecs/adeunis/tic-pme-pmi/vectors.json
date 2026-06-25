@@ -1,0 +1,78 @@
+{
+  "uplink": [
+    {
+      "description": "0x49 TIC data — full PME-PMI register set with calibrated EA_s total active energy (707 Wh)",
+      "input": {
+        "fPort": 1,
+        "bytes": [73, 96, 21, 4, 20, 13, 43, 5, 0, 0, 2, 195, 0, 0, 0, 152, 0, 0, 0, 2, 0, 0, 2, 235, 72, 80, 69, 0, 6, 146, 204, 0, 2, 92, 170, 0, 0, 5, 55, 0, 6, 141, 184, 0, 2, 91, 130, 0, 0, 5, 40]
+      },
+      "expected": {
+        "data": {
+          "frameType": "0x49 TIC data",
+          "frameCounter": 3,
+          "lowBattery": false,
+          "configurationDone": false,
+          "configurationInconsistency": false,
+          "readError": false,
+          "meterDate": "2020-04-21T13:43:05",
+          "metering": { "energy": { "total": 707 } },
+          "reactiveEnergyImportVarh": 152,
+          "reactiveEnergyExportVarh": 2,
+          "apparentEnergyVah": 747,
+          "tariffPeriod": "HPE",
+          "activeEnergyPeriodKwh": 430796,
+          "reactiveEnergyImportPeriodKvarh": 154794,
+          "reactiveEnergyExportPeriodKvarh": 1335,
+          "activeEnergyPreviousPeriodKwh": 429496,
+          "reactiveEnergyImportPreviousPeriodKvarh": 154498,
+          "reactiveEnergyExportPreviousPeriodKvarh": 1320,
+          "make": "adeunis",
+          "model": "tic-pme-pmi"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream tic-pme-pmi-codec.yaml example. EA_s (bytes 8-11 = 0x000002C3 = 707 Wh) is the cumulative active-energy index -> metering.energy.total; all other register values verified by running reference/upstream-codec.js."
+    },
+    {
+      "description": "0x49 TIC data — EA_s register reads the 0x80000000 not-found sentinel (warning, no energy total)",
+      "input": {
+        "fPort": 1,
+        "bytes": [73, 96, 21, 4, 20, 13, 43, 5, 128, 0, 0, 0, 0, 0, 0, 152, 0, 0, 0, 2, 0, 0, 2, 235, 72, 80, 69, 0, 6, 146, 204, 0, 2, 92, 170, 0, 0, 5, 55, 0, 6, 141, 184, 0, 2, 91, 130, 0, 0, 5, 40]
+      },
+      "expected": {
+        "data": {
+          "frameType": "0x49 TIC data",
+          "frameCounter": 3,
+          "lowBattery": false,
+          "configurationDone": false,
+          "configurationInconsistency": false,
+          "readError": false,
+          "meterDate": "2020-04-21T13:43:05",
+          "reactiveEnergyImportVarh": 152,
+          "reactiveEnergyExportVarh": 2,
+          "apparentEnergyVah": 747,
+          "tariffPeriod": "HPE",
+          "activeEnergyPeriodKwh": 430796,
+          "reactiveEnergyImportPeriodKvarh": 154794,
+          "reactiveEnergyExportPeriodKvarh": 1335,
+          "activeEnergyPreviousPeriodKwh": 429496,
+          "reactiveEnergyImportPreviousPeriodKvarh": 154498,
+          "reactiveEnergyExportPreviousPeriodKvarh": 1320,
+          "make": "adeunis",
+          "model": "tic-pme-pmi"
+        },
+        "warnings": ["EA_s (total active energy) not found on the TIC bus"]
+      },
+      "source": "synthetic",
+      "_note": "Example bytes with EA_s set to the TIC 0x80000000 not-found sentinel; per upstream payloadToValue this register is omitted, so no metering.energy.total is emitted and a warning is raised."
+    },
+    {
+      "description": "Unsupported frame code 0x99 — produces an error",
+      "input": { "fPort": 1, "bytes": [153, 0, 0, 0] },
+      "expected": { "errors": ["unsupported frame code 0x99"] },
+      "source": "synthetic",
+      "_note": "0x99 is not a TIC PME-PMI frame; the decoder rejects it."
+    }
+  ],
+  "downlink": []
+}

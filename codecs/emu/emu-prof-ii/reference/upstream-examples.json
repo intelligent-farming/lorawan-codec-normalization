@@ -1,0 +1,215 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/emu/emu-prof-ii-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "1810 Wh Energy at 1635506100",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          180,
+          215,
+          123,
+          97,
+          1,
+          180,
+          215,
+          123,
+          97,
+          3,
+          18,
+          7,
+          0,
+          0,
+          57
+        ]
+      },
+      "output": {
+        "data": {
+          "timestamp": {
+            "unit": "seconds",
+            "value": 1635506100
+          },
+          "ActiveEnergyImportT1": {
+            "unit": "Wh",
+            "value": 1810
+          },
+          "timeStamp": 1635506100,
+          "medium": {
+            "type": 1,
+            "desc": "Electricity"
+          }
+        }
+      }
+    },
+    {
+      "description": "all energy-registers at 1635506100",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          180,
+          215,
+          123,
+          97,
+          1,
+          180,
+          215,
+          123,
+          97,
+          3,
+          18,
+          7,
+          0,
+          0,
+          4,
+          128,
+          0,
+          0,
+          0,
+          5,
+          125,
+          4,
+          0,
+          0,
+          6,
+          130,
+          69,
+          0,
+          0,
+          7,
+          72,
+          7,
+          0,
+          0,
+          8,
+          40,
+          10,
+          0,
+          0,
+          9,
+          82,
+          1,
+          0,
+          0,
+          10,
+          189,
+          37,
+          0,
+          0,
+          228
+        ]
+      },
+      "output": {
+        "data": {
+          "timestamp": {
+            "unit": "seconds",
+            "value": 1635506100
+          },
+          "ActiveEnergyImportT1": {
+            "unit": "Wh",
+            "value": 1810
+          },
+          "ActiveEnergyImportT2": {
+            "unit": "Wh",
+            "value": 128
+          },
+          "ActiveEnergyExportT1": {
+            "unit": "Wh",
+            "value": 1149
+          },
+          "ActiveEnergyExportT2": {
+            "unit": "Wh",
+            "value": 17794
+          },
+          "ReactiveEnergyImportT1": {
+            "unit": "varh",
+            "value": 1864
+          },
+          "ReactiveEnergyImportT2": {
+            "unit": "varh",
+            "value": 2600
+          },
+          "ReactiveEnergyExportT1": {
+            "unit": "varh",
+            "value": 338
+          },
+          "ReactiveEnergyExportT2": {
+            "unit": "varh",
+            "value": 9661
+          },
+          "timeStamp": 1635506100,
+          "medium": {
+            "type": 1,
+            "desc": "Electricity"
+          }
+        }
+      }
+    },
+    {
+      "description": "meter infos after joining the network",
+      "input": {
+        "fPort": 100,
+        "bytes": [
+          48,
+          209,
+          5,
+          98,
+          241,
+          38,
+          1,
+          6,
+          34,
+          247,
+          1,
+          243,
+          5,
+          0,
+          244,
+          5,
+          0,
+          245,
+          100,
+          0,
+          246,
+          100,
+          0,
+          248,
+          2,
+          0,
+          2,
+          2,
+          196
+        ]
+      },
+      "output": {
+        "data": {
+          "serial-number": {
+            "value": "22060126"
+          },
+          "meter-typ": {
+            "value": 1
+          },
+          "current-transformerprimary": {
+            "value": 5
+          },
+          "current-transformersecondary": {
+            "value": 5
+          },
+          "voltage-transformerprimary": {
+            "value": 100
+          },
+          "voltage-transformersecondary": {
+            "value": 100
+          },
+          "MIDyear": {
+            "value": "2022"
+          },
+          "timeStamp": 1644548400,
+          "medium": {
+            "type": 1,
+            "desc": "Electricity"
+          }
+        }
+      }
+    }
+  ]
+}

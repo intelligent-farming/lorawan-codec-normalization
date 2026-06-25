@@ -1,0 +1,33 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-alb",
+  "name": "DL-ALB - Albedometer Sensor",
+  "categories": [
+    "solar-radiation"
+  ],
+  "sensors": [
+    "albedo",
+    "battery"
+  ],
+  "provides": [
+    "air.solarIrradiance",
+    "albedo",
+    "battery",
+    "deviceId",
+    "protocolVersion",
+    "reflectedRadiation"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-alb",
+    "codecId": "dl-alb-codec",
+    "codecFile": "dl-alb.js",
+    "codecSha256": "5238345dd434ea1f43562c986c77c604847dc51c9dd53394d8735f6de506f744",
+    "referencedAt": "2026-06-25"
+  }
+}

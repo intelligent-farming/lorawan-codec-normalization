@@ -1,0 +1,42 @@
+{
+  "vendor": "enginko",
+  "device": "mcf-lw12plg",
+  "name": "MCF-LW12PLG - Smart Plug",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "voltage",
+    "current",
+    "energy",
+    "power",
+    "time"
+  ],
+  "provides": [
+    "activation",
+    "apparentEnergy",
+    "metering.energy.total",
+    "period",
+    "power.active",
+    "power.apparent",
+    "power.current",
+    "power.frequency",
+    "power.voltage",
+    "reactiveEnergy",
+    "reactivePower",
+    "time"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "enginko",
+    "device": "mcf-lw12plg",
+    "codecId": "mcf-power-codec",
+    "codecFile": "decoder-power.js",
+    "codecSha256": "139eda8196e316ebcf173bd1db137c5a8c720c465e98444b6f7a6dee2a987bd1",
+    "referencedAt": "2026-06-25"
+  }
+}

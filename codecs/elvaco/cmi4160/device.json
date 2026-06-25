@@ -1,0 +1,33 @@
+{
+  "vendor": "elvaco",
+  "device": "cmi4160",
+  "name": "CMi4160",
+  "categories": [
+    "power-meter",
+    "water-meter"
+  ],
+  "sensors": [],
+  "provides": [
+    "errorFlag",
+    "flow",
+    "flowTemperature",
+    "metering.energy.total",
+    "metering.water.total",
+    "power.active",
+    "returnTemperature",
+    "serial"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "elvaco",
+    "device": "cmi4160",
+    "codecId": "cmi4160-codec",
+    "codecFile": "cmi4160.js",
+    "codecSha256": "4cfb5b1d10989a1a1be944cbb1a56f7d662c3886f235a7c4a214aa1e7ec91407",
+    "referencedAt": "2026-06-25"
+  }
+}

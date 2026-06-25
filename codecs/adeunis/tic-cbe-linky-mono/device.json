@@ -1,0 +1,47 @@
+{
+  "vendor": "adeunis",
+  "device": "tic-cbe-linky-mono",
+  "name": "TIC CBE/LINKY MONO - Electricity Meter Interface",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "power",
+    "metering"
+  ],
+  "provides": [
+    "configurationDone",
+    "configurationInconsistency",
+    "currentTariffPeriod",
+    "energyHcWh",
+    "energyHpWh",
+    "frameCounter",
+    "frameType",
+    "lowBattery",
+    "maxCurrentA",
+    "meterId",
+    "metering.energy.total",
+    "power.apparent",
+    "power.current",
+    "productMode",
+    "readError",
+    "samplingPeriodMin",
+    "subscribedCurrentA",
+    "tariffOption",
+    "transmissionPeriodData",
+    "transmissionPeriodKeepAliveMin"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "adeunis",
+    "device": "tic-cbe-linky-mono",
+    "codecId": "tic-cbe-linky-mono-codec",
+    "codecFile": "tic_cbe_linky_mono_lib.js",
+    "codecSha256": "8af33383309b66d9b99b7f082d072022f415a9b0c90fb694635abb8f2f747141",
+    "referencedAt": "2026-06-25"
+  }
+}

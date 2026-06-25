@@ -1,0 +1,112 @@
+{
+  "uplink": [
+    {
+      "description": "fPort 2 door open, no alarm, 5 opens, last open 120 min",
+      "input": { "fPort": 2, "bytes": [1, 0, 0, 5, 0, 0, 120, 87, 132, 188, 120] },
+      "expected": {
+        "data": {
+          "action": { "contactState": "open" },
+          "time": "2016-07-12T09:46:32.000Z",
+          "alarm": false,
+          "doorOpenTimes": 5,
+          "lastDoorOpenDurationMinutes": 120,
+          "make": "dragino",
+          "model": "lds03a"
+        }
+      },
+      "source": "synthetic",
+      "_note": "fPort 2 door-status frame; byte0 bit0x01=open, bit0x02=alarm; oracle-checked against upstream decodeUplink (DOOR_OPEN_STATUS=OPEN, ALARM=FALSE, TIMES=5, DURATION=120, epoch 1468316792)."
+    },
+    {
+      "description": "fPort 2 door closed with alarm, 12 opens, last open 300 min",
+      "input": { "fPort": 2, "bytes": [2, 0, 0, 12, 0, 1, 44, 87, 132, 202, 136] },
+      "expected": {
+        "data": {
+          "action": { "contactState": "closed" },
+          "time": "2016-07-12T10:46:32.000Z",
+          "alarm": true,
+          "doorOpenTimes": 12,
+          "lastDoorOpenDurationMinutes": 300,
+          "make": "dragino",
+          "model": "lds03a"
+        }
+      },
+      "source": "synthetic",
+      "_note": "byte0=0x02 -> CLOSE + ALARM TRUE; oracle-checked against upstream (DOOR_OPEN_STATUS=CLOSE, ALARM=TRUE, TIMES=12, DURATION=300, epoch 1468320392)."
+    },
+    {
+      "description": "fPort 3 datalog: two records (current open+alarm, prior closed) -> history",
+      "input": { "fPort": 3, "bytes": [3, 0, 0, 5, 0, 0, 120, 87, 132, 188, 120, 0, 0, 0, 6, 0, 0, 200, 87, 132, 188, 180] },
+      "expected": {
+        "data": {
+          "action": { "contactState": "open" },
+          "time": "2016-07-12T09:46:32.000Z",
+          "alarm": true,
+          "doorOpenTimes": 5,
+          "lastDoorOpenDurationMinutes": 120,
+          "history": [
+            {
+              "action": { "contactState": "closed" },
+              "time": "2016-07-12T09:47:32.000Z",
+              "alarm": false,
+              "doorOpenTimes": 6,
+              "lastDoorOpenDurationMinutes": 200
+            }
+          ],
+          "make": "dragino",
+          "model": "lds03a"
+        }
+      },
+      "source": "synthetic",
+      "_note": "fPort 3 history frame; each 11-byte record decoded like fPort 2. Oracle-checked against upstream DATALOG [TRUE,OPEN,5,120,...],[FALSE,CLOSE,6,200,...]. Current reading at top level, prior in history[] with time."
+    },
+    {
+      "description": "fPort 4 config report (yaml example): TDC, disalarm, keep status/time",
+      "input": { "fPort": 4, "bytes": [49, 97, 142, 87, 64, 97, 142] },
+      "expected": {
+        "data": {
+          "transmitIntervalSeconds": 3236238,
+          "disalarm": true,
+          "keepStatus": false,
+          "keepTimeSeconds": 24974,
+          "make": "dragino",
+          "model": "lds03a"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream uplinkDecoder example [0x31,0x61,0x8E,0x57,0x40,0x61,0x8E]; oracle-checked against upstream (TDC=3236238, DISALARM=1, KEEP_STATUS=0, KEEP_TIME=24974). Config frame: no vocabulary key, all extras."
+    },
+    {
+      "description": "fPort 5 device status: battery 3.096 V, firmware 1.1.4, EU868",
+      "input": { "fPort": 5, "bytes": [10, 1, 20, 1, 255, 12, 24] },
+      "expected": {
+        "data": {
+          "battery": 3.096,
+          "deviceModel": "LDS03A",
+          "firmwareVersion": "1.1.4",
+          "frequencyBand": "EU868",
+          "subBand": "NULL",
+          "make": "dragino",
+          "model": "lds03a"
+        }
+      },
+      "source": "synthetic",
+      "_note": "fPort 5 status frame; oracle-checked against upstream (SENSOR_MODEL=LDS03A, FIRMWARE_VERSION=1.1.4, FREQUENCY_BAND=EU868, SUB_BAND=NULL, BAT=3.096). Battery mV->V per volts vocabulary."
+    },
+    {
+      "description": "fPort 42 unknown (yaml example) -> error",
+      "input": { "fPort": 42, "bytes": [49, 97, 142, 87, 64, 97, 142, 129, 112, 5, 0] },
+      "expected": { "errors": ["unsupported fPort 42"] },
+      "source": "ttn-example",
+      "_note": "Upstream uplinkDecoder example for an unknown fPort; upstream returns errors:['unknown FPort']."
+    },
+    {
+      "description": "fPort 2 too short -> error",
+      "input": { "fPort": 2, "bytes": [1, 2, 3] },
+      "expected": { "errors": ["fPort 2 expected at least 11 bytes"] },
+      "source": "synthetic",
+      "_note": "Length guard: a door-status frame is 11 bytes."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,64 @@
+{
+  "uplink": [
+    {
+      "description": "Full uplink (flags 0x0003): turbidity block + battery",
+      "input": { "fPort": 1, "bytes": [2, 35, 50, 0, 3, 0, 0, 136, 133, 1, 62, 1, 62, 2, 51, 11, 16] },
+      "expected": {
+        "data": {
+          "status": 0,
+          "water": {
+            "temperature": { "current": 21.81 },
+            "turbidity": 31.8
+          },
+          "turbidityFnu": 31.8,
+          "turbidityMgL": 56.3,
+          "battery": 2.832,
+          "make": "decentlab",
+          "model": "dl-ntu"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream codec yaml Example 1; expected.data authored by mapping upstream output to vocabulary (temperature->water.temperature.current, NTU->water.turbidity; FNU/mg-L/status as extras; battery V)."
+    },
+    {
+      "description": "Battery-only uplink (flags 0x0002): no turbidity block",
+      "input": { "fPort": 1, "bytes": [2, 35, 50, 0, 2, 11, 16] },
+      "expected": {
+        "data": {
+          "battery": 2.832,
+          "make": "decentlab",
+          "model": "dl-ntu"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream codec yaml Example 2; only the battery sensor flag is set."
+    },
+    {
+      "description": "Synthetic turbidity-only uplink (flags 0x0001): no battery block",
+      "input": { "fPort": 1, "bytes": [2, 0, 5, 0, 1, 0, 1, 128, 0, 0, 100, 0, 200, 1, 144] },
+      "expected": {
+        "data": {
+          "status": 1,
+          "water": {
+            "temperature": { "current": 0 },
+            "turbidity": 10
+          },
+          "turbidityFnu": 20,
+          "turbidityMgL": 40,
+          "make": "decentlab",
+          "model": "dl-ntu"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; only the turbidity/temperature sensor flag is set. Expected.data derived by running reference/upstream-codec.js and mapping to vocabulary."
+    },
+    {
+      "description": "Wrong protocol version byte",
+      "input": { "fPort": 1, "bytes": [1, 35, 50, 0, 3, 0, 0, 136, 133, 1, 62, 1, 62, 2, 51, 11, 16] },
+      "expected": { "errors": ["protocol version"] },
+      "source": "synthetic",
+      "_note": "Version byte != 2 must be rejected, mirroring upstream guard."
+    }
+  ],
+  "downlink": []
+}

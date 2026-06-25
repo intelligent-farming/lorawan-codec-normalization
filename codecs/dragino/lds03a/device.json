@@ -1,0 +1,40 @@
+{
+  "vendor": "dragino",
+  "device": "lds03a",
+  "name": "LDS03A - Door Sensor",
+  "categories": [
+    "contact"
+  ],
+  "sensors": [
+    "contact"
+  ],
+  "provides": [
+    "action.contactState",
+    "alarm",
+    "battery",
+    "deviceModel",
+    "disalarm",
+    "doorOpenTimes",
+    "firmwareVersion",
+    "frequencyBand",
+    "keepStatus",
+    "keepTimeSeconds",
+    "lastDoorOpenDurationMinutes",
+    "subBand",
+    "time",
+    "transmitIntervalSeconds"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "lds03a",
+    "codecId": "lds03a-codec",
+    "codecFile": "lds03a.js",
+    "codecSha256": "10a3c51a55ef9d2696851fe0dbf771119ba54bbf9a962170e365fb330f0cdbf0",
+    "referencedAt": "2026-06-25"
+  }
+}

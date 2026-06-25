@@ -1,0 +1,88 @@
+{
+  "uplink": [
+    {
+      "description": "Leaf wetness + battery (upstream example payload)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 17, 17, 0, 3, 64, 154, 0, 134, 12, 84]
+      },
+      "expected": {
+        "data": {
+          "leaf": { "wetness": 4.88 },
+          "leafWetnessIndex": 0.048846,
+          "battery": 3.156,
+          "make": "decentlab",
+          "model": "dl-lws"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Both sensor flags set (0b11). index=(16538+134*65536)/8388608-1=0.0488465; leaf.wetness=index*100=4.88%; battery 3156 mV/1000=3.156 V. Derived by running reference/upstream-codec.js."
+    },
+    {
+      "description": "Leaf wetness only, mid-range (~50%)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 17, 17, 0, 1, 0, 0, 0, 192]
+      },
+      "expected": {
+        "data": {
+          "leaf": { "wetness": 50 },
+          "leafWetnessIndex": 0.5,
+          "make": "decentlab",
+          "model": "dl-lws"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Only leaf-wetness flag set (0b01). words=[0,192] -> index=(0+192*65536)/8388608-1=0.5 -> 50%. No battery block. Derived via upstream decoder (leaf_wetness_index=0.5)."
+    },
+    {
+      "description": "Leaf wetness index above 1, clamped to 100% (warning)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 17, 17, 0, 1, 0, 0, 1, 44]
+      },
+      "expected": {
+        "data": {
+          "leaf": { "wetness": 100 },
+          "leafWetnessIndex": 1.34375,
+          "make": "decentlab",
+          "model": "dl-lws"
+        },
+        "warnings": ["leaf wetness index above 1; clamped to 100%"]
+      },
+      "source": "synthetic",
+      "_note": "words=[0,300] -> index=(300*65536)/8388608-1=1.34375 (>1); percentage clamped to 100. Upstream leaf_wetness_index=1.34375."
+    },
+    {
+      "description": "Leaf wetness index below 0, clamped to 0% (warning)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 17, 17, 0, 1, 0, 0, 0, 100]
+      },
+      "expected": {
+        "data": {
+          "leaf": { "wetness": 0 },
+          "leafWetnessIndex": -0.21875,
+          "make": "decentlab",
+          "model": "dl-lws"
+        },
+        "warnings": ["leaf wetness index below 0; clamped to 0%"]
+      },
+      "source": "synthetic",
+      "_note": "words=[0,100] -> index=(100*65536)/8388608-1=-0.21875 (<0); percentage clamped to 0. Upstream leaf_wetness_index=-0.21875."
+    },
+    {
+      "description": "Wrong protocol version -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [3, 0, 0, 0, 1, 0, 0]
+      },
+      "expected": {
+        "errors": ["protocol version 3 doesn't match v2"]
+      },
+      "source": "synthetic",
+      "_note": "Header version byte != 2; upstream returns the same protocol-mismatch error."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,76 @@
+{
+  "uplink": [
+    {
+      "description": "Metering 0x09 long frame: full instantaneous block (230.0V, 6.8A, 1500W, 50Hz) plus cumulative energies",
+      "input": { "fPort": 2, "bytes": [9, 202, 83, 111, 48, 64, 226, 1, 0, 32, 78, 0, 0, 72, 232, 1, 0, 220, 5, 200, 0, 240, 5, 252, 8, 144, 26, 32, 78, 128, 81, 1, 0] },
+      "expected": {
+        "data": {
+          "make": "enginko",
+          "model": "egk-lw22plg",
+          "metering": { "energy": { "total": 123456 } },
+          "reactiveEnergy": 20000,
+          "apparentEnergy": 125000,
+          "power": { "active": 1500, "apparent": 1520, "voltage": 230, "current": 6.8, "frequency": 50 },
+          "reactivePower": 200,
+          "period": 20000,
+          "activation": 86400,
+          "time": "2024-03-15T10:30:20Z"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Hand-built in-bounds 0x09 long frame; expected.data derived by running reference/upstream-codec.js (decodeUplink/parseMetering) and mapping voltage dV/10->V, current mA/1000->A, activeEnergy->metering.energy.total, period->derived frequency. Date emitted as RFC3339 UTC (upstream uses non-deterministic toLocaleString)."
+    },
+    {
+      "description": "Metering 0x09 long frame with negative active/reactive power (export, 229.5V, 2.5A, 49.9Hz)",
+      "input": { "fPort": 2, "bytes": [9, 0, 0, 129, 51, 160, 187, 13, 0, 152, 58, 0, 0, 40, 207, 13, 0, 12, 254, 206, 255, 126, 4, 247, 8, 196, 9, 72, 78, 128, 238, 54, 0] },
+      "expected": {
+        "data": {
+          "make": "enginko",
+          "model": "egk-lw22plg",
+          "metering": { "energy": { "total": 900000 } },
+          "reactiveEnergy": 15000,
+          "apparentEnergy": 905000,
+          "power": { "active": -500, "apparent": 1150, "voltage": 229.5, "current": 2.5, "frequency": 49.9 },
+          "reactivePower": -50,
+          "period": 20040,
+          "activation": 3600000,
+          "time": "2025-12-01T00:00:00Z"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Exercises two's-complement 16-bit active/reactive power and fractional frequency; expected.data derived from reference/upstream-codec.js then normalized."
+    },
+    {
+      "description": "Metering 0x09 short frame: cumulative energies and activation only (no instantaneous channels)",
+      "input": { "fPort": 2, "bytes": [9, 202, 83, 111, 48, 80, 195, 0, 0, 64, 31, 0, 0, 56, 199, 0, 0, 16, 14, 0, 0] },
+      "expected": {
+        "data": {
+          "make": "enginko",
+          "model": "egk-lw22plg",
+          "metering": { "energy": { "total": 50000 } },
+          "reactiveEnergy": 8000,
+          "apparentEnergy": 51000,
+          "activation": 3600,
+          "time": "2024-03-15T10:30:20Z"
+        }
+      },
+      "source": "synthetic",
+      "_note": "21-byte short metering frame; expected.data derived from reference/upstream-codec.js parseMetering (<=42-hex branch). Satisfies power-meter via metering.energy.total."
+    },
+    {
+      "description": "Unsupported frame id (0xFF) is rejected",
+      "input": { "fPort": 2, "bytes": [255, 1, 2] },
+      "expected": { "errors": ["unsupported frame id"] },
+      "source": "synthetic",
+      "_note": "Upstream returns null -> 'Error on decoding payload'; we author a specific frame-id rejection. Only the 0x09 metering frame carries calibrated power-meter quantities."
+    },
+    {
+      "description": "Truncated metering frame is rejected",
+      "input": { "fPort": 2, "bytes": [9, 202, 83, 111, 48] },
+      "expected": { "errors": ["truncated metering frame"] },
+      "source": "synthetic",
+      "_note": "0x09 frame with header only, shorter than the 21-byte short form."
+    }
+  ],
+  "downlink": []
+}

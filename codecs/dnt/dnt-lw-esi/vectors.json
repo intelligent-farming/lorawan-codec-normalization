@@ -1,0 +1,106 @@
+{
+  "uplink": [
+    {
+      "description": "cyclic energy data (1): power + HT/NT consumption + delivery counters",
+      "input": { "fPort": 10, "bytes": [2, 111, 1, 0, 1, 1, 92, 18, 0, 16, 2, 147, 2, 92, 0, 0, 16, 3, 0, 0, 0, 0, 0, 16, 4, 12, 11, 10, 0, 0] },
+      "expected": { "data": {
+        "txReason": "Cyclic_Timer",
+        "battery": 2.94,
+        "frameType": "Sensor_Data",
+        "errorMsg": "No_Error",
+        "power": { "active": 47 },
+        "metering": { "energy": { "total": 602997.1 } },
+        "energyConsumptionNt": 0,
+        "energyDelivery": 65818.8,
+        "make": "dnt",
+        "model": "dnt-lw-esi"
+      } },
+      "source": "ttn-example",
+      "_note": "Upstream Energy_Data Value [47,602997.1,0,65818.8]: Power 47 W -> power.active; Consumption HT 602997.1 Wh -> metering.energy.total; NT 0 Wh and Delivery 65818.8 Wh -> extras."
+    },
+    {
+      "description": "cyclic energy data (2): higher instantaneous power, same counters",
+      "input": { "fPort": 10, "bytes": [2, 111, 1, 0, 1, 1, 16, 39, 0, 16, 2, 187, 2, 92, 0, 0, 16, 3, 0, 0, 0, 0, 0, 16, 4, 12, 11, 10, 0, 0] },
+      "expected": { "data": {
+        "txReason": "Cyclic_Timer",
+        "battery": 2.94,
+        "frameType": "Sensor_Data",
+        "errorMsg": "No_Error",
+        "power": { "active": 100 },
+        "metering": { "energy": { "total": 603001.1 } },
+        "energyConsumptionNt": 0,
+        "energyDelivery": 65818.8,
+        "make": "dnt",
+        "model": "dnt-lw-esi"
+      } },
+      "source": "ttn-example",
+      "_note": "Upstream Energy_Data Value [100,603001.1,0,65818.8]; Power 100 W -> power.active, Consumption HT -> metering.energy.total."
+    },
+    {
+      "description": "minimal 16-byte Sensor_Data: power + HT consumption only",
+      "input": { "fPort": 10, "bytes": [2, 111, 1, 0, 1, 1, 232, 3, 0, 16, 2, 57, 48, 0, 0, 0] },
+      "expected": { "data": {
+        "txReason": "Cyclic_Timer",
+        "battery": 2.94,
+        "frameType": "Sensor_Data",
+        "errorMsg": "No_Error",
+        "power": { "active": 10 },
+        "metering": { "energy": { "total": 1234.5 } },
+        "make": "dnt",
+        "model": "dnt-lw-esi"
+      } },
+      "source": "synthetic",
+      "_note": "Power raw 1000/100=10 W; HT counter raw 12345/10=1234.5 Wh -> metering.energy.total. Covers power-meter atLeastOne with only the mandatory two-block frame."
+    },
+    {
+      "description": "HT counter reports Unknown sentinel (0xFFFFFFFFFF) -> warning, no energy.total",
+      "input": { "fPort": 10, "bytes": [2, 111, 1, 0, 1, 1, 232, 3, 0, 16, 2, 255, 255, 255, 255, 255] },
+      "expected": {
+        "data": {
+          "txReason": "Cyclic_Timer",
+          "battery": 2.94,
+          "frameType": "Sensor_Data",
+          "errorMsg": "No_Error",
+          "power": { "active": 10 },
+          "energyStatus": "Unknown",
+          "make": "dnt",
+          "model": "dnt-lw-esi"
+        },
+        "warnings": ["block 1 sentinel: Unknown"]
+      },
+      "source": "synthetic",
+      "_note": "Upstream maps 0xFFFFFFFFFF energy counter to the string 'Unknown'; a string cannot occupy numeric metering.energy.total, so it is surfaced as the energyStatus extra with a warning."
+    },
+    {
+      "description": "Device_Info startup frame: diagnostics only (battery from supply voltage)",
+      "input": { "fPort": 10, "bytes": [4, 111, 255, 1, 0, 0, 1, 0, 3, 0, 2] },
+      "expected": { "data": {
+        "txReason": "Joined",
+        "battery": 2.94,
+        "frameType": "Device_Info",
+        "bootloaderVersion": "1.0.0",
+        "firmwareVersion": "1.0.3",
+        "hwRevision": 2,
+        "make": "dnt",
+        "model": "dnt-lw-esi"
+      } },
+      "source": "ttn-example",
+      "_note": "Upstream Device_Info: Bootloader 1.0.0, Firmware 1.0.3, Hw_Revision 2, Supply_Voltage 2.94 -> battery."
+    },
+    {
+      "description": "unsupported fPort",
+      "input": { "fPort": 5, "bytes": [1, 2, 3] },
+      "expected": { "errors": ["unsupported fPort 5"] },
+      "source": "synthetic",
+      "_note": "Device app data is only sent on fPort 10; upstream sets parser_error 'Wrong Port Number'."
+    },
+    {
+      "description": "truncated header (fewer than 3 bytes)",
+      "input": { "fPort": 10, "bytes": [1, 2] },
+      "expected": { "errors": ["truncated header"] },
+      "source": "synthetic",
+      "_note": "Header is TX reason + supply voltage + frame type = 3 bytes minimum."
+    }
+  ],
+  "downlink": []
+}

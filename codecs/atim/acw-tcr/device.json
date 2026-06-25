@@ -1,0 +1,30 @@
+{
+  "vendor": "atim",
+  "device": "acw-tcr",
+  "name": "ACW-TCR - Temperature Probe",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "surface temperature",
+    "humidity"
+  ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "atim",
+    "device": "acw-tcr",
+    "codecId": "codec",
+    "codecFile": "decodeur.js",
+    "codecSha256": "b86b0c72a7ee43f4caa766c25057326897faafe3a98f98fe3cf17d12627d8758",
+    "referencedAt": "2026-06-25"
+  }
+}

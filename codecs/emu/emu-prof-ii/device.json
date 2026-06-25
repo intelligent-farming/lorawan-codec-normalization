@@ -1,0 +1,52 @@
+{
+  "vendor": "emu",
+  "device": "emu-prof-ii",
+  "name": "Professional II LoRa - 3 Phase Energy Meter",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "energy",
+    "power",
+    "voltage",
+    "current"
+  ],
+  "provides": [
+    "activeEnergyExportT1Wh",
+    "activeEnergyExportT2Wh",
+    "activeEnergyImportT1Wh",
+    "activeEnergyImportT2Wh",
+    "currentTransformerPrimary",
+    "currentTransformerSecondary",
+    "meterType",
+    "metering.energy.total",
+    "midYear",
+    "power.active",
+    "power.current",
+    "power.frequency",
+    "power.voltage",
+    "reactiveEnergyExportT1Varh",
+    "reactiveEnergyExportT2Varh",
+    "reactiveEnergyImportT1Varh",
+    "reactiveEnergyImportT2Varh",
+    "recordTimestamp",
+    "serialNumber",
+    "time",
+    "timeStamp",
+    "voltageTransformerPrimary",
+    "voltageTransformerSecondary"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "emu",
+    "device": "emu-prof-ii",
+    "codecId": "emu-prof-ii-codec",
+    "codecFile": "profii-lp-codec_generic.js",
+    "codecSha256": "ad937f985e985d786bd520f01ce8b822aba0e15ef87a9593b3ec998275252926",
+    "referencedAt": "2026-06-25"
+  }
+}

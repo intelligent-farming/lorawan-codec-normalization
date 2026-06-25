@@ -1,0 +1,132 @@
+{
+  "uplink": [
+    {
+      "description": "single active-energy import register (T1) at 1635506100",
+      "input": {
+        "fPort": 1,
+        "bytes": [180, 215, 123, 97, 1, 180, 215, 123, 97, 3, 18, 7, 0, 0, 57]
+      },
+      "expected": {
+        "data": {
+          "timeStamp": 1635506100,
+          "time": "2021-10-29T11:15:00.000Z",
+          "recordTimestamp": 1635506100,
+          "activeEnergyImportT1Wh": 1810,
+          "metering": { "energy": { "total": 1810 } },
+          "make": "emu",
+          "model": "emu-prof-ii"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream TTN example. metering.energy.total = cumulative active energy import (T1 only here = 1810 Wh)."
+    },
+    {
+      "description": "all eight energy registers at 1635506100",
+      "input": {
+        "fPort": 1,
+        "bytes": [180, 215, 123, 97, 1, 180, 215, 123, 97, 3, 18, 7, 0, 0, 4, 128, 0, 0, 0, 5, 125, 4, 0, 0, 6, 130, 69, 0, 0, 7, 72, 7, 0, 0, 8, 40, 10, 0, 0, 9, 82, 1, 0, 0, 10, 189, 37, 0, 0, 228]
+      },
+      "expected": {
+        "data": {
+          "timeStamp": 1635506100,
+          "time": "2021-10-29T11:15:00.000Z",
+          "recordTimestamp": 1635506100,
+          "activeEnergyImportT1Wh": 1810,
+          "activeEnergyImportT2Wh": 128,
+          "activeEnergyExportT1Wh": 1149,
+          "activeEnergyExportT2Wh": 17794,
+          "reactiveEnergyImportT1Varh": 1864,
+          "reactiveEnergyImportT2Varh": 2600,
+          "reactiveEnergyExportT1Varh": 338,
+          "reactiveEnergyExportT2Varh": 9661,
+          "metering": { "energy": { "total": 1938 } },
+          "make": "emu",
+          "model": "emu-prof-ii"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream TTN example. metering.energy.total = import T1 (1810) + T2 (128) = 1938 Wh; export/reactive registers kept as camelCase extras."
+    },
+    {
+      "description": "instantaneous power/current/voltage/frequency frame",
+      "input": {
+        "fPort": 1,
+        "bytes": [180, 215, 123, 97, 11, 252, 8, 0, 0, 15, 4, 41, 0, 0, 20, 253, 8, 0, 0, 26, 244, 1, 60]
+      },
+      "expected": {
+        "data": {
+          "timeStamp": 1635506100,
+          "time": "2021-10-29T11:15:00.000Z",
+          "power": {
+            "active": 2300,
+            "current": 10.5,
+            "voltage": 230.1,
+            "frequency": 50
+          },
+          "make": "emu",
+          "model": "emu-prof-ii"
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic frame (valid CRC-8): ActivePowerL123 2300 W (0x0B), CurrentL123 10500 mA -> 10.5 A (0x0F), VoltageL1-N 2301 -> 230.1 V (0x14), Frequency 500 -> 50.0 Hz (0x1A). Exercises power.active/current/voltage."
+    },
+    {
+      "description": "energy frame with corrupted CRC byte (warning)",
+      "input": {
+        "fPort": 1,
+        "bytes": [180, 215, 123, 97, 1, 180, 215, 123, 97, 3, 18, 7, 0, 0, 58]
+      },
+      "expected": {
+        "data": {
+          "timeStamp": 1635506100,
+          "time": "2021-10-29T11:15:00.000Z",
+          "recordTimestamp": 1635506100,
+          "activeEnergyImportT1Wh": 1810,
+          "metering": { "energy": { "total": 1810 } },
+          "make": "emu",
+          "model": "emu-prof-ii"
+        },
+        "warnings": ["crc-8 mismatch"]
+      },
+      "source": "synthetic",
+      "_note": "First TTN example with trailing CRC byte flipped 57 -> 58; decode still proceeds but flags crc-8 mismatch."
+    },
+    {
+      "description": "meter info frame after join (diagnostics only)",
+      "input": {
+        "fPort": 100,
+        "bytes": [48, 209, 5, 98, 241, 38, 1, 6, 34, 247, 1, 243, 5, 0, 244, 5, 0, 245, 100, 0, 246, 100, 0, 248, 2, 0, 2, 2, 196]
+      },
+      "expected": {
+        "data": {
+          "timeStamp": 1644548400,
+          "time": "2022-02-11T03:00:00.000Z",
+          "serialNumber": "22060126",
+          "meterType": 1,
+          "currentTransformerPrimary": 5,
+          "currentTransformerSecondary": 5,
+          "voltageTransformerPrimary": 100,
+          "voltageTransformerSecondary": 100,
+          "midYear": "2022",
+          "make": "emu",
+          "model": "emu-prof-ii"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream TTN example. Meter identity/config frame: no calibrated vocabulary key, only camelCase diagnostic extras."
+    },
+    {
+      "description": "status-only short uplink (no measurement)",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 1]
+      },
+      "expected": {
+        "errors": ["status-only uplink, no measurement data"]
+      },
+      "source": "synthetic",
+      "_note": "A 2-byte (or shorter) frame is a status update with no decodable measurement; matches upstream's length<=2 short-circuit."
+    }
+  ],
+  "downlink": []
+}

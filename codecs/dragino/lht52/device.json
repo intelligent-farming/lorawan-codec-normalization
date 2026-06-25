@@ -1,0 +1,38 @@
+{
+  "vendor": "dragino",
+  "device": "lht52",
+  "name": "LHT52 - Temperature & Humidity Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "air.location",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "ext",
+    "externalTemperature",
+    "firmwareVersion",
+    "freqBand",
+    "sensorModel",
+    "status",
+    "subBand",
+    "systimestamp"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "lht52",
+    "codecId": "lht52-codec",
+    "codecFile": "lht52.js",
+    "codecSha256": "78e74e3912db6096ecc779d5c6f7fd17ba4cfd454c22d1b22bdd7b108d3932c0",
+    "referencedAt": "2026-06-25"
+  }
+}

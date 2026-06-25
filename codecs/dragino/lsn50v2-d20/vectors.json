@@ -1,0 +1,88 @@
+{
+  "uplink": [
+    {
+      "description": "IIC mode: onboard SHT temp/humidity + battery + DS18B20 probe (TTN example bytes)",
+      "input": {
+        "fPort": 2,
+        "bytes": [11, 84, 0, 0, 0, 0, 0, 0, 252, 2, 5]
+      },
+      "expected": {
+        "data": {
+          "make": "dragino",
+          "model": "lsn50v2-d20",
+          "battery": 2.9,
+          "air": { "location": "outdoor", "temperature": 25.2, "relativeHumidity": 51.7 },
+          "probeTemperature": 0
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream BatV 2.9, TempC_SHT 25.2, Hum_SHT 51.7, TempC1 0 -> battery, air, probeTemperature."
+    },
+    {
+      "description": "IIC mode: negative SHT temperature, nonzero probe temp (synthetic in-bounds)",
+      "input": {
+        "fPort": 2,
+        "bytes": [10, 40, 0, 100, 0, 0, 0, 255, 246, 1, 200]
+      },
+      "expected": {
+        "data": {
+          "make": "dragino",
+          "model": "lsn50v2-d20",
+          "battery": 2.6,
+          "air": { "location": "outdoor", "temperature": -1, "relativeHumidity": 45.6 },
+          "probeTemperature": 10
+        }
+      },
+      "source": "synthetic",
+      "_note": "Upstream BatV 2.6, TempC_SHT -1 (0xFFF6/10), Hum_SHT 45.6 (456/10), TempC1 10 (100/10)."
+    },
+    {
+      "description": "3ADC mode (mode 2): SHT temp/humidity, battery from byte 11 (synthetic in-bounds)",
+      "input": {
+        "fPort": 2,
+        "bytes": [1, 44, 0, 200, 0, 100, 8, 1, 44, 2, 5, 30]
+      },
+      "expected": {
+        "data": {
+          "make": "dragino",
+          "model": "lsn50v2-d20",
+          "battery": 3,
+          "air": { "location": "outdoor", "temperature": 30, "relativeHumidity": 51.7 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "mode bits byte6=0x08 -> mode 2. Upstream BatV byte11/10=3.0, TempC_SHT 30 (300/10), Hum_SHT 51.7 (517/10); no DS18B20 probe in 3ADC mode."
+    },
+    {
+      "description": "IIC mode: humidity channel reports illuminance (humidity field 0) -> air.lightIntensity + warning",
+      "input": {
+        "fPort": 2,
+        "bytes": [11, 84, 0, 0, 0, 0, 0, 1, 44, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "dragino",
+          "model": "lsn50v2-d20",
+          "battery": 2.9,
+          "air": { "location": "outdoor", "lightIntensity": 300 }
+        },
+        "warnings": ["SHT humidity channel reported illuminance; no air.relativeHumidity in this frame"]
+      },
+      "source": "synthetic",
+      "_note": "Upstream Illum branch: bytes9/10==0 -> Illum 300; we emit air.lightIntensity and warn that no relativeHumidity is present."
+    },
+    {
+      "description": "Unsupported fPort returns an error",
+      "input": {
+        "fPort": 42,
+        "bytes": [11, 84, 0, 0, 0, 0, 0, 0, 252, 2, 5]
+      },
+      "expected": {
+        "errors": ["unsupported fPort"]
+      },
+      "source": "ttn-example",
+      "_note": "Upstream returns {errors:['unknown FPort']} for any non-2 port; we reject with our own message."
+    }
+  ],
+  "downlink": []
+}

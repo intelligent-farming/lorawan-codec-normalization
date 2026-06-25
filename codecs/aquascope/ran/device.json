@@ -1,0 +1,37 @@
+{
+  "vendor": "aquascope",
+  "device": "ran",
+  "name": "LoRain Rain Gauge RANLWE01",
+  "categories": [
+    "rain-gauge",
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity",
+    "rain"
+  ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "alarmActive",
+    "alarmType",
+    "alarmValue",
+    "battery",
+    "batterymAh",
+    "rain.cumulative"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "aquascope",
+    "device": "ran",
+    "codecId": "ran-codec",
+    "codecFile": "ran.js",
+    "codecSha256": "af31dbdabe1894d2f2cff340eb31c4c605212aa63860a770e87181b6b2e7fe5d",
+    "referencedAt": "2026-06-25"
+  }
+}

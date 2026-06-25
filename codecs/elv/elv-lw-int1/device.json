@@ -1,0 +1,43 @@
+{
+  "vendor": "elv",
+  "device": "elv-lw-int1",
+  "name": "LoRaWAN® Interface 1",
+  "categories": [
+    "soil-monitor"
+  ],
+  "sensors": [],
+  "provides": [
+    "application",
+    "battery",
+    "bootloader",
+    "deviceEventBoot",
+    "deviceEventButton",
+    "deviceEventCyclic",
+    "deviceEventHeartbeat",
+    "deviceType",
+    "firmwareId",
+    "frameType",
+    "hardware",
+    "in1Changed",
+    "in1Level",
+    "in2Changed",
+    "in2Level",
+    "soil.moisture",
+    "soil.temperature",
+    "soilMoistureRaw",
+    "soilTemperatureStatus"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "elv",
+    "device": "elv-lw-int1",
+    "codecId": "elv-lw-int1-codec",
+    "codecFile": "elv-lw-int1.js",
+    "codecSha256": "f9741c93708114a6545353fb9cffc579d148aae7d7ff078e17934934004a4d49",
+    "referencedAt": "2026-06-25"
+  }
+}

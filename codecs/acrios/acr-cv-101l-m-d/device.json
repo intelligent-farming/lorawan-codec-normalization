@@ -1,0 +1,31 @@
+{
+  "vendor": "acrios",
+  "device": "acr-cv-101l-m-d",
+  "name": "M-Bus to LoRaWAN converter",
+  "categories": [
+    "water-meter"
+  ],
+  "sensors": [],
+  "provides": [
+    "accessNo",
+    "cStored",
+    "deviceType",
+    "meterId",
+    "metering.water.total",
+    "statusByte",
+    "volumeStored"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "acrios",
+    "device": "acr-cv-101l-m-d",
+    "codecId": "acr-cv-101l-m-x-codec",
+    "codecFile": "acr-cv-101l-m-x.js",
+    "codecSha256": "1ab7fafa781d13634a5fc29411702c085ed47073d6c81daf7afae06036cbb71b",
+    "referencedAt": "2026-06-25"
+  }
+}

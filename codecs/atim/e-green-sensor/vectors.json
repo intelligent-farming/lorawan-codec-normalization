@@ -1,0 +1,118 @@
+{
+  "uplink": [
+    {
+      "description": "measurement frame: cable current 12.34 A on internal channel 0",
+      "input": { "fPort": 1, "bytes": [160, 11, 4, 210] },
+      "expected": {
+        "data": {
+          "make": "atim",
+          "model": "e-green-sensor",
+          "frameType": "measurement",
+          "channel": 0,
+          "power": { "current": 12.34 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds 0xA0 'Trame de mesure': current type 0x0b -> 0x04D2=1234, /100=12.34 A. expected.data produced by running reference/upstream-codec.js (courant.value=[12.34], unit 'A') and mapping to power.current."
+    },
+    {
+      "description": "measurement frame: current 50.00 A and equipment temperature 25.00 C",
+      "input": { "fPort": 1, "bytes": [160, 11, 19, 136, 8, 9, 196] },
+      "expected": {
+        "data": {
+          "make": "atim",
+          "model": "e-green-sensor",
+          "frameType": "measurement",
+          "channel": 0,
+          "power": { "current": 50 },
+          "equipmentTemperature": 25
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: current 0x1388=5000/100=50.00 A; temperature type 0x08 -> 0x09C4=2500/100=25.00 C. Verified against reference/upstream-codec.js (courant.value=[50], temperature0.value=[25], voie '0'). Current maps to power.current, equipment temperature to the camelCase extra equipmentTemperature."
+    },
+    {
+      "description": "measurement frame: cable voltage 14.400 V",
+      "input": { "fPort": 1, "bytes": [160, 10, 56, 64] },
+      "expected": {
+        "data": {
+          "make": "atim",
+          "model": "e-green-sensor",
+          "frameType": "measurement",
+          "channel": 0,
+          "power": { "voltage": 14.4 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: voltage type 0x0a -> 0x3840=14400 mV, /1000=14.4 V. Verified against reference/upstream-codec.js (tension.value=[14400], unit 'mV'). Normalized to power.voltage in volts."
+    },
+    {
+      "description": "measurement frame: equipment temperature -3.56 C (two's complement)",
+      "input": { "fPort": 1, "bytes": [160, 8, 254, 156] },
+      "expected": {
+        "data": {
+          "make": "atim",
+          "model": "e-green-sensor",
+          "frameType": "measurement",
+          "channel": 0,
+          "equipmentTemperature": -3.56
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic two's-complement temperature: 0xFE9C as signed 16-bit = -356/100 = -3.56 C. Verified against reference/upstream-codec.js (temperature0.value=[-3.56])."
+    },
+    {
+      "description": "measurement frame: temperature sensor fault, current valid",
+      "input": { "fPort": 1, "bytes": [160, 8, 128, 0, 11, 19, 136] },
+      "expected": {
+        "data": {
+          "make": "atim",
+          "model": "e-green-sensor",
+          "frameType": "measurement",
+          "channel": 0,
+          "power": { "current": 50 }
+        },
+        "warnings": ["one or more channels report the sensor-fault sentinel"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: temperature 0x8000 = -327.68 C is the upstream sensor-fault sentinel (reference temperature0.value=['erreur']); current 0x1388=50.00 A remains valid. Faulty temperature channel is dropped, current is emitted, and a warning is raised. channel reflects the temperature channel (voie 0), set first in the TLV walk."
+    },
+    {
+      "description": "life frame: harvester rail 3.550 V, capacitor rail 5.000 V",
+      "input": { "fPort": 1, "bytes": [129, 13, 222, 19, 136] },
+      "expected": {
+        "data": {
+          "make": "atim",
+          "model": "e-green-sensor",
+          "frameType": "life",
+          "harvesterVoltage": 3.55,
+          "capacitorVoltage": 5
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic 0x81 'Trame de vie': tensionv 0x0DDE=3550/1000=3.55 V; tensionc 0x1388=5000/1000=5 V. Verified against reference/upstream-codec.js (tensionv.value=3.55, tensionc.value=5). This device is self-powered with no battery, so the internal rails are emitted as camelCase extras (not battery)."
+    },
+    {
+      "description": "error frame yields no power measurement",
+      "input": { "fPort": 1, "bytes": [142, 138, 13, 172] },
+      "expected": { "errors": ["unsupported frame type"] },
+      "source": "synthetic",
+      "_note": "Synthetic 0x8E 'Trame d'erreur' (reference decodes a diagnostic 'Erreur' object). This codec only normalizes current/voltage/temperature, so an error frame returns errors."
+    },
+    {
+      "description": "unknown frame type yields no power measurement",
+      "input": { "fPort": 1, "bytes": [131, 3] },
+      "expected": { "errors": ["unsupported frame type"] },
+      "source": "synthetic",
+      "_note": "Synthetic 0x83 -> reference 'Type de trame inconnu'; nothing to normalize."
+    },
+    {
+      "description": "empty payload",
+      "input": { "fPort": 1, "bytes": [] },
+      "expected": { "errors": ["empty payload"] },
+      "source": "synthetic",
+      "_note": "Synthetic empty payload; reference returns an empty data object, this codec reports an explicit error."
+    }
+  ],
+  "downlink": []
+}

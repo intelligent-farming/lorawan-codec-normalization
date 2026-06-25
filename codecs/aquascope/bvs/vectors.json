@@ -1,0 +1,85 @@
+{
+  "uplink": [
+    {
+      "description": "Status frame (fPort 10): no leak, valve open, temperature 0",
+      "input": {
+        "fPort": 10,
+        "bytes": [32, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "water": { "temperature": { "current": 0 }, "leak": false },
+          "valveState": "On",
+          "make": "aquascope",
+          "model": "bvs"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream decodeUplink yields {leak:'N', valve:'On', temperature:0}; leak coerced to boolean false, valve to extra valveState, temperature (bytes[2]*0xff+bytes[3]) to water.temperature.current."
+    },
+    {
+      "description": "Status frame (fPort 10): no leak, valve closed, temperature 0",
+      "input": {
+        "fPort": 10,
+        "bytes": [64, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "water": { "temperature": { "current": 0 }, "leak": false },
+          "valveState": "Off",
+          "make": "aquascope",
+          "model": "bvs"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream yields {leak:'N', valve:'Off', temperature:0}; bit5 clear -> valveState Off."
+    },
+    {
+      "description": "Status frame (fPort 10): leak detected, valve open, temperature reported",
+      "input": {
+        "fPort": 10,
+        "bytes": [33, 1, 5, 10]
+      },
+      "expected": {
+        "data": {
+          "water": { "temperature": { "current": 1285 }, "leak": true },
+          "valveState": "On",
+          "make": "aquascope",
+          "model": "bvs"
+        }
+      },
+      "source": "synthetic",
+      "_note": "byte0=0x21 sets bit0 (leak) and bit5 (valve On); upstream yields {leak:'Y', valve:'On', temperature: 5*0xff+10 = 1285}. leak true satisfies water-leak requires water.leak."
+    },
+    {
+      "description": "Heartbeat frame (fPort 16): valve open, temperature reported, no leak field",
+      "input": {
+        "fPort": 16,
+        "bytes": [32, 0, 2, 8]
+      },
+      "expected": {
+        "data": {
+          "water": { "temperature": { "current": 518 } },
+          "valveState": "On",
+          "make": "aquascope",
+          "model": "bvs"
+        }
+      },
+      "source": "synthetic",
+      "_note": "fPort 16 omits the leak bit upstream; our codec correspondingly emits no water.leak. temperature = 2*0xff+8 = 518."
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [1, 42]
+      },
+      "expected": {
+        "errors": ["unknown FPort"]
+      },
+      "source": "ttn-example",
+      "_note": "Upstream returns {errors:['unknown FPort']} for any fPort other than 10/16."
+    }
+  ],
+  "downlink": []
+}

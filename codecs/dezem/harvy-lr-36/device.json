@@ -1,0 +1,47 @@
+{
+  "vendor": "dezem",
+  "device": "harvy-lr-36",
+  "name": "HarvyLR 36 - Current Sensor",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "4-20 ma",
+    "current",
+    "rssi",
+    "snr",
+    "temperature",
+    "voltage"
+  ],
+  "provides": [
+    "amplifierGain",
+    "firmwareVersion",
+    "isecAvgLongMa",
+    "isecAvgShortMa",
+    "isecMaxMa",
+    "isecMinMa",
+    "lastUploadSec",
+    "measurementsCounter",
+    "power.current",
+    "powerLost",
+    "shuntValueOhm",
+    "temperature",
+    "vampRmsMv",
+    "vsysCurrentMv",
+    "vsysMaxMv",
+    "vsysMinMv"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dezem",
+    "device": "harvy-lr-36",
+    "codecId": "harvy-lr-codec",
+    "codecFile": "harvy-lr.js",
+    "codecSha256": "7f7430f9082f0e1bd9979ecfb0c188c64e6ed405f00eabd7fe3025c682d527de",
+    "referencedAt": "2026-06-25"
+  }
+}

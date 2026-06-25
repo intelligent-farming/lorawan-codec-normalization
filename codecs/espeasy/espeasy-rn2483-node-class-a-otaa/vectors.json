@@ -1,0 +1,60 @@
+{
+  "uplink": [
+    {
+      "description": "SenseAir S8 CO2 (P052), ppm only",
+      "input": { "fPort": 1, "bytes": [52, 0, 0, 218, 1, 0, 145, 80, 0] },
+      "expected": {
+        "data": {
+          "air": { "co2": 528 },
+          "plugin": "SenseAir",
+          "deviceIdx": 0,
+          "sampleSetCount": 218,
+          "valueCount": 1,
+          "make": "espeasy",
+          "model": "espeasy-rn2483-node-class-a-otaa"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream yaml uplinkDecoder example. Header plugin_id=52 (SenseAir), one int32_1e4 value: 0+145*256+80*65536=5280000 /1e4=528 ppm. Mapped to air.co2; no second value so no temperature."
+    },
+    {
+      "description": "MHZ19 CO2 + temperature (P049)",
+      "input": { "fPort": 1, "bytes": [49, 5, 0, 100, 3, 128, 118, 114, 0, 232, 110, 3, 0, 0, 0, 0, 0] },
+      "expected": {
+        "data": {
+          "air": { "co2": 750.144, "temperature": 22.5 },
+          "plugin": "MHZ19",
+          "deviceIdx": 5,
+          "sampleSetCount": 100,
+          "valueCount": 3,
+          "make": "espeasy",
+          "model": "espeasy-rn2483-node-class-a-otaa"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds MHZ19 frame; values verified against reference/upstream-codec.js (ppm 750.144, temp 22.5). val_1=7501440/1e4 ppm, val_2=225000/1e4 degC. Mapped to air.co2 + air.temperature."
+    },
+    {
+      "description": "unsupported plugin (BME280 P028) is not an air-quality CO2 source",
+      "input": { "fPort": 1, "bytes": [28, 0, 0, 0, 3, 0, 145, 80, 0, 0, 0, 0, 0] },
+      "expected": { "errors": ["unsupported ESPEasy plugin"] },
+      "source": "synthetic",
+      "_note": "plugin_id=28 (BME280) emits temp/hum/pressure, no CO2; codec rejects rather than fabricate air.co2."
+    },
+    {
+      "description": "wrong fPort rejected",
+      "input": { "fPort": 2, "bytes": [52, 0, 0, 218, 1, 0, 145, 80, 0] },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "synthetic",
+      "_note": "ESPEasy PACKED uplinks are on fPort 1 only."
+    },
+    {
+      "description": "empty payload rejected",
+      "input": { "fPort": 1, "bytes": [] },
+      "expected": { "errors": ["empty payload"] },
+      "source": "synthetic",
+      "_note": "Zero-length payload has no header."
+    }
+  ],
+  "downlink": []
+}

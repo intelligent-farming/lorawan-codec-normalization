@@ -1,0 +1,31 @@
+{
+  "vendor": "espeasy",
+  "device": "espeasy-rn2483-node-class-a-abp",
+  "name": "RN2483 (Class A ABP)",
+  "categories": [
+    "air-quality"
+  ],
+  "sensors": [],
+  "provides": [
+    "air.co2",
+    "air.pm10",
+    "air.pm1_0",
+    "air.pm2_5",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "espeasy",
+    "device": "espeasy-rn2483-node-class-a-abp",
+    "codecId": "espeasy-codec",
+    "codecFile": "packed-decode-uplink.js",
+    "codecSha256": "374959d7a5a832806ac15bed8568e18e42901ed76123085c42d944e3a439661d",
+    "referencedAt": "2026-06-25"
+  }
+}

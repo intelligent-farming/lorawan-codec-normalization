@@ -1,0 +1,52 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/dragino/lds03a-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "LDS03A Outdoor Open/Close Door Sensor",
+      "input": {
+        "fPort": 4,
+        "bytes": [
+          49,
+          97,
+          142,
+          87,
+          64,
+          97,
+          142
+        ]
+      },
+      "output": {
+        "data": {
+          "DISALARM": 1,
+          "KEEP_STATUS": 0,
+          "KEEP_TIME": 24974,
+          "TDC": 3236238
+        }
+      }
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [
+          49,
+          97,
+          142,
+          87,
+          64,
+          97,
+          142,
+          129,
+          112,
+          5,
+          0
+        ]
+      },
+      "output": {
+        "errors": [
+          "unknown FPort"
+        ]
+      }
+    }
+  ]
+}

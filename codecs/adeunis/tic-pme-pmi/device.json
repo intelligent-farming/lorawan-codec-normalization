@@ -1,0 +1,44 @@
+{
+  "vendor": "adeunis",
+  "device": "tic-pme-pmi",
+  "name": "TIC PME-PMI - Electricity Meter Interface",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "power"
+  ],
+  "provides": [
+    "activeEnergyPeriodKwh",
+    "activeEnergyPreviousPeriodKwh",
+    "apparentEnergyVah",
+    "configurationDone",
+    "configurationInconsistency",
+    "frameCounter",
+    "frameType",
+    "lowBattery",
+    "meterDate",
+    "metering.energy.total",
+    "reactiveEnergyExportPeriodKvarh",
+    "reactiveEnergyExportPreviousPeriodKvarh",
+    "reactiveEnergyExportVarh",
+    "reactiveEnergyImportPeriodKvarh",
+    "reactiveEnergyImportPreviousPeriodKvarh",
+    "reactiveEnergyImportVarh",
+    "readError",
+    "tariffPeriod"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "adeunis",
+    "device": "tic-pme-pmi",
+    "codecId": "tic-pme-pmi-codec",
+    "codecFile": "tic_pme_pmi_lib.js",
+    "codecSha256": "78cb250ac7ec300e40405e16ec62db2977131a88deb066dbb3d5d3127c496cb3",
+    "referencedAt": "2026-06-25"
+  }
+}

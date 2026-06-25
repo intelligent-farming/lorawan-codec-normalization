@@ -1,0 +1,96 @@
+{
+  "uplink": [
+    {
+      "description": "TTN example: CBOR indefinite map L+v -> level 1.6155 m, battery 3.32 V",
+      "input": {
+        "fPort": 15,
+        "bytes": [191, 97, 76, 250, 63, 206, 200, 200, 97, 118, 25, 12, 248, 255]
+      },
+      "expected": {
+        "data": {
+          "water": { "level": 1.6155 },
+          "battery": 3.32,
+          "make": "ellenex",
+          "model": "pls2-l-v6"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream pls2-l-v6.js decodes this to {Level(m):1.6155023574829102, Battery_Voltage(mv):3320}; we map L->water.level (rounded to 4 dp) and v(mV)->battery(V). Satisfies groundwater (water.level)."
+    },
+    {
+      "description": "Synthetic definite map (A2): L float32 0.5 m, v uint16 3600 mV",
+      "input": {
+        "fPort": 15,
+        "bytes": [162, 97, 76, 250, 63, 0, 0, 0, 97, 118, 25, 14, 16]
+      },
+      "expected": {
+        "data": {
+          "water": { "level": 0.5 },
+          "battery": 3.6,
+          "make": "ellenex",
+          "model": "pls2-l-v6"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Definite-length CBOR map (0xA2). Verified against reference/upstream-codec.js: {Level(m):0.5, Battery_Voltage(mv):3600}."
+    },
+    {
+      "description": "Synthetic indefinite map: L float32 2.75 m, v uint8 200 mV (low battery)",
+      "input": {
+        "fPort": 15,
+        "bytes": [191, 97, 76, 250, 64, 48, 0, 0, 97, 118, 24, 200, 255]
+      },
+      "expected": {
+        "data": {
+          "water": { "level": 2.75 },
+          "battery": 0.2,
+          "make": "ellenex",
+          "model": "pls2-l-v6"
+        }
+      },
+      "source": "synthetic",
+      "_note": "v encoded as 1-byte uint (0x18 0xC8 = 200 mV). Verified against reference/upstream-codec.js: {Level(m):2.75, Battery_Voltage(mv):200}."
+    },
+    {
+      "description": "Synthetic level-only map (A1): L float32 0.0 m, no battery",
+      "input": {
+        "fPort": 15,
+        "bytes": [161, 97, 76, 250, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "water": { "level": 0 },
+          "make": "ellenex",
+          "model": "pls2-l-v6"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Single-entry map (0xA1) carrying only L. Verified against reference/upstream-codec.js: {Level(m):0}. Confirms groundwater is satisfied by water.level alone."
+    },
+    {
+      "description": "Error: payload is a bare CBOR integer, not a map",
+      "input": {
+        "fPort": 15,
+        "bytes": [5]
+      },
+      "expected": {
+        "errors": ["payload is not a CBOR map"]
+      },
+      "source": "synthetic",
+      "_note": "0x05 decodes (in CBOR) to the integer 5; upstream would silently return that as data, but our codec rejects non-map payloads."
+    },
+    {
+      "description": "Error: empty payload",
+      "input": {
+        "fPort": 15,
+        "bytes": []
+      },
+      "expected": {
+        "errors": ["empty payload"]
+      },
+      "source": "synthetic",
+      "_note": "No bytes to decode."
+    }
+  ],
+  "downlink": []
+}

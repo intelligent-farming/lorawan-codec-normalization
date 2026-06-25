@@ -1,0 +1,168 @@
+{
+  "uplink": [
+    {
+      "description": "0x49 TIC data, HC/HP tariff meter at install (all indexes zero) — upstream YAML example",
+      "input": {
+        "fPort": 1,
+        "bytes": [73, 64, 48, 50, 49, 55, 50, 56, 48, 51, 49, 56, 49, 57, 72, 67, 46, 46, 128, 0, 0, 0, 0, 0, 0, 45, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 72, 80, 46, 46]
+      },
+      "expected": {
+        "data": {
+          "frameType": "0x49 TIC data",
+          "metering": { "energy": { "total": 0 } },
+          "energyHcWh": 0,
+          "energyHpWh": 0,
+          "power": { "current": 0, "apparent": 0 },
+          "meterId": "021728031819",
+          "tariffOption": "HC..",
+          "currentTariffPeriod": "HP..",
+          "subscribedCurrentA": 45,
+          "maxCurrentA": 0,
+          "frameCounter": 2,
+          "lowBattery": false,
+          "configurationDone": false,
+          "configurationInconsistency": false,
+          "readError": false,
+          "make": "adeunis",
+          "model": "tic-cbe-linky-mono"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream tic_cbe_linky_mono_lib.js example: BASEstatus notFound, HCHC=HCHP=0 so energy.total=0; ISOUSC=45 A; OPTARIF HC.., PTEC HP... metering.energy.total + power.current satisfy power-meter."
+    },
+    {
+      "description": "0x49 TIC data, BASE tariff meter with load (BASE index, IINST, PAPP)",
+      "input": {
+        "fPort": 1,
+        "bytes": [73, 33, 48, 50, 49, 55, 50, 56, 48, 51, 49, 56, 49, 57, 66, 65, 83, 69, 0, 1, 226, 64, 0, 0, 0, 45, 0, 0, 0, 12, 0, 0, 0, 30, 0, 0, 10, 80, 128, 0, 0, 0, 128, 0, 0, 0, 84, 72, 46, 46]
+      },
+      "expected": {
+        "data": {
+          "frameType": "0x49 TIC data",
+          "metering": { "energy": { "total": 123456 } },
+          "power": { "current": 12, "apparent": 2640 },
+          "meterId": "021728031819",
+          "tariffOption": "BASE",
+          "currentTariffPeriod": "TH..",
+          "subscribedCurrentA": 45,
+          "maxCurrentA": 30,
+          "frameCounter": 1,
+          "lowBattery": false,
+          "configurationDone": true,
+          "configurationInconsistency": false,
+          "readError": false,
+          "make": "adeunis",
+          "model": "tic-cbe-linky-mono"
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds BASE-mode frame. Oracle (reference/upstream-codec.js): BASE=123456 Wh -> metering.energy.total; IINST=12 A -> power.current; PAPP=2640 VA -> power.apparent; ISOUSC=45, IMAX=30. HCHC/HCHP=0x80000000 (notFound) omitted. Status 0x21 -> frameCounter 1, configurationDone true."
+    },
+    {
+      "description": "0x49 TIC data, HC/HP tariff meter with energy on both indexes",
+      "input": {
+        "fPort": 1,
+        "bytes": [73, 64, 48, 50, 49, 55, 50, 56, 48, 51, 49, 56, 49, 57, 72, 67, 46, 46, 128, 0, 0, 0, 0, 0, 0, 60, 0, 0, 0, 5, 0, 0, 0, 40, 0, 0, 4, 76, 0, 106, 207, 192, 0, 137, 84, 64, 72, 80, 46, 46]
+      },
+      "expected": {
+        "data": {
+          "frameType": "0x49 TIC data",
+          "metering": { "energy": { "total": 16000000 } },
+          "energyHcWh": 7000000,
+          "energyHpWh": 9000000,
+          "power": { "current": 5, "apparent": 1100 },
+          "meterId": "021728031819",
+          "tariffOption": "HC..",
+          "currentTariffPeriod": "HP..",
+          "subscribedCurrentA": 60,
+          "maxCurrentA": 40,
+          "frameCounter": 2,
+          "lowBattery": false,
+          "configurationDone": false,
+          "configurationInconsistency": false,
+          "readError": false,
+          "make": "adeunis",
+          "model": "tic-cbe-linky-mono"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Oracle: BASE notFound; HCHC=7000000, HCHP=9000000 Wh -> metering.energy.total = 16000000 (sum of tariff indexes), per-slot kept as energyHcWh/energyHpWh; IINST=5 A; PAPP=1100 VA; ISOUSC=60, IMAX=40."
+    },
+    {
+      "description": "0x30 keep-alive — status byte only, no meter reading",
+      "input": { "fPort": 1, "bytes": [48, 32] },
+      "expected": {
+        "data": {
+          "frameType": "0x30 keep alive",
+          "frameCounter": 1,
+          "lowBattery": false,
+          "configurationDone": false,
+          "configurationInconsistency": false,
+          "readError": false,
+          "make": "adeunis",
+          "model": "tic-cbe-linky-mono"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Service frame; no calibrated value. Upstream mis-routes 0x30 to the 0x20 parser; our codec decodes it correctly as a keep-alive (status flags only). Status 0x20 -> frameCounter 1."
+    },
+    {
+      "description": "0x10 TIC configuration — sampling/keep-alive periods (minutes mode)",
+      "input": { "fPort": 1, "bytes": [16, 32, 6, 0, 1, 1, 0, 10] },
+      "expected": {
+        "data": {
+          "frameType": "0x10 TIC configuration",
+          "transmissionPeriodKeepAliveMin": 60,
+          "samplingPeriodMin": 10,
+          "transmissionPeriodData": 1,
+          "productMode": "PRODUCTION",
+          "frameCounter": 1,
+          "lowBattery": false,
+          "configurationDone": false,
+          "configurationInconsistency": false,
+          "readError": false,
+          "make": "adeunis",
+          "model": "tic-cbe-linky-mono"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Oracle: productMode byte[5]=1 (PRODUCTION, not 2) -> minutes mode; transmissionPeriodKeepAlive byte[2]=6 *10 = 60 min; samplingPeriod u16be(6)=10 min; transmissionPeriodData u16be(3)=1."
+    },
+    {
+      "description": "0x49 TIC data with no energy index on the bus (BASE/HCHC/HCHP all absent) -> warning",
+      "input": {
+        "fPort": 1,
+        "bytes": [73, 32, 48, 50, 49, 55, 50, 56, 48, 51, 49, 56, 49, 57, 66, 65, 83, 69, 128, 0, 0, 0, 0, 0, 0, 45, 0, 0, 0, 8, 0, 0, 0, 30, 0, 0, 6, 64, 128, 0, 0, 0, 128, 0, 0, 0, 84, 72, 46, 46]
+      },
+      "expected": {
+        "data": {
+          "frameType": "0x49 TIC data",
+          "power": { "current": 8, "apparent": 1600 },
+          "meterId": "021728031819",
+          "tariffOption": "BASE",
+          "currentTariffPeriod": "TH..",
+          "subscribedCurrentA": 45,
+          "maxCurrentA": 30,
+          "frameCounter": 1,
+          "lowBattery": false,
+          "configurationDone": false,
+          "configurationInconsistency": false,
+          "readError": false,
+          "make": "adeunis",
+          "model": "tic-cbe-linky-mono"
+        },
+        "warnings": ["no cumulative energy index on the TIC bus (BASE/HCHC/HCHP all absent)"]
+      },
+      "source": "synthetic",
+      "_note": "Oracle: BASE/HCHC/HCHP all 0x80000000 (notFound) -> no metering.energy.total; only IINST=8 A -> power.current and PAPP=1600 VA -> power.apparent. power.current still satisfies power-meter; warning emitted."
+    },
+    {
+      "description": "unsupported frame code -> error",
+      "input": { "fPort": 1, "bytes": [153, 0] },
+      "expected": { "errors": ["unsupported frame code 0x99"] },
+      "source": "synthetic",
+      "_note": "Frame 0x99 is not a TIC frame; upstream silently yields {type:'Unsupported'}, we return an explicit error."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,73 @@
+{
+  "uplink": [
+    {
+      "description": "Multical standard frame: energy, volume, power, flow, flow/return temperature, serial and error flag.",
+      "input": {
+        "fPort": 2,
+        "bytes": [21, 4, 5, 252, 67, 127, 14, 4, 19, 64, 145, 152, 34, 2, 46, 144, 21, 2, 60, 72, 43, 2, 89, 216, 37, 2, 93, 232, 20, 12, 120, 39, 148, 129, 121, 4, 253, 23, 0, 0, 1, 0]
+      },
+      "expected": {
+        "data": {
+          "metering": { "energy": { "total": 24322150000 }, "water": { "total": 580424000 } },
+          "power": { "active": 5520000 },
+          "water": { "temperature": { "current": 96.88 } },
+          "returnTemperature": 53.52,
+          "flowRate": 110.8,
+          "serialNumber": 79819427,
+          "errorFlag": 10000,
+          "make": "elvaco",
+          "model": "cmi4140"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream example 1. energy 24322150 kWh -> 24322150000 Wh; volume 580424 m3 -> 580424000 L; power 5520 kW -> 5520000 W; flow_temperature -> water.temperature.current. Derived by running reference/upstream-codec.js and mapping to vocabulary."
+    },
+    {
+      "description": "Second Multical standard frame with zero power/flow and no error flag.",
+      "input": {
+        "fPort": 2,
+        "bytes": [21, 4, 5, 184, 39, 189, 58, 4, 20, 44, 221, 177, 13, 2, 41, 0, 0, 2, 58, 0, 0, 2, 89, 143, 38, 2, 93, 97, 22, 12, 120, 68, 5, 129, 121, 4, 253, 23, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "metering": { "energy": { "total": 98547500000 }, "water": { "total": 2297603000 } },
+          "power": { "active": 0 },
+          "water": { "temperature": { "current": 98.71 } },
+          "returnTemperature": 57.29,
+          "flowRate": 0,
+          "serialNumber": 79810544,
+          "errorFlag": 0,
+          "make": "elvaco",
+          "model": "cmi4140"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream example 2. Confirms cumulative water.total and metering.energy.total with zero instantaneous power/flow. Derived via reference/upstream-codec.js."
+    },
+    {
+      "description": "Unknown FPort is rejected.",
+      "input": { "fPort": 1, "bytes": [21, 4, 5, 252, 67, 127, 14] },
+      "expected": { "errors": ["unknown FPort"] },
+      "source": "synthetic",
+      "_note": "Only fPort 2 carries the standard heat-meter frame; any other port errors."
+    },
+    {
+      "description": "Payload shorter than 40 bytes is rejected.",
+      "input": { "fPort": 2, "bytes": [21, 4, 5, 252, 67] },
+      "expected": { "errors": ["payload length < 40"] },
+      "source": "synthetic",
+      "_note": "Upstream guards on a minimum standard-frame length of 40 bytes."
+    },
+    {
+      "description": "Non-standard frame type (first byte != 0x15) is rejected.",
+      "input": {
+        "fPort": 2,
+        "bytes": [99, 4, 5, 252, 67, 127, 14, 4, 19, 64, 145, 152, 34, 2, 46, 144, 21, 2, 60, 72, 43, 2, 89, 216, 37, 2, 93, 232, 20, 12, 120, 39, 148, 129, 121, 4, 253, 23, 0, 0, 1, 0]
+      },
+      "expected": { "errors": ["Payload type unknown, currently standard format supported"] },
+      "source": "synthetic",
+      "_note": "Only the 0x15 standard format is implemented upstream; other frame types error."
+    }
+  ],
+  "downlink": []
+}

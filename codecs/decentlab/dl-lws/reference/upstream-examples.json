@@ -1,0 +1,65 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/decentlab/dl-lws-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Example 1",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          17,
+          17,
+          0,
+          3,
+          64,
+          154,
+          0,
+          134,
+          12,
+          84
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.156
+          },
+          "device_id": 4369,
+          "leaf_wetness_index": {
+            "displayName": "Leaf wetness index",
+            "value": 0.04884648323059082
+          },
+          "protocol_version": 2
+        }
+      }
+    },
+    {
+      "description": "Example 2",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          17,
+          17,
+          0,
+          2,
+          12,
+          84
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.156
+          },
+          "device_id": 4369,
+          "protocol_version": 2
+        }
+      }
+    }
+  ]
+}

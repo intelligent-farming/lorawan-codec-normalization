@@ -1,0 +1,114 @@
+{
+  "uplink": [
+    {
+      "description": "TTN example: single PM10 record (fPort 2 TLV).",
+      "input": {
+        "fPort": 2,
+        "bytes": [11, 136, 1, 0, 37, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "location": "outdoor",
+            "pm10": 256
+          },
+          "make": "dragino",
+          "model": "wsc1-l"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream decodes this header byte (0x0B = PM10) with len byte 0x88, value u16(0x01,0x00)=256, advancing the index past the buffer; only air.pm10 is produced. Satisfies particulate (air.pm10)."
+    },
+    {
+      "description": "Full multi-sensor frame: all weather channels in TLV order.",
+      "input": {
+        "fPort": 2,
+        "bytes": [0, 2, 4, 176, 1, 3, 0, 50, 5, 2, 3, 0, 90, 4, 3, 2, 0, 100, 4, 1, 1, 5, 2, 1, 244, 6, 2, 0, 250, 7, 2, 2, 10, 8, 2, 39, 16, 9, 2, 0, 20, 10, 2, 0, 15, 11, 2, 0, 42, 12, 2, 1, 144, 13, 2, 3, 132]
+      },
+      "expected": {
+        "data": {
+          "batteryRaw": 40,
+          "windSpeedLevel": 5,
+          "windDirectionCardinal": "E",
+          "rainSnow": 1,
+          "air": {
+            "location": "outdoor",
+            "lightIntensity": 1000,
+            "co2": 500,
+            "temperature": 25,
+            "relativeHumidity": 52.2,
+            "pressure": 1000,
+            "pm2_5": 15,
+            "pm10": 42,
+            "par": 400,
+            "solarIrradiance": 90
+          },
+          "wind": {
+            "speed": 5,
+            "direction": 9
+          },
+          "rain": {
+            "cumulative": 2
+          },
+          "make": "dragino",
+          "model": "wsc1-l"
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic frame exercising every sensor type. Expected values derived by running reference/upstream-codec.js: bat=1200/30=40 (raw, not volts), wind_speed=50/10=5 m/s level 5 (E), illumination=100*10=1000 lux, CO2=500 ppm, TEM=250/10=25 C, HUM=522/10=52.2 %, pressure=10000/10=1000 hPa, rain_gauge=20/10=2 mm, PM2_5=15, PM10=42, PAR=400, TSR=900/10=90 W/m2. Covers climate, weather-station, wind, rain-gauge, light, air-quality, particulate and solar-radiation."
+    },
+    {
+      "description": "Negative temperature record (two's-complement).",
+      "input": {
+        "fPort": 2,
+        "bytes": [6, 2, 255, 206]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "location": "outdoor",
+            "temperature": -5
+          },
+          "make": "dragino",
+          "model": "wsc1-l"
+        }
+      },
+      "source": "synthetic",
+      "_note": "0xFFCE = -50 via correct two's-complement (value - 0x10000), /10 = -5.0 C. Upstream's (value - 0xffff) would give -4.9 (off by one count, the documented dragino bug); this codec uses the correct conversion per AUTHORING.md."
+    },
+    {
+      "description": "fPort 5 device-info frame.",
+      "input": {
+        "fPort": 5,
+        "bytes": [13, 1, 2, 1, 0, 11, 184, 1, 35, 4]
+      },
+      "expected": {
+        "data": {
+          "deviceNode": "WSC1-L",
+          "firmwareVersion": "V.1.0.2",
+          "frequencyBand": "EU868",
+          "subBand": 0,
+          "batteryVoltage": 3,
+          "weatherSensorTypes": "1234",
+          "make": "dragino",
+          "model": "wsc1-l"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Device-info uplink: firmware V.1.0.2, EU868 sub-band 0, battery u16(0x0B,0xB8)=3000/1000=3.0 V (this frame's battery IS in mV per upstream, unlike the fPort 2 `bat` field), sensor-types nibble string. No meteorological vocabulary keys; included for fidelity to the upstream fPort 5 branch."
+    },
+    {
+      "description": "Unknown FPort.",
+      "input": {
+        "fPort": 42,
+        "bytes": [11, 136, 1, 0, 37, 0, 1]
+      },
+      "expected": {
+        "errors": ["unknown FPort"]
+      },
+      "source": "ttn-example",
+      "_note": "Upstream returns errors:['unknown FPort'] for any port other than 2 or 5."
+    }
+  ],
+  "downlink": []
+}

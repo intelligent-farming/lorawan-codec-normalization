@@ -1,0 +1,30 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-lws",
+  "name": "DL-LWS - Leaf Wetness Sensor",
+  "categories": [
+    "leaf-wetness"
+  ],
+  "sensors": [
+    "leaf wetness",
+    "battery"
+  ],
+  "provides": [
+    "battery",
+    "leaf.wetness",
+    "leafWetnessIndex"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-lws",
+    "codecId": "dl-lws-codec",
+    "codecFile": "dl-lws.js",
+    "codecSha256": "fbd8a674384994b8f8c8f3ec5faa2748892412c83f2b94330652c3f00ac0573f",
+    "referencedAt": "2026-06-25"
+  }
+}

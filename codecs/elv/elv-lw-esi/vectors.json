@@ -1,0 +1,118 @@
+{
+  "uplink": [
+    {
+      "description": "Electricity meter consumption (kWh counter + W power)",
+      "input": {
+        "fPort": 10,
+        "bytes": [3, 1, 11, 222, 1, 1, 1, 136, 71, 232, 21, 0, 0, 174, 174, 10, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "elv",
+          "model": "elv-lw-esi",
+          "txReason": "Timer_Event",
+          "battery": 3.038,
+          "consumptionType": "Consumption",
+          "counterUnit": "kWh",
+          "powerUnit": "W",
+          "powerSign": "Positive",
+          "counterOverflow": false,
+          "metering": { "energy": { "total": 36754420 } },
+          "power": { "active": 7000.78 }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream Energy_Counter 36754.42 kWh -> metering.energy.total 36754420 Wh; Power 7000.78 W -> power.active. Supply_Voltage 3038 mV -> battery 3.038 V."
+    },
+    {
+      "description": "Electricity meter delivery/export (kW power, negative signum)",
+      "input": {
+        "fPort": 10,
+        "bytes": [3, 1, 11, 220, 1, 2, 1, 112, 95, 188, 0, 0, 5, 128, 26, 6, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "elv",
+          "model": "elv-lw-esi",
+          "txReason": "Timer_Event",
+          "battery": 3.036,
+          "consumptionType": "Delivery",
+          "counterUnit": "kWh",
+          "powerUnit": "kW",
+          "powerSign": "Negative",
+          "counterOverflow": false,
+          "metering": { "energy": { "total": 1234520 } },
+          "power": { "active": -4000000 }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Energy_Counter 1234.52 kWh -> 1234520 Wh; Power 4000 kW -> 4000000 W, negated to -4000000 W for Delivery/Negative signum."
+    },
+    {
+      "description": "Gas/heat meter block (m^3) has no electrical-vocabulary home -> extras only",
+      "input": {
+        "fPort": 10,
+        "bytes": [3, 1, 11, 226, 1, 1, 2, 144, 135, 1, 0, 0, 2, 150, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "elv",
+          "model": "elv-lw-esi",
+          "txReason": "Timer_Event",
+          "battery": 3.042,
+          "volumeM3": 10.024,
+          "flowRateM3h": 1.5,
+          "consumptionType": "Consumption",
+          "counterUnit": "m^3",
+          "powerUnit": "m^3/h",
+          "powerSign": "Positive",
+          "counterOverflow": false
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Energy_Counter_Unit m^3 / Power_Unit m^3/h are gas/heat volume + flow, not electrical energy/power; preserved as camelCase extras volumeM3 (10.024) and flowRateM3h (1.5)."
+    },
+    {
+      "description": "Header-only frame (no application data) emits device telemetry only",
+      "input": {
+        "fPort": 10,
+        "bytes": [3, 1, 11, 222]
+      },
+      "expected": {
+        "data": {
+          "make": "elv",
+          "model": "elv-lw-esi",
+          "txReason": "Timer_Event",
+          "battery": 3.038
+        }
+      },
+      "source": "synthetic",
+      "_note": "Header length 3 with no TLV payload: only TX reason and supply rail (3038 mV -> 3.038 V battery) are present."
+    },
+    {
+      "description": "Wrong fPort is rejected",
+      "input": {
+        "fPort": 11,
+        "bytes": [1]
+      },
+      "expected": {
+        "errors": ["Wrong Port Number"]
+      },
+      "source": "synthetic",
+      "_note": "Upstream rejects any port other than 10 with 'Wrong Port Number'."
+    },
+    {
+      "description": "Unknown application datatype byte is rejected",
+      "input": {
+        "fPort": 10,
+        "bytes": [3, 1, 11, 222, 153, 0]
+      },
+      "expected": {
+        "errors": ["Data Type Failure"]
+      },
+      "source": "synthetic",
+      "_note": "Datatype 0x99 is not 0x01/0x02; upstream clears decoded and sets parser_error 'Data Type Failure'."
+    }
+  ],
+  "downlink": []
+}

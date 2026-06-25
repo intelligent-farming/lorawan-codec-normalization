@@ -1,0 +1,167 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/elv/elv-lw-esi-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Power Consumption",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          3,
+          1,
+          11,
+          222,
+          1,
+          1,
+          1,
+          136,
+          71,
+          232,
+          21,
+          0,
+          0,
+          174,
+          174,
+          10,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Energy_Data": {
+            "Boot_Flag": [
+              "No_Overflow"
+            ],
+            "Consumption_Type": [
+              "Consumption"
+            ],
+            "Energy_Counter": [
+              36754.42
+            ],
+            "Energy_Counter_Unit": [
+              "kWh"
+            ],
+            "Energy_Power_Unit": [
+              "W"
+            ],
+            "Power": [
+              7000.78
+            ],
+            "Signum_Of_Power": [
+              "Positive"
+            ]
+          },
+          "Supply_Voltage": 3038,
+          "TX_Reason": "Timer_Event"
+        }
+      }
+    },
+    {
+      "description": "Power Delivery",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          3,
+          1,
+          11,
+          220,
+          1,
+          2,
+          1,
+          112,
+          95,
+          188,
+          0,
+          0,
+          5,
+          128,
+          26,
+          6,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Energy_Data": {
+            "Boot_Flag": [
+              "No_Overflow"
+            ],
+            "Consumption_Type": [
+              "Delivery"
+            ],
+            "Energy_Counter": [
+              1234.52
+            ],
+            "Energy_Counter_Unit": [
+              "kWh"
+            ],
+            "Energy_Power_Unit": [
+              "kW"
+            ],
+            "Power": [
+              4000
+            ],
+            "Signum_Of_Power": [
+              "Negative"
+            ]
+          },
+          "Supply_Voltage": 3036,
+          "TX_Reason": "Timer_Event"
+        }
+      }
+    },
+    {
+      "description": "Gas Consumption",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          3,
+          1,
+          11,
+          226,
+          1,
+          1,
+          2,
+          144,
+          135,
+          1,
+          0,
+          0,
+          2,
+          150,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Energy_Data": {
+            "Boot_Flag": [
+              "No_Overflow"
+            ],
+            "Consumption_Type": [
+              "Consumption"
+            ],
+            "Energy_Counter": [
+              10.024
+            ],
+            "Energy_Counter_Unit": [
+              "m^3"
+            ],
+            "Energy_Power_Unit": [
+              "m^3/h"
+            ],
+            "Power": [
+              1.5
+            ],
+            "Signum_Of_Power": [
+              "Positive"
+            ]
+          },
+          "Supply_Voltage": 3042,
+          "TX_Reason": "Timer_Event"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "vendor": "arwin-technology",
+  "device": "lrs20600",
+  "name": "LRS20600 - Contact Sensor",
+  "categories": [
+    "contact"
+  ],
+  "sensors": [
+    "digital input",
+    "pulse count"
+  ],
+  "provides": [
+    "action.contactState",
+    "batteryPercent",
+    "dataUploadInterval",
+    "event",
+    "eventCount",
+    "firmwareVersion",
+    "inputEnabled",
+    "triggerDeafTime",
+    "triggerMode"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "arwin-technology",
+    "device": "lrs20600",
+    "codecId": "lrs20600-codec",
+    "codecFile": "lrs20600.js",
+    "codecSha256": "acc13db0cfb0c1b982b8a7ab0989055e5f58527ae435a7d0078bca11eae92f51",
+    "referencedAt": "2026-06-25"
+  }
+}

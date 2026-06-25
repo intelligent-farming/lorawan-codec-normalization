@@ -1,0 +1,110 @@
+{
+  "uplink": [
+    {
+      "description": "SenseAir S8 CO2 ppm (TTN example) -> air.co2",
+      "input": { "fPort": 1, "bytes": [52, 0, 0, 218, 1, 0, 145, 80, 0] },
+      "expected": {
+        "data": {
+          "air": { "co2": 528 },
+          "make": "espeasy",
+          "model": "espeasy-rn2483-node-class-a-abp"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream PACKED decoder yields {name:'SenseAir', ppm:528}; val_1 (int32 LE /1e4) = 5280000/1e4 = 528 ppm -> air.co2."
+    },
+    {
+      "description": "SenseAir with CO2 + temperature -> air.co2 + air.temperature",
+      "input": { "fPort": 1, "bytes": [52, 0, 0, 5, 2, 112, 215, 93, 0, 40, 17, 3, 0] },
+      "expected": {
+        "data": {
+          "air": { "co2": 615, "temperature": 20.1 },
+          "make": "espeasy",
+          "model": "espeasy-rn2483-node-class-a-abp"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Two values: 6150000/1e4=615 ppm, 201000/1e4=20.1 C. Upstream Converter names them ppm/temp for plugin 52."
+    },
+    {
+      "description": "MHZ19 CO2 sensor -> air.co2 + air.temperature (val_3 'U' dropped)",
+      "input": { "fPort": 1, "bytes": [49, 0, 0, 5, 3, 0, 18, 122, 0, 232, 110, 3, 0, 48, 117, 0, 0] },
+      "expected": {
+        "data": {
+          "air": { "co2": 800, "temperature": 22.5 },
+          "make": "espeasy",
+          "model": "espeasy-rn2483-node-class-a-abp"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Upstream plugin 49 names val_1=ppm(800), val_2=temp(22.5), val_3=U(3, no vocabulary key, dropped)."
+    },
+    {
+      "description": "PMSx003 particulate matter -> air.pm1_0/pm2_5/pm10",
+      "input": { "fPort": 1, "bytes": [53, 0, 0, 5, 3, 80, 195, 0, 0, 192, 212, 1, 0, 64, 13, 3, 0] },
+      "expected": {
+        "data": {
+          "air": { "pm1_0": 5, "pm2_5": 12, "pm10": 20 },
+          "make": "espeasy",
+          "model": "espeasy-rn2483-node-class-a-abp"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Upstream plugin 53 names val_1=pm1_0(5), val_2=pm2_5(12), val_3=pm10(20) ug/m3."
+    },
+    {
+      "description": "SDS011 dust sensor -> air.pm2_5/pm10",
+      "input": { "fPort": 1, "bytes": [56, 0, 0, 5, 2, 128, 56, 1, 0, 240, 73, 2, 0] },
+      "expected": {
+        "data": {
+          "air": { "pm2_5": 8, "pm10": 15 },
+          "make": "espeasy",
+          "model": "espeasy-rn2483-node-class-a-abp"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Upstream plugin 56 names val_1=pm2_5(8), val_2=pm10(15) ug/m3."
+    },
+    {
+      "description": "BME280 -> air.temperature/relativeHumidity/pressure",
+      "input": { "fPort": 1, "bytes": [28, 0, 0, 5, 3, 8, 64, 3, 0, 64, 108, 8, 0, 32, 154, 154, 0] },
+      "expected": {
+        "data": {
+          "air": { "temperature": 21.3, "relativeHumidity": 55.2, "pressure": 1013.2 },
+          "make": "espeasy",
+          "model": "espeasy-rn2483-node-class-a-abp"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Upstream plugin 28 names val_1=temp(21.3 C), val_2=hum(55.2 %), val_3=pressure(1013.2 hPa, already in vocab unit)."
+    },
+    {
+      "description": "SHT3x temp/humidity -> air.temperature/relativeHumidity",
+      "input": { "fPort": 1, "bytes": [68, 0, 0, 5, 2, 112, 5, 3, 0, 112, 106, 7, 0] },
+      "expected": {
+        "data": {
+          "air": { "temperature": 19.8, "relativeHumidity": 48.6 },
+          "make": "espeasy",
+          "model": "espeasy-rn2483-node-class-a-abp"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Upstream plugin 68 names val_1=temp(19.8 C), val_2=hum(48.6 %)."
+    },
+    {
+      "description": "SysInfo task (TTN example) -> no air measurement (error)",
+      "input": { "fPort": 1, "bytes": [26, 0, 0, 218, 11, 130, 11, 0, 56, 44, 0, 212, 0, 81, 192, 168, 10, 130, 59, 72, 0, 0, 11] },
+      "expected": { "errors": ["plugin 26 has no air-quality measurement"] },
+      "source": "ttn-example",
+      "_note": "Upstream plugin 26 (Sysinfo) emits uptime/freeheap/rssi/vcc(-1)/ip diagnostics only — no air vocabulary key, so we reject it."
+    },
+    {
+      "description": "Unsupported fPort (non-PACKED) -> error",
+      "input": { "fPort": 2, "bytes": [52, 0, 0, 218, 1, 0, 145, 80, 0] },
+      "expected": { "errors": ["unsupported fPort 2"] },
+      "source": "synthetic",
+      "_note": "PACKED uplinks are always fPort 1; any other port is not a PACKED measurement frame."
+    }
+  ],
+  "downlink": []
+}

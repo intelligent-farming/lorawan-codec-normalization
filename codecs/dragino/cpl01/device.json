@@ -1,0 +1,40 @@
+{
+  "vendor": "dragino",
+  "device": "cpl01",
+  "name": "CPL01 - Dry Contact Sensor",
+  "categories": [
+    "contact"
+  ],
+  "sensors": [
+    "level"
+  ],
+  "provides": [
+    "action.contactState",
+    "alarm",
+    "battery",
+    "calculateFlag",
+    "deviceModel",
+    "disalarm",
+    "disconnectDuration",
+    "firmwareVersion",
+    "keepStatus",
+    "keepTime",
+    "tdc",
+    "time",
+    "totalPulse",
+    "triggerMode"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "cpl01",
+    "codecId": "cpl01-codec",
+    "codecFile": "cpl01.js",
+    "codecSha256": "c379fddf9a028c17c318748495dc1fcff14163408a3c7c3738a95a08ffd15260",
+    "referencedAt": "2026-06-25"
+  }
+}

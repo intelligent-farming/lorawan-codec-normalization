@@ -1,0 +1,34 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-ntu",
+  "name": "DL-NTU - Optical Turbidity and Temperature Sensor",
+  "categories": [
+    "water-quality"
+  ],
+  "sensors": [
+    "turbidity",
+    "temperature",
+    "battery"
+  ],
+  "provides": [
+    "battery",
+    "status",
+    "turbidityFnu",
+    "turbidityMgL",
+    "water.temperature.current",
+    "water.turbidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-ntu",
+    "codecId": "dl-ntu-codec",
+    "codecFile": "dl-ntu.js",
+    "codecSha256": "6dc7df816af2d5b3de4bd83e08c8f1a7cefa22d3c9d91e528640651cf23ac8e7",
+    "referencedAt": "2026-06-25"
+  }
+}

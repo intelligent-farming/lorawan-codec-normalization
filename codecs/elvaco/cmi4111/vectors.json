@@ -1,0 +1,79 @@
+{
+  "uplink": [
+    {
+      "description": "Landis+Gyr heat meter standard uplink: energy, volume, power, flow, flow/return temperature, serial, error flag.",
+      "input": {
+        "fPort": 2,
+        "bytes": [5, 4, 6, 90, 38, 0, 0, 4, 20, 240, 20, 10, 0, 2, 45, 11, 0, 2, 59, 38, 0, 2, 90, 123, 2, 2, 94, 124, 1, 12, 120, 113, 53, 73, 105, 4, 253, 23, 0, 0, 8, 0]
+      },
+      "expected": {
+        "data": {
+          "metering": {
+            "energy": { "total": 9818000 },
+            "water": { "total": 6607200 }
+          },
+          "power": { "active": 1100 },
+          "water": { "temperature": { "current": 63.5 } },
+          "returnTemperature": 38,
+          "flowRate": 0.038,
+          "serialFromMessage": 69493571,
+          "errorFlag": 524288,
+          "make": "elvaco",
+          "model": "cmi4111"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream yaml example. energy 9818 kWh -> 9818000 Wh; volume 6607.2 m3 -> 6607200 L; power 1.1 kW -> 1100 W; flow_temperature -> water.temperature.current; remaining fields are camelCase extras."
+    },
+    {
+      "description": "Synthetic standard uplink with distinct scales and zero error flag.",
+      "input": {
+        "fPort": 2,
+        "bytes": [5, 4, 6, 160, 134, 1, 0, 4, 19, 135, 214, 18, 0, 2, 45, 55, 0, 2, 59, 123, 0, 2, 89, 113, 27, 2, 93, 148, 17, 12, 120, 68, 51, 34, 17, 4, 253, 23, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "metering": {
+            "energy": { "total": 100000000 },
+            "water": { "total": 1234567 }
+          },
+          "power": { "active": 5500 },
+          "water": { "temperature": { "current": 70.25 } },
+          "returnTemperature": 45,
+          "flowRate": 0.123,
+          "serialFromMessage": 11223344,
+          "errorFlag": 0,
+          "make": "elvaco",
+          "model": "cmi4111"
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic verified against reference/upstream-codec.js: energy 100000 kWh, volume 1234.567 m3, power 5.5 kW, flow 0.123 m3/h, flow temp 70.25 C, return temp 45 C, serial 11223344, error flag 0."
+    },
+    {
+      "description": "Wrong FPort is rejected.",
+      "input": { "fPort": 1, "bytes": [5, 4, 6, 90] },
+      "expected": { "errors": ["unknown FPort"] },
+      "source": "synthetic",
+      "_note": "Only fPort 2 (standard format) is supported."
+    },
+    {
+      "description": "Payload shorter than 40 bytes is rejected.",
+      "input": { "fPort": 2, "bytes": [5, 4, 6, 90, 38] },
+      "expected": { "errors": ["payload length < 40"] },
+      "source": "synthetic",
+      "_note": "Standard frames are at least 40 bytes."
+    },
+    {
+      "description": "Unknown leading payload type byte is rejected.",
+      "input": {
+        "fPort": 2,
+        "bytes": [9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": { "errors": ["Payload type unknown"] },
+      "source": "synthetic",
+      "_note": "First byte must be 0x05 (standard format)."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,71 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/decentlab/dl-trs21-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Example 1",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          1,
+          146,
+          0,
+          3,
+          0,
+          117,
+          128,
+          161,
+          12,
+          37
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.109
+          },
+          "device_id": 402,
+          "protocol_version": 2,
+          "soil_temperature": {
+            "displayName": "Soil temperature",
+            "unit": "°C",
+            "value": 16.1
+          },
+          "water_potential": {
+            "displayName": "Water potential",
+            "unit": "kPa",
+            "value": -11.7
+          }
+        }
+      }
+    },
+    {
+      "description": "Example 2",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          1,
+          146,
+          0,
+          2,
+          12,
+          37
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.109
+          },
+          "device_id": 402,
+          "protocol_version": 2
+        }
+      }
+    }
+  ]
+}

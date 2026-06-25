@@ -1,0 +1,33 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-mes5",
+  "name": "DL-MES5 - Large-Range Optical Turbidity and Temperature Sensor For LoRaWAN",
+  "categories": [
+    "water-quality"
+  ],
+  "sensors": [
+    "turbidity",
+    "battery"
+  ],
+  "provides": [
+    "battery",
+    "sludgeBlanket",
+    "status",
+    "suspendedSolids",
+    "water.temperature.current",
+    "water.turbidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-mes5",
+    "codecId": "dl-mes5-codec",
+    "codecFile": "dl-mes5.js",
+    "codecSha256": "9331f6d4e147cdc0e2812d33b5625b176f7f1307080ce5fb2af698cf86fc8fc7",
+    "referencedAt": "2026-06-25"
+  }
+}

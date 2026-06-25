@@ -1,0 +1,108 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/adeunis/tic-cbe-linky-mono-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "0x49 TIC data",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          73,
+          64,
+          48,
+          50,
+          49,
+          55,
+          50,
+          56,
+          48,
+          51,
+          49,
+          56,
+          49,
+          57,
+          72,
+          67,
+          46,
+          46,
+          128,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          45,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          72,
+          80,
+          46,
+          46
+        ]
+      },
+      "output": {
+        "data": {
+          "bytes": {
+            "type": "0x49 TIC data",
+            "status": {
+              "frameCounter": 2,
+              "hardwareError": false,
+              "lowBattery": false,
+              "configurationDone": false,
+              "configurationInconsistency": false,
+              "readError": false
+            },
+            "ADCO": "021728031819",
+            "OPTARIF": "HC..",
+            "BASEstatus": "notFound",
+            "ISOUSC": {
+              "unit": "A",
+              "value": 45
+            },
+            "IINST": {
+              "unit": "A",
+              "value": 0
+            },
+            "IMAX": {
+              "unit": "A",
+              "value": 0
+            },
+            "PAPP": {
+              "unit": "VA",
+              "value": 0
+            },
+            "HCHC": {
+              "unit": "Wh",
+              "value": 0
+            },
+            "HCHP": {
+              "unit": "Wh",
+              "value": 0
+            },
+            "PTEC": "HP.."
+          }
+        },
+        "warnings": [],
+        "errors": []
+      }
+    }
+  ]
+}

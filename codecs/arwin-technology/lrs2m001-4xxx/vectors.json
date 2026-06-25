@@ -1,0 +1,133 @@
+{
+  "uplink": [
+    {
+      "description": "fPort 10 meter voltage: phase A 220V, B 198V, C 242V, 50Hz, backup batt 80%, phase B under / phase C over voltage events",
+      "input": { "fPort": 10, "bytes": [10, 8, 152, 7, 188, 9, 116, 0, 200, 24, 80] },
+      "expected": {
+        "data": {
+          "power": { "voltage": 220, "frequency": 50 },
+          "phaseBVoltage": 198,
+          "phaseCVoltage": 242,
+          "batteryPercent": 80,
+          "event": "ph_C_over_V,ph_B_under_V",
+          "make": "arwin-technology",
+          "model": "lrs2m001-4xxx"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream example payload (codec yaml). Voltages V x10, freq = top 14 bits of bytes[7..9]. Maps power.voltage (phase A) + frequency; B/C kept as extras, backup battery percent -> batteryPercent."
+    },
+    {
+      "description": "fPort 50 channel 1 phase A: 178.9A, 34438.3W, PF 0.875, 5678.9 kWh, over-current event",
+      "input": { "fPort": 50, "bytes": [10, 70, 253, 21, 4, 255, 107, 0, 0, 221, 213] },
+      "expected": {
+        "data": {
+          "power": { "current": 178.9, "active": 34438.3, "factor": 0.875 },
+          "metering": { "energy": { "total": 5678900 } },
+          "channel": 1,
+          "phase": "A",
+          "event": "over_current",
+          "make": "arwin-technology",
+          "model": "lrs2m001-4xxx"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream example. current A x10, active power W x10 (22-bit signed), power factor x1000. active_energy upstream is kWh x10 (=5678.9 kWh); normalized to Wh via x1000."
+    },
+    {
+      "description": "fPort 55 channel 2 phase C: 620.5A, 117274.5W, PF 0.9, 2379645 kWh, no event",
+      "input": { "fPort": 55, "bytes": [10, 24, 61, 71, 148, 39, 132, 1, 107, 26, 226] },
+      "expected": {
+        "data": {
+          "power": { "current": 620.5, "active": 117274.5, "factor": 0.9 },
+          "metering": { "energy": { "total": 2379645000 } },
+          "channel": 2,
+          "phase": "C",
+          "event": "",
+          "make": "arwin-technology",
+          "model": "lrs2m001-4xxx"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream example. Empty phase event string. Energy 2379645 kWh -> 2379645000 Wh."
+    },
+    {
+      "description": "fPort 60 channel 4 phase B: 865.4A, negative active power -161829.8W (export/reverse), PF 0.85, 56789.2 kWh, over-current + heartbeat events",
+      "input": { "fPort": 60, "bytes": [10, 225, 206, 157, 58, 27, 82, 0, 8, 170, 84] },
+      "expected": {
+        "data": {
+          "power": { "current": 865.4, "active": -161829.8, "factor": 0.85 },
+          "metering": { "energy": { "total": 56789200 } },
+          "channel": 4,
+          "phase": "B",
+          "event": "over_current,heartbeat/button",
+          "make": "arwin-technology",
+          "model": "lrs2m001-4xxx"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream example exercising signed (negative) active power via 22-bit two's-complement. power.active has no minimum so the negative value is in bounds."
+    },
+    {
+      "description": "fPort 53 channel 2 phase A synthetic: 12.5A, 2750.0W, PF 0.99, 123.4 kWh, no event",
+      "input": { "fPort": 53, "bytes": [10, 0, 125, 1, 173, 179, 222, 0, 0, 4, 210] },
+      "expected": {
+        "data": {
+          "power": { "current": 12.5, "active": 2750, "factor": 0.99 },
+          "metering": { "energy": { "total": 123400 } },
+          "channel": 2,
+          "phase": "A",
+          "event": "",
+          "make": "arwin-technology",
+          "model": "lrs2m001-4xxx"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds phase reading on a different channel/phase fPort. current=125/10, power: 22-bit signed = 27500 -> 2750.0 W, PF=990/1000=0.99, energy 1234/10 kWh -> 123400 Wh. Expected derived by running reference/upstream-codec.js."
+    },
+    {
+      "description": "fPort 8 firmware version 1.00.001",
+      "input": { "fPort": 8, "bytes": [1, 0, 0, 1] },
+      "expected": {
+        "data": {
+          "firmwareVersion": "1.00.001",
+          "make": "arwin-technology",
+          "model": "lrs2m001-4xxx"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Diagnostic version frame; no vocabulary key, firmwareVersion is an extra."
+    },
+    {
+      "description": "fPort 16 device settings: interval 15 min, UV 195, OV 245, OC 1000",
+      "input": { "fPort": 16, "bytes": [10, 0, 15, 0, 195, 0, 245, 3, 232] },
+      "expected": {
+        "data": {
+          "dataUploadInterval": 15,
+          "underVoltageLimit": 195,
+          "overVoltageLimit": 245,
+          "overCurrentLimit": 1000,
+          "make": "arwin-technology",
+          "model": "lrs2m001-4xxx"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Settings frame; all values are device-configuration extras."
+    },
+    {
+      "description": "fPort 10 meter frame with wrong leading type byte -> unknown packet type",
+      "input": { "fPort": 10, "bytes": [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+      "expected": { "errors": ["unknown packet type"] },
+      "source": "synthetic",
+      "_note": "Error vector: meter/phase frames require bytes[0]==0x0a."
+    },
+    {
+      "description": "Unsupported fPort -> unknown FPort error",
+      "input": { "fPort": 99, "bytes": [1, 2, 3] },
+      "expected": { "errors": ["unknown FPort"] },
+      "source": "synthetic",
+      "_note": "Error vector for an fPort the device never emits."
+    }
+  ],
+  "downlink": []
+}

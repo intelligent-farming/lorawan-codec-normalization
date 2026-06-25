@@ -1,0 +1,131 @@
+{
+  "uplink": [
+    {
+      "description": "Upstream example: fixed M-Bus telegram (CI=0x73), Water meter, actual volume 1 l",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 104, 19, 19, 104, 8, 5, 115, 120, 86, 52, 18, 10, 0, 233, 126, 1, 0, 0, 0, 53, 1, 0, 0, 60, 22]
+      },
+      "expected": {
+        "data": {
+          "metering.water.total": 1,
+          "meterId": 12345678,
+          "deviceType": "Water meter",
+          "accessNumber": 10,
+          "statusByte": 0,
+          "make": "acrios",
+          "model": "acr-cv-101l-m-eac"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "From acr-cv-101l-m-x-codec.yaml uplinkDecoder.examples. Storage-0 actual counter is 1 l; expected.data derived by running reference/upstream-codec.js (records[0].value=1, unit l) and mapping to metering.water.total (l x 1)."
+    },
+    {
+      "description": "Fixed telegram (CI=0x73), Water meter, actual volume 987654 l",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 104, 19, 19, 104, 8, 5, 115, 120, 86, 52, 18, 10, 0, 233, 126, 84, 118, 152, 0, 53, 1, 0, 0, 157, 22]
+      },
+      "expected": {
+        "data": {
+          "metering.water.total": 987654,
+          "meterId": 12345678,
+          "deviceType": "Water meter",
+          "accessNumber": 10,
+          "statusByte": 0,
+          "make": "acrios",
+          "model": "acr-cv-101l-m-eac"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds fixed frame (BCD counter 987654 l, valid M-Bus checksum). Upstream oracle decodes records[0].value=987654 unit l -> metering.water.total 987654."
+    },
+    {
+      "description": "Fixed telegram (CI=0x73), Water meter, zero volume (lower bound)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 104, 19, 19, 104, 8, 5, 115, 17, 17, 17, 17, 10, 0, 233, 126, 0, 0, 0, 0, 0, 0, 0, 0, 53, 22]
+      },
+      "expected": {
+        "data": {
+          "metering.water.total": 0,
+          "meterId": 11111111,
+          "deviceType": "Water meter",
+          "accessNumber": 10,
+          "statusByte": 0,
+          "make": "acrios",
+          "model": "acr-cv-101l-m-eac"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic zero-volume fixed frame. Upstream oracle decodes records[0].value=0 unit l -> metering.water.total 0 (>= 0 bound)."
+    },
+    {
+      "description": "Variable telegram (CI=0x72), Water meter, Volume record 12.345 m3",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 104, 21, 21, 104, 8, 5, 114, 33, 67, 101, 135, 172, 72, 1, 7, 10, 0, 0, 0, 12, 19, 69, 35, 1, 0, 93, 22]
+      },
+      "expected": {
+        "data": {
+          "metering.water.total": 12345,
+          "meterId": 87654321,
+          "manufacturerId": "REL",
+          "deviceType": "Water meter",
+          "accessNumber": 10,
+          "statusByte": 0,
+          "make": "acrios",
+          "model": "acr-cv-101l-m-eac"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic variable-data frame: DIF 0x0C (8-digit BCD) + VIF 0x13 (Volume, m3 x 1e-3) over raw BCD 12345 -> 12.345 m3. Upstream oracle: records[0].type=Volume, unit m3, value 12.345 -> metering.water.total 12345 (m3 x 1000)."
+    },
+    {
+      "description": "Fixed telegram with Power Low application status (status bit 0x04)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 104, 19, 19, 104, 8, 5, 115, 120, 86, 52, 18, 10, 4, 233, 126, 0, 80, 0, 0, 53, 1, 0, 0, 143, 22]
+      },
+      "expected": {
+        "data": {
+          "metering.water.total": 5000,
+          "meterId": 12345678,
+          "deviceType": "Water meter",
+          "accessNumber": 10,
+          "statusByte": 4,
+          "make": "acrios",
+          "model": "acr-cv-101l-m-eac"
+        },
+        "warnings": ["Power Low"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic fixed frame, actual volume 5000 l, M-Bus status byte 0x04 (Power Low). Upstream oracle records the M-Bus application status 'Power Low'; we surface it as a normalized warning."
+    },
+    {
+      "description": "Fragmented frame is rejected (frameIndex/batchFrames != 1,1)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 3, 104, 0, 0]
+      },
+      "expected": {
+        "errors": ["fragmented frame not supported"]
+      },
+      "source": "synthetic",
+      "_note": "Upstream front-end only decodes the (1,1) single-frame case; any other index/count pair is a multi-frame fragment that cannot be decoded on-device."
+    },
+    {
+      "description": "Corrupt M-Bus telegram (checksum mismatch) is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 104, 19, 19, 104, 8, 5, 115, 120, 86, 52, 18, 10, 0, 233, 126, 0, 80, 0, 0, 53, 1, 0, 0, 0, 22]
+      },
+      "expected": {
+        "errors": ["Check sum failed"]
+      },
+      "source": "synthetic",
+      "_note": "Same payload as the Power-Low frame but with the M-Bus checksum byte zeroed, so the ported tmbus frame validator throws 'Check sum failed'."
+    }
+  ],
+  "downlink": []
+}

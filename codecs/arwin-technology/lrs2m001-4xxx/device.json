@@ -1,0 +1,46 @@
+{
+  "vendor": "arwin-technology",
+  "device": "lrs2m001-4xxx",
+  "name": "LRS2M001-4P3P - Power Monitoring Sensor",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "voltage",
+    "current",
+    "energy",
+    "power"
+  ],
+  "provides": [
+    "batteryPercent",
+    "channel",
+    "dataUploadInterval",
+    "event",
+    "firmwareVersion",
+    "metering.energy.total",
+    "overCurrentLimit",
+    "overVoltageLimit",
+    "phase",
+    "phaseBVoltage",
+    "phaseCVoltage",
+    "power.active",
+    "power.current",
+    "power.factor",
+    "power.frequency",
+    "power.voltage",
+    "underVoltageLimit"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "arwin-technology",
+    "device": "lrs2m001-4xxx",
+    "codecId": "lrs2m001-4xxx-codec",
+    "codecFile": "lrs2m001-4xxx.js",
+    "codecSha256": "dd1fe950dbab212a4c2b73891b70f24ae5faa93ba83a980b9ca50ff1a60f8211",
+    "referencedAt": "2026-06-25"
+  }
+}

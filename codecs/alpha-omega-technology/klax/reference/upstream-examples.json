@@ -1,0 +1,180 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/alpha-omega-technology/klax-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "App",
+      "input": {
+        "fPort": 3,
+        "bytes": [
+          0,
+          74,
+          221,
+          17,
+          3,
+          9,
+          1,
+          69,
+          77,
+          72,
+          0,
+          0,
+          110,
+          253,
+          15,
+          1,
+          57,
+          1,
+          0,
+          189,
+          217,
+          144,
+          0,
+          189,
+          217,
+          144,
+          0,
+          189,
+          217,
+          144,
+          0,
+          189,
+          213,
+          168,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          117,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "header": {
+            "batteryPerc": 100,
+            "configured": true,
+            "connTest": false,
+            "deviceType": "SML Klax",
+            "meterType": "SML",
+            "version": 0
+          },
+          "msgInfo": {
+            "msgCnt": 1,
+            "msgIdx": 221,
+            "msgNum": 1
+          },
+          "payloads": [
+            {
+              "id": "0901454d4800006efd0f",
+              "type": "serverID"
+            },
+            {
+              "registers": [
+                {
+                  "dataValid": true,
+                  "data_valid": true,
+                  "filterId": 0,
+                  "unit": "Wh",
+                  "values": [
+                    12442000,
+                    12442000,
+                    12442000,
+                    12441000
+                  ]
+                },
+                {
+                  "dataValid": false,
+                  "data_valid": false,
+                  "filterId": 1,
+                  "unit": "NDEF",
+                  "values": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              ],
+              "type": "historic"
+            },
+            {
+              "registers": [
+                {
+                  "dataValid": false,
+                  "data_valid": false,
+                  "filterId": 2,
+                  "unit": "NDEF",
+                  "values": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "dataValid": false,
+                  "data_valid": false,
+                  "filterId": 3,
+                  "unit": "NDEF",
+                  "values": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              ],
+              "type": "historic"
+            }
+          ],
+          "type": "app"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/aquascope/bvs-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Valve Open",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          32,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "leak": "N",
+          "temperature": 0,
+          "valve": "On"
+        }
+      }
+    },
+    {
+      "description": "Valve Closed",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          64,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "leak": "N",
+          "temperature": 0,
+          "valve": "Off"
+        }
+      }
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [
+          1,
+          42
+        ]
+      },
+      "output": {
+        "errors": [
+          "unknown FPort"
+        ]
+      }
+    }
+  ]
+}

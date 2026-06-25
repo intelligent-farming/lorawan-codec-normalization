@@ -1,0 +1,29 @@
+{
+  "vendor": "aquascope",
+  "device": "bvs",
+  "name": "Ball Valve Servo BVSLWE01",
+  "categories": [
+    "water-leak"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "valveState",
+    "water.leak",
+    "water.temperature.current"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "aquascope",
+    "device": "bvs",
+    "codecId": "bvs-codec",
+    "codecFile": "bvs.js",
+    "codecSha256": "43a3fd1ddc7639544a8205d3816b3b85c998be4becc425959568b158ec39bf05",
+    "referencedAt": "2026-06-25"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "vendor": "elvaco",
+  "device": "cmi4111",
+  "name": "CMi4111",
+  "categories": [
+    "power-meter",
+    "water-meter"
+  ],
+  "sensors": [],
+  "provides": [
+    "errorFlag",
+    "flowRate",
+    "metering.energy.total",
+    "metering.water.total",
+    "power.active",
+    "returnTemperature",
+    "serialFromMessage",
+    "water.temperature.current"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "elvaco",
+    "device": "cmi4111",
+    "codecId": "cmi4111-codec",
+    "codecFile": "cmi4111.js",
+    "codecSha256": "4be72ed17ec4d926ee724d7439b38830176373d7ecf09864f1f0fa97cbd037af",
+    "referencedAt": "2026-06-25"
+  }
+}

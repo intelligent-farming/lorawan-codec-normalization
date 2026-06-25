@@ -1,0 +1,33 @@
+{
+  "vendor": "alpha-omega-technology",
+  "device": "klax",
+  "name": "KLAX - Electricity Meter Reader",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "energy"
+  ],
+  "provides": [
+    "batteryPercent",
+    "metering.energy.total",
+    "power.active",
+    "power.apparent",
+    "power.current",
+    "power.frequency",
+    "power.voltage"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "alpha-omega-technology",
+    "device": "klax",
+    "codecId": "klax-codec",
+    "codecFile": "klax.js",
+    "codecSha256": "6fb1d5c2913131374a26fa130b7cd441cbacb50b6d8d0958b25c944e9a7d121c",
+    "referencedAt": "2026-06-25"
+  }
+}

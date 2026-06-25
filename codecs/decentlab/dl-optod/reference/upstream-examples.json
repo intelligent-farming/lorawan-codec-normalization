@@ -1,0 +1,91 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/decentlab/dl-optod-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Example 1",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          24,
+          108,
+          0,
+          3,
+          0,
+          0,
+          136,
+          98,
+          166,
+          24,
+          131,
+          101,
+          131,
+          101,
+          12,
+          96
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.168
+          },
+          "device_id": 6252,
+          "oxygen_concentration": {
+            "displayName": "Oxygen concentration",
+            "unit": "mg⋅L⁻¹",
+            "value": 8.69
+          },
+          "oxygen_concentration_alt": {
+            "displayName": "Oxygen concentration (alt)",
+            "unit": "ppm",
+            "value": 8.69
+          },
+          "oxygen_saturation": {
+            "displayName": "Oxygen saturation",
+            "unit": "%",
+            "value": 97.52
+          },
+          "protocol_version": 2,
+          "status": {
+            "displayName": "Status",
+            "value": 0
+          },
+          "temperature": {
+            "displayName": "Temperature",
+            "unit": "°C",
+            "value": 21.46
+          }
+        }
+      }
+    },
+    {
+      "description": "Example 2",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          24,
+          108,
+          0,
+          2,
+          12,
+          96
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.168
+          },
+          "device_id": 6252,
+          "protocol_version": 2
+        }
+      }
+    }
+  ]
+}

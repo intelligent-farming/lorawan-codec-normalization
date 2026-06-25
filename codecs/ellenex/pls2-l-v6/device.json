@@ -1,0 +1,28 @@
+{
+  "vendor": "ellenex",
+  "device": "pls2-l-v6",
+  "name": "PLS2-L-V6- Level Transmitter",
+  "categories": [
+    "groundwater"
+  ],
+  "sensors": [
+    "level"
+  ],
+  "provides": [
+    "battery",
+    "water.level"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "ellenex",
+    "device": "pls2-l-v6",
+    "codecId": "pls2-l-v6-codec",
+    "codecFile": "pls2-l-v6.js",
+    "codecSha256": "3b22857ab91bb1964f0050cfa6834571c305e43c7c24d00231c1502f2c4b0bd1",
+    "referencedAt": "2026-06-25"
+  }
+}

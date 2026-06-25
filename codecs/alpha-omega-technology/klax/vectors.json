@@ -1,0 +1,110 @@
+{
+  "uplink": [
+    {
+      "description": "App uplink (fPort 3, protocol v0): SML Klax with a historic Wh energy register (current reading 12442000 Wh), battery 100%",
+      "input": {
+        "fPort": 3,
+        "bytes": [0, 74, 221, 17, 3, 9, 1, 69, 77, 72, 0, 0, 110, 253, 15, 1, 57, 1, 0, 189, 217, 144, 0, 189, 217, 144, 0, 189, 217, 144, 0, 189, 213, 168, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 117, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "metering": { "energy": { "total": 12442000 } },
+          "batteryPercent": 100,
+          "make": "alpha-omega-technology",
+          "model": "klax"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream klax-codec.yaml uplinkDecoder example. Upstream emits a serverID block then a historic Wh register with values [12442000,12442000,12442000,12441000]; we map the current (index 0) Wh value to metering.energy.total and header battery (low3 bits = 5, v0 => *10 path gives 100) to batteryPercent."
+    },
+    {
+      "description": "App uplink (fPort 3, protocol v0): historic block with two registers, Wh energy (5500000 Wh) and VA apparent power (800 VA), battery 80%",
+      "input": {
+        "fPort": 3,
+        "bytes": [0, 72, 10, 17, 1, 17, 145, 0, 83, 236, 96, 0, 83, 232, 120, 0, 83, 228, 144, 0, 83, 224, 168, 0, 0, 3, 32, 0, 0, 3, 31, 0, 0, 3, 30, 0, 0, 3, 29]
+      },
+      "expected": {
+        "data": {
+          "metering": { "energy": { "total": 5500000 } },
+          "power": { "apparent": 800 },
+          "batteryPercent": 80,
+          "make": "alpha-omega-technology",
+          "model": "klax"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds historic frame. Verified against reference/upstream-codec.js: register 1 unit Wh values [5500000,...], register 2 unit VA values [800,...]; battery low nibble 8 on v0 path => 80%. We take each register's index-0 value."
+    },
+    {
+      "description": "App uplink (fPort 3, protocol v2): 'now' float registers reporting instantaneous voltage 230.5 V, current 1.25 A, active power 287.4 W, frequency 50 Hz",
+      "input": {
+        "fPort": 3,
+        "bytes": [8, 69, 10, 17, 2, 255, 67, 82, 67, 102, 128, 0, 63, 160, 0, 0, 67, 143, 179, 51, 66, 72, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "power": { "voltage": 230.5, "current": 1.25, "active": 287.4, "frequency": 50 },
+          "batteryPercent": 100,
+          "make": "alpha-omega-technology",
+          "model": "klax"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic v2 'now' frame (4 IEEE-754 float registers, all set+valid). Verified against reference/upstream-codec.js which decodes V=230.5, A=1.25, W=287.3999938964844 (rounds to 287.4 at 3dp), Hz=50; battery low3 bits=5 on v>0 path => *20 => 100%."
+    },
+    {
+      "description": "App uplink (fPort 3, protocol v2): filter block, single valid IEEE-754 float Wh register (12442.5 Wh)",
+      "input": {
+        "fPort": 3,
+        "bytes": [8, 69, 10, 17, 1, 17, 1, 70, 66, 106, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "metering": { "energy": { "total": 12442.5 } },
+          "batteryPercent": 100,
+          "make": "alpha-omega-technology",
+          "model": "klax"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic v2 filter frame. Verified against reference/upstream-codec.js: filter unit Wh, values[0]={value:12442.5,valid:true}, remaining invalid. We take the first valid float."
+    },
+    {
+      "description": "App uplink (fPort 3) with only an NDEF (undefined-unit) register: no calibrated measurement -> error",
+      "input": {
+        "fPort": 3,
+        "bytes": [0, 64, 10, 17, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["no calibrated meter register"]
+      },
+      "source": "synthetic",
+      "_note": "Historic frame whose only active register has unit NDEF with all-zero values; upstream marks it data_valid:false / unit 'NDEF'. No vocabulary key is satisfiable, so we error rather than emit an empty measurement."
+    },
+    {
+      "description": "Config uplink on fPort 100: not a measurement frame -> error",
+      "input": {
+        "fPort": 100,
+        "bytes": [0, 0, 0, 5]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 100"]
+      },
+      "source": "synthetic",
+      "_note": "fPort 100 is the KLAX config uplink (measure interval), not a calibrated meter reading. Only fPort 3 carries telemetry."
+    },
+    {
+      "description": "Too-short payload -> error",
+      "input": {
+        "fPort": 3,
+        "bytes": [1, 2]
+      },
+      "expected": {
+        "errors": ["empty or too-short payload"]
+      },
+      "source": "synthetic",
+      "_note": "Fewer than the 4-byte header+msgInfo minimum."
+    }
+  ],
+  "downlink": []
+}

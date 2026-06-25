@@ -1,0 +1,84 @@
+{
+  "uplink": [
+    {
+      "description": "M-Bus fixed-data water frame (upstream example): actual 1 l, fixed-date 135 l",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 104, 19, 19, 104, 8, 5, 115, 120, 86, 52, 18, 10, 0, 233, 126, 1, 0, 0, 0, 53, 1, 0, 0, 60, 22]
+      },
+      "expected": {
+        "data": {
+          "metering.water.total": 1,
+          "meterId": 12345678,
+          "accessNo": 10,
+          "statusByte": 0,
+          "deviceType": "Water meter",
+          "cStored": "Actual",
+          "volumeStored": 135,
+          "make": "acrios",
+          "model": "acr-cv-101l-m-d"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream oracle decodes data[] = [{storage0, 1 l},{storage1, 135 l}]; actual (storage 0) -> metering.water.total, stored -> volumeStored. status 0 -> no warnings."
+    },
+    {
+      "description": "Synthetic litres frame with Power Low status flag (123456 l actual, 99 l stored)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 104, 19, 19, 104, 8, 7, 115, 17, 34, 51, 68, 42, 4, 233, 126, 86, 52, 18, 0, 153, 0, 0, 0, 246, 22]
+      },
+      "expected": {
+        "data": {
+          "metering.water.total": 123456,
+          "meterId": 44332211,
+          "accessNo": 42,
+          "statusByte": 4,
+          "deviceType": "Water meter",
+          "cStored": "Actual",
+          "volumeStored": 99,
+          "make": "acrios",
+          "model": "acr-cv-101l-m-d"
+        },
+        "warnings": ["Power Low"]
+      },
+      "source": "synthetic",
+      "_note": "Built as a valid CI=0x73 fixed water frame; upstream oracle yields data[]=[{123456 l},{99 l}] and pushes 'Power Low' to its application-status list (status byte 0x04). We surface that as a warning."
+    },
+    {
+      "description": "Synthetic cubic-metre frame (5 m3 actual -> 5000 L, 0 m3 stored)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 104, 19, 19, 104, 8, 9, 115, 1, 0, 0, 0, 5, 0, 236, 126, 5, 0, 0, 0, 0, 0, 0, 0, 249, 22]
+      },
+      "expected": {
+        "data": {
+          "metering.water.total": 5000,
+          "meterId": 1,
+          "accessNo": 5,
+          "statusByte": 0,
+          "deviceType": "Water meter",
+          "cStored": "Actual",
+          "volumeStored": 0,
+          "make": "acrios",
+          "model": "acr-cv-101l-m-d"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Unit nibble selects m3 (volume idx 14, exp 0); upstream oracle decodes 5 m3 / 0 m3. metering.water.total is litres so 5 m3 -> 5000 L (AUTHORING unit table x1000)."
+    },
+    {
+      "description": "Fragmented frame (FrameIndex/BatchFrames != 1,1) is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 1, 104, 19]
+      },
+      "expected": {
+        "errors": ["Fragmentation not supported"]
+      },
+      "source": "synthetic",
+      "_note": "Upstream rejects any frame header other than (1,1); our codec returns an error rather than a partial total."
+    }
+  ],
+  "downlink": []
+}

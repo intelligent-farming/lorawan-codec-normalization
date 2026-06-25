@@ -1,0 +1,111 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/elv/elv-lw-int1-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "button message",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          137,
+          0,
+          0,
+          0,
+          8,
+          17
+        ]
+      },
+      "output": {
+        "data": {
+          "Device_Event_Boot": "N",
+          "Device_Event_Button": "Y",
+          "Device_Event_Cyclic": "N",
+          "Device_Event_Heartbeat": "N",
+          "Device_Event_IN1": "N",
+          "Device_Event_IN2": "N",
+          "Device_Eventflags": 8,
+          "Device_InputStates": 17,
+          "Frame_Type": "Status-Info",
+          "IN1_Change": "N",
+          "IN1_Level": "Hi",
+          "IN2_Change": "N",
+          "IN2_Level": "Hi",
+          "Supply_Voltage": "2.87"
+        }
+      }
+    },
+    {
+      "description": "cylic message",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          137,
+          0,
+          2,
+          2,
+          1,
+          84,
+          12,
+          213,
+          3,
+          3,
+          0,
+          0,
+          216
+        ]
+      },
+      "output": {
+        "data": {
+          "Frame_Type": "Status-Info",
+          "SoMo1H_Event_Boot": "N",
+          "SoMo1H_Event_Cyclic": "Y",
+          "SoMo1H_Event_Error": "N",
+          "SoMo1H_Event_Threshold_1": "N",
+          "SoMo1H_Event_Threshold_2": "N",
+          "SoMo1H_Event_Threshold_Delta": "N",
+          "SoMo1H_Eventflags": 1,
+          "SoMo1H_Level": 84,
+          "SoMo1H_Value": 3285,
+          "SoMo1T_Event_Boot": "N",
+          "SoMo1T_Event_Cyclic": "N",
+          "SoMo1T_Event_Error": "N",
+          "SoMo1T_Event_Threshold_1": "N",
+          "SoMo1T_Event_Threshold_2": "N",
+          "SoMo1T_Event_Threshold_Delta": "N",
+          "SoMo1T_Eventflags": 0,
+          "SoMo1T_Value": "21.6",
+          "Supply_Voltage": "2.87"
+        }
+      }
+    },
+    {
+      "description": "device info message",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          136,
+          255,
+          0,
+          2,
+          21,
+          1,
+          0,
+          2,
+          2,
+          3,
+          1,
+          3
+        ]
+      },
+      "output": {
+        "data": {
+          "Application": "1.0.2",
+          "Bootloader": "2.3.1",
+          "DeviceType": "ELV-LW-INT1",
+          "Frame_Type": "Device-Info",
+          "Hardware": "C",
+          "Supply_Voltage": "2.86"
+        }
+      }
+    }
+  ]
+}

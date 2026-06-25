@@ -1,0 +1,117 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/adeunis/tic-cbe-linky-tri-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "0x49 TIC data",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          73,
+          64,
+          48,
+          50,
+          49,
+          55,
+          50,
+          56,
+          48,
+          51,
+          49,
+          56,
+          49,
+          57,
+          0,
+          0,
+          18,
+          52,
+          0,
+          0,
+          0,
+          43,
+          0,
+          0,
+          0,
+          44,
+          0,
+          0,
+          0,
+          45,
+          0,
+          0,
+          0,
+          17,
+          0,
+          0,
+          0,
+          18,
+          0,
+          0,
+          0,
+          19,
+          0,
+          0,
+          0,
+          32,
+          0,
+          0,
+          0,
+          16
+        ]
+      },
+      "output": {
+        "data": {
+          "bytes": {
+            "type": "0x49 TIC data",
+            "status": {
+              "frameCounter": 2,
+              "hardwareError": false,
+              "lowBattery": false,
+              "configurationDone": false,
+              "configurationInconsistency": false,
+              "readError": false
+            },
+            "ADCO": "021728031819",
+            "BASE": {
+              "unit": "Wh",
+              "value": 4660
+            },
+            "IINST1": {
+              "unit": "A",
+              "value": 43
+            },
+            "IINST2": {
+              "unit": "A",
+              "value": 44
+            },
+            "IINST3": {
+              "unit": "A",
+              "value": 45
+            },
+            "IMAX1": {
+              "unit": "A",
+              "value": 17
+            },
+            "IMAX2": {
+              "unit": "A",
+              "value": 18
+            },
+            "IMAX3": {
+              "unit": "A",
+              "value": 19
+            },
+            "PMAX": {
+              "unit": "W",
+              "value": 32
+            },
+            "PAPP": {
+              "unit": "VA",
+              "value": 16
+            }
+          }
+        },
+        "warnings": [],
+        "errors": []
+      }
+    }
+  ]
+}
