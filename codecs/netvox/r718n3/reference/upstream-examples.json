@@ -1,0 +1,204 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/netvox/r718n3-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Startup version report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          74,
+          0,
+          100,
+          2,
+          32,
+          32,
+          7,
+          6,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R718N3",
+          "SWver": 10,
+          "HWver": 2,
+          "Datecode": "20200706"
+        }
+      }
+    },
+    {
+      "description": "Status report - 1",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          74,
+          1,
+          36,
+          3,
+          232,
+          0,
+          200,
+          27,
+          88,
+          1
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R718N3",
+          "Volt": 3.6,
+          "Current1": 1000,
+          "Current2": 200,
+          "Current3": 7000,
+          "Multiplier1": 1
+        }
+      }
+    },
+    {
+      "description": "Status report - 2",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          74,
+          2,
+          36,
+          3,
+          10,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R718N3",
+          "Volt": 3.6,
+          "Multiplier2": 3,
+          "Multiplier3": 10
+        }
+      }
+    },
+    {
+      "description": "Status report - 3",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          74,
+          3,
+          36,
+          3,
+          232,
+          0,
+          200,
+          27,
+          88,
+          54
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R718N3",
+          "Volt": 3.6,
+          "Current1": 1000,
+          "Current2": 200,
+          "Current3": 7000,
+          "Multiplier1": 10,
+          "Multiplier2": 5,
+          "Multiplier3": 100
+        }
+      }
+    },
+    {
+      "description": "Status report - 4",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          74,
+          4,
+          36,
+          57,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R718N3",
+          "Volt": 3.6,
+          "LowCurrent1Alarm": 1,
+          "HighCurrent1Alarm": 0,
+          "LowCurrent2Alarm": 0,
+          "HighCurren2Alarm": 1,
+          "LowCurrent3Alarm": 1,
+          "HighCurrent3Alarm": 1
+        }
+      }
+    },
+    {
+      "description": "Configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          129,
+          74,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ConfigReportRsp",
+          "Device": "R718N3",
+          "Status": "Success"
+        }
+      }
+    },
+    {
+      "description": "Read configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          130,
+          74,
+          3,
+          132,
+          7,
+          8,
+          0,
+          100,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ReadConfigReportRsp",
+          "Device": "R718N3",
+          "MinTime": 900,
+          "MaxTime": 1800,
+          "CurrentChange": 100
+        }
+      }
+    }
+  ]
+}

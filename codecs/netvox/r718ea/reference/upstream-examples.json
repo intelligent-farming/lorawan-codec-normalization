@@ -1,0 +1,170 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/netvox/r718ea-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Startup version report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          154,
+          0,
+          100,
+          2,
+          32,
+          32,
+          18,
+          8,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R718EA",
+          "SWver": 10,
+          "HWver": 2,
+          "Datecode": "20201208"
+        }
+      }
+    },
+    {
+      "description": "Status report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          154,
+          1,
+          36,
+          0,
+          206,
+          166,
+          255,
+          151,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R718EA",
+          "Volt": 3.6,
+          "AngleX": 0,
+          "AngleY": -50,
+          "AngleZ": -90,
+          "Temp": -10.5
+        }
+      }
+    },
+    {
+      "description": "Configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          129,
+          154,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ConfigReportRsp",
+          "Device": "R718EA",
+          "Status": "Success"
+        }
+      }
+    },
+    {
+      "description": "Read configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          130,
+          154,
+          3,
+          132,
+          7,
+          8,
+          1,
+          5,
+          10,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ReadConfigReportRsp",
+          "Device": "R718EA",
+          "MinTime": 900,
+          "MaxTime": 1800,
+          "BatteryChange": 0.1,
+          "AngleChange": 5,
+          "TempChange": 1
+        }
+      }
+    },
+    {
+      "description": "Set active threshold response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          131,
+          154,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "SetActiveThresholdRsp",
+          "Device": "R718EA",
+          "Status": "Success"
+        }
+      }
+    },
+    {
+      "description": "Get active threshold response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          132,
+          154,
+          0,
+          100,
+          30,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "GetActiveThresholdRsp",
+          "Device": "R718EA",
+          "Threshold": 100,
+          "InActiveTime": 30
+        }
+      }
+    }
+  ]
+}

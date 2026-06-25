@@ -1,0 +1,37 @@
+{
+  "vendor": "netvox",
+  "device": "r809a",
+  "name": "R809A - Wireless Power Plug with Power Meter",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "current",
+    "energy",
+    "voltage"
+  ],
+  "provides": [
+    "dashCurrentAlarm",
+    "deviceName",
+    "metering.energy.total",
+    "onOff",
+    "overCurrentAlarm",
+    "power.active",
+    "power.current",
+    "power.voltage",
+    "powerOffAlarm"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r809a",
+    "codecId": "r809a-codec",
+    "codecFile": "payload/r809a.js",
+    "codecSha256": "95f5c6bec89afa850b063c8b8e2e02bc9cf624f9798783fb48e224e5b50b0329",
+    "referencedAt": "2026-06-25"
+  }
+}

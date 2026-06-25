@@ -1,0 +1,138 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/netvox/r718n360-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Startup version report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          202,
+          0,
+          100,
+          2,
+          32,
+          32,
+          7,
+          6,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R718N360",
+          "SWver": 10,
+          "HWver": 2,
+          "Datecode": "20200706"
+        }
+      }
+    },
+    {
+      "description": "Status report - 1",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          202,
+          1,
+          36,
+          0,
+          0,
+          5,
+          220,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R718N360",
+          "Volt": 3.6,
+          "Channel_A": 1500
+        }
+      }
+    },
+    {
+      "description": "Status report - 2",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          202,
+          2,
+          0,
+          0,
+          6,
+          164,
+          0,
+          0,
+          14,
+          52
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R718N360",
+          "Channel_B": 1700,
+          "Channel_C": 3636
+        }
+      }
+    },
+    {
+      "description": "Configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          129,
+          202,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ConfigReportRsp",
+          "Device": "R718N360",
+          "Status": "Success"
+        }
+      }
+    },
+    {
+      "description": "Read configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          130,
+          202,
+          3,
+          132,
+          7,
+          8,
+          0,
+          0,
+          0,
+          100,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ReadConfigReportRsp",
+          "Device": "R718N360",
+          "MinTime": 900,
+          "MaxTime": 1800,
+          "RawDataChange": 100
+        }
+      }
+    }
+  ]
+}

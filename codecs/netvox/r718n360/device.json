@@ -1,0 +1,30 @@
+{
+  "vendor": "netvox",
+  "device": "r718n360",
+  "name": "R718N360 - Wireless 3-Phase Current Meter Interface",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "current"
+  ],
+  "provides": [
+    "battery",
+    "channelC",
+    "deviceName",
+    "power.current"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r718n360",
+    "codecId": "r718n360-codec",
+    "codecFile": "payload/r718n360.js",
+    "codecSha256": "e50db0eb74ab255e6046acd72628e6cb57b977798ad333d516582c9a3a9bb9f5",
+    "referencedAt": "2026-06-25"
+  }
+}

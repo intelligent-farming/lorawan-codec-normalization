@@ -1,0 +1,95 @@
+{
+  "uplink": [
+    {
+      "description": "Measurement frame 1 -> power-meter",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          202,
+          1,
+          36,
+          0,
+          0,
+          5,
+          220,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "deviceName": "R718N360",
+          "battery": 3.6,
+          "power": {
+            "current": 1.5
+          },
+          "make": "netvox",
+          "model": "r718n360"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream-example input (TTN netvox r718n360 codec yaml, Apache-2.0). expected.data via the ported netvox decoder (oracle). Mapped to vocabulary per the codec header."
+    },
+    {
+      "description": "Measurement frame 2 -> power-meter",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          202,
+          2,
+          0,
+          0,
+          6,
+          164,
+          0,
+          0,
+          14,
+          52
+        ]
+      },
+      "expected": {
+        "data": {
+          "deviceName": "R718N360",
+          "power": {
+            "current": 1.7
+          },
+          "channelC": 3.636,
+          "make": "netvox",
+          "model": "r718n360"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream-example input (TTN netvox r718n360 codec yaml, Apache-2.0). expected.data via the ported netvox decoder (oracle). Mapped to vocabulary per the codec header."
+    },
+    {
+      "description": "Device-info / config frame -> error",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          202,
+          0,
+          100,
+          2,
+          32,
+          32,
+          7,
+          6,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "device information f"
+        ]
+      },
+      "source": "ttn-example",
+      "_note": "Non-measurement frame."
+    }
+  ],
+  "downlink": []
+}

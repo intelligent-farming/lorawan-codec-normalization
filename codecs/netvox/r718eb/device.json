@@ -1,0 +1,31 @@
+{
+  "vendor": "netvox",
+  "device": "r718eb",
+  "name": "R718EB - Wireless Tilt Angle Sensor",
+  "categories": [
+    "tilt"
+  ],
+  "sensors": [
+    "tilt"
+  ],
+  "provides": [
+    "battery",
+    "deviceName",
+    "tilt.x",
+    "tilt.y",
+    "tilt.z"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r718eb",
+    "codecId": "r718eb-codec",
+    "codecFile": "payload/r718ea_eb.js",
+    "codecSha256": "4be6d371c77360fad237576704a9c680690e350f1e99ba3cb02cc2d9e5d8badc",
+    "referencedAt": "2026-06-25"
+  }
+}

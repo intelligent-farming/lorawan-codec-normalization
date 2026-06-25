@@ -1,0 +1,67 @@
+{
+  "uplink": [
+    {
+      "description": "Measurement frame 1 -> power-meter/light",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          152,
+          1,
+          36,
+          3,
+          232,
+          1,
+          0,
+          0,
+          11,
+          184
+        ]
+      },
+      "expected": {
+        "data": {
+          "deviceName": "R718NL1",
+          "battery": 3.6,
+          "power": {
+            "current": 1
+          },
+          "multiplier": 1,
+          "air": {
+            "lightIntensity": 3000
+          },
+          "make": "netvox",
+          "model": "r718nl1"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream-example input (TTN netvox r718nl1 codec yaml, Apache-2.0). expected.data via the ported netvox decoder (oracle). Mapped to vocabulary per the codec header."
+    },
+    {
+      "description": "Device-info / config frame -> error",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          152,
+          0,
+          130,
+          2,
+          32,
+          32,
+          18,
+          36,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "device information f"
+        ]
+      },
+      "source": "ttn-example",
+      "_note": "Non-measurement frame."
+    }
+  ],
+  "downlink": []
+}

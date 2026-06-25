@@ -1,0 +1,30 @@
+{
+  "vendor": "netvox",
+  "device": "r718n1",
+  "name": "R718N1 - Wireless 1-Phase Current Meter with 1 x 30A Solid Core CT",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "current"
+  ],
+  "provides": [
+    "battery",
+    "deviceName",
+    "multiplier",
+    "power.current"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r718n1",
+    "codecId": "r718n1-codec",
+    "codecFile": "payload/r718n1.js",
+    "codecSha256": "47fe12f0445e7d4770558127e2f61f1a34214a2f4969f650f37e1a83eb6f86ae",
+    "referencedAt": "2026-06-25"
+  }
+}

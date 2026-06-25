@@ -1,0 +1,143 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/netvox/r809a-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Startup version report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          14,
+          0,
+          100,
+          12,
+          32,
+          25,
+          9,
+          16,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R809A",
+          "SWver": 10,
+          "HWver": 12,
+          "Datecode": "20190910"
+        }
+      }
+    },
+    {
+      "description": "Status report - 1",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          14,
+          1,
+          1,
+          0,
+          0,
+          2,
+          0,
+          1,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R809A",
+          "OnOff": "ON",
+          "Energy": 512,
+          "OverCurrentAlarm": "Alarm",
+          "DashCurrentAlarm": "No alarm",
+          "PowerOffAlarm": "No alarm"
+        }
+      }
+    },
+    {
+      "description": "Status report - 2",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          14,
+          2,
+          0,
+          220,
+          3,
+          232,
+          0,
+          220,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R809A",
+          "Vol": 220,
+          "Current": 1000,
+          "Power": 220
+        }
+      }
+    },
+    {
+      "description": "Configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          129,
+          14,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ConfigReportRsp",
+          "Device": "R809A",
+          "Status": "Success"
+        }
+      }
+    },
+    {
+      "description": "Read configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          130,
+          14,
+          3,
+          132,
+          7,
+          8,
+          0,
+          100,
+          0,
+          1,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ReadConfigReportRsp",
+          "Device": "R809A",
+          "MinTime": 900,
+          "MaxTime": 1800,
+          "CurrentChange": 100,
+          "PowerChange": 1
+        }
+      }
+    }
+  ]
+}

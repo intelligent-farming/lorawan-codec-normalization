@@ -1,0 +1,68 @@
+{
+  "uplink": [
+    {
+      "description": "Measurement frame 1 -> tilt",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          154,
+          1,
+          36,
+          0,
+          206,
+          166,
+          255,
+          151,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "deviceName": "R718EA",
+          "battery": 3.6,
+          "tilt": {
+            "x": 0,
+            "y": -50,
+            "z": -90
+          },
+          "air": {
+            "temperature": -10.5
+          },
+          "make": "netvox",
+          "model": "r718ea"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream-example input (TTN netvox r718ea codec yaml, Apache-2.0). expected.data via the ported netvox decoder (oracle). Mapped to vocabulary per the codec header."
+    },
+    {
+      "description": "Device-info / config frame -> error",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          154,
+          0,
+          100,
+          2,
+          32,
+          32,
+          18,
+          8,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "device information f"
+        ]
+      },
+      "source": "ttn-example",
+      "_note": "Non-measurement frame."
+    }
+  ],
+  "downlink": []
+}

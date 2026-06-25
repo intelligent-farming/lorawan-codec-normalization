@@ -1,0 +1,101 @@
+{
+  "uplink": [
+    {
+      "description": "Measurement frame 1 -> power-meter",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          115,
+          1,
+          1,
+          0,
+          0,
+          2,
+          0,
+          1,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "deviceName": "R816B",
+          "onOff": "ON",
+          "metering": {
+            "energy": {
+              "total": 512
+            }
+          },
+          "overCurrentAlarm": "Alarm",
+          "dashCurrentAlarm": "No alarm",
+          "powerOffAlarm": "No alarm",
+          "make": "netvox",
+          "model": "r816b"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream-example input (TTN netvox r816b codec yaml, Apache-2.0). expected.data via the ported netvox decoder (oracle). Mapped to vocabulary per the codec header."
+    },
+    {
+      "description": "Measurement frame 2 -> power-meter",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          115,
+          2,
+          0,
+          220,
+          3,
+          232,
+          0,
+          220,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "deviceName": "R816B",
+          "power": {
+            "voltage": 220,
+            "current": 1,
+            "active": 220
+          },
+          "make": "netvox",
+          "model": "r816b"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream-example input (TTN netvox r816b codec yaml, Apache-2.0). expected.data via the ported netvox decoder (oracle). Mapped to vocabulary per the codec header."
+    },
+    {
+      "description": "Device-info / config frame -> error",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          115,
+          0,
+          100,
+          12,
+          32,
+          25,
+          9,
+          16,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "device information f"
+        ]
+      },
+      "source": "ttn-example",
+      "_note": "Non-measurement frame."
+    }
+  ],
+  "downlink": []
+}

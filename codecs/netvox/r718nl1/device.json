@@ -1,0 +1,32 @@
+{
+  "vendor": "netvox",
+  "device": "r718nl1",
+  "name": "R718NL1 - Wireless Light Sensor and 1-Phase Current Meter with 1x(30A, 75A, 150A, 250A, 630A)Clamp-On CT",
+  "categories": [
+    "power-meter",
+    "light"
+  ],
+  "sensors": [
+    "current"
+  ],
+  "provides": [
+    "air.lightIntensity",
+    "battery",
+    "deviceName",
+    "multiplier",
+    "power.current"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r718nl1",
+    "codecId": "r718nl1-codec",
+    "codecFile": "payload/r718nl1.js",
+    "codecSha256": "c1d445b4154322fa3c39d397179435b583d57a74a6c4da2ef4e06471b0485369",
+    "referencedAt": "2026-06-25"
+  }
+}

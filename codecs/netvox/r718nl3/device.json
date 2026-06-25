@@ -1,0 +1,36 @@
+{
+  "vendor": "netvox",
+  "device": "r718nl3",
+  "name": "R718NL3 - Wireless Light Sensor and 3-Phase Current Meter with 3x150A Clamp-On CT",
+  "categories": [
+    "power-meter",
+    "light"
+  ],
+  "sensors": [
+    "current"
+  ],
+  "provides": [
+    "air.lightIntensity",
+    "battery",
+    "current2",
+    "current3",
+    "deviceName",
+    "multiplier1",
+    "multiplier2",
+    "multiplier3",
+    "power.current"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r718nl3",
+    "codecId": "r718nl3-codec",
+    "codecFile": "payload/r718nl3.js",
+    "codecSha256": "3029f46165ea64cc05ba8c477a501337b5b42a30fc933e090c04fd67cd484383",
+    "referencedAt": "2026-06-25"
+  }
+}

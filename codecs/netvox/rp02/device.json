@@ -1,0 +1,36 @@
+{
+  "vendor": "netvox",
+  "device": "rp02",
+  "name": "RP02 - Wireless Bottom-installed Ultrasonic Liquid Level Sensor",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "current",
+    "voltage"
+  ],
+  "provides": [
+    "air.temperature",
+    "breakerRS485Addr",
+    "deviceName",
+    "frequency",
+    "metering.energy.total",
+    "power.active",
+    "power.current",
+    "power.voltage",
+    "powerFactor"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "rp02",
+    "codecId": "rp02-codec",
+    "codecFile": "payload/rp02.js",
+    "codecSha256": "2646aad949c9737d62ce9fec374cdd6490cc6f39eb3642da9e8fcc25899d03b7",
+    "referencedAt": "2026-06-25"
+  }
+}

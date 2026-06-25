@@ -1,0 +1,832 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/netvox/rp02-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Startup version report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          156,
+          0,
+          110,
+          6,
+          32,
+          35,
+          9,
+          17,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "RP02",
+          "SWver": 11,
+          "HWver": 6,
+          "Datecode": "20230911"
+        }
+      }
+    },
+    {
+      "description": "Status report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          156,
+          1,
+          19,
+          9,
+          8,
+          0,
+          25,
+          1,
+          9,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "RP02",
+          "BreakerRS485Addr": 19,
+          "BreakerType": 9,
+          "BreakerProtectStatusBits_1P": 8,
+          "AlarmStatusBits_1P": 0,
+          "Pre_TripStatusBits_1P": 25,
+          "TripStatusBits_1P": 1,
+          "HandOrAutoControlAndSelfTestStatus": 9
+        }
+      }
+    },
+    {
+      "description": "Status report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          156,
+          2,
+          19,
+          9,
+          9,
+          0,
+          16,
+          1,
+          8,
+          2
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "RP02",
+          "BreakerRS485Addr": 19,
+          "Current": 2313,
+          "Voltage": 16,
+          "Power": 264,
+          "Temperature": 2
+        }
+      }
+    },
+    {
+      "description": "Status report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          156,
+          3,
+          96,
+          0,
+          9,
+          0,
+          16,
+          1,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "RP02",
+          "BreakerRS485Addr": 96,
+          "Energy": 589840,
+          "Frequency": 1,
+          "PowerFactor": 0
+        }
+      }
+    },
+    {
+      "description": "Status report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          156,
+          4,
+          96,
+          3,
+          9,
+          0,
+          16,
+          1,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "RP02",
+          "BreakerRS485Addr": 96,
+          "LeakageCurrent": 777,
+          "OnOffTotalCount": 1048832
+        }
+      }
+    },
+    {
+      "description": "Status report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          156,
+          17,
+          96,
+          9,
+          9,
+          0,
+          16,
+          3,
+          2,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "RP02",
+          "BreakerRS485Addr": 96,
+          "BreakerTYpe": 9,
+          "BreakerProtectStatusBits": 2304,
+          "AlarmStatusBits": 4099,
+          "PreTripStatusBits": 512
+        }
+      }
+    },
+    {
+      "description": "Status report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          156,
+          18,
+          85,
+          9,
+          9,
+          0,
+          16,
+          1,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "RP02",
+          "BreakerRS485Addr": 85,
+          "TripStatusBits": 2313,
+          "APhaseCurrent": 160,
+          "BphaseCurrent": 2560
+        }
+      }
+    },
+    {
+      "description": "Status report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          156,
+          19,
+          96,
+          9,
+          1,
+          0,
+          16,
+          1,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "RP02",
+          "BreakerRS485Addr": 96,
+          "CPhaseCurrent": 23050,
+          "AphaseVoltage": 16,
+          "BPhaseVoltage": 256,
+          "Temperature": 0
+        }
+      }
+    },
+    {
+      "description": "Status report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          156,
+          20,
+          96,
+          9,
+          9,
+          0,
+          16,
+          1,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "RP02",
+          "BreakerRS485Addr": 96,
+          "CPhaseVoltage": 2313,
+          "APhasePower": 16,
+          "BPhasePower": 256,
+          "Frequency": 0
+        }
+      }
+    },
+    {
+      "description": "Status report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          156,
+          21,
+          96,
+          9,
+          5,
+          0,
+          16,
+          1,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "RP02",
+          "BreakerRS485Addr": 96,
+          "CPhasePower": 2309,
+          "APhaseEnergy": 1048832
+        }
+      }
+    },
+    {
+      "description": "Status report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          156,
+          22,
+          96,
+          0,
+          9,
+          0,
+          16,
+          1,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "RP02",
+          "BreakerRS485Addr": 96,
+          "BPhaseEnergy": 589840,
+          "APhasePowerFactor": 1,
+          "CPhasePowerFactor": 0,
+          "BPhasePowerFactor": 0
+        }
+      }
+    },
+    {
+      "description": "Status report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          156,
+          23,
+          51,
+          0,
+          8,
+          0,
+          0,
+          1,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "RP02",
+          "BreakerRS485Addr": 51,
+          "CPhaseEnergy": 524288,
+          "HandOrAutoControlStatus": 1,
+          "OnOffStatus": "Off"
+        }
+      }
+    },
+    {
+      "description": "Status report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          156,
+          24,
+          96,
+          9,
+          9,
+          0,
+          16,
+          1,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "RP02",
+          "BreakerRS485Addr": 96,
+          "LeakageCurrent": 2313,
+          "OnOffTotalCount": 1048832
+        }
+      }
+    },
+    {
+      "description": "Configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          129,
+          156,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ConfigReportRsp",
+          "Device": "RP02",
+          "Status": "Success"
+        }
+      }
+    },
+    {
+      "description": "Read configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          130,
+          156,
+          3,
+          132,
+          7,
+          8,
+          1,
+          0,
+          20,
+          1,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ReadConfigReportRsp",
+          "Device": "RP02",
+          "MinTime": 900,
+          "MaxTime": 1800
+        }
+      }
+    },
+    {
+      "description": "SetPassThroughModeRsq",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          131,
+          156,
+          0,
+          132,
+          7,
+          8,
+          1,
+          0,
+          20,
+          1,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "SetPassThroughModeRsq",
+          "Device": "RP02",
+          "Status": "Success"
+        }
+      }
+    },
+    {
+      "description": "GetPassThroughModeRsq",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          132,
+          156,
+          3,
+          5,
+          7,
+          8,
+          1,
+          0,
+          20,
+          1,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "GetPassThroughModeRsq",
+          "Device": "RP02",
+          "PassThroughModeOn": 3
+        }
+      }
+    },
+    {
+      "description": "SetProtectionRsp",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          133,
+          156,
+          3,
+          132,
+          7,
+          8,
+          1,
+          0,
+          20,
+          1,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "SetProtectionRsp",
+          "Device": "RP02",
+          "Status": "Failure"
+        }
+      }
+    },
+    {
+      "description": "GetTripCntRsq",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          134,
+          156,
+          7,
+          4,
+          7,
+          8,
+          1,
+          0,
+          20,
+          1,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "GetTripCntRsq",
+          "Device": "RP02",
+          "OverLoadTripCnt": 7,
+          "ShortCircuitTripCnt": 4,
+          "LeakageCurrentTripCnt": 7,
+          "UnderVoltagetTripCnt": 8,
+          "OverVoltagetTripCnt": 1,
+          "TemperaturetTripCnt": 0,
+          "RemoteSelfTesttTripCnt": 20,
+          "LeakingPhaseTripCnt": 1
+        }
+      }
+    },
+    {
+      "description": "GetAlarmInfoRsq(For 1P)",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          135,
+          156,
+          3,
+          132,
+          7,
+          8,
+          1,
+          0,
+          20,
+          1,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "GetAlarmInfoRsq(For 1P)",
+          "Device": "RP02",
+          "AlarmCurrent": 900,
+          "AlarmLeakageCurrent": 1800,
+          "AlarmVoltage": 256,
+          "AlarmTemperature": 20
+        }
+      }
+    },
+    {
+      "description": "GetAlarmInfoRsp1(For 3P)",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          136,
+          156,
+          3,
+          132,
+          7,
+          8,
+          1,
+          0,
+          20,
+          1,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "GetAlarmInfoRsp1(For 3P)",
+          "Device": "RP02",
+          "AlarmAPhaseCurrent": 900,
+          "AlarmBPhaseCurrent": 1800,
+          "AlarmCPhaseCurrent": 256,
+          "AlarmHPhaseCurrent": 5121
+        }
+      }
+    },
+    {
+      "description": "GetAlarmInfoRsp2(For 3P)",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          137,
+          156,
+          3,
+          132,
+          7,
+          8,
+          1,
+          1,
+          20,
+          3,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "GetAlarmInfoRsp2(For 3P)",
+          "Device": "RP02",
+          "AlarmLeakageCurrent": 900,
+          "AlarmAPhaseVoltage": 1800,
+          "AlarmBPhaseVoltage": 257,
+          "AlarmCPhaseVoltage": 5123
+        }
+      }
+    },
+    {
+      "description": "GetAlarmInfoRsp3(For 3P)",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          138,
+          156,
+          3,
+          132,
+          7,
+          8,
+          1,
+          0,
+          20,
+          1,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "GetAlarmInfoRsp3(For 3P)",
+          "Device": "RP02",
+          "AlarmTemperature": 3
+        }
+      }
+    },
+    {
+      "description": "OffCmd",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          144,
+          156,
+          3,
+          132,
+          7,
+          8,
+          1,
+          0,
+          20,
+          1,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "Off",
+          "Device": "RP02",
+          "BreakerRS485Addr": 3
+        }
+      }
+    },
+    {
+      "description": "OnCmd",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          145,
+          156,
+          7,
+          132,
+          7,
+          8,
+          1,
+          0,
+          20,
+          1,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "On",
+          "Device": "RP02",
+          "BreakerRS485Addr": 7
+        }
+      }
+    },
+    {
+      "description": "Off(Cant manually On After Off)",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          146,
+          156,
+          20,
+          132,
+          7,
+          8,
+          1,
+          0,
+          20,
+          1,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "Off(Cant manually On After Off)",
+          "Device": "RP02",
+          "BreakerRS485Addr": 20
+        }
+      }
+    },
+    {
+      "description": "ClearEnergy",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          147,
+          156,
+          17,
+          132,
+          7,
+          8,
+          1,
+          0,
+          20,
+          1,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ClearEnergy",
+          "Device": "RP02",
+          "BreakerRS485Addr": 17
+        }
+      }
+    },
+    {
+      "description": "ResetToFactory",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          148,
+          156,
+          3,
+          132,
+          7,
+          8,
+          1,
+          0,
+          20,
+          1,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ResetToFactory",
+          "Device": "RP02",
+          "BreakerRS485Addr": 3
+        }
+      }
+    },
+    {
+      "description": "LeakageCurrentSeftTest",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          149,
+          156,
+          3,
+          132,
+          7,
+          8,
+          1,
+          0,
+          20,
+          1,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "LeakageCurrentSeftTest",
+          "Device": "RP02",
+          "BreakerRS485Addr": 3
+        }
+      }
+    },
+    {
+      "description": "ClearError/AlarmLog",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          150,
+          156,
+          7,
+          132,
+          7,
+          8,
+          1,
+          0,
+          20,
+          1,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ClearError/AlarmLog",
+          "Device": "RP02",
+          "BreakerRS485Addr": 7
+        }
+      }
+    }
+  ]
+}

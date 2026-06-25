@@ -1,0 +1,113 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/netvox/r718n1-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Startup version report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          73,
+          0,
+          130,
+          2,
+          32,
+          32,
+          18,
+          36,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R718N1",
+          "SWver": 13,
+          "HWver": 2,
+          "Datecode": "20201224"
+        }
+      }
+    },
+    {
+      "description": "Status report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          73,
+          1,
+          36,
+          3,
+          232,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R718N1",
+          "Volt": 3.6,
+          "Current": 1000,
+          "Multiplier": 1
+        }
+      }
+    },
+    {
+      "description": "Configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          129,
+          73,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ConfigReportRsp",
+          "Device": "R718N1",
+          "Status": "Success"
+        }
+      }
+    },
+    {
+      "description": "Read configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          130,
+          73,
+          3,
+          132,
+          7,
+          8,
+          0,
+          100,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ReadConfigReportRsp",
+          "Device": "R718N1",
+          "MinTime": 900,
+          "MaxTime": 1800,
+          "CurrentChange": 100
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "vendor": "netvox",
+  "device": "r718n3",
+  "name": "R718N3 - Wireless 3-Phase Current Meter With 3 x 50A Solid Core CT",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "current"
+  ],
+  "provides": [
+    "battery",
+    "current2",
+    "current3",
+    "deviceName",
+    "multiplier1",
+    "multiplier2",
+    "multiplier3",
+    "power.current"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r718n3",
+    "codecId": "r718n3-codec",
+    "codecFile": "payload/r718n3.js",
+    "codecSha256": "3fb3023d72202dd0f4c8edae3f8e6dadd7631fdd27f7c3f074978b2bb05ae8cf",
+    "referencedAt": "2026-06-25"
+  }
+}

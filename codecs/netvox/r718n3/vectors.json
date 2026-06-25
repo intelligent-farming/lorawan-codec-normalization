@@ -1,0 +1,103 @@
+{
+  "uplink": [
+    {
+      "description": "Measurement frame 1 -> power-meter",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          74,
+          1,
+          36,
+          3,
+          232,
+          0,
+          200,
+          27,
+          88,
+          1
+        ]
+      },
+      "expected": {
+        "data": {
+          "deviceName": "R718N3",
+          "battery": 3.6,
+          "power": {
+            "current": 1
+          },
+          "current2": 0.2,
+          "current3": 7,
+          "multiplier1": 1,
+          "make": "netvox",
+          "model": "r718n3"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream-example input (TTN netvox r718n3 codec yaml, Apache-2.0). expected.data via the ported netvox decoder (oracle). Mapped to vocabulary per the codec header."
+    },
+    {
+      "description": "Measurement frame 2 -> power-meter",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          74,
+          3,
+          36,
+          3,
+          232,
+          0,
+          200,
+          27,
+          88,
+          54
+        ]
+      },
+      "expected": {
+        "data": {
+          "deviceName": "R718N3",
+          "battery": 3.6,
+          "power": {
+            "current": 1
+          },
+          "current2": 0.2,
+          "current3": 7,
+          "multiplier1": 10,
+          "multiplier2": 5,
+          "multiplier3": 100,
+          "make": "netvox",
+          "model": "r718n3"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream-example input (TTN netvox r718n3 codec yaml, Apache-2.0). expected.data via the ported netvox decoder (oracle). Mapped to vocabulary per the codec header."
+    },
+    {
+      "description": "Device-info / config frame -> error",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          74,
+          0,
+          100,
+          2,
+          32,
+          32,
+          7,
+          6,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "device information f"
+        ]
+      },
+      "source": "ttn-example",
+      "_note": "Non-measurement frame."
+    }
+  ],
+  "downlink": []
+}
