@@ -1,0 +1,65 @@
+{
+  "uplink": [
+    {
+      "description": "NPK soil frame -> soil.n/p/k",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          9,
+          15,
+          72,
+          3,
+          132,
+          26,
+          2,
+          1,
+          35,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "deviceName": "R726 Series",
+          "battery": 7.2,
+          "soil": {
+            "n": 900,
+            "p": 6658,
+            "k": 291
+          },
+          "make": "netvox",
+          "model": "r72632a01"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream-example input (TTN netvox r72632a01 codec yaml, Apache-2.0). reportType 0x0F decodes Nitrogen/Phosphorus/Potassium -> soil.n/p/k; Volt->battery. Satisfies soil-monitor."
+    },
+    {
+      "description": "Device-info frame -> error",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          9,
+          0,
+          130,
+          4,
+          32,
+          32,
+          17,
+          5,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "device information"
+        ]
+      },
+      "source": "ttn-example",
+      "_note": "Non-measurement frame."
+    }
+  ],
+  "downlink": []
+}
