@@ -1,0 +1,39 @@
+{
+  "vendor": "sensecap",
+  "device": "sensecaps2100-data-logger",
+  "name": "S2100 LoRaWAN® Data Logger",
+  "categories": [
+    "climate",
+    "weather-station",
+    "light",
+    "wind",
+    "rain-gauge"
+  ],
+  "sensors": [
+    "4-20 ma",
+    "analog input"
+  ],
+  "provides": [
+    "air.lightIntensity",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "rain.cumulative",
+    "uVIndex",
+    "wind.speed",
+    "windDirectionSensor"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "sensecap",
+    "device": "sensecaps2100-data-logger",
+    "codecId": "sensecap2100-codec",
+    "codecFile": "sensecap2100-decoder.js",
+    "codecSha256": "8604a5e689cd6732498b33238c67bede68c50fa42cb51e9e31cb8b26c09a6408",
+    "referencedAt": "2026-06-25"
+  }
+}

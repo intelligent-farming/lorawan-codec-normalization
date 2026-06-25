@@ -1,0 +1,73 @@
+{
+  "uplink": [
+    {
+      "description": "Weather group (dataId 0x01): temperature, humidity, light, UV, wind",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          1,
+          0,
+          250,
+          50,
+          0,
+          0,
+          3,
+          232,
+          30,
+          0,
+          50
+        ]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 25,
+            "relativeHumidity": 50,
+            "lightIntensity": 1000
+          },
+          "uVIndex": 3,
+          "wind": {
+            "speed": 5
+          },
+          "make": "sensecap",
+          "model": "sensecaps2100-data-logger"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic SenseCAP S2100 telemetry frame (dataId 0x01); expected.data via the ported upstream decoder (oracle). 4097->air.temperature, 4098->air.relativeHumidity, 4099->air.lightIntensity, 4105->wind.speed; UV as extra."
+    },
+    {
+      "description": "Weather group (dataId 0x02): wind direction, rainfall, barometric pressure",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          2,
+          0,
+          180,
+          0,
+          0,
+          4,
+          210,
+          39,
+          146
+        ]
+      },
+      "expected": {
+        "data": {
+          "windDirectionSensor": 180,
+          "rain": {
+            "cumulative": 1.234
+          },
+          "air": {
+            "pressure": 1013
+          },
+          "make": "sensecap",
+          "model": "sensecaps2100-data-logger"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic SenseCAP S2100 frame (dataId 0x02). 4113->rain.cumulative; barometric pressure (Pa) /100 -> air.pressure (hPa). Union with the 0x01 frame covers weather-station + rain-gauge."
+    }
+  ],
+  "downlink": []
+}
