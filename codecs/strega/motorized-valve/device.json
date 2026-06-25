@@ -1,0 +1,39 @@
+{
+  "vendor": "strega",
+  "device": "motorized-valve",
+  "name": "Wireless LoRaWAN Motorized Smart Valve",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "smart valve"
+  ],
+  "provides": [
+    "actuator",
+    "air.relativeHumidity",
+    "air.temperature",
+    "batteryPercent",
+    "cable",
+    "class",
+    "dI0",
+    "lSC",
+    "lSO",
+    "leak",
+    "powerState",
+    "tamper",
+    "vt"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "strega",
+    "device": "motorized-valve",
+    "codecId": "motorized-valve-codec",
+    "codecFile": "motorized-valve.js",
+    "codecSha256": "ede4e3d74f293f9cead2adb959526d71bf8d9f126b10c7e26c1e415a73cab0e8",
+    "referencedAt": "2026-06-25"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/strega/motorized-valve-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Periodic Uplink",
+      "input": {
+        "fPort": 4,
+        "bytes": [
+          51,
+          49,
+          56,
+          56,
+          50,
+          35,
+          99,
+          61,
+          119,
+          219
+        ]
+      },
+      "output": {
+        "data": {
+          "Actuator": "0",
+          "Ana": "null",
+          "Bat": 74,
+          "Cable": "0",
+          "Class": "0",
+          "DI0": "0",
+          "LSO": "0",
+          "LSC": "0",
+          "Hygro": 46.82,
+          "Leak": "0",
+          "Power": "0",
+          "Tamper": "1",
+          "Temp": 23.96,
+          "counterValue": "null",
+          "vt": "10"
+        }
+      }
+    }
+  ]
+}
