@@ -37,3 +37,14 @@ The Things Network — lorawan-devices
   Note: the normalized codecs themselves (codecs/<vendor>/<device>/codec.js) are
   ORIGINAL works authored for this project, not copied from upstream. Upstream
   decoders are consulted only to understand each device's wire format.
+
+WSC2-Compact-LS (codecs/dragino/wsc2-compact-ls)
+------------------------------------------------
+This device is not present in TheThingsNetwork/lorawan-devices. Its normalized
+codec was authored from Dragino's published payload decoder and product manual:
+  https://github.com/dragino/dragino-end-node-decoder (WSC2-Compact-LS)
+  https://wiki.dragino.com (WSC2-Compact-LS Weather Station Kit User Manual)
+A verbatim copy of the Dragino decoder is retained as an authoring reference at
+codecs/dragino/wsc2-compact-ls/reference/upstream-codec.js (excluded from the
+published package). Wire-format facts are not copyrightable; the normalized
+codec is original work under AGPL-3.0-or-later.

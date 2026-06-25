@@ -1,0 +1,4 @@
+{
+  "_note": "No official example payloads are published for the WSC2-Compact-LS. The normalized codec was authored from the Dragino decoder byte layout (see upstream-codec.js); its vectors use a synthetic in-bounds frame. This device is not in TheThingsNetwork/lorawan-devices.",
+  "examples": []
+}
