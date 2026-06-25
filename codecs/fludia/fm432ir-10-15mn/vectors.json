@@ -1,0 +1,33 @@
+{
+  "uplink": [
+    {
+      "description": "T1_MECA_10MN frame: cumulative energy index + 8 ten-minute increments (most recent 1500 W)",
+      "input": {
+        "fPort": 1,
+        "bytes": [72, 0, 1, 134, 160, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 250]
+      },
+      "expected": {
+        "data": {
+          "metering": { "energy": { "total": 100000 } },
+          "power": { "active": 1500 },
+          "powers": [0, 0, 0, 0, 0, 0, 0, 1500],
+          "increments": [0, 0, 0, 0, 0, 0, 0, 250],
+          "messageType": "T1_MECA_10MN",
+          "timeStep": 10,
+          "make": "fludia",
+          "model": "fm432ir-10-15mn"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic T1_MECA_10MN frame (header 0x48, 21 bytes): 4-byte big-endian index then 8 uint16 interval increments. expected.data derived by running reference/upstream-codec.js (oracle: index 100000, power = increment*60/step = 250*6 = 1500 W). index Wh -> metering.energy.total; most-recent derived power -> power.active; powers/increments kept as extras. Satisfies power-meter."
+    },
+    {
+      "description": "Unknown/unsupported frame -> error",
+      "input": { "fPort": 1, "bytes": [255, 0] },
+      "expected": { "errors": ["unsupported or invalid frame"] },
+      "source": "synthetic",
+      "_note": "Headers outside the fixed-step MECA/T2/START set are not normalized by this codec."
+    }
+  ],
+  "downlink": []
+}

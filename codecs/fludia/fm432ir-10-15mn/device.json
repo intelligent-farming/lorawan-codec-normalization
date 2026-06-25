@@ -1,0 +1,33 @@
+{
+  "vendor": "fludia",
+  "device": "fm432ir-10-15mn",
+  "name": "FM432ir - Sensor for German electricity meters - 10/15 min",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "power",
+    "energy"
+  ],
+  "provides": [
+    "increments",
+    "messageType",
+    "metering.energy.total",
+    "power.active",
+    "powers",
+    "timeStep"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "fludia",
+    "device": "fm432ir-10-15mn",
+    "codecId": "fm432ir-10-15mn-codec",
+    "codecFile": "fm432ir-10-15mn-decode.js",
+    "codecSha256": "3e8dc4e37d5ad8ea225becb8957c4a2e81b8e7a0ca4e736add2baefb9d722879",
+    "referencedAt": "2026-06-25"
+  }
+}
