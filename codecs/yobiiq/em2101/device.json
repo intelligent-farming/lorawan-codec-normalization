@@ -1,0 +1,39 @@
+{
+  "vendor": "yobiiq",
+  "device": "em2101",
+  "name": "EM2101 - 1 Phase Energy Meter",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "current",
+    "power",
+    "voltage",
+    "snr",
+    "rssi",
+    "digital input"
+  ],
+  "provides": [
+    "codecVersion",
+    "dataloggerTimestamp",
+    "genericModel",
+    "manufacturer",
+    "metering.energy.total",
+    "modbusErrorCode",
+    "productCode",
+    "timestamp"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "yobiiq",
+    "device": "em2101",
+    "codecId": "em2101-codec",
+    "codecFile": "em2101.js",
+    "codecSha256": "58c4fec72c1cbd3982c20b8707f1d194cac0f4155e073f4daeaed647b263ef5d",
+    "referencedAt": "2026-06-25"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "vendor": "yobiiq",
+  "device": "em4301-ct",
+  "name": "EM4301-CT - 3 Phase Energy Meter",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "current",
+    "power",
+    "voltage",
+    "snr",
+    "rssi",
+    "digital input"
+  ],
+  "provides": [
+    "activeEnergyExportL123T1",
+    "activeEnergyExportL123T2",
+    "codecVersion",
+    "dataloggerTimestamp",
+    "genericModel",
+    "manufacturer",
+    "metering.energy.total",
+    "modbusErrorCode",
+    "productCode",
+    "timestamp"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "yobiiq",
+    "device": "em4301-ct",
+    "codecId": "em4301-codec",
+    "codecFile": "em4301.js",
+    "codecSha256": "84dc52c8edfc7a3cf25a7a7ccd8eeed3d100ecd3b24935b5d45f1ddbc29b5051",
+    "referencedAt": "2026-06-25"
+  }
+}

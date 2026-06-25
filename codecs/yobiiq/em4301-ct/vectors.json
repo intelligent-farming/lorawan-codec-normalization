@@ -1,0 +1,74 @@
+{
+  "uplink": [
+    {
+      "description": "Datalog frame: active energy import -> metering.energy.total",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          1,
+          1,
+          103,
+          59,
+          36,
+          12,
+          2,
+          3,
+          103,
+          59,
+          33,
+          180,
+          3,
+          4,
+          3,
+          8,
+          15,
+          4,
+          4,
+          5,
+          0,
+          0,
+          0,
+          0,
+          5,
+          6,
+          0,
+          0,
+          0,
+          0,
+          6,
+          7,
+          0,
+          0,
+          0,
+          0,
+          11,
+          10,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "timestamp": 1731929100,
+          "dataloggerTimestamp": 1731928500,
+          "activeEnergyExportL123T1": 0,
+          "activeEnergyExportL123T2": 0,
+          "modbusErrorCode": 0,
+          "codecVersion": "1.0.1",
+          "genericModel": "EM4301",
+          "productCode": "P1002011",
+          "manufacturer": "YOBIIQ B.V.",
+          "metering": {
+            "energy": {
+              "total": 50859780
+            }
+          },
+          "make": "yobiiq",
+          "model": "em4301-ct"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream-example input (TTN yobiiq/em4301-ct codec yaml, Apache-2.0). expected.data via the ported upstream decoder (oracle). Sum of activeEnergyImport* registers (Wh) -> metering.energy.total; other fields flattened from {data,unit} to camelCase extras. Satisfies power-meter."
+    }
+  ],
+  "downlink": []
+}
