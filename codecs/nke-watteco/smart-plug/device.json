@@ -1,0 +1,33 @@
+{
+  "vendor": "nke-watteco",
+  "device": "smart-plug",
+  "name": "Smart Plug",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "current",
+    "voltage",
+    "energy"
+  ],
+  "provides": [
+    "metering.energy.total",
+    "power.active",
+    "reactiveEnergy",
+    "reactivePower",
+    "sampleCount"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "nke-watteco",
+    "device": "smart-plug",
+    "codecId": "smart-plug-codec",
+    "codecFile": "smart-plug.js",
+    "codecSha256": "7303071d4375db8d5fbfc823885ad724c1c6f2696094d360bd5d78582711b6ce",
+    "referencedAt": "2026-06-25"
+  }
+}

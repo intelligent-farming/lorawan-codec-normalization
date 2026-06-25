@@ -1,0 +1,71 @@
+{
+  "uplink": [
+    {
+      "description": "Energy/power report (cluster 0x0052) -> metering.energy.total + power.active",
+      "input": {
+        "fPort": 125,
+        "bytes": [
+          49,
+          10,
+          0,
+          82,
+          0,
+          0,
+          65,
+          12,
+          0,
+          0,
+          71,
+          255,
+          255,
+          190,
+          0,
+          99,
+          0,
+          47,
+          255,
+          214
+        ]
+      },
+      "expected": {
+        "data": {
+          "metering": {
+            "energy": {
+              "total": 71
+            }
+          },
+          "power": {
+            "active": 47
+          },
+          "reactiveEnergy": -66,
+          "sampleCount": 99,
+          "reactivePower": -42,
+          "make": "nke-watteco",
+          "model": "smart-plug"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic Watteco ZCL metering frame (cluster 0x0052; same format as the watteco/smartplug sibling, offsets verified against the upstream decoder). active_energy s24 -> metering.energy.total, active_power s16 -> power.active. No upstream examples published. Satisfies power-meter."
+    },
+    {
+      "description": "Batch report -> error",
+      "input": {
+        "fPort": 125,
+        "bytes": [
+          32,
+          16,
+          0,
+          82
+        ]
+      },
+      "expected": {
+        "errors": [
+          "payload to"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Batch frames need per-device coding tables."
+    }
+  ],
+  "downlink": []
+}

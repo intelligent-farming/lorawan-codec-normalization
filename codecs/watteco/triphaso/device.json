@@ -1,0 +1,30 @@
+{
+  "vendor": "watteco",
+  "device": "triphaso",
+  "name": "Triphas'O - Energy Consumption Interface",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "energy"
+  ],
+  "provides": [
+    "metering.energy.total",
+    "negativeActiveEnergy",
+    "negativeReactiveEnergy",
+    "positiveReactiveEnergy"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "watteco",
+    "device": "triphaso",
+    "codecId": "triphaso-codec",
+    "codecFile": "triphaso.js",
+    "codecSha256": "54a9ece731af5ddcfd1c87cf9e6c6efe2f46fbffccb08ec8fa99ea04d3266925",
+    "referencedAt": "2026-06-25"
+  }
+}

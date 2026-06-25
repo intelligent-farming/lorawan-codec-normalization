@@ -1,0 +1,86 @@
+{
+  "uplink": [
+    {
+      "description": "Three-phase active-energy report (cluster 0x800A) -> metering.energy.total",
+      "input": {
+        "fPort": 125,
+        "bytes": [
+          113,
+          10,
+          128,
+          10,
+          0,
+          0,
+          65,
+          32,
+          0,
+          3,
+          169,
+          106,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          146,
+          153,
+          0,
+          0,
+          112,
+          80,
+          0,
+          0,
+          124,
+          127,
+          0,
+          0,
+          0,
+          0,
+          0,
+          192,
+          0,
+          0,
+          15,
+          111
+        ]
+      },
+      "expected": {
+        "data": {
+          "metering": {
+            "energy": {
+              "total": 239978
+            }
+          },
+          "negativeActiveEnergy": 0,
+          "positiveReactiveEnergy": 37529,
+          "negativeReactiveEnergy": 28752,
+          "make": "nke-watteco",
+          "model": "triphaso-sensor"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Watteco ZCL octet-string three-phase energy block (offsets verified against the upstream decoder): positive_active_energy_abc u32 -> metering.energy.total; negative/reactive totals as extras. Satisfies power-meter."
+    },
+    {
+      "description": "Batch report -> error",
+      "input": {
+        "fPort": 125,
+        "bytes": [
+          32,
+          16,
+          128,
+          10
+        ]
+      },
+      "expected": {
+        "errors": [
+          "payload to"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Batch frames need per-device coding tables."
+    }
+  ],
+  "downlink": []
+}
