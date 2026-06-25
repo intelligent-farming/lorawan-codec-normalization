@@ -1,0 +1,71 @@
+{
+  "uplink": [
+    {
+      "description": "Energy/power report (cluster 0x0052) -> metering.energy.total + power.active",
+      "input": {
+        "fPort": 125,
+        "bytes": [
+          49,
+          10,
+          0,
+          82,
+          0,
+          0,
+          65,
+          12,
+          0,
+          0,
+          71,
+          255,
+          255,
+          190,
+          0,
+          99,
+          0,
+          47,
+          255,
+          214
+        ]
+      },
+      "expected": {
+        "data": {
+          "metering": {
+            "energy": {
+              "total": 71
+            }
+          },
+          "power": {
+            "active": 47
+          },
+          "reactiveEnergy": -66,
+          "sampleCount": 99,
+          "reactivePower": -42,
+          "make": "watteco",
+          "model": "smartplug"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream-example input (TTN watteco/smartplug codec yaml, Apache-2.0). Octet-string metering block decoded (offsets verified empirically against the upstream decoder): active_energy s24 -> metering.energy.total, active_power s16 -> power.active; reactive energy/power and sample count as extras. Satisfies power-meter."
+    },
+    {
+      "description": "Batch report -> error",
+      "input": {
+        "fPort": 125,
+        "bytes": [
+          32,
+          16,
+          0,
+          82
+        ]
+      },
+      "expected": {
+        "errors": [
+          "payload to"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Batch frames need per-device coding tables."
+    }
+  ],
+  "downlink": []
+}

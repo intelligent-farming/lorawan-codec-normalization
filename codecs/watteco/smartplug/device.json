@@ -1,0 +1,33 @@
+{
+  "vendor": "watteco",
+  "device": "smartplug",
+  "name": "Smart Plug",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "current",
+    "voltage",
+    "energy"
+  ],
+  "provides": [
+    "metering.energy.total",
+    "power.active",
+    "reactiveEnergy",
+    "reactivePower",
+    "sampleCount"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "watteco",
+    "device": "smartplug",
+    "codecId": "smartplug-codec",
+    "codecFile": "smartplug.js",
+    "codecSha256": "5c494db039ea97c00778d62ee3dfa757c97f97fd89ca40fbb01d8219688be1a2",
+    "referencedAt": "2026-06-25"
+  }
+}
