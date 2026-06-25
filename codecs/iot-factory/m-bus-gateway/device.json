@@ -1,0 +1,32 @@
+{
+  "vendor": "iot-factory",
+  "device": "m-bus-gateway",
+  "name": "M-BUS LORAWAN GATEWAY",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [],
+  "provides": [
+    "batteryPercent",
+    "frameTime",
+    "medium",
+    "meterSerialNumber",
+    "metering.energy.total",
+    "powerType",
+    "protocolVersion",
+    "serialNumber"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "iot-factory",
+    "device": "m-bus-gateway",
+    "codecId": "m-bus-gateway-codec",
+    "codecFile": "m-bus-gateway-decoder.js",
+    "codecSha256": "90d9a90ed18891fafdbcbf955e10892eb3d15231344822ca2a823cc0c6bc8500",
+    "referencedAt": "2026-06-25"
+  }
+}
