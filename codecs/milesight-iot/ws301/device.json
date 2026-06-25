@@ -1,0 +1,29 @@
+{
+  "vendor": "milesight-iot",
+  "device": "ws301",
+  "name": "Milesight WS301-Wireless Magnetic Contact Switch",
+  "categories": [
+    "contact"
+  ],
+  "sensors": [
+    "battery"
+  ],
+  "provides": [
+    "action.contactState",
+    "batteryPercent",
+    "install"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "ws301",
+    "codecId": "ws301-codec",
+    "codecFile": "ws301.js",
+    "codecSha256": "3c366680914eb9f4a62c847488ac79e2d4a14d8cd2172469c34789591d000318",
+    "referencedAt": "2026-06-25"
+  }
+}

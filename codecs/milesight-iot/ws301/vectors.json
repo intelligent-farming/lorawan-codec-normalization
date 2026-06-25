@@ -1,0 +1,51 @@
+{
+  "uplink": [
+    {
+      "description": "Door state uplink -> action.contactState",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          1,
+          117,
+          75,
+          3,
+          0,
+          1
+        ]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 75,
+          "action": {
+            "contactState": "open"
+          },
+          "make": "milesight-iot",
+          "model": "ws301"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream-example input (TTN milesight-iot ws301 codec yaml, Apache-2.0). door (open/closed) -> action.contactState; battery % -> batteryPercent. Satisfies contact."
+    },
+    {
+      "description": "Install/status frame (no contact measurement)",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          4,
+          0,
+          1
+        ]
+      },
+      "expected": {
+        "data": {
+          "install": "no",
+          "make": "milesight-iot",
+          "model": "ws301"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Config/status frame; install state as a camelCase extra."
+    }
+  ],
+  "downlink": []
+}
