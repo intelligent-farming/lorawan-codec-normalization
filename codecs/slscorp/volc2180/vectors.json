@@ -1,0 +1,48 @@
+{
+  "uplink": [
+    {
+      "description": "Meter-data uplink (MIB GetResponse 0x58) -> power + energy + voltage + current",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          88,
+          128,
+          5,
+          220,
+          1,
+          134,
+          160,
+          3,
+          232,
+          25,
+          82,
+          0,
+          3,
+          134,
+          88
+        ]
+      },
+      "expected": {
+        "data": {
+          "dimmer": "51.2",
+          "power": {
+            "active": 1500,
+            "current": 6.482,
+            "voltage": 231
+          },
+          "metering": {
+            "energy": {
+              "total": 100000
+            }
+          },
+          "powerfactor": "1",
+          "make": "slscorp",
+          "model": "volc2180"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic SLS MIB meter-data frame (0x58 GetResponse); expected.data via the ported upstream decoder (oracle). power -> power.active (W), energy (kWh) -> metering.energy.total (Wh), VRMS -> power.voltage (V), IRMS -> power.current (A); dimmer/powerfactor as extras. No upstream examples published. Satisfies power-meter."
+    }
+  ],
+  "downlink": []
+}

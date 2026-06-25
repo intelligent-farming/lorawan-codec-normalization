@@ -1,0 +1,32 @@
+{
+  "vendor": "slscorp",
+  "device": "volc2180",
+  "name": "VOLC2180",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "dimmer",
+    "metering.energy.total",
+    "power.active",
+    "power.current",
+    "power.voltage",
+    "powerfactor"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "slscorp",
+    "device": "volc2180",
+    "codecId": "volc2180-codec",
+    "codecFile": "volc2180.js",
+    "codecSha256": "086e854f20443ec6683a1d7cdefc52ab29d30e58a7972cb7eaeb7800c8f7f8c1",
+    "referencedAt": "2026-06-25"
+  }
+}
