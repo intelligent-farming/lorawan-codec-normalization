@@ -1,0 +1,161 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/radionode/rn320ex2-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "checkin upload",
+      "input": {
+        "fPort": 88,
+        "bytes": [
+          11,
+          38,
+          227,
+          169,
+          5,
+          104,
+          88,
+          2,
+          238,
+          12,
+          14,
+          7,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "head": 11,
+          "ver": 1745201635,
+          "interval": 600,
+          "splrate": 600,
+          "bat": 238,
+          "volt": 3596,
+          "frequency": 7,
+          "subband": 0
+        }
+      }
+    },
+    {
+      "description": "datain upload",
+      "input": {
+        "fPort": 88,
+        "bytes": [
+          12,
+          38,
+          0,
+          201,
+          3,
+          11,
+          104,
+          2,
+          196,
+          29,
+          180,
+          65,
+          216,
+          2,
+          183,
+          65,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "head": 12,
+          "model": 38,
+          "tsmode": 0,
+          "timestamp": 1745552329,
+          "splfmt": 2,
+          "data_size": 12,
+          "temperature_01": 22.514534,
+          "temperature_02": 22.876389,
+          "door_01": 0
+        }
+      }
+    },
+    {
+      "description": "holdin upload",
+      "input": {
+        "fPort": 88,
+        "bytes": [
+          13,
+          38,
+          0,
+          201,
+          3,
+          11,
+          104,
+          2,
+          196,
+          29,
+          180,
+          65,
+          216,
+          2,
+          183,
+          65,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "head": 13,
+          "model": 38,
+          "tsmode": 0,
+          "timestamp": 1745286954,
+          "splfmt": 2,
+          "data_size": 12,
+          "temperature_01": 22.514534,
+          "temperature_02": 22.876389,
+          "door_01": 0
+        }
+      }
+    },
+    {
+      "description": "eventin upload",
+      "input": {
+        "fPort": 88,
+        "bytes": [
+          14,
+          38,
+          0,
+          16,
+          4,
+          11,
+          104,
+          2,
+          154,
+          63,
+          28,
+          198,
+          154,
+          63,
+          28,
+          198,
+          0,
+          0,
+          198,
+          66
+        ]
+      },
+      "output": {
+        "data": {
+          "head": 14,
+          "model": 38,
+          "tsmode": 0,
+          "timestamp": 1745552400,
+          "splfmt": 2,
+          "data_size": 12,
+          "temperature_01": -9999.9,
+          "temperature_02": -9999.9,
+          "door_01": 99
+        }
+      }
+    }
+  ]
+}

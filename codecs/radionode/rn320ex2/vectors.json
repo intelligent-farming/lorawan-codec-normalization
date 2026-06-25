@@ -1,0 +1,52 @@
+{
+  "uplink": [
+    {
+      "description": "contact measurement frame",
+      "input": {
+        "fPort": 88,
+        "bytes": [
+          12,
+          38,
+          0,
+          201,
+          3,
+          11,
+          104,
+          2,
+          196,
+          29,
+          180,
+          65,
+          216,
+          2,
+          183,
+          65,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "head": 12,
+          "deviceModel": 38,
+          "tsmode": 0,
+          "timestamp": 1745552329,
+          "splfmt": 2,
+          "dataSize": 12,
+          "temperature_01": 22.514534,
+          "temperature_02": 22.876389,
+          "action": {
+            "contactState": "closed"
+          },
+          "make": "radionode",
+          "model": "rn320ex2"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream-example input (TTN radionode/rn320ex2 codec yaml, Apache-2.0). expected.data via the ported upstream decoder (oracle). Mapped per the codec header."
+    }
+  ],
+  "downlink": []
+}

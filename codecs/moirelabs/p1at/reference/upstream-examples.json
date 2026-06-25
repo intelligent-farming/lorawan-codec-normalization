@@ -1,0 +1,73 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/moirelabs/p1a-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "20.59 MPa average pressure",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          3,
+          229,
+          184,
+          180,
+          65,
+          0,
+          0,
+          199,
+          65,
+          229,
+          184,
+          164,
+          65,
+          0,
+          0,
+          200,
+          65
+        ]
+      },
+      "output": {
+        "data": {
+          "unit": "MPa",
+          "min_value": 22.5903,
+          "max_value": 24.875,
+          "average_value": 20.5903,
+          "last_value": 25
+        }
+      }
+    },
+    {
+      "description": "20.59 kPa average pressure",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          229,
+          184,
+          180,
+          65,
+          0,
+          0,
+          199,
+          65,
+          229,
+          184,
+          164,
+          65,
+          0,
+          0,
+          200,
+          65
+        ]
+      },
+      "output": {
+        "data": {
+          "unit": "kPa",
+          "min_value": 22.5903,
+          "max_value": 24.875,
+          "average_value": 20.5903,
+          "last_value": 25
+        }
+      }
+    }
+  ]
+}

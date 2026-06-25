@@ -1,0 +1,32 @@
+{
+  "vendor": "dnt",
+  "device": "dnt-lw-bsm",
+  "name": "LoRaWAN® Switch Actuator and Meter for brand switches",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "current",
+    "power",
+    "voltage"
+  ],
+  "provides": [
+    "power.active",
+    "switchFault",
+    "switchRockerPressed",
+    "switchState"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dnt",
+    "device": "dnt-lw-bsm",
+    "codecId": "dnt-lw-bsm-codec",
+    "codecFile": "dnt-lw-bsm.js",
+    "codecSha256": "7056345d78cdd75cbfb9a2c48f30371daec07018566f8886b762fe955bbd2662",
+    "referencedAt": "2026-06-25"
+  }
+}

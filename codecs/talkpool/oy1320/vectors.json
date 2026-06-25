@@ -1,0 +1,33 @@
+{
+  "uplink": [
+    {
+      "description": "water-meter measurement frame",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          1,
+          33,
+          0,
+          0,
+          23,
+          56
+        ]
+      },
+      "expected": {
+        "data": {
+          "metering": {
+            "water": {
+              "total": 5944
+            }
+          },
+          "Status": "0",
+          "make": "talkpool",
+          "model": "oy1320"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream-example input (TTN talkpool/oy1320 codec yaml, Apache-2.0). expected.data via the ported upstream decoder (oracle). Mapped per the codec header."
+    }
+  ],
+  "downlink": []
+}

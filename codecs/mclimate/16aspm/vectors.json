@@ -1,0 +1,45 @@
+{
+  "uplink": [
+    {
+      "description": "power-meter measurement frame",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          1,
+          28,
+          3,
+          74,
+          36,
+          24,
+          5,
+          217,
+          231,
+          25,
+          82,
+          1
+        ]
+      },
+      "expected": {
+        "data": {
+          "internalTemperature": 28,
+          "metering": {
+            "energy": {
+              "total": 55190552
+            }
+          },
+          "power": {
+            "active": 1497,
+            "voltage": 231,
+            "current": 6.482
+          },
+          "relayState": "ON",
+          "make": "mclimate",
+          "model": "16aspm"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream-example input (TTN mclimate/16aspm codec yaml, Apache-2.0). expected.data via the ported upstream decoder (oracle). Mapped per the codec header."
+    }
+  ],
+  "downlink": []
+}

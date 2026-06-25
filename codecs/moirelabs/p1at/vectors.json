@@ -1,0 +1,44 @@
+{
+  "uplink": [
+    {
+      "description": "Gauge pressure (last reading) -> pressure.gauge",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          3,
+          229,
+          184,
+          180,
+          65,
+          0,
+          0,
+          199,
+          65,
+          229,
+          184,
+          164,
+          65,
+          0,
+          0,
+          200,
+          65
+        ]
+      },
+      "expected": {
+        "data": {
+          "pressure": {
+            "gauge": 25000
+          },
+          "pressureGaugeMin": 22590.2805,
+          "pressureGaugeMax": 24875,
+          "pressureGaugeAverage": 20590.2805,
+          "make": "moirelabs",
+          "model": "p1at"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream-example input (TTN moirelabs/p1at codec yaml, Apache-2.0); same decoder as the p1ap sibling. expected.data via the ported decoder (oracle): unit selector + min/max/average/last; last reading -> pressure.gauge (kPa, MPa x1000); min/max/average as camelCase extras. Satisfies process-pressure."
+    }
+  ],
+  "downlink": []
+}

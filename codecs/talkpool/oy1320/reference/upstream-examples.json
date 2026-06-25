@@ -1,0 +1,25 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/talkpool/oy1320-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Example",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          1,
+          33,
+          0,
+          0,
+          23,
+          56
+        ]
+      },
+      "output": {
+        "data": {
+          "MeterReading": 5944,
+          "Status": "0"
+        }
+      }
+    }
+  ]
+}

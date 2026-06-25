@@ -1,0 +1,32 @@
+{
+  "vendor": "mclimate",
+  "device": "16aspm",
+  "name": "16A Switch & Power Meter (16ASPM)",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "internalTemperature",
+    "metering.energy.total",
+    "power.active",
+    "power.current",
+    "power.voltage",
+    "relayState"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "mclimate",
+    "device": "16aspm",
+    "codecId": "16aspm-codec",
+    "codecFile": "16aspm.js",
+    "codecSha256": "ab8f5613e59384f10ddcb5530a448fa3df81268af94a4ddbc3894d510524cf7e",
+    "referencedAt": "2026-06-25"
+  }
+}

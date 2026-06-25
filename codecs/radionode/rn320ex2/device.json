@@ -1,0 +1,36 @@
+{
+  "vendor": "radionode",
+  "device": "rn320ex2",
+  "name": "RN320-EX2",
+  "categories": [
+    "contact"
+  ],
+  "sensors": [
+    "temperature",
+    "switch"
+  ],
+  "provides": [
+    "action.contactState",
+    "dataSize",
+    "deviceModel",
+    "head",
+    "splfmt",
+    "temperature_01",
+    "temperature_02",
+    "timestamp",
+    "tsmode"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "radionode",
+    "device": "rn320ex2",
+    "codecId": "rn320ex2-codec",
+    "codecFile": "rn320ex2.js",
+    "codecSha256": "6afca003a2c2bce4fcc1d17726782d171857798eb38873424108456b622c0169",
+    "referencedAt": "2026-06-25"
+  }
+}

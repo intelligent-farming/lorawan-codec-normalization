@@ -1,0 +1,28 @@
+{
+  "vendor": "talkpool",
+  "device": "oy1320",
+  "name": "OY1320 LoRaWAN Water meter AMR",
+  "categories": [
+    "water-meter"
+  ],
+  "sensors": [
+    "infrared"
+  ],
+  "provides": [
+    "Status",
+    "metering.water.total"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "talkpool",
+    "device": "oy1320",
+    "codecId": "oy1320-codec",
+    "codecFile": "oy1320.js",
+    "codecSha256": "bb198edbc1956283491e766b4511995770e9aa701c57997faf6d2f0518a5290b",
+    "referencedAt": "2026-06-25"
+  }
+}

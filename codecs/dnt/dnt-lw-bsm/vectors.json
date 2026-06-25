@@ -1,0 +1,32 @@
+{
+  "uplink": [
+    {
+      "description": "power-meter measurement frame",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          4,
+          192,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "switchState": "SWITCH_DISABLED",
+          "switchFault": "NO_FAULT",
+          "switchRockerPressed": "NO_ROCKER_PRESSED",
+          "power": {
+            "active": 0
+          },
+          "make": "dnt",
+          "model": "dnt-lw-bsm"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream-example input (TTN dnt/dnt-lw-bsm codec yaml, Apache-2.0). expected.data via the ported upstream decoder (oracle). Mapped per the codec header."
+    }
+  ],
+  "downlink": []
+}
