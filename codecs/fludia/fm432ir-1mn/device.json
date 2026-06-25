@@ -1,0 +1,31 @@
+{
+  "vendor": "fludia",
+  "device": "fm432ir-1mn",
+  "name": "FM432ir - Sensor for German electricity meters - 1 min",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "power",
+    "energy"
+  ],
+  "provides": [
+    "messageType",
+    "metering.energy.total",
+    "power.active",
+    "powers"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "fludia",
+    "device": "fm432ir-1mn",
+    "codecId": "fm432ir-1mn-codec",
+    "codecFile": "fm432ir-1mn-decode.js",
+    "codecSha256": "b01c4063b955278460eda15be78e62ab121e5b1b0947ad4be28225e93de64616",
+    "referencedAt": "2026-06-25"
+  }
+}

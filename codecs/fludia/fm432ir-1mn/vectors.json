@@ -1,0 +1,31 @@
+{
+  "uplink": [
+    {
+      "description": "T1_MECA_1MN frame: cumulative energy index + 20 per-minute power samples (most recent 1500 W)",
+      "input": {
+        "fPort": 1,
+        "bytes": [91, 0, 1, 134, 160, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 220]
+      },
+      "expected": {
+        "data": {
+          "metering": { "energy": { "total": 100000 } },
+          "power": { "active": 1500 },
+          "powers": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1500],
+          "messageType": "T1_MECA_1MN",
+          "make": "fludia",
+          "model": "fm432ir-1mn"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic T1_MECA_1MN frame (header 0x5b, 45 bytes): 4-byte big-endian index then 20 uint16 per-minute powers. expected.data derived by running reference/upstream-codec.js (oracle: index 100000, powers[19] 1500). index Wh -> metering.energy.total; most-recent non-null power -> power.active; full series kept as the powers extra. Satisfies power-meter."
+    },
+    {
+      "description": "Unrecognized header / length -> error",
+      "input": { "fPort": 1, "bytes": [240, 153, 0] },
+      "expected": { "errors": ["Invalid payload"] },
+      "source": "synthetic",
+      "_note": "find_message_type returns null for an unknown header/size combination."
+    }
+  ],
+  "downlink": []
+}
