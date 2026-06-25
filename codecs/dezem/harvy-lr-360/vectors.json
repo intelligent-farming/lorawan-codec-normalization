@@ -1,0 +1,87 @@
+{
+  "uplink": [
+    {
+      "description": "HarvyLR current frame (30 bytes): secondary current + supply-rail and temperature diagnostics",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          1,
+          2,
+          3,
+          50,
+          4,
+          128,
+          232,
+          125,
+          0,
+          132,
+          208,
+          5,
+          220,
+          69,
+          226,
+          69,
+          136,
+          69,
+          36,
+          39,
+          16,
+          78,
+          32,
+          0,
+          5,
+          0,
+          120,
+          0,
+          235,
+          7
+        ]
+      },
+      "expected": {
+        "data": {
+          "power": {
+            "current": 0.1789
+          },
+          "firmwareVersion": "v1.2.3",
+          "shuntValueOhm": 5,
+          "amplifierGain": 4,
+          "vsysCurrentMv": 3300,
+          "vsysMinMv": 3200,
+          "vsysMaxMv": 3400,
+          "vampRmsMv": 150,
+          "isecAvgLongMa": 178,
+          "isecAvgShortMa": 177,
+          "isecMinMa": 100,
+          "isecMaxMa": 200,
+          "measurementsCounter": 5,
+          "lastUploadSec": 120,
+          "temperature": 23.5,
+          "powerLost": 7,
+          "make": "dezem",
+          "model": "harvy-lr-360"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic 30-byte frame; expected.data via reference/upstream-codec.js (oracle: isecCurrent_mA 178.9). mA->A for power.current; supply-rail/stats/temperature kept as extras. Identical decoder to the authored harvy-lr-36 sibling. Satisfies power-meter."
+    },
+    {
+      "description": "Frame shorter than 30 bytes -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          1,
+          2,
+          3
+        ]
+      },
+      "expected": {
+        "errors": [
+          "HarvyLR frame too short"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Length guard."
+    }
+  ],
+  "downlink": []
+}
