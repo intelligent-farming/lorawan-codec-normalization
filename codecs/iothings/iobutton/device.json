@@ -1,0 +1,54 @@
+{
+  "vendor": "iothings",
+  "device": "iobutton",
+  "name": "ioButton",
+  "categories": [
+    "gps-tracker",
+    "climate",
+    "light",
+    "tilt"
+  ],
+  "sensors": [
+    "button"
+  ],
+  "provides": [
+    "air.lightIntensity",
+    "air.relativeHumidity",
+    "air.temperature",
+    "batteryPercent",
+    "buttonClickReason",
+    "containsSpecial",
+    "crc",
+    "externalPower",
+    "gpsAltitude",
+    "gpsCourse",
+    "gpsHdop",
+    "gpsHorizontalAccuracy",
+    "gpsNavStatus",
+    "gpsSatellites",
+    "gpsSpeedKmh",
+    "gpsVerticalAccuracy",
+    "position.latitude",
+    "position.longitude",
+    "tilt.angle",
+    "tiltDirection",
+    "tiltDirectionHistory",
+    "tiltMaxHistory",
+    "uplinkReasonButton",
+    "uplinkReasonGpio",
+    "uplinkReasonMovement"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "iothings",
+    "device": "iobutton",
+    "codecId": "iobutton-codec",
+    "codecFile": "iobutton.js",
+    "codecSha256": "ab14e0384dfdfb5b919e574f8e5c28575b97edf6cc33aa982ace51529914454f",
+    "referencedAt": "2026-06-25"
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "uplink": [
+    {
+      "description": "Full uplink: onboard temperature + light + humidity + tilt, plus GPS fix (covers gps-tracker, climate, light, tilt)",
+      "input": { "fPort": 1, "bytes": [24, 171, 200, 131, 18, 8, 103, 5, 220, 21, 124, 17, 171, 128, 23, 112, 64, 3, 31, 51, 81, 21, 2, 249, 14, 63, 4, 210, 5, 8, 0, 152, 3, 132, 12, 9] },
+      "expected": {
+        "data": {
+          "crc": 171,
+          "batteryPercent": 78.7,
+          "uplinkReasonButton": false,
+          "uplinkReasonMovement": false,
+          "uplinkReasonGpio": false,
+          "containsSpecial": false,
+          "buttonClickReason": "none",
+          "tilt": { "angle": 45.23 },
+          "tiltDirection": 181,
+          "tiltMaxHistory": 60,
+          "tiltDirectionHistory": 90,
+          "position": { "latitude": 52.3456789, "longitude": 4.9876543 },
+          "gpsNavStatus": 3,
+          "gpsAltitude": 123.4,
+          "gpsHorizontalAccuracy": 5,
+          "gpsVerticalAccuracy": 8,
+          "gpsSpeedKmh": 15.2,
+          "gpsCourse": 90,
+          "gpsHdop": 1.2,
+          "gpsSatellites": 9,
+          "air": { "temperature": 21.51, "lightIntensity": 15, "relativeHumidity": 55 },
+          "make": "iothings",
+          "model": "iobutton"
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic payload; expected.data derived by running reference/upstream-codec.js Decoder (temperature 21.51 C, lightIntensity 15 lux, relativeHumidity 55 %, tilt.currentTilt 45.23 deg, GPS 52.3456789/4.9876543) and mapping to the vocabulary."
+    },
+    {
+      "description": "Climate uplink: onboard temperature (negative) + humidity, button single click",
+      "input": { "fPort": 1, "bytes": [17, 0, 254, 129, 2, 254, 0, 31, 187] },
+      "expected": {
+        "data": {
+          "crc": 0,
+          "batteryPercent": 100,
+          "uplinkReasonButton": true,
+          "uplinkReasonMovement": false,
+          "uplinkReasonGpio": false,
+          "containsSpecial": false,
+          "buttonClickReason": "single",
+          "air": { "temperature": -5.12, "relativeHumidity": 81.23 },
+          "make": "iothings",
+          "model": "iobutton"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Exercises signed temperature and humidity; upstream Decoder yields temperature -5.12 C and relativeHumidity 81.23 %."
+    },
+    {
+      "description": "Light-only uplink (float12 mantissa with exponent), movement-triggered",
+      "input": { "fPort": 1, "bytes": [18, 5, 150, 2, 35, 232] },
+      "expected": {
+        "data": {
+          "crc": 5,
+          "batteryPercent": 59.1,
+          "uplinkReasonButton": false,
+          "uplinkReasonMovement": true,
+          "uplinkReasonGpio": false,
+          "containsSpecial": false,
+          "buttonClickReason": "none",
+          "air": { "lightIntensity": 40 },
+          "make": "iothings",
+          "model": "iobutton"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Light raw 0x23E8 = exponent 2, mantissa 1000 -> (1000<<2)/100 = 40 lux, confirmed against upstream Decoder."
+    },
+    {
+      "description": "Tilt-only uplink (max direction byte 255)",
+      "input": { "fPort": 1, "bytes": [16, 1, 100, 128, 16, 7, 7, 255, 14, 16, 0] },
+      "expected": {
+        "data": {
+          "crc": 1,
+          "batteryPercent": 39.4,
+          "uplinkReasonButton": false,
+          "uplinkReasonMovement": false,
+          "uplinkReasonGpio": false,
+          "containsSpecial": false,
+          "buttonClickReason": "none",
+          "tilt": { "angle": 17.99 },
+          "tiltDirection": 360,
+          "tiltMaxHistory": 36,
+          "tiltDirectionHistory": 0,
+          "make": "iothings",
+          "model": "iobutton"
+        }
+      },
+      "source": "synthetic",
+      "_note": "tilt.currentTilt 1799/100 = 17.99 deg; direction byte 255 -> round(255*360/255) = 360; matches upstream Decoder."
+    },
+    {
+      "description": "GPS-only uplink on external power (southern/eastern hemisphere fix)",
+      "input": { "fPort": 1, "bytes": [8, 0, 255, 0, 235, 208, 7, 59, 90, 32, 181, 27, 2, 48, 10, 15, 0, 0, 7, 8, 9, 11] },
+      "expected": {
+        "data": {
+          "crc": 0,
+          "externalPower": true,
+          "uplinkReasonButton": false,
+          "uplinkReasonMovement": false,
+          "uplinkReasonGpio": false,
+          "containsSpecial": false,
+          "position": { "latitude": -33.8688197, "longitude": 151.2092955 },
+          "gpsNavStatus": 0,
+          "gpsAltitude": 56,
+          "gpsHorizontalAccuracy": 10,
+          "gpsVerticalAccuracy": 15,
+          "gpsSpeedKmh": 0,
+          "gpsCourse": 180,
+          "gpsHdop": 0.9,
+          "gpsSatellites": 11,
+          "make": "iothings",
+          "model": "iobutton"
+        }
+      },
+      "source": "synthetic",
+      "_note": "battery byte 255 -> externalPower; upstream Decoder yields latitude -33.8688197, longitude 151.2092955."
+    },
+    {
+      "description": "Truncated payload shorter than the 3-byte header",
+      "input": { "fPort": 1, "bytes": [1, 2] },
+      "expected": { "errors": ["payload too short"] },
+      "source": "synthetic",
+      "_note": "Fewer than 3 bytes cannot carry header/CRC/battery."
+    },
+    {
+      "description": "Unsupported external-sensor block (variable length, cannot realign stream)",
+      "input": { "fPort": 1, "bytes": [16, 1, 100, 64, 100, 0, 100] },
+      "expected": { "errors": ["unsupported external-sensor block"] },
+      "source": "synthetic",
+      "_note": "sensor-content bit 6 (external sensors) set; upstream switch over the external type is vendor-specific so we error rather than misalign."
+    }
+  ],
+  "downlink": []
+}

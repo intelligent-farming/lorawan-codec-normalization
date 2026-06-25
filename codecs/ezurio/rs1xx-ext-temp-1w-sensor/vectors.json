@@ -1,0 +1,160 @@
+{
+  "uplink": [
+    {
+      "description": "Temp/RH data notification (0x01), in-bounds values",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 4, 20, 58, 45, 21, 4, 0, 2, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "make": "ezurio",
+          "model": "rs1xx-ext-temp-1w-sensor",
+          "messageType": "tempRh",
+          "air": {
+            "relativeHumidity": 58.2,
+            "temperature": 21.45
+          },
+          "batteryCapacityRange": "60-80%",
+          "options": ["alarm"],
+          "alarmMsgCount": 2,
+          "backlogMsgCount": 1
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload (the upstream TTN example carries out-of-range 98.67degC/52.33%). RS1xx float pair is [fractional, decimal] each signed int8, value = decimal + fractional/100: humidity [20,58]=58.20, temperature [45,21]=21.45. options byte 0x04 = alarm; battery-capacity index 4 = 60-80%; counts are big-endian u16. expected.data computed by running reference/upstream-codec.js (humidity:58.2, temperature:21.45, options:['Sensor alarm flag'], batteryCapacity:'60-80%', alarmMsgCount:2, backlogMsgCount:1) and normalizing temperature->air.temperature, humidity->air.relativeHumidity."
+    },
+    {
+      "description": "Aggregated Temp/RH notification (0x02), 2 readings -> top-level + history",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 0, 0, 0, 0, 5, 2, 0, 1, 110, 88, 0, 55, 10, 20, 50, 60, 30, 22]
+      },
+      "expected": {
+        "data": {
+          "make": "ezurio",
+          "model": "rs1xx-ext-temp-1w-sensor",
+          "messageType": "aggregatedTempRh",
+          "air": {
+            "relativeHumidity": 60.5,
+            "temperature": 22.3
+          },
+          "time": "2015-01-02T02:03:04Z",
+          "batteryCapacityRange": "80-100%",
+          "options": [],
+          "alarmMsgCount": 0,
+          "backlogMsgCount": 0,
+          "numberOfReadings": 2,
+          "history": [
+            {
+              "air": {
+                "relativeHumidity": 55,
+                "temperature": 20.1
+              },
+              "time": "2015-01-02T02:03:04Z"
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds aggregated frame. Header: options=0, alarmMsgCount=byte[2]=0, backlogMsgCount=big-endian u16 bytes[3..4]=0, battery-capacity byte[5]=5 (80-100%), numberOfReadings byte[6]=2, timestamp big-endian u32 seconds since 2015-01-01Z bytes[7..10]=93784 -> 2015-01-02T02:03:04Z. Two 4-byte [hFrac,hDec,tFrac,tDec] readings: [0,55,10,20]=55.00%/20.10degC and [50,60,30,22]=60.50%/22.30degC. Newest (last) reading is emitted at top level; the older reading goes to history (newest-first). Timestamps/values cross-checked against reference/upstream-codec.js (upstream keeps every reading at the same frame timestamp; readings array [{55,20.1},{60.5,22.3}])."
+    },
+    {
+      "description": "Single backlog message (0x03)",
+      "input": {
+        "fPort": 1,
+        "bytes": [3, 2, 0, 0, 14, 77, 0, 55, 10, 20]
+      },
+      "expected": {
+        "data": {
+          "make": "ezurio",
+          "model": "rs1xx-ext-temp-1w-sensor",
+          "messageType": "backlog",
+          "air": {
+            "relativeHumidity": 55,
+            "temperature": 20.1
+          },
+          "time": "2015-01-01T01:01:01Z",
+          "options": ["configurationError"]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds single backlog frame. options byte 0x02 = configurationError; timestamp big-endian u32 bytes[2..5]=3661 -> 2015-01-01T01:01:01Z; humidity [0,55]=55.00%; temperature [10,20]=20.10degC. expected.data cross-checked against reference/upstream-codec.js (humidity:55, temperature:20.1, options:['Sensor configuration error'])."
+    },
+    {
+      "description": "Multiple backlog messages (0x04), 2 readings -> top-level + history",
+      "input": {
+        "fPort": 1,
+        "bytes": [4, 1, 2, 0, 1, 134, 160, 0, 55, 10, 20, 0, 3, 13, 64, 50, 60, 30, 22]
+      },
+      "expected": {
+        "data": {
+          "make": "ezurio",
+          "model": "rs1xx-ext-temp-1w-sensor",
+          "messageType": "backlogMultiple",
+          "air": {
+            "relativeHumidity": 60.5,
+            "temperature": 22.3
+          },
+          "time": "2015-01-03T07:33:20Z",
+          "options": ["serverTimeRequest"],
+          "numberOfReadings": 2,
+          "history": [
+            {
+              "air": {
+                "relativeHumidity": 55,
+                "temperature": 20.1
+              },
+              "time": "2015-01-02T03:46:40Z"
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds multi-backlog frame. 3-byte header: options byte 0x01 = serverTimeRequest, numberOfReadings byte[2]=2. Then two 8-byte records [ts(u32 BE), hFrac, hDec, tFrac, tDec]: record1 ts=100000 -> 2015-01-02T03:46:40Z, 55.00%/20.10degC; record2 ts=200000 -> 2015-01-03T07:33:20Z, 60.50%/22.30degC. Newest (last) record at top level, older to history. Values/timestamps cross-checked against reference/upstream-codec.js."
+    },
+    {
+      "description": "Battery voltage notification (0x0A) -> battery (volts)",
+      "input": {
+        "fPort": 1,
+        "bytes": [10, 0, 62, 3]
+      },
+      "expected": {
+        "data": {
+          "make": "ezurio",
+          "model": "rs1xx-ext-temp-1w-sensor",
+          "messageType": "batteryVoltage",
+          "battery": 3.62,
+          "options": []
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds battery-voltage frame. options=0 -> []. Voltage is an RS1xx float pair [fractional, decimal]=[62,3] -> 3.62 V, mapped to the vocabulary `battery` (volts). expected.data cross-checked against reference/upstream-codec.js (voltage:3.62)."
+    },
+    {
+      "description": "Unknown message type -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [99, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["Invalid message type used!"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error vector: byte[0]=99 is not a recognized RS1xx uplink message type. Matches the reference's default-case error string."
+    },
+    {
+      "description": "Wrong length for Temp/RH (0x01) -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 0, 0]
+      },
+      "expected": {
+        "errors": ["Invalid uplink message length!"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic error vector: a 0x01 Temp/RH frame must be exactly 11 bytes; a 3-byte frame is rejected. Matches the reference's length-check error string."
+    }
+  ],
+  "downlink": []
+}

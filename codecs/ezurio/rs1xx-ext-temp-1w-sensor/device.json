@@ -1,0 +1,36 @@
+{
+  "vendor": "ezurio",
+  "device": "rs1xx-ext-temp-1w-sensor",
+  "name": "Sentrius RS1xx Ext Temp 1W Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "alarmMsgCount",
+    "backlogMsgCount",
+    "battery",
+    "batteryCapacityRange",
+    "messageType",
+    "numberOfReadings",
+    "options",
+    "time"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "ezurio",
+    "device": "rs1xx-ext-temp-1w-sensor",
+    "codecId": "rs1xx-ext-temp-1w-sensor-codec",
+    "codecFile": "rs1xx-ext-temp-1w-sensor.js",
+    "codecSha256": "63f5640dcb8ebc589a8609440d61985137fafc84045e821dbe07544d1eefa448",
+    "referencedAt": "2026-06-25"
+  }
+}
