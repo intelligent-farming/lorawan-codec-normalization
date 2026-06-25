@@ -1,0 +1,72 @@
+{
+  "uplink": [
+    {
+      "description": "Metering frame (uplink id 0x09) -> energy + power + voltage + current",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          9,
+          0,
+          1,
+          2,
+          3,
+          160,
+          134,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          220,
+          5,
+          0,
+          0,
+          0,
+          0,
+          231,
+          0,
+          100,
+          0,
+          32,
+          78,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "date": "8/2/2001, 12:08:00 AM",
+          "metering": {
+            "energy": {
+              "total": 100000
+            }
+          },
+          "reactiveEnergy": "0",
+          "apparentEnergy": "0",
+          "power": {
+            "active": 1500,
+            "voltage": 231,
+            "current": 0.1
+          },
+          "reactivePower": "0",
+          "apparentPower": "0",
+          "period": "20000",
+          "frequency": "50.00",
+          "activation": "0",
+          "make": "mcf88",
+          "model": "mcf-lw12plg"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic MCF88 metering frame (33 bytes); expected.data via the ported upstream decoder (oracle). activeEnergy -> metering.energy.total, activePower -> power.active, voltage -> power.voltage, current mA -> power.current (A); reactive/apparent/period/frequency/date as extras. No upstream examples published. Satisfies power-meter."
+    }
+  ],
+  "downlink": []
+}

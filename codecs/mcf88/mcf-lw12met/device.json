@@ -1,0 +1,43 @@
+{
+  "vendor": "mcf88",
+  "device": "mcf-lw12met",
+  "name": "MCF-LW12MET",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "voltage",
+    "current",
+    "energy",
+    "power",
+    "time",
+    "digital input"
+  ],
+  "provides": [
+    "activation",
+    "apparentEnergy",
+    "apparentPower",
+    "date",
+    "frequency",
+    "metering.energy.total",
+    "period",
+    "power.active",
+    "power.current",
+    "power.voltage",
+    "reactiveEnergy",
+    "reactivePower"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "mcf88",
+    "device": "mcf-lw12met",
+    "codecId": "mcf-power-codec",
+    "codecFile": "decoder-power.js",
+    "codecSha256": "e7b347f1179db75997231424d31b608f440140329263bbd31a7c1284493a4966",
+    "referencedAt": "2026-06-25"
+  }
+}
