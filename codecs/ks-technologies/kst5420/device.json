@@ -1,0 +1,31 @@
+{
+  "vendor": "ks-technologies",
+  "device": "kst5420",
+  "name": "Impulse - Proof of Coverage Test Tool",
+  "categories": [
+    "gps-tracker"
+  ],
+  "sensors": [],
+  "provides": [
+    "accuracy",
+    "altitude",
+    "battery",
+    "position.latitude",
+    "position.longitude",
+    "speed",
+    "txPower"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "ks-technologies",
+    "device": "kst5420",
+    "codecId": "kst5420-codec",
+    "codecFile": "kst5420.js",
+    "codecSha256": "e9f72e357e2856686b1930536e6861429e4c2ae7552084150fbcd83600c2e651",
+    "referencedAt": "2026-06-25"
+  }
+}

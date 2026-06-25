@@ -1,0 +1,56 @@
+{
+  "uplink": [
+    {
+      "description": "GPS position frame -> position.latitude/longitude",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          0,
+          0,
+          0,
+          6,
+          7,
+          8,
+          1,
+          226,
+          64,
+          0,
+          39,
+          16,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          14,
+          16,
+          0,
+          0,
+          0,
+          5
+        ]
+      },
+      "expected": {
+        "data": {
+          "position": {
+            "latitude": 39.5016,
+            "longitude": 12.3456
+          },
+          "altitude": 100,
+          "accuracy": 0,
+          "speed": 0,
+          "battery": 3.6,
+          "txPower": "+20",
+          "make": "ks-technologies",
+          "model": "kst5420"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic frame with valid coordinates (the upstream catalog example uses placeholder bytes that decode out of range). expected.data via the ported decoder (oracle): 24-bit signed lat/lon /10000; altitude/accuracy/speed/txPower as camelCase extras. Satisfies gps-tracker."
+    }
+  ],
+  "downlink": []
+}

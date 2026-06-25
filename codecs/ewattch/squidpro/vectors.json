@@ -1,0 +1,70 @@
+{
+  "uplink": [
+    {
+      "description": "Clamp metering frame: current, voltage and active power for one clamp (socket 0 / channel 0)",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          0,
+          14,
+          64,
+          17,
+          136,
+          19,
+          0,
+          64,
+          26,
+          252,
+          8,
+          64,
+          20,
+          220,
+          5,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "power": {
+            "current": 5,
+            "voltage": 230,
+            "active": 1500
+          },
+          "channels": [
+            {
+              "socket": 0,
+              "channel": 0,
+              "current": 5,
+              "voltage": 230,
+              "activePower": 1500
+            }
+          ],
+          "make": "ewattch",
+          "model": "squidpro"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic clamp frame built to the upstream object-stream layout (header 0x00 + declared length, then three type-0x40 clamp objects with measure codes 1=current/10=voltage/4=power). expected.data derived by running reference/upstream-codec.js (oracle: current 5000 mA, voltage 230 V, power 1500 W) and mapping mA->A (power.current), V (power.voltage), W (power.active); each clamp is also surfaced in the channels extra. Satisfies power-meter (power.current/voltage/active)."
+    },
+    {
+      "description": "Declared payload length does not match actual length -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          0,
+          99,
+          64,
+          17
+        ]
+      },
+      "expected": {
+        "errors": [
+          "Payload size indicated"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "The header's declared length byte must equal total length - 2; a mismatch is rejected (mirrors the upstream guard)."
+    }
+  ],
+  "downlink": []
+}
