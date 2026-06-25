@@ -1,0 +1,30 @@
+{
+  "vendor": "makerfabs",
+  "device": "positioning-water-leak",
+  "name": "Positioning Water Leak",
+  "categories": [
+    "water-leak"
+  ],
+  "sensors": [
+    "battery"
+  ],
+  "provides": [
+    "battery",
+    "water.leak",
+    "waterLeakCount",
+    "waterLeakTime"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "makerfabs",
+    "device": "positioning-water-leak",
+    "codecId": "positioning-water-leak-codec",
+    "codecFile": "positioning-water-leak.js",
+    "codecSha256": "ef59bee9863e5af5b1b82cb4c1f26b446a4d0bc38e925078ccf805abcd0b566b",
+    "referencedAt": "2026-06-25"
+  }
+}

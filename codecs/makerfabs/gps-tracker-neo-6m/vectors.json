@@ -1,0 +1,69 @@
+{
+  "uplink": [
+    {
+      "description": "GPS fix -> position.latitude/longitude",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          0,
+          0,
+          37,
+          2,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          34,
+          166,
+          215,
+          0,
+          0,
+          174,
+          85,
+          102,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.7,
+          "gSensorState": 2,
+          "position": {
+            "latitude": 22.70935,
+            "longitude": 114.25126
+          },
+          "make": "makerfabs",
+          "model": "gps-tracker-neo-6m"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic frame built to the upstream byte layout; expected.data via this codec (which ports the upstream offsets/scaling). Mapped per the codec header."
+    },
+    {
+      "description": "Payload too short -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          0,
+          0,
+          37
+        ]
+      },
+      "expected": {
+        "errors": [
+          "payload too shor"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Length guard."
+    }
+  ],
+  "downlink": []
+}

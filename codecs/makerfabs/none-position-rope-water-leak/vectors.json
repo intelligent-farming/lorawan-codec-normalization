@@ -1,0 +1,55 @@
+{
+  "uplink": [
+    {
+      "description": "Leak detected -> water.leak",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          0,
+          0,
+          37,
+          1,
+          0,
+          5,
+          0,
+          0,
+          0,
+          60
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.7,
+          "water": {
+            "leak": true
+          },
+          "waterLeakCount": 5,
+          "waterLeakTime": 60,
+          "make": "makerfabs",
+          "model": "none-position-rope-water-leak"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic frame built to the upstream byte layout; expected.data via this codec (which ports the upstream offsets/scaling). Mapped per the codec header."
+    },
+    {
+      "description": "Payload too short -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          0,
+          0,
+          37
+        ]
+      },
+      "expected": {
+        "errors": [
+          "payload too shor"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Length guard."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,28 @@
+{
+  "vendor": "makerfabs",
+  "device": "gps-tracker-neo-6m",
+  "name": "GPS Tracker NEO_6M",
+  "categories": [
+    "gps-tracker"
+  ],
+  "sensors": [],
+  "provides": [
+    "battery",
+    "gSensorState",
+    "position.latitude",
+    "position.longitude"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "makerfabs",
+    "device": "gps-tracker-neo-6m",
+    "codecId": "gps-tracker-neo-6m-codec",
+    "codecFile": "gps-tracker-neo-6m.js",
+    "codecSha256": "e93d90409b5c044231c8271307190b855d6a2fc0eb001434f59bf97e54309e67",
+    "referencedAt": "2026-06-25"
+  }
+}
