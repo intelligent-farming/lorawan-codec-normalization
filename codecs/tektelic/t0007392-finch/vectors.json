@@ -1,0 +1,32 @@
+{
+  "uplink": [
+    {
+      "description": "Temperature + humidity TLV -> climate",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          0,
+          103,
+          0,
+          247,
+          4,
+          104,
+          29
+        ]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 24.7,
+            "relativeHumidity": 14.5
+          },
+          "make": "tektelic",
+          "model": "t0007392-finch"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic Tektelic TLV frame (0x00 0x67 temperature, 0x04 0x68 humidity); expected.data via the ported upstream decoder (oracle). temperature->air.temperature, relative_humidity->air.relativeHumidity. Satisfies climate."
+    }
+  ],
+  "downlink": []
+}

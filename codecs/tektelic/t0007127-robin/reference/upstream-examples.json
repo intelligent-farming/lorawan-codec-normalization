@@ -1,0 +1,29 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/tektelic/t0007127-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "BLE Mode and Number of Devices Uplink",
+      "input": {
+        "fPort": 100,
+        "bytes": [
+          80,
+          133
+        ]
+      },
+      "output": {
+        "data": {
+          "ble": {
+            "mode": {
+              "averaging_mode": 1,
+              "number_of_devices": 5
+            }
+          },
+          "port": "100",
+          "raw": "[50, 85]"
+        },
+        "errors": [],
+        "warnings": []
+      }
+    }
+  ]
+}
