@@ -1,0 +1,27 @@
+{
+  "vendor": "nke-watteco",
+  "device": "intenso-sensor",
+  "name": "Intens'O - Current Meter",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "current"
+  ],
+  "provides": [
+    "power.current"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "nke-watteco",
+    "device": "intenso-sensor",
+    "codecId": "intenso-sensor-codec",
+    "codecFile": "intenso-sensor.js",
+    "codecSha256": "75ac03d2026c3899a0dff1ee37854d6f164ee9215298f2e3e550f155ae508691",
+    "referencedAt": "2026-06-25"
+  }
+}

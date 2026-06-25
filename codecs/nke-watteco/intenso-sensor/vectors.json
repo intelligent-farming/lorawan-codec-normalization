@@ -1,0 +1,54 @@
+{
+  "uplink": [
+    {
+      "description": "Analog-input RMS current report -> power.current",
+      "input": {
+        "fPort": 125,
+        "bytes": [
+          17,
+          10,
+          0,
+          12,
+          0,
+          85,
+          57,
+          65,
+          80,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "power": {
+            "current": 13
+          },
+          "make": "nke-watteco",
+          "model": "intenso-sensor"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic Watteco ZCL standard report (cluster 0x000C attr 0x0055, IEEE754 float32 = 13.0 A); no upstream examples are published. Decoded by this hand-authored Watteco parser. Satisfies power-meter."
+    },
+    {
+      "description": "Batch report -> error",
+      "input": {
+        "fPort": 125,
+        "bytes": [
+          32,
+          16,
+          0,
+          12
+        ]
+      },
+      "expected": {
+        "errors": [
+          "payload to"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Batch frames need per-device coding tables."
+    }
+  ],
+  "downlink": []
+}

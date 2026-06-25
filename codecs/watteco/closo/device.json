@@ -1,0 +1,28 @@
+{
+  "vendor": "watteco",
+  "device": "closo",
+  "name": "Clos'O - Contact Sensor",
+  "categories": [
+    "contact"
+  ],
+  "sensors": [
+    "proximity"
+  ],
+  "provides": [
+    "action.contactState",
+    "index"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "watteco",
+    "device": "closo",
+    "codecId": "closo-codec",
+    "codecFile": "closo.js",
+    "codecSha256": "f264c33ff5274be168e4073b389890d1e9cb43b1acbe3f449bd999114f6220cb",
+    "referencedAt": "2026-06-25"
+  }
+}

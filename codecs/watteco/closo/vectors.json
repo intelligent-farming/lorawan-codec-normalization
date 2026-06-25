@@ -1,0 +1,79 @@
+{
+  "uplink": [
+    {
+      "description": "Contact open -> action.contactState",
+      "input": {
+        "fPort": 125,
+        "bytes": [
+          49,
+          10,
+          0,
+          15,
+          0,
+          85,
+          16,
+          1
+        ]
+      },
+      "expected": {
+        "data": {
+          "action": {
+            "contactState": "open"
+          },
+          "make": "watteco",
+          "model": "closo"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream-example input (TTN watteco/closo codec yaml, Apache-2.0). Binary input present value (cluster 0x000F attr 0x0055) -> action.contactState. Satisfies contact."
+    },
+    {
+      "description": "Change counter -> index extra",
+      "input": {
+        "fPort": 125,
+        "bytes": [
+          17,
+          10,
+          0,
+          15,
+          4,
+          2,
+          35,
+          0,
+          0,
+          0,
+          5
+        ]
+      },
+      "expected": {
+        "data": {
+          "index": 5,
+          "make": "watteco",
+          "model": "closo"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Binary-input change counter (cluster 0x000F attr 0x0402)."
+    },
+    {
+      "description": "Batch report -> error",
+      "input": {
+        "fPort": 125,
+        "bytes": [
+          32,
+          16,
+          0,
+          15
+        ]
+      },
+      "expected": {
+        "errors": [
+          "payload to"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Batch frames need per-device coding tables."
+    }
+  ],
+  "downlink": []
+}
