@@ -1,0 +1,36 @@
+{
+  "vendor": "laird",
+  "device": "rs1xx-ext-temp-1w-sensor",
+  "name": "Sentrius RS1xx Ext Temp 1W Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "alarmMsgCount",
+    "backlogMsgCount",
+    "battery",
+    "batteryCapacityRange",
+    "messageType",
+    "numberOfReadings",
+    "options",
+    "time"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "laird",
+    "device": "rs1xx-ext-temp-1w-sensor",
+    "codecId": "rs1xx-ext-temp-1w-sensor-codec",
+    "codecFile": "rs1xx-ext-temp-1w-sensor.js",
+    "codecSha256": "6b238be17a28f735612c06e18e55b2289eec644f68e25989f731ec46378d7ef1",
+    "referencedAt": "2026-06-25"
+  }
+}
