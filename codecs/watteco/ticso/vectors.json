@@ -1,0 +1,71 @@
+{
+  "uplink": [
+    {
+      "description": "TIC active-energy report (cluster 0x0052) -> metering.energy.total + power.active",
+      "input": {
+        "fPort": 125,
+        "bytes": [
+          49,
+          10,
+          0,
+          82,
+          0,
+          0,
+          65,
+          12,
+          1,
+          134,
+          160,
+          0,
+          0,
+          0,
+          0,
+          10,
+          4,
+          176,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "metering": {
+            "energy": {
+              "total": 100000
+            }
+          },
+          "power": {
+            "active": 1200
+          },
+          "reactiveEnergy": 0,
+          "sampleCount": 10,
+          "reactivePower": 0,
+          "make": "watteco",
+          "model": "ticso"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic Watteco ZCL metering frame (cluster 0x0052; same format/offsets as the authored watteco/smartplug, verified against the upstream decoder). active_energy s24 -> metering.energy.total, active_power s16 -> power.active. No upstream examples published. Satisfies power-meter."
+    },
+    {
+      "description": "Batch report -> error",
+      "input": {
+        "fPort": 125,
+        "bytes": [
+          32,
+          16,
+          0,
+          82
+        ]
+      },
+      "expected": {
+        "errors": [
+          "payload to"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Batch frames need per-device coding tables."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,31 @@
+{
+  "vendor": "watteco",
+  "device": "ticso",
+  "name": "Tics'O -",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "energy"
+  ],
+  "provides": [
+    "metering.energy.total",
+    "power.active",
+    "reactiveEnergy",
+    "reactivePower",
+    "sampleCount"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "watteco",
+    "device": "ticso",
+    "codecId": "ticso-codec",
+    "codecFile": "ticso.js",
+    "codecSha256": "625c137a4ec332395290a1673eaec81a6ed742c383fb8c08ebcf11257a4c959d",
+    "referencedAt": "2026-06-25"
+  }
+}
