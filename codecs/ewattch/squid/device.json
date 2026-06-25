@@ -1,0 +1,30 @@
+{
+  "vendor": "ewattch",
+  "device": "squid",
+  "name": "squid",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "current"
+  ],
+  "provides": [
+    "channels",
+    "power.active",
+    "power.current",
+    "power.voltage"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "ewattch",
+    "device": "squid",
+    "codecId": "squid-codec",
+    "codecFile": "ewattchlorawandecoder.js",
+    "codecSha256": "008a1985794b4e6f53a9f5e5cc66f6609305d6257644968e9510f26dd04f76de",
+    "referencedAt": "2026-06-25"
+  }
+}
