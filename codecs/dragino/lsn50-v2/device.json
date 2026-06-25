@@ -1,0 +1,36 @@
+{
+  "vendor": "dragino",
+  "device": "lsn50-v2",
+  "name": "LSN50-V2 - Sensor Node",
+  "categories": [
+    "climate",
+    "contact"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "aDCCH0V",
+    "action.contactState",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "digitalIStatus",
+    "eXTITrigger",
+    "tempC1",
+    "workMode"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "lsn50-v2",
+    "codecId": "lsn50-v2-codec",
+    "codecFile": "lsn50-v2.js",
+    "codecSha256": "01b2f1b46fd7d9028281f51360cddfb4699cdcb851364f41aeda6bd8bd73f561",
+    "referencedAt": "2026-06-25"
+  }
+}

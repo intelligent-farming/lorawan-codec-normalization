@@ -1,0 +1,41 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/dragino/trackerd-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Temperature",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          1,
+          90,
+          112,
+          102,
+          6,
+          207,
+          60,
+          248,
+          15,
+          162,
+          48,
+          1,
+          174,
+          0,
+          218
+        ]
+      },
+      "output": {
+        "data": {
+          "ALARM_status": "FALSE",
+          "Hum": 43,
+          "LON": "ON",
+          "Latitude": 22.70423,
+          "Location": "22.70423,114.244856",
+          "Longitude": 114.244856,
+          "MD": 0,
+          "Tem": 21.8,
+          "Transport": "MOVE"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "vendor": "dragino",
+  "device": "trackerd",
+  "name": "TrackerD - GPS Tracker",
+  "categories": [
+    "gps-tracker",
+    "climate"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "aLARMStatus",
+    "air.relativeHumidity",
+    "air.temperature",
+    "lON",
+    "location",
+    "mD",
+    "position.latitude",
+    "position.longitude",
+    "transport"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "trackerd",
+    "codecId": "trackerd-codec",
+    "codecFile": "trackerd.js",
+    "codecSha256": "3260487db965efa01e7c337463573f3b3508a802bf7a107e5126c792a64240d9",
+    "referencedAt": "2026-06-25"
+  }
+}

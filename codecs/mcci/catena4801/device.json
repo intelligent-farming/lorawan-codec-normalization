@@ -1,0 +1,39 @@
+{
+  "vendor": "mcci",
+  "device": "catena4801",
+  "name": "Catena® 4801 Modbus Node",
+  "categories": [
+    "climate",
+    "weather-station",
+    "light"
+  ],
+  "sensors": [
+    "auxiliary",
+    "digital input",
+    "analog input",
+    "battery"
+  ],
+  "provides": [
+    "air.lightIntensity",
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "boot",
+    "error",
+    "tDewC"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "mcci",
+    "device": "catena4801",
+    "codecId": "codec-catena-generic",
+    "codecFile": "codec-catena-generic.js",
+    "codecSha256": "df34bafdb00a6502fbc5d241be7c82e1a48b8f923fa161e9c7d01a04dbb6f20c",
+    "referencedAt": "2026-06-25"
+  }
+}

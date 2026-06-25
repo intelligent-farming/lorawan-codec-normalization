@@ -1,0 +1,33 @@
+{
+  "vendor": "dragino",
+  "device": "lsnpk01",
+  "name": "LSNPK01 - Soil NPK Sensor",
+  "categories": [
+    "soil-monitor"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "battery",
+    "interruptFlag",
+    "messageType",
+    "soil.k",
+    "soil.n",
+    "soil.p",
+    "soil.temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "lsnpk01",
+    "codecId": "lsnpk01-codec",
+    "codecFile": "lsnpk01.js",
+    "codecSha256": "c00b085743616a6b8dfd6b98333d3525da0360cd2a0fd24c1f00b4a500e99547",
+    "referencedAt": "2026-06-25"
+  }
+}

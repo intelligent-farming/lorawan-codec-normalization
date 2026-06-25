@@ -1,0 +1,34 @@
+{
+  "vendor": "mcci",
+  "device": "model4811",
+  "name": "Model 4811 Remote Power Meter",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "power",
+    "voltage",
+    "current"
+  ],
+  "provides": [
+    "battery",
+    "boot",
+    "energySourced",
+    "metering.energy.total",
+    "modbusError",
+    "power.active"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "mcci",
+    "device": "model4811",
+    "codecId": "codec-model4811",
+    "codecFile": "codec-model4811.js",
+    "codecSha256": "0791672200dd5c3dc2b1c21b54f88316ced1ef5480bbd67a4befdcf4c37f58aa",
+    "referencedAt": "2026-06-25"
+  }
+}

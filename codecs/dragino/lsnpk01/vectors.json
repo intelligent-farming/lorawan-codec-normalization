@@ -1,0 +1,41 @@
+{
+  "uplink": [
+    {
+      "description": "soil-monitor measurement frame",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          14,
+          85,
+          1,
+          8,
+          98,
+          8,
+          103,
+          96,
+          228,
+          60,
+          198
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.669,
+          "soil": {
+            "temperature": 26.4,
+            "n": 25096,
+            "p": 26464,
+            "k": 58428
+          },
+          "messageType": 12,
+          "interruptFlag": 6,
+          "make": "dragino",
+          "model": "lsnpk01"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream-example input (TTN dragino/lsnpk01 codec yaml, Apache-2.0). expected.data via the ported upstream decoder (oracle). Mapped per the codec header."
+    }
+  ],
+  "downlink": []
+}

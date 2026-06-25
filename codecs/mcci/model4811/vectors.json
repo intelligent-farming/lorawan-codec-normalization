@@ -1,0 +1,50 @@
+{
+  "uplink": [
+    {
+      "description": "power-meter measurement frame",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          25,
+          27,
+          53,
+          52,
+          14,
+          0,
+          0,
+          0,
+          118,
+          0,
+          0,
+          1,
+          97,
+          66,
+          146,
+          146,
+          137
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3251953125,
+          "boot": 14,
+          "modbusError": 0,
+          "metering": {
+            "energy": {
+              "total": 11800
+            }
+          },
+          "energySourced": 35300,
+          "power": {
+            "active": 73.28620147705078
+          },
+          "make": "mcci",
+          "model": "model4811"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream-example input (TTN mcci/model4811 codec yaml, Apache-2.0). expected.data via the ported upstream decoder (oracle). Mapped per the codec header."
+    }
+  ],
+  "downlink": []
+}

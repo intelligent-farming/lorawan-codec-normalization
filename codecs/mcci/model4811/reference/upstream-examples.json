@@ -1,0 +1,75 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/mcci/codec-model4811.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Sensor report format 0x19",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          25,
+          27,
+          53,
+          52,
+          14,
+          0,
+          0,
+          0,
+          118,
+          0,
+          0,
+          1,
+          97,
+          66,
+          146,
+          146,
+          137
+        ]
+      },
+      "output": {
+        "data": {
+          "ModbusError": 0,
+          "boot": 14,
+          "energySourced": 35300,
+          "energyUsed": 11800,
+          "mainDemand": 73.28620147705078,
+          "vBat": 3.3251953125
+        }
+      }
+    },
+    {
+      "description": "Sensor report format 0x19, very low demand",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          25,
+          27,
+          53,
+          52,
+          14,
+          0,
+          0,
+          0,
+          118,
+          0,
+          0,
+          1,
+          97,
+          0,
+          0,
+          0,
+          1
+        ]
+      },
+      "output": {
+        "data": {
+          "ModbusError": 0,
+          "boot": 14,
+          "energySourced": 35300,
+          "energyUsed": 11800,
+          "mainDemand": 1.401298464324817e-45,
+          "vBat": 3.3251953125
+        }
+      }
+    }
+  ]
+}

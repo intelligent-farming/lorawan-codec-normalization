@@ -1,0 +1,45 @@
+{
+  "uplink": [
+    {
+      "description": "climate/contact measurement frame",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          11,
+          84,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          252,
+          2,
+          5
+        ]
+      },
+      "expected": {
+        "data": {
+          "digitalIStatus": "L",
+          "battery": 2.9,
+          "tempC1": 0,
+          "aDCCH0V": 0,
+          "eXTITrigger": "FALSE",
+          "action": {
+            "contactState": "open"
+          },
+          "workMode": "IIC",
+          "air": {
+            "temperature": 25.2,
+            "relativeHumidity": 51.7
+          },
+          "make": "dragino",
+          "model": "lsn50-v2"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream-example input (TTN dragino/lsn50-v2 codec yaml, Apache-2.0). expected.data via the ported upstream decoder (oracle). Mapped per the codec header."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,49 @@
+{
+  "uplink": [
+    {
+      "description": "gps-tracker/climate measurement frame",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          1,
+          90,
+          112,
+          102,
+          6,
+          207,
+          60,
+          248,
+          15,
+          162,
+          48,
+          1,
+          174,
+          0,
+          218
+        ]
+      },
+      "expected": {
+        "data": {
+          "location": "22.70423,114.244856",
+          "position": {
+            "latitude": 22.70423,
+            "longitude": 114.244856
+          },
+          "air": {
+            "relativeHumidity": 43,
+            "temperature": 21.8
+          },
+          "aLARMStatus": "FALSE",
+          "mD": 0,
+          "lON": "ON",
+          "transport": "MOVE",
+          "make": "dragino",
+          "model": "trackerd"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream-example input (TTN dragino/trackerd codec yaml, Apache-2.0). expected.data via the ported upstream decoder (oracle). Mapped per the codec header."
+    }
+  ],
+  "downlink": []
+}
