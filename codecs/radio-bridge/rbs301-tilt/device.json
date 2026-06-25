@@ -1,0 +1,31 @@
+{
+  "vendor": "radio-bridge",
+  "device": "rbs301-tilt",
+  "name": "RBS301-TILT - Low Precision Tilt Sensor",
+  "categories": [
+    "tilt"
+  ],
+  "sensors": [
+    "tilt"
+  ],
+  "provides": [
+    "counter",
+    "event",
+    "eventType",
+    "protocol",
+    "tilt.angle"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "radio-bridge",
+    "device": "rbs301-tilt",
+    "codecId": "rbs301-tilt-codec",
+    "codecFile": "radio_bridge_packet_decoder.js",
+    "codecSha256": "83bc2db0c2c9a7bacb4cbe22d63bc8169172ce2caac5f1969526626978d5ff24",
+    "referencedAt": "2026-06-25"
+  }
+}

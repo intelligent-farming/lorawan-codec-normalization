@@ -1,0 +1,49 @@
+{
+  "uplink": [
+    {
+      "description": "Tilt angle -> tilt.angle",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          16,
+          10,
+          0,
+          45
+        ]
+      },
+      "expected": {
+        "data": {
+          "tilt": {
+            "angle": 45
+          },
+          "event": "Transitioned to Vertical",
+          "protocol": 1,
+          "counter": 0,
+          "eventType": "TILT",
+          "make": "radio-bridge",
+          "model": "rbs301-tilt"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic RadioBridge event frame (byte0 protocol/counter, byte1 event type); expected.data via the ported upstream decoder (oracle). Mapped per the codec header."
+    },
+    {
+      "description": "Undefined event -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          16,
+          254
+        ]
+      },
+      "expected": {
+        "errors": [
+          "unsupported or "
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Unsupported event code."
+    }
+  ],
+  "downlink": []
+}

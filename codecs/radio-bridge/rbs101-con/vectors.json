@@ -1,0 +1,47 @@
+{
+  "uplink": [
+    {
+      "description": "Door/window open -> action.contactState",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          16,
+          3,
+          1
+        ]
+      },
+      "expected": {
+        "data": {
+          "action": {
+            "contactState": "open"
+          },
+          "protocol": 1,
+          "counter": 0,
+          "eventType": "DOOR/WINDOW",
+          "make": "radio-bridge",
+          "model": "rbs101-con"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic RadioBridge event frame (byte0 protocol/counter, byte1 event type); expected.data via the ported upstream decoder (oracle). Mapped per the codec header."
+    },
+    {
+      "description": "Undefined event -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          16,
+          254
+        ]
+      },
+      "expected": {
+        "errors": [
+          "unsupported or "
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Unsupported event code."
+    }
+  ],
+  "downlink": []
+}

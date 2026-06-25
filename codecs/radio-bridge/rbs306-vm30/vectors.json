@@ -1,0 +1,50 @@
+{
+  "uplink": [
+    {
+      "description": "Voltmeter reading -> power.voltage",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          16,
+          20,
+          0,
+          4,
+          226
+        ]
+      },
+      "expected": {
+        "data": {
+          "power": {
+            "voltage": 12.5
+          },
+          "event": "Periodic Report",
+          "protocol": 1,
+          "counter": 0,
+          "eventType": "VOLTMETER",
+          "make": "radio-bridge",
+          "model": "rbs306-vm30"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic RadioBridge event frame (byte0 protocol/counter, byte1 event type); expected.data via the ported upstream decoder (oracle). Mapped per the codec header."
+    },
+    {
+      "description": "Undefined event -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          16,
+          254
+        ]
+      },
+      "expected": {
+        "errors": [
+          "unsupported or "
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Unsupported event code."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,52 @@
+{
+  "uplink": [
+    {
+      "description": "High-precision tilt angle -> tilt.angle",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          16,
+          15,
+          0,
+          30,
+          0,
+          80
+        ]
+      },
+      "expected": {
+        "data": {
+          "tilt": {
+            "angle": 30
+          },
+          "event": "Periodic Report",
+          "temperature": 80,
+          "protocol": 1,
+          "counter": 0,
+          "eventType": "TILT-HP",
+          "make": "radio-bridge",
+          "model": "rbs306-tilt-hp"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic RadioBridge event frame (byte0 protocol/counter, byte1 event type); expected.data via the ported upstream decoder (oracle). Mapped per the codec header."
+    },
+    {
+      "description": "Undefined event -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          16,
+          254
+        ]
+      },
+      "expected": {
+        "errors": [
+          "unsupported or "
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Unsupported event code."
+    }
+  ],
+  "downlink": []
+}

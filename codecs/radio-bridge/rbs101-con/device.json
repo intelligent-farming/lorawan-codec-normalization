@@ -1,0 +1,30 @@
+{
+  "vendor": "radio-bridge",
+  "device": "rbs101-con",
+  "name": "RBS101-CON - Dry Contact Sensor",
+  "categories": [
+    "contact"
+  ],
+  "sensors": [
+    "digital input"
+  ],
+  "provides": [
+    "action.contactState",
+    "counter",
+    "eventType",
+    "protocol"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "radio-bridge",
+    "device": "rbs101-con",
+    "codecId": "rbs101-con-codec",
+    "codecFile": "radio_bridge_packet_decoder.js",
+    "codecSha256": "83bc2db0c2c9a7bacb4cbe22d63bc8169172ce2caac5f1969526626978d5ff24",
+    "referencedAt": "2026-06-25"
+  }
+}
