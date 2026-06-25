@@ -1,0 +1,41 @@
+{
+  "uplink": [
+    {
+      "description": "Landis+Gyr heat-meter standard frame (fPort 2): energy, volume, power, flow, flow/return temperature, serial, error flag",
+      "input": {
+        "fPort": 2,
+        "bytes": [0, 12, 6, 82, 103, 97, 2, 12, 20, 151, 137, 153, 0, 11, 45, 0, 0, 0, 11, 59, 0, 0, 0, 10, 90, 51, 6, 10, 94, 65, 5, 12, 120, 41, 17, 3, 102, 2, 253, 23, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "metering": { "energy": { "total": 2616752000 }, "water": { "total": 9989970 } },
+          "power": { "active": 0 },
+          "water": { "temperature": { "current": 63.3 } },
+          "returnTemperature": 54.1,
+          "flowRate": 0,
+          "serialFromMessage": 66031129,
+          "errorFlag": 0,
+          "make": "elvaco",
+          "model": "cmi4110"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream-example input (TheThingsNetwork elvaco/cmi4110-codec.yaml, Apache-2.0). expected.data authored here by running reference/upstream-codec.js (oracle) and mapping BCD records to the vocabulary: energy kWh->Wh (x1000), volume m3->L (x1000), power kW->W (x1000), flow_temperature->water.temperature.current; flow/return-temperature/serial/error are camelCase extras. Satisfies power-meter (metering.energy.total, power.active) and water-meter (metering.water.total)."
+    },
+    {
+      "description": "Unsupported fPort (not 2) -> error",
+      "input": { "fPort": 1, "bytes": [0, 12, 6, 82, 103, 97] },
+      "expected": { "errors": ["unknown FPort"] },
+      "source": "synthetic",
+      "_note": "Upstream only decodes the standard heat-meter frame on fPort 2."
+    },
+    {
+      "description": "fPort 2 but payload shorter than the standard frame -> error",
+      "input": { "fPort": 2, "bytes": [0, 12, 6, 82, 103, 97, 2, 12] },
+      "expected": { "errors": ["payload length < 40"] },
+      "source": "synthetic",
+      "_note": "Upstream rejects standard frames under 40 bytes."
+    }
+  ],
+  "downlink": []
+}
