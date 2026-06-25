@@ -1,0 +1,49 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/milesight-iot/ws515-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Smart Wall Socket - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          8,
+          112,
+          1,
+          5,
+          129,
+          97,
+          7,
+          201,
+          168,
+          0,
+          3,
+          116,
+          131,
+          8,
+          6,
+          131,
+          29,
+          0,
+          0,
+          0,
+          4,
+          128,
+          35,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "socket_status": "on",
+          "power_factor": 97,
+          "current": 168,
+          "voltage": 217.9,
+          "power_consumption": 29,
+          "active_power": 35
+        }
+      }
+    }
+  ]
+}

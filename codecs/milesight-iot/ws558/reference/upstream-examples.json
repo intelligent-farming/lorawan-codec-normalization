@@ -1,0 +1,41 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/milesight-iot/ws558-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Light Controller (example 1) - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          3,
+          116,
+          178,
+          8
+        ]
+      },
+      "output": {
+        "data": {
+          "voltage": 222.6
+        }
+      }
+    },
+    {
+      "description": "Light Controller (example 2) - Milesight IoT",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          6,
+          131,
+          86,
+          4,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "power_consumption": 1110
+        }
+      }
+    }
+  ]
+}

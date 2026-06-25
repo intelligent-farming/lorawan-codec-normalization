@@ -1,0 +1,36 @@
+{
+  "vendor": "milesight-iot",
+  "device": "ws515",
+  "name": "Smart Wall Socket",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "energy",
+    "power",
+    "current",
+    "voltage",
+    "temperature"
+  ],
+  "provides": [
+    "metering.energy.total",
+    "power.active",
+    "power.current",
+    "power.factor",
+    "power.voltage",
+    "socketStatus"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "ws515",
+    "codecId": "ws515-codec",
+    "codecFile": "ws515.js",
+    "codecSha256": "80e1e2ea7a256b0ce9a2c5f97eaf506efa4d9227a4159ad79dd2f273b949edfc",
+    "referencedAt": "2026-06-25"
+  }
+}

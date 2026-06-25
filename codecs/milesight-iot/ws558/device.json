@@ -1,0 +1,29 @@
+{
+  "vendor": "milesight-iot",
+  "device": "ws558",
+  "name": "Milesight WS558 Smart Light Controller",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "voltage",
+    "power",
+    "current"
+  ],
+  "provides": [
+    "power.voltage"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "ws558",
+    "codecId": "ws558-codec",
+    "codecFile": "ws558.js",
+    "codecSha256": "3853dbe8ac8cf79c7e23a27c814fede7961666aea97ffc0b3a56613d3e392de3",
+    "referencedAt": "2026-06-25"
+  }
+}

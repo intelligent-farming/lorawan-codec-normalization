@@ -1,0 +1,31 @@
+{
+  "vendor": "milesight-iot",
+  "device": "ws52x",
+  "name": "Milesight WS52x Portable Socket",
+  "categories": [
+    "power-meter"
+  ],
+  "sensors": [
+    "voltage",
+    "button",
+    "current",
+    "energy",
+    "power"
+  ],
+  "provides": [
+    "power.voltage"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "milesight-iot",
+    "device": "ws52x",
+    "codecId": "ws52x-codec",
+    "codecFile": "ws52x.js",
+    "codecSha256": "5feb2d4573d6e2205b85dd4942924600ed5f1623663a27f425a70730239fb39f",
+    "referencedAt": "2026-06-25"
+  }
+}

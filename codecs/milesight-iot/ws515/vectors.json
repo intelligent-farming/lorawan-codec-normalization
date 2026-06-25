@@ -1,0 +1,59 @@
+{
+  "uplink": [
+    {
+      "description": "Power-switch metering uplink -> power.* (and energy where present)",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          8,
+          112,
+          1,
+          5,
+          129,
+          97,
+          7,
+          201,
+          168,
+          0,
+          3,
+          116,
+          131,
+          8,
+          6,
+          131,
+          29,
+          0,
+          0,
+          0,
+          4,
+          128,
+          35,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "socketStatus": "on",
+          "power": {
+            "factor": 0.97,
+            "current": 0.168,
+            "voltage": 217.9,
+            "active": 35
+          },
+          "metering": {
+            "energy": {
+              "total": 29
+            }
+          },
+          "make": "milesight-iot",
+          "model": "ws515"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream-example input (TTN milesight-iot ws515 codec yaml, Apache-2.0). expected.data via the ported Milesight TLV decoder (oracle). voltage->power.voltage, active_power->power.active, current mA->power.current (A), power_factor %->power.factor, power_consumption Wh->metering.energy.total; switch/socket state as camelCase extras. Satisfies power-meter."
+    }
+  ],
+  "downlink": []
+}
