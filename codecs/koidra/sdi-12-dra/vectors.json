@@ -1,0 +1,49 @@
+{
+  "uplink": [
+    {
+      "description": "SDI-12 root-zone soil frame -> soil.moisture/temperature/ec",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          11,
+          136,
+          1,
+          50,
+          54,
+          50,
+          54,
+          46,
+          57,
+          54,
+          43,
+          50,
+          49,
+          46,
+          56,
+          43,
+          51,
+          56
+        ]
+      },
+      "expected": {
+        "data": {
+          "msgLength": 18,
+          "EXTITrigger": "FALSE",
+          "battery": 2.952,
+          "Payver": 1,
+          "dataSum": "2626.96+21.8+38",
+          "soil": {
+            "moisture": 0.401,
+            "temperature": 21.8,
+            "ec": 0.038
+          },
+          "make": "koidra",
+          "model": "sdi-12-dra"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic Dragino SDI-12 frame (battery + payver + ASCII measurement string wc+temp+ec); expected.data via the ported upstream decoder (oracle). Root-zone volumetric water content -> soil.moisture, temperature -> soil.temperature, EC -> soil.ec. No upstream examples published. Satisfies soil-monitor."
+    }
+  ],
+  "downlink": []
+}

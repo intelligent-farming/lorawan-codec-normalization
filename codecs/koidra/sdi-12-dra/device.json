@@ -1,0 +1,32 @@
+{
+  "vendor": "koidra",
+  "device": "sdi-12-dra",
+  "name": "SDI-12-DRA - SDI-12 To LoRaWAN®",
+  "categories": [
+    "soil-monitor"
+  ],
+  "sensors": [],
+  "provides": [
+    "EXTITrigger",
+    "Payver",
+    "battery",
+    "dataSum",
+    "msgLength",
+    "soil.ec",
+    "soil.moisture",
+    "soil.temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "koidra",
+    "device": "sdi-12-dra",
+    "codecId": "sdi-12-dra-codec",
+    "codecFile": "sdi-12-dra.js",
+    "codecSha256": "05cff46e58ad28808febc5c6b8997e1fc5a7873bdd1e691a9a8f9fd8ba6f42c9",
+    "referencedAt": "2026-06-25"
+  }
+}
