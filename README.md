@@ -104,7 +104,7 @@ fPort-variant, config, and partial uplinks legal.
 
 ## Categories
 
-`categories()` lists all 25; `categorySchema(id)` returns the JSON Schema for a
+`categories()` lists all 27; `categorySchema(id)` returns the JSON Schema for a
 category. Coverage grows over time — devices are added incrementally. Use
 `devices({ category })` for the live member list; the counts below are a snapshot.
 
@@ -113,30 +113,32 @@ of the listed paths present).
 
 | Category | membership | Authored members |
 |---|---|---|
-| `soil-monitor` | `atLeastOne`: `soil.moisture` / `soil.temperature` / `soil.ec` / `soil.pH` / … | 19 |
-| `climate` | `air.temperature`, `air.relativeHumidity` | 266 |
-| `air-quality` | `air.co2` | 84 |
-| `light` | `air.lightIntensity` | 72 |
-| `weather-station` | `air.temperature`, `air.pressure` | 72 |
-| `wind` | `wind.speed` | 12 |
-| `rain-gauge` | `rain.cumulative` | 10 |
-| `water-meter` | `metering.water.total` | 7 |
+| `soil-monitor` | `atLeastOne`: `soil.moisture` / `soil.temperature` / `soil.ec` / `soil.pH` / … | 31 |
+| `climate` | `air.temperature`, `air.relativeHumidity` | 300 |
+| `air-quality` | `air.co2` | 90 |
+| `light` | `air.lightIntensity` | 79 |
+| `weather-station` | `air.temperature`, `air.pressure` | 76 |
+| `wind` | `wind.speed` | 14 |
+| `rain-gauge` | `rain.cumulative` | 15 |
+| `water-meter` | `metering.water.total` | 15 |
 | `motion` | `action.motion` | 141 |
-| `contact` | `action.contactState` | 24 |
-| `gps-tracker` | `position.latitude`, `position.longitude` | 47 |
-| `water-leak` | `water.leak` | 38 |
-| `groundwater` | `atLeastOne`: `water.level` / `water.pressure` | 10 |
-| `particulate` | `atLeastOne`: `air.pm2_5` / `air.pm10` / `air.tvoc` / `air.iaqIndex` / … | 2 |
+| `contact` | `action.contactState` | 33 |
+| `gps-tracker` | `position.latitude`, `position.longitude` | 51 |
+| `water-leak` | `water.leak` | 41 |
+| `groundwater` | `atLeastOne`: `water.level` / `water.pressure` | 15 |
+| `tank-level` | `atLeastOne`: `tank.distance` / `tank.level` / `tank.volume` | 10 |
+| `particulate` | `atLeastOne`: `air.pm2_5` / `air.pm10` / `air.tvoc` / `air.iaqIndex` / … | 3 |
 | `gas-detector` | `air.gasAlarm` | 3 |
-| `vibration` | `atLeastOne`: `vibration.velocityRms` / `vibration.accelerationRms` / … | 5 |
-| `tilt` | `atLeastOne`: `tilt.angle` / `tilt.x` / `tilt.y` / `tilt.z` | 2 |
+| `vibration` | `atLeastOne`: `vibration.velocityRms` / `vibration.accelerationRms` / … | 6 |
+| `tilt` | `atLeastOne`: `tilt.angle` / `tilt.x` / `tilt.y` / `tilt.z` | 9 |
 | `occupancy` | `action.occupancy.occupied` | 5 |
-| `process-pressure` | `atLeastOne`: `pressure.gauge` / `pressure.absolute` | 3 |
-| `differential-pressure` | `pressure.differential` | 5 |
-| `water-quality` | `atLeastOne`: `water.ph` / `water.turbidity` / `water.residualChlorine` / … | 2 |
-| `power-meter` | `atLeastOne`: `metering.energy.total` / `power.active` / `power.voltage` / … | 1 |
-| `solar-radiation` | `atLeastOne`: `air.solarIrradiance` / `air.par` | 2 |
-| `leaf-wetness` | `leaf.wetness` | 1 |
+| `temperature` | `temperature` | 6 |
+| `process-pressure` | `atLeastOne`: `pressure.gauge` / `pressure.absolute` | 12 |
+| `differential-pressure` | `pressure.differential` | 8 |
+| `water-quality` | `atLeastOne`: `water.ph` / `water.turbidity` / `water.residualChlorine` / … | 12 |
+| `power-meter` | `atLeastOne`: `metering.energy.total` / `power.active` / `power.voltage` / … | 65 |
+| `solar-radiation` | `atLeastOne`: `air.solarIrradiance` / `air.par` | 4 |
+| `leaf-wetness` | `leaf.wetness` | 3 |
 | `runtime-meter` | `device.runtime` | 2 |
 
 `devices()` / `devices({ category })` enumerate registered devices;
