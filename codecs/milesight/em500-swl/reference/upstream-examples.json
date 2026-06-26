@@ -1,0 +1,12 @@
+{
+  "_note": "Example from the Milesight README: 01756403770200 -> {battery:100, depth:2}. Vectors use Milesight-format synthetic frames cross-checked against upstream-codec.js.",
+  "examples": [
+    {
+      "bytes": "01756403770200",
+      "decoded": {
+        "battery": 100,
+        "depth": 2
+      }
+    }
+  ]
+}

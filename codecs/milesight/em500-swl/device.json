@@ -1,0 +1,21 @@
+{
+  "vendor": "milesight",
+  "device": "em500-swl",
+  "name": "EM500-SWL Submersible Water Level Sensor",
+  "categories": [
+    "groundwater"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "batteryPercent",
+    "water.level"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

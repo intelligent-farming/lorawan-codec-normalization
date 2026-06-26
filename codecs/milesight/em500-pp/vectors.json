@@ -1,0 +1,50 @@
+{
+  "uplink": [
+    {
+      "description": "gauge-pressure frame (battery + pressure TLV)",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          1,
+          117,
+          100,
+          3,
+          123,
+          150,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 100,
+          "pressure": {
+            "gauge": 150
+          },
+          "make": "milesight",
+          "model": "em500-pp"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic EM500-PP Milesight-format frame; expected.data via this codec, cross-checked against the upstream Milesight decoder (oracle pressure=150 kPa, battery=100%). int16LE kPa -> pressure.gauge; battery % -> batteryPercent extra. Satisfies process-pressure."
+    },
+    {
+      "description": "Version-only frame (no measurement) -> error",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          255,
+          1,
+          16
+        ]
+      },
+      "expected": {
+        "errors": [
+          "no pressure measur"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "IPSO-version channel carries no pressure reading."
+    }
+  ],
+  "downlink": []
+}

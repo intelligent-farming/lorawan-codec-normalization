@@ -1,0 +1,50 @@
+{
+  "uplink": [
+    {
+      "description": "groundwater depth frame (battery + depth TLV)",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          1,
+          117,
+          100,
+          3,
+          119,
+          250,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 100,
+          "water": {
+            "level": 2.5
+          },
+          "make": "milesight",
+          "model": "em500-swl"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic EM500-SWL Milesight-format frame; expected.data via this codec, cross-checked against the upstream Milesight decoder (oracle depth=250 cm, battery=100%). depth cm /100 -> water.level (2.5 m); battery % -> batteryPercent extra. Satisfies groundwater (atLeastOne water.level)."
+    },
+    {
+      "description": "Version-only frame (no measurement) -> error",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          255,
+          1,
+          16
+        ]
+      },
+      "expected": {
+        "errors": [
+          "no valid depth mea"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "IPSO-version channel carries no depth reading."
+    }
+  ],
+  "downlink": []
+}

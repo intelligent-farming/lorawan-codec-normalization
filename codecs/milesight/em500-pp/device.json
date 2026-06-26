@@ -1,0 +1,21 @@
+{
+  "vendor": "milesight",
+  "device": "em500-pp",
+  "name": "EM500-PP Pressure Transmitter",
+  "categories": [
+    "process-pressure"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "batteryPercent",
+    "pressure.gauge"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}
