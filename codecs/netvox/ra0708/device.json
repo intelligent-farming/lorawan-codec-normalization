@@ -1,0 +1,23 @@
+{
+  "vendor": "netvox",
+  "device": "ra0708",
+  "name": "RA0708 - Wireless pH Sensor",
+  "categories": [
+    "water-quality"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "battery",
+    "water.orp",
+    "water.ph",
+    "water.temperature.current"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

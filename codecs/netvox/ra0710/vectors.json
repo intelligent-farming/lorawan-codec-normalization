@@ -1,0 +1,65 @@
+{
+  "uplink": [
+    {
+      "description": "turbidity + temperature report (fPort 6, type 0x09)",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          5,
+          9,
+          30,
+          0,
+          125,
+          8,
+          152,
+          255,
+          255,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "water": {
+            "turbidity": 12.5,
+            "temperature": {
+              "current": 22
+            }
+          },
+          "battery": 3,
+          "make": "netvox",
+          "model": "ra0710"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic RA0710 ReportDataCmd; expected.data via this codec. Values (turbidity 12.5 NTU, temp 22.00 C, battery 3.0 V; aux humidity absent 0xFFFF) match the documented Netvox Application Command scaling, cross-checked against an independent community decoder. turbidity/10 -> water.turbidity; temp signed/100 -> water.temperature.current. Satisfies water-quality."
+    },
+    {
+      "description": "Version frame (report type 0x00) -> error",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          5,
+          0,
+          100,
+          72,
+          32,
+          23,
+          18,
+          8,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "version fram"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Report type 0x00 carries firmware/version metadata, not a measurement."
+    }
+  ],
+  "downlink": []
+}

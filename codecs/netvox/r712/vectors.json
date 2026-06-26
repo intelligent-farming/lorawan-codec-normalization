@@ -1,0 +1,218 @@
+{
+  "uplink": [
+    {
+      "description": "Temperature/humidity status report, positive temperature",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          1,
+          1,
+          30,
+          9,
+          234,
+          26,
+          144,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "r712",
+          "battery": 3,
+          "air": {
+            "temperature": 25.38,
+            "relativeHumidity": 68
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; expected derived from running reference/upstream-codec.js (Temp 0x09EA=25.38C, Humi 0x1A90/100=68%, Volt 30/10=3.0V) and normalized into the vocabulary."
+    },
+    {
+      "description": "Temperature/humidity report, negative temperature (two's-complement)",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          1,
+          1,
+          30,
+          255,
+          236,
+          17,
+          112,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "r712",
+          "battery": 3,
+          "air": {
+            "temperature": -0.2,
+            "relativeHumidity": 44.64
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input exercising the negative-temperature branch; expected from reference/upstream-codec.js (Temp 0xFFEC -> -0.20C, Humi 0x1170/100=44.64%)."
+    },
+    {
+      "description": "Low-battery flag set (high bit of voltage byte)",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          1,
+          1,
+          158,
+          8,
+          52,
+          12,
+          128,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "r712",
+          "lowBattery": true,
+          "battery": 3,
+          "air": {
+            "temperature": 21,
+            "relativeHumidity": 32
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input; byte3 0x9E has the low-battery high bit set, masked value 30/10=3.0V (upstream Volt '3(low battery)'). Temp 0x0834=21.00C, Humi 0x0C80/100=32%."
+    },
+    {
+      "description": "Humidity at 100% upper bound",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          1,
+          1,
+          28,
+          11,
+          184,
+          39,
+          16,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "r712",
+          "battery": 2.8,
+          "air": {
+            "temperature": 30,
+            "relativeHumidity": 100
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input at the humidity ceiling; expected from reference/upstream-codec.js (Humi 0x2710=10000/100=100%, Temp 0x0BB8=30.00C, Volt 28/10=2.8V)."
+    },
+    {
+      "description": "Humidity and temperature at zero lower bound",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          1,
+          1,
+          28,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "r712",
+          "battery": 2.8,
+          "air": {
+            "temperature": 0,
+            "relativeHumidity": 0
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input at the lower bound; expected from reference/upstream-codec.js (Temp 0, Humi 0, Volt 2.8V)."
+    },
+    {
+      "description": "Device info frame carries no measurement (report type 0x00)",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          1,
+          0,
+          100,
+          72,
+          32,
+          23,
+          18,
+          8,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "no measurement"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "TTN startup-version example bytes; upstream returns Device/SWver/HWver/Datecode metadata, which carries no normalizable measurement."
+    },
+    {
+      "description": "Config response on fPort 7 is unsupported",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          129,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "unsupported fPort"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "TTN config-response example bytes; fPort 7 carries configuration, not measurements."
+    }
+  ],
+  "downlink": []
+}

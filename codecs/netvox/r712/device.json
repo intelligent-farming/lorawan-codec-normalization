@@ -1,0 +1,24 @@
+{
+  "vendor": "netvox",
+  "device": "r712",
+  "name": "R712 - Wireless Temperature and Humidity Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity"
+  ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "lowBattery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

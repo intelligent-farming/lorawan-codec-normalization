@@ -1,0 +1,66 @@
+{
+  "uplink": [
+    {
+      "description": "pH + temperature + ORP report (fPort 6, type 0x08)",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          5,
+          8,
+          30,
+          2,
+          188,
+          8,
+          152,
+          0,
+          250,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "water": {
+            "ph": 7,
+            "temperature": {
+              "current": 22
+            },
+            "orp": 250
+          },
+          "battery": 3,
+          "make": "netvox",
+          "model": "ra0708"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic RA0708 ReportDataCmd; expected.data via this codec. Values (pH 7.00, temp 22.00 C, ORP 250 mV, battery 3.0 V) match the documented Netvox Application Command scaling, cross-checked against an independent community decoder. pH/100 -> water.ph; temp signed/100 -> water.temperature.current; ORP mV -> water.orp. Satisfies water-quality."
+    },
+    {
+      "description": "Version frame (report type 0x00) -> error",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          5,
+          0,
+          100,
+          72,
+          32,
+          23,
+          18,
+          8,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "version fram"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Report type 0x00 carries firmware/version metadata, not a measurement."
+    }
+  ],
+  "downlink": []
+}

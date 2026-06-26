@@ -1,0 +1,22 @@
+{
+  "vendor": "netvox",
+  "device": "ra0710",
+  "name": "RA0710 - Wireless Turbidity Sensor",
+  "categories": [
+    "water-quality"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "battery",
+    "water.temperature.current",
+    "water.turbidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}
