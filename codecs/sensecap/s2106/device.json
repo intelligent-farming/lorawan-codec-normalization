@@ -1,0 +1,20 @@
+{
+  "vendor": "sensecap",
+  "device": "s2106",
+  "name": "SenseCAP S2106 - LoRaWAN pH Sensor",
+  "categories": [
+    "water-quality"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "water.ph"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

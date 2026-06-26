@@ -1,0 +1,57 @@
+{
+  "uplink": [
+    {
+      "description": "water pH telemetry frame (measurement ID 4106)",
+      "input": {
+        "fPort": 5,
+        "bytes": [
+          1,
+          10,
+          16,
+          88,
+          27,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "water": {
+            "ph": 7
+          },
+          "make": "sensecap",
+          "model": "s2106"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic SenseCAP S210X frame: channel 1, measurement ID 4106 (Water pH) LE, value 7000 LE (/1000 = pH 7.00), + 2-byte CRC. expected.data via this codec, cross-checked against an independent community decoder (measurementValue 7). ID 4106 -> water.ph. Satisfies water-quality."
+    },
+    {
+      "description": "Control-only frame (version, no telemetry) -> error",
+      "input": {
+        "fPort": 5,
+        "bytes": [
+          1,
+          0,
+          0,
+          16,
+          1,
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "no telemetry"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Measurement ID 0 (board version) is a control frame carrying no pH telemetry."
+    }
+  ],
+  "downlink": []
+}
