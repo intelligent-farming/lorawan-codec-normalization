@@ -1,0 +1,4 @@
+{
+  "_note": "Forum/datasheet reference: analog-input channel carries the ULB16 4-20 mA current (e.g. 0102018e -> analog_in ~4 mA = 0 m). Vectors use synthetic in-bounds frames cross-checked against the RAK Standardized Payload decoder for the LPP walk.",
+  "examples": []
+}

@@ -1,0 +1,22 @@
+{
+  "vendor": "rakwireless",
+  "device": "rak2560-ulb16",
+  "name": "RAK2560 Sensor Hub (ULB16 Water Level)",
+  "categories": [
+    "groundwater"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "battery",
+    "loopCurrent",
+    "water.level"
+  ],
+  "variantOf": "rak2560",
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

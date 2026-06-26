@@ -2,7 +2,33 @@
   "uplink": [
     {
       "description": "full environmental frame: temp 23.5C, humidity 60%, pressure 1013.2 hPa, presence, 350 lux, battery 3.65V",
-      "input": { "fPort": 1, "bytes": [1, 103, 0, 235, 2, 104, 120, 3, 115, 39, 148, 4, 102, 1, 5, 101, 1, 94, 6, 116, 1, 109] },
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          1,
+          103,
+          0,
+          235,
+          2,
+          104,
+          120,
+          3,
+          115,
+          39,
+          148,
+          4,
+          102,
+          1,
+          5,
+          101,
+          1,
+          94,
+          6,
+          116,
+          1,
+          109
+        ]
+      },
       "expected": {
         "data": {
           "make": "rakwireless",
@@ -13,7 +39,11 @@
             "pressure": 1013.2,
             "lightIntensity": 350
           },
-          "action": { "motion": { "detected": true } },
+          "action": {
+            "motion": {
+              "detected": true
+            }
+          },
           "battery": 3.65
         }
       },
@@ -22,7 +52,19 @@
     },
     {
       "description": "minimal weather-station frame: negative temp -5.2C and pressure 998.7 hPa",
-      "input": { "fPort": 1, "bytes": [1, 103, 255, 204, 3, 115, 39, 3] },
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          1,
+          103,
+          255,
+          204,
+          3,
+          115,
+          39,
+          3
+        ]
+      },
       "expected": {
         "data": {
           "make": "rakwireless",
@@ -38,7 +80,34 @@
     },
     {
       "description": "frame with CO2 concentration and GPS: temp 25C, pressure 1013.2 hPa, 412 ppm, position 40,-105",
-      "input": { "fPort": 1, "bytes": [1, 103, 0, 250, 3, 115, 39, 148, 7, 125, 1, 156, 9, 136, 6, 26, 128, 239, 250, 112, 2, 73, 240] },
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          1,
+          103,
+          0,
+          250,
+          3,
+          115,
+          39,
+          148,
+          7,
+          125,
+          1,
+          156,
+          9,
+          136,
+          6,
+          26,
+          128,
+          239,
+          250,
+          112,
+          2,
+          73,
+          240
+        ]
+      },
       "expected": {
         "data": {
           "make": "rakwireless",
@@ -60,17 +129,113 @@
     },
     {
       "description": "unrecognized LPP sensor type",
-      "input": { "fPort": 1, "bytes": [1, 250, 0, 0] },
-      "expected": { "errors": ["unrecognized LPP sensor type: 250"] },
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          1,
+          250,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "unrecognized LPP sensor type: 250"
+        ]
+      },
       "source": "synthetic",
       "_note": "Synthetic; type 250 is not in the LPP table. Upstream throws 'Sensor type error!: 250' on the same input."
     },
     {
       "description": "truncated payload: barometer value missing a byte",
-      "input": { "fPort": 1, "bytes": [3, 115, 39] },
-      "expected": { "errors": ["truncated payload"] },
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          3,
+          115,
+          39
+        ]
+      },
+      "expected": {
+        "errors": [
+          "truncated payload"
+        ]
+      },
       "source": "synthetic",
       "_note": "Synthetic; type 115 (barometer) declares 2 value bytes but only 1 is present."
+    },
+    {
+      "description": "soil probe frame: moisture 45%, EC 1.5 dS/m, pH 7.0",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          1,
+          188,
+          1,
+          194,
+          2,
+          192,
+          5,
+          220,
+          3,
+          193,
+          2,
+          188
+        ]
+      },
+      "expected": {
+        "data": {
+          "soil": {
+            "moisture": 45,
+            "ec": 1.5,
+            "pH": 7
+          },
+          "make": "rakwireless",
+          "model": "rak2560"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic RAK Standardized Payload with the soil probe channels; expected.data via this codec, cross-checked against the upstream RAK decoder (soil_moist 45, soil_ec 1.5, soil_ph_h 7.0). LPP 188->soil.moisture, 192->soil.ec, 193->soil.pH. Satisfies soil-monitor."
+    },
+    {
+      "description": "weather frame with wind: temp 23.0C, pressure 1013.2 hPa, wind 3.5 m/s @180deg",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          1,
+          103,
+          0,
+          230,
+          3,
+          115,
+          39,
+          148,
+          4,
+          190,
+          1,
+          94,
+          5,
+          191,
+          0,
+          180
+        ]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 23,
+            "pressure": 1013.2
+          },
+          "wind": {
+            "speed": 3.5,
+            "direction": 180
+          },
+          "make": "rakwireless",
+          "model": "rak2560"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic RAK Standardized Payload; expected.data via this codec, cross-checked against the upstream RAK decoder (wind_speed 3.5, wind_direction 180). LPP 190->wind.speed, 191->wind.direction; temp+barometer satisfy weather-station."
     }
   ],
   "downlink": []

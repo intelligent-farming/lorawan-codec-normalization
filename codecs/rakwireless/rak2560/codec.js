@@ -28,7 +28,15 @@
 //   presence (102)                -> action.motion.detected (boolean)
 //   voltage (116, 0.01 V/bit)     -> battery (V)
 //   gps (136 / 137)               -> position.latitude / position.longitude
-// Every other recognized LPP type has no normalized vocabulary home and is
+//   soilMoist (188, 0.1%/bit)     -> soil.moisture (%)
+//   soilEc (192, 0.001)           -> soil.ec (dS/m)
+//   soilPhH (193) / soilPhL (194) -> soil.pH (high precision preferred)
+//   windSpeed (190, 0.01 m/s/bit) -> wind.speed (m/s)
+//   windDirection (191, deg)      -> wind.direction (deg)
+// The fluid-level (ULB16) probe instead reports a raw 4-20 mA loop current on a
+// generic analogIn channel (no probe identity in the payload), so it stays an
+// extra here; the rak2560-ulb16 variant applies the documented level
+// conversion. Every other recognized LPP type has no normalized vocabulary home and is
 // emitted as a camelCase extra keyed `<name><Channel>` (e.g. analogIn1,
 // pyranometer3, gpsAltitude7) to preserve the multi-channel, multi-sensor shape.
 
@@ -119,8 +127,12 @@ function decodeUplinkCore(input) {
   var data = {};
   var air = {};
   var position = {};
+  var soil = {};
+  var wind = {};
   var hasAir = false;
   var hasPosition = false;
+  var hasSoil = false;
+  var hasWind = false;
 
   var i = 0;
   while (i < bytes.length) {
@@ -200,6 +212,32 @@ function decodeUplinkCore(input) {
           b: decimalFrom(bytes, i + 2, i + 3, false, 1)
         };
         break;
+      case 188: // soil moisture (0.1 % per bit) -> soil.moisture (%)
+        soil.moisture = round(decimalFrom(bytes, i, i + 2, false, 10), 1);
+        hasSoil = true;
+        break;
+      case 192: // soil EC (0.001) -> soil.ec (dS/m)
+        soil.ec = round(decimalFrom(bytes, i, i + 2, false, 1000), 3);
+        hasSoil = true;
+        break;
+      case 193: // soil pH, high precision (0.01) -> soil.pH
+        soil.pH = round(decimalFrom(bytes, i, i + 2, false, 100), 2);
+        hasSoil = true;
+        break;
+      case 194: // soil pH (0.1) -> soil.pH (only if high-precision absent)
+        if (soil.pH === undefined) {
+          soil.pH = round(decimalFrom(bytes, i, i + 2, false, 10), 1);
+          hasSoil = true;
+        }
+        break;
+      case 190: // wind speed (0.01 m/s per bit) -> wind.speed
+        wind.speed = round(decimalFrom(bytes, i, i + 2, false, 100), 2);
+        hasWind = true;
+        break;
+      case 191: // wind direction (deg) -> wind.direction
+        wind.direction = round(decimalFrom(bytes, i, i + 2, false, 1), 0);
+        hasWind = true;
+        break;
       default: // every other recognized type -> camelCase extra
         data[def.name + channel] = round(
           decimalFrom(bytes, i, i + def.size, def.signed, def.divisor),
@@ -216,6 +254,12 @@ function decodeUplinkCore(input) {
   }
   if (hasPosition) {
     data.position = position;
+  }
+  if (hasSoil) {
+    data.soil = soil;
+  }
+  if (hasWind) {
+    data.wind = wind;
   }
 
   return { data: data };

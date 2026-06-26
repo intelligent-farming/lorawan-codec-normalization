@@ -1,0 +1,53 @@
+{
+  "uplink": [
+    {
+      "description": "water-level frame: ULB16 loop current 5.0 mA -> 0.313 m",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          1,
+          2,
+          1,
+          244,
+          6,
+          116,
+          1,
+          109
+        ]
+      },
+      "expected": {
+        "data": {
+          "water": {
+            "level": 0.313
+          },
+          "loopCurrent": 5,
+          "battery": 3.65,
+          "make": "rakwireless",
+          "model": "rak2560-ulb16"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic RAK Standardized Payload (RAK2560 + ULB16): analog-input channel 0x02 = 0x01F4 = 5.00 mA (cross-checked against the upstream RAK decoder, analog_in 5.0). ULB16 4-20 mA maps to 0-5 m at 3.2 mA/m: (5-4)/3.2 = 0.3125 -> water.level 0.313 m; voltage 0x016D = 3.65 V -> battery. Satisfies groundwater (atLeastOne water.level)."
+    },
+    {
+      "description": "Frame without an analog-input (level) channel -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          6,
+          116,
+          1,
+          109
+        ]
+      },
+      "expected": {
+        "errors": [
+          "no analog-input (l"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "A frame with only battery and no analog level channel carries no level reading."
+    }
+  ],
+  "downlink": []
+}

@@ -5,13 +5,15 @@
   "categories": [
     "climate",
     "weather-station",
-    "gps-tracker"
+    "gps-tracker",
+    "soil-monitor"
   ],
   "sensors": [
     "temperature",
     "humidity",
     "barometer",
-    "accelerometer"
+    "accelerometer",
+    "soil"
   ],
   "provides": [
     "action.motion.detected",
@@ -23,7 +25,12 @@
     "battery",
     "gpsAltitude9",
     "position.latitude",
-    "position.longitude"
+    "position.longitude",
+    "soil.ec",
+    "soil.moisture",
+    "soil.pH",
+    "wind.direction",
+    "wind.speed"
   ],
   "variantOf": null,
   "downlink": {
