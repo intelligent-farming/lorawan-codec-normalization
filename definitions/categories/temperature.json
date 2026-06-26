@@ -1,0 +1,8 @@
+{
+  "id": "temperature",
+  "name": "Temperature",
+  "description": "Single-purpose temperature sensors: probes, immersion/surface/contact thermometers, and cold-chain or grain/silo temperature monitors. Distinct from `climate`, which also reports humidity.",
+  "requires": ["temperature"],
+  "provides": ["battery"],
+  "notes": "temperature is °C. Use this only for standalone temperature devices; a sensor that also reports humidity is `climate` (air.temperature + air.relativeHumidity), and soil/water/leaf probes use those groups."
+}

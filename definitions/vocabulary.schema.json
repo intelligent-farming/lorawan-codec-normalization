@@ -72,6 +72,31 @@
           "description": "Voltage (V)",
           "minimum": 0
         },
+        "temperature": {
+          "description": "Standalone temperature reading (°C) from a single-purpose temperature probe (not the ambient air/soil/water/leaf groups)",
+          "$ref": "#/$defs/temperature"
+        },
+        "tank": {
+          "type": "object",
+          "description": "Tank / silo / bin contents measured by a top-mounted ranging sensor (ultrasonic or radar). Distinct from water.level (hydrostatic depth above a submerged sensor): `tank.distance` is measured from the top down to the surface and decreases as the vessel fills.",
+          "properties": {
+            "distance": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Distance from the top-mounted sensor to the contents surface (m)"
+            },
+            "level": {
+              "description": "Fill level (%) when the device supplies the empty/full geometry",
+              "$ref": "#/$defs/percentage"
+            },
+            "volume": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Contents volume (L)"
+            }
+          },
+          "additionalProperties": true
+        },
         "soil": {
           "type": "object",
           "properties": {

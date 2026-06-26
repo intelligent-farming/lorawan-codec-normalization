@@ -1,0 +1,8 @@
+{
+  "id": "tank-level",
+  "name": "Tank / silo level",
+  "description": "Top-mounted ranging sensors (ultrasonic or radar) measuring the contents of tanks, silos, bins, and cisterns — grain, feed, water, fuel/diesel, or slurry. Distinct from `groundwater`, which reports hydrostatic water depth above a submerged sensor.",
+  "atLeastOne": ["tank.distance", "tank.level", "tank.volume"],
+  "provides": ["air.temperature", "battery"],
+  "notes": "tank.distance is the measured gap from the sensor down to the surface (m), which decreases as the vessel fills; tank.level is the derived fill percentage and tank.volume the contents volume (L) when the device supplies the vessel geometry. A submersible hydrostatic level/pressure probe belongs in `groundwater`, not here."
+}
