@@ -1,0 +1,23 @@
+{
+  "vendor": "rejeee",
+  "device": "sl711us",
+  "name": "SL711US LoRaWAN Water Level Sensor",
+  "categories": [
+    "groundwater"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "batteryLevel",
+    "firmwareVersion",
+    "loopCurrent",
+    "water.level"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

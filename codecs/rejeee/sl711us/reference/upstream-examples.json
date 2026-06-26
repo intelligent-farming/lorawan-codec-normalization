@@ -1,0 +1,8 @@
+{
+  "_note": "Manual example (non-LoRaWAN framing): ...00 5F71 03 0190... -> device info + ADC 0x0190=400 mV = 4.00 mA. Over LoRaWAN the FRMPayload is the TLV blocks only. Vectors use synthetic in-bounds frames.",
+  "examples": [
+    {
+      "note": "ADC 0x0190 = 400 mV = 4.00 mA (loop minimum, level 0 m)"
+    }
+  ]
+}

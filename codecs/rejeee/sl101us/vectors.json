@@ -1,0 +1,52 @@
+{
+  "uplink": [
+    {
+      "description": "temperature + humidity report (fPort 1 TLV)",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          0,
+          95,
+          113,
+          1,
+          0,
+          220,
+          2,
+          55
+        ]
+      },
+      "expected": {
+        "data": {
+          "batteryLevel": 31,
+          "firmwareVersion": 2,
+          "air": {
+            "temperature": 22,
+            "relativeHumidity": 55
+          },
+          "make": "rejeee",
+          "model": "sl101us"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic Rejeee TLV frame: device-info 00 5F 71 (battery level 31), temperature 22.0 C (b4..5 0x00DC signed/10), humidity 55% (b7). expected.data via this codec, cross-checked against an independent community decoder. Satisfies climate."
+    },
+    {
+      "description": "Truncated frame -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          0,
+          95
+        ]
+      },
+      "expected": {
+        "errors": [
+          "payload too "
+        ]
+      },
+      "source": "synthetic",
+      "_note": "A frame shorter than the device-info + temp + humidity blocks carries no full reading."
+    }
+  ],
+  "downlink": []
+}

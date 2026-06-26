@@ -1,0 +1,54 @@
+{
+  "uplink": [
+    {
+      "description": "water-level report (fPort 1, ADC 0x03 block)",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          0,
+          95,
+          113,
+          3,
+          4,
+          176
+        ]
+      },
+      "expected": {
+        "data": {
+          "batteryLevel": 31,
+          "firmwareVersion": 2,
+          "water": {
+            "level": 2.5
+          },
+          "loopCurrent": 12,
+          "make": "rejeee",
+          "model": "sl711us"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic SL711 TLV frame: device-info 00 5F 71 (battery level 31), ADC 0x04B0 = 1200 mV = 12.00 mA. 4-20 mA maps to 0-5 m: (12-4)/16*5 = 2.5 m -> water.level. ADC->mA scaling per the manual (1 mV = 0.01 mA). Satisfies groundwater (atLeastOne water.level)."
+    },
+    {
+      "description": "Frame without ADC block -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          0,
+          95,
+          113,
+          9,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "no ADC (0x03"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "A frame whose sensor block is not the 0x03 ADC carries no level reading."
+    }
+  ],
+  "downlink": []
+}

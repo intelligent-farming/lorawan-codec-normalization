@@ -1,0 +1,24 @@
+{
+  "vendor": "rejeee",
+  "device": "sl110us",
+  "name": "SL110US Temperature & Humidity Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity"
+  ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "batteryLevel",
+    "firmwareVersion"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

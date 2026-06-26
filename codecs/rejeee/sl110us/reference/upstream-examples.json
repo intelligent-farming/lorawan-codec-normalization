@@ -1,0 +1,4 @@
+{
+  "_note": "No official example payloads published; wire format from the documented Rejeee sensor-data protocol (see upstream-codec.js), cross-checked against an independent community decoder. Vectors use synthetic in-bounds frames.",
+  "examples": []
+}
