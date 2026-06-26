@@ -1,0 +1,28 @@
+{
+  "vendor": "netvox",
+  "device": "r711a",
+  "name": "R711A - Wireless Temperature Sensor",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "battery",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r711a",
+    "codecId": "r711a-codec",
+    "codecFile": "payload/r718ad.js",
+    "codecSha256": "bd0cea848fbb9a7f697ed99bc931813fe02a95dd27b958d13e958d5f0bfb4c52",
+    "referencedAt": "2026-06-26"
+  }
+}

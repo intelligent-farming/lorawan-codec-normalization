@@ -1,0 +1,29 @@
+{
+  "vendor": "netvox",
+  "device": "r718cn2",
+  "name": "R718CN2 - Wireless 2-Gang Thermocouple Sensor - Type N",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "battery",
+    "temperature",
+    "temperature2"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r718cn2",
+    "codecId": "r718cn2-codec",
+    "codecFile": "payload/r718b2.js",
+    "codecSha256": "3ed16e306b883c703f2df791e02754ae127a04508af2f31e5e3fef78a5edc315",
+    "referencedAt": "2026-06-26"
+  }
+}

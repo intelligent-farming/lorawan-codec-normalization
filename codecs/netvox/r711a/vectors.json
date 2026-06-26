@@ -1,0 +1,60 @@
+{
+  "uplink": [
+    {
+      "description": "temperature report (fPort 6)",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          188,
+          1,
+          30,
+          8,
+          152,
+          8,
+          252,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "temperature": 22,
+          "make": "netvox",
+          "model": "r711a"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic Netvox ReportDataCmd (device type 0xbc); cross-checked against the upstream decoder (Temp 22). temperature signed/100 -> temperature. Satisfies temperature."
+    },
+    {
+      "description": "Version frame (report type 0x00) -> error",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          188,
+          0,
+          100,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "version fram"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Report type 0x00 carries firmware/version metadata, not a measurement."
+    }
+  ],
+  "downlink": []
+}

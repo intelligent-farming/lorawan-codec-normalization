@@ -1,0 +1,28 @@
+{
+  "vendor": "netvox",
+  "device": "r718b",
+  "name": "R718B - Wireless Resistance Temperature Detector",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "battery",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r718b",
+    "codecId": "r718b-codec",
+    "codecFile": "payload/r718cj_ck_ct_cr_ce_r718b.js",
+    "codecSha256": "ea94226babc121d1b8db0b1a0ea21198a865b9c626f9871dde608bc754247140",
+    "referencedAt": "2026-06-26"
+  }
+}

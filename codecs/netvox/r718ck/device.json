@@ -1,0 +1,28 @@
+{
+  "vendor": "netvox",
+  "device": "r718ck",
+  "name": "R718CK - Wireless Thermocouple Sensor",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "battery",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r718ck",
+    "codecId": "r718ck-codec",
+    "codecFile": "payload/r718cj_ck_ct_cr_ce_r718b.js",
+    "codecSha256": "ea94226babc121d1b8db0b1a0ea21198a865b9c626f9871dde608bc754247140",
+    "referencedAt": "2026-06-26"
+  }
+}
