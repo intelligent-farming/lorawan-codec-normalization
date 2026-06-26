@@ -1,0 +1,28 @@
+{
+  "vendor": "radio-bridge",
+  "device": "rbs306-vshb",
+  "name": "RBS306-VSHB - Vibration Sensor",
+  "categories": [
+    "vibration"
+  ],
+  "sensors": [
+    "vibration",
+    "temperature"
+  ],
+  "provides": [
+    "air.temperature",
+    "biasVoltage",
+    "channel",
+    "event",
+    "packetCounter",
+    "peakVelocity",
+    "protocolVersion",
+    "vibration.accelerationPeak"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

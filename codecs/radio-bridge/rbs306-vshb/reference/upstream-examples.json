@@ -1,0 +1,16 @@
+{
+  "_note": "Official RadioBridge doc example (DecoderDocs/HBVibrationSensor.md).",
+  "examples": [
+    {
+      "bytes": "1f1c001c2c1ba8",
+      "decoded": {
+        "axis": "Channel 1",
+        "event": "Periodic Report",
+        "vibration_velocity": "0.28000",
+        "vibration_gforce": 11,
+        "accelerator_temp": 27,
+        "bias_voltage": 1.68
+      }
+    }
+  ]
+}

@@ -48,3 +48,16 @@ A verbatim copy of the Dragino decoder is retained as an authoring reference at
 codecs/dragino/wsc2-compact-ls/reference/upstream-codec.js (excluded from the
 published package). Wire-format facts are not copyrightable; the normalized
 codec is original work under AGPL-3.0-or-later.
+
+RBS306-VSHB (codecs/radio-bridge/rbs306-vshb)
+---------------------------------------------
+The MultiTech / Radio Bridge RBS306-VSHB high-bandwidth vibration sensor is not
+decoded by the shared radio_bridge_packet_decoder.js used by the other
+RadioBridge devices. Its wire format was understood from the official
+MIT-licensed decoder:
+  @radiobridge/packet-decoder — https://github.com/RadioBridge/Packet-Decoder
+  (src/decoders/HBVibrationSensor.ts; MIT License, Copyright (c) Radio Bridge Inc.)
+A faithful reference port is retained at
+codecs/radio-bridge/rbs306-vshb/reference/upstream-codec.js (excluded from the
+published package). MIT is compatible inbound to AGPL-3.0-or-later. Wire-format
+facts are not copyrightable; the normalized codec is original work.

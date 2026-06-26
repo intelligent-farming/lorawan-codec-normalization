@@ -1,0 +1,62 @@
+{
+  "uplink": [
+    {
+      "description": "high-bandwidth vibration periodic report (g-force 11 g, temp 27C)",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          31,
+          28,
+          0,
+          28,
+          44,
+          27,
+          168
+        ]
+      },
+      "expected": {
+        "data": {
+          "vibration": {
+            "accelerationPeak": 11
+          },
+          "air": {
+            "temperature": 27
+          },
+          "peakVelocity": 7.112,
+          "channel": 1,
+          "event": "Periodic Report",
+          "biasVoltage": 1.68,
+          "protocolVersion": 1,
+          "packetCounter": 31,
+          "make": "radio-bridge",
+          "model": "rbs306-vshb"
+        }
+      },
+      "source": "vendor-doc",
+      "_note": "Official RadioBridge doc example (DecoderDocs/HBVibrationSensor.md): 1f1c001c2c1ba8 -> g-force 11 g, velocity 0.28 in/s, temp 27 C, bias 1.68 V. high-frequency peak g-force /4 -> vibration.accelerationPeak (g); accelerometer temp -> air.temperature; low-frequency peak velocity 0.28 in/s -> peakVelocity 7.112 mm/s extra. Satisfies vibration."
+    },
+    {
+      "description": "non-vibration frame (wrong type byte) -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          25,
+          6,
+          3,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "not a high-bandwidth"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "A frame whose type/axis byte is outside 0x1C-0x1F is not a high-bandwidth vibration report."
+    }
+  ],
+  "downlink": []
+}
