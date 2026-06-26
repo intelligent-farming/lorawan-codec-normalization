@@ -1,0 +1,57 @@
+{
+  "uplink": [
+    {
+      "description": "soil data packet (fPort 2, 5-byte with status)",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          0,
+          11,
+          184,
+          5,
+          220
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3,
+          "soil": {
+            "moisture": 15
+          },
+          "soilMoisturePercent": 51,
+          "sensorVoltage": 1500,
+          "status": 0,
+          "make": "senzemo",
+          "model": "ssm40"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic SSM40 port-2 data packet; expected.data via this codec, cross-checked against the upstream decoder (oracle VWC=15, SoilMoisture=51, BatteryVoltage=3000 mV, SensorVoltage=1500 mV). VWC cubic -> soil.moisture; battery mV/1000 -> battery (V). Satisfies soil-monitor."
+    },
+    {
+      "description": "Config frame (fPort 3) -> error",
+      "input": {
+        "fPort": 3,
+        "bytes": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "fPort 3 is n"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "fPort 3 carries device configuration, not a soil reading."
+    }
+  ],
+  "downlink": []
+}

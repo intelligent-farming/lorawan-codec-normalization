@@ -1,0 +1,30 @@
+{
+  "vendor": "senzemo",
+  "device": "ssm30",
+  "name": "Senstick SSM30 Soil Moisture Sensor",
+  "categories": [
+    "soil-monitor"
+  ],
+  "sensors": [
+    "water",
+    "temperature",
+    "humidity",
+    "barometer"
+  ],
+  "provides": [
+    "air.pressure",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "soil.moisture",
+    "soilMoisturePercent",
+    "soilMoistureRaw",
+    "status"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

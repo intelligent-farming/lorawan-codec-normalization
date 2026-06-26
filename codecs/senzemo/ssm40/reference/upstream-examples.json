@@ -1,0 +1,4 @@
+{
+  "_note": "No official example payloads published; normalized codec authored from the SSM40 decoder (see upstream-codec.js). Vectors use a synthetic in-bounds port-2 data packet cross-checked against upstream-codec.js.",
+  "examples": []
+}

@@ -1,0 +1,24 @@
+{
+  "vendor": "senzemo",
+  "device": "ssm40",
+  "name": "Senstick SSM40 Soil Moisture Sensor",
+  "categories": [
+    "soil-monitor"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "battery",
+    "sensorVoltage",
+    "soil.moisture",
+    "soilMoisturePercent",
+    "status"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

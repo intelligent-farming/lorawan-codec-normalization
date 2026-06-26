@@ -1,0 +1,67 @@
+{
+  "uplink": [
+    {
+      "description": "soil + climate data packet (fPort 2)",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          0,
+          8,
+          152,
+          21,
+          124,
+          39,
+          146,
+          200,
+          5,
+          220
+        ]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "temperature": 22,
+            "relativeHumidity": 55,
+            "pressure": 1013
+          },
+          "battery": 3,
+          "soil": {
+            "moisture": 15
+          },
+          "soilMoisturePercent": 51,
+          "soilMoistureRaw": 1500,
+          "status": 0,
+          "make": "senzemo",
+          "model": "ssm30"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic SSM30 data packet; expected.data via this codec, cross-checked against the upstream decoder (oracle Temperature=22, Humidity=55, AirPressure=1013, BatteryLevel=3, VWC=15, SoilMoisture=51). VWC cubic -> soil.moisture; temp signed/100 -> air.temperature; humidity/100 -> air.relativeHumidity; pressure/10 -> air.pressure (hPa); battery (b7+100)/100 -> battery (V). Satisfies soil-monitor."
+    },
+    {
+      "description": "Config frame (fPort 3) -> error",
+      "input": {
+        "fPort": 3,
+        "bytes": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "fPort 3 is a"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "fPort 3 carries device configuration, not a data packet."
+    }
+  ],
+  "downlink": []
+}
