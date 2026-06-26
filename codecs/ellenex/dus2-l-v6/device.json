@@ -1,0 +1,21 @@
+{
+  "vendor": "ellenex",
+  "device": "dus2-l-v6",
+  "name": "DUS2-L-V6 - Ultrasonic Distance / Level Sensor",
+  "categories": [
+    "tank-level"
+  ],
+  "sensors": [
+    "distance"
+  ],
+  "provides": [
+    "battery",
+    "tank.distance"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

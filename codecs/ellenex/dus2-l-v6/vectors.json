@@ -1,0 +1,66 @@
+{
+  "uplink": [
+    {
+      "description": "tank/silo ranging frame (distance to surface)",
+      "input": {
+        "fPort": 15,
+        "bytes": [
+          191,
+          97,
+          118,
+          251,
+          64,
+          169,
+          200,
+          0,
+          0,
+          0,
+          0,
+          0,
+          97,
+          68,
+          251,
+          63,
+          253,
+          153,
+          153,
+          153,
+          153,
+          153,
+          154,
+          255
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "tank": {
+            "distance": 1.85
+          },
+          "make": "ellenex",
+          "model": "dus2-l-v6"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic Ellenex V6 CBOR map {v:3300 mV, D:1.85 m}. D (top-down distance to the contents surface) -> tank.distance. Satisfies tank-level."
+    },
+    {
+      "description": "Non-map / undecodable payload -> error",
+      "input": {
+        "fPort": 15,
+        "bytes": [
+          1,
+          2
+        ]
+      },
+      "expected": {
+        "errors": [
+          "payload is n"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "A payload that is not a CBOR map yields no sensor fields."
+    }
+  ],
+  "downlink": []
+}

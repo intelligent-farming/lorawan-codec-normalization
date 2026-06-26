@@ -1,0 +1,4 @@
+{
+  "_note": "V6 CBOR; vectors are synthetic CBOR maps round-tripped through the shared CBOR reader (validated by ellenex/pls2-l-v6).",
+  "examples": []
+}

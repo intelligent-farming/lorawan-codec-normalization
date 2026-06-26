@@ -1,0 +1,51 @@
+{
+  "uplink": [
+    {
+      "description": "external temperature probe report (22 C)",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          16,
+          9,
+          0,
+          22,
+          22
+        ]
+      },
+      "expected": {
+        "data": {
+          "temperature": 22,
+          "rawTemperature": 22,
+          "protocol": 1,
+          "counter": 0,
+          "eventType": "TEMP_EXT",
+          "make": "radio-bridge",
+          "model": "rbs306-temp-ext"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic RadioBridge ext-temperature frame; expected.data via this codec, cross-checked against the upstream decoder (TempExt.currentTemperature 22). Signed probe temperature -> temperature. Satisfies temperature."
+    },
+    {
+      "description": "Unsupported / non-measurement event -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          16,
+          0,
+          1,
+          1,
+          1
+        ]
+      },
+      "expected": {
+        "errors": [
+          "frame carries no n"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "A frame whose event is not this device's measurement event yields no normalized reading."
+    }
+  ],
+  "downlink": []
+}

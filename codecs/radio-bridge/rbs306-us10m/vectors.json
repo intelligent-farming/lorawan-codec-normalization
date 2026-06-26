@@ -1,0 +1,54 @@
+{
+  "uplink": [
+    {
+      "description": "ultrasonic level report (distance 9999 mm)",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          16,
+          16,
+          0,
+          39,
+          15
+        ]
+      },
+      "expected": {
+        "data": {
+          "tank": {
+            "distance": 9.999
+          },
+          "distanceMm": 9999,
+          "event": "Periodic Report",
+          "protocol": 1,
+          "counter": 0,
+          "eventType": "ULTRASONIC",
+          "make": "radio-bridge",
+          "model": "rbs306-us10m"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic RadioBridge ultrasonic frame; expected.data via this codec, cross-checked against the upstream decoder (Ultrasonic.Distance 9999 mm). Top-down distance mm/1000 -> tank.distance (9.999 m). Satisfies tank-level."
+    },
+    {
+      "description": "Unsupported / non-measurement event -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          16,
+          0,
+          1,
+          1,
+          1
+        ]
+      },
+      "expected": {
+        "errors": [
+          "frame carries no n"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "A reset/version event carries no level reading."
+    }
+  ],
+  "downlink": []
+}

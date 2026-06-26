@@ -1,0 +1,21 @@
+{
+  "vendor": "ellenex",
+  "device": "tts2-l-v6",
+  "name": "TTS2-L-V6 - Temperature Transmitter",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "battery",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}
