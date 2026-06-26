@@ -1,0 +1,39 @@
+{
+  "vendor": "radio-bridge",
+  "device": "rbs306-temp-tc",
+  "name": "RBS306-TEMP-TC - Thermocouple Temperature Sensor",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "counter",
+    "event",
+    "eventType",
+    "protocol",
+    "temperature",
+    "thermocoupleFault.ColdAboveThresh",
+    "thermocoupleFault.ColdBelowThresh",
+    "thermocoupleFault.ColdOutsideRange",
+    "thermocoupleFault.HotOutsideRange",
+    "thermocoupleFault.OpenCircuit",
+    "thermocoupleFault.TCTooHigh",
+    "thermocoupleFault.TCTooLow",
+    "thermocoupleFault.VoltageOutsideRange"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "radio-bridge",
+    "device": "rbs306-temp-tc",
+    "codecId": "rbs306-temp-tc-codec",
+    "codecFile": "radio_bridge_packet_decoder.js",
+    "codecSha256": "83bc2db0c2c9a7bacb4cbe22d63bc8169172ce2caac5f1969526626978d5ff24",
+    "referencedAt": "2026-06-26"
+  }
+}

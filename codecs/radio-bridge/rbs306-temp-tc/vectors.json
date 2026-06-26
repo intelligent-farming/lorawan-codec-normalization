@@ -1,0 +1,61 @@
+{
+  "uplink": [
+    {
+      "description": "thermocouple temperature report (18.75 C)",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          16,
+          19,
+          0,
+          1,
+          44
+        ]
+      },
+      "expected": {
+        "data": {
+          "temperature": 18.75,
+          "thermocoupleFault": {
+            "ColdOutsideRange": "False",
+            "HotOutsideRange": "False",
+            "ColdAboveThresh": "False",
+            "ColdBelowThresh": "False",
+            "TCTooHigh": "False",
+            "TCTooLow": "False",
+            "VoltageOutsideRange": "False",
+            "OpenCircuit": "False"
+          },
+          "event": "Periodic Report",
+          "protocol": 1,
+          "counter": 0,
+          "eventType": "Thermocouple",
+          "make": "radio-bridge",
+          "model": "rbs306-temp-tc"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic RadioBridge thermocouple frame; cross-checked against the upstream decoder (Thermocouple.Temperature 18.75). -> temperature; fault flags kept as the thermocoupleFault extra."
+    },
+    {
+      "description": "Reset/version event -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          16,
+          0,
+          1,
+          1,
+          1
+        ]
+      },
+      "expected": {
+        "errors": [
+          "frame carries no n"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "A non-measurement event yields no normalized reading."
+    }
+  ],
+  "downlink": []
+}

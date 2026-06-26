@@ -1,0 +1,21 @@
+{
+  "vendor": "ellenex",
+  "device": "tts3-l-v6",
+  "name": "TTS3-L-V6 - Temperature Transmitter (IP68)",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "battery",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

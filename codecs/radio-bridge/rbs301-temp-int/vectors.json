@@ -1,0 +1,50 @@
+{
+  "uplink": [
+    {
+      "description": "probeless temperature report (22.1 C)",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          16,
+          25,
+          0,
+          22,
+          22
+        ]
+      },
+      "expected": {
+        "data": {
+          "temperature": 22.1,
+          "protocol": 1,
+          "counter": 0,
+          "eventType": "TEMP_INT",
+          "make": "radio-bridge",
+          "model": "rbs301-temp-int"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic RadioBridge int-temp frame; cross-checked against the upstream decoder (TempInt.currentTemperature 22.1). -> temperature."
+    },
+    {
+      "description": "Reset/version event -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          16,
+          0,
+          1,
+          1,
+          1
+        ]
+      },
+      "expected": {
+        "errors": [
+          "frame carries no n"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "A non-measurement event yields no normalized reading."
+    }
+  ],
+  "downlink": []
+}

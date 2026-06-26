@@ -1,0 +1,30 @@
+{
+  "vendor": "radio-bridge",
+  "device": "rbs301-temp-int",
+  "name": "RBS301-TEMP-INT - Probeless Temperature Sensor",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "counter",
+    "eventType",
+    "protocol",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "radio-bridge",
+    "device": "rbs301-temp-int",
+    "codecId": "rbs301-temp-int-codec",
+    "codecFile": "radio_bridge_packet_decoder.js",
+    "codecSha256": "83bc2db0c2c9a7bacb4cbe22d63bc8169172ce2caac5f1969526626978d5ff24",
+    "referencedAt": "2026-06-26"
+  }
+}
