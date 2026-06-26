@@ -1,0 +1,63 @@
+{
+  "uplink": [
+    {
+      "description": "process gauge-pressure frame (fPort 2, probe mode 1, range 3)",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          12,
+          228,
+          1,
+          3,
+          46,
+          224,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "probeMode": 1,
+          "loopCurrent": 12,
+          "supplyVoltage": 0,
+          "in1PinHigh": false,
+          "in2PinHigh": false,
+          "extiPinHigh": false,
+          "extiActive": false,
+          "pressure": {
+            "gauge": 800
+          },
+          "make": "dragino",
+          "model": "ps-lb"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic PS-LB frame, probe mode 1 (pressure), range select 3 (x0.1 MPa). IDC=12.0 mA -> (12-4)*0.1=0.8 MPa=800 kPa -> pressure.gauge. Battery/IDC/VDC formulas cross-checked against the upstream decoder on a probe-mode-0, IDC<=4 frame; the pressure branch is hand-derived from Dragino's documented transfer table because the upstream references an undefined `decode.` object that throws for non-zero pressure. Satisfies process-pressure (atLeastOne pressure.gauge)."
+    },
+    {
+      "description": "Device-information frame (fPort 5) -> error",
+      "input": {
+        "fPort": 5,
+        "bytes": [
+          22,
+          1,
+          6,
+          1,
+          255,
+          12,
+          228
+        ]
+      },
+      "expected": {
+        "errors": [
+          "device information"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "fPort 5 is firmware/band info, not a measurement."
+    }
+  ],
+  "downlink": []
+}

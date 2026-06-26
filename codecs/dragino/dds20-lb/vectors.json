@@ -1,0 +1,59 @@
+{
+  "uplink": [
+    {
+      "description": "groundwater level frame (fPort 2)",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          12,
+          228,
+          4,
+          176,
+          0,
+          0,
+          250,
+          1
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "water": {
+            "level": 1.2,
+            "temperature": {
+              "current": 25
+            }
+          },
+          "distanceMm": 1200,
+          "interruptFlag": 0,
+          "sensorFlag": 1,
+          "make": "dragino",
+          "model": "dds20-lb"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic DDS20-LB frame; expected.data via this codec, cross-checked against the upstream decoder (oracle distance=1200 mm, temp=25.00). distance/1000 -> water.level (1.2 m); DS18B20 signed/10 -> water.temperature.current (25.0). Satisfies groundwater (atLeastOne water.level)."
+    },
+    {
+      "description": "Device-information frame (fPort 5) -> error",
+      "input": {
+        "fPort": 5,
+        "bytes": [
+          41,
+          0,
+          0,
+          1,
+          255
+        ]
+      },
+      "expected": {
+        "errors": [
+          "device information"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "fPort 5 is firmware/band info, not a level reading."
+    }
+  ],
+  "downlink": []
+}

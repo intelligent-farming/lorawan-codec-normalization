@@ -1,0 +1,32 @@
+{
+  "vendor": "dragino",
+  "device": "dds20-lb",
+  "name": "DDS20-LB",
+  "categories": [
+    "groundwater"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "battery",
+    "distanceMm",
+    "interruptFlag",
+    "sensorFlag",
+    "water.level",
+    "water.temperature.current"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "dds20-lb",
+    "codecId": "dds20-lb-codec",
+    "codecFile": "dds20-lb.js",
+    "codecSha256": "93a45e5cec5aaddc47ad161dd85f2ed3cd6575727e9046402849f876605253b1",
+    "referencedAt": "2026-06-26"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "vendor": "dragino",
+  "device": "s31-lb",
+  "name": "S31-LB - Temperature & Humidity Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "adcVoltage",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "digitalInputHigh",
+    "onboardTemperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "s31-lb",
+    "codecId": "s31-lb-codec",
+    "codecFile": "s31-lb.js",
+    "codecSha256": "0014f3e1ed193be38479eecf7dd3ebae63d85082a0d2f29867eeda0059abd96e",
+    "referencedAt": "2026-06-26"
+  }
+}

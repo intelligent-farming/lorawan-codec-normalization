@@ -1,0 +1,35 @@
+{
+  "vendor": "dragino",
+  "device": "ps-lb",
+  "name": "PS-LB - Pressure Sensor",
+  "categories": [
+    "process-pressure"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "battery",
+    "extiActive",
+    "extiPinHigh",
+    "in1PinHigh",
+    "in2PinHigh",
+    "loopCurrent",
+    "pressure.gauge",
+    "probeMode",
+    "supplyVoltage"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "ps-lb",
+    "codecId": "ps-lb-codec",
+    "codecFile": "ps-lb.js",
+    "codecSha256": "ef0951a24985a63b60e9cbd30b87df8be04d4c18dc652572d47faf26e552facc",
+    "referencedAt": "2026-06-26"
+  }
+}
