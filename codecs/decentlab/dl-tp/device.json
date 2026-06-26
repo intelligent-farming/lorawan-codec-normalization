@@ -1,0 +1,43 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-tp",
+  "name": "DL-TP - Temperature Profile",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "battery",
+    "temperature",
+    "temperatureAtLevel1",
+    "temperatureAtLevel10",
+    "temperatureAtLevel11",
+    "temperatureAtLevel12",
+    "temperatureAtLevel13",
+    "temperatureAtLevel14",
+    "temperatureAtLevel15",
+    "temperatureAtLevel2",
+    "temperatureAtLevel3",
+    "temperatureAtLevel4",
+    "temperatureAtLevel5",
+    "temperatureAtLevel6",
+    "temperatureAtLevel7",
+    "temperatureAtLevel8",
+    "temperatureAtLevel9"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-tp",
+    "codecId": "dl-tp-codec",
+    "codecFile": "dl-tp.js",
+    "codecSha256": "1b7e673415ff0f1c25fc0d07a42adb7cc07adac2de30a4cceedb03e1b8fda004",
+    "referencedAt": "2026-06-26"
+  }
+}

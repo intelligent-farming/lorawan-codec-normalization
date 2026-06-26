@@ -1,0 +1,28 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-ds18",
+  "name": "DL-DS18 - Temperature Sensor",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "battery",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-ds18",
+    "codecId": "dl-ds18-codec",
+    "codecFile": "dl-ds18.js",
+    "codecSha256": "daef3b1077f38f4c5df85aa3a3deefe63aa3b62f2eb5e3d952cfdcd2c11286c2",
+    "referencedAt": "2026-06-26"
+  }
+}

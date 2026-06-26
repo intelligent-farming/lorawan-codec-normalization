@@ -1,0 +1,64 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/decentlab/dl-ds18-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Example 1",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          2,
+          61,
+          0,
+          3,
+          129,
+          94,
+          12,
+          21
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.093
+          },
+          "device_id": 573,
+          "protocol_version": 2,
+          "temperature": {
+            "displayName": "Temperature",
+            "unit": "°C",
+            "value": 21.875
+          }
+        }
+      }
+    },
+    {
+      "description": "Example 2",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          2,
+          61,
+          0,
+          2,
+          12,
+          21
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.093
+          },
+          "device_id": 573,
+          "protocol_version": 2
+        }
+      }
+    }
+  ]
+}

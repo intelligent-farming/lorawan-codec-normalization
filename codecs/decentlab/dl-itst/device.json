@@ -1,0 +1,29 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-itst",
+  "name": "DL-ITST - Infrared Thermometer / Surface Temperature Sensor",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "battery",
+    "temperature",
+    "temperatureHead"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-itst",
+    "codecId": "dl-itst-codec",
+    "codecFile": "dl-itst.js",
+    "codecSha256": "432f88e3604fb0f0d91195913b785b3a604eb654ab6411d29e037657e99c21c7",
+    "referencedAt": "2026-06-26"
+  }
+}

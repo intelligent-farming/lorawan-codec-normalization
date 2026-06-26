@@ -1,0 +1,52 @@
+{
+  "uplink": [
+    {
+      "description": "temperature report",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          0,
+          1,
+          0,
+          3,
+          129,
+          88,
+          12,
+          228
+        ]
+      },
+      "expected": {
+        "data": {
+          "temperature": 21.5,
+          "battery": 3.3,
+          "make": "decentlab",
+          "model": "dl-ds18"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic Decentlab v2 frame (temperature word chosen for a realistic ~22 C) decoded by the embedded upstream decoder; temperature -> temperature; battery -> battery. Satisfies temperature."
+    },
+    {
+      "description": "Wrong protocol version -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          1,
+          0,
+          1,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "protocol version 1"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Decentlab decoder rejects non-v2 payloads."
+    }
+  ],
+  "downlink": []
+}

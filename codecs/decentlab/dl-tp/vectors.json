@@ -1,0 +1,97 @@
+{
+  "uplink": [
+    {
+      "description": "temperature report",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          0,
+          1,
+          0,
+          3,
+          136,
+          102,
+          136,
+          152,
+          136,
+          152,
+          136,
+          152,
+          136,
+          152,
+          136,
+          152,
+          136,
+          152,
+          136,
+          152,
+          136,
+          152,
+          136,
+          152,
+          136,
+          152,
+          136,
+          152,
+          136,
+          152,
+          136,
+          152,
+          136,
+          152,
+          136,
+          152,
+          12,
+          228
+        ]
+      },
+      "expected": {
+        "data": {
+          "temperature": 21.5,
+          "battery": 3.3,
+          "temperatureAtLevel1": 22,
+          "temperatureAtLevel2": 22,
+          "temperatureAtLevel3": 22,
+          "temperatureAtLevel4": 22,
+          "temperatureAtLevel5": 22,
+          "temperatureAtLevel6": 22,
+          "temperatureAtLevel7": 22,
+          "temperatureAtLevel8": 22,
+          "temperatureAtLevel9": 22,
+          "temperatureAtLevel10": 22,
+          "temperatureAtLevel11": 22,
+          "temperatureAtLevel12": 22,
+          "temperatureAtLevel13": 22,
+          "temperatureAtLevel14": 22,
+          "temperatureAtLevel15": 22,
+          "make": "decentlab",
+          "model": "dl-tp"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic Decentlab v2 frame (temperature word chosen for a realistic ~22 C) decoded by the embedded upstream decoder; temperature_at_level_0 -> temperature; battery -> battery. Satisfies temperature."
+    },
+    {
+      "description": "Wrong protocol version -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          1,
+          0,
+          1,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "protocol version 1"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Decentlab decoder rejects non-v2 payloads."
+    }
+  ],
+  "downlink": []
+}

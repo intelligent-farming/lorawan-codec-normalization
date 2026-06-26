@@ -1,0 +1,169 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/decentlab/dl-tp-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Example 1",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          62,
+          62,
+          0,
+          3,
+          138,
+          188,
+          138,
+          146,
+          138,
+          160,
+          138,
+          132,
+          138,
+          179,
+          138,
+          137,
+          138,
+          195,
+          138,
+          173,
+          138,
+          183,
+          138,
+          146,
+          138,
+          161,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          10,
+          252
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 2.812
+          },
+          "device_id": 15934,
+          "protocol_version": 2,
+          "temperature_at_level_0": {
+            "displayName": "Temperature at level 0",
+            "unit": "°C",
+            "value": 27.48
+          },
+          "temperature_at_level_1": {
+            "displayName": "Temperature at level 1",
+            "unit": "°C",
+            "value": 27.06
+          },
+          "temperature_at_level_10": {
+            "displayName": "Temperature at level 10",
+            "unit": "°C",
+            "value": 27.21
+          },
+          "temperature_at_level_11": {
+            "displayName": "Temperature at level 11",
+            "unit": "°C",
+            "value": -327.68
+          },
+          "temperature_at_level_12": {
+            "displayName": "Temperature at level 12",
+            "unit": "°C",
+            "value": -327.68
+          },
+          "temperature_at_level_13": {
+            "displayName": "Temperature at level 13",
+            "unit": "°C",
+            "value": -327.68
+          },
+          "temperature_at_level_14": {
+            "displayName": "Temperature at level 14",
+            "unit": "°C",
+            "value": -327.68
+          },
+          "temperature_at_level_15": {
+            "displayName": "Temperature at level 15",
+            "unit": "°C",
+            "value": -327.68
+          },
+          "temperature_at_level_2": {
+            "displayName": "Temperature at level 2",
+            "unit": "°C",
+            "value": 27.2
+          },
+          "temperature_at_level_3": {
+            "displayName": "Temperature at level 3",
+            "unit": "°C",
+            "value": 26.92
+          },
+          "temperature_at_level_4": {
+            "displayName": "Temperature at level 4",
+            "unit": "°C",
+            "value": 27.39
+          },
+          "temperature_at_level_5": {
+            "displayName": "Temperature at level 5",
+            "unit": "°C",
+            "value": 26.97
+          },
+          "temperature_at_level_6": {
+            "displayName": "Temperature at level 6",
+            "unit": "°C",
+            "value": 27.55
+          },
+          "temperature_at_level_7": {
+            "displayName": "Temperature at level 7",
+            "unit": "°C",
+            "value": 27.33
+          },
+          "temperature_at_level_8": {
+            "displayName": "Temperature at level 8",
+            "unit": "°C",
+            "value": 27.43
+          },
+          "temperature_at_level_9": {
+            "displayName": "Temperature at level 9",
+            "unit": "°C",
+            "value": 27.06
+          }
+        }
+      }
+    },
+    {
+      "description": "Example 2",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          62,
+          62,
+          0,
+          2,
+          10,
+          252
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 2.812
+          },
+          "device_id": 15934,
+          "protocol_version": 2
+        }
+      }
+    }
+  ]
+}

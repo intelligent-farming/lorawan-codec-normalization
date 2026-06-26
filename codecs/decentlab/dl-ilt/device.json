@@ -1,0 +1,29 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-ilt",
+  "name": "DL-ILT - Leaf Temperature Sensor",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "battery",
+    "leaf.temperature",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-ilt",
+    "codecId": "dl-ilt-codec",
+    "codecFile": "dl-ilt.js",
+    "codecSha256": "41e2332b931b65263f3b6797c59a441952ebf70ba25097ade8380e108bb9b2d8",
+    "referencedAt": "2026-06-26"
+  }
+}
