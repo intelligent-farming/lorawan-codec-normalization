@@ -7,30 +7,35 @@
         "bytes": [
           12,
           228,
-          5,
-          220,
-          0,
           0,
           250,
+          11,
+          184,
+          0,
+          0,
+          0,
+          0,
           1
         ]
       },
       "expected": {
         "data": {
           "battery": 3.3,
-          "tank": {
-            "distance": 1.5
-          },
-          "distanceMm": 1500,
           "probeTemperature": 25,
-          "interruptFlag": 0,
-          "sensorFlag": 1,
+          "tank": {
+            "distance": 3
+          },
+          "distanceMm": 3000,
+          "distance2Mm": 0,
+          "distance3Mm": 0,
+          "sensorFlag": 0,
+          "interruptFlag": 1,
           "make": "dragino",
-          "model": "dds20-lb"
+          "model": "dds75-lb"
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic DDS20-LB frame; cross-checked against the upstream decoder (distance 1500 mm, DS18B20 25.0). distance mm/1000 -> tank.distance (1.5 m). Satisfies tank-level. (Re-categorized from groundwater: a top-down ranging distance is not hydrostatic water.level.)"
+      "_note": "Synthetic DDS75-LB frame; cross-checked against the upstream decoder (distance1 3000 mm, DS18B20 25.0). primary distance1 mm/1000 -> tank.distance (3.0 m); distance2/3 as extras. Satisfies tank-level."
     },
     {
       "description": "Device-information frame (fPort 5) -> error",

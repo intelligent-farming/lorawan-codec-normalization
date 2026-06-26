@@ -1,7 +1,7 @@
 {
   "vendor": "dragino",
-  "device": "dds20-lb",
-  "name": "DDS20-LB",
+  "device": "dds45-lb",
+  "name": "DDS45-LB",
   "categories": [
     "tank-level"
   ],
@@ -23,10 +23,10 @@
   },
   "ttn": {
     "vendor": "dragino",
-    "device": "dds20-lb",
-    "codecId": "dds20-lb-codec",
-    "codecFile": "dds20-lb.js",
-    "codecSha256": "93a45e5cec5aaddc47ad161dd85f2ed3cd6575727e9046402849f876605253b1",
+    "device": "dds45-lb",
+    "codecId": "dds45-lb-codec",
+    "codecFile": "DDS45-LB.js",
+    "codecSha256": "d9a6195196e2c8319a98fdcc97779fa165cbb20cb97c2843f7e7ffc927e12b1b",
     "referencedAt": "2026-06-26"
   }
 }

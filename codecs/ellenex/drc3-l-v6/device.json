@@ -1,0 +1,21 @@
+{
+  "vendor": "ellenex",
+  "device": "drc3-l-v6",
+  "name": "DRC3-L-V6 - Radar Distance / Level Sensor (IP68)",
+  "categories": [
+    "tank-level"
+  ],
+  "sensors": [
+    "distance"
+  ],
+  "provides": [
+    "battery",
+    "tank.distance"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

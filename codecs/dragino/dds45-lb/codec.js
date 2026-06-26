@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2026 Intelligent Farming Foundation
 //
-// Normalized payload codec for dragino/dds20-lb (DDS20-LB Distance Detection Sensor). Ported from
+// Normalized payload codec for dragino/dds45-lb (DDS45-LB Ultrasonic Distance Sensor). Ported from
 // the upstream Apache-2.0 Dragino decoder (TheThingsNetwork/lorawan-devices
-// vendor/dragino/dds20-lb.js, attributed in NOTICE; upstream stores JS with
+// vendor/dragino/dds45-lb.js, attributed in NOTICE; upstream stores JS with
 // escaped newlines), cross-checked against the upstream as oracle.
 //
 // fPort 2: battery ((b0<<8|b1)&0x3FFF)/1000. distance b2..3 (mm) -> tank.distance (m, /1000); DS18B20 b5..6 signed/10 -> probeTemperature. This is a top-mounted
@@ -31,6 +31,6 @@ function decodeUplinkCore(input) {
 // Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
 function decodeUplink(input) {
   var result = decodeUplinkCore(input);
-  if (result && result.data) { result.data.make = "dragino"; result.data.model = "dds20-lb"; }
+  if (result && result.data) { result.data.make = "dragino"; result.data.model = "dds45-lb"; }
   return result;
 }

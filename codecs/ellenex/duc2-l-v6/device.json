@@ -1,0 +1,21 @@
+{
+  "vendor": "ellenex",
+  "device": "duc2-l-v6",
+  "name": "DUC2-L-V6 - Ultrasonic Distance / Level Sensor (corrosion-resistant)",
+  "categories": [
+    "tank-level"
+  ],
+  "sensors": [
+    "distance"
+  ],
+  "provides": [
+    "battery",
+    "tank.distance"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

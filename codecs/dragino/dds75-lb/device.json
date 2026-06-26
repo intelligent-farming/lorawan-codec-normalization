@@ -1,7 +1,7 @@
 {
   "vendor": "dragino",
-  "device": "dds20-lb",
-  "name": "DDS20-LB",
+  "device": "dds75-lb",
+  "name": "DDS75-LB",
   "categories": [
     "tank-level"
   ],
@@ -10,6 +10,8 @@
   ],
   "provides": [
     "battery",
+    "distance2Mm",
+    "distance3Mm",
     "distanceMm",
     "interruptFlag",
     "probeTemperature",
@@ -23,10 +25,10 @@
   },
   "ttn": {
     "vendor": "dragino",
-    "device": "dds20-lb",
-    "codecId": "dds20-lb-codec",
-    "codecFile": "dds20-lb.js",
-    "codecSha256": "93a45e5cec5aaddc47ad161dd85f2ed3cd6575727e9046402849f876605253b1",
+    "device": "dds75-lb",
+    "codecId": "dds75-lb-codec",
+    "codecFile": "dds75-lb.js",
+    "codecSha256": "8038e797ceef07ffe53e2bc42ec783ceb6836f16bbf2814c54c43d8ef76b1b40",
     "referencedAt": "2026-06-26"
   }
 }

@@ -1,0 +1,54 @@
+{
+  "uplink": [
+    {
+      "description": "Maxbotix ultrasonic distance report (1000 mm)",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          16,
+          16,
+          0,
+          3,
+          232
+        ]
+      },
+      "expected": {
+        "data": {
+          "tank": {
+            "distance": 1
+          },
+          "distanceMm": 1000,
+          "event": "Periodic Report",
+          "protocol": 1,
+          "counter": 0,
+          "eventType": "ULTRASONIC",
+          "make": "radio-bridge",
+          "model": "rbs306-mbhr"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic RadioBridge ultrasonic frame; cross-checked against the upstream decoder (Ultrasonic.Distance 1000 mm). mm/1000 -> tank.distance (1.0 m). Satisfies tank-level."
+    },
+    {
+      "description": "Reset/version event -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          16,
+          0,
+          1,
+          1,
+          1
+        ]
+      },
+      "expected": {
+        "errors": [
+          "frame carries no n"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "A non-measurement event yields no level reading."
+    }
+  ],
+  "downlink": []
+}
