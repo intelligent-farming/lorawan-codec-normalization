@@ -1,0 +1,84 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/decentlab/dl-rad-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Example 1",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          88,
+          107,
+          0,
+          3,
+          7,
+          76,
+          136,
+          182,
+          138,
+          140,
+          0,
+          0,
+          11,
+          147
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 2.963
+          },
+          "device_id": 22635,
+          "distance": {
+            "displayName": "Distance",
+            "unit": "mm",
+            "value": 1868
+          },
+          "protocol_version": 2,
+          "reliability": {
+            "displayName": "Reliability",
+            "unit": "dB",
+            "value": 27
+          },
+          "status": {
+            "displayName": "Status",
+            "value": 0
+          },
+          "temperature": {
+            "displayName": "Temperature",
+            "unit": "°C",
+            "value": 22.3
+          }
+        }
+      }
+    },
+    {
+      "description": "Example 2",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          88,
+          107,
+          0,
+          2,
+          11,
+          147
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 2.963
+          },
+          "device_id": 22635,
+          "protocol_version": 2
+        }
+      }
+    }
+  ]
+}

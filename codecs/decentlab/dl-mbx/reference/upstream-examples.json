@@ -1,0 +1,70 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/decentlab/dl-mbx-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Example 1",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          1,
+          47,
+          0,
+          3,
+          4,
+          210,
+          0,
+          1,
+          11,
+          177
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 2.993
+          },
+          "device_id": 303,
+          "distance": {
+            "displayName": "Distance",
+            "unit": "mm",
+            "value": 1234
+          },
+          "number_of_valid_samples": {
+            "displayName": "Number of valid samples",
+            "value": 1
+          },
+          "protocol_version": 2
+        }
+      }
+    },
+    {
+      "description": "Example 2",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          1,
+          47,
+          0,
+          2,
+          11,
+          177
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 2.993
+          },
+          "device_id": 303,
+          "protocol_version": 2
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-lid",
+  "name": "DL-LID - Laser Distance / Level Sensor",
+  "categories": [
+    "tank-level"
+  ],
+  "sensors": [
+    "distance"
+  ],
+  "provides": [
+    "battery",
+    "distance10thPercentile",
+    "distance25thPercentile",
+    "distance75thPercentile",
+    "distance90thPercentile",
+    "distanceMaximum",
+    "distanceMedian",
+    "distanceMinimum",
+    "distanceMostFrequentValue",
+    "numberOfSamples",
+    "tank.distance",
+    "totalAcquisitionTime"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-lid",
+    "codecId": "dl-lid-codec",
+    "codecFile": "dl-lid.js",
+    "codecSha256": "5db957710671ac1d95db216f0b3212043e025c761535292cb987a04138f10ffc",
+    "referencedAt": "2026-06-26"
+  }
+}

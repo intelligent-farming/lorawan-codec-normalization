@@ -1,0 +1,29 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-mbx",
+  "name": "DL-MBX - Ultrasonic Distance / Level Sensor",
+  "categories": [
+    "tank-level"
+  ],
+  "sensors": [
+    "distance"
+  ],
+  "provides": [
+    "battery",
+    "numberOfValidSamples",
+    "tank.distance"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-mbx",
+    "codecId": "dl-mbx-codec",
+    "codecFile": "dl-mbx.js",
+    "codecSha256": "f474cd8d533f098bab561514790c0dc8feb138da199a7da7404146360aa46858",
+    "referencedAt": "2026-06-26"
+  }
+}

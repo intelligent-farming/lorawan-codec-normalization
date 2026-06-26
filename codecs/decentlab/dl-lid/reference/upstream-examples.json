@@ -1,0 +1,133 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/decentlab/dl-lid-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Example 1",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          17,
+          201,
+          0,
+          3,
+          17,
+          155,
+          17,
+          118,
+          17,
+          188,
+          17,
+          158,
+          17,
+          138,
+          17,
+          148,
+          17,
+          168,
+          17,
+          168,
+          17,
+          148,
+          0,
+          100,
+          1,
+          153,
+          10,
+          189
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 2.749
+          },
+          "device_id": 4553,
+          "distance_10th_percentile": {
+            "displayName": "Distance: 10th percentile",
+            "unit": "mm",
+            "value": 4490
+          },
+          "distance_25th_percentile": {
+            "displayName": "Distance: 25th percentile",
+            "unit": "mm",
+            "value": 4500
+          },
+          "distance_75th_percentile": {
+            "displayName": "Distance: 75th percentile",
+            "unit": "mm",
+            "value": 4520
+          },
+          "distance_90th_percentile": {
+            "displayName": "Distance: 90th percentile",
+            "unit": "mm",
+            "value": 4520
+          },
+          "distance_average": {
+            "displayName": "Distance: average",
+            "unit": "mm",
+            "value": 4507
+          },
+          "distance_maximum": {
+            "displayName": "Distance: maximum",
+            "unit": "mm",
+            "value": 4540
+          },
+          "distance_median": {
+            "displayName": "Distance: median",
+            "unit": "mm",
+            "value": 4510
+          },
+          "distance_minimum": {
+            "displayName": "Distance: minimum",
+            "unit": "mm",
+            "value": 4470
+          },
+          "distance_most_frequent_value": {
+            "displayName": "Distance: most frequent value",
+            "unit": "mm",
+            "value": 4500
+          },
+          "number_of_samples": {
+            "displayName": "Number of samples",
+            "value": 100
+          },
+          "protocol_version": 2,
+          "total_acquisition_time": {
+            "displayName": "Total acquisition time",
+            "unit": "ms",
+            "value": 399.4140625
+          }
+        }
+      }
+    },
+    {
+      "description": "Example 2",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          17,
+          201,
+          0,
+          2,
+          10,
+          189
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 2.749
+          },
+          "device_id": 4553,
+          "protocol_version": 2
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-rad",
+  "name": "DL-RAD - Radar Distance / Level Sensor",
+  "categories": [
+    "tank-level"
+  ],
+  "sensors": [
+    "distance"
+  ],
+  "provides": [
+    "battery",
+    "reliability",
+    "status",
+    "tank.distance",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-rad",
+    "codecId": "dl-rad-codec",
+    "codecFile": "dl-rad.js",
+    "codecSha256": "4929a84db4a462b6a12fd3e7c149d1c4179af976b93b7d54bb3967bbd5d73900",
+    "referencedAt": "2026-06-26"
+  }
+}
