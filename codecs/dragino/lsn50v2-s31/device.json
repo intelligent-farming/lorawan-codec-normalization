@@ -6,20 +6,16 @@
     "climate"
   ],
   "sensors": [
-    "battery",
     "temperature",
     "humidity"
   ],
   "provides": [
-    "action.contactState",
-    "adcCh0V",
+    "adcVoltage",
     "air.relativeHumidity",
     "air.temperature",
     "battery",
-    "digitalInputStatus",
-    "extiTrigger",
-    "temperatureC1",
-    "workMode"
+    "digitalInputHigh",
+    "onboardTemperature"
   ],
   "variantOf": null,
   "downlink": {
