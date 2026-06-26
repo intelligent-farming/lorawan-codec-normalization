@@ -1,0 +1,48 @@
+{
+  "uplink": [
+    {
+      "description": "temperature frame (battery + temperature TLV)",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          1,
+          117,
+          100,
+          3,
+          103,
+          220,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 100,
+          "temperature": 22,
+          "make": "milesight",
+          "model": "ts101"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic Milesight frame; cross-checked against upstream. temperature int16LE 0.1 C -> temperature (22.0); battery % -> batteryPercent. Satisfies temperature."
+    },
+    {
+      "description": "Version-only frame -> error",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          255,
+          1,
+          16
+        ]
+      },
+      "expected": {
+        "errors": [
+          "no temperature mea"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Version channel carries no temperature reading."
+    }
+  ],
+  "downlink": []
+}

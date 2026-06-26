@@ -1,0 +1,21 @@
+{
+  "vendor": "milesight",
+  "device": "ts201v2",
+  "name": "Milesight TS201 v2 Temperature Sensor",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "batteryPercent",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

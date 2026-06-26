@@ -1,0 +1,21 @@
+{
+  "vendor": "milesight",
+  "device": "em500-pt100",
+  "name": "Milesight EM500-PT100 Temperature Transmitter",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "batteryPercent",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}
