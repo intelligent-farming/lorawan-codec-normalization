@@ -1,0 +1,62 @@
+{
+  "uplink": [
+    {
+      "description": "temperature report (fPort 2)",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          12,
+          228,
+          0,
+          220,
+          0,
+          0,
+          12,
+          0,
+          230,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "temperature": 22,
+          "temperature2": 23,
+          "alarm": false,
+          "make": "dragino",
+          "model": "lsn50v2-d20-d22-d23"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic LSN50v2-D20 DS18B20 frame (mode 3); cross-checked against the upstream decoder (Temp_Red 22.0, Temp_White 23.0). probe signed/10 -> temperature, temperature2. Satisfies temperature."
+    },
+    {
+      "description": "non-measurement / wrong mode -> error",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          12,
+          228,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "work mode is not D"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Frame not carrying a valid temperature reading."
+    }
+  ],
+  "downlink": []
+}

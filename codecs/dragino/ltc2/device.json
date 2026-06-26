@@ -1,0 +1,29 @@
+{
+  "vendor": "dragino",
+  "device": "ltc2",
+  "name": "LTC2 - Temperature Transmitter",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "battery",
+    "temperature",
+    "temperature2"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "ltc2",
+    "codecId": "ltc2-codec",
+    "codecFile": "ltc2.js",
+    "codecSha256": "902d4a3decf2b8b0be6750d427cd9d141ae19b0b5314218ded1b3a0593577e0a",
+    "referencedAt": "2026-06-26"
+  }
+}

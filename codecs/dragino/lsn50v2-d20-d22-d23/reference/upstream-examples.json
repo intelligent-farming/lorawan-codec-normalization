@@ -1,0 +1,58 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/dragino/lsn50v2-d20-d22-d23-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Temperature Sensor",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          11,
+          84,
+          0,
+          0,
+          0,
+          0,
+          12,
+          0,
+          252,
+          2,
+          5
+        ]
+      },
+      "output": {
+        "data": {
+          "ALARM_status": "FALSE",
+          "BatV": 2.9,
+          "Temp_Black": 51.7,
+          "Temp_Red": 0,
+          "Temp_White": 25.2,
+          "Work_mode": "DS18B20"
+        }
+      }
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [
+          11,
+          84,
+          0,
+          0,
+          0,
+          0,
+          12,
+          0,
+          252,
+          2,
+          5
+        ]
+      },
+      "output": {
+        "errors": [
+          "unknown FPort"
+        ]
+      }
+    }
+  ]
+}

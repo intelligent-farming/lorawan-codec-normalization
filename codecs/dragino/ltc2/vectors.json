@@ -1,0 +1,57 @@
+{
+  "uplink": [
+    {
+      "description": "temperature report (fPort 2)",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          12,
+          228,
+          1,
+          8,
+          152,
+          9,
+          96,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "temperature": 22,
+          "temperature2": 24,
+          "make": "dragino",
+          "model": "ltc2"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic LTC2 thermocouple frame (Ext 0x01); cross-checked against the upstream decoder (Temp_Channel1 22, Temp_Channel2 24). channel signed/100 -> temperature, temperature2. Satisfies temperature."
+    },
+    {
+      "description": "non-measurement / wrong mode -> error",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          12,
+          228,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "external sensor ty"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Frame not carrying a valid temperature reading."
+    }
+  ],
+  "downlink": []
+}

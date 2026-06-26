@@ -1,0 +1,30 @@
+{
+  "vendor": "dragino",
+  "device": "lsn50v2-d20-d22-d23",
+  "name": "LSN50v2-D20-D22-D23 - Temperature Sensor",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "alarm",
+    "battery",
+    "temperature",
+    "temperature2"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "lsn50v2-d20-d22-d23",
+    "codecId": "lsn50v2-d20-d22-d23-codec",
+    "codecFile": "lsn50v2-d20-d22-d23.js",
+    "codecSha256": "7e3c8aa11f33110622f69691c91f24ee126456acb7761124503833d37aa7b580",
+    "referencedAt": "2026-06-26"
+  }
+}

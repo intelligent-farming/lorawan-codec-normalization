@@ -1,0 +1,33 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/dragino/ltc2-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Industrial LoRaWAN Temperature Transmitter",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          14,
+          85,
+          1,
+          8,
+          98,
+          8,
+          103,
+          96,
+          228,
+          60,
+          198
+        ]
+      },
+      "output": {
+        "data": {
+          "BatV": 3.669,
+          "Ext": 1,
+          "Systimestamp": 1625570502,
+          "Temp_Channel1": 21.46,
+          "Temp_Channel2": 21.51
+        }
+      }
+    }
+  ]
+}
