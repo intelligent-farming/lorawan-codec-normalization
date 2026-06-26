@@ -1,0 +1,62 @@
+{
+  "uplink": [
+    {
+      "description": "leaf-wetness measurement frame (fPort 2)",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          12,
+          228,
+          0,
+          250,
+          1,
+          244,
+          0,
+          200,
+          0,
+          0,
+          1
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "probeTemperature": 25,
+          "leaf": {
+            "wetness": 50,
+            "temperature": 20
+          },
+          "interruptFlag": 0,
+          "messageType": 1,
+          "make": "dragino",
+          "model": "lms01-lb"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic LMS01-LB frame; expected.data via this codec, cross-checked against the upstream decoder (oracle). leaf moisture b4..5/10 (%) -> leaf.wetness (50.0); leaf temp b6..7 signed/10 -> leaf.temperature (20.0). Satisfies leaf-wetness."
+    },
+    {
+      "description": "Device-information frame (fPort 5) -> error",
+      "input": {
+        "fPort": 5,
+        "bytes": [
+          44,
+          1,
+          6,
+          1,
+          255,
+          12,
+          228
+        ]
+      },
+      "expected": {
+        "errors": [
+          "device information"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "fPort 5 carries firmware/band info."
+    }
+  ],
+  "downlink": []
+}

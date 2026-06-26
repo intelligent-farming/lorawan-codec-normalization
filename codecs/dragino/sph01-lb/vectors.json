@@ -1,0 +1,62 @@
+{
+  "uplink": [
+    {
+      "description": "soil-monitor measurement frame (fPort 2)",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          12,
+          228,
+          0,
+          250,
+          2,
+          138,
+          0,
+          220,
+          0,
+          0,
+          1
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "probeTemperature": 25,
+          "soil": {
+            "pH": 6.5,
+            "temperature": 22
+          },
+          "interruptFlag": 0,
+          "messageType": 1,
+          "make": "dragino",
+          "model": "sph01-lb"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic SPH01-LB frame; expected.data via this codec, cross-checked against the upstream decoder (oracle). soil pH b4..5/100 -> soil.pH (6.5); soil temp b6..7 signed/10 -> soil.temperature (22.0). Satisfies soil-monitor."
+    },
+    {
+      "description": "Device-information frame (fPort 5) -> error",
+      "input": {
+        "fPort": 5,
+        "bytes": [
+          44,
+          1,
+          6,
+          1,
+          255,
+          12,
+          228
+        ]
+      },
+      "expected": {
+        "errors": [
+          "device information"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "fPort 5 carries firmware/band info."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,32 @@
+{
+  "vendor": "dragino",
+  "device": "lms01-lb",
+  "name": "LMS01-LB",
+  "categories": [
+    "leaf-wetness"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "battery",
+    "interruptFlag",
+    "leaf.temperature",
+    "leaf.wetness",
+    "messageType",
+    "probeTemperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "lms01-lb",
+    "codecId": "lms01-lb-codec",
+    "codecFile": "lms01-lb.js",
+    "codecSha256": "ecb4b3c64edb63f9f5f8e3525417a5774c42724bd8b11a3beb8343b4dbdd8a66",
+    "referencedAt": "2026-06-26"
+  }
+}

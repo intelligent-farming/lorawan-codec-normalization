@@ -1,0 +1,34 @@
+{
+  "vendor": "dragino",
+  "device": "se02-lb",
+  "name": "SE02-LB",
+  "categories": [
+    "soil-monitor"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "battery",
+    "ecSoil2",
+    "moistureSoil2",
+    "probeTemperature",
+    "soil.ec",
+    "soil.moisture",
+    "soil.temperature",
+    "tempSoil2"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "se02-lb",
+    "codecId": "se02-lb-codec",
+    "codecFile": "se02-lb.js",
+    "codecSha256": "ae421b95b21d85743d0c965a6c2ab2b3a5516d9239d3b34d0fe207b8850e0c7d",
+    "referencedAt": "2026-06-26"
+  }
+}

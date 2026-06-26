@@ -1,0 +1,32 @@
+{
+  "vendor": "dragino",
+  "device": "sph01-lb",
+  "name": "SPH01-LB",
+  "categories": [
+    "soil-monitor"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "battery",
+    "interruptFlag",
+    "messageType",
+    "probeTemperature",
+    "soil.pH",
+    "soil.temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "sph01-lb",
+    "codecId": "sph01-lb-codec",
+    "codecFile": "sph01-lb.js",
+    "codecSha256": "f110e555978dea759cd848abecf02e1c44110517cff872601b777e6134c194a7",
+    "referencedAt": "2026-06-26"
+  }
+}

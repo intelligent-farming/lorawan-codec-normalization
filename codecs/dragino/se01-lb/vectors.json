@@ -1,0 +1,62 @@
+{
+  "uplink": [
+    {
+      "description": "Soil frame (fPort 2, MOD 0): moisture, temperature, EC",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          12,
+          228,
+          0,
+          250,
+          17,
+          198,
+          8,
+          202,
+          1,
+          24,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "probeTemperature": 25,
+          "soil": {
+            "moisture": 45.5,
+            "temperature": 22.5,
+            "ec": 0.28
+          },
+          "mod": 0,
+          "make": "dragino",
+          "model": "se01-lb"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic frame to the Dragino SE01-LB byte layout; expected.data computed by this codec and cross-checked against the upstream decoder (oracle): moisture 45.50%%, soil temp 22.50C, EC 280 uS/cm -> 0.28 dS/m, battery 3.3V. Satisfies soil-monitor."
+    },
+    {
+      "description": "Device-information frame (fPort 5) -> error",
+      "input": {
+        "fPort": 5,
+        "bytes": [
+          38,
+          1,
+          6,
+          1,
+          255,
+          12,
+          228
+        ]
+      },
+      "expected": {
+        "errors": [
+          "device information"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "fPort 5 carries firmware/band info."
+    }
+  ],
+  "downlink": []
+}

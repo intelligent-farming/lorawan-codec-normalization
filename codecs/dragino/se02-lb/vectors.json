@@ -1,0 +1,69 @@
+{
+  "uplink": [
+    {
+      "description": "soil-monitor measurement frame (fPort 2)",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          12,
+          228,
+          0,
+          250,
+          17,
+          198,
+          8,
+          202,
+          1,
+          24,
+          15,
+          160,
+          8,
+          52,
+          0,
+          250
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "probeTemperature": 25,
+          "soil": {
+            "moisture": 45.5,
+            "temperature": 22.5,
+            "ec": 0.28
+          },
+          "moistureSoil2": 40,
+          "tempSoil2": 21,
+          "ecSoil2": 250,
+          "make": "dragino",
+          "model": "se02-lb"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic SE02-LB frame; expected.data via this codec, cross-checked against the upstream decoder (oracle). Channel-1 moisture/temp/EC -> soil.*; EC uS/cm -> dS/m (/1000); channel 2 as extras. Satisfies soil-monitor."
+    },
+    {
+      "description": "Device-information frame (fPort 5) -> error",
+      "input": {
+        "fPort": 5,
+        "bytes": [
+          51,
+          1,
+          6,
+          1,
+          255,
+          12,
+          228
+        ]
+      },
+      "expected": {
+        "errors": [
+          "device information"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "fPort 5 carries firmware/band info."
+    }
+  ],
+  "downlink": []
+}
