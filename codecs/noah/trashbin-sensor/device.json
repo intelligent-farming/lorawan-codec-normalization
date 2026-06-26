@@ -1,0 +1,22 @@
+{
+  "vendor": "noah",
+  "device": "trashbin-sensor",
+  "name": "Noah Trash Bin Fill-Level Sensor",
+  "categories": [
+    "tank-level"
+  ],
+  "sensors": [
+    "distance"
+  ],
+  "provides": [
+    "ambientTemperature",
+    "tank.level",
+    "voltageRaw"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

@@ -1,0 +1,50 @@
+{
+  "uplink": [
+    {
+      "description": "fill-level ranging frame (battery + distance TLV)",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          1,
+          117,
+          90,
+          3,
+          130,
+          220,
+          5
+        ]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 90,
+          "tank": {
+            "distance": 1.5
+          },
+          "make": "milesight",
+          "model": "ws201"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic Milesight WS201 frame; cross-checked against upstream. distance uint16LE 1500 mm -> tank.distance (1.5 m); battery % -> batteryPercent. Satisfies tank-level."
+    },
+    {
+      "description": "Version-only frame -> error",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          255,
+          1,
+          16
+        ]
+      },
+      "expected": {
+        "errors": [
+          "no distance measur"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Version channel carries no distance reading."
+    }
+  ],
+  "downlink": []
+}

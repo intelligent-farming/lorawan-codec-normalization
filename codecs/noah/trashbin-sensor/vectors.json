@@ -1,0 +1,48 @@
+{
+  "uplink": [
+    {
+      "description": "bin fill-level report (~60%)",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          0,
+          0,
+          25,
+          0,
+          185,
+          124
+        ]
+      },
+      "expected": {
+        "data": {
+          "tank": {
+            "level": 59
+          },
+          "ambientTemperature": 0,
+          "voltageRaw": 25,
+          "make": "noah",
+          "model": "trashbin-sensor"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic Noah frame (level word scanned for ~60%); decoded by the embedded upstream decoder. sflt16 fill level x100 -> tank.level (%). Satisfies tank-level."
+    },
+    {
+      "description": "Truncated payload -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "payload too short "
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Fewer than 6 bytes carries no complete reading."
+    }
+  ],
+  "downlink": []
+}

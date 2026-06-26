@@ -1,0 +1,21 @@
+{
+  "vendor": "milesight",
+  "device": "ws201",
+  "name": "Milesight WS201 Fill-Level Sensor",
+  "categories": [
+    "tank-level"
+  ],
+  "sensors": [
+    "distance"
+  ],
+  "provides": [
+    "batteryPercent",
+    "tank.distance"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}
