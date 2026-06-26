@@ -1,0 +1,26 @@
+{
+  "vendor": "rejeee",
+  "device": "sl311us",
+  "name": "SL311US LoRaWAN CO2 Sensor",
+  "categories": [
+    "air-quality"
+  ],
+  "sensors": [
+    "co2",
+    "temperature",
+    "humidity"
+  ],
+  "provides": [
+    "air.co2",
+    "air.relativeHumidity",
+    "air.temperature",
+    "batteryLevel",
+    "firmwareVersion"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

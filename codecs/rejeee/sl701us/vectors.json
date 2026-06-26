@@ -1,0 +1,58 @@
+{
+  "uplink": [
+    {
+      "description": "gauge-pressure report (fPort 1, pressure 0x07 block)",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          0,
+          95,
+          113,
+          7,
+          0,
+          3,
+          208,
+          144
+        ]
+      },
+      "expected": {
+        "data": {
+          "batteryLevel": 31,
+          "firmwareVersion": 2,
+          "pressure": {
+            "gauge": 250
+          },
+          "pressurePa": 250000,
+          "make": "rejeee",
+          "model": "sl701us"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic SL701 TLV frame: device-info 00 5F 71 (battery level 31), pressure 0x07 = 0x0003D090 = 250000 Pa. Gauge Pa/1000 -> pressure.gauge (250 kPa). Per the documented Rejeee Pressure TLV (4-byte signed integer, Pa). Satisfies process-pressure (atLeastOne pressure.gauge)."
+    },
+    {
+      "description": "Frame without pressure block -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          0,
+          95,
+          113,
+          3,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "no pressure "
+        ]
+      },
+      "source": "synthetic",
+      "_note": "A frame whose sensor block is not the 0x07 pressure block carries no pressure reading."
+    }
+  ],
+  "downlink": []
+}

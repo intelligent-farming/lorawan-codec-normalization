@@ -1,0 +1,4 @@
+{
+  "_note": "No official example payloads published; wire format from the documented Rejeee sensor-data protocol, Pressure TLV 0x07 (see upstream-codec.js). Vectors use synthetic in-bounds frames.",
+  "examples": []
+}

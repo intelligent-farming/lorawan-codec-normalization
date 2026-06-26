@@ -1,0 +1,64 @@
+{
+  "uplink": [
+    {
+      "description": "CO2 + temperature + humidity report (fPort 1 TLV)",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          0,
+          63,
+          36,
+          48,
+          5,
+          4,
+          0,
+          1,
+          11,
+          248,
+          4,
+          0,
+          201,
+          5,
+          55
+        ]
+      },
+      "expected": {
+        "data": {
+          "air": {
+            "co2": 686,
+            "temperature": 20.1,
+            "relativeHumidity": 55
+          },
+          "batteryLevel": 31,
+          "firmwareVersion": 1,
+          "make": "rejeee",
+          "model": "sl311us"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic SL311 TLV frame: device-info 00 3F 24 (version 1, battery level 31), CO2 block 30 05 04 00010BF8 (gas-type 04 = CO2, 0x00010BF8 = 68600 /100 = 686.00 ppm), temperature 04 00C9 (0x00C9=201 /10 = 20.1 C), humidity 05 37 (0x37 = 55 %RH). CO2 cross-checked against the manual's own decoder (686). 0x30/0x04 -> air.co2; 0x04 -> air.temperature; 0x05 -> air.relativeHumidity. Satisfies air-quality."
+    },
+    {
+      "description": "Frame without CO2 block -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          0,
+          63,
+          36,
+          4,
+          0,
+          201
+        ]
+      },
+      "expected": {
+        "errors": [
+          "no CO2 (gas-"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "A frame with only temperature and no CO2 gas block cannot satisfy the air-quality contract."
+    }
+  ],
+  "downlink": []
+}

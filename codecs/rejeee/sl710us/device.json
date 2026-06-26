@@ -1,0 +1,23 @@
+{
+  "vendor": "rejeee",
+  "device": "sl710us",
+  "name": "SL710US LoRaWAN Water Pressure Sensor",
+  "categories": [
+    "groundwater"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "batteryLevel",
+    "firmwareVersion",
+    "pressurePa",
+    "water.pressure"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

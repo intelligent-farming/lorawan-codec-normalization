@@ -1,0 +1,58 @@
+{
+  "uplink": [
+    {
+      "description": "water-pressure report (fPort 1, pressure 0x07 block)",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          0,
+          95,
+          113,
+          7,
+          0,
+          1,
+          134,
+          160
+        ]
+      },
+      "expected": {
+        "data": {
+          "batteryLevel": 31,
+          "firmwareVersion": 2,
+          "water": {
+            "pressure": 100
+          },
+          "pressurePa": 100000,
+          "make": "rejeee",
+          "model": "sl710us"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic SL710 TLV frame: device-info 00 5F 71 (battery level 31), pressure 0x07 = 0x000186A0 = 100000 Pa. Hydrostatic Pa/1000 -> water.pressure (100 kPa). Per the documented Rejeee Pressure TLV (4-byte signed integer, Pa). Satisfies groundwater (atLeastOne water.pressure)."
+    },
+    {
+      "description": "Frame without pressure block -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          0,
+          95,
+          113,
+          3,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "no pressure "
+        ]
+      },
+      "source": "synthetic",
+      "_note": "A frame whose sensor block is not the 0x07 pressure block carries no pressure reading."
+    }
+  ],
+  "downlink": []
+}

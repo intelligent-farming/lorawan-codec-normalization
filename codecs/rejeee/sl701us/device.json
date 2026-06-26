@@ -1,0 +1,23 @@
+{
+  "vendor": "rejeee",
+  "device": "sl701us",
+  "name": "SL701US LoRaWAN Pressure Sensor",
+  "categories": [
+    "process-pressure"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "batteryLevel",
+    "firmwareVersion",
+    "pressure.gauge",
+    "pressurePa"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

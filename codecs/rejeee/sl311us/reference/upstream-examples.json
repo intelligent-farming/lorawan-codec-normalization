@@ -1,0 +1,12 @@
+{
+  "_note": "Manual example: 003F24300504 00010BF8 -> CO2 686.00 ppm, battery level 31. Wire format from the documented Rejeee SL300/SL311 sensor-data definition (see upstream-codec.js); CO2 cross-checked against the manual's own decoder. Vectors use synthetic in-bounds frames.",
+  "examples": [
+    {
+      "bytes": "003F243005040 0010BF8",
+      "decoded": {
+        "co2": 686,
+        "batteryLevel": 31
+      }
+    }
+  ]
+}
