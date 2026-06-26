@@ -1,0 +1,67 @@
+{
+  "uplink": [
+    {
+      "description": "multi-probe water-quality frame (fPort 2): turbidity, DO, ORP, pH",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          12,
+          228,
+          0,
+          250,
+          57,
+          0,
+          125,
+          3,
+          82,
+          0,
+          250,
+          2,
+          188
+        ]
+      },
+      "expected": {
+        "data": {
+          "water": {
+            "temperature": {
+              "current": 25
+            },
+            "turbidity": 12.5,
+            "dissolvedOxygen": 8.5,
+            "orp": 250,
+            "ph": 7
+          },
+          "battery": 3.3,
+          "interruptFlag": 0,
+          "make": "dragino",
+          "model": "wqs-lb"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic WQS-LB frame, probe mask 0x39 (turbidity, dissolved oxygen, ORP, pH present); expected.data via this codec, cross-checked against the upstream decoder (oracle pH 7.0, turbidity 12.5, DO 8.5, ORP 250, water temp 25.0). Mapped to water.ph/turbidity/dissolvedOxygen/orp and water.temperature.current. Satisfies water-quality."
+    },
+    {
+      "description": "Device-information frame (fPort 5) -> error",
+      "input": {
+        "fPort": 5,
+        "bytes": [
+          60,
+          1,
+          6,
+          1,
+          255,
+          12,
+          228
+        ]
+      },
+      "expected": {
+        "errors": [
+          "device information"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "fPort 5 is firmware/band info, not a measurement."
+    }
+  ],
+  "downlink": []
+}

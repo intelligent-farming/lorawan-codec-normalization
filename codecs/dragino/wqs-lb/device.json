@@ -1,0 +1,33 @@
+{
+  "vendor": "dragino",
+  "device": "wqs-lb",
+  "name": "WQS-LB",
+  "categories": [
+    "water-quality"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "battery",
+    "interruptFlag",
+    "water.dissolvedOxygen",
+    "water.orp",
+    "water.ph",
+    "water.temperature.current",
+    "water.turbidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "wqs-lb",
+    "codecId": "wqs-lb-codec",
+    "codecFile": "wqs-lb.js",
+    "codecSha256": "b12709f0ae4e432e4556cf5704ff7115330ca7ec66a2ca3087fc4c131c4b4862",
+    "referencedAt": "2026-06-26"
+  }
+}

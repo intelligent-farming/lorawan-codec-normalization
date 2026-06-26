@@ -1,0 +1,66 @@
+{
+  "uplink": [
+    {
+      "description": "climate frame (fPort 2, IIC/SHT work mode 0)",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          12,
+          228,
+          0,
+          200,
+          0,
+          0,
+          0,
+          0,
+          220,
+          2,
+          38
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "air": {
+            "temperature": 22,
+            "relativeHumidity": 55
+          },
+          "onboardTemperature": 20,
+          "adcVoltage": 0,
+          "digitalInputHigh": false,
+          "make": "dragino",
+          "model": "sn50v3-lb"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic SN50v3-LB IIC/SHT frame (b6=0x00 -> work mode 0); expected.data via this codec, cross-checked against the upstream decoder (oracle temperature 22.0, humidity 55.0, battery 3.3). SHT temp b7..8 signed/10 -> air.temperature; SHT humidity b9..10 /10 -> air.relativeHumidity. Satisfies climate."
+    },
+    {
+      "description": "Device-information frame (fPort 5) -> error",
+      "input": {
+        "fPort": 5,
+        "bytes": [
+          60,
+          0,
+          0,
+          1,
+          255,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "device information"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "fPort 5 is firmware/band info, not a measurement."
+    }
+  ],
+  "downlink": []
+}

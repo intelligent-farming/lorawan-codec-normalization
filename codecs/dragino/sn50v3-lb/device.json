@@ -1,0 +1,32 @@
+{
+  "vendor": "dragino",
+  "device": "sn50v3-lb",
+  "name": "SN50v3-LB",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "adcVoltage",
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "digitalInputHigh",
+    "onboardTemperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "sn50v3-lb",
+    "codecId": "sn50v3-lb-codec",
+    "codecFile": "sn50v3-lb.js",
+    "codecSha256": "4e7e0f35b24c27e2540cf60d25fd82ef64e22c6cb76b84189b9c9274253d3261",
+    "referencedAt": "2026-06-26"
+  }
+}
