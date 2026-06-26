@@ -1,0 +1,25 @@
+{
+  "vendor": "dragino",
+  "device": "se0x-lb",
+  "name": "SE0X-LB Multi-Channel Soil Sensor",
+  "categories": [
+    "soil-monitor"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "battery",
+    "channelMask",
+    "probeTemperature",
+    "soil.ec",
+    "soil.moisture",
+    "soil.temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

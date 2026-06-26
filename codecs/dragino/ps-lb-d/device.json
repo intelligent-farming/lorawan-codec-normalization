@@ -1,0 +1,28 @@
+{
+  "vendor": "dragino",
+  "device": "ps-lb-d",
+  "name": "PS-LB-D Differential Pressure Sensor",
+  "categories": [
+    "differential-pressure"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "battery",
+    "extiActive",
+    "extiPinHigh",
+    "in1PinHigh",
+    "in2PinHigh",
+    "loopCurrent",
+    "pressure.differential",
+    "probeMode",
+    "supplyVoltage"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

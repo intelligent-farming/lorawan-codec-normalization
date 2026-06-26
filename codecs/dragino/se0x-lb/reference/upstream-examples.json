@@ -1,0 +1,4 @@
+{
+  "_note": "No official example payloads published; normalized codec authored from the SE0X-LB decoder byte layout (see upstream-codec.js). Vectors use a synthetic in-bounds single-channel frame.",
+  "examples": []
+}

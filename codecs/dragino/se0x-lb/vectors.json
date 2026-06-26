@@ -1,0 +1,62 @@
+{
+  "uplink": [
+    {
+      "description": "single-channel calibrated soil frame (fPort 2)",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          12,
+          228,
+          0,
+          250,
+          8,
+          17,
+          148,
+          8,
+          152,
+          5,
+          220
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "probeTemperature": 25,
+          "channelMask": 8,
+          "soil": {
+            "moisture": 45,
+            "temperature": 22,
+            "ec": 1.5
+          },
+          "make": "dragino",
+          "model": "se0x-lb"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic SE0X-LB calibrated frame, channel 1 only (b4=0x08); expected.data via this codec, cross-checked against the upstream decoder (oracle water_SOIL1=45.00, temp_SOIL1=22.00, conduct_SOIL1=1500). moisture/100 -> soil.moisture; temp signed/100 -> soil.temperature; EC µS/cm /1000 -> soil.ec (dS/m). Satisfies soil-monitor."
+    },
+    {
+      "description": "Device-information frame (fPort 5) -> error",
+      "input": {
+        "fPort": 5,
+        "bytes": [
+          249,
+          1,
+          6,
+          1,
+          255,
+          12,
+          228
+        ]
+      },
+      "expected": {
+        "errors": [
+          "device information"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "fPort 5 is firmware/band info, not a measurement."
+    }
+  ],
+  "downlink": []
+}

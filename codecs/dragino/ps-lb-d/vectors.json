@@ -1,0 +1,63 @@
+{
+  "uplink": [
+    {
+      "description": "differential-pressure frame (fPort 2, probe mode 2, range 1)",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          12,
+          228,
+          2,
+          1,
+          46,
+          224,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "probeMode": 2,
+          "loopCurrent": 12,
+          "supplyVoltage": 0,
+          "in1PinHigh": false,
+          "in2PinHigh": false,
+          "extiPinHigh": false,
+          "extiActive": false,
+          "pressure": {
+            "differential": 50
+          },
+          "make": "dragino",
+          "model": "ps-lb-d"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic PS-LB-D frame, probe mode 0x02 (differential), range 1 (x6.25). IDC=12.0 mA -> (12-4)*6.25=50 Pa -> pressure.differential. expected.data via this codec, cross-checked against the upstream PS-LB v1.2 decoder (oracle Differential_pressure_Pa=50). Satisfies differential-pressure."
+    },
+    {
+      "description": "Device-information frame (fPort 5) -> error",
+      "input": {
+        "fPort": 5,
+        "bytes": [
+          22,
+          1,
+          6,
+          1,
+          255,
+          12,
+          228
+        ]
+      },
+      "expected": {
+        "errors": [
+          "device information"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "fPort 5 is firmware/band info, not a measurement."
+    }
+  ],
+  "downlink": []
+}

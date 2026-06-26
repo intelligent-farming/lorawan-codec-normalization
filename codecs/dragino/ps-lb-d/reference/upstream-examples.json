@@ -1,0 +1,4 @@
+{
+  "_note": "No official example payloads published; normalized codec authored from the PS-LB v1.2 decoder differential branch (see upstream-codec.js). Vectors use a synthetic in-bounds frame.",
+  "examples": []
+}
