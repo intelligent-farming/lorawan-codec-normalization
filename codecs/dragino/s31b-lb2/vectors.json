@@ -1,0 +1,66 @@
+{
+  "uplink": [
+    {
+      "description": "climate frame (fPort 2, SHT work mode 0)",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          12,
+          228,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          220,
+          2,
+          38
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "air": {
+            "temperature": 22,
+            "relativeHumidity": 55
+          },
+          "epochSeconds": 0,
+          "extiTriggered": false,
+          "doorClosed": false,
+          "make": "dragino",
+          "model": "s31b-lb2"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic S31B SHT frame (b6=0x00 -> mode 0); expected.data via this codec, cross-checked against the upstream S31B decoder (oracle TempC_SHT31=22, Hum_SHT31=55). SHT temp b7..8 signed/10 -> air.temperature; SHT humidity b9..10 /10 -> air.relativeHumidity. Satisfies climate."
+    },
+    {
+      "description": "Datalog history frame (fPort 3) -> error",
+      "input": {
+        "fPort": 3,
+        "bytes": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "datalog history fr"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "fPort 3 carries stored history, not a live reading."
+    }
+  ],
+  "downlink": []
+}

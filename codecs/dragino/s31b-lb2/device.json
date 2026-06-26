@@ -1,0 +1,26 @@
+{
+  "vendor": "dragino",
+  "device": "s31b-lb2",
+  "name": "S31B-LB2 Temperature & Humidity Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity"
+  ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery",
+    "doorClosed",
+    "epochSeconds",
+    "extiTriggered"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}
