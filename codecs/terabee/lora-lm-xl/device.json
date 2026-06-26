@@ -1,0 +1,25 @@
+{
+  "vendor": "terabee",
+  "device": "lora-lm-xl",
+  "name": "LoRa Level Monitoring XL",
+  "categories": [
+    "tank-level"
+  ],
+  "sensors": [
+    "distance"
+  ],
+  "provides": [],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "terabee",
+    "device": "lora-lm-xl",
+    "codecId": "lora-lm-xl-codec",
+    "codecFile": "lora-lm-xl.js",
+    "codecSha256": "d76093ed18511583ee64499e22d5f30b06424577079896e87ded09e99f94ff24",
+    "referencedAt": "2026-06-26"
+  }
+}

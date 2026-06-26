@@ -1,0 +1,53 @@
+{
+  "uplink": [
+    {
+      "description": "level-monitoring frame: distance 1500 mm, level 60%",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          5,
+          220,
+          60,
+          12,
+          228,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "tank": {
+            "distance": 1.5,
+            "level": 60
+          },
+          "battery": 3.3,
+          "make": "terabee",
+          "model": "lora-lm-xl"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic Terabee LM-XL frame; cross-checked against the upstream decoder (distance 1500 mm, levelPercentage 60, batteryVoltage 3300 mV). distance mm/1000 -> tank.distance (1.5 m); fill % -> tank.level (60); battery mV/1000 -> battery. Satisfies tank-level."
+    },
+    {
+      "description": "Error-flag frame -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          5,
+          220,
+          60,
+          12,
+          228,
+          1
+        ]
+      },
+      "expected": {
+        "errors": [
+          "device-reported er"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "A non-zero error byte yields a device-error result."
+    }
+  ],
+  "downlink": []
+}
