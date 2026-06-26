@@ -1,0 +1,80 @@
+{
+  "uplink": [
+    {
+      "description": "process gauge-pressure + temperature frame",
+      "input": {
+        "fPort": 15,
+        "bytes": [
+          191,
+          97,
+          118,
+          251,
+          64,
+          169,
+          200,
+          0,
+          0,
+          0,
+          0,
+          0,
+          97,
+          80,
+          251,
+          64,
+          4,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          97,
+          84,
+          251,
+          64,
+          54,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          255
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "pressure": {
+            "gauge": 250
+          },
+          "air": {
+            "temperature": 22
+          },
+          "make": "ellenex",
+          "model": "ptd2-l-v6"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic Ellenex V6 CBOR map {v:3300, P:2.5 bar, T:22 C}. P bar x100 -> pressure.gauge (250 kPa); T -> air.temperature. Satisfies process-pressure."
+    },
+    {
+      "description": "Non-map / undecodable payload -> error",
+      "input": {
+        "fPort": 15,
+        "bytes": [
+          1,
+          2
+        ]
+      },
+      "expected": {
+        "errors": [
+          "payload is n"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "A payload that is not a CBOR map yields no sensor fields."
+    }
+  ],
+  "downlink": []
+}

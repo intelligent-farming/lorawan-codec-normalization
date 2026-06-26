@@ -1,0 +1,21 @@
+{
+  "vendor": "ellenex",
+  "device": "ptc2-l-v6",
+  "name": "PTC2-L-V6 - Submersible Pressure Transmitter",
+  "categories": [
+    "process-pressure"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "battery",
+    "pressure.gauge"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

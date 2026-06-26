@@ -1,0 +1,24 @@
+{
+  "vendor": "ellenex",
+  "device": "cph2-l-v6",
+  "name": "CPH2-L-V6 - pH Sensor",
+  "categories": [
+    "water-quality"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "battery",
+    "ph2Mv",
+    "water.orp",
+    "water.ph",
+    "water.temperature.current"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

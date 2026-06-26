@@ -1,0 +1,22 @@
+{
+  "vendor": "ellenex",
+  "device": "cdo2-l-v6",
+  "name": "CDO2-L-V6 - Dissolved Oxygen Sensor",
+  "categories": [
+    "water-quality"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "battery",
+    "water.dissolvedOxygen",
+    "water.temperature.current"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

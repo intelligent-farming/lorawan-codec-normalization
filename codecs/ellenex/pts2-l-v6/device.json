@@ -1,0 +1,21 @@
+{
+  "vendor": "ellenex",
+  "device": "pts2-l-v6",
+  "name": "PTS2-L-V6 - Pressure Transmitter",
+  "categories": [
+    "process-pressure"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "battery",
+    "pressure.gauge"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

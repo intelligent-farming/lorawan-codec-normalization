@@ -1,0 +1,22 @@
+{
+  "vendor": "ellenex",
+  "device": "mrs2-l-v6",
+  "name": "MRS2-L-V6 - Tipping Spoon Rain Sensor",
+  "categories": [
+    "rain-gauge"
+  ],
+  "sensors": [
+    "rainfall"
+  ],
+  "provides": [
+    "battery",
+    "rain.cumulative",
+    "rainTipCount"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

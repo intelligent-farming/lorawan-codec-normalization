@@ -1,0 +1,21 @@
+{
+  "vendor": "ellenex",
+  "device": "ptf2-l-v6",
+  "name": "PTF2-L-V6 - Flush Pressure Transmitter",
+  "categories": [
+    "process-pressure"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "battery",
+    "pressure.gauge"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

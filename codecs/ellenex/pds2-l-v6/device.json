@@ -1,0 +1,21 @@
+{
+  "vendor": "ellenex",
+  "device": "pds2-l-v6",
+  "name": "PDS2-L-V6 - Differential Pressure Transmitter",
+  "categories": [
+    "differential-pressure"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "battery",
+    "pressure.differential"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

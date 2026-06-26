@@ -1,0 +1,110 @@
+{
+  "uplink": [
+    {
+      "description": "water-quality frame (pH, ORP, temperature)",
+      "input": {
+        "fPort": 15,
+        "bytes": [
+          191,
+          97,
+          118,
+          251,
+          64,
+          169,
+          200,
+          0,
+          0,
+          0,
+          0,
+          0,
+          97,
+          84,
+          251,
+          64,
+          54,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          99,
+          112,
+          72,
+          49,
+          251,
+          64,
+          28,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          99,
+          82,
+          101,
+          100,
+          251,
+          64,
+          111,
+          64,
+          0,
+          0,
+          0,
+          0,
+          0,
+          99,
+          112,
+          72,
+          50,
+          251,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          255
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "water": {
+            "temperature": {
+              "current": 22
+            },
+            "ph": 7,
+            "orp": 250
+          },
+          "ph2Mv": 0,
+          "make": "ellenex",
+          "model": "cph2-l-v6"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic Ellenex V6 CBOR map. pH1 -> water.ph (7.0), Red(ox) -> water.orp (250 mV), T -> water.temperature.current (22 C). Satisfies water-quality (atLeastOne water.ph)."
+    },
+    {
+      "description": "Non-map / undecodable payload -> error",
+      "input": {
+        "fPort": 15,
+        "bytes": [
+          1,
+          2
+        ]
+      },
+      "expected": {
+        "errors": [
+          "payload is n"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "A payload that is not a CBOR map yields no sensor fields."
+    }
+  ],
+  "downlink": []
+}

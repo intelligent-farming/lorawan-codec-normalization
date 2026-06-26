@@ -1,0 +1,82 @@
+{
+  "uplink": [
+    {
+      "description": "water-quality frame (dissolved oxygen + temperature)",
+      "input": {
+        "fPort": 15,
+        "bytes": [
+          191,
+          97,
+          118,
+          251,
+          64,
+          169,
+          200,
+          0,
+          0,
+          0,
+          0,
+          0,
+          97,
+          84,
+          251,
+          64,
+          54,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          99,
+          68,
+          79,
+          50,
+          251,
+          64,
+          33,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          255
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "water": {
+            "temperature": {
+              "current": 22
+            },
+            "dissolvedOxygen": 8.5
+          },
+          "make": "ellenex",
+          "model": "cdo2-l-v6"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic Ellenex V6 CBOR map. DO2 -> water.dissolvedOxygen (8.5 mg/L), T -> water.temperature.current. Satisfies water-quality (atLeastOne water.dissolvedOxygen)."
+    },
+    {
+      "description": "Non-map / undecodable payload -> error",
+      "input": {
+        "fPort": 15,
+        "bytes": [
+          1,
+          2
+        ]
+      },
+      "expected": {
+        "errors": [
+          "payload is n"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "A payload that is not a CBOR map yields no sensor fields."
+    }
+  ],
+  "downlink": []
+}

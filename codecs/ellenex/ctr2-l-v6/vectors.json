@@ -1,0 +1,82 @@
+{
+  "uplink": [
+    {
+      "description": "water-quality frame (turbidity + temperature)",
+      "input": {
+        "fPort": 15,
+        "bytes": [
+          191,
+          97,
+          118,
+          251,
+          64,
+          169,
+          200,
+          0,
+          0,
+          0,
+          0,
+          0,
+          97,
+          84,
+          251,
+          64,
+          54,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          99,
+          84,
+          82,
+          49,
+          251,
+          64,
+          41,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          255
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "water": {
+            "temperature": {
+              "current": 22
+            },
+            "turbidity": 12.5
+          },
+          "make": "ellenex",
+          "model": "ctr2-l-v6"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic Ellenex V6 CBOR map. TR1 -> water.turbidity (12.5 NTU), T -> water.temperature.current. Satisfies water-quality (atLeastOne water.turbidity)."
+    },
+    {
+      "description": "Non-map / undecodable payload -> error",
+      "input": {
+        "fPort": 15,
+        "bytes": [
+          1,
+          2
+        ]
+      },
+      "expected": {
+        "errors": [
+          "payload is n"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "A payload that is not a CBOR map yields no sensor fields."
+    }
+  ],
+  "downlink": []
+}

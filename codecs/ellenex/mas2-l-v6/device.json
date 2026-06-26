@@ -1,0 +1,23 @@
+{
+  "vendor": "ellenex",
+  "device": "mas2-l-v6",
+  "name": "MAS2-L-V6 - Humidity & Temperature Sensor",
+  "categories": [
+    "climate"
+  ],
+  "sensors": [
+    "temperature",
+    "humidity"
+  ],
+  "provides": [
+    "air.relativeHumidity",
+    "air.temperature",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

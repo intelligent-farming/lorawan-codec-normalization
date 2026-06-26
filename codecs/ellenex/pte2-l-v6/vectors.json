@@ -1,0 +1,66 @@
+{
+  "uplink": [
+    {
+      "description": "earth gauge-pressure frame",
+      "input": {
+        "fPort": 15,
+        "bytes": [
+          191,
+          97,
+          118,
+          251,
+          64,
+          169,
+          200,
+          0,
+          0,
+          0,
+          0,
+          0,
+          97,
+          80,
+          251,
+          63,
+          240,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          255
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "pressure": {
+            "gauge": 98.067
+          },
+          "make": "ellenex",
+          "model": "pte2-l-v6"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic Ellenex V6 CBOR map {v:3300 mV, P:1.0 kg/cm2}. P kg/cm2 x98.0665 -> pressure.gauge (98.067 kPa). Satisfies process-pressure."
+    },
+    {
+      "description": "Non-map / undecodable payload -> error",
+      "input": {
+        "fPort": 15,
+        "bytes": [
+          1,
+          2
+        ]
+      },
+      "expected": {
+        "errors": [
+          "payload is n"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "A payload that is not a CBOR map yields no sensor fields."
+    }
+  ],
+  "downlink": []
+}

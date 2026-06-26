@@ -1,0 +1,23 @@
+{
+  "vendor": "ellenex",
+  "device": "ptd2-l-v6",
+  "name": "PTD2-L-V6 - Pressure Transmitter with Temperature",
+  "categories": [
+    "process-pressure"
+  ],
+  "sensors": [
+    "water",
+    "temperature"
+  ],
+  "provides": [
+    "air.temperature",
+    "battery",
+    "pressure.gauge"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

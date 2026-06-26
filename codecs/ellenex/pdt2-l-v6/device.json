@@ -1,0 +1,23 @@
+{
+  "vendor": "ellenex",
+  "device": "pdt2-l-v6",
+  "name": "PDT2-L-V6 - Differential Pressure Transmitter (ultra-low)",
+  "categories": [
+    "differential-pressure"
+  ],
+  "sensors": [
+    "water",
+    "temperature"
+  ],
+  "provides": [
+    "air.temperature",
+    "battery",
+    "pressure.differential"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

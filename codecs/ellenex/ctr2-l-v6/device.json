@@ -1,0 +1,22 @@
+{
+  "vendor": "ellenex",
+  "device": "ctr2-l-v6",
+  "name": "CTR2-L-V6 - Turbidity Sensor",
+  "categories": [
+    "water-quality"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "battery",
+    "water.temperature.current",
+    "water.turbidity"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

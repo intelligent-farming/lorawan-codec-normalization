@@ -1,0 +1,21 @@
+{
+  "vendor": "ellenex",
+  "device": "pte2-l-v6",
+  "name": "PTE2-L-V6 - Earth Pressure Transmitter",
+  "categories": [
+    "process-pressure"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "battery",
+    "pressure.gauge"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}

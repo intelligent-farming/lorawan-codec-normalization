@@ -1,0 +1,67 @@
+{
+  "uplink": [
+    {
+      "description": "differential-pressure frame",
+      "input": {
+        "fPort": 15,
+        "bytes": [
+          191,
+          97,
+          118,
+          251,
+          64,
+          169,
+          200,
+          0,
+          0,
+          0,
+          0,
+          0,
+          98,
+          68,
+          80,
+          251,
+          63,
+          132,
+          122,
+          225,
+          71,
+          174,
+          20,
+          123,
+          255
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "pressure": {
+            "differential": 1000
+          },
+          "make": "ellenex",
+          "model": "pds2-l-v6"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic Ellenex V6 CBOR map {v:3300 mV, DP:0.01 bar}. DP bar x100000 -> pressure.differential (1000 Pa). Satisfies differential-pressure."
+    },
+    {
+      "description": "Non-map / undecodable payload -> error",
+      "input": {
+        "fPort": 15,
+        "bytes": [
+          1,
+          2
+        ]
+      },
+      "expected": {
+        "errors": [
+          "payload is n"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "A payload that is not a CBOR map yields no sensor fields."
+    }
+  ],
+  "downlink": []
+}

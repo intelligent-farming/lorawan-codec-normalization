@@ -1,0 +1,81 @@
+{
+  "uplink": [
+    {
+      "description": "ultra-low differential-pressure + temperature frame",
+      "input": {
+        "fPort": 15,
+        "bytes": [
+          191,
+          97,
+          118,
+          251,
+          64,
+          169,
+          200,
+          0,
+          0,
+          0,
+          0,
+          0,
+          98,
+          68,
+          80,
+          251,
+          64,
+          111,
+          64,
+          0,
+          0,
+          0,
+          0,
+          0,
+          97,
+          84,
+          251,
+          64,
+          54,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          255
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "pressure": {
+            "differential": 250
+          },
+          "air": {
+            "temperature": 22
+          },
+          "make": "ellenex",
+          "model": "pdt2-l-v6"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic Ellenex V6 CBOR map {v:3300, DP:250 Pa, T:22 C}. DP -> pressure.differential (250 Pa); T -> air.temperature. Satisfies differential-pressure."
+    },
+    {
+      "description": "Non-map / undecodable payload -> error",
+      "input": {
+        "fPort": 15,
+        "bytes": [
+          1,
+          2
+        ]
+      },
+      "expected": {
+        "errors": [
+          "payload is n"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "A payload that is not a CBOR map yields no sensor fields."
+    }
+  ],
+  "downlink": []
+}
