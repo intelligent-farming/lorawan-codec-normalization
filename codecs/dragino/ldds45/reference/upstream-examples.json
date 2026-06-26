@@ -1,0 +1,51 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/dragino/ldds45-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Distance Detection",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          13,
+          59,
+          10,
+          239,
+          0,
+          0,
+          0,
+          1
+        ]
+      },
+      "output": {
+        "data": {
+          "Bat": 3.387,
+          "Distance": "2799 mm",
+          "Interrupt_flag": 0,
+          "Sensor_flag": 1,
+          "TempC_DS18B20": "0.00"
+        }
+      }
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [
+          13,
+          59,
+          10,
+          239,
+          0,
+          0,
+          0,
+          1
+        ]
+      },
+      "output": {
+        "errors": [
+          "unknown FPort"
+        ]
+      }
+    }
+  ]
+}

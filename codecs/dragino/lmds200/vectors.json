@@ -1,0 +1,58 @@
+{
+  "uplink": [
+    {
+      "description": "ranging frame (fPort 2): distance to surface",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          12,
+          228,
+          11,
+          184,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "tank": {
+            "distance": 3
+          },
+          "distance2Mm": 0,
+          "distanceAlarm": 0,
+          "interruptAlarm": 0,
+          "make": "dragino",
+          "model": "lmds200"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic LMDS200 frame; cross-checked against the upstream decoder (dis1 3000 mm). microwave distance mm/1000 -> tank.distance (3.0 m). Satisfies tank-level."
+    },
+    {
+      "description": "Device-information frame (fPort 5) -> error",
+      "input": {
+        "fPort": 5,
+        "bytes": [
+          22,
+          0,
+          0,
+          1,
+          255,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "device information"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "fPort 5 is firmware/band info, not a measurement."
+    }
+  ],
+  "downlink": []
+}

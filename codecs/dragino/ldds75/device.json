@@ -1,0 +1,29 @@
+{
+  "vendor": "dragino",
+  "device": "ldds75",
+  "name": "LDDS75 - Distance Sensor",
+  "categories": [
+    "tank-level"
+  ],
+  "sensors": [
+    "distance"
+  ],
+  "provides": [
+    "battery",
+    "distanceMm",
+    "tank.distance"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "ldds75",
+    "codecId": "ldds75-codec",
+    "codecFile": "ldds75.js",
+    "codecSha256": "d07921b12d540125b5017ed0d6a52190c5a99ce0185cb447eb2c96affb66f121",
+    "referencedAt": "2026-06-26"
+  }
+}

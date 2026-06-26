@@ -1,0 +1,57 @@
+{
+  "uplink": [
+    {
+      "description": "ranging frame (fPort 2): distance to surface",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          12,
+          228,
+          11,
+          184,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "tank": {
+            "distance": 3
+          },
+          "distanceMm": 3000,
+          "make": "dragino",
+          "model": "ldds75"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic LDDS75 frame: distance bytes b2..3 = 3000 mm -> tank.distance (3.0 m). The upstream decoder has a bug (it assigns distance from its battery variable, not bytes[2..3]); this codec reads the intended distance bytes b2..3. Satisfies tank-level."
+    },
+    {
+      "description": "Device-information frame (fPort 5) -> error",
+      "input": {
+        "fPort": 5,
+        "bytes": [
+          22,
+          0,
+          0,
+          1,
+          255,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "device information"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "fPort 5 is firmware/band info, not a measurement."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,32 @@
+{
+  "vendor": "dragino",
+  "device": "llds12",
+  "name": "LLDS12 - LiDAR Distance Sensor",
+  "categories": [
+    "tank-level"
+  ],
+  "sensors": [
+    "distance"
+  ],
+  "provides": [
+    "battery",
+    "interruptFlag",
+    "lidarSignal",
+    "messageType",
+    "probeTemperature",
+    "tank.distance"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "llds12",
+    "codecId": "llds12-codec",
+    "codecFile": "llds12.js",
+    "codecSha256": "f49cfe5125142eaa46de46661179f0fc725898ca8dbf8875d8390598fcc8b006",
+    "referencedAt": "2026-06-26"
+  }
+}

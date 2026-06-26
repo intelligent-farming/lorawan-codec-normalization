@@ -1,0 +1,63 @@
+{
+  "uplink": [
+    {
+      "description": "ranging frame (fPort 2): distance to surface",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          12,
+          228,
+          11,
+          184,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "tank": {
+            "distance": 3
+          },
+          "distance2Cm": 0,
+          "distance3Cm": 0,
+          "distance4Cm": 0,
+          "messageType": 1,
+          "make": "dragino",
+          "model": "ldds04"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic LDDS04 frame; cross-checked against the upstream decoder (distance1_cm 300). distance1 cm/100 -> tank.distance (3.0 m). Satisfies tank-level."
+    },
+    {
+      "description": "Device-information frame (fPort 5) -> error",
+      "input": {
+        "fPort": 5,
+        "bytes": [
+          22,
+          0,
+          0,
+          1,
+          255,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "device information"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "fPort 5 is firmware/band info, not a measurement."
+    }
+  ],
+  "downlink": []
+}

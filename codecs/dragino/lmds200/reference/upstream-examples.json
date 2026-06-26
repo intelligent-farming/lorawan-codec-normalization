@@ -1,0 +1,50 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/dragino/lmds200-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "LMDS200 LoRaWAN Microwave Radar Distance Detection Sensor",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          11,
+          136,
+          1,
+          0,
+          37,
+          0,
+          1
+        ]
+      },
+      "output": {
+        "data": {
+          "Bat": 2.952,
+          "DALARM_count": 0,
+          "Distance_alarm": 0,
+          "Interrupt_alarm": 1,
+          "dis1": 256,
+          "dis2": 9472
+        }
+      }
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [
+          11,
+          136,
+          1,
+          0,
+          37,
+          0,
+          1
+        ]
+      },
+      "output": {
+        "errors": [
+          "unknown FPort"
+        ]
+      }
+    }
+  ]
+}

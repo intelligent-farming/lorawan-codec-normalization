@@ -1,0 +1,32 @@
+{
+  "vendor": "dragino",
+  "device": "ldds04",
+  "name": "LDDS04 - Distance Sensor",
+  "categories": [
+    "tank-level"
+  ],
+  "sensors": [
+    "distance"
+  ],
+  "provides": [
+    "battery",
+    "distance2Cm",
+    "distance3Cm",
+    "distance4Cm",
+    "messageType",
+    "tank.distance"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "ldds04",
+    "codecId": "ldds04-codec",
+    "codecFile": "ldds04.js",
+    "codecSha256": "2848d3bedf58305773fd0bccb18c6e3783e7f5123d891885df8ea9412f0d4feb",
+    "referencedAt": "2026-06-26"
+  }
+}

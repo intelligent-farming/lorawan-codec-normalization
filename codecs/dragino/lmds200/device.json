@@ -1,0 +1,31 @@
+{
+  "vendor": "dragino",
+  "device": "lmds200",
+  "name": "LMDS200 - Microwave Radar Distance Sensor",
+  "categories": [
+    "tank-level"
+  ],
+  "sensors": [
+    "distance"
+  ],
+  "provides": [
+    "battery",
+    "distance2Mm",
+    "distanceAlarm",
+    "interruptAlarm",
+    "tank.distance"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "lmds200",
+    "codecId": "lmds200-codec",
+    "codecFile": "lmds200.js",
+    "codecSha256": "89b2ca39f6da9db57bd36589d80511c91e3be8ec23b59144243baa8fb5e82147",
+    "referencedAt": "2026-06-26"
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "uplink": [
+    {
+      "description": "ranging frame (fPort 2): distance to surface",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          12,
+          228,
+          11,
+          184,
+          0,
+          0,
+          250,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "tank": {
+            "distance": 3
+          },
+          "distanceMm": 3000,
+          "probeTemperature": 25,
+          "sensorFlag": 0,
+          "make": "dragino",
+          "model": "ldds45"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic LDDS45 frame; cross-checked against the upstream decoder (Distance '3000 mm'). distance mm/1000 -> tank.distance (3.0 m). Satisfies tank-level."
+    },
+    {
+      "description": "Device-information frame (fPort 5) -> error",
+      "input": {
+        "fPort": 5,
+        "bytes": [
+          22,
+          0,
+          0,
+          1,
+          255,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "device information"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "fPort 5 is firmware/band info, not a measurement."
+    }
+  ],
+  "downlink": []
+}
