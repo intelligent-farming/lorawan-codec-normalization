@@ -1,0 +1,50 @@
+{
+  "uplink": [
+    {
+      "description": "ultrasonic distance frame (battery + distance TLV)",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          1,
+          117,
+          90,
+          3,
+          130,
+          220,
+          5
+        ]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 90,
+          "tank": {
+            "distance": 1.5
+          },
+          "make": "milesight",
+          "model": "em500-udl"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic Milesight-format frame; cross-checked against the upstream decoder. distance uint16LE 1500 mm -> tank.distance (1.5 m); battery % -> batteryPercent. Satisfies tank-level."
+    },
+    {
+      "description": "Version-only frame -> error",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          255,
+          1,
+          16
+        ]
+      },
+      "expected": {
+        "errors": [
+          "no distance measur"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "A version channel carries no distance reading."
+    }
+  ],
+  "downlink": []
+}

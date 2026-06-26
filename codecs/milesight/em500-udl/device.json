@@ -1,0 +1,21 @@
+{
+  "vendor": "milesight",
+  "device": "em500-udl",
+  "name": "Milesight EM500-UDL Ultrasonic Distance/Level Sensor",
+  "categories": [
+    "tank-level"
+  ],
+  "sensors": [
+    "distance"
+  ],
+  "provides": [
+    "batteryPercent",
+    "tank.distance"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": null
+}
