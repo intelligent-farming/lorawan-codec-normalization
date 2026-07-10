@@ -1,0 +1,33 @@
+{
+  "vendor": "dragino",
+  "device": "mds120-lb",
+  "name": "MDS120-LB",
+  "categories": [
+    "tank-level"
+  ],
+  "sensors": [
+    "distance",
+    "temperature",
+    "level"
+  ],
+  "provides": [
+    "battery",
+    "interruptFlag",
+    "sensorFlag",
+    "tank.distance",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "mds120-lb",
+    "codecId": "mds120-lb-codec",
+    "codecFile": "mds120-lb.js",
+    "codecSha256": "4dbae4254dea96138c2217a4a88957b7729af0c85d951e6bbbeff20a82a8d7e0",
+    "referencedAt": "2026-07-10"
+  }
+}

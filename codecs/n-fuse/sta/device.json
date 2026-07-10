@@ -1,0 +1,36 @@
+{
+  "vendor": "n-fuse",
+  "device": "sta",
+  "name": "Action button",
+  "categories": [
+    "button"
+  ],
+  "sensors": [
+    "battery",
+    "temperature",
+    "button"
+  ],
+  "provides": [
+    "action.button.count",
+    "action.button.event",
+    "action.button.pressed",
+    "battery",
+    "mcuTemperature",
+    "scheduledReport",
+    "txPower",
+    "version"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "n-fuse",
+    "device": "sta",
+    "codecId": "sta-codec",
+    "codecFile": "sta.js",
+    "codecSha256": "11d342cf7e594b93758e0275d2c51af264fc574701beedabff766b2bd8fc3e1f",
+    "referencedAt": "2026-07-10"
+  }
+}

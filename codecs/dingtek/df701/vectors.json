@@ -1,0 +1,66 @@
+{
+  "uplink": [
+    {
+      "description": "heartbeat upload: out-of-range sentinel (level 9999 cm), 3.60 V",
+      "input": {
+        "fPort": 3,
+        "bytes": [128, 0, 1, 2, 18, 39, 15, 0, 0, 0, 0, 0, 0, 1, 104, 0, 1, 129]
+      },
+      "expected": {
+        "data": {
+          "tank": { "distance": 99.99 },
+          "noTarget": true,
+          "alarmLevel": false,
+          "alarmBattery": false,
+          "battery": 3.6,
+          "frameCounter": 1,
+          "make": "dingtek",
+          "model": "df701"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "in-range laser distance: 35 cm from lid to refuse (0.35 m)",
+      "input": {
+        "fPort": 3,
+        "bytes": [128, 0, 1, 2, 18, 0, 35, 0, 0, 0, 0, 0, 0, 1, 104, 0, 2, 129]
+      },
+      "expected": {
+        "data": {
+          "tank": { "distance": 0.35 },
+          "alarmLevel": false,
+          "alarmBattery": false,
+          "battery": 3.6,
+          "frameCounter": 2,
+          "make": "dingtek",
+          "model": "df701"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "parameter/config frame carries no measurement",
+      "input": {
+        "fPort": 3,
+        "bytes": [128, 0, 1, 3, 12, 1, 2, 10, 10, 20, 0, 129]
+      },
+      "expected": {
+        "errors": ["parameter confirmation frame"]
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "unsupported fPort returns an error",
+      "input": {
+        "fPort": 42,
+        "bytes": [128, 0, 1, 2, 18, 39, 15, 0, 0, 0, 0, 0, 0, 1, 104, 0, 1, 129]
+      },
+      "expected": {
+        "errors": ["unknown FPort"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

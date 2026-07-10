@@ -1,0 +1,8 @@
+{
+  "id": "switch",
+  "name": "Switch / relay output",
+  "description": "Actuators reporting a relay / switch output state (smart plugs, wall switches, dry-switch controllers, valve keepers).",
+  "requires": ["action.switch.state"],
+  "provides": ["air.temperature", "power.active", "battery"],
+  "notes": "action.switch.state is boolean (true = on/closed). A device that also meters cumulative electrical energy belongs in `power-meter`."
+}

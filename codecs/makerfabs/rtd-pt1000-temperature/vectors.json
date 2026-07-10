@@ -1,0 +1,48 @@
+{
+  "uplink": [
+    {
+      "description": "battery (tenths of a volt) and signed16/100 temperature",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 1, 36, 9, 41]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "temperature": 23.45,
+          "make": "makerfabs",
+          "model": "rtd-pt1000-temperature"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "sub-zero temperature via two's complement",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 2, 35, 255, 236]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.5,
+          "temperature": -0.2,
+          "make": "makerfabs",
+          "model": "rtd-pt1000-temperature"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "truncated payload is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 1, 36]
+      },
+      "expected": {
+        "errors": ["payload too short"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

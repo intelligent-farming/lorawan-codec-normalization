@@ -1,0 +1,51 @@
+{
+  "uplink": [
+    {
+      "description": "heartbeat, single channel: signed16/100 -> temperature; battery % and rssi as extras",
+      "input": {
+        "fPort": 1,
+        "bytes": [48, 95, 52, 9, 41, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "temperature": 23.45,
+          "batteryPercent": 95,
+          "rssi": -52,
+          "make": "lansitec",
+          "model": "precision-platinum-sensor"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "heartbeat, two channels incl. a negative reading (two's complement)",
+      "input": {
+        "fPort": 1,
+        "bytes": [49, 88, 60, 9, 41, 254, 12, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "temperature": 23.45,
+          "temperatures": [23.45, -5],
+          "batteryPercent": 88,
+          "rssi": -60,
+          "make": "lansitec",
+          "model": "precision-platinum-sensor"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "register message (type 0x1) is not telemetry",
+      "input": {
+        "fPort": 1,
+        "bytes": [22, 32, 80, 80, 0, 60, 18, 52]
+      },
+      "expected": {
+        "errors": ["not heartbeat temperature telemetry"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

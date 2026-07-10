@@ -1,0 +1,52 @@
+{
+  "uplink": [
+    {
+      "description": "Status report (TTN example bytes): no smoke, 4.8 V, tamper + power-off alarms",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 215, 1, 48, 0, 0, 1, 1, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "ra02g",
+          "action": { "smoke": { "detected": false } },
+          "battery": 4.8,
+          "highSoundAlarm": false,
+          "tamperAlarm": true,
+          "powerOffAlarm": true
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Status report, smoke detected (synthetic)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 215, 1, 46, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "ra02g",
+          "action": { "smoke": { "detected": true } },
+          "battery": 4.6,
+          "highSoundAlarm": false,
+          "tamperAlarm": false,
+          "powerOffAlarm": false
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Config response on fPort 7 carries no measurement (error)",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 215, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": { "errors": ["unsupported fPort 7"] },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

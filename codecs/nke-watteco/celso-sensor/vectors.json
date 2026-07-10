@@ -1,0 +1,23 @@
+{
+  "uplink": [
+    {
+      "description": "standard report: temperature 23.00 C | payload:110A0402000029 08FC",
+      "input": { "fPort": 125, "bytes": [17, 10, 4, 2, 0, 0, 41, 8, 252] },
+      "expected": { "data": { "temperature": 23.0, "make": "nke-watteco", "model": "celso-sensor" } },
+      "source": "synthetic"
+    },
+    {
+      "description": "standard report: negative cold-chain temperature -5.00 C | payload:110A0402000029 FE0C",
+      "input": { "fPort": 125, "bytes": [17, 10, 4, 2, 0, 0, 41, 254, 12] },
+      "expected": { "data": { "temperature": -5.0, "make": "nke-watteco", "model": "celso-sensor" } },
+      "source": "synthetic"
+    },
+    {
+      "description": "batch (Huffman) frame is not supported (byte0 bit0 clear)",
+      "input": { "fPort": 125, "bytes": [48, 1, 128, 196, 164, 96, 2, 39, 180, 143, 128, 9, 159, 14, 84] },
+      "expected": { "errors": ["batch frame not supported"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

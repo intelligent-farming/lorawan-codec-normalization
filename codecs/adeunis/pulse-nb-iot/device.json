@@ -1,0 +1,36 @@
+{
+  "vendor": "adeunis",
+  "device": "pulse-nb-iot",
+  "name": "Pulse 4 NB-IoT - Metering Interface",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "pulse count"
+  ],
+  "provides": [
+    "channel",
+    "configurationDone",
+    "counterHistory",
+    "frameCounter",
+    "globalFrameCounter",
+    "imei",
+    "lowBattery",
+    "pulse.total",
+    "signalQuality",
+    "time"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "adeunis",
+    "device": "pulse-nb-iot",
+    "codecId": "pulse-nb-iot-codec",
+    "codecFile": "pulse_nbiot_lib.js",
+    "codecSha256": "7cccd6b4c60d9c4dec84293f8974681c08d845b685c51f74b65e53e19914b25e",
+    "referencedAt": "2026-07-10"
+  }
+}

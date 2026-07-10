@@ -1,0 +1,159 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/decentlab/dl-isf-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Example 1",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          61,
+          1,
+          0,
+          3,
+          12,
+          41,
+          11,
+          171,
+          12,
+          62,
+          121,
+          112,
+          122,
+          29,
+          120,
+          67,
+          121,
+          145,
+          73,
+          8,
+          69,
+          153,
+          126,
+          76,
+          172,
+          222,
+          170,
+          110,
+          0,
+          0,
+          0,
+          0,
+          69,
+          126,
+          65,
+          90,
+          11,
+          89
+        ]
+      },
+      "output": {
+        "data": {
+          "alpha_inner": {
+            "displayName": "Alpha (inner)",
+            "value": 0.00352
+          },
+          "alpha_outer": {
+            "displayName": "Alpha (outer)",
+            "value": -0.05184
+          },
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 2.905
+          },
+          "beta_inner": {
+            "displayName": "Beta (inner)",
+            "value": -0.04128
+          },
+          "beta_outer": {
+            "displayName": "Beta (outer)",
+            "value": -0.14816
+          },
+          "device_id": 15617,
+          "diagnostic": {
+            "displayName": "Diagnostic",
+            "value": 0
+          },
+          "heat_velocity_inner": {
+            "displayName": "Heat velocity (inner)",
+            "unit": "cm⋅h⁻¹",
+            "value": 0.144
+          },
+          "heat_velocity_outer": {
+            "displayName": "Heat velocity (outer)",
+            "unit": "cm⋅h⁻¹",
+            "value": -2.208
+          },
+          "max_voltage": {
+            "displayName": "Max voltage",
+            "unit": "V",
+            "value": 11.486
+          },
+          "min_voltage": {
+            "displayName": "Min voltage",
+            "unit": "V",
+            "value": 10.862
+          },
+          "protocol_version": 2,
+          "sap_flow": {
+            "displayName": "Sap flow",
+            "unit": "l⋅h⁻¹",
+            "value": -0.192
+          },
+          "temperature_outer": {
+            "displayName": "Temperature (outer)",
+            "unit": "°C",
+            "value": -4.36
+          },
+          "tmax_inner": {
+            "displayName": "Tmax (inner)",
+            "unit": "s",
+            "value": 35.634
+          },
+          "tmax_outer": {
+            "displayName": "Tmax (outer)",
+            "unit": "s",
+            "value": 37.392
+          },
+          "upstream_tmax_inner": {
+            "displayName": "Upstream Tmax (inner)",
+            "unit": "s",
+            "value": 33.46
+          },
+          "upstream_tmax_outer": {
+            "displayName": "Upstream Tmax (outer)",
+            "unit": "s",
+            "value": 35.58
+          }
+        }
+      }
+    },
+    {
+      "description": "Example 2",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          61,
+          1,
+          0,
+          2,
+          11,
+          89
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 2.905
+          },
+          "device_id": 15617,
+          "protocol_version": 2
+        }
+      }
+    }
+  ]
+}

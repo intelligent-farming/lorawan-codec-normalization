@@ -1,0 +1,32 @@
+{
+  "uplink": [
+    {
+      "description": "Sound level keepalive (TTN example bytes): 40 dB, 3.6 V, board 22 °C",
+      "input": {
+        "fPort": 105,
+        "bytes": [0, 11, 54, 40]
+      },
+      "expected": {
+        "data": {
+          "make": "browan",
+          "model": "tbsl100",
+          "sound": { "level": 40 },
+          "battery": 3.6,
+          "air": { "temperature": 22 },
+          "status": 0
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Unknown fPort returns an error",
+      "input": {
+        "fPort": 42,
+        "bytes": [1]
+      },
+      "expected": { "errors": ["unsupported fPort 42"] },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

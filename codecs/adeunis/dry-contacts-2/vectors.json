@@ -1,0 +1,45 @@
+{
+  "uplink": [
+    {
+      "description": "0x40 Dry Contacts 2 data: A/B closed, C/D open; counts 1/2/3/4; frame counter 6",
+      "input": {
+        "fPort": 1,
+        "bytes": [64, 192, 0, 1, 0, 2, 0, 3, 0, 4, 165]
+      },
+      "expected": {
+        "data": {
+          "action": { "contactState": "closed" },
+          "channelBContactState": "closed",
+          "channelCContactState": "open",
+          "channelDContactState": "open",
+          "channelAPreviousState": "open",
+          "channelBPreviousState": "open",
+          "channelCPreviousState": "closed",
+          "channelDPreviousState": "closed",
+          "channelACount": 1,
+          "channelBCount": 2,
+          "channelCCount": 3,
+          "channelDCount": 4,
+          "lowBattery": false,
+          "configurationDone": false,
+          "frameCounter": 6,
+          "make": "adeunis",
+          "model": "dry-contacts-2"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Configuration frame (0x10) carries no interface reading and is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [16, 0, 0, 1, 0, 1, 0, 0, 1]
+      },
+      "expected": {
+        "errors": ["unsupported frame code"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,48 @@
+{
+  "uplink": [
+    {
+      "description": "Button pressed (TTN example bytes)",
+      "input": {
+        "fPort": 147,
+        "bytes": [1, 254, 55, 0, 0, 4, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "browan",
+          "model": "tbpb100",
+          "action": { "button": { "pressed": true, "event": "single" } },
+          "battery": 3.9,
+          "temperatureBoard": 23
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Not pressed status frame (synthetic: byte0 bit0 clear)",
+      "input": {
+        "fPort": 147,
+        "bytes": [0, 254, 55, 0, 0, 4, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "browan",
+          "model": "tbpb100",
+          "action": { "button": { "pressed": false } },
+          "battery": 3.9,
+          "temperatureBoard": 23
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unknown fPort returns an error",
+      "input": {
+        "fPort": 42,
+        "bytes": [1]
+      },
+      "expected": { "errors": ["unsupported fPort 42"] },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,37 @@
+{
+  "vendor": "mutelcor",
+  "device": "mtc-nfc02",
+  "name": "NFC RFID - LoRa Button",
+  "categories": [
+    "button"
+  ],
+  "sensors": [
+    "button",
+    "battery",
+    "digital input"
+  ],
+  "provides": [
+    "action.button.count",
+    "action.button.event",
+    "action.button.pressed",
+    "alarmId",
+    "battery",
+    "buttons",
+    "nfcUid",
+    "opcode",
+    "payloadVersion"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "mutelcor",
+    "device": "mtc-nfc02",
+    "codecId": "mutelcor-codec",
+    "codecFile": "mutelcor.js",
+    "codecSha256": "988ab94685a68c414f87b3b9873c2195134ad878b6a730db76572085f9807846",
+    "referencedAt": "2026-07-10"
+  }
+}

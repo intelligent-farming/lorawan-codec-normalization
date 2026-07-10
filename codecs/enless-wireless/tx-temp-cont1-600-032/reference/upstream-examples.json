@@ -1,0 +1,51 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/enless-wireless/tx-temp-cont1-600-032-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "TX TEMP INS 600-032",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          0,
+          0,
+          220,
+          15,
+          10,
+          1,
+          254,
+          208,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "alarm_status": {
+            "temperature_1": {
+              "high": false,
+              "low": false
+            }
+          },
+          "fw_version": 1,
+          "id": 220,
+          "seq_counter": 10,
+          "states": {
+            "battery": "100%",
+            "msg_type": "normal"
+          },
+          "type": 15,
+          "values": {
+            "temperature_1": {
+              "unit": "°C",
+              "value": -30.4
+            }
+          }
+        }
+      }
+    }
+  ]
+}

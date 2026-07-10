@@ -1,0 +1,36 @@
+{
+  "uplink": [
+    {
+      "description": "TX PULSE LED 600-038 (EN310, type 0x0A): ch1 total 0, ch2 total 0, OC total 10, battery 100%",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 170, 10, 13, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 5, 99]
+      },
+      "expected": {
+        "data": {
+          "pulse": { "total": 0 },
+          "channel2Total": 0,
+          "ocTotal": 10,
+          "batteryPercent": 100,
+          "deviceId": 170,
+          "sequenceCounter": 13,
+          "make": "enless-wireless",
+          "model": "tx-pulse-led-600-038"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Frame with wrong device type byte is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 170, 8, 13, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 5, 99]
+      },
+      "expected": {
+        "errors": ["unexpected device type"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

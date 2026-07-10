@@ -1,0 +1,48 @@
+{
+  "uplink": [
+    {
+      "description": "Status report, gang 1 pressed (TTN example bytes)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 166, 1, 36, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "rb02b",
+          "battery": 3.6,
+          "action": { "button": { "pressed": true, "count": 1, "event": "single" } },
+          "gang2Pressed": false
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Gang 2 only pressed (synthetic)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 166, 1, 36, 0, 1, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "rb02b",
+          "battery": 3.6,
+          "action": { "button": { "pressed": false, "count": 1, "event": "single" } },
+          "gang2Pressed": true
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Configuration response fPort 7 returns an error",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 166, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": { "errors": ["unsupported fPort 7"] },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,33 @@
+{
+  "vendor": "nke-watteco",
+  "device": "presso-sensor",
+  "name": "Press'O - Analog Interface",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "pulse count",
+    "analog input",
+    "4-20 ma",
+    "digital input"
+  ],
+  "provides": [
+    "action.contactState",
+    "analog.raw",
+    "battery",
+    "pulse.total"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "nke-watteco",
+    "device": "presso-sensor",
+    "codecId": "presso-sensor-codec",
+    "codecFile": "presso-sensor.js",
+    "codecSha256": "51f69f21acbcfd82fe27000f3914358f23f3c06e924fcb088132bf157e6537b3",
+    "referencedAt": "2026-07-10"
+  }
+}

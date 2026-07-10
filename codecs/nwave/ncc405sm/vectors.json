@@ -1,0 +1,46 @@
+{
+  "uplink": [
+    {
+      "description": "Counter update (TTN example bytes) -> people.total",
+      "input": {
+        "fPort": 1,
+        "bytes": [6, 170]
+      },
+      "expected": {
+        "data": {
+          "make": "nwave",
+          "model": "ncc405sm",
+          "people": { "total": 1706 }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Heartbeat (TTN example bytes) -> battery",
+      "input": {
+        "fPort": 2,
+        "bytes": [168, 102, 97]
+      },
+      "expected": {
+        "data": {
+          "make": "nwave",
+          "model": "ncc405sm",
+          "battery": 2.908,
+          "batteryMean24h": 2.888,
+          "hwHealthStatus": 40
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Startup frame carries no measurement (error)",
+      "input": {
+        "fPort": 3,
+        "bytes": [1, 13, 0, 2]
+      },
+      "expected": { "errors": ["startup frame"] },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

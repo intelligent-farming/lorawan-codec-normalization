@@ -1,0 +1,56 @@
+{
+  "uplink": [
+    {
+      "description": "0x5a Pulse 4 datalog - channel A: newest total 295, prior samples, timestamped",
+      "input": {
+        "fPort": 1,
+        "bytes": [90, 103, 0, 0, 1, 39, 0, 1, 0, 2, 0, 3, 0, 4, 20, 171, 163, 233]
+      },
+      "expected": {
+        "data": {
+          "pulse": { "total": 295 },
+          "channel": "A",
+          "counterHistory": [294, 292, 289, 285],
+          "time": "2023-12-28T19:22:17.000Z",
+          "configurationDone": true,
+          "lowBattery": true,
+          "frameCounter": 3,
+          "make": "adeunis",
+          "model": "pulse-4"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "0x46 Pulse 4 data: channel A total 295, channel B total 1000, no timestamp",
+      "input": {
+        "fPort": 1,
+        "bytes": [70, 0, 0, 0, 1, 39, 0, 0, 3, 232]
+      },
+      "expected": {
+        "data": {
+          "pulse": { "total": 295 },
+          "channelBTotal": 1000,
+          "configurationDone": false,
+          "lowBattery": false,
+          "frameCounter": 0,
+          "make": "adeunis",
+          "model": "pulse-4"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Keep-alive frame (0x30) carries no counter and is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [48, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported frame code"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

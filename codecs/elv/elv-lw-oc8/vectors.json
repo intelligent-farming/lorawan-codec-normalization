@@ -1,0 +1,56 @@
+{
+  "uplink": [
+    {
+      "description": "cyclic event: all 8 outputs off (contact open), supply 5.021 V",
+      "input": {
+        "fPort": 10,
+        "bytes": [1, 1, 0, 1, 2, 3, 0, 7, 3, 12, 4, 19, 157, 7, 1, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "elv", "model": "elv-lw-oc8",
+          "appVersion": "V1.0.1", "blVersion": "V3.0.7",
+          "txReason": "CYCLIC_EVENT", "supplyVoltage": 5.021,
+          "action": { "contactState": "open" },
+          "contactState2": false, "contactState3": false, "contactState4": false,
+          "contactState5": false, "contactState6": false, "contactState7": false,
+          "contactState8": false
+        }
+      },
+      "source": "ttn-example",
+      "_note": "TTN example. 0x07 output states bitfield 0x00 -> all channels off. ch1 -> action.contactState open. supply 0x139D=5021 mV -> 5.021 V. Verified against reference/upstream-codec.js (ch1..ch8 all 0, supply_voltage 5021, tx_reason CYCLIC_EVENT)."
+    },
+    {
+      "description": "output channels 1 and 3 on -> contact closed",
+      "input": {
+        "fPort": 10,
+        "bytes": [3, 10, 4, 19, 157, 7, 1, 5]
+      },
+      "expected": {
+        "data": {
+          "make": "elv", "model": "elv-lw-oc8",
+          "txReason": "INPUT_8_EVENT", "supplyVoltage": 5.021,
+          "action": { "contactState": "closed" },
+          "contactState2": false, "contactState3": true, "contactState4": false,
+          "contactState5": false, "contactState6": false, "contactState7": false,
+          "contactState8": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "0x07 bitfield 0x05 -> bit0 (ch1) and bit2 (ch3) set. ch1 -> contactState closed, ch3 -> contactState3 true. Verified against reference/upstream-codec.js (ch1=1, ch3=1, others 0)."
+    },
+    {
+      "description": "wrong port yields error",
+      "input": { "fPort": 5, "bytes": [1, 1, 0, 1] },
+      "expected": { "errors": ["unsupported fPort 5"] },
+      "source": "synthetic"
+    },
+    {
+      "description": "empty payload",
+      "input": { "fPort": 10, "bytes": [] },
+      "expected": { "errors": ["empty payload"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

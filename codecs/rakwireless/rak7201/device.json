@@ -1,0 +1,29 @@
+{
+  "vendor": "rakwireless",
+  "device": "rak7201",
+  "name": "RAK7201 WisNode Button 4K",
+  "categories": [
+    "button"
+  ],
+  "sensors": [
+    "button"
+  ],
+  "provides": [
+    "action.button.event",
+    "action.button.pressed",
+    "buttonId"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "rakwireless",
+    "device": "rak7201",
+    "codecId": "rak7201-codec",
+    "codecFile": "decoder-rak7201.js",
+    "codecSha256": "cff8fe314139454653f3c4ef023779af0176d91a75c7ee87dd402288c8d77bb6",
+    "referencedAt": "2026-07-10"
+  }
+}

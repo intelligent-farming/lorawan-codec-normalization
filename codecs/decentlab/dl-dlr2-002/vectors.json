@@ -1,0 +1,38 @@
+{
+  "uplink": [
+    {
+      "description": "Example 1: pulse + battery frame (flags=0x0003)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 25, 158, 0, 3, 0, 0, 2, 88, 0, 0, 0, 0, 12, 155]
+      },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 6558,
+          "pulse": {
+            "count": 0,
+            "total": 0
+          },
+          "pulseInterval": 600,
+          "battery": 3.227,
+          "make": "decentlab",
+          "model": "dl-dlr2-002"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Battery-only frame (flags=0x0002) carries no pulse block -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 25, 158, 0, 2, 12, 155]
+      },
+      "expected": {
+        "errors": ["no pulse field in payload"]
+      },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

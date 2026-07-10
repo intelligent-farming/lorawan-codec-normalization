@@ -1,0 +1,45 @@
+{
+  "uplink": [
+    {
+      "description": "0-10 V periodic frame: 5.00 V input, input1 asserted",
+      "input": { "fPort": 1, "bytes": [24, 32, 125, 120] },
+      "expected": {
+        "data": { "make": "atim", "model": "acw-dinda", "analog": { "voltage": 5 }, "input1": true, "input2": false, "frameType": "voltage" }
+      },
+      "source": "synthetic",
+      "_note": "0x18 '0-10V' frame. voltage = 0x7D78(32120) * 10 / 64240 = 5.0 V. logicLevel 0x20 -> input1 true. Verified against reference/upstream-codec.js postProcessAncienDINDA (voltage.value=5 V, logic_level [1,0])."
+    },
+    {
+      "description": "0-20 mA periodic frame: 12.00 mA input, no inputs asserted",
+      "input": { "fPort": 1, "bytes": [25, 0, 111, 134] },
+      "expected": {
+        "data": { "make": "atim", "model": "acw-dinda", "analog": { "current": 12 }, "input1": false, "input2": false, "frameType": "current" }
+      },
+      "source": "synthetic",
+      "_note": "0x19 '0-20mA' frame. current = 0x6F86(28550) * 20 / 47584 = 12.0 mA. Verified against reference/upstream-codec.js (current.value=12 mA)."
+    },
+    {
+      "description": "life frame: secondary rail 3.60 V -> battery",
+      "input": { "fPort": 1, "bytes": [1, 14, 16] },
+      "expected": {
+        "data": { "make": "atim", "model": "acw-dinda", "battery": 3.6, "frameType": "life" }
+      },
+      "source": "synthetic",
+      "_note": "0x01 'Trame de vie': tensionc 0x0E10=3600 / 1000 = 3.6 V. Verified against reference/upstream-codec.js (tensionc.value=3.6)."
+    },
+    {
+      "description": "unsupported frame type yields error",
+      "input": { "fPort": 1, "bytes": [66, 0, 0] },
+      "expected": { "errors": ["unsupported ATIM frame type"] },
+      "source": "synthetic",
+      "_note": "0x42 is a DINDxx digital-inputs frame, not a DINDA analog frame."
+    },
+    {
+      "description": "empty payload",
+      "input": { "fPort": 1, "bytes": [] },
+      "expected": { "errors": ["empty payload"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

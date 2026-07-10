@@ -1,0 +1,47 @@
+{
+  "uplink": [
+    {
+      "description": "Example 1: thermistor + battery frame (flags=0x0003)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 48, 197, 0, 3, 164, 12, 0, 129, 12, 96]
+      },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 12485,
+          "temperature": 22.03,
+          "voltageRatio": 0.006409,
+          "thermistorResistance": 115020.68,
+          "battery": 3.168,
+          "make": "decentlab",
+          "model": "dl-blg"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Example 2: battery-only frame (flags=0x0002) carries no temperature -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 48, 197, 0, 2, 12, 96]
+      },
+      "expected": {
+        "errors": ["no temperature field in payload"]
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Wrong protocol version byte -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 48, 197, 0, 3, 164, 12, 0, 129, 12, 96]
+      },
+      "expected": {
+        "errors": ["protocol version"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

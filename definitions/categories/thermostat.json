@@ -1,0 +1,8 @@
+{
+  "id": "thermostat",
+  "name": "Thermostat / TRV",
+  "description": "Actuating heating / cooling controllers — thermostatic radiator valves, smart thermostats, and boiler controllers — that report a target setpoint and/or valve position alongside the measured temperature.",
+  "atLeastOne": ["hvac.setpoint", "hvac.valvePosition"],
+  "provides": ["air.temperature", "air.relativeHumidity", "battery"],
+  "notes": "hvac.setpoint is °C, hvac.valvePosition is %. The measured room temperature, when present, is air.temperature. A passive temperature + humidity sensor with no actuation is `climate`, not this."
+}

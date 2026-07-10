@@ -1,0 +1,30 @@
+{
+  "vendor": "browan",
+  "device": "tbpb100",
+  "name": "Push Button",
+  "categories": [
+    "button"
+  ],
+  "sensors": [
+    "button"
+  ],
+  "provides": [
+    "action.button.event",
+    "action.button.pressed",
+    "battery",
+    "temperatureBoard"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "browan",
+    "device": "tbpb100",
+    "codecId": "tbpb100-codec",
+    "codecFile": "tbpb100.js",
+    "codecSha256": "d1f28f8f4aed2d3fc98345c214724ce34439a874b4b33b6d3f2e69ad3dd61a42",
+    "referencedAt": "2026-07-10"
+  }
+}

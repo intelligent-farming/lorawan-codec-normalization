@@ -1,0 +1,46 @@
+{
+  "uplink": [
+    {
+      "description": "Status report: 3.0 V, ADC input 6.657 V",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 32, 1, 30, 26, 1, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "r718ia",
+          "battery": 3.0,
+          "analog": { "voltage": 6.657 }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "TTN example status report (netvox r718ia codec yaml, Apache-2.0). Upstream oracle: Volt 3, ADCRaw 6657. byte3 0x1E=30 -> 3.0 V; bytes[4..5]=0x1A01=6657 mV -> analog.voltage 6.657 V. (The 6657 mV example exceeds the 0-5 V input range but is the upstream illustrative value; the codec applies the mV/1000 scale uniformly.)"
+    },
+    {
+      "description": "Startup version frame (report type 0x00) carries no measurement",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 32, 0, 100, 11, 32, 32, 4, 36, 0, 0]
+      },
+      "expected": {
+        "errors": ["device information frame"]
+      },
+      "source": "ttn-example",
+      "_note": "TTN example startup version report (byte2 == 0x00). No measurement."
+    },
+    {
+      "description": "Configuration response on fPort 7 carries no measurement",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 32, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 7"]
+      },
+      "source": "ttn-example",
+      "_note": "TTN example ConfigReportRsp on fPort 7."
+    }
+  ],
+  "downlink": []
+}

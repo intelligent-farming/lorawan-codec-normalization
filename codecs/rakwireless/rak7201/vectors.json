@@ -1,0 +1,46 @@
+{
+  "uplink": [
+    {
+      "description": "Button 1 pressed (synthetic: key byte 49)",
+      "input": {
+        "fPort": 1,
+        "bytes": [49]
+      },
+      "expected": {
+        "data": {
+          "make": "rakwireless",
+          "model": "rak7201",
+          "buttonId": 1,
+          "action": { "button": { "pressed": true, "event": "single" } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Button 4 pressed (synthetic: key byte 52)",
+      "input": {
+        "fPort": 1,
+        "bytes": [52]
+      },
+      "expected": {
+        "data": {
+          "make": "rakwireless",
+          "model": "rak7201",
+          "buttonId": 4,
+          "action": { "button": { "pressed": true, "event": "single" } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unknown key byte returns an error",
+      "input": {
+        "fPort": 1,
+        "bytes": [10]
+      },
+      "expected": { "errors": ["unknown key byte"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

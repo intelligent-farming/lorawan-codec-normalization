@@ -1,0 +1,8 @@
+{
+  "id": "smoke-detector",
+  "name": "Smoke detector",
+  "description": "Smoke and fire detectors reporting a boolean alarm state. Distinct from `gas-detector` (CO / combustible gas).",
+  "requires": ["action.smoke.detected"],
+  "provides": ["battery"],
+  "notes": "action.smoke.detected is boolean (true = smoke detected)."
+}

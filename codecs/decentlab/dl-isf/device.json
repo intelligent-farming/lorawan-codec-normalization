@@ -1,0 +1,44 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-isf",
+  "name": "DL-ISF - Sapflow Sensor",
+  "categories": [
+    "sap-flow"
+  ],
+  "sensors": [
+    "sap flow"
+  ],
+  "provides": [
+    "alphaInner",
+    "alphaOuter",
+    "battery",
+    "betaInner",
+    "betaOuter",
+    "deviceId",
+    "diagnostic",
+    "heatVelocityInner",
+    "heatVelocityOuter",
+    "maxVoltage",
+    "minVoltage",
+    "plant.sapFlow",
+    "protocolVersion",
+    "temperatureOuter",
+    "tmaxInner",
+    "tmaxOuter",
+    "upstreamTmaxInner",
+    "upstreamTmaxOuter"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-isf",
+    "codecId": "dl-isf-codec",
+    "codecFile": "dl-isf.js",
+    "codecSha256": "b6add3f2c5b537ce00c7c6ce85190a82c7e5ba1f06f958fe434497ce8f406d4b",
+    "referencedAt": "2026-07-10"
+  }
+}

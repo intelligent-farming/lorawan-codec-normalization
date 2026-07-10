@@ -1,0 +1,30 @@
+{
+  "vendor": "watteco",
+  "device": "flasho",
+  "name": "Flash'O - Smart Metering",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "energy",
+    "pulse count"
+  ],
+  "provides": [
+    "action.contactState",
+    "battery",
+    "pulse.total"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "watteco",
+    "device": "flasho",
+    "codecId": "flasho-codec",
+    "codecFile": "flasho.js",
+    "codecSha256": "be249fd09062c9070afc8231a912c86e3177e67983ad47d321e3d4fca00e945e",
+    "referencedAt": "2026-07-10"
+  }
+}

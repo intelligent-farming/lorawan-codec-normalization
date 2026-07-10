@@ -1,0 +1,33 @@
+{
+  "vendor": "watteco",
+  "device": "presso",
+  "name": "Press'O - Analog Interface",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "pulse count",
+    "analog input",
+    "4-20 ma",
+    "digital input"
+  ],
+  "provides": [
+    "action.contactState",
+    "analog.raw",
+    "battery",
+    "pulse.total"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "watteco",
+    "device": "presso",
+    "codecId": "presso-codec",
+    "codecFile": "presso.js",
+    "codecSha256": "3c57e55cfe4cf7faf0304a0b8289e2ea0c35b2388a851cbdef951045ab726782",
+    "referencedAt": "2026-07-10"
+  }
+}

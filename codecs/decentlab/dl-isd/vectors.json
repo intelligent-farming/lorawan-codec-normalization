@@ -1,0 +1,36 @@
+{
+  "uplink": [
+    {
+      "description": "Example 1: stem-size + battery frame (flags=0x0003)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 86, 225, 0, 3, 11, 82, 12, 82]
+      },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 22241,
+          "plant": {
+            "dendrometer": 2898
+          },
+          "battery": 3.154,
+          "make": "decentlab",
+          "model": "dl-isd"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Example 2: battery-only frame (flags=0x0002) carries no dendrometer -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 86, 225, 0, 2, 12, 82]
+      },
+      "expected": {
+        "errors": ["no dendrometer field in payload"]
+      },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

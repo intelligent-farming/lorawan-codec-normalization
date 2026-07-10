@@ -1,0 +1,55 @@
+{
+  "uplink": [
+    {
+      "description": "level type 0x01: distance 1234 mm -> tank.distance, fill 75% -> tank.level, ambient temp -> air.temperature",
+      "input": {
+        "fPort": 2,
+        "bytes": [20, 1, 202, 83, 111, 48, 228, 12, 0, 0, 210, 4, 75, 137, 9, 88]
+      },
+      "expected": {
+        "data": {
+          "time": "2024-03-15T10:30:20Z",
+          "adc": 3300,
+          "tank": { "level": 75, "distance": 1.234 },
+          "air": { "temperature": 24.41 },
+          "batteryPercent": 88,
+          "make": "enginko",
+          "model": "egk-lw20w00"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "out-of-range distance flagged; tank.level still present; sub-zero ambient temperature",
+      "input": {
+        "fPort": 2,
+        "bytes": [20, 1, 202, 83, 111, 48, 228, 12, 0, 0, 255, 255, 40, 106, 255, 90]
+      },
+      "expected": {
+        "data": {
+          "time": "2024-03-15T10:30:20Z",
+          "adc": 3300,
+          "tank": { "level": 40 },
+          "distanceError": true,
+          "air": { "temperature": -1.5 },
+          "batteryPercent": 90,
+          "make": "enginko",
+          "model": "egk-lw20w00"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "wrong payload type for this device is rejected",
+      "input": {
+        "fPort": 2,
+        "bytes": [20, 0, 202, 83, 111, 48, 228, 12, 0, 0, 210, 4, 88]
+      },
+      "expected": {
+        "errors": ["unsupported level payload type"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

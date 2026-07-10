@@ -1,0 +1,30 @@
+{
+  "vendor": "browan",
+  "device": "tbsl100",
+  "name": "Sound Level Sensor",
+  "categories": [
+    "sound-level"
+  ],
+  "sensors": [
+    "sound"
+  ],
+  "provides": [
+    "air.temperature",
+    "battery",
+    "sound.level",
+    "status"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "browan",
+    "device": "tbsl100",
+    "codecId": "tbsl100-codec",
+    "codecFile": "tbsl100.js",
+    "codecSha256": "4a1a9a237699457aa95a39dcdffe36ee2123a023a707fb749f4fe352c977b1a8",
+    "referencedAt": "2026-07-10"
+  }
+}

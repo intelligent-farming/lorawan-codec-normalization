@@ -1,0 +1,52 @@
+{
+  "vendor": "mcf88",
+  "device": "mcf-lw13io",
+  "name": "MCF-LW13IO",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "digital input"
+  ],
+  "provides": [
+    "action.contactState",
+    "frameType",
+    "input10",
+    "input11",
+    "input12",
+    "input13",
+    "input14",
+    "input15",
+    "input16",
+    "input2",
+    "input3",
+    "input4",
+    "input5",
+    "input6",
+    "input7",
+    "input8",
+    "input9",
+    "output1",
+    "output2",
+    "output3",
+    "output4",
+    "output5",
+    "output6",
+    "output7",
+    "output8",
+    "pulse.count"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "mcf88",
+    "device": "mcf-lw13io",
+    "codecId": "mcf-io-codec",
+    "codecFile": "decoder-digital.js",
+    "codecSha256": "e7b347f1179db75997231424d31b608f440140329263bbd31a7c1284493a4966",
+    "referencedAt": "2026-07-10"
+  }
+}

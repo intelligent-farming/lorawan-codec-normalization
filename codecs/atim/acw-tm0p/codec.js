@@ -1,0 +1,235 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+// Copyright (C) 2026 Intelligent Farming Foundation
+//
+// Normalized payload codec for ATIM ACW-TM0P (Temperature Probe).
+//
+// Ported/normalized from the upstream Apache-2.0 decoder
+// (TheThingsNetwork/lorawan-devices vendor/atim/decodeur.js, attributed in
+// NOTICE). The upstream file is ATIM's generic "ACW" decoder shared across the
+// whole product line; the source of truth for the TMxP wire format is its
+// measurement-frame path (`getFrameType` -> "Trame de mesure"/"Trame de test"
+// -> `decodeFrame`) plus the life frame ("Trame de vie"). The frame-type nibble
+// logic, the channel/type TLV walk (type 0x08 = temperature, big-endian signed
+// centi-degrees with -327.68 as the sensor-fault sentinel), and the life-frame
+// battery voltage (tensionv = raw / 1000) are ported faithfully from upstream.
+//
+// The TMxP is a single-purpose temperature probe carrying up to two thermal
+// channels (voie 0 / voie 1). Mapping into the normalized vocabulary:
+//   temperature channel voie 0 -> temperature   (top-level, degrees C)
+//   temperature channel voie 1 -> temperature2  (camelCase extra, degrees C)
+//   life-frame tensionv        -> battery        (V; device battery/pile rail)
+//   life-frame tensionc        -> supplyVoltage  (V; secondary rail, extra)
+//   frame type                 -> frameType      (camelCase extra)
+// Sensor-fault sentinels and non-measurement/non-life frames yield errors.
+//
+// Scope note: ATIM measurement frames may carry a history of several samples
+// (echan x historique) and an optional embedded timestamp/period. Deriving an
+// RFC3339 time for each prior sample requires both the absolute timestamp frame
+// header and the sampling period, which the canonical TMxP uplink does not
+// carry reliably; rather than emit a `history` array without trustworthy `time`
+// values, this codec normalizes the most recent (index 0) sample of the frame.
+
+function round(value, decimals) {
+  var f = Math.pow(10, decimals);
+  return Math.round(value * f) / f;
+}
+
+function u16be(hi, lo) {
+  return ((hi << 8) | lo) & 0xffff;
+}
+
+function s16be(hi, lo) {
+  var v = u16be(hi, lo);
+  return v > 0x7fff ? v - 0x10000 : v;
+}
+
+// Minimal-width MSB-first 4-bit string for a nibble, matching the upstream
+// frame-type bit indexing (bin1[0] = bit 3 / value 8, bin1[2] = bit 1 / value
+// 2). Upstream left-pads to width 4.
+function nibbleBits(n) {
+  var s = (n & 0x0f).toString(2);
+  while (s.length < 4) {
+    s = '0' + s;
+  }
+  return s;
+}
+
+// Classify the frame from its first two nibbles, mirroring upstream
+// getFrameType for the cases the TMxP emits.
+function frameTypeOf(bytes) {
+  var oct1 = (bytes[0] >> 4) & 0x0f; // high nibble of byte 0
+  var oct2 = bytes[0] & 0x0f; // low nibble of byte 0
+  var bin1 = nibbleBits(oct1);
+
+  if (bin1[0] === '0') {
+    return 'legacy';
+  }
+  if (bin1[2] === '1') {
+    return 'measure';
+  }
+  if (oct2 === 0x1) {
+    return 'life';
+  }
+  if (oct2 === 0x5) {
+    return 'test';
+  }
+  if (oct2 === 0x2) {
+    return 'networkTest';
+  }
+  if (oct2 === 0xd) {
+    return 'alert';
+  }
+  if (oct2 === 0xe) {
+    return 'error';
+  }
+  if (oct2 === 0xf) {
+    return 'specific';
+  }
+  if (oct2 === 0x9) {
+    return 'measureExtended';
+  }
+  return 'unknown';
+}
+
+var FRAME_TYPE_LABEL = {
+  measure: 'measurement',
+  test: 'test',
+  life: 'life',
+  networkTest: 'networkTest',
+  alert: 'alert',
+  error: 'error',
+  specific: 'specific',
+  measureExtended: 'measurementExtended',
+  legacy: 'legacy',
+  unknown: 'unknown'
+};
+
+// Walk the channel/type TLV stream of a measurement/test frame, reading only
+// the first (most recent) sample of each temperature (0x08) channel. voie 0 ->
+// temperature, voie 1 -> temperature2. start is the index of the first TLV byte.
+function decodeMeasurement(bytes, start, isTest) {
+  var data = {};
+  var sawTemp = false;
+  var fault = false;
+
+  var i = start;
+  while (i < bytes.length) {
+    var raw = bytes[i];
+    var type = raw & 0x0f;
+    var voie = 0;
+    if (type !== raw) {
+      // High nibble carries the voie (channel) index in measurement frames.
+      var v = raw & 0xf0;
+      if (v === 0x10) {
+        voie = 1;
+      } else if (v === 0x20) {
+        voie = 2;
+      } else if (v === 0x30) {
+        voie = 3;
+      }
+    }
+
+    if (type === 0x08) {
+      // temperature: 2-byte big-endian signed, centi-degrees.
+      var traw = s16be(bytes[i + 1], bytes[i + 2]);
+      sawTemp = true;
+      if (traw / 100 === -327.68) {
+        fault = true;
+      } else {
+        var key = voie === 0 ? 'temperature' : 'temperature' + (voie + 1);
+        if (data[key] === undefined) {
+          data[key] = round(traw / 100, 2);
+        }
+      }
+      i += 3;
+    } else if (isTest) {
+      // Test frames may carry a leading non-TLV status byte; skip it.
+      i += 1;
+    } else {
+      // Any other channel type is not part of a TMxP temperature frame.
+      i += 1;
+    }
+  }
+
+  if (!sawTemp) {
+    return { errors: ['no temperature channel in measurement frame'] };
+  }
+  if (data.temperature === undefined && data.temperature2 === undefined) {
+    return { errors: ['temperature sensor fault (all channels report the error sentinel)'] };
+  }
+
+  data.frameType = isTest ? FRAME_TYPE_LABEL.test : FRAME_TYPE_LABEL.measure;
+  if (fault) {
+    return { data: data, warnings: ['one or more channels report the sensor-fault sentinel'] };
+  }
+  return { data: data };
+}
+
+// Life frame ("Trame de vie"): optional 4-byte timestamp, then tensionv[2] and
+// tensionc[2], each big-endian millivolts. A life frame carries no temperature,
+// so the temperature-category requirement is met by measurement frames.
+function decodeLife(bytes) {
+  var horo = (nibbleBits((bytes[0] >> 4) & 0x0f)[1] === '1');
+  var off = 1 + (horo ? 4 : 0);
+  if (bytes.length < off + 4) {
+    return { errors: ['life frame too short for battery voltage'] };
+  }
+  var data = { frameType: FRAME_TYPE_LABEL.life };
+  data.battery = round(u16be(bytes[off], bytes[off + 1]) / 1000, 3);
+  data.supplyVoltage = round(u16be(bytes[off + 2], bytes[off + 3]) / 1000, 3);
+  return { data: data };
+}
+
+function decodeUplinkCore(input) {
+  var bytes = input.bytes;
+  if (!bytes || bytes.length < 1) {
+    return { errors: ['empty payload'] };
+  }
+
+  var ft = frameTypeOf(bytes);
+
+  if (ft === 'measure') {
+    // start_bcl: header byte (1) + optional 4-byte timestamp + optional 2-byte
+    // period when the frame declares history/sampling.
+    var oct1 = (bytes[0] >> 4) & 0x0f;
+    var oct2 = bytes[0] & 0x0f;
+    var b0 = nibbleBits(oct1);
+    var b1 = nibbleBits(oct2);
+    var hasHist = b0[3] === '1' || b1[0] === '1';
+    var hasEchan = b1[1] === '1' || b1[2] === '1' || b1[3] === '1';
+    var horo = b0[1] === '1';
+    var start = 1;
+    if (horo) {
+      start += 4;
+    }
+    if (hasHist || hasEchan) {
+      start += 2;
+    }
+    return decodeMeasurement(bytes, start, false);
+  }
+
+  if (ft === 'test') {
+    return decodeMeasurement(bytes, 1, true);
+  }
+
+  if (ft === 'life') {
+    return decodeLife(bytes);
+  }
+
+  return {
+    errors: [
+      'unsupported frame type "' + (FRAME_TYPE_LABEL[ft] || ft) +
+        '": no temperature measurement to normalize'
+    ]
+  };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "atim";
+    result.data.model = "acw-tm0p";
+  }
+  return result;
+}

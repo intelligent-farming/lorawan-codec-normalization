@@ -1,0 +1,28 @@
+{
+  "vendor": "watteco",
+  "device": "indoor-temperature",
+  "name": "Temperature Indoor Sensor",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "battery",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "watteco",
+    "device": "indoor-temperature",
+    "codecId": "indoor-temperature-codec",
+    "codecFile": "indoor-temperature.js",
+    "codecSha256": "24976132de35bf1056718953beca34de7011d5ea9d68b66e80edc7ea0aa730a4",
+    "referencedAt": "2026-07-10"
+  }
+}

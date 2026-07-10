@@ -1,0 +1,42 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/browan/tbpb100-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Button I pressed",
+      "input": {
+        "fPort": 147,
+        "bytes": [
+          1,
+          254,
+          55,
+          0,
+          0,
+          4,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "status": 1,
+          "battery": 3.9,
+          "temperatureBoard": 23
+        }
+      }
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [
+          1
+        ]
+      },
+      "output": {
+        "errors": [
+          "unknown FPort"
+        ]
+      }
+    }
+  ]
+}

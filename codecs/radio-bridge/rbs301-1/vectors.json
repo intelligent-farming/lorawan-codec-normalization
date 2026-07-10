@@ -1,0 +1,50 @@
+{
+  "uplink": [
+    {
+      "description": "Push button pressed (synthetic: proto v1, counter 0, button 0x03, state Pressed)",
+      "input": {
+        "fPort": 1,
+        "bytes": [16, 6, 3, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "radio-bridge",
+          "model": "rbs301-1",
+          "protocolVersion": 1,
+          "packetCounter": 0,
+          "buttonId": 3,
+          "action": { "button": { "pressed": true, "event": "single" } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Push button released (synthetic: state Released)",
+      "input": {
+        "fPort": 1,
+        "bytes": [17, 6, 3, 1]
+      },
+      "expected": {
+        "data": {
+          "make": "radio-bridge",
+          "model": "rbs301-1",
+          "protocolVersion": 1,
+          "packetCounter": 1,
+          "buttonId": 3,
+          "action": { "button": { "pressed": false, "event": "release" } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Supervisory event carries no press and returns an error",
+      "input": {
+        "fPort": 1,
+        "bytes": [16, 1, 0, 54, 54, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": { "errors": ["unsupported event type 0x1"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

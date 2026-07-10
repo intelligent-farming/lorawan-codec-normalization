@@ -1,0 +1,56 @@
+{
+  "uplink": [
+    {
+      "description": "Grain temperature sensor, Ext=1 (hundredths); channel 1 -> temperature",
+      "input": {
+        "fPort": 2,
+        "bytes": [14, 85, 1, 8, 98, 8, 103, 96, 228, 60, 198]
+      },
+      "expected": {
+        "data": {
+          "temperature": 21.46,
+          "temperature2": 21.51,
+          "temperatures": [21.46, 21.51],
+          "battery": 3.669,
+          "sensorMode": 1,
+          "deviceTime": 1625570502,
+          "make": "smartrural",
+          "model": "grain-probe-01"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Ext=1 with a negative channel-2 reading (two's complement)",
+      "input": {
+        "fPort": 2,
+        "bytes": [14, 85, 1, 8, 98, 251, 46, 96, 228, 60, 198]
+      },
+      "expected": {
+        "data": {
+          "temperature": 21.46,
+          "temperature2": -12.34,
+          "temperatures": [21.46, -12.34],
+          "battery": 3.669,
+          "sensorMode": 1,
+          "deviceTime": 1625570502,
+          "make": "smartrural",
+          "model": "grain-probe-01"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unknown FPort returns an error",
+      "input": {
+        "fPort": 42,
+        "bytes": [14, 85, 1, 8, 98, 8, 103, 96, 228, 60, 198]
+      },
+      "expected": {
+        "errors": ["unknown FPort"]
+      },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

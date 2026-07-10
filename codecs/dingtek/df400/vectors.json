@@ -1,0 +1,48 @@
+{
+  "uplink": [
+    {
+      "description": "heartbeat upload: 75% full (raw 70), 25 C, 5.88 V",
+      "input": {
+        "fPort": 3,
+        "bytes": [128, 0, 1, 1, 17, 2, 76, 0, 25, 0, 70, 75, 0, 0, 1, 0, 129]
+      },
+      "expected": {
+        "data": {
+          "tank": { "level": 75 },
+          "rawLevel": 70,
+          "temperature": 25,
+          "battery": 5.88,
+          "alarmLevel": false,
+          "alarmBattery": false,
+          "frameCounter": 1,
+          "make": "dingtek",
+          "model": "df400"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "parameter/config frame carries no measurement",
+      "input": {
+        "fPort": 3,
+        "bytes": [128, 0, 1, 3, 13, 0, 2, 24, 30, 20, 10, 0, 129]
+      },
+      "expected": {
+        "errors": ["parameter confirmation frame"]
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "unsupported fPort returns an error",
+      "input": {
+        "fPort": 42,
+        "bytes": [128, 0, 1, 1, 17, 2, 76, 0, 25, 0, 70, 75, 0, 0, 1, 0, 129]
+      },
+      "expected": {
+        "errors": ["unknown FPort"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

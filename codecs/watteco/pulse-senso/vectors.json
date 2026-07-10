@@ -1,0 +1,43 @@
+{
+  "uplink": [
+    {
+      "description": "standard report: pulse count on meter 1 (cluster 0x000F attr 0x0402, uint32, endpoint 0) | payload 110A000F04022300000000",
+      "input": { "fPort": 125, "bytes": [17, 10, 0, 15, 4, 2, 35, 0, 0, 0, 0] },
+      "expected": {
+        "data": { "pulse.total": 0, "make": "watteco", "model": "pulse-senso" }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "standard report: pulse count on meter 2 (endpoint 1) -> extra pulseTotal2, value 305419896 (0x12345678) | payload 310A000F04022312345678",
+      "input": { "fPort": 125, "bytes": [49, 10, 0, 15, 4, 2, 35, 18, 52, 86, 120] },
+      "expected": {
+        "data": { "pulseTotal2": 305419896, "make": "watteco", "model": "pulse-senso" }
+      },
+      "source": "datasheet"
+    },
+    {
+      "description": "standard report: input 1 contact state closed (cluster 0x000F attr 0x0055) | payload 110A000F00551001",
+      "input": { "fPort": 125, "bytes": [17, 10, 0, 15, 0, 85, 16, 1] },
+      "expected": {
+        "data": { "action.contactState": "closed", "make": "watteco", "model": "pulse-senso" }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "standard report: disposable battery voltage 3.688 V (cluster 0x0050 attr 6) | payload 110A00500006410503040E6804",
+      "input": { "fPort": 125, "bytes": [17, 10, 0, 80, 0, 6, 65, 5, 3, 4, 14, 104, 4] },
+      "expected": {
+        "data": { "battery": 3.688, "make": "watteco", "model": "pulse-senso" }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "batch (Huffman) frame is not decoded -> error | payload 3203...",
+      "input": { "fPort": 125, "bytes": [50, 3, 3, 44, 210, 220, 0, 0, 0, 0, 17, 123] },
+      "expected": { "errors": ["batch frame not supported"] },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

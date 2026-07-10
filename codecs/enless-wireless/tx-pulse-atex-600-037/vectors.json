@@ -1,0 +1,36 @@
+{
+  "uplink": [
+    {
+      "description": "TX PULSE ATEX 600-037 (EN309, type 0x09): ch1 total 18, ch2 total 26, OC total 24, battery 100%",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 160, 9, 13, 1, 0, 0, 0, 18, 0, 0, 0, 26, 0, 0, 0, 24, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "pulse": { "total": 18 },
+          "channel2Total": 26,
+          "ocTotal": 24,
+          "batteryPercent": 100,
+          "deviceId": 160,
+          "sequenceCounter": 13,
+          "make": "enless-wireless",
+          "model": "tx-pulse-atex-600-037"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Frame with wrong device type byte is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 160, 8, 13, 1, 0, 0, 0, 18, 0, 0, 0, 26, 0, 0, 0, 24, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unexpected device type"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

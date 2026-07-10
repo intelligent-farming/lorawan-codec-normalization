@@ -1,0 +1,129 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+// Copyright (C) 2026 Intelligent Farming Foundation
+//
+// Normalized payload codec for nke-watteco Humid'O Liquid Sensor Probe, a spot
+// water/liquid leak detector.
+//
+// Original work for @intelligent-farming/lorawan-codec-normalization. Wire
+// format (Watteco ZCL-over-LoRa "standard report") understood with reference
+// to the upstream Apache-2.0 decoder (TheThingsNetwork/lorawan-devices
+// vendor/nke-watteco/humido-sensor.js, attributed in NOTICE). Ported from that
+// decoder's standard-report path only (fPort 125, command 0x0A/0x8A/0x01);
+// do NOT copy upstream Decoder()/normalizeUplink.
+//
+// The Humid'O reports its wet/dry state through the ZCL Binary Input cluster
+// 0x000F: attribute 0x0055 (Present Value) is the boolean liquid-presence state
+// (upstream label "State"; 1 = liquid detected), and attribute 0x0402 (Count)
+// is a change counter (upstream label "Index"). Both appear in a standard data
+// report.
+//
+// Watteco frames arrive on fPort 125. Byte 0 bit0 distinguishes the report
+// kind: when SET the frame is a ZCL standard report; when CLEAR it is a
+// Huffman-compressed "batch" frame (upstream brUncompress) which this codec
+// does NOT decode and reports as an error. A standard data report carries the
+// frame control (byte 0), command id (byte 1), 16-bit cluster id (bytes 2-3),
+// 16-bit attribute id (bytes 4-5), a ZCL data-type byte (byte 6) and then the
+// attribute value. Value offset is 7 for data/alarm reports (cmd 0x0A / 0x8A)
+// and 8 for the read-attribute response (cmd 0x01).
+//
+// Measurement mapping:
+//   cluster 0x000F (15) attr 0x0055 (85) present value -> water.leak (bool; 1 = leak)
+//   cluster 0x000F (15) attr 0x0402 (1026) count       -> leakCount  (extra, u8)
+//   cluster 0x0050 (80) attr 6 power                   -> battery    (mV / 1000, volts)
+
+function round(value, decimals) {
+  var f = Math.pow(10, decimals);
+  return Math.round(value * f) / f;
+}
+
+function u16be(hi, lo) {
+  return ((hi << 8) | lo) & 0xffff;
+}
+
+function decodeUplinkCore(input) {
+  var bytes = input.bytes;
+  var fPort = input.fPort;
+
+  if (fPort !== 125) {
+    return { errors: ['unsupported fPort ' + fPort + ' (expected 125)'] };
+  }
+  if (!bytes || bytes.length < 6) {
+    return { errors: ['payload too short for a Watteco ZCL report'] };
+  }
+  // Byte 0 bit0 clear => Huffman batch frame (upstream brUncompress); unsupported.
+  if ((bytes[0] & 0x01) === 0) {
+    return { errors: ['Watteco batch frame not supported (standard reports only)'] };
+  }
+
+  var cmd = bytes[1];
+  var cluster = u16be(bytes[2], bytes[3]);
+  var attr = u16be(bytes[4], bytes[5]);
+
+  // Standard data report (cmd 0x0A) or alarm report (cmd 0x8A): value at index 7.
+  // Read-attribute response (cmd 0x01): a status byte sits at index 6, value at 8.
+  var h;
+  if (cmd === 0x0a || cmd === 0x8a) {
+    h = 7;
+  } else if (cmd === 0x01) {
+    h = 8;
+  } else {
+    return { errors: ['unsupported Watteco command 0x' + cmd.toString(16)] };
+  }
+
+  var data = {};
+
+  if (cluster === 15 && attr === 85) {
+    // Binary Input present value: liquid-presence boolean.
+    if (bytes.length <= h) {
+      return { errors: ['binary-input report missing present value'] };
+    }
+    data.water = { leak: bytes[h] !== 0 };
+    return { data: data };
+  }
+  if (cluster === 15 && attr === 1026) {
+    // Binary Input count: number of state changes (device diagnostic).
+    if (bytes.length <= h) {
+      return { errors: ['binary-input report missing count value'] };
+    }
+    data.leakCount = bytes[h];
+    return { data: data };
+  }
+  if (cluster === 80 && attr === 6) {
+    // Power configuration report. A presence-flags byte at h+2 selects which
+    // 2-byte millivolt sources follow from h+3 (bit0 external, bit1 rechargeable,
+    // bit2 disposable battery, bit3 solar, bit4 TIC). Emit the first present
+    // source, in wire (bit) order, as the volts battery reading.
+    if (bytes.length < h + 3) {
+      return { errors: ['power report missing flags byte'] };
+    }
+    var flags = bytes[h + 2];
+    var p = h + 3;
+    var voltage;
+    var bit;
+    for (bit = 0; bit < 5; bit++) {
+      if ((flags & (1 << bit)) && p + 1 < bytes.length) {
+        voltage = u16be(bytes[p], bytes[p + 1]) / 1000;
+        break;
+      }
+    }
+    if (voltage === undefined) {
+      return { errors: ['power report carried no battery source'] };
+    }
+    data.battery = round(voltage, 3);
+    return { data: data };
+  }
+
+  return {
+    errors: ['unrecognized Watteco cluster ' + cluster + ' attribute ' + attr],
+  };
+}
+
+// Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
+function decodeUplink(input) {
+  var result = decodeUplinkCore(input);
+  if (result && result.data) {
+    result.data.make = "nke-watteco";
+    result.data.model = "humido-sensor";
+  }
+  return result;
+}

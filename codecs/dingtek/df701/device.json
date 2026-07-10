@@ -1,0 +1,32 @@
+{
+  "vendor": "dingtek",
+  "device": "df701",
+  "name": "DF701 - Indoor Waste Bin Laser Level Sensor",
+  "categories": [
+    "tank-level"
+  ],
+  "sensors": [
+    "level"
+  ],
+  "provides": [
+    "alarmBattery",
+    "alarmLevel",
+    "battery",
+    "frameCounter",
+    "noTarget",
+    "tank.distance"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dingtek",
+    "device": "df701",
+    "codecId": "df701-codec",
+    "codecFile": "df701.js",
+    "codecSha256": "a080e9bfa7d805dd3c0f84a6098bfa5ecb455c960cbdf4d49de4cd7e93495e0e",
+    "referencedAt": "2026-07-10"
+  }
+}

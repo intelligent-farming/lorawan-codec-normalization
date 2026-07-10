@@ -1,0 +1,55 @@
+{
+  "uplink": [
+    {
+      "description": "GET_STATUS frame (TTN example bytes): battery 3.32 V, room 18 °C, setpoint 20 °C, valve 60% (no mode byte present)",
+      "input": {
+        "fPort": 10,
+        "bytes": [4, 244, 182, 0, 180, 40, 120]
+      },
+      "expected": {
+        "data": {
+          "make": "dnt",
+          "model": "dnt-lw-etrv-c",
+          "battery": 3.32,
+          "air": { "temperature": 18 },
+          "hvac": {
+            "setpoint": 20,
+            "valvePosition": 60
+          }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "GET_STATUS frame with device-flags byte present (synthetic): mode Auto",
+      "input": {
+        "fPort": 10,
+        "bytes": [4, 244, 182, 0, 190, 40, 120, 64]
+      },
+      "expected": {
+        "data": {
+          "make": "dnt",
+          "model": "dnt-lw-etrv-c",
+          "battery": 3.32,
+          "air": { "temperature": 19 },
+          "hvac": {
+            "setpoint": 20,
+            "valvePosition": 60,
+            "mode": "Auto"
+          }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unsupported command id returns an error",
+      "input": {
+        "fPort": 10,
+        "bytes": [127, 1, 0]
+      },
+      "expected": { "errors": ["unsupported command"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,34 @@
+{
+  "uplink": [
+    {
+      "description": "Counting data uplink (TTN example bytes): in=10, out=5, NETWORK_ON",
+      "input": {
+        "fPort": 82,
+        "bytes": [0, 0, 0, 10, 0, 0, 0, 5, 4]
+      },
+      "expected": {
+        "data": {
+          "make": "terabee",
+          "model": "people-flow-counting-m",
+          "people": { "total": 5 },
+          "countInTotal": 10,
+          "countOutTotal": 5,
+          "tpcStopped": false,
+          "tpcStuck": false,
+          "networkOn": true
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Command/parameter response fPort is not a measurement (error)",
+      "input": {
+        "fPort": 100,
+        "bytes": [1, 5, 220]
+      },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

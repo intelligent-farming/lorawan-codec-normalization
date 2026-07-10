@@ -1,0 +1,29 @@
+{
+  "vendor": "netvox",
+  "device": "r311ca",
+  "name": "R311CA - Wireless 2-Input Dry Contact Interface",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "digital input"
+  ],
+  "provides": [
+    "action.contactState",
+    "battery",
+    "contactState2"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r311ca",
+    "codecId": "r311ca-codec",
+    "codecFile": "payload/r718da2_r718db2_r718f2.js",
+    "codecSha256": "abc850a575db243c63a6f437e62a6916931b081d18adc283bb3ce9da261ede69",
+    "referencedAt": "2026-07-10"
+  }
+}

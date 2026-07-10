@@ -373,6 +373,49 @@
                 }
               },
               "additionalProperties": true
+            },
+            "button": {
+              "type": "object",
+              "description": "User-triggered push-button / scene-panel event.",
+              "properties": {
+                "pressed": {
+                  "type": "boolean",
+                  "description": "Button currently pressed (true) or released (false)"
+                },
+                "event": {
+                  "type": "string",
+                  "description": "Press gesture",
+                  "enum": ["single", "double", "triple", "long", "hold", "release"]
+                },
+                "count": {
+                  "type": "number",
+                  "minimum": 0,
+                  "description": "Number of presses in the reporting interval (count)"
+                }
+              },
+              "additionalProperties": true
+            },
+            "smoke": {
+              "type": "object",
+              "description": "Smoke / fire alarm state.",
+              "properties": {
+                "detected": {
+                  "type": "boolean",
+                  "description": "Smoke detected (true) or clear (false)"
+                }
+              },
+              "additionalProperties": true
+            },
+            "switch": {
+              "type": "object",
+              "description": "Relay / switch actuator output state.",
+              "properties": {
+                "state": {
+                  "type": "boolean",
+                  "description": "Output on/closed (true) or off/open (false)"
+                }
+              },
+              "additionalProperties": true
             }
           },
           "additionalProperties": true
@@ -498,6 +541,137 @@
               "minimum": -180,
               "maximum": 180,
               "description": "Vertical distance from prime meridian (°)"
+            }
+          },
+          "additionalProperties": true
+        },
+        "analog": {
+          "type": "object",
+          "description": "Generic analog / digital sensor-interface transmitter readings (4-20 mA loop, 0-10 V, potentiometer, or raw ADC). The physical quantity is defined by the attached probe, not this device.",
+          "properties": {
+            "current": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Analog loop current (mA)"
+            },
+            "voltage": {
+              "type": "number",
+              "description": "Analog input voltage (V)"
+            },
+            "ratio": {
+              "description": "Analog input as a fraction of full scale (%)",
+              "$ref": "#/$defs/percentage"
+            },
+            "raw": {
+              "type": "number",
+              "description": "Raw analog-to-digital converter count"
+            }
+          },
+          "additionalProperties": true
+        },
+        "pulse": {
+          "type": "object",
+          "description": "Dry-contact / pulse-input counter (S0 meters, tipping mechanisms, generic pulse sources). The metered quantity is defined by the attached device, not this counter.",
+          "properties": {
+            "count": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Pulses in the reporting interval (count)"
+            },
+            "total": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Cumulative pulse count (count)"
+            }
+          },
+          "additionalProperties": true
+        },
+        "people": {
+          "type": "object",
+          "description": "Pedestrian / vehicle flow and occupancy counting.",
+          "properties": {
+            "in": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Entries in the reporting interval (count)"
+            },
+            "out": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Exits in the reporting interval (count)"
+            },
+            "total": {
+              "type": "number",
+              "description": "Cumulative net count (in - out)"
+            },
+            "present": {
+              "type": "number",
+              "minimum": 0,
+              "description": "People currently present (count)"
+            }
+          },
+          "additionalProperties": true
+        },
+        "hvac": {
+          "type": "object",
+          "description": "Actuating heating/cooling controller state (thermostatic radiator valve, smart thermostat, boiler controller).",
+          "properties": {
+            "setpoint": {
+              "description": "Target temperature setpoint (°C)",
+              "$ref": "#/$defs/temperature"
+            },
+            "valvePosition": {
+              "description": "Valve / actuator opening (%)",
+              "$ref": "#/$defs/percentage"
+            },
+            "mode": {
+              "type": "string",
+              "description": "Operating mode reported by the device"
+            }
+          },
+          "additionalProperties": true
+        },
+        "sound": {
+          "type": "object",
+          "description": "Acoustic sound-pressure-level measurements.",
+          "properties": {
+            "level": {
+              "type": "number",
+              "description": "Sound pressure level (dB)"
+            },
+            "peak": {
+              "type": "number",
+              "description": "Peak sound pressure level (dB)"
+            }
+          },
+          "additionalProperties": true
+        },
+        "plant": {
+          "type": "object",
+          "description": "Plant physiology probes (dendrometry, sap flow) for growth and water-stress monitoring.",
+          "properties": {
+            "dendrometer": {
+              "type": "number",
+              "description": "Stem / trunk / fruit dimensional change from the dendrometer (µm)"
+            },
+            "sapFlow": {
+              "type": "number",
+              "description": "Sap flow rate through the stem (g/h)"
+            }
+          },
+          "additionalProperties": true
+        },
+        "linear": {
+          "type": "object",
+          "description": "Linear position / displacement of a mechanical element (potentiometer travel, string pot, linear way).",
+          "properties": {
+            "position": {
+              "description": "Position as a fraction of full travel (%)",
+              "$ref": "#/$defs/percentage"
+            },
+            "displacement": {
+              "type": "number",
+              "description": "Linear displacement (mm)"
             }
           },
           "additionalProperties": true

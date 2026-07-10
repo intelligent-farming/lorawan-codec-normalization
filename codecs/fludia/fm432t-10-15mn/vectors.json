@@ -1,0 +1,44 @@
+{
+  "uplink": [
+    {
+      "description": "T1 datalog frame (0x57, 18 bytes, 8 samples); last sample -> temperature, includes positive, high-resolution and negative readings",
+      "input": {
+        "fPort": 1,
+        "bytes": [87, 10, 8, 52, 8, 62, 8, 47, 254, 162, 7, 8, 8, 152, 9, 146, 7, 207]
+      },
+      "expected": {
+        "data": {
+          "temperature": 19.99,
+          "temperatures": [21, 21.1, 20.95, -3.5, 18, 22, 24.5, 19.99],
+          "timeStep": 10,
+          "make": "fludia",
+          "model": "fm432t-10-15mn"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "T2 configuration/statistics frame (0x58, 12 bytes) is not telemetry",
+      "input": {
+        "fPort": 1,
+        "bytes": [88, 53, 46, 48, 10, 8, 152, 255, 156, 0, 50, 0]
+      },
+      "expected": {
+        "errors": ["unsupported frame type 0x58"]
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "T1 header with wrong length is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [87, 10, 8, 52]
+      },
+      "expected": {
+        "errors": ["invalid T1 datalog length"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

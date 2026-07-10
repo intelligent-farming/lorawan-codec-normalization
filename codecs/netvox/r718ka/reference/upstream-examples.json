@@ -1,0 +1,114 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/netvox/r718ka-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Startup version report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          34,
+          0,
+          100,
+          11,
+          32,
+          25,
+          17,
+          18,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R718KA",
+          "SWver": 10,
+          "HWver": 11,
+          "Datecode": "20191112"
+        }
+      }
+    },
+    {
+      "description": "Status report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          34,
+          1,
+          36,
+          5,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R718KA",
+          "Volt": 3.6,
+          "Current": 5,
+          "FineCurrent": 0.1
+        }
+      }
+    },
+    {
+      "description": "Configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          129,
+          34,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ConfigReportRsp",
+          "Device": "R718KA",
+          "Status": "Success"
+        }
+      }
+    },
+    {
+      "description": "Read configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          130,
+          34,
+          3,
+          132,
+          7,
+          8,
+          1,
+          10,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ReadConfigReportRsp",
+          "Device": "R718KA",
+          "MinTime": 900,
+          "MaxTime": 1800,
+          "BatteryChange": 0.1,
+          "CurrentChange": 10
+        }
+      }
+    }
+  ]
+}

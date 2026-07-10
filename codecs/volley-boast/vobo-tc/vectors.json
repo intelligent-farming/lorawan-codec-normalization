@@ -1,0 +1,50 @@
+{
+  "uplink": [
+    {
+      "description": "fPort 1 standard payload: 25.00 C, 3.60 V, DIN1 asserted",
+      "input": { "fPort": 1, "bytes": [1, 0, 0, 0, 0, 132, 131, 12, 0, 0] },
+      "expected": {
+        "data": {
+          "make": "volley-boast",
+          "model": "vobo-tc",
+          "temperature": 25,
+          "battery": 3.6,
+          "din1": true,
+          "din2": false,
+          "din3": false,
+          "wakeup": false,
+          "modbus0": 0
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic, verified against reference/upstream-codec.js parseStandardPayload: temp 12-bit = (bytes[6]&0xf0)>>4=8 | bytes[7]<<4=192 => 200 * 0.125 = 25.0 C (bytes[7] bit7=0 positive); Battery raw = ((bytes[6]&0x0f)=3)<<8 | bytes[5]=132 => 900 * 4 = 3600 mV => 3.6 V; DIN1 = bytes[0] bit0 = 1."
+    },
+    {
+      "description": "fPort 1 standard payload: negative -10.00 C, 3.60 V",
+      "input": { "fPort": 1, "bytes": [0, 0, 0, 0, 0, 132, 3, 251, 0, 0] },
+      "expected": {
+        "data": {
+          "make": "volley-boast",
+          "model": "vobo-tc",
+          "temperature": -10,
+          "battery": 3.6,
+          "din1": false,
+          "din2": false,
+          "din3": false,
+          "wakeup": false,
+          "modbus0": 0
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic, verified against reference parseStandardPayload below-zero branch: temp 12-bit = 0 | (251<<4)&0xfff = 4016; bytes[7] bit7=1 => (4096-4016)*0.125*-1 = -10.0 C; Battery raw = 3<<8|132 = 900 * 4 = 3600 mV => 3.6 V."
+    },
+    {
+      "description": "heartbeat / non-standard payload fPort is not normalized",
+      "input": { "fPort": 10, "bytes": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "synthetic",
+      "_note": "fPort 10 is the 1.0 heartbeat payload (no unit-defined temperature); this codec only normalizes the fPort 1 standard measurement payload."
+    }
+  ],
+  "downlink": []
+}

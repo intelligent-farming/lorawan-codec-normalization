@@ -1,0 +1,66 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/dnt/dnt-lw-etrv-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Status Uplink",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          4,
+          244,
+          182,
+          100,
+          100,
+          0,
+          4
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_cover_locked": {
+            "unit": "bool",
+            "value": true
+          },
+          "battery_voltage": {
+            "unit": "mV",
+            "value": "3320"
+          },
+          "heating_control": {
+            "mode": {
+              "active_mode": {
+                "unit": "string",
+                "value": "Manu Temp"
+              },
+              "holiday": {
+                "is_pending": {
+                  "unit": "bool",
+                  "value": false
+                }
+              },
+              "window_open_detection": {
+                "is_open": {
+                  "unit": "bool",
+                  "value": false
+                }
+              }
+            },
+            "room_temperature": {
+              "unit": "°C",
+              "value": "20.0"
+            },
+            "set_point_temperature": {
+              "unit": "°C",
+              "value": "20.0"
+            },
+            "valve_position": {
+              "unit": "%",
+              "value": "0.0"
+            }
+          }
+        },
+        "errors": [],
+        "warnings": []
+      }
+    }
+  ]
+}

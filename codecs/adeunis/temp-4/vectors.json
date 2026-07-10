@@ -1,0 +1,54 @@
+{
+  "uplink": [
+    {
+      "description": "0x57 Temp 4 periodic data, 2 channels, with trailing timestamp; t=0 sample of channel 1 -> temperature",
+      "input": {
+        "fPort": 1,
+        "bytes": [87, 150, 1, 179, 255, 156, 1, 244, 255, 255, 20, 171, 163, 233]
+      },
+      "expected": {
+        "data": {
+          "temperature": 43.5,
+          "temperatures1": [43.5, 50],
+          "temperature2": -10,
+          "temperatures2": [-10, -0.1],
+          "frameCounter": 4,
+          "lowBattery": true,
+          "make": "adeunis",
+          "model": "temp-4"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "0x30 keep-alive, single channel, no timestamp: one current sample -> temperature",
+      "input": {
+        "fPort": 1,
+        "bytes": [48, 128, 0, 210]
+      },
+      "expected": {
+        "data": {
+          "temperature": 21,
+          "temperatures1": [21],
+          "frameCounter": 4,
+          "lowBattery": false,
+          "make": "adeunis",
+          "model": "temp-4"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "configuration frame (0x10) is not periodic telemetry",
+      "input": {
+        "fPort": 1,
+        "bytes": [16, 0, 0, 6, 0, 1, 0, 30, 0, 15, 0]
+      },
+      "expected": {
+        "errors": ["not periodic temperature telemetry"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

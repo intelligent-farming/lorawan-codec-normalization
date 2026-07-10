@@ -1,0 +1,32 @@
+{
+  "uplink": [
+    {
+      "description": "Standard payload (fPort 1): ADC1 raw 160, battery 3.048 V, temp 20 C, DIN1 -> contactState 'closed'",
+      "input": { "fPort": 1, "bytes": [1, 10, 32, 3, 5, 250, 2, 10, 0, 0] },
+      "expected": {
+        "data": {
+          "analog": { "raw": 160 },
+          "battery": 3.048,
+          "air": { "temperature": 20 },
+          "action": { "contactState": "closed" },
+          "adc2Raw": 800,
+          "adc3Raw": 80,
+          "digitalInput2": 0,
+          "digitalInput3": 0,
+          "wakeup": 0,
+          "modbus0": 0,
+          "make": "volley-boast",
+          "model": "vobo-hl-1"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "non-Standard fPort (Modbus payload) is not normalized",
+      "input": { "fPort": 2, "bytes": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+      "expected": { "errors": ["only the Standard payload on fPort 1 is normalized"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,32 @@
+{
+  "vendor": "mclimate",
+  "device": "mc-button",
+  "name": "Multipurpose Button",
+  "categories": [
+    "button"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "action.button.event",
+    "action.button.pressed",
+    "battery",
+    "pressEvent",
+    "sensorTemperature",
+    "thermistorProperlyConnected"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "mclimate",
+    "device": "mc-button",
+    "codecId": "mc-button-codec",
+    "codecFile": "mc-button.js",
+    "codecSha256": "1b483637ea9dd4d0a02e2efd14a220a7972bf9858f7ff84960076f80647759c0",
+    "referencedAt": "2026-07-10"
+  }
+}

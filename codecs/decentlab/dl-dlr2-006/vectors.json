@@ -1,0 +1,36 @@
+{
+  "uplink": [
+    {
+      "description": "Example 1: potentiometer + battery frame (flags=0x0003)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 17, 17, 0, 3, 64, 154, 0, 134, 12, 84]
+      },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 4369,
+          "linear": {
+            "position": 4.8846
+          },
+          "battery": 3.156,
+          "make": "decentlab",
+          "model": "dl-dlr2-006"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Example 2: battery-only frame (flags=0x0002) carries no position -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 17, 17, 0, 2, 12, 84]
+      },
+      "expected": {
+        "errors": ["no position field in payload"]
+      },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,23 @@
+{
+  "uplink": [
+    {
+      "description": "standard report, endpoint 0 (probe 1): temperature 24.27 C | payload:110A0402000029 097B",
+      "input": { "fPort": 125, "bytes": [17, 10, 4, 2, 0, 0, 41, 9, 123] },
+      "expected": { "data": { "temperature": 24.27, "make": "nke-watteco", "model": "t-2-ctn-sensor" } },
+      "source": "ttn-example"
+    },
+    {
+      "description": "standard report, endpoint 1 (probe 2): temperature2 24.07 C | payload:210A0402000029 0967",
+      "input": { "fPort": 125, "bytes": [33, 10, 4, 2, 0, 0, 41, 9, 103] },
+      "expected": { "data": { "temperature2": 24.07, "make": "nke-watteco", "model": "t-2-ctn-sensor" } },
+      "source": "synthetic"
+    },
+    {
+      "description": "batch (Huffman) frame is not supported (byte0 bit0 clear)",
+      "input": { "fPort": 125, "bytes": [34, 1, 0, 129, 234, 142, 4, 181, 200, 62, 65, 45, 12, 32] },
+      "expected": { "errors": ["batch frame not supported"] },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

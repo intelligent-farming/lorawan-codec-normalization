@@ -1,0 +1,37 @@
+{
+  "uplink": [
+    {
+      "description": "Example 1: strain-gauge analog + battery frame (flags=0x0003)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 23, 131, 0, 3, 22, 46, 0, 135, 12, 51]
+      },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 6019,
+          "analog": {
+            "raw": 8853038
+          },
+          "strainMicrostrain": 1713.0065,
+          "battery": 3.123,
+          "make": "decentlab",
+          "model": "dl-dlr2-012"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Example 2: battery-only frame (flags=0x0002) carries no analog block -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 23, 131, 0, 2, 12, 51]
+      },
+      "expected": {
+        "errors": ["no analog field in payload"]
+      },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

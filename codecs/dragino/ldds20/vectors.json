@@ -1,0 +1,44 @@
+{
+  "uplink": [
+    {
+      "description": "fPort 2 telemetry: 2.821 m liquid surface distance, 3.612 V",
+      "input": {
+        "fPort": 2,
+        "bytes": [14, 28, 11, 5, 1]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.612,
+          "tank": { "distance": 2.821 },
+          "interrupt": 1,
+          "make": "dragino",
+          "model": "ldds20"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "no sensor attached (TTN example, 4-byte frame) returns an error",
+      "input": {
+        "fPort": 2,
+        "bytes": [14, 28, 11, 5]
+      },
+      "expected": {
+        "errors": ["no sensor attached"]
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "unsupported fPort returns an error",
+      "input": {
+        "fPort": 42,
+        "bytes": [14, 28, 11, 5]
+      },
+      "expected": {
+        "errors": ["unsupported fPort"]
+      },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

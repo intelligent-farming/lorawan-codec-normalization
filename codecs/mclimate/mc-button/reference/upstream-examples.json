@@ -1,0 +1,26 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/mclimate/mc-button-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Short periodic uplink",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          1,
+          171,
+          2,
+          155,
+          3
+        ]
+      },
+      "output": {
+        "data": {
+          "sensorTemperature": 66.7,
+          "batteryVoltage": 3,
+          "thermistorProperlyConnected": true,
+          "pressEvent": 3
+        }
+      }
+    }
+  ]
+}

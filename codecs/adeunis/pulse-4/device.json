@@ -1,0 +1,34 @@
+{
+  "vendor": "adeunis",
+  "device": "pulse-4",
+  "name": "Pulse 4 / Pulse 4 ATEX - Metering Interface",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "pulse count"
+  ],
+  "provides": [
+    "channel",
+    "channelBTotal",
+    "configurationDone",
+    "counterHistory",
+    "frameCounter",
+    "lowBattery",
+    "pulse.total",
+    "time"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "adeunis",
+    "device": "pulse-4",
+    "codecId": "pulse-codec",
+    "codecFile": "pulse_lib.js",
+    "codecSha256": "939a9c30e899a5308922906ac845ef07bfae819500ed0ea0b8ce1ba33ba115b0",
+    "referencedAt": "2026-07-10"
+  }
+}

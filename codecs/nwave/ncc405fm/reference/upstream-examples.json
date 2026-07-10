@@ -1,0 +1,59 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/nwave/ncc405-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Counter Update",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          6,
+          170
+        ]
+      },
+      "output": {
+        "data": {
+          "type": "counter_update",
+          "counter_value": 1706
+        }
+      }
+    },
+    {
+      "description": "Heartbeat",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          168,
+          102,
+          97
+        ]
+      },
+      "output": {
+        "data": {
+          "type": "heartbeat",
+          "hw_health_status": 40,
+          "battery_voltage": 2.908,
+          "battery_voltage_mean_24h": 2.888
+        }
+      }
+    },
+    {
+      "description": "Startup",
+      "input": {
+        "fPort": 3,
+        "bytes": [
+          1,
+          13,
+          0,
+          2
+        ]
+      },
+      "output": {
+        "data": {
+          "type": "startup",
+          "firmware_version": "1.13.0",
+          "reset_cause": "power_on"
+        }
+      }
+    }
+  ]
+}

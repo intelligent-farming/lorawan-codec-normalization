@@ -1,0 +1,33 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-blg",
+  "name": "DL-BLG - Black Globe Temperature Sensor",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature",
+    "battery"
+  ],
+  "provides": [
+    "battery",
+    "deviceId",
+    "protocolVersion",
+    "temperature",
+    "thermistorResistance",
+    "voltageRatio"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-blg",
+    "codecId": "dl-blg-codec",
+    "codecFile": "dl-blg.js",
+    "codecSha256": "77d2a1f5430c3036df71855db87d992383981b03fb7c605060eca91ee5396b4e",
+    "referencedAt": "2026-07-10"
+  }
+}

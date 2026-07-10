@@ -1,0 +1,29 @@
+{
+  "vendor": "fludia",
+  "device": "fm432t-10-15mn",
+  "name": "FM432t - Indoor temperature sensor - 10/15 min",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "temperature",
+    "temperatures",
+    "timeStep"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "fludia",
+    "device": "fm432t-10-15mn",
+    "codecId": "fm432t-10-15mn-codec",
+    "codecFile": "fm432t-10-15mn-decode.js",
+    "codecSha256": "4023ab1c4ed85c145a0a57f2d55f0979bb238d08a9a3530184393bbb9301c932",
+    "referencedAt": "2026-07-10"
+  }
+}

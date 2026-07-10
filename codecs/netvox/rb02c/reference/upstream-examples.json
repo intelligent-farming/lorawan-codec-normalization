@@ -1,0 +1,114 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/netvox/rb02c-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Startup version report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          167,
+          0,
+          100,
+          2,
+          32,
+          32,
+          7,
+          6,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "RB02C",
+          "SWver": 10,
+          "HWver": 2,
+          "Datecode": "20200706"
+        }
+      }
+    },
+    {
+      "description": "Status report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          167,
+          1,
+          36,
+          1,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "RB02C",
+          "Volt": 3.6,
+          "Key_1": 1,
+          "Key_2": 0,
+          "Key_3": 1
+        }
+      }
+    },
+    {
+      "description": "Configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          129,
+          167,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ConfigReportRsp",
+          "Device": "RB02C",
+          "Status": "Success"
+        }
+      }
+    },
+    {
+      "description": "Read configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          130,
+          167,
+          3,
+          132,
+          7,
+          8,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ReadConfigReportRsp",
+          "Device": "RB02C",
+          "MinTime": 900,
+          "MaxTime": 1800,
+          "BatteryChange": 0.1
+        }
+      }
+    }
+  ]
+}

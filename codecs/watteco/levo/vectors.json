@@ -1,0 +1,36 @@
+{
+  "uplink": [
+    {
+      "description": "standard report: 4-20 mA analog input = 13 mA | payload:110A000C00553941500000",
+      "input": {
+        "fPort": 125,
+        "bytes": [17, 10, 0, 12, 0, 85, 57, 65, 80, 0, 0]
+      },
+      "expected": {
+        "data": { "analog": { "current": 13 }, "make": "watteco", "model": "levo" }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "standard report: disposable battery 3.688 V | payload:110A00500006410503040E6804",
+      "input": {
+        "fPort": 125,
+        "bytes": [17, 10, 0, 80, 0, 6, 65, 5, 3, 4, 14, 104, 4]
+      },
+      "expected": {
+        "data": { "battery": 3.688, "make": "watteco", "model": "levo" }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "read-attribute response for firmware (cluster 0 attr 2) is not a measurement | payload:110100000002000D0305020015E2",
+      "input": {
+        "fPort": 125,
+        "bytes": [17, 1, 0, 0, 0, 2, 0, 13, 3, 5, 2, 0, 21, 226]
+      },
+      "expected": { "errors": ["unrecognized Watteco cluster"] },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

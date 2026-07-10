@@ -1,0 +1,36 @@
+{
+  "uplink": [
+    {
+      "description": "Example 1: 4-20 mA current + battery frame (flags=0x0003)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 8, 178, 0, 3, 139, 184, 12, 96]
+      },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 2226,
+          "analog": {
+            "current": 13.7329
+          },
+          "battery": 3.168,
+          "make": "decentlab",
+          "model": "dl-dlr2-004"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Example 2: battery-only frame (flags=0x0002) carries no current block -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 8, 178, 0, 2, 12, 96]
+      },
+      "expected": {
+        "errors": ["no current field in payload"]
+      },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

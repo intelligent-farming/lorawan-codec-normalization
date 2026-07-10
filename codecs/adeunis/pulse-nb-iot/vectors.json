@@ -1,0 +1,40 @@
+{
+  "uplink": [
+    {
+      "description": "0x5a Pulse 4 NB-IoT datalog - channel A: newest total 295, prior samples, timestamped",
+      "input": {
+        "fPort": 1,
+        "bytes": [17, 34, 51, 68, 85, 102, 119, 136, 3, 0, 0, 0, 38, 90, 103, 0, 0, 1, 39, 0, 1, 0, 2, 0, 3, 0, 4, 20, 171, 163, 233]
+      },
+      "expected": {
+        "data": {
+          "pulse": { "total": 295 },
+          "imei": "1122334455667788",
+          "signalQuality": 3,
+          "globalFrameCounter": 38,
+          "channel": "A",
+          "counterHistory": [294, 292, 289, 285],
+          "time": "2023-12-28T19:22:17.000Z",
+          "configurationDone": true,
+          "lowBattery": true,
+          "frameCounter": 3,
+          "make": "adeunis",
+          "model": "pulse-nb-iot"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Unsupported application frame code is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [17, 34, 51, 68, 85, 102, 119, 136, 3, 0, 0, 0, 38, 48, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported frame code"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

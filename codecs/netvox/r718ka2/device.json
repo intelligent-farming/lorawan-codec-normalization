@@ -1,0 +1,29 @@
+{
+  "vendor": "netvox",
+  "device": "r718ka2",
+  "name": "R718KA2 - Wireless 2-Input-mA Current Meter Interface, 4~20mA",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "current"
+  ],
+  "provides": [
+    "analog.current",
+    "battery",
+    "current2"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r718ka2",
+    "codecId": "r718ka2-codec",
+    "codecFile": "payload/r718ka.js",
+    "codecSha256": "5d8ab502a1a9f0de96bc74eae3e45be698d6620870ea7c1bf57d304edefca018",
+    "referencedAt": "2026-07-10"
+  }
+}

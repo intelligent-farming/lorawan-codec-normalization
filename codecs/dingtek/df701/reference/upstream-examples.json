@@ -1,0 +1,69 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/dingtek/df701-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "heartbeat upload",
+      "input": {
+        "fPort": 3,
+        "bytes": [
+          128,
+          0,
+          1,
+          2,
+          18,
+          39,
+          15,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          104,
+          0,
+          1,
+          129
+        ]
+      },
+      "output": {
+        "data": {
+          "level": 9999,
+          "alarmLevel": false,
+          "alarmBattery": false,
+          "volt": 3.6,
+          "frameCounter": 1
+        }
+      }
+    },
+    {
+      "description": "parameter packet",
+      "input": {
+        "fPort": 3,
+        "bytes": [
+          128,
+          0,
+          1,
+          3,
+          12,
+          1,
+          2,
+          10,
+          10,
+          20,
+          0,
+          129
+        ]
+      },
+      "output": {
+        "data": {
+          "firmware": "1.2",
+          "uploadInterval": 10,
+          "detectInterval": 10,
+          "levelThreshold": 20,
+          "workMode": 0
+        }
+      }
+    }
+  ]
+}

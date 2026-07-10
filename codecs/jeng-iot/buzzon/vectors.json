@@ -1,0 +1,50 @@
+{
+  "uplink": [
+    {
+      "description": "Normal message: 5 short presses, 2 long presses, 2.5 V (synthetic)",
+      "input": {
+        "fPort": 1,
+        "bytes": [5, 0, 2, 0, 0, 0, 0, 122]
+      },
+      "expected": {
+        "data": {
+          "make": "jeng-iot",
+          "model": "buzzon",
+          "action": { "button": { "count": 5 } },
+          "longPressCount": 2,
+          "battery": 2.5,
+          "heartbeat": false
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Heartbeat (fPort 2): same layout, 5 short / 0 long, 2.5 V (synthetic)",
+      "input": {
+        "fPort": 2,
+        "bytes": [5, 0, 0, 0, 0, 0, 0, 122]
+      },
+      "expected": {
+        "data": {
+          "make": "jeng-iot",
+          "model": "buzzon",
+          "action": { "button": { "count": 5 } },
+          "longPressCount": 0,
+          "battery": 2.5,
+          "heartbeat": true
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unsupported fPort returns an error",
+      "input": {
+        "fPort": 3,
+        "bytes": [0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": { "errors": ["unsupported fPort 3"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,34 @@
+{
+  "vendor": "elsys",
+  "device": "elt-lite",
+  "name": "ELT Lite an easy but powerful LoRAWAN device for measuring analog or digital signals.",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "digital input",
+    "analog input",
+    "pulse count"
+  ],
+  "provides": [
+    "action.contactState",
+    "air.temperature",
+    "analog.voltage",
+    "battery",
+    "pulse.count",
+    "pulse.total"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "elsys",
+    "device": "elt-lite",
+    "codecId": "elt-2-codec",
+    "codecFile": "elsys.js",
+    "codecSha256": "b2ed840ebd22065c17c4401d7675ecb16959e0cb73c5db8a9b481e17c0154282",
+    "referencedAt": "2026-07-10"
+  }
+}

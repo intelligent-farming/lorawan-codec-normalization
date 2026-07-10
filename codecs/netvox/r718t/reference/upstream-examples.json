@@ -1,0 +1,145 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/netvox/r718t-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Startup version report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          49,
+          0,
+          100,
+          2,
+          32,
+          32,
+          1,
+          7,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R718T",
+          "SWver": 10,
+          "HWver": 2,
+          "Datecode": "20200107"
+        }
+      }
+    },
+    {
+      "description": "Status report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          49,
+          1,
+          36,
+          1,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R718T",
+          "Volt": 3.6,
+          "Alarm": 1,
+          "FunctionKeyTrigger": "fuctionkey2"
+        }
+      }
+    },
+    {
+      "description": "Configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          129,
+          49,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ConfigReportRsp",
+          "Device": "R718T",
+          "Status": "Success"
+        }
+      }
+    },
+    {
+      "description": "Read configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          130,
+          49,
+          3,
+          132,
+          7,
+          8,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ReadConfigReportRsp",
+          "Device": "R718T",
+          "MinTime": 900,
+          "MaxTime": 1800,
+          "BatteryChange": 0.1
+        }
+      }
+    },
+    {
+      "description": "Set button press time response",
+      "input": {
+        "fPort": 13,
+        "bytes": [
+          129,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "SetButtonPressTimeRsp",
+          "Status": "Success"
+        }
+      }
+    },
+    {
+      "description": "Get button press time response",
+      "input": {
+        "fPort": 13,
+        "bytes": [
+          130,
+          5
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "GetButtonPressTimeRsp",
+          "PressTime": 5
+        }
+      }
+    }
+  ]
+}

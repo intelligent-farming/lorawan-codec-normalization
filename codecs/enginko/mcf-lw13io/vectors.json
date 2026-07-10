@@ -1,0 +1,46 @@
+{
+  "uplink": [
+    {
+      "description": "I/O status frame: input 1 active (contact closed), all outputs off",
+      "input": { "fPort": 1, "bytes": [10, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+      "expected": {
+        "data": {
+          "make": "enginko", "model": "mcf-lw13io",
+          "action": { "contactState": "closed" },
+          "input2": false, "input3": false, "input4": false, "input5": false,
+          "input6": false, "input7": false, "input8": false, "input9": false,
+          "input10": false, "input11": false, "input12": false, "input13": false,
+          "input14": false, "input15": false, "input16": false,
+          "output1": false, "output2": false, "output3": false, "output4": false,
+          "output5": false, "output6": false, "output7": false, "output8": false,
+          "frameType": "ioStatus"
+        }
+      },
+      "source": "synthetic",
+      "_note": "0x0A I/O-status frame: date(4)=0, inputStatus[0]=0x01 -> input1 active, outputs 0. Verified against reference/upstream-codec.js parseIO (inputStatus8_1='1', outputStatus8_1='0')."
+    },
+    {
+      "description": "digital counter frame: counter = 1000",
+      "input": { "fPort": 1, "bytes": [16, 0, 232, 3] },
+      "expected": {
+        "data": { "make": "enginko", "model": "mcf-lw13io", "pulse": { "count": 1000 }, "frameType": "counters" }
+      },
+      "source": "synthetic",
+      "_note": "0x10 sub-type 0x00: counter = (0x03<<8)+0xE8 = 1000. Verified against reference/upstream-codec.js parseDigitalData (counter='1000')."
+    },
+    {
+      "description": "unsupported uplink id",
+      "input": { "fPort": 1, "bytes": [1, 0, 0, 0, 0] },
+      "expected": { "errors": ["carries no I/O interface reading"] },
+      "source": "synthetic",
+      "_note": "0x01 is the time-sync frame, no interface reading."
+    },
+    {
+      "description": "empty payload",
+      "input": { "fPort": 1, "bytes": [] },
+      "expected": { "errors": ["empty or truncated payload"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

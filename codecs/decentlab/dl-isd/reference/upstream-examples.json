@@ -1,0 +1,64 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/decentlab/dl-isd-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Example 1",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          86,
+          225,
+          0,
+          3,
+          11,
+          82,
+          12,
+          82
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.154
+          },
+          "device_id": 22241,
+          "protocol_version": 2,
+          "stem_size": {
+            "displayName": "Stem size",
+            "unit": "mm",
+            "value": 2.898
+          }
+        }
+      }
+    },
+    {
+      "description": "Example 2",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          86,
+          225,
+          0,
+          2,
+          12,
+          82
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.154
+          },
+          "device_id": 22241,
+          "protocol_version": 2
+        }
+      }
+    }
+  ]
+}

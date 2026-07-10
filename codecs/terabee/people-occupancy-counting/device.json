@@ -1,0 +1,39 @@
+{
+  "vendor": "terabee",
+  "device": "people-occupancy-counting",
+  "name": "people-occupancy-counting",
+  "categories": [
+    "people-counter"
+  ],
+  "sensors": [
+    "distance"
+  ],
+  "provides": [
+    "people.present",
+    "stopped",
+    "stuck",
+    "warmup",
+    "wifiAccessPointOn",
+    "zone0",
+    "zone1",
+    "zone2",
+    "zone3",
+    "zone4",
+    "zone5",
+    "zone6",
+    "zone7"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "terabee",
+    "device": "people-occupancy-counting",
+    "codecId": "people-occupancy-counting-codec",
+    "codecFile": "people-occupancy-counting.js",
+    "codecSha256": "782bb6d452d1c7c3e7341f5828d46e285edd4eb0be1864c47b43ad64c1544021",
+    "referencedAt": "2026-07-10"
+  }
+}

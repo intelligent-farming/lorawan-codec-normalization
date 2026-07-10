@@ -1,0 +1,41 @@
+{
+  "vendor": "adeunis",
+  "device": "dry-contacts-2",
+  "name": "Dry Contact 2 - I/O Interface",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "digital input"
+  ],
+  "provides": [
+    "action.contactState",
+    "channelACount",
+    "channelAPreviousState",
+    "channelBContactState",
+    "channelBCount",
+    "channelBPreviousState",
+    "channelCContactState",
+    "channelCCount",
+    "channelCPreviousState",
+    "channelDContactState",
+    "channelDCount",
+    "channelDPreviousState",
+    "configurationDone",
+    "frameCounter",
+    "lowBattery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "adeunis",
+    "device": "dry-contacts-2",
+    "codecId": "drycontacts-codec",
+    "codecFile": "drycontacts_lib.js",
+    "codecSha256": "9da9a13063669f09671c2c1b26fc3e219ffc7dd5c6e97a122a1b9d6ef00664a7",
+    "referencedAt": "2026-07-10"
+  }
+}

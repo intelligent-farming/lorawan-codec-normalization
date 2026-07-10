@@ -1,0 +1,66 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/dragino/lt22222-l-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "IO controller",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          4,
+          171,
+          4,
+          172,
+          19,
+          16,
+          19,
+          0,
+          170,
+          255,
+          1
+        ]
+      },
+      "output": {
+        "data": {
+          "ACI1_mA": 4.88,
+          "ACI2_mA": 4.864,
+          "AVI1_V": 1.195,
+          "AVI2_V": 1.196,
+          "DI1_status": "H",
+          "DI2_status": "L",
+          "DI3_status": "H",
+          "DO1_status": "H",
+          "DO2_status": "L",
+          "DO3_status": "H",
+          "Hardware_mode": "LT33222",
+          "RO1_status": "ON",
+          "RO2_status": "OFF",
+          "Work_mode": "2ACI+2AVI"
+        }
+      }
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [
+          4,
+          171,
+          4,
+          172,
+          19,
+          16,
+          19,
+          0,
+          170,
+          255,
+          1
+        ]
+      },
+      "output": {
+        "errors": [
+          "unknown FPort"
+        ]
+      }
+    }
+  ]
+}

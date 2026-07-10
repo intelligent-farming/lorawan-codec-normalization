@@ -1,0 +1,32 @@
+{
+  "vendor": "netvox",
+  "device": "r718ijk",
+  "name": "R718IJK - Wireless Multi-Sensor Interface for 0-24V ADC, Dry Contact and 4-20mA Sensors",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "voltage",
+    "digital input",
+    "4-20 ma"
+  ],
+  "provides": [
+    "action.contactState",
+    "adcVoltage",
+    "analog.current",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r718ijk",
+    "codecId": "r718ijk-codec",
+    "codecFile": "payload/r718ijk.js",
+    "codecSha256": "73461915f9c9e4ae5cc976e7428a61f6781fab2f4642644194d0be75d4d8ce5f",
+    "referencedAt": "2026-07-10"
+  }
+}

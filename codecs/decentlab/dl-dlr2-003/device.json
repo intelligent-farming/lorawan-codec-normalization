@@ -1,0 +1,31 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-dlr2-003",
+  "name": "DL-DLR2-003 - Digital Input Dry Contact Transmitter",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "digital input",
+    "battery"
+  ],
+  "provides": [
+    "action.contactState",
+    "battery",
+    "deviceId",
+    "protocolVersion"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-dlr2-003",
+    "codecId": "dl-dlr2-003-codec",
+    "codecFile": "dl-dlr2-003.js",
+    "codecSha256": "df5f0ebb4651f6181ba1416a6ad0c152942878afc032d6186249f5533e68b0d2",
+    "referencedAt": "2026-07-10"
+  }
+}

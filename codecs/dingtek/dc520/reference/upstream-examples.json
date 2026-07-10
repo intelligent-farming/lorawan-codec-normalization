@@ -1,0 +1,83 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/dingtek/dc520-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "event trigger upload",
+      "input": {
+        "fPort": 3,
+        "bytes": [
+          128,
+          0,
+          82,
+          2,
+          19,
+          0,
+          1,
+          0,
+          2,
+          0,
+          1,
+          0,
+          0,
+          0,
+          5,
+          0,
+          0,
+          1,
+          129
+        ]
+      },
+      "output": {
+        "data": {
+          "balanceCounter": 1,
+          "inCounter": 2,
+          "outCounter": 1,
+          "alarmBalance": 0,
+          "alarmIn": 0,
+          "alarmOut": 0,
+          "alarmBattery": 0,
+          "volt": 5,
+          "errorCode": 0,
+          "frameCounter": 1
+        }
+      }
+    },
+    {
+      "description": "parameter packet",
+      "input": {
+        "fPort": 3,
+        "bytes": [
+          128,
+          0,
+          82,
+          3,
+          18,
+          1,
+          2,
+          1,
+          0,
+          5,
+          0,
+          35,
+          0,
+          50,
+          0,
+          20,
+          20,
+          129
+        ]
+      },
+      "output": {
+        "data": {
+          "firmware": "1.2",
+          "uploadInterval": 1,
+          "originalBalance": 5,
+          "balanceThreshold": 35,
+          "inThreshold": 50,
+          "outThreshold": 20,
+          "batteryThreshold": 20
+        }
+      }
+    }
+  ]
+}

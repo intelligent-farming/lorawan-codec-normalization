@@ -1,0 +1,51 @@
+{
+  "uplink": [
+    {
+      "description": "Alarm: panic button 1 pressed (synthetic: opcode 1, mask 0x01, 3.60 V)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 104, 1, 1]
+      },
+      "expected": {
+        "data": {
+          "make": "mutelcor",
+          "model": "mtc-pb01",
+          "payloadVersion": 1,
+          "battery": 3.6,
+          "opcode": 1,
+          "buttons": [1],
+          "action": { "button": { "pressed": true, "event": "single", "count": 1 } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Heartbeat, no press (synthetic: opcode 0)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 104, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "mutelcor",
+          "model": "mtc-pb01",
+          "payloadVersion": 1,
+          "battery": 3.6,
+          "opcode": 0,
+          "action": { "button": { "pressed": false } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Measurements opcode carries no press and returns an error",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 104, 3, 1, 1, 44]
+      },
+      "expected": { "errors": ["unsupported opcode 3"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

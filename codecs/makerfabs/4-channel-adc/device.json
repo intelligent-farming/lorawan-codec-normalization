@@ -1,0 +1,32 @@
+{
+  "vendor": "makerfabs",
+  "device": "4-channel-adc",
+  "name": "4-Channel ADC 12 bits",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [],
+  "provides": [
+    "analog.voltage",
+    "battery",
+    "differentialVoltage",
+    "frameCounter",
+    "timeInterval",
+    "voltage2",
+    "voltage3",
+    "voltage4"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "makerfabs",
+    "device": "4-channel-adc",
+    "codecId": "4-channel-adc-codec",
+    "codecFile": "4-channel-adc.js",
+    "codecSha256": "ed16317ea63bcc2e69bf71bbd57775fbb88757647aae77b83c297494b61023a4",
+    "referencedAt": "2026-07-10"
+  }
+}

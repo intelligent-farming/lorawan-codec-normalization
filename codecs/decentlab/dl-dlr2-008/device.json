@@ -1,0 +1,33 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-dlr2-008",
+  "name": "DL-DLR2-008 - Analog PT100 Sensor Transmitter",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "analog input",
+    "temperature",
+    "battery"
+  ],
+  "provides": [
+    "analog.raw",
+    "battery",
+    "deviceId",
+    "probeTemperature",
+    "protocolVersion"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-dlr2-008",
+    "codecId": "dl-dlr2-008-2000-codec",
+    "codecFile": "dl-dlr2-008-2000.js",
+    "codecSha256": "e04ce0b97f4cedec240c4c01c0a050cb0ed6bc239ffadc80209258dc6ae94b85",
+    "referencedAt": "2026-07-10"
+  }
+}

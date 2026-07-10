@@ -1,0 +1,52 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/decentlab/dl-dlr2-002-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Example 1",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          25,
+          158,
+          0,
+          3,
+          0,
+          0,
+          2,
+          88,
+          0,
+          0,
+          0,
+          0,
+          12,
+          155
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.227
+          },
+          "cumulative_pulse_count": {
+            "displayName": "Cumulative pulse count",
+            "value": 0
+          },
+          "device_id": 6558,
+          "protocol_version": 2,
+          "pulse_count": {
+            "displayName": "Pulse count",
+            "value": 0
+          },
+          "pulse_interval": {
+            "displayName": "Pulse interval",
+            "unit": "s",
+            "value": 600
+          }
+        }
+      }
+    }
+  ]
+}

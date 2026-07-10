@@ -1,0 +1,52 @@
+{
+  "vendor": "enginko",
+  "device": "mcf-lw13io",
+  "name": "MCF-LW13IO - Wireless Actuator",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "digital input"
+  ],
+  "provides": [
+    "action.contactState",
+    "frameType",
+    "input10",
+    "input11",
+    "input12",
+    "input13",
+    "input14",
+    "input15",
+    "input16",
+    "input2",
+    "input3",
+    "input4",
+    "input5",
+    "input6",
+    "input7",
+    "input8",
+    "input9",
+    "output1",
+    "output2",
+    "output3",
+    "output4",
+    "output5",
+    "output6",
+    "output7",
+    "output8",
+    "pulse.count"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "enginko",
+    "device": "mcf-lw13io",
+    "codecId": "mcf-io-codec",
+    "codecFile": "decoder-digital.js",
+    "codecSha256": "17c13cd550e8bd8782cd4da5da7bfbaab7a9f4be4b4c45caaf8974aae1b3f218",
+    "referencedAt": "2026-07-10"
+  }
+}

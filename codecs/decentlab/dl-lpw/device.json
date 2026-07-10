@@ -1,0 +1,31 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-lpw",
+  "name": "DL-LPW - Linear Position / Way",
+  "categories": [
+    "linear-position"
+  ],
+  "sensors": [
+    "distance",
+    "battery"
+  ],
+  "provides": [
+    "battery",
+    "deviceId",
+    "linear.position",
+    "protocolVersion"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-lpw",
+    "codecId": "dl-lpw-codec",
+    "codecFile": "dl-lpw.js",
+    "codecSha256": "93c172c1cf2f9bb749835d8d4207bf365c79e4566d4930058e3d87423c0dbd80",
+    "referencedAt": "2026-07-10"
+  }
+}

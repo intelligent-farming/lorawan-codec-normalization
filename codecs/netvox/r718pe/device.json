@@ -1,0 +1,31 @@
+{
+  "vendor": "netvox",
+  "device": "r718pe",
+  "name": "R718PE - Wireless Top Mounted Ultrasonic Liquid Level Sensor",
+  "categories": [
+    "tank-level"
+  ],
+  "sensors": [
+    "distance"
+  ],
+  "provides": [
+    "battery",
+    "lowBattery",
+    "sensorOn",
+    "tank.distance",
+    "tank.level"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r718pe",
+    "codecId": "r718pe-codec",
+    "codecFile": "payload/r718x.js",
+    "codecSha256": "e2939f04fc007dd80b512ae6890d61b7a22a458794b41152f213d65fa206e0d6",
+    "referencedAt": "2026-07-10"
+  }
+}

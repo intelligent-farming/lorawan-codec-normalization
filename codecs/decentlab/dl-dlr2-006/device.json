@@ -1,0 +1,32 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-dlr2-006",
+  "name": "DL-DLR2-006 - Analog Potentiometer Sensor Transmitter",
+  "categories": [
+    "linear-position"
+  ],
+  "sensors": [
+    "analog input",
+    "potentiometer",
+    "battery"
+  ],
+  "provides": [
+    "battery",
+    "deviceId",
+    "linear.position",
+    "protocolVersion"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-dlr2-006",
+    "codecId": "dl-dlr2-006-codec",
+    "codecFile": "dl-dlr2-006.js",
+    "codecSha256": "793be8f6e3c6d40398ff4bba139ced70c7a6aa57cdfe37b28272a59032a8b94f",
+    "referencedAt": "2026-07-10"
+  }
+}

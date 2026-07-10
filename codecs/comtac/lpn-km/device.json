@@ -1,0 +1,33 @@
+{
+  "vendor": "comtac",
+  "device": "lpn-km",
+  "name": "LPN KM - Short-circuit monitor",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "digital input",
+    "temperature",
+    "battery",
+    "button"
+  ],
+  "provides": [
+    "action.contactState",
+    "batteryPercent",
+    "inputId",
+    "pulse.total"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "comtac",
+    "device": "lpn-km",
+    "codecId": "lpn-km-codec",
+    "codecFile": "lpn-km.js",
+    "codecSha256": "2ffa7b8bf24d6c6174738a8b8ca3b52ae8dc570017b64d3eadb18ca3be19c3c6",
+    "referencedAt": "2026-07-10"
+  }
+}

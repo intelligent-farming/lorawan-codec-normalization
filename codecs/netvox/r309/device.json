@@ -1,0 +1,31 @@
+{
+  "vendor": "netvox",
+  "device": "r309",
+  "name": "R309 - Wireless Wearable Emergency Button with Inactivity Detection",
+  "categories": [
+    "button"
+  ],
+  "sensors": [
+    "button",
+    "vibration"
+  ],
+  "provides": [
+    "action.button.event",
+    "action.button.pressed",
+    "battery",
+    "inactivityAlarm"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r309",
+    "codecId": "r309-codec",
+    "codecFile": "payload/r309.js",
+    "codecSha256": "a4683ffe184c77a6736e6da923e81ae1461e077970017c39bf93a5785c819355",
+    "referencedAt": "2026-07-10"
+  }
+}

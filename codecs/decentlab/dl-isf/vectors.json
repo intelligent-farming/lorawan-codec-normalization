@@ -1,0 +1,50 @@
+{
+  "uplink": [
+    {
+      "description": "Example 1: sap-flow diagnostics + battery frame (flags=0x0003)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 61, 1, 0, 3, 12, 41, 11, 171, 12, 62, 121, 112, 122, 29, 120, 67, 121, 145, 73, 8, 69, 153, 126, 76, 172, 222, 170, 110, 0, 0, 0, 0, 69, 126, 65, 90, 11, 89]
+      },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 15617,
+          "plant": {
+            "sapFlow": -192
+          },
+          "heatVelocityOuter": -2.208,
+          "heatVelocityInner": 0.144,
+          "alphaOuter": -0.05184,
+          "alphaInner": 0.00352,
+          "betaOuter": -0.14816,
+          "betaInner": -0.04128,
+          "tmaxOuter": 37.392,
+          "tmaxInner": 35.634,
+          "temperatureOuter": -4.36,
+          "maxVoltage": 11.486,
+          "minVoltage": 10.862,
+          "diagnostic": 0,
+          "upstreamTmaxOuter": 35.58,
+          "upstreamTmaxInner": 33.46,
+          "battery": 2.905,
+          "make": "decentlab",
+          "model": "dl-isf"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Example 2: battery-only frame (flags=0x0002) carries no sap-flow -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 61, 1, 0, 2, 11, 89]
+      },
+      "expected": {
+        "errors": ["no sap-flow field in payload"]
+      },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,46 @@
+{
+  "uplink": [
+    {
+      "description": "Keepalive uplink (TTN example bytes): internal 28 °C, relay ON",
+      "input": {
+        "fPort": 2,
+        "bytes": [1, 28, 1]
+      },
+      "expected": {
+        "data": {
+          "make": "mclimate",
+          "model": "16ads",
+          "action": { "switch": { "state": true } },
+          "air": { "temperature": 28 }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Response uplink with trailing keepalive (synthetic): relay OFF, -5 °C",
+      "input": {
+        "fPort": 2,
+        "bytes": [4, 1, 20, 1, 133, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "mclimate",
+          "model": "16ads",
+          "action": { "switch": { "state": false } },
+          "air": { "temperature": -5 }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Truncated frame (fewer than 3 bytes) returns an error",
+      "input": {
+        "fPort": 2,
+        "bytes": [1, 28]
+      },
+      "expected": { "errors": ["expected at least 3 bytes"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

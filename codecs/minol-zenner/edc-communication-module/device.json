@@ -1,0 +1,33 @@
+{
+  "vendor": "minol-zenner",
+  "device": "edc-communication-module",
+  "name": "EDC COMMUNICATION MODULE FOR WATER METERS",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "pulse count",
+    "pulse frequency"
+  ],
+  "provides": [
+    "batteryEndOfLife",
+    "batteryLow",
+    "coilManipulation",
+    "hardwareError",
+    "pulse.total",
+    "removalDetection"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "minol-zenner",
+    "device": "edc-communication-module",
+    "codecId": "edc-communication-module-codec",
+    "codecFile": "edc-communication-module.js",
+    "codecSha256": "e82d93ea13b254d0ba2521ecb6912e3ab524c9fb40fed6324bd8d015c5b34871",
+    "referencedAt": "2026-07-10"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "uplink": [
+    {
+      "description": "battery 3.6 V, raw capacitive ADC 2048",
+      "input": { "fPort": 1, "bytes": [0, 0, 8, 0, 36] },
+      "expected": {
+        "data": {
+          "make": "makerfabs",
+          "model": "soil-moisture",
+          "battery": 3.6,
+          "soilMoistureAdc": 2048
+        },
+        "warnings": ["uncalibrated raw capacitive ADC count"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic, verified against reference/upstream-codec.js: bat = bytes[4]/10 = 36/10 = 3.6 V; adc = bytes[2]*256 + bytes[3] = 8*256 + 0 = 2048."
+    },
+    {
+      "description": "battery 3.1 V, raw capacitive ADC 1500",
+      "input": { "fPort": 1, "bytes": [0, 0, 5, 220, 31] },
+      "expected": {
+        "data": {
+          "make": "makerfabs",
+          "model": "soil-moisture",
+          "battery": 3.1,
+          "soilMoistureAdc": 1500
+        },
+        "warnings": ["uncalibrated raw capacitive ADC count"]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic, verified against reference: bat = 31/10 = 3.1 V; adc = 5*256 + 220 = 1500."
+    },
+    {
+      "description": "payload too short to contain battery/ADC",
+      "input": { "fPort": 1, "bytes": [0, 0] },
+      "expected": { "errors": ["payload too short"] },
+      "source": "synthetic",
+      "_note": "Synthetic short payload; the upstream decoder would index undefined bytes, this codec returns an explicit error."
+    }
+  ],
+  "downlink": []
+}

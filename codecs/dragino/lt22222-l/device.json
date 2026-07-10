@@ -1,0 +1,43 @@
+{
+  "vendor": "dragino",
+  "device": "lt22222-l",
+  "name": "LT22222-L - I/O Controller",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "digital input",
+    "analog input"
+  ],
+  "provides": [
+    "action.contactState",
+    "analog.current",
+    "analog.voltage",
+    "count2",
+    "current2",
+    "do1",
+    "do2",
+    "do3",
+    "hardwareMode",
+    "input2",
+    "input3",
+    "pulse.count",
+    "ro1",
+    "ro2",
+    "voltage2",
+    "workMode"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "lt22222-l",
+    "codecId": "lt22222-l-codec",
+    "codecFile": "lt22222-l.js",
+    "codecSha256": "2ca9798c69b483e79f86b322c40a014a0a0ee182952ab75791372e9b64585a7c",
+    "referencedAt": "2026-07-10"
+  }
+}

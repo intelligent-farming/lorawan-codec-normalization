@@ -1,0 +1,27 @@
+{
+  "vendor": "nke-watteco",
+  "device": "t-indoor-sensor",
+  "name": "Temperature Indoor Sensor",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "nke-watteco",
+    "device": "t-indoor-sensor",
+    "codecId": "t-indoor-sensor-codec",
+    "codecFile": "t-indoor-sensor.js",
+    "codecSha256": "ce3d3fdbb2bd6fa7af3aa373db1549e107928d3e9ee57242aed43c4ca3e256b3",
+    "referencedAt": "2026-07-10"
+  }
+}

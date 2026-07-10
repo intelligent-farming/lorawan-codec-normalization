@@ -1,0 +1,28 @@
+{
+  "vendor": "watteco",
+  "device": "tempo-outdoor",
+  "name": "Temp'O - Outdoor temperature sensor",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "battery",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "watteco",
+    "device": "tempo-outdoor",
+    "codecId": "tempo-outdoor-codec",
+    "codecFile": "tempo-outdoor.js",
+    "codecSha256": "6f8d73699e9f400881df88f9b8b6a766142d2da7baf3a10610b5dc3b7fe6d6bc",
+    "referencedAt": "2026-07-10"
+  }
+}

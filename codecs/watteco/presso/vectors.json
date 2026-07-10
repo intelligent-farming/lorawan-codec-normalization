@@ -1,0 +1,43 @@
+{
+  "uplink": [
+    {
+      "description": "standard report: analog gauge present value 13.0 (cluster 0x000C attr 0x0055, float32) | payload 110A000C00553941500000",
+      "input": { "fPort": 125, "bytes": [17, 10, 0, 12, 0, 85, 57, 65, 80, 0, 0] },
+      "expected": {
+        "data": { "analog.raw": 13, "make": "watteco", "model": "presso" }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "standard report: binary/pulse input state closed (cluster 0x000F attr 0x0055) | payload 110A000F00551001",
+      "input": { "fPort": 125, "bytes": [17, 10, 0, 15, 0, 85, 16, 1] },
+      "expected": {
+        "data": { "action.contactState": "closed", "make": "watteco", "model": "presso" }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "standard report: pulse count (cluster 0x000F attr 0x0402, uint32) | payload 110A000F04022300000000",
+      "input": { "fPort": 125, "bytes": [17, 10, 0, 15, 4, 2, 35, 0, 0, 0, 0] },
+      "expected": {
+        "data": { "pulse.total": 0, "make": "watteco", "model": "presso" }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "standard report: disposable battery voltage 3.688 V (cluster 0x0050 attr 6) | payload 110A00500006410503040E6804",
+      "input": { "fPort": 125, "bytes": [17, 10, 0, 80, 0, 6, 65, 5, 3, 4, 14, 104, 4] },
+      "expected": {
+        "data": { "battery": 3.688, "make": "watteco", "model": "presso" }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "batch (Huffman) frame is not decoded -> error | payload 3620...",
+      "input": { "fPort": 125, "bytes": [54, 32, 0, 0, 0, 35, 7, 8, 236, 125, 214, 11, 61, 178, 15, 66, 4, 0, 88, 0] },
+      "expected": { "errors": ["batch frame not supported"] },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

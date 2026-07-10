@@ -1,0 +1,35 @@
+{
+  "vendor": "enless-wireless",
+  "device": "tx-contact-600-039",
+  "name": "600-039 - Digital Input sensor (status report ON/OFF)",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "pulse count"
+  ],
+  "provides": [
+    "action.contactState",
+    "batteryPercent",
+    "channel1Count",
+    "channel2ContactState",
+    "channel2Count",
+    "deviceId",
+    "ocContactState",
+    "ocCount",
+    "sequenceCounter"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "enless-wireless",
+    "device": "tx-contact-600-039",
+    "codecId": "tx-contact-600-039-codec",
+    "codecFile": "enlessdecoder.js",
+    "codecSha256": "a476a50a07fa25a8326f561778ad7c7650e53516bd00e0cce41c868402f55a07",
+    "referencedAt": "2026-07-10"
+  }
+}

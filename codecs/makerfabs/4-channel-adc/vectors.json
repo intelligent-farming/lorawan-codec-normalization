@@ -1,0 +1,28 @@
+{
+  "uplink": [
+    {
+      "description": "4 ADC channels: ch1 3.0 V, ch2 2.5 V, ch3 1.2 V, ch4 0 V; battery 3.6 V; 60 s interval",
+      "input": { "fPort": 1, "bytes": [0, 1, 36, 11, 184, 9, 196, 4, 176, 0, 0, 0, 0, 0, 0, 234, 96] },
+      "expected": {
+        "data": {
+          "make": "makerfabs", "model": "4-channel-adc",
+          "frameCounter": 1,
+          "battery": 3.6,
+          "analog": { "voltage": 3 },
+          "voltage2": 2.5, "voltage3": 1.2, "voltage4": 0,
+          "differentialVoltage": 0,
+          "timeInterval": 60
+        }
+      },
+      "source": "synthetic",
+      "_note": "frameCounter=0x0001; battery byte 36/10=3.6 V; ADC1 0x0BB8=3000 mV=3.0 V -> analog.voltage; ADC2 0x09C4=2500=2.5; ADC3 0x04B0=1200=1.2; ADC4 0; diff 0; interval 0x0000EA60=60000 ms/1000=60 s. Verified against reference/upstream-codec.js (field1 3.6, field2 3, field3 2.5, field4 1.2, field7 60)."
+    },
+    {
+      "description": "wrong frame length yields error",
+      "input": { "fPort": 1, "bytes": [0, 1, 36] },
+      "expected": { "errors": ["expected 17-byte frame"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

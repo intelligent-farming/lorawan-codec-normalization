@@ -1,0 +1,30 @@
+{
+  "vendor": "fludia",
+  "device": "fm432p-10-15mn",
+  "name": "FM432p - Pulse Multifluid Tracker - 10/15 min",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "pulse count"
+  ],
+  "provides": [
+    "increments",
+    "pulse.count",
+    "pulse.total",
+    "stepMinutes"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "fludia",
+    "device": "fm432p-10-15mn",
+    "codecId": "fm432p-10-15mn-codec",
+    "codecFile": "fm432p-10-15mn-decode.js",
+    "codecSha256": "8c5f568efb2442d135946ebb9c17decc7ecb75a4235c8d325fceff99bfef5ea6",
+    "referencedAt": "2026-07-10"
+  }
+}

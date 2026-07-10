@@ -1,0 +1,43 @@
+{
+  "uplink": [
+    {
+      "description": "Extended V4 application payload (from upstream commented example bytes)",
+      "input": {
+        "fPort": 14,
+        "bytes": [190, 1, 4, 0, 1, 0, 2, 0, 3, 0, 4, 28, 32, 12, 228, 1, 57]
+      },
+      "expected": {
+        "data": {
+          "make": "parametric",
+          "model": "pcr2",
+          "people": { "in": 1, "out": 2, "total": -1 },
+          "totalIn": 3,
+          "totalOut": 4,
+          "battery": 7.2,
+          "solarPowerMw": 3300,
+          "air": { "temperature": 31 }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Configuration payload (fPort 190) is not a measurement (error)",
+      "input": {
+        "fPort": 190,
+        "bytes": [190, 1, 4, 0, 1, 0, 0, 2, 0, 0, 60, 0, 60, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 30]
+      },
+      "expected": { "errors": ["configuration payload"] },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unsupported fPort returns an error",
+      "input": {
+        "fPort": 1,
+        "bytes": [190, 1, 4, 0, 1, 0, 2, 0, 3, 0, 4, 28, 32, 12, 228, 1, 57]
+      },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

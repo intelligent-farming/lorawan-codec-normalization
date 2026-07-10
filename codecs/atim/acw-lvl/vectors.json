@@ -1,0 +1,46 @@
+{
+  "uplink": [
+    {
+      "description": "measurement frame: 1500 mm distance to surface (1.5 m)",
+      "input": { "fPort": 1, "bytes": [160, 7, 5, 220] },
+      "expected": {
+        "data": { "make": "atim", "model": "acw-lvl", "tank": { "distance": 1.5 }, "frameType": "measurement" }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic 0xA0 'Trame de mesure': distance type 0x07 -> 0x05DC=1500 mm / 1000 = 1.5 m. Verified against reference/upstream-codec.js decode logic (distance.value=[1500], unit 'mm')."
+    },
+    {
+      "description": "measurement frame: near-full vessel, 350 mm to surface (0.35 m)",
+      "input": { "fPort": 1, "bytes": [160, 7, 1, 94] },
+      "expected": {
+        "data": { "make": "atim", "model": "acw-lvl", "tank": { "distance": 0.35 }, "frameType": "measurement" }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: distance type 0x07 -> 0x015E=350 mm / 1000 = 0.35 m. Verified against reference/upstream-codec.js (distance.value=[350])."
+    },
+    {
+      "description": "life frame: battery 3.60 V, supply rail 3.30 V",
+      "input": { "fPort": 1, "bytes": [129, 14, 16, 12, 228] },
+      "expected": {
+        "data": { "make": "atim", "model": "acw-lvl", "frameType": "life", "battery": 3.6, "supplyVoltage": 3.3 }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic 0x81 'Trame de vie': tensionv 0x0E10=3600/1000=3.6 V -> battery; tensionc 0x0CE4=3300/1000=3.3 V -> supplyVoltage. Verified against reference/upstream-codec.js (tensionv.value=3.6, tensionc.value=3.3)."
+    },
+    {
+      "description": "error frame yields no distance measurement",
+      "input": { "fPort": 1, "bytes": [142, 14, 1, 149] },
+      "expected": { "errors": ["unsupported frame type"] },
+      "source": "synthetic",
+      "_note": "Synthetic 0x8E 'Trame d'erreur'; this codec only normalizes distance/battery, so an error frame returns errors."
+    },
+    {
+      "description": "empty payload",
+      "input": { "fPort": 1, "bytes": [] },
+      "expected": { "errors": ["empty payload"] },
+      "source": "synthetic",
+      "_note": "Synthetic empty payload; reference returns an empty data object, this codec reports an explicit error."
+    }
+  ],
+  "downlink": []
+}

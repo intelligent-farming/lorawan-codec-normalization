@@ -1,0 +1,31 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-zn1",
+  "name": "DL-ZN1 - Dendrometer",
+  "categories": [
+    "dendrometer"
+  ],
+  "sensors": [
+    "distance",
+    "battery"
+  ],
+  "provides": [
+    "battery",
+    "deviceId",
+    "plant.dendrometer",
+    "protocolVersion"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-zn1",
+    "codecId": "dl-zn1-codec",
+    "codecFile": "dl-zn1.js",
+    "codecSha256": "51a453b58a35e22f6118acbd5b4747907833d9b55a9bf0579d62d8c4023ec112",
+    "referencedAt": "2026-07-10"
+  }
+}

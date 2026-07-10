@@ -1,0 +1,48 @@
+{
+  "uplink": [
+    {
+      "description": "DI_DATA (fPort 20): first single-point input state 0 -> contactState 'open'; battery byte 195 -> 77%",
+      "input": {
+        "fPort": 20,
+        "bytes": [16, 0, 12, 195, 95, 238, 102, 1, 17, 64, 0, 0, 18, 64, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 77,
+          "action": { "contactState": "open" },
+          "inputId": 1,
+          "make": "comtac",
+          "model": "lpn-km"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "CNT_DATA (fPort 21): one counter, 24-bit value 300 -> pulse.total",
+      "input": {
+        "fPort": 21,
+        "bytes": [16, 0, 12, 195, 1, 95, 238, 102, 1, 5, 0, 0, 1, 44]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 77,
+          "pulse": { "total": 300 },
+          "inputId": 5,
+          "make": "comtac",
+          "model": "lpn-km"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "FIXED_DATA config frame (fPort 3) is not an input measurement",
+      "input": {
+        "fPort": 3,
+        "bytes": [16, 0, 0, 0, 7, 95, 238, 106, 240, 0, 255, 255]
+      },
+      "expected": { "errors": ["FIXED_DATA config frame"] },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,51 @@
+{
+  "uplink": [
+    {
+      "description": "battery 3.5 V, analog input 1 = 3.0 V, external digital input high",
+      "input": { "fPort": 5, "bytes": [7, 13, 172, 8, 11, 184, 13, 1] },
+      "expected": {
+        "data": {
+          "make": "elsys", "model": "elt-lite",
+          "battery": 3.5,
+          "analog": { "voltage": 3 },
+          "action": { "contactState": "closed" }
+        }
+      },
+      "source": "synthetic",
+      "_note": "ELSYS TLV: VDD(0x07)=0x0DAC=3500 mV -> battery 3.5 V; ANALOG1(0x08)=0x0BB8=3000 mV -> analog.voltage 3.0 V; EXT_DIGITAL(0x0D)=1 -> contactState closed. Verified against reference/upstream-codec.js (vdd 3500, analog1 3000, digital 1)."
+    },
+    {
+      "description": "external temperature-equivalent temp + relative and absolute pulse counts",
+      "input": { "fPort": 5, "bytes": [1, 0, 200, 10, 0, 100, 11, 0, 0, 3, 232] },
+      "expected": {
+        "data": {
+          "make": "elsys", "model": "elt-lite",
+          "air": { "temperature": 20 },
+          "pulse": { "count": 100, "total": 1000 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "TEMP(0x01)=0x00C8=200/10=20 degC -> air.temperature; PULSE1(0x0A)=100 -> pulse.count; PULSE1_ABS(0x0B)=0x000003E8=1000 -> pulse.total. Verified against reference/upstream-codec.js (temperature 20, pulse1 100, pulseAbs 1000)."
+    },
+    {
+      "description": "payload stopping at an unsupported ELSYS type still decodes leading fields",
+      "input": { "fPort": 5, "bytes": [8, 7, 208, 3, 1, 39, 5] },
+      "expected": {
+        "data": {
+          "make": "elsys", "model": "elt-lite",
+          "analog": { "voltage": 2 }
+        },
+        "warnings": ["unsupported ELSYS type"]
+      },
+      "source": "synthetic",
+      "_note": "ANALOG1(0x08)=0x07D0=2000 mV -> 2.0 V, then ACC(0x03) is unsupported and stops the walk (upstream default: skip to end). A warning is emitted."
+    },
+    {
+      "description": "empty payload",
+      "input": { "fPort": 5, "bytes": [] },
+      "expected": { "errors": ["empty payload"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

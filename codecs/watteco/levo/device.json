@@ -1,0 +1,29 @@
+{
+  "vendor": "watteco",
+  "device": "levo",
+  "name": "Lev'O+ - Pressure Sensor Probe",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "pressure",
+    "level"
+  ],
+  "provides": [
+    "analog.current",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "watteco",
+    "device": "levo",
+    "codecId": "levo-codec",
+    "codecFile": "levo.js",
+    "codecSha256": "c09447d1664514bd53b2afbb9cf8a9d0794e837cc2578a6cb7543b2cd79f2a0a",
+    "referencedAt": "2026-07-10"
+  }
+}

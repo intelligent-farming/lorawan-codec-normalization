@@ -1,0 +1,37 @@
+{
+  "uplink": [
+    {
+      "description": "Example 1: dual dendrometer + battery frame (flags=0x0003)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 17, 17, 0, 3, 64, 154, 0, 134, 48, 57, 0, 62, 12, 84]
+      },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 4369,
+          "plant": {
+            "dendrometer": 976.93
+          },
+          "dendrometer2": 11260,
+          "battery": 3.156,
+          "make": "decentlab",
+          "model": "dl-zn2"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Battery-only frame (flags=0x0002) carries no dendrometer -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 17, 17, 0, 2, 12, 84]
+      },
+      "expected": {
+        "errors": ["no dendrometer field in payload"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

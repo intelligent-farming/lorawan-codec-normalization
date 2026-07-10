@@ -1,0 +1,46 @@
+{
+  "vendor": "atim",
+  "device": "acw-dind88",
+  "name": "ACW-DIND88 - Digital Monitoring",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "pulse count"
+  ],
+  "provides": [
+    "action.contactState",
+    "battery",
+    "count2",
+    "frameType",
+    "input10",
+    "input11",
+    "input12",
+    "input13",
+    "input14",
+    "input15",
+    "input16",
+    "input2",
+    "input3",
+    "input4",
+    "input5",
+    "input6",
+    "input7",
+    "input8",
+    "input9",
+    "pulse.count"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "atim",
+    "device": "acw-dind88",
+    "codecId": "codec2",
+    "codecFile": "decodeur.js",
+    "codecSha256": "b86b0c72a7ee43f4caa766c25057326897faafe3a98f98fe3cf17d12627d8758",
+    "referencedAt": "2026-07-10"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "vendor": "netvox",
+  "device": "r718j",
+  "name": "R718J - Wireless Dry Contact Interface",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "digital input"
+  ],
+  "provides": [
+    "action.contactState",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r718j",
+    "codecId": "r718j-codec",
+    "codecFile": "payload/r718da_r718db_r718j_r718lb_r718mba.js",
+    "codecSha256": "e9bc7cc99a2db42fdb784f0a9375b5a1225234723052a67a2fc1576471862747",
+    "referencedAt": "2026-07-10"
+  }
+}

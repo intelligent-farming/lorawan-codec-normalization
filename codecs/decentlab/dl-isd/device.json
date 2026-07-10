@@ -1,0 +1,31 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-isd",
+  "name": "DL-ISD - Stem Dendrometer Sensor",
+  "categories": [
+    "dendrometer"
+  ],
+  "sensors": [
+    "size",
+    "battery"
+  ],
+  "provides": [
+    "battery",
+    "deviceId",
+    "plant.dendrometer",
+    "protocolVersion"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-isd",
+    "codecId": "dl-isd-codec",
+    "codecFile": "dl-isd.js",
+    "codecSha256": "ddbb0b484ebc6239a2c7d9d9b694d5ce10c6a30d8c907475761cb277744658cc",
+    "referencedAt": "2026-07-10"
+  }
+}

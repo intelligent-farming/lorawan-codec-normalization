@@ -1,0 +1,28 @@
+{
+  "vendor": "nke-watteco",
+  "device": "remote-t-sensor",
+  "name": "Remote temperature sensor",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "battery",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "nke-watteco",
+    "device": "remote-t-sensor",
+    "codecId": "remote-t-sensor-codec",
+    "codecFile": "remote-t-sensor.js",
+    "codecSha256": "1e4f47113eb399cda1c5c701d003b4c9a8078f42a2b549a714531a40c6e2ee64",
+    "referencedAt": "2026-07-10"
+  }
+}

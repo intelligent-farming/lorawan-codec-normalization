@@ -1,0 +1,36 @@
+{
+  "vendor": "dragino",
+  "device": "lds12-lb",
+  "name": "LDS12-LB",
+  "categories": [
+    "tank-level"
+  ],
+  "sensors": [
+    "distance",
+    "temperature",
+    "level"
+  ],
+  "provides": [
+    "battery",
+    "interruptFlag",
+    "interruptLevelHigh",
+    "lidarSignal",
+    "lidarTemp",
+    "messageType",
+    "tank.distance",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "lds12-lb",
+    "codecId": "lds12-lb-codec",
+    "codecFile": "lds12-lb.js",
+    "codecSha256": "acc66eb98872163d50faa9ca5b8d6359333f705194e0130a5d3db4324af3f587",
+    "referencedAt": "2026-07-10"
+  }
+}

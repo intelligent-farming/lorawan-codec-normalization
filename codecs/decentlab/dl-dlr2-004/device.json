@@ -1,0 +1,33 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-dlr2-004",
+  "name": "DL-DLR2-004 - Analog 4 … 20 mA Sensor Transmitter",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "analog input",
+    "current",
+    "4-20 ma",
+    "battery"
+  ],
+  "provides": [
+    "analog.current",
+    "battery",
+    "deviceId",
+    "protocolVersion"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-dlr2-004",
+    "codecId": "dl-dlr2-004-10-codec",
+    "codecFile": "dl-dlr2-004-10.js",
+    "codecSha256": "1dceea8bec89687871d2e8df2c93de380b5638504dcf060d485c5a95a10ba8f7",
+    "referencedAt": "2026-07-10"
+  }
+}

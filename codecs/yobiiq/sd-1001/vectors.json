@@ -1,0 +1,52 @@
+{
+  "uplink": [
+    {
+      "description": "Data-register report (synthetic): 100% battery, AC power on, smoke alarm active",
+      "input": {
+        "fPort": 8,
+        "bytes": [1, 0, 100, 2, 0, 1, 3, 0, 0, 4, 0, 0, 5, 0, 1, 6, 0, 0, 7, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "yobiiq",
+          "model": "sd-1001",
+          "batteryPercent": 100,
+          "powerEvent": "AC Power On",
+          "lowBatteryAlarm": false,
+          "faultAlarm": false,
+          "action": { "smoke": { "detected": true } },
+          "interconnectAlarm": false,
+          "testButtonPressed": false
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Data-register report (synthetic): no smoke, low-battery alarm",
+      "input": {
+        "fPort": 8,
+        "bytes": [1, 0, 15, 3, 0, 1, 5, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "yobiiq",
+          "model": "sd-1001",
+          "batteryPercent": 15,
+          "lowBatteryAlarm": true,
+          "action": { "smoke": { "detected": false } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Basic-information frame (channel 0xFF, TTN example bytes) carries no smoke measurement (error)",
+      "input": {
+        "fPort": 8,
+        "bytes": [255, 9, 1, 0, 255, 10, 1, 0, 255, 22, 36, 1, 100, 0, 0, 255, 15, 0, 255, 11, 0]
+      },
+      "expected": { "errors": ["basic-information frame"] },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,113 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/netvox/r718t2-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Startup version report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          72,
+          0,
+          100,
+          2,
+          32,
+          32,
+          8,
+          17,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R718T2",
+          "SWver": 10,
+          "HWver": 2,
+          "Datecode": "20200811"
+        }
+      }
+    },
+    {
+      "description": "Status report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          72,
+          1,
+          36,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "R718T2",
+          "Volt": 3.6,
+          "Alarm1": 0,
+          "Alarm2": 1
+        }
+      }
+    },
+    {
+      "description": "Configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          129,
+          72,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ConfigReportRsp",
+          "Device": "R718T2",
+          "Status": "Success"
+        }
+      }
+    },
+    {
+      "description": "Read configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          130,
+          72,
+          3,
+          132,
+          7,
+          8,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ReadConfigReportRsp",
+          "Device": "R718T2",
+          "MinTime": 900,
+          "MaxTime": 1800,
+          "BatteryChange": 0.1
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "id": "button",
+  "name": "Button / scene panel",
+  "description": "User-triggered push buttons, panic / emergency buttons, and scene panels reporting a discrete press event.",
+  "atLeastOne": ["action.button.pressed", "action.button.event", "action.button.count"],
+  "provides": ["battery"],
+  "notes": "action.button.pressed is boolean; action.button.event is the gesture enum (single/double/triple/long/hold/release); action.button.count is presses in the reporting interval."
+}

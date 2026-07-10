@@ -1,0 +1,34 @@
+{
+  "uplink": [
+    {
+      "description": "TX TEMP CONT1 600-032 (EN312, type 0x0F): PT1000 probe -30.4 C (negative, two's-complement), battery 100%",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 220, 15, 10, 1, 254, 208, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "temperature": -30.4,
+          "batteryPercent": 100,
+          "deviceId": 220,
+          "sequenceCounter": 10,
+          "make": "enless-wireless",
+          "model": "tx-temp-cont1-600-032"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Short frame is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 220, 15, 10, 1]
+      },
+      "expected": {
+        "errors": ["expected 14-byte EN312 frame"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

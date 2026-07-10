@@ -1,0 +1,37 @@
+{
+  "uplink": [
+    {
+      "description": "Switch frame (opcode 6): state 1 -> manhole open; input voltage 3.6 V",
+      "input": { "fPort": 1, "bytes": [1, 1, 104, 6, 1] },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "action": { "contactState": "open" },
+          "make": "mutelcor",
+          "model": "mtc-mh01"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Switch frame (opcode 6): state 0 -> manhole closed",
+      "input": { "fPort": 1, "bytes": [1, 1, 104, 6, 0] },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "action": { "contactState": "closed" },
+          "make": "mutelcor",
+          "model": "mtc-mh01"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Heartbeat frame (opcode 0) carries no contact state",
+      "input": { "fPort": 1, "bytes": [1, 1, 104, 0] },
+      "expected": { "errors": ["is not a Switch/contact frame"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,66 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/decentlab/dl-dlr2-012-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Example 1",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          23,
+          131,
+          0,
+          3,
+          22,
+          46,
+          0,
+          135,
+          12,
+          51
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.123
+          },
+          "device_id": 6019,
+          "protocol_version": 2,
+          "strain_gauge": {
+            "displayName": "Strain gauge",
+            "unit": "µm⋅m⁻¹",
+            "value": 1713.0065082323433
+          }
+        }
+      }
+    },
+    {
+      "description": "Example 2",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          23,
+          131,
+          0,
+          2,
+          12,
+          51
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.123
+          },
+          "device_id": 6019,
+          "protocol_version": 2
+        }
+      }
+    }
+  ]
+}

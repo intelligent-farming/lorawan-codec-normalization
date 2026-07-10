@@ -1,0 +1,65 @@
+{
+  "uplink": [
+    {
+      "description": "real TTN example: SN present, first frame is analog input (0x0C) -> analog.voltage 0 V @ 2023-12-07T16:00:00Z",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 227, 180, 138, 247, 1, 12, 0, 0, 236, 113, 101, 1, 0, 0, 0, 0, 3, 12, 0, 0, 236, 113, 101, 2, 0, 0, 0, 0, 3, 12, 0, 0, 236, 113, 101, 3, 0, 0, 0, 0, 3, 13, 0, 0, 236, 113, 101, 1, 60, 56, 0, 0, 13, 0, 0, 236, 113, 101, 2, 0, 0, 0, 0, 13, 0, 0, 236, 113, 101, 3, 0, 0, 0, 0, 11, 0, 0, 236, 113, 101, 3, 1]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 0,
+          "time": "2023-12-07T16:00:00Z",
+          "analog": { "voltage": 0 },
+          "make": "iot-factory",
+          "model": "metering-node"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "synthetic pulse-counter frame (0x0D): counter 14396 -> pulse.total; battery 50%",
+      "input": {
+        "fPort": 10,
+        "bytes": [100, 0, 13, 0, 0, 236, 113, 101, 1, 60, 56, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 50,
+          "time": "2023-12-07T16:00:00Z",
+          "pulse": { "total": 14396 },
+          "make": "iot-factory",
+          "model": "metering-node"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "synthetic 4-20 mA frame (0x0A): 20 mA -> analog.current",
+      "input": {
+        "fPort": 10,
+        "bytes": [100, 0, 10, 0, 1, 0, 236, 113, 101, 20, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 50,
+          "time": "2023-12-07T16:00:00Z",
+          "analog": { "current": 20 },
+          "make": "iot-factory",
+          "model": "metering-node"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "real TTN example: first frame is a movement frame (0x13), not an input measurement",
+      "input": {
+        "fPort": 10,
+        "bytes": [194, 226, 19, 0, 88, 11, 115, 101, 0, 4, 0, 89, 11, 115, 101, 83, 228, 8, 9, 31, 172, 201, 128, 107, 12, 191, 153, 240, 193, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": { "errors": ["is not an input measurement"] },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

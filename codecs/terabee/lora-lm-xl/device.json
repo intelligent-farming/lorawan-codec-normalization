@@ -8,7 +8,11 @@
   "sensors": [
     "distance"
   ],
-  "provides": [],
+  "provides": [
+    "battery",
+    "tank.distance",
+    "tank.level"
+  ],
   "variantOf": null,
   "downlink": {
     "encode": false,

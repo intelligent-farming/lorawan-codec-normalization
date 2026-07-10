@@ -1,0 +1,28 @@
+{
+  "vendor": "watteco",
+  "device": "tempo",
+  "name": "Temp'O - Indoor Temperature",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "battery",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "watteco",
+    "device": "tempo",
+    "codecId": "tempo-codec",
+    "codecFile": "tempo.js",
+    "codecSha256": "607a3f39c48a155f944feeb444f174e75cf49f1c9388ceeebd1d5fca889fea5e",
+    "referencedAt": "2026-07-10"
+  }
+}

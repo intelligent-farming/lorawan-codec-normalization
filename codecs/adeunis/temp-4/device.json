@@ -1,0 +1,32 @@
+{
+  "vendor": "adeunis",
+  "device": "temp-4",
+  "name": "Temp 4 / Temp 2S 4 IP68 - Temperature Probe",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "frameCounter",
+    "lowBattery",
+    "temperature",
+    "temperature2",
+    "temperatures1",
+    "temperatures2"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "adeunis",
+    "device": "temp-4",
+    "codecId": "temp-codec",
+    "codecFile": "temp_lib.js",
+    "codecSha256": "da8ac8d37df51424564eb62a2cdd00135106ebe782ddc2d41f51db75857df561",
+    "referencedAt": "2026-07-10"
+  }
+}

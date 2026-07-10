@@ -1,0 +1,33 @@
+{
+  "vendor": "terabee",
+  "device": "people-flow-counting-l-xl",
+  "name": "people-flow-counting-l-xl",
+  "categories": [
+    "people-counter"
+  ],
+  "sensors": [
+    "distance"
+  ],
+  "provides": [
+    "countInTotal",
+    "countOutTotal",
+    "multiDevIssue",
+    "people.total",
+    "tpcStopped",
+    "tpcStuck",
+    "wifiApEnabled"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "terabee",
+    "device": "people-flow-counting-l-xl",
+    "codecId": "people-flow-counting-l-xl-codec",
+    "codecFile": "people-flow-counting-l-xl.js",
+    "codecSha256": "6797c725679e1e29e1c9cebd403316ceb0a610bfd814aeffad69d5747dfd1b81",
+    "referencedAt": "2026-07-10"
+  }
+}

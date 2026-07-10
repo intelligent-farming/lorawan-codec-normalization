@@ -1,0 +1,64 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/decentlab/dl-ifd-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Example 1",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          86,
+          220,
+          0,
+          3,
+          2,
+          188,
+          12,
+          72
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.144
+          },
+          "device_id": 22236,
+          "fruit_size": {
+            "displayName": "Fruit size",
+            "unit": "mm",
+            "value": 7
+          },
+          "protocol_version": 2
+        }
+      }
+    },
+    {
+      "description": "Example 2",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          86,
+          220,
+          0,
+          2,
+          12,
+          72
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.144
+          },
+          "device_id": 22236,
+          "protocol_version": 2
+        }
+      }
+    }
+  ]
+}

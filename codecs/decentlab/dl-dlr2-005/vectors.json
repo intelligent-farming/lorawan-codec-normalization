@@ -1,0 +1,36 @@
+{
+  "uplink": [
+    {
+      "description": "Example 1: 0-3 V analog + battery frame (flags=0x0003)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 17, 58, 0, 3, 197, 85, 0, 216, 12, 109]
+      },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 4410,
+          "analog": {
+            "voltage": 2.0806
+          },
+          "battery": 3.181,
+          "make": "decentlab",
+          "model": "dl-dlr2-005"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Example 2: battery-only frame (flags=0x0002) carries no voltage block -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 17, 58, 0, 2, 12, 109]
+      },
+      "expected": {
+        "errors": ["no voltage field in payload"]
+      },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

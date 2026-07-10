@@ -1,0 +1,47 @@
+{
+  "uplink": [
+    {
+      "description": "Status report: 3.6 V, channel-1 5.1 mA, channel-2 10.3 mA",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 68, 1, 36, 5, 10, 1, 3, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "r718ka2",
+          "battery": 3.6,
+          "analog": { "current": 5.1 },
+          "current2": 10.3
+        }
+      },
+      "source": "ttn-example",
+      "_note": "TTN example status report (netvox r718ka2 codec yaml, Apache-2.0). Upstream oracle: Volt 3.6, Current_1 5, Current_2 10, FineCurrent_1 0.1, FineCurrent_2 0.3. byte3 0x24 -> 3.6 V; byte4=5 + byte6=1 (0.1) -> analog.current 5.1 mA; byte5=10 + byte7=3 (0.1) -> current2 10.3 mA."
+    },
+    {
+      "description": "Startup version frame (report type 0x00) carries no measurement",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 68, 0, 100, 11, 32, 25, 17, 18, 0, 0]
+      },
+      "expected": {
+        "errors": ["device information frame"]
+      },
+      "source": "ttn-example",
+      "_note": "TTN example startup version report (byte2 == 0x00). No measurement."
+    },
+    {
+      "description": "Configuration response on fPort 7 carries no measurement",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 68, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 7"]
+      },
+      "source": "ttn-example",
+      "_note": "TTN example ConfigReportRsp on fPort 7."
+    }
+  ],
+  "downlink": []
+}

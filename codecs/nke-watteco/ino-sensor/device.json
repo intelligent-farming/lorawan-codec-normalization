@@ -1,0 +1,41 @@
+{
+  "vendor": "nke-watteco",
+  "device": "ino-sensor",
+  "name": "In'O - I/O Interface",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "current",
+    "voltage",
+    "energy"
+  ],
+  "provides": [
+    "action.contactState",
+    "analog.raw",
+    "battery",
+    "contactState10",
+    "contactState2",
+    "contactState3",
+    "contactState4",
+    "contactState5",
+    "contactState6",
+    "contactState7",
+    "contactState8",
+    "contactState9",
+    "pulse.total"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "nke-watteco",
+    "device": "ino-sensor",
+    "codecId": "ino-sensor-codec",
+    "codecFile": "ino-sensor.js",
+    "codecSha256": "57486e234686014036a3601359e5dbccbfc52bd0d9290492fdd848fffb370663",
+    "referencedAt": "2026-07-10"
+  }
+}

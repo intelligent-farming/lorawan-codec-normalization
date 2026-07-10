@@ -1,0 +1,36 @@
+{
+  "vendor": "dingtek",
+  "device": "dc520",
+  "name": "DC520 - People Counter",
+  "categories": [
+    "people-counter"
+  ],
+  "sensors": [
+    "radar"
+  ],
+  "provides": [
+    "balanceAlarm",
+    "battery",
+    "batteryAlarm",
+    "errorCode",
+    "frameCounter",
+    "inAlarm",
+    "outAlarm",
+    "people.in",
+    "people.out",
+    "people.total"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dingtek",
+    "device": "dc520",
+    "codecId": "dc520-codec",
+    "codecFile": "dc520.js",
+    "codecSha256": "01e919fe7412cb9b6dff283f8278eb086724720474941a17b2c2c4db8744ca26",
+    "referencedAt": "2026-07-10"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "uplink": [
+    {
+      "description": "Status report, no alarm (TTN example bytes)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 211, 1, 36, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "r309",
+          "battery": 3.6,
+          "action": { "button": { "pressed": false } },
+          "inactivityAlarm": false
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Emergency button pressed (synthetic: byte[4] alarm set)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 211, 1, 36, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "r309",
+          "battery": 3.6,
+          "action": { "button": { "pressed": true, "event": "single" } },
+          "inactivityAlarm": false
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Configuration response fPort 7 returns an error",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 211, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": { "errors": ["unsupported fPort 7"] },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

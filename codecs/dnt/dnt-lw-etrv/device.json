@@ -1,0 +1,32 @@
+{
+  "vendor": "dnt",
+  "device": "dnt-lw-etrv",
+  "name": "LoRaWAN® Radiator thermostat",
+  "categories": [
+    "thermostat"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "air.temperature",
+    "battery",
+    "batteryCoverLocked",
+    "hvac.mode",
+    "hvac.setpoint",
+    "hvac.valvePosition"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dnt",
+    "device": "dnt-lw-etrv",
+    "codecId": "dnt-lw-etrv-codec",
+    "codecFile": "dnt-lw-etrv.js",
+    "codecSha256": "d33b5dc03d4015043f05de3c69f254eaed0569996ce10069fad06f5eae2d4e2e",
+    "referencedAt": "2026-07-10"
+  }
+}

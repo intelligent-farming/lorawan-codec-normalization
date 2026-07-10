@@ -1,0 +1,27 @@
+{
+  "uplink": [
+    {
+      "description": "single pulse reading 12345 (LE @9) with read time 2021-01-01T00:00:00Z (LE seconds @3)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 2, 3, 0, 102, 238, 95, 0, 0, 57, 48, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "pulse": { "total": 12345 },
+          "time": "2021-01-01T00:00:00Z",
+          "make": "tehama",
+          "model": "tehama-pulse-mdt"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "payload shorter than 13 bytes is rejected",
+      "input": { "fPort": 1, "bytes": [1, 2, 3, 0, 102, 238, 95] },
+      "expected": { "errors": ["payload too short"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,31 @@
+{
+  "vendor": "dingtek",
+  "device": "dc500",
+  "name": "DC500 - People Counter",
+  "categories": [
+    "people-counter"
+  ],
+  "sensors": [
+    "pulse count"
+  ],
+  "provides": [
+    "battery",
+    "batteryAlarm",
+    "countAlarm",
+    "frameCounter",
+    "people.total"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dingtek",
+    "device": "dc500",
+    "codecId": "dc500-codec",
+    "codecFile": "dc500.js",
+    "codecSha256": "4ae7fe1d3f323cc03a9742992765928e85017b1c1ab059eae9a6ec611076e92a",
+    "referencedAt": "2026-07-10"
+  }
+}

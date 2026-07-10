@@ -1,0 +1,38 @@
+{
+  "vendor": "elv",
+  "device": "elv-lw-oc8",
+  "name": "LoRaWAN® Module Board Open Collector 8fold",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "digital input"
+  ],
+  "provides": [
+    "action.contactState",
+    "appVersion",
+    "blVersion",
+    "contactState2",
+    "contactState3",
+    "contactState4",
+    "contactState5",
+    "contactState6",
+    "contactState7",
+    "contactState8",
+    "supplyVoltage",
+    "txReason"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "elv",
+    "device": "elv-lw-oc8",
+    "codecId": "elv-lw-oc8-codec",
+    "codecFile": "elv-lw-oc8.js",
+    "codecSha256": "5f941208481ed23412a97b58ad94d62b2cadf1431c46ce0a4c6d9a90beb1db3d",
+    "referencedAt": "2026-07-10"
+  }
+}

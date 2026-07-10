@@ -1,0 +1,35 @@
+{
+  "vendor": "dragino",
+  "device": "dds04-lb",
+  "name": "DDS04-LB",
+  "categories": [
+    "tank-level"
+  ],
+  "sensors": [
+    "distance",
+    "level"
+  ],
+  "provides": [
+    "battery",
+    "distance2Meters",
+    "distance3Meters",
+    "distance4Meters",
+    "extiLevelHigh",
+    "extiTrigger",
+    "messageType",
+    "tank.distance"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "dds04-lb",
+    "codecId": "dds04-lb-codec",
+    "codecFile": "DDS04-LB.js",
+    "codecSha256": "a919537c9a96562e732659f53b8cb61e4b8d01f69c9d35031ee9cffe3ac162bc",
+    "referencedAt": "2026-07-10"
+  }
+}

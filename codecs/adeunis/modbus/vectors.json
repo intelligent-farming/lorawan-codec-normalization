@@ -1,0 +1,38 @@
+{
+  "uplink": [
+    {
+      "description": "0x44 Modbus data (int32): registers [-1, 170, -128]; primary -> analog.raw; low battery",
+      "input": {
+        "fPort": 1,
+        "bytes": [68, 2, 255, 255, 255, 255, 0, 0, 0, 170, 255, 255, 255, 128]
+      },
+      "expected": {
+        "data": {
+          "analog": { "raw": -1 },
+          "registerValues": [-1, 170, -128],
+          "configurationDone": false,
+          "lowBattery": true,
+          "hardwareError": false,
+          "configurationInconsistency": false,
+          "modbusReadError": false,
+          "frameCounter": 0,
+          "make": "adeunis",
+          "model": "modbus"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "0x45 Modbus alarm frame is not a plain register read and is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [69, 0, 1, 1, 0, 10, 0, 5]
+      },
+      "expected": {
+        "errors": ["unsupported frame code"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

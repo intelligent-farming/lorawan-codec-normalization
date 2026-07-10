@@ -1,0 +1,30 @@
+{
+  "vendor": "netvox",
+  "device": "ra02a",
+  "name": "RA02A - Wireless Smoke Detector",
+  "categories": [
+    "smoke-detector"
+  ],
+  "sensors": [
+    "smoke"
+  ],
+  "provides": [
+    "action.smoke.detected",
+    "air.temperature",
+    "battery",
+    "highTempAlarm"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "ra02a",
+    "codecId": "ra02a-codec",
+    "codecFile": "payload/ra02a.js",
+    "codecSha256": "f94a46ba7ef907b711142283c17ac101eee6f923905e26c47dff881d75015aa6",
+    "referencedAt": "2026-07-10"
+  }
+}

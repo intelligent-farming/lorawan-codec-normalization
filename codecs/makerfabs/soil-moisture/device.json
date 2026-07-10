@@ -1,0 +1,28 @@
+{
+  "vendor": "makerfabs",
+  "device": "soil-moisture",
+  "name": "Soil Moisture",
+  "categories": [
+    "soil-monitor"
+  ],
+  "sensors": [
+    "battery"
+  ],
+  "provides": [
+    "battery",
+    "soilMoistureAdc"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "makerfabs",
+    "device": "soil-moisture",
+    "codecId": "soil-moisture-codec",
+    "codecFile": "soil-moisture.js",
+    "codecSha256": "52a826ce6626c1287fde13f823d961d98d111c5bd6ff95fa6c9f13e3073fdaab",
+    "referencedAt": "2026-07-10"
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "uplink": [
+    {
+      "description": "Single press, 3.00 V, MCU -40 C (synthetic: version 1, triggered, code 1, count 1)",
+      "input": {
+        "fPort": 1,
+        "bytes": [65, 100, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "make": "n-fuse",
+          "model": "sta",
+          "version": 1,
+          "txPower": 0,
+          "battery": 3,
+          "mcuTemperature": -40,
+          "action": { "button": { "pressed": true, "event": "single", "count": 1 } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Double press (synthetic: trigger low bit set -> code 2, count 2)",
+      "input": {
+        "fPort": 1,
+        "bytes": [67, 100, 0, 2]
+      },
+      "expected": {
+        "data": {
+          "make": "n-fuse",
+          "model": "sta",
+          "version": 1,
+          "txPower": 0,
+          "battery": 3,
+          "mcuTemperature": -40,
+          "action": { "button": { "pressed": true, "event": "double", "count": 2 } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Scheduled (RTC) interval report, no press (synthetic: triggered bit clear)",
+      "input": {
+        "fPort": 1,
+        "bytes": [64, 100, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "n-fuse",
+          "model": "sta",
+          "version": 1,
+          "txPower": 0,
+          "battery": 3,
+          "mcuTemperature": -40,
+          "action": { "button": { "pressed": false } },
+          "scheduledReport": true
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unsupported fPort returns an error",
+      "input": {
+        "fPort": 2,
+        "bytes": [65, 100, 0, 1]
+      },
+      "expected": { "errors": ["unsupported fPort 2"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,37 @@
+{
+  "vendor": "dingtek",
+  "device": "do200",
+  "name": "DO200 - Parking Occupancy Sensor",
+  "categories": [
+    "occupancy"
+  ],
+  "sensors": [
+    "level",
+    "magnetometer"
+  ],
+  "provides": [
+    "action.occupancy.occupied",
+    "battery",
+    "batteryAlarm",
+    "frameCounter",
+    "levelAlarm",
+    "magnetAlarm",
+    "magnetometerX",
+    "magnetometerY",
+    "magnetometerZ",
+    "rangingLevel"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dingtek",
+    "device": "do200",
+    "codecId": "do200-codec",
+    "codecFile": "do200.js",
+    "codecSha256": "842ba3f8646571db8568063ec20b899b9426f9d203987005ed51bd633623da46",
+    "referencedAt": "2026-07-10"
+  }
+}

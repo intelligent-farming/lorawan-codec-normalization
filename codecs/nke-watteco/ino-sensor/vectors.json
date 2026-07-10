@@ -1,0 +1,64 @@
+{
+  "uplink": [
+    {
+      "description": "standard report: 10 digital input states (In'O bitmap16, cluster 0x8005 attr 0), all inputs closed | payload 110A80050000190FFF03",
+      "input": { "fPort": 125, "bytes": [17, 10, 128, 5, 0, 0, 25, 3, 255] },
+      "expected": {
+        "data": {
+          "action.contactState": "closed",
+          "contactState2": "closed",
+          "contactState3": "closed",
+          "contactState4": "closed",
+          "contactState5": "closed",
+          "contactState6": "closed",
+          "contactState7": "closed",
+          "contactState8": "closed",
+          "contactState9": "closed",
+          "contactState10": "closed",
+          "make": "nke-watteco",
+          "model": "ino-sensor"
+        }
+      },
+      "source": "datasheet"
+    },
+    {
+      "description": "standard report: binary input 1 state closed (cluster 0x000F attr 0x0055) | payload 110A000F00551001",
+      "input": { "fPort": 125, "bytes": [17, 10, 0, 15, 0, 85, 16, 1] },
+      "expected": {
+        "data": { "action.contactState": "closed", "make": "nke-watteco", "model": "ino-sensor" }
+      },
+      "source": "datasheet"
+    },
+    {
+      "description": "standard report: pulse count on input 1 (cluster 0x000F attr 0x0402, uint32) | payload 110A000F04022300000000",
+      "input": { "fPort": 125, "bytes": [17, 10, 0, 15, 4, 2, 35, 0, 0, 0, 0] },
+      "expected": {
+        "data": { "pulse.total": 0, "make": "nke-watteco", "model": "ino-sensor" }
+      },
+      "source": "datasheet"
+    },
+    {
+      "description": "standard report: analog input 1 present value 13.0 (cluster 0x000C attr 0x0055, float32) | payload 110A000C00553941500000",
+      "input": { "fPort": 125, "bytes": [17, 10, 0, 12, 0, 85, 57, 65, 80, 0, 0] },
+      "expected": {
+        "data": { "analog.raw": 13, "make": "nke-watteco", "model": "ino-sensor" }
+      },
+      "source": "datasheet"
+    },
+    {
+      "description": "standard report: disposable battery voltage 3.688 V (cluster 0x0050 attr 6) | payload 110A00500006410503040E6804",
+      "input": { "fPort": 125, "bytes": [17, 10, 0, 80, 0, 6, 65, 5, 3, 4, 14, 104, 4] },
+      "expected": {
+        "data": { "battery": 3.688, "make": "nke-watteco", "model": "ino-sensor" }
+      },
+      "source": "datasheet"
+    },
+    {
+      "description": "batch (Huffman) frame is not decoded -> error",
+      "input": { "fPort": 125, "bytes": [54, 32, 0, 0, 0, 35, 7, 8, 236, 125, 214, 11, 61, 178, 15, 66, 4, 0, 88, 0] },
+      "expected": { "errors": ["batch frame not supported"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

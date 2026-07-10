@@ -1,0 +1,31 @@
+{
+  "vendor": "netvox",
+  "device": "rb02b",
+  "name": "RB02B - Wireless 2-Gang Push Button",
+  "categories": [
+    "button"
+  ],
+  "sensors": [
+    "button"
+  ],
+  "provides": [
+    "action.button.count",
+    "action.button.event",
+    "action.button.pressed",
+    "battery",
+    "gang2Pressed"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "rb02b",
+    "codecId": "rb02b-codec",
+    "codecFile": "payload/rb02b.js",
+    "codecSha256": "17dbdbae510e490d65f004d13b26dacca82cc0e88a857159229da41949ea83a1",
+    "referencedAt": "2026-07-10"
+  }
+}

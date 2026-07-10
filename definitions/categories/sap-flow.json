@@ -1,0 +1,8 @@
+{
+  "id": "sap-flow",
+  "name": "Sap flow",
+  "description": "Sap-flow sensors measuring the rate of sap movement through a plant stem.",
+  "requires": ["plant.sapFlow"],
+  "provides": ["air.temperature", "battery"],
+  "notes": "plant.sapFlow is the flow rate in grams per hour (g/h)."
+}

@@ -1,0 +1,40 @@
+{
+  "vendor": "nke-watteco",
+  "device": "pulse-senso-sensor",
+  "name": "Pulse Sens'O - Smart Meter Interface",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "pulse count",
+    "digital input"
+  ],
+  "provides": [
+    "action.contactState",
+    "battery",
+    "contactState10",
+    "contactState2",
+    "contactState3",
+    "contactState4",
+    "contactState5",
+    "contactState6",
+    "contactState7",
+    "contactState8",
+    "contactState9",
+    "pulse.total",
+    "pulseTotal2"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "nke-watteco",
+    "device": "pulse-senso-sensor",
+    "codecId": "pulse-senso-sensor-codec",
+    "codecFile": "pulse-senso-sensor.js",
+    "codecSha256": "0ec3cd5bcb8ce7d4c85cdec6832731bd2eb407d151d4adffee6e7941df28c00a",
+    "referencedAt": "2026-07-10"
+  }
+}

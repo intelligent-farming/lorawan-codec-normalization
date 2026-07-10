@@ -1,0 +1,75 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/decentlab/dl-blg-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Example 1",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          48,
+          197,
+          0,
+          3,
+          164,
+          12,
+          0,
+          129,
+          12,
+          96
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.168
+          },
+          "device_id": 12485,
+          "protocol_version": 2,
+          "temperature": {
+            "displayName": "Temperature",
+            "unit": "°C",
+            "value": 22.028848392450755
+          },
+          "thermistor_resistance": {
+            "displayName": "Thermistor resistance",
+            "unit": "Ω",
+            "value": 115020.68221552655
+          },
+          "voltage_ratio": {
+            "displayName": "Voltage ratio",
+            "value": 0.006409406661987305
+          }
+        }
+      }
+    },
+    {
+      "description": "Example 2",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          48,
+          197,
+          0,
+          2,
+          12,
+          96
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.168
+          },
+          "device_id": 12485,
+          "protocol_version": 2
+        }
+      }
+    }
+  ]
+}

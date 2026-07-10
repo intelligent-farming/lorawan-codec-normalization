@@ -1,0 +1,29 @@
+{
+  "vendor": "fludia",
+  "device": "fm432p-1mn",
+  "name": "FM432p - Pulse Multifluid Tracker - 1 min",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "energy"
+  ],
+  "provides": [
+    "increments",
+    "pulse.count",
+    "pulse.total"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "fludia",
+    "device": "fm432p-1mn",
+    "codecId": "fm432p-1mn-codec",
+    "codecFile": "fm432p-1mn-decode.js",
+    "codecSha256": "a143373fb3425a9ff989c6949dcd3b79332aa82f07907e696e5c41f05fa82a9f",
+    "referencedAt": "2026-07-10"
+  }
+}

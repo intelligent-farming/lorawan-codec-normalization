@@ -1,0 +1,60 @@
+{
+  "uplink": [
+    {
+      "description": "Positive wide temperature (TTN example): +781.23 C, battery Good",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 192, 3, 3, 13, 58, 225]
+      },
+      "expected": {
+        "data": {
+          "make": "ezurio",
+          "model": "rs26x-ext-rtd-temp-sensor",
+          "temperature": 781.23,
+          "batteryStatus": "Good",
+          "deviceStatus": {
+            "sensorFault": false,
+            "bandwidthLimitation": false,
+            "backlogsAvailable": false,
+            "backlogWraparound": false,
+            "unsupportedApiVersion": false
+          }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Negative wide temperature (TTN example): -129.8 C, battery Good",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 192, 3, 255, 126, 51, 52]
+      },
+      "expected": {
+        "data": {
+          "make": "ezurio",
+          "model": "rs26x-ext-rtd-temp-sensor",
+          "temperature": -129.8,
+          "batteryStatus": "Good",
+          "deviceStatus": {
+            "sensorFault": false,
+            "bandwidthLimitation": false,
+            "backlogsAvailable": false,
+            "backlogWraparound": false,
+            "unsupportedApiVersion": false
+          }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Sensor-configuration frame (0x01, Read Period) is not a measurement",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 192, 2, 1, 44]
+      },
+      "expected": { "errors": ["sensor-configuration frame"] },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

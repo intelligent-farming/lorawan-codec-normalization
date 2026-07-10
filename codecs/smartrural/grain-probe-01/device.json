@@ -1,0 +1,32 @@
+{
+  "vendor": "smartrural",
+  "device": "grain-probe-01",
+  "name": "Grain Probe",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "battery",
+    "deviceTime",
+    "sensorMode",
+    "temperature",
+    "temperature2",
+    "temperatures"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "smartrural",
+    "device": "grain-probe-01",
+    "codecId": "grain-probe-codec",
+    "codecFile": "grain-probe.js",
+    "codecSha256": "af64e0d919d628da59abacac4c1c1f9d84d11fd8ae78936b3f72eb4f2f5002d7",
+    "referencedAt": "2026-07-10"
+  }
+}

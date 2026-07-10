@@ -1,0 +1,31 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-ifd",
+  "name": "DL-IFD - Fruit Dendrometer Sensor",
+  "categories": [
+    "dendrometer"
+  ],
+  "sensors": [
+    "size",
+    "battery"
+  ],
+  "provides": [
+    "battery",
+    "deviceId",
+    "plant.dendrometer",
+    "protocolVersion"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-ifd",
+    "codecId": "dl-ifd-codec",
+    "codecFile": "dl-ifd.js",
+    "codecSha256": "41ce66e5f6c7eb7a33a5fcf49325d44c75f0910d9d1129714270e971720ccb6a",
+    "referencedAt": "2026-07-10"
+  }
+}

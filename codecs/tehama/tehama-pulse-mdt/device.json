@@ -1,0 +1,29 @@
+{
+  "vendor": "tehama",
+  "device": "tehama-pulse-mdt",
+  "name": "Single Pulse Sensor",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "pulse count",
+    "temperature"
+  ],
+  "provides": [
+    "pulse.total",
+    "time"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "tehama",
+    "device": "tehama-pulse-mdt",
+    "codecId": "tehama-pulse-mdt-codec",
+    "codecFile": "tehama-pulse-mdt.js",
+    "codecSha256": "97031c94ddd097adac0c509ceb0ba6e1a4565b2aef833be97e5e6bf58af605ef",
+    "referencedAt": "2026-07-10"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "vendor": "enless-wireless",
+  "device": "tx-pulse-atex-600-037",
+  "name": "600-037 - Pulse Meter sensor - ATEX Approved(Gas)",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "pulse count"
+  ],
+  "provides": [
+    "batteryPercent",
+    "channel2Total",
+    "deviceId",
+    "ocTotal",
+    "pulse.total",
+    "sequenceCounter"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "enless-wireless",
+    "device": "tx-pulse-atex-600-037",
+    "codecId": "tx-pulse-atex-600-037-codec",
+    "codecFile": "enlessdecoder.js",
+    "codecSha256": "a476a50a07fa25a8326f561778ad7c7650e53516bd00e0cce41c868402f55a07",
+    "referencedAt": "2026-07-10"
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "uplink": [
+    {
+      "description": "TX CONTACT 600-039 (EN319, type 0x0B): all inputs open, counts 24/40/86, battery 100%",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 180, 11, 14, 1, 0, 0, 0, 24, 0, 0, 0, 40, 0, 0, 0, 86, 0, 4, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "action": { "contactState": "open" },
+          "channel2ContactState": "open",
+          "ocContactState": "open",
+          "channel1Count": 24,
+          "channel2Count": 40,
+          "ocCount": 86,
+          "batteryPercent": 100,
+          "deviceId": 180,
+          "sequenceCounter": 14,
+          "make": "enless-wireless",
+          "model": "tx-contact-600-039"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Synthetic: channel 1 contact closed (state word bit 4 set)",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 180, 11, 15, 1, 0, 0, 0, 24, 0, 0, 0, 40, 0, 0, 0, 86, 0, 4, 0, 17]
+      },
+      "expected": {
+        "data": {
+          "action": { "contactState": "closed" },
+          "channel2ContactState": "open",
+          "ocContactState": "open",
+          "channel1Count": 24,
+          "channel2Count": 40,
+          "ocCount": 86,
+          "batteryPercent": 100,
+          "deviceId": 180,
+          "sequenceCounter": 15,
+          "make": "enless-wireless",
+          "model": "tx-contact-600-039"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Frame with wrong device type byte is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 180, 8, 14, 1, 0, 0, 0, 24, 0, 0, 0, 40, 0, 0, 0, 86, 0, 4, 0, 1]
+      },
+      "expected": {
+        "errors": ["unexpected device type"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

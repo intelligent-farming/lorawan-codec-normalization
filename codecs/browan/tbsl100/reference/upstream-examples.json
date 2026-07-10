@@ -1,0 +1,39 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/browan/tbsl100-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Sound level keep alive",
+      "input": {
+        "fPort": 105,
+        "bytes": [
+          0,
+          11,
+          54,
+          40
+        ]
+      },
+      "output": {
+        "data": {
+          "status": 0,
+          "battery": 3.6,
+          "decibel": 40,
+          "temperatureBoard": 22
+        }
+      }
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [
+          1
+        ]
+      },
+      "output": {
+        "errors": [
+          "unknown FPort"
+        ]
+      }
+    }
+  ]
+}

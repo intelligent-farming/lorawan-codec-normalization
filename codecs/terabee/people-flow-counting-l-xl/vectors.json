@@ -1,0 +1,56 @@
+{
+  "uplink": [
+    {
+      "description": "Counting data uplink (TTN example bytes): in=200, out=456, no flags",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 0, 200, 0, 0, 1, 200, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "terabee",
+          "model": "people-flow-counting-l-xl",
+          "people": { "total": -256 },
+          "countInTotal": 200,
+          "countOutTotal": 456,
+          "tpcStopped": false,
+          "tpcStuck": false,
+          "multiDevIssue": false,
+          "wifiApEnabled": false
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Counting data uplink with all status flags set (TTN example bytes)",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 0, 0, 0, 0, 0, 0, 15]
+      },
+      "expected": {
+        "data": {
+          "make": "terabee",
+          "model": "people-flow-counting-l-xl",
+          "people": { "total": 0 },
+          "countInTotal": 0,
+          "countOutTotal": 0,
+          "tpcStopped": true,
+          "tpcStuck": true,
+          "multiDevIssue": true,
+          "wifiApEnabled": true
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Command/parameter response fPort is not a measurement (error)",
+      "input": {
+        "fPort": 100,
+        "bytes": [1, 5, 220]
+      },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

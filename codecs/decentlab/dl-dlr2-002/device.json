@@ -1,0 +1,33 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-dlr2-002",
+  "name": "DL-DLR2-002 - Pulse Counter Dry Contact Transmitter",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "pulse count",
+    "battery"
+  ],
+  "provides": [
+    "battery",
+    "deviceId",
+    "protocolVersion",
+    "pulse.count",
+    "pulse.total",
+    "pulseInterval"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-dlr2-002",
+    "codecId": "dl-dlr2-002-codec",
+    "codecFile": "dl-dlr2-002.js",
+    "codecSha256": "bf6cc8e0a96f11de42406744368dc9b5c2f177888be58152c19c951bd9ab656d",
+    "referencedAt": "2026-07-10"
+  }
+}

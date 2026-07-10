@@ -1,0 +1,42 @@
+{
+  "uplink": [
+    {
+      "description": "Event-trigger telemetry frame (TTN example bytes)",
+      "input": {
+        "fPort": 3,
+        "bytes": [128, 0, 2, 1, 21, 1, 1, 1, 0, 1, 111, 0, 0, 0, 0, 0, 0, 0, 1, 0, 129]
+      },
+      "expected": {
+        "data": {
+          "make": "dingtek",
+          "model": "dc500",
+          "people": { "total": 257 },
+          "countAlarm": false,
+          "batteryAlarm": true,
+          "battery": 3.67,
+          "frameCounter": 1
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Parameter confirmation frame carries no measurement (error)",
+      "input": {
+        "fPort": 3,
+        "bytes": [128, 0, 2, 3, 12, 1, 3, 4, 1, 244, 30, 129]
+      },
+      "expected": { "errors": ["parameter confirmation frame"] },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Unsupported fPort returns an error",
+      "input": {
+        "fPort": 1,
+        "bytes": [128, 0, 2, 1, 21, 1, 1, 1, 0, 1, 111, 0, 0, 0, 0, 0, 0, 0, 1, 0, 129]
+      },
+      "expected": { "errors": ["unknown FPort"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

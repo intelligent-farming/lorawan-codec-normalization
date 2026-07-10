@@ -1,0 +1,32 @@
+{
+  "vendor": "dingtek",
+  "device": "dc510",
+  "name": "DC510 - People Counter",
+  "categories": [
+    "people-counter"
+  ],
+  "sensors": [
+    "pulse count"
+  ],
+  "provides": [
+    "air.temperature",
+    "battery",
+    "batteryAlarm",
+    "countAlarm",
+    "frameCounter",
+    "people.total"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dingtek",
+    "device": "dc510",
+    "codecId": "dc510-codec",
+    "codecFile": "dc510.js",
+    "codecSha256": "e6b39810b8cfc79d7e631cedab69272f00a2048e6f51f9f0141f36d6192fa735",
+    "referencedAt": "2026-07-10"
+  }
+}

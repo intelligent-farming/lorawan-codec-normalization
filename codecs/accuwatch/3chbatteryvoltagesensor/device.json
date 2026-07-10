@@ -1,0 +1,29 @@
+{
+  "vendor": "accuwatch",
+  "device": "3chbatteryvoltagesensor",
+  "name": "LoraWan 3ch Voltage Sensor",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "voltage"
+  ],
+  "provides": [
+    "analog.voltage",
+    "voltage2",
+    "voltage3"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "accuwatch",
+    "device": "3chbatteryvoltagesensor",
+    "codecId": "3chbatteryvoltagesensor-codec",
+    "codecFile": "3chbatteryvoltagesensor.js",
+    "codecSha256": "2072042b05151b1c0e8875ad0cd6c38fea429195d6429aa31606c7591637f499",
+    "referencedAt": "2026-07-10"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "vendor": "mclimate",
+  "device": "16ads",
+  "name": "16A Dry Switch (16ADS)",
+  "categories": [
+    "switch"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "action.switch.state",
+    "air.temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "mclimate",
+    "device": "16ads",
+    "codecId": "16ads-codec",
+    "codecFile": "16ads.js",
+    "codecSha256": "3d214fffb60f7b5e08741996de39de1cf9b621ecd9f95b5f36a891aee26dedad",
+    "referencedAt": "2026-07-10"
+  }
+}

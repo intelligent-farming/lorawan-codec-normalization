@@ -1,0 +1,109 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/ezurio/rs26x-ext-therm-temp-sensor-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Decode Read Thermistor 560 Cal Actual",
+      "input": {
+        "bytes": [
+          1,
+          192,
+          33,
+          66,
+          246,
+          230,
+          102,
+          194,
+          246,
+          230,
+          102
+        ],
+        "fPort": 1
+      },
+      "output": {
+        "data": {
+          "Battery Status": "Good",
+          "Device Status": {
+            "Backlog Wraparound": "No",
+            "Backlogs Available": "No",
+            "Bandwidth Limitation": "No",
+            "Sensor Fault": "No",
+            "Unsupported API Version": "No"
+          },
+          "Thermistor 560 Cal Actual": {
+            "Value 1": 123.44999694824219,
+            "Value 2": -123.44999694824219
+          }
+        }
+      }
+    },
+    {
+      "description": "Decode Read Thermistor S-H Coefficient A",
+      "input": {
+        "bytes": [
+          1,
+          192,
+          48,
+          196,
+          137,
+          121,
+          154
+        ],
+        "fPort": 1
+      },
+      "output": {
+        "data": {
+          "Battery Status": "Good",
+          "Device Status": {
+            "Backlog Wraparound": "No",
+            "Backlogs Available": "No",
+            "Bandwidth Limitation": "No",
+            "Sensor Fault": "No",
+            "Unsupported API Version": "No"
+          },
+          "Thermistor S-H Coefficient A": -1099.800048828125
+        }
+      }
+    },
+    {
+      "description": "Decode Read Group External Thermistor",
+      "input": {
+        "bytes": [
+          1,
+          192,
+          33,
+          66,
+          246,
+          230,
+          102,
+          194,
+          246,
+          230,
+          102,
+          48,
+          196,
+          137,
+          121,
+          154
+        ],
+        "fPort": 1
+      },
+      "output": {
+        "data": {
+          "Battery Status": "Good",
+          "Device Status": {
+            "Backlog Wraparound": "No",
+            "Backlogs Available": "No",
+            "Bandwidth Limitation": "No",
+            "Sensor Fault": "No",
+            "Unsupported API Version": "No"
+          },
+          "Thermistor 560 Cal Actual": {
+            "Value 1": 123.44999694824219,
+            "Value 2": -123.44999694824219
+          },
+          "Thermistor S-H Coefficient A": -1099.800048828125
+        }
+      }
+    }
+  ]
+}

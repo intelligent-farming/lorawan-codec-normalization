@@ -1,0 +1,30 @@
+{
+  "vendor": "jeng-iot",
+  "device": "buzzon",
+  "name": "Buzzon Button",
+  "categories": [
+    "button"
+  ],
+  "sensors": [
+    "button"
+  ],
+  "provides": [
+    "action.button.count",
+    "battery",
+    "heartbeat",
+    "longPressCount"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "jeng-iot",
+    "device": "buzzon",
+    "codecId": "buzzon-codec",
+    "codecFile": "buzzon.js",
+    "codecSha256": "b64d9dce8ddb53b62c7850da78b185e0b79cf305b5a62e32a7172055cffdde00",
+    "referencedAt": "2026-07-10"
+  }
+}

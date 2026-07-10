@@ -1,0 +1,39 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/dragino/ldds20-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Liquid height",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          14,
+          28,
+          11,
+          5
+        ]
+      },
+      "output": {
+        "data": {
+          "distance": "No Sensor"
+        }
+      }
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [
+          14,
+          28,
+          11,
+          5
+        ]
+      },
+      "output": {
+        "errors": [
+          "unknown FPort"
+        ]
+      }
+    }
+  ]
+}

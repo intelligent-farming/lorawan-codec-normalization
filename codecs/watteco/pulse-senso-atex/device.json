@@ -1,0 +1,32 @@
+{
+  "vendor": "watteco",
+  "device": "pulse-senso-atex",
+  "name": "Pulse Sens'O AtEx Zone 1 - Smart Meter Interface",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "pulse count",
+    "digital input",
+    "voltage"
+  ],
+  "provides": [
+    "action.contactState",
+    "battery",
+    "pulse.total",
+    "pulseTotal3"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "watteco",
+    "device": "pulse-senso-atex",
+    "codecId": "pulse-senso-atex-codec",
+    "codecFile": "pulse-senso-atex.js",
+    "codecSha256": "547708425ab50c92936d57af8f60d241d3b5a7c7ee5b1282d0635afcc1d1e008",
+    "referencedAt": "2026-07-10"
+  }
+}

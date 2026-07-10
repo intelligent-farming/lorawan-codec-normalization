@@ -1,0 +1,32 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-dlr2-005",
+  "name": "DL-DLR2-005 - Analog 0 … 3 V Sensor Transmitter",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "analog input",
+    "voltage",
+    "battery"
+  ],
+  "provides": [
+    "analog.voltage",
+    "battery",
+    "deviceId",
+    "protocolVersion"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-dlr2-005",
+    "codecId": "dl-dlr2-005-codec",
+    "codecFile": "dl-dlr2-005.js",
+    "codecSha256": "f8408217da1eaa67f443f5ead14a6bdbe40eb37af0721f87efc98dd0165d17cf",
+    "referencedAt": "2026-07-10"
+  }
+}

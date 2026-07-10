@@ -1,0 +1,36 @@
+{
+  "vendor": "enginko",
+  "device": "egk-lw20w00",
+  "name": "EGK-LW20W00 - Waste Level Sensor",
+  "categories": [
+    "tank-level"
+  ],
+  "sensors": [
+    "distance",
+    "level",
+    "temperature",
+    "battery"
+  ],
+  "provides": [
+    "adc",
+    "air.temperature",
+    "batteryPercent",
+    "distanceError",
+    "tank.distance",
+    "tank.level",
+    "time"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "enginko",
+    "device": "egk-lw20w00",
+    "codecId": "egk-level-codec",
+    "codecFile": "decoder-level.js",
+    "codecSha256": "42440d52d940af82b2233078f5cce58a92064dc987e63fa05132b03cb0f7a169",
+    "referencedAt": "2026-07-10"
+  }
+}

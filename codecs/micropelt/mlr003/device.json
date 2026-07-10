@@ -1,0 +1,31 @@
+{
+  "vendor": "micropelt",
+  "device": "mlr003",
+  "name": "MLR003 - LoRaWAN® TRV",
+  "categories": [
+    "thermostat"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "air.temperature",
+    "battery",
+    "hvac.mode",
+    "hvac.setpoint",
+    "hvac.valvePosition"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "micropelt",
+    "device": "mlr003",
+    "codecId": "mlr003-codec",
+    "codecFile": "mlr003.js",
+    "codecSha256": "775486692ee2afff038d879de954d2e3365e139cb1c12aca09566759f5caffcc",
+    "referencedAt": "2026-07-10"
+  }
+}

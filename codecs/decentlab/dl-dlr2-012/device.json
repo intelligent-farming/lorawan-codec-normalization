@@ -1,0 +1,33 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-dlr2-012",
+  "name": "DL-DLR2-012 - Analog Strain Gauge Sensor Transmitter",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "analog input",
+    "strain",
+    "battery"
+  ],
+  "provides": [
+    "analog.raw",
+    "battery",
+    "deviceId",
+    "protocolVersion",
+    "strainMicrostrain"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-dlr2-012",
+    "codecId": "dl-dlr2-012-codec",
+    "codecFile": "dl-dlr2-012.js",
+    "codecSha256": "0aa82f619a956188ae70017b1bb451c892683eaa3e93058893d59af3e1c72dca",
+    "referencedAt": "2026-07-10"
+  }
+}

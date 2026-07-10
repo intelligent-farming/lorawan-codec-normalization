@@ -1,0 +1,60 @@
+{
+  "uplink": [
+    {
+      "description": "Standard temperature (synthetic; same standard-width encoding as the TTN internal-temp examples): +20.5 C, battery Good",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 192, 0, 20, 128]
+      },
+      "expected": {
+        "data": {
+          "make": "ezurio",
+          "model": "rs26x-ext-therm-temp-sensor",
+          "temperature": 20.5,
+          "batteryStatus": "Good",
+          "deviceStatus": {
+            "sensorFault": false,
+            "bandwidthLimitation": false,
+            "backlogsAvailable": false,
+            "backlogWraparound": false,
+            "unsupportedApiVersion": false
+          }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Negative standard temperature (synthetic): -120.65 C, OK battery",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 128, 0, 135, 90]
+      },
+      "expected": {
+        "data": {
+          "make": "ezurio",
+          "model": "rs26x-ext-therm-temp-sensor",
+          "temperature": -120.65,
+          "batteryStatus": "OK",
+          "deviceStatus": {
+            "sensorFault": false,
+            "bandwidthLimitation": false,
+            "backlogsAvailable": false,
+            "backlogWraparound": false,
+            "unsupportedApiVersion": false
+          }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Thermistor calibration config frame (0x01, TTN example) carries no measurement",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 192, 48, 196, 137, 121, 154]
+      },
+      "expected": { "errors": ["sensor-configuration frame"] },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

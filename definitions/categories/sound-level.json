@@ -1,0 +1,8 @@
+{
+  "id": "sound-level",
+  "name": "Sound level",
+  "description": "Acoustic sensors reporting sound-pressure level in decibels (noise monitors, acoustic leak / noise loggers).",
+  "atLeastOne": ["sound.level", "sound.peak"],
+  "provides": ["battery"],
+  "notes": "sound.level and sound.peak are dB."
+}

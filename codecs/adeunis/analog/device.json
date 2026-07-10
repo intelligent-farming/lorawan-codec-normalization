@@ -1,0 +1,35 @@
+{
+  "vendor": "adeunis",
+  "device": "analog",
+  "name": "Analog - Sensor Interface",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "analog input",
+    "4-20 ma",
+    "voltage"
+  ],
+  "provides": [
+    "alarmChannelA",
+    "alarmChannelB",
+    "analog.current",
+    "analog.voltage",
+    "channelBCurrent",
+    "frameCounter",
+    "lowBattery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "adeunis",
+    "device": "analog",
+    "codecId": "analog-codec",
+    "codecFile": "analog_lib.js",
+    "codecSha256": "fe9fe784ab79d65eb5b05a5a1acddb5d210f78409d3607c3d9261fbf197cbc19",
+    "referencedAt": "2026-07-10"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "vendor": "netvox",
+  "device": "r718t",
+  "name": "R718T - Wireless Push Button Interface",
+  "categories": [
+    "button"
+  ],
+  "sensors": [
+    "digital input"
+  ],
+  "provides": [
+    "action.button.event",
+    "action.button.pressed",
+    "battery",
+    "functionKeyTrigger"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r718t",
+    "codecId": "r718t-codec",
+    "codecFile": "payload/rb02i_r718t_r312a_r312.js",
+    "codecSha256": "56da8b01e38a3a7b77eb193fedc39eeb194caa798e8137026816cc9673b3feb2",
+    "referencedAt": "2026-07-10"
+  }
+}

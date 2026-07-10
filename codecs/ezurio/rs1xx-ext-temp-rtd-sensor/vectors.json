@@ -1,0 +1,52 @@
+{
+  "uplink": [
+    {
+      "description": "RTD single-reading frame (TTN example): -258.97 C, 80-100% capacity, alarm=1, backlog=4096",
+      "input": {
+        "fPort": 1,
+        "bytes": [11, 0, 255, 159, 254, 254, 5, 0, 1, 16, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "ezurio",
+          "model": "rs1xx-ext-temp-rtd-sensor",
+          "temperature": -258.97,
+          "batteryCapacityRange": "80-100%",
+          "uplinkOptions": [],
+          "alarmMessageCount": 1,
+          "backlogMessageCount": 4096
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "RTD single-reading frame (synthetic): +21.50 C, 60-80% capacity, alarm flag set",
+      "input": {
+        "fPort": 1,
+        "bytes": [11, 4, 0, 50, 0, 21, 4, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "ezurio",
+          "model": "rs1xx-ext-temp-rtd-sensor",
+          "temperature": 21.5,
+          "batteryCapacityRange": "60-80%",
+          "uplinkOptions": ["Sensor alarm flag"],
+          "alarmMessageCount": 0,
+          "backlogMessageCount": 0
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Battery-voltage frame (0x0A) is not temperature telemetry",
+      "input": {
+        "fPort": 1,
+        "bytes": [10, 0, 1, 3]
+      },
+      "expected": { "errors": ["battery-voltage frame"] },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

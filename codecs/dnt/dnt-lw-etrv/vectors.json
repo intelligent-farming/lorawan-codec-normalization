@@ -1,0 +1,36 @@
+{
+  "uplink": [
+    {
+      "description": "GET_STATUS frame (TTN example bytes): battery 3.32 V, room 20 °C, setpoint 20 °C, valve 0%, Manu Temp",
+      "input": {
+        "fPort": 10,
+        "bytes": [4, 244, 182, 100, 100, 0, 4]
+      },
+      "expected": {
+        "data": {
+          "make": "dnt",
+          "model": "dnt-lw-etrv",
+          "battery": 3.32,
+          "air": { "temperature": 20 },
+          "batteryCoverLocked": true,
+          "hvac": {
+            "setpoint": 20,
+            "valvePosition": 0,
+            "mode": "Manu Temp"
+          }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Unsupported command id (config/version frame) returns an error",
+      "input": {
+        "fPort": 10,
+        "bytes": [127, 1, 0, 0, 0]
+      },
+      "expected": { "errors": ["unsupported command"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

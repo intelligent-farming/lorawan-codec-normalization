@@ -1,0 +1,49 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/decentlab/dl-zn2-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Example 1",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          17,
+          17,
+          0,
+          3,
+          64,
+          154,
+          0,
+          134,
+          48,
+          57,
+          0,
+          62,
+          12,
+          84
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.156
+          },
+          "dendrometer_a_position": {
+            "displayName": "Dendrometer A Position",
+            "unit": "µm",
+            "value": 976.9296646118164
+          },
+          "dendrometer_b_position": {
+            "displayName": "Dendrometer B Position",
+            "unit": "µm",
+            "value": 11259.996891021729
+          },
+          "device_id": 4369,
+          "protocol_version": 2
+        }
+      }
+    }
+  ]
+}

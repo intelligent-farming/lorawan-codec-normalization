@@ -1,0 +1,72 @@
+{
+  "uplink": [
+    {
+      "description": "Status report: 3.6 V, sensor ON, 300 mm (0.3 m) to surface, 50% full",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 177, 1, 36, 1, 1, 44, 50, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "r718pe",
+          "battery": 3.6,
+          "sensorOn": true,
+          "tank": {
+            "distance": 0.3,
+            "level": 50
+          }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "TTN example input (netvox r718pe codec yaml, Apache-2.0). Upstream oracle: Volt 3.6, Status 'ON', Distance 300, FillLevel 50. Distance 300 mm -> tank.distance 0.3 m; FillLevel 50 -> tank.level 50%."
+    },
+    {
+      "description": "Status report, low battery + higher fill: 3.6 V (low), 1500 mm (1.5 m), 20% full",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 177, 1, 164, 1, 5, 220, 20, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "r718pe",
+          "lowBattery": true,
+          "battery": 3.6,
+          "sensorOn": true,
+          "tank": {
+            "distance": 1.5,
+            "level": 20
+          }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input. byte3 = 0x80 | 36 -> battery 3.6 V + lowBattery. Distance bytes[5..6] = 0x05DC = 1500 mm -> 1.5 m. FillLevel 20."
+    },
+    {
+      "description": "Device-info / startup version frame (report type 0x00) carries no measurement",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 177, 0, 100, 4, 32, 32, 8, 17, 0, 0]
+      },
+      "expected": {
+        "errors": ["device information frame"]
+      },
+      "source": "ttn-example",
+      "_note": "TTN example startup version report (byte2 == 0x00). Upstream returns Device/SWver/HWver/Datecode; we carry no measurement here and report an error."
+    },
+    {
+      "description": "Configuration response on fPort 7 carries no measurement",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 177, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 7"]
+      },
+      "source": "ttn-example",
+      "_note": "TTN example ConfigReportRsp on fPort 7. Config frames carry no measurement; reported as an unsupported fPort error."
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,8 @@
+{
+  "id": "people-counter",
+  "name": "People / flow counter",
+  "description": "Pedestrian and vehicle flow counters reporting directional in / out counts, cumulative totals, or current presence. Distinct from `occupancy`, which is a persistent occupied-vs-vacant state.",
+  "atLeastOne": ["people.in", "people.out", "people.total", "people.present"],
+  "provides": ["air.temperature", "battery"],
+  "notes": "people.in / people.out are per-interval counts; people.total is the cumulative net count; people.present is the current number of people present."
+}

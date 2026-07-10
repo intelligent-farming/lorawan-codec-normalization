@@ -1,0 +1,53 @@
+{
+  "uplink": [
+    {
+      "description": "Variant 6 data frame with IMB header (synthetic: in/out + totals + battery)",
+      "input": {
+        "fPort": 2,
+        "bytes": [2, 6, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 64, 0, 5, 0, 3, 1, 0, 100, 0, 80, 7]
+      },
+      "expected": {
+        "data": {
+          "make": "imbuildings",
+          "model": "imbuildings-people-counter",
+          "people": { "in": 5, "out": 3, "total": 20 },
+          "battery": 3.2,
+          "deviceStatus": 0,
+          "sensorStatus": 1,
+          "totalCounterA": 100,
+          "totalCounterB": 80,
+          "payloadCounter": 7
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Variant 7 headerless totals-only frame on fPort 27 (synthetic)",
+      "input": {
+        "fPort": 27,
+        "bytes": [1, 0, 100, 0, 80]
+      },
+      "expected": {
+        "data": {
+          "make": "imbuildings",
+          "model": "imbuildings-people-counter",
+          "people": { "total": 20 },
+          "sensorStatus": 1,
+          "totalCounterA": 100,
+          "totalCounterB": 80
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unrecognized frame (unknown fPort / length) returns an error",
+      "input": {
+        "fPort": 99,
+        "bytes": [1, 2, 3]
+      },
+      "expected": { "errors": ["unrecognized people-counter frame"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

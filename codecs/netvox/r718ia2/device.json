@@ -1,0 +1,29 @@
+{
+  "vendor": "netvox",
+  "device": "r718ia2",
+  "name": "R718IA2 - Wireless 2-Input 0-5V ADC Sampling Interface",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "voltage"
+  ],
+  "provides": [
+    "analog.voltage",
+    "battery",
+    "voltage2"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r718ia2",
+    "codecId": "r718ia2-codec",
+    "codecFile": "payload/r718ia2_ib2.js",
+    "codecSha256": "a9ef71b2c9ce40a182529277d34522421c39c4aa227d0334ef58d629d8c19b99",
+    "referencedAt": "2026-07-10"
+  }
+}

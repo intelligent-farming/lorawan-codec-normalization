@@ -1,0 +1,45 @@
+{
+  "uplink": [
+    {
+      "description": "T1 10-min datalog (0x2b, 20 bytes): 24-bit index -> pulse.total, last step increment -> pulse.count",
+      "input": {
+        "fPort": 1,
+        "bytes": [43, 0, 1, 44, 0, 2, 0, 3, 0, 1, 0, 0, 0, 5, 0, 2, 0, 1, 0, 9]
+      },
+      "expected": {
+        "data": {
+          "pulse": { "total": 300, "count": 9 },
+          "increments": [2, 3, 1, 0, 5, 2, 1, 9],
+          "stepMinutes": 10,
+          "make": "fludia",
+          "model": "fm432p-10-15mn"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "T1 adjustable-step (0x6b): step + 32-bit index + N increments",
+      "input": {
+        "fPort": 1,
+        "bytes": [107, 30, 0, 0, 1, 44, 0, 2, 0, 3, 0, 4]
+      },
+      "expected": {
+        "data": {
+          "pulse": { "total": 300, "count": 4 },
+          "increments": [2, 3, 4],
+          "stepMinutes": 30,
+          "make": "fludia",
+          "model": "fm432p-10-15mn"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "START notification (0x01) carries no telemetry",
+      "input": { "fPort": 1, "bytes": [1, 0, 0] },
+      "expected": { "errors": ["START notification"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

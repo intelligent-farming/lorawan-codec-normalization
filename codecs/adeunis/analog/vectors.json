@@ -1,0 +1,55 @@
+{
+  "uplink": [
+    {
+      "description": "0x42 Analog data: ch A 0-10V -> 1.049 V, ch B 4-20mA -> 10.486 mA, ch B alarm set",
+      "input": {
+        "fPort": 1,
+        "bytes": [66, 80, 1, 16, 0, 0, 2, 16, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "analog": { "voltage": 1.049 },
+          "channelBCurrent": 10.486,
+          "lowBattery": false,
+          "alarmChannelA": false,
+          "alarmChannelB": true,
+          "frameCounter": 2,
+          "make": "adeunis",
+          "model": "analog"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "0x42 Analog data: ch A 4-20mA -> 10.486 mA, ch B deactivated",
+      "input": {
+        "fPort": 1,
+        "bytes": [66, 0, 2, 16, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "analog": { "current": 10.486 },
+          "lowBattery": false,
+          "alarmChannelA": false,
+          "alarmChannelB": false,
+          "frameCounter": 0,
+          "make": "adeunis",
+          "model": "analog"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Configuration frame (0x10) carries no interface reading and is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [16, 0, 1, 1, 0, 0, 0, 0, 1]
+      },
+      "expected": {
+        "errors": ["unsupported frame code"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

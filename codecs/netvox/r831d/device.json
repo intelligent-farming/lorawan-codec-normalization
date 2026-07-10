@@ -1,0 +1,32 @@
+{
+  "vendor": "netvox",
+  "device": "r831d",
+  "name": "R831D - Wireless Multifunctional Control Box",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "digital input"
+  ],
+  "provides": [
+    "action.contactState",
+    "contactState2",
+    "contactState3",
+    "relay1",
+    "relay2",
+    "relay3"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r831d",
+    "codecId": "r831d-codec",
+    "codecFile": "payload/r831.js",
+    "codecSha256": "21ff06c1ad304ee1e8882aee0f76170d506df03312a7f3b48f2fe0b8b4320de9",
+    "referencedAt": "2026-07-10"
+  }
+}

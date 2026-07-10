@@ -1,0 +1,32 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-dlr2-011",
+  "name": "DL-DLR2-011 - Dual Digital Input Dry Contact Transmitter",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "digital input",
+    "battery"
+  ],
+  "provides": [
+    "action.contactState",
+    "battery",
+    "contactState2",
+    "deviceId",
+    "protocolVersion"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-dlr2-011",
+    "codecId": "dl-dlr2-011-codec",
+    "codecFile": "dl-dlr2-011.js",
+    "codecSha256": "234656e2d495902c3cda952cb5c79a94f1ecb431cd4eae52bc2327fff3b0307a",
+    "referencedAt": "2026-07-10"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "uplink": [
+    {
+      "description": "Status report: relays 1&2 ON, relay 3 OFF; inputs 1&2 open, input 3 closed",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 176, 1, 1, 1, 0, 0, 0, 1, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "r831d",
+          "relay1": true,
+          "relay2": true,
+          "relay3": false,
+          "action": { "contactState": "open" },
+          "contactState2": "open",
+          "contactState3": "closed"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "TTN example status report (netvox r831d codec yaml, Apache-2.0). Upstream oracle: Relay_1 ON, Relay_2 ON, Relay_3 OFF, Input_1 OFF, Input_2 OFF, Input_3 ON. byte3/4/5 relays; byte6=0 -> action.contactState 'open'; byte7=0 -> contactState2 'open'; byte8=1 -> contactState3 'closed'. No battery byte in this device's data frame."
+    },
+    {
+      "description": "Startup version frame (report type 0x00) carries no measurement",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 176, 0, 100, 1, 32, 32, 8, 17, 0, 0]
+      },
+      "expected": {
+        "errors": ["device information frame"]
+      },
+      "source": "ttn-example",
+      "_note": "TTN example startup version report (byte2 == 0x00). No measurement."
+    },
+    {
+      "description": "Configuration response on fPort 7 carries no measurement",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 176, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 7"]
+      },
+      "source": "ttn-example",
+      "_note": "TTN example ConfigReportRsp on fPort 7."
+    }
+  ],
+  "downlink": []
+}

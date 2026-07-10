@@ -1,0 +1,34 @@
+{
+  "vendor": "dingtek",
+  "device": "df400",
+  "name": "DF400 - Tissue Dispenser Level Sensor",
+  "categories": [
+    "tank-level"
+  ],
+  "sensors": [
+    "level",
+    "temperature"
+  ],
+  "provides": [
+    "alarmBattery",
+    "alarmLevel",
+    "battery",
+    "frameCounter",
+    "rawLevel",
+    "tank.level",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dingtek",
+    "device": "df400",
+    "codecId": "df400-codec",
+    "codecFile": "df400.js",
+    "codecSha256": "6940f7db6cf9c0adf60c2331769982e7a14d028720e1dc878fe60ce4eb8072bc",
+    "referencedAt": "2026-07-10"
+  }
+}

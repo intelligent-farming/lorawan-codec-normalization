@@ -1,0 +1,30 @@
+{
+  "vendor": "dragino",
+  "device": "ldds20",
+  "name": "LDDS20 - Liquid Level Sensor",
+  "categories": [
+    "tank-level"
+  ],
+  "sensors": [
+    "distance",
+    "level"
+  ],
+  "provides": [
+    "battery",
+    "interrupt",
+    "tank.distance"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "ldds20",
+    "codecId": "ldds20-codec",
+    "codecFile": "ldds20.js",
+    "codecSha256": "b94a6476c60600110bd7d99e9bb481806ac0972234d15a966298a842024de23d",
+    "referencedAt": "2026-07-10"
+  }
+}

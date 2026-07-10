@@ -1,0 +1,55 @@
+{
+  "uplink": [
+    {
+      "description": "FPort 1 Basic Device Data (TTN example bytes): valve 71%, SP_Ambient_Temperature setpoint 23 °C",
+      "input": {
+        "fPort": 1,
+        "bytes": [71, 94, 78, 116, 87, 32, 136, 44, 237, 82, 46, 89]
+      },
+      "expected": {
+        "data": {
+          "make": "micropelt",
+          "model": "mlr003",
+          "hvac": {
+            "valvePosition": 71,
+            "mode": "SP_Ambient_Temperature",
+            "setpoint": 23
+          },
+          "air": { "temperature": 21.75 },
+          "battery": 2.72
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "FPort 1 in Valve_Position mode (synthetic): no temperature setpoint, valve position only",
+      "input": {
+        "fPort": 1,
+        "bytes": [40, 94, 78, 116, 80, 32, 130, 44, 237, 80, 0, 89]
+      },
+      "expected": {
+        "data": {
+          "make": "micropelt",
+          "model": "mlr003",
+          "hvac": {
+            "valvePosition": 40,
+            "mode": "Valve_Position"
+          },
+          "air": { "temperature": 20 },
+          "battery": 2.6
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "FPort 2 device-version frame carries no telemetry (error)",
+      "input": {
+        "fPort": 2,
+        "bytes": [194, 49, 24, 9, 3, 0]
+      },
+      "expected": { "errors": ["unsupported fPort 2"] },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

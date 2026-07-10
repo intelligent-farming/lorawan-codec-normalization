@@ -1,0 +1,42 @@
+{
+  "vendor": "volley-boast",
+  "device": "vobo-xp",
+  "name": "VoBo-XP - Input Endpoint",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "4-20 ma",
+    "analog input",
+    "battery",
+    "button",
+    "digital input",
+    "power",
+    "voltage"
+  ],
+  "provides": [
+    "action.contactState",
+    "adc2Raw",
+    "adc3Raw",
+    "air.temperature",
+    "analog.raw",
+    "battery",
+    "digitalInput2",
+    "digitalInput3",
+    "modbus0",
+    "wakeup"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "volley-boast",
+    "device": "vobo-xp",
+    "codecId": "vobo-codec",
+    "codecFile": "vobo-decoder.js",
+    "codecSha256": "9691afa4d037ce5a0f1a75cd97a6e8f859de2c8ed0cb886c6b37774f48eab860",
+    "referencedAt": "2026-07-10"
+  }
+}

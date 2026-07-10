@@ -1,0 +1,49 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/adeunis/modbus-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "0x44 Modbus data (int32)",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          68,
+          2,
+          255,
+          255,
+          255,
+          255,
+          0,
+          0,
+          0,
+          170,
+          255,
+          255,
+          255,
+          128
+        ]
+      },
+      "output": {
+        "data": {
+          "bytes": {
+            "type": "0x44 Modbus data (int32)",
+            "status": {
+              "frameCounter": 0,
+              "configurationDone": false,
+              "lowBattery": true,
+              "hardwareError": false,
+              "configurationInconsistency": false,
+              "modbusReadError": false
+            },
+            "registerValues": [
+              -1,
+              170,
+              -128
+            ]
+          }
+        },
+        "warnings": [],
+        "errors": []
+      }
+    }
+  ]
+}

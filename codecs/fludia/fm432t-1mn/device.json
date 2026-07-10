@@ -1,0 +1,29 @@
+{
+  "vendor": "fludia",
+  "device": "fm432t-1mn",
+  "name": "FM432t - Indoor temperature sensor - 1 min",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "temperature",
+    "temperatures",
+    "timeStep"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "fludia",
+    "device": "fm432t-1mn",
+    "codecId": "fm432t-1mn-codec",
+    "codecFile": "fm432t-1mn-decode.js",
+    "codecSha256": "9d1c2bc4a9200ef005886cbbecab303725b97ea5af7557db4f830bae1880ac5c",
+    "referencedAt": "2026-07-10"
+  }
+}

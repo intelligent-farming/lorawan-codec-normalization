@@ -1,0 +1,48 @@
+{
+  "uplink": [
+    {
+      "description": "real TTN example: status 0x27, first 32-bit meter value 12 -> pulse.total",
+      "input": {
+        "fPort": 1,
+        "bytes": [39, 0, 0, 0, 12, 0, 0, 0, 13, 0, 0, 0, 15]
+      },
+      "expected": {
+        "data": {
+          "pulse": { "total": 12 },
+          "removalDetection": true,
+          "batteryLow": true,
+          "batteryEndOfLife": true,
+          "hardwareError": false,
+          "coilManipulation": true,
+          "make": "minol-zenner",
+          "model": "edc-communication-module"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "synthetic: status 0x02 (battery low), meter value 123456",
+      "input": { "fPort": 1, "bytes": [2, 0, 1, 226, 64] },
+      "expected": {
+        "data": {
+          "pulse": { "total": 123456 },
+          "removalDetection": false,
+          "batteryLow": true,
+          "batteryEndOfLife": false,
+          "hardwareError": false,
+          "coilManipulation": false,
+          "make": "minol-zenner",
+          "model": "edc-communication-module"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "payload with no full 32-bit meter value is rejected",
+      "input": { "fPort": 1, "bytes": [2, 0, 1] },
+      "expected": { "errors": ["payload too short"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

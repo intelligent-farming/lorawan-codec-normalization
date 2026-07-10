@@ -1,0 +1,46 @@
+{
+  "uplink": [
+    {
+      "description": "Status report: 3.6 V, pulse count 100",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 31, 1, 36, 0, 100, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "r718h",
+          "battery": 3.6,
+          "pulse": { "count": 100 }
+        }
+      },
+      "source": "ttn-example",
+      "_note": "TTN example status report (netvox r718h codec yaml, Apache-2.0). Upstream oracle: Volt 3.6, PulseCount 100. byte3 0x24 -> 3.6 V; bytes[4..5]=0x0064=100 -> pulse.count 100."
+    },
+    {
+      "description": "Startup version frame (report type 0x00) carries no measurement",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 31, 0, 100, 2, 32, 32, 16, 9, 0, 0]
+      },
+      "expected": {
+        "errors": ["device information frame"]
+      },
+      "source": "ttn-example",
+      "_note": "TTN example startup version report (byte2 == 0x00). Carries SW/HW version + datecode, no measurement."
+    },
+    {
+      "description": "Configuration response on fPort 7 carries no measurement",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 31, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 7"]
+      },
+      "source": "ttn-example",
+      "_note": "TTN example ConfigReportRsp on fPort 7. Config frames carry no measurement."
+    }
+  ],
+  "downlink": []
+}

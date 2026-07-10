@@ -1,0 +1,33 @@
+{
+  "vendor": "dingtek",
+  "device": "df200",
+  "name": "DF200 - Soap Dispenser Level Sensor",
+  "categories": [
+    "tank-level"
+  ],
+  "sensors": [
+    "level",
+    "temperature"
+  ],
+  "provides": [
+    "alarmBattery",
+    "alarmLevel",
+    "battery",
+    "frameCounter",
+    "tank.level",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dingtek",
+    "device": "df200",
+    "codecId": "df200-codec",
+    "codecFile": "df200.js",
+    "codecSha256": "2646ef81445b2c0ce2e36fc4988f57f9bea1ea3b58633de13779f3882e1d6b83",
+    "referencedAt": "2026-07-10"
+  }
+}

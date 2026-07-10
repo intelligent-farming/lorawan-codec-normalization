@@ -1,0 +1,8 @@
+{
+  "id": "linear-position",
+  "name": "Linear position",
+  "description": "Linear position / displacement transducers (potentiometer travel, string pots, linear way sensors) reporting position as a fraction of full travel or an absolute displacement.",
+  "atLeastOne": ["linear.position", "linear.displacement"],
+  "provides": ["air.temperature", "battery"],
+  "notes": "linear.position is % of full travel; linear.displacement is mm."
+}

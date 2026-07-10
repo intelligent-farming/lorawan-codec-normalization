@@ -1,0 +1,52 @@
+{
+  "uplink": [
+    {
+      "description": "measurement frame: 25.00 C on internal channel (voie 0)",
+      "input": { "fPort": 1, "bytes": [160, 8, 9, 196] },
+      "expected": {
+        "data": { "make": "atim", "model": "acw-tm0p", "temperature": 25, "frameType": "measurement" }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic 0xA0 'Trame de mesure': temp type 0x08 -> 0x09C4=2500/100=25.00 C. Verified against reference/upstream-codec.js decode logic (temperature0.value=[25])."
+    },
+    {
+      "description": "measurement frame: two probes, voie 0 = 21.35 C, voie 1 = -5.00 C",
+      "input": { "fPort": 1, "bytes": [160, 8, 8, 87, 24, 254, 12] },
+      "expected": {
+        "data": {
+          "make": "atim",
+          "model": "acw-tm0p",
+          "temperature": 21.35,
+          "temperature2": -5,
+          "frameType": "measurement"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: temp voie 0 (0x08) 0x0857=2135/100=21.35 C; temp voie 1 (0x18, high nibble 0x10=voie 1) 0xFE0C signed = -500/100 = -5.00 C. Verified against reference/upstream-codec.js (temperature0=[21.35], temperature1=[-5], voie '1')."
+    },
+    {
+      "description": "life frame: battery 3.60 V, supply rail 3.30 V",
+      "input": { "fPort": 1, "bytes": [129, 14, 16, 12, 228] },
+      "expected": {
+        "data": { "make": "atim", "model": "acw-tm0p", "frameType": "life", "battery": 3.6, "supplyVoltage": 3.3 }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic 0x81 'Trame de vie': tensionv 0x0E10=3600/1000=3.6 V -> battery; tensionc 0x0CE4=3300/1000=3.3 V -> supplyVoltage. Verified against reference/upstream-codec.js (tensionv.value=3.6, tensionc.value=3.3)."
+    },
+    {
+      "description": "measurement frame: temperature sensor fault (error sentinel)",
+      "input": { "fPort": 1, "bytes": [160, 8, 128, 0] },
+      "expected": { "errors": ["temperature sensor fault"] },
+      "source": "synthetic",
+      "_note": "Synthetic: temp 0x8000 = -327.68 C is the upstream sensor-fault sentinel (reference temperature0.value=['erreur']); the only channel is faulty, so an error is returned."
+    },
+    {
+      "description": "empty payload",
+      "input": { "fPort": 1, "bytes": [] },
+      "expected": { "errors": ["empty payload"] },
+      "source": "synthetic",
+      "_note": "Synthetic empty payload; reference returns an empty data object, this codec reports an explicit error."
+    }
+  ],
+  "downlink": []
+}

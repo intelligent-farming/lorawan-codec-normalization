@@ -1,0 +1,43 @@
+{
+  "vendor": "dragino",
+  "device": "lt33222-l",
+  "name": "LT33222-L - I/O Controller",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "digital input",
+    "analog input"
+  ],
+  "provides": [
+    "action.contactState",
+    "analog.current",
+    "analog.voltage",
+    "count2",
+    "current2",
+    "do1",
+    "do2",
+    "do3",
+    "hardwareMode",
+    "input2",
+    "input3",
+    "pulse.count",
+    "ro1",
+    "ro2",
+    "voltage2",
+    "workMode"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "lt33222-l",
+    "codecId": "lt33222-l-codec",
+    "codecFile": "lt33222-l.js",
+    "codecSha256": "4e3f0c004e6770fc0f158d5d7dea1e99ba0b3fc2d0f816d7c2316556db8f598a",
+    "referencedAt": "2026-07-10"
+  }
+}

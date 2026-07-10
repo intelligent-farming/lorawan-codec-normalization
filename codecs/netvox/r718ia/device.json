@@ -1,0 +1,28 @@
+{
+  "vendor": "netvox",
+  "device": "r718ia",
+  "name": "R718IA - Wireless 0-5V ADC Sampling Interface",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "voltage"
+  ],
+  "provides": [
+    "analog.voltage",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r718ia",
+    "codecId": "r718ia-codec",
+    "codecFile": "payload/r718ia_r718ib_r730ia_r730ib.js",
+    "codecSha256": "9bea87e68bb338b874f9e74b1b252abd82594ec2ce4d00adfb1bdc213c9df542",
+    "referencedAt": "2026-07-10"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "vendor": "makerfabs",
+  "device": "rtd-pt1000-temperature",
+  "name": "RTD PT1000 Temperature",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature",
+    "battery"
+  ],
+  "provides": [
+    "battery",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "makerfabs",
+    "device": "rtd-pt1000-temperature",
+    "codecId": "rtd-pt1000-codec",
+    "codecFile": "rtd-pt1000.js",
+    "codecSha256": "2445231e4b87bee731ee1a504dacd5a06a4dbd5d26a541283f5a51b5f2e7242e",
+    "referencedAt": "2026-07-10"
+  }
+}

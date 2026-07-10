@@ -1,0 +1,53 @@
+{
+  "uplink": [
+    {
+      "description": "Alarm: button 1 pressed with NFC tag (synthetic: opcode 1, mask 0x01, alarmId 5, uidType 0x10, uid ABCD)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 104, 1, 1, 0, 5, 16, 171, 205]
+      },
+      "expected": {
+        "data": {
+          "make": "mutelcor",
+          "model": "mtc-nfc02",
+          "payloadVersion": 1,
+          "battery": 3.6,
+          "opcode": 1,
+          "buttons": [1],
+          "alarmId": 5,
+          "nfcUid": "10ABCD",
+          "action": { "button": { "pressed": true, "event": "single", "count": 1 } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Heartbeat, no press (synthetic: opcode 0)",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 104, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "mutelcor",
+          "model": "mtc-nfc02",
+          "payloadVersion": 1,
+          "battery": 3.6,
+          "opcode": 0,
+          "action": { "button": { "pressed": false } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Location opcode carries no press and returns an error",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 1, 104, 4, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": { "errors": ["unsupported opcode 4"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

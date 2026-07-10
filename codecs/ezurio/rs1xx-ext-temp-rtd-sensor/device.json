@@ -1,0 +1,31 @@
+{
+  "vendor": "ezurio",
+  "device": "rs1xx-ext-temp-rtd-sensor",
+  "name": "Sentrius RS1xx Ext Temp RTD Sensor",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "alarmMessageCount",
+    "backlogMessageCount",
+    "batteryCapacityRange",
+    "temperature",
+    "uplinkOptions"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "ezurio",
+    "device": "rs1xx-ext-temp-rtd-sensor",
+    "codecId": "rs1xx-ext-temp-rtd-sensor-codec",
+    "codecFile": "rs1xx-ext-temp-rtd-sensor.js",
+    "codecSha256": "17ae8be9fceb83e5bf21ce960f83b99963cce6b634a01710a0795b8a3e967807",
+    "referencedAt": "2026-07-10"
+  }
+}

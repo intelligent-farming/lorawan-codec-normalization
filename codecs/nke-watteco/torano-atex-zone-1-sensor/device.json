@@ -1,0 +1,34 @@
+{
+  "vendor": "nke-watteco",
+  "device": "torano-atex-zone-1-sensor",
+  "name": "Toran'O AtEx Zone 1 - I/O Interface",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "analog input",
+    "current",
+    "pulse count",
+    "voltage"
+  ],
+  "provides": [
+    "action.contactState",
+    "analog.raw",
+    "analog2Raw",
+    "battery",
+    "pulse.total"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "nke-watteco",
+    "device": "torano-atex-zone-1-sensor",
+    "codecId": "torano-atex-zone-1-sensor-codec",
+    "codecFile": "torano-atex-zone-1-sensor.js",
+    "codecSha256": "df9d304b9ddc459a3659a970f55dc4dc8ad127ffb4b00fbf6d1ec6954b7bfa14",
+    "referencedAt": "2026-07-10"
+  }
+}

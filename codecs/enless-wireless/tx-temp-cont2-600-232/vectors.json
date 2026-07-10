@@ -1,0 +1,35 @@
+{
+  "uplink": [
+    {
+      "description": "TX TEMP CONT2 600-232 (EN306, type 0x0C): probe1 (primary) 20.2 C -> temperature, probe2 38.6 C -> temperature2, battery 25%",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 189, 12, 10, 1, 0, 202, 1, 130, 0, 1, 0, 15]
+      },
+      "expected": {
+        "data": {
+          "temperature": 20.2,
+          "temperature2": 38.6,
+          "batteryPercent": 25,
+          "deviceId": 189,
+          "sequenceCounter": 10,
+          "make": "enless-wireless",
+          "model": "tx-temp-cont2-600-232"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Frame with wrong device type byte is rejected",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 0, 189, 15, 10, 1, 0, 202, 1, 130, 0, 1, 0, 15]
+      },
+      "expected": {
+        "errors": ["unexpected device type"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

@@ -1,0 +1,30 @@
+{
+  "vendor": "netvox",
+  "device": "r730ct2",
+  "name": "R730CT2 - Wireless 2-Gang Thermocouple Interface - T type",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "battery",
+    "lowBattery",
+    "temperature",
+    "temperature2"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r730ct2",
+    "codecId": "r730ct2-codec",
+    "codecFile": "payload/r718b2.js",
+    "codecSha256": "3ed16e306b883c703f2df791e02754ae127a04508af2f31e5e3fef78a5edc315",
+    "referencedAt": "2026-07-10"
+  }
+}

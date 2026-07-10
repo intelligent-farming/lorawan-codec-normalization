@@ -1,0 +1,36 @@
+{
+  "uplink": [
+    {
+      "description": "fPort 2 telemetry: dual ultrasonic 0.257 m / 0.768 m, 3.318 V",
+      "input": {
+        "fPort": 2,
+        "bytes": [12, 246, 1, 1, 3, 0, 12, 1, 221, 1, 255]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.318,
+          "tank": { "distance": 0.257 },
+          "distance2Meters": 0.768,
+          "distanceAlarmCount": 3,
+          "distanceAlarm": false,
+          "interruptAlarm": false,
+          "make": "dragino",
+          "model": "mds200-lb"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "unsupported fPort returns an error",
+      "input": {
+        "fPort": 42,
+        "bytes": [12, 246, 1, 1, 3, 0, 12]
+      },
+      "expected": {
+        "errors": ["unsupported fPort"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

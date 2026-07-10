@@ -1,0 +1,29 @@
+{
+  "vendor": "netvox",
+  "device": "r718h2",
+  "name": "R718H2 - Wireless 2-Input Pulse Counter",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "pulse count"
+  ],
+  "provides": [
+    "battery",
+    "pulse.count",
+    "pulseCount2"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r718h2",
+    "codecId": "r718h2-codec",
+    "codecFile": "payload/r718h.js",
+    "codecSha256": "c40ba8f145f9c1b6196a71f96552a891f604524665f02c3c7b9b9e8db49bd3d3",
+    "referencedAt": "2026-07-10"
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/dingtek/do200-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "telemetry upload",
+      "input": {
+        "fPort": 3,
+        "bytes": [
+          128,
+          0,
+          2,
+          1,
+          21,
+          0,
+          0,
+          0,
+          0,
+          1,
+          111,
+          0,
+          121,
+          255,
+          176,
+          255,
+          245,
+          0,
+          0,
+          0,
+          129
+        ]
+      },
+      "output": {
+        "data": {
+          "level": 0,
+          "volt": 3.67,
+          "alarmPark": false,
+          "alarmLevel": false,
+          "alarmMagnet": false,
+          "alarmBattery": false,
+          "xMagnet": 121,
+          "yMagnet": -80,
+          "zMagnet": -11,
+          "Frame_Counter": 0
+        }
+      }
+    },
+    {
+      "description": "parameter packet",
+      "input": {
+        "fPort": 3,
+        "bytes": [
+          128,
+          0,
+          2,
+          3,
+          17,
+          0,
+          11,
+          24,
+          2,
+          10,
+          5,
+          160,
+          0,
+          60,
+          0,
+          0,
+          129
+        ]
+      },
+      "output": {
+        "data": {
+          "firmware": "0.11",
+          "uploadInterval": 24,
+          "ultraDetectInterval": 2,
+          "magDetectInterval": 10,
+          "magThreshold": 60
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/elv/elv-lw-oc8-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "cyclic event",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          1,
+          1,
+          0,
+          1,
+          2,
+          3,
+          0,
+          7,
+          3,
+          12,
+          4,
+          19,
+          157,
+          7,
+          1,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "app_version": "V1.0.1",
+          "bl_version": "V3.0.7",
+          "ch1": 0,
+          "ch2": 0,
+          "ch3": 0,
+          "ch4": 0,
+          "ch5": 0,
+          "ch6": 0,
+          "ch7": 0,
+          "ch8": 0,
+          "supply_voltage": 5021,
+          "tx_reason": "CYCLIC_EVENT"
+        }
+      }
+    },
+    {
+      "description": "downlink ack event",
+      "input": {
+        "fPort": 10,
+        "bytes": [
+          1,
+          1,
+          0,
+          1,
+          2,
+          3,
+          0,
+          7,
+          3,
+          14,
+          4,
+          19,
+          96,
+          7,
+          1,
+          0,
+          8,
+          15,
+          9,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "app_version": "V1.0.1",
+          "bl_version": "V3.0.7",
+          "ch1": 0,
+          "ch2": 0,
+          "ch3": 0,
+          "ch4": 0,
+          "ch5": 0,
+          "ch6": 0,
+          "ch7": 0,
+          "ch8": 0,
+          "contact_interface_en": 0,
+          "interval": 15,
+          "supply_voltage": 4960,
+          "tx_reason": "DOWNLINK_ACK_EVENT"
+        }
+      }
+    }
+  ]
+}

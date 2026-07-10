@@ -1,0 +1,28 @@
+{
+  "vendor": "watteco",
+  "device": "tempo-remote-1-probe",
+  "name": "Temp'O remote 1 probe sensor",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "battery",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "watteco",
+    "device": "tempo-remote-1-probe",
+    "codecId": "tempo-remote-1-probe-codec",
+    "codecFile": "tempo-remote-1-probe.js",
+    "codecSha256": "fb23364681cd061af8755e0b38f961d5731a83a9b02ca5f473b0c5c0c632a6fd",
+    "referencedAt": "2026-07-10"
+  }
+}

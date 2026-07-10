@@ -1,0 +1,27 @@
+{
+  "vendor": "nke-watteco",
+  "device": "humido-sensor",
+  "name": "Humid'O - Liquid Sensor Probe",
+  "categories": [
+    "water-leak"
+  ],
+  "sensors": [
+    "water"
+  ],
+  "provides": [
+    "water.leak"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "nke-watteco",
+    "device": "humido-sensor",
+    "codecId": "humido-sensor-codec",
+    "codecFile": "humido-sensor.js",
+    "codecSha256": "80cafcee503f5b373b822d0182aea10b0a93d846bf546db6dff52797de5c88e4",
+    "referencedAt": "2026-07-10"
+  }
+}

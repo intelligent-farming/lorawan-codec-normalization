@@ -1,0 +1,40 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/minol-zenner/edc-communication-module-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "example meter values with status bytes",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          39,
+          0,
+          0,
+          0,
+          12,
+          0,
+          0,
+          0,
+          13,
+          0,
+          0,
+          0,
+          15
+        ]
+      },
+      "output": {
+        "data": {
+          "removal_detection": 1,
+          "battery_low": 1,
+          "battery_end_of_life": 1,
+          "hw_error": 0,
+          "coil_manipulation": 1,
+          "meter_values": [
+            12,
+            13,
+            15
+          ]
+        }
+      }
+    }
+  ]
+}

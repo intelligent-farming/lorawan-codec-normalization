@@ -1,0 +1,62 @@
+{
+  "uplink": [
+    {
+      "description": "Telemetry, space vacant (TTN example bytes)",
+      "input": {
+        "fPort": 3,
+        "bytes": [128, 0, 2, 1, 21, 0, 0, 0, 0, 1, 111, 0, 121, 255, 176, 255, 245, 0, 0, 0, 129]
+      },
+      "expected": {
+        "data": {
+          "make": "dingtek",
+          "model": "do200",
+          "action": { "occupancy": { "occupied": false } },
+          "battery": 3.67,
+          "rangingLevel": 0,
+          "levelAlarm": false,
+          "magnetAlarm": false,
+          "batteryAlarm": false,
+          "magnetometerX": 121,
+          "magnetometerY": -80,
+          "magnetometerZ": -11,
+          "frameCounter": 0
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Telemetry, space occupied (synthetic: park flag set, ranging + counter populated)",
+      "input": {
+        "fPort": 3,
+        "bytes": [128, 0, 2, 1, 21, 0, 210, 16, 0, 1, 90, 0, 121, 255, 176, 255, 245, 0, 5, 0, 129]
+      },
+      "expected": {
+        "data": {
+          "make": "dingtek",
+          "model": "do200",
+          "action": { "occupancy": { "occupied": true } },
+          "battery": 3.46,
+          "rangingLevel": 210,
+          "levelAlarm": false,
+          "magnetAlarm": false,
+          "batteryAlarm": false,
+          "magnetometerX": 121,
+          "magnetometerY": -80,
+          "magnetometerZ": -11,
+          "frameCounter": 5
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Unsupported fPort returns an error",
+      "input": {
+        "fPort": 42,
+        "bytes": [128, 0, 2, 1, 21, 0, 0, 0, 0, 1, 111, 0, 121, 255, 176, 255, 245, 0, 0, 0, 129]
+      },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

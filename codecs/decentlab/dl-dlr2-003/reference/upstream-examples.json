@@ -1,0 +1,37 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/decentlab/dl-dlr2-003-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Example 1",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          25,
+          155,
+          0,
+          3,
+          0,
+          1,
+          12,
+          141
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.213
+          },
+          "device_id": 6555,
+          "input": {
+            "displayName": "Input",
+            "value": 1
+          },
+          "protocol_version": 2
+        }
+      }
+    }
+  ]
+}

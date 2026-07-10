@@ -1,0 +1,29 @@
+{
+  "vendor": "netvox",
+  "device": "ra02g",
+  "name": "RA02G - Wireless Smoking Warning",
+  "categories": [
+    "smoke-detector"
+  ],
+  "sensors": [],
+  "provides": [
+    "action.smoke.detected",
+    "battery",
+    "highSoundAlarm",
+    "powerOffAlarm",
+    "tamperAlarm"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "ra02g",
+    "codecId": "ra02g-codec",
+    "codecFile": "payload/ra02g.js",
+    "codecSha256": "e8a96bf0ed1ca1d90e7f373888cdc41a7e045ff828b509a0f3fceeaf46fc7443",
+    "referencedAt": "2026-07-10"
+  }
+}

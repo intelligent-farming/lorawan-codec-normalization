@@ -1,0 +1,31 @@
+{
+  "vendor": "atim",
+  "device": "acw-tm1p",
+  "name": "ACW-TM1P - Temperature Probe",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "surface temperature"
+  ],
+  "provides": [
+    "battery",
+    "frameType",
+    "supplyVoltage",
+    "temperature",
+    "temperature2"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "atim",
+    "device": "acw-tm1p",
+    "codecId": "codec",
+    "codecFile": "decodeur.js",
+    "codecSha256": "b86b0c72a7ee43f4caa766c25057326897faafe3a98f98fe3cf17d12627d8758",
+    "referencedAt": "2026-07-10"
+  }
+}

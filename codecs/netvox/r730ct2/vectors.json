@@ -1,0 +1,66 @@
+{
+  "uplink": [
+    {
+      "description": "Status report: 3.6 V, channel-1 25.3 °C, channel-2 36.5 °C",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 122, 1, 36, 0, 253, 1, 109, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "r730ct2",
+          "battery": 3.6,
+          "temperature": 25.3,
+          "temperature2": 36.5
+        }
+      },
+      "source": "ttn-example",
+      "_note": "TTN example status report (netvox r730ct2 codec yaml, Apache-2.0). Upstream oracle: Volt 3.6, Temp1 25.3, Temp2 36.5. byte3 0x24 -> 3.6 V; bytes[4..5]=0x00FD=253 -> 25.3 °C; bytes[6..7]=0x016D=365 -> 36.5 °C."
+    },
+    {
+      "description": "Status report with low battery and a negative channel-1 reading: 2.9 V (low), channel-1 -1.0 °C, channel-2 40.0 °C",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 122, 1, 157, 255, 246, 1, 144, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "r730ct2",
+          "lowBattery": true,
+          "battery": 2.9,
+          "temperature": -1.0,
+          "temperature2": 40.0
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds input. byte3 0x9D = 0x80 | 29 -> battery 2.9 V + lowBattery. bytes[4..5]=0xFFF6 signed -10 -> -1.0 °C; bytes[6..7]=0x0190=400 -> 40.0 °C."
+    },
+    {
+      "description": "Startup version frame (report type 0x00) carries no measurement",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 122, 0, 100, 2, 32, 32, 7, 41, 0, 0]
+      },
+      "expected": {
+        "errors": ["device information frame"]
+      },
+      "source": "ttn-example",
+      "_note": "TTN example startup version report (byte2 == 0x00). Upstream returns Device/SWver/HWver/Datecode; we carry no measurement here and report an error."
+    },
+    {
+      "description": "Configuration response on fPort 7 carries no measurement",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 122, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort 7"]
+      },
+      "source": "ttn-example",
+      "_note": "TTN example ConfigReportRsp on fPort 7. Config frames carry no measurement; reported as an unsupported fPort error."
+    }
+  ],
+  "downlink": []
+}

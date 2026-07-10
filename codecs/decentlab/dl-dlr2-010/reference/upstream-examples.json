@@ -1,0 +1,99 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/decentlab/dl-dlr2-010-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Example 1",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          25,
+          143,
+          0,
+          7,
+          0,
+          4,
+          2,
+          88,
+          11,
+          240,
+          0,
+          1,
+          0,
+          0,
+          2,
+          88,
+          222,
+          206,
+          0,
+          0,
+          12,
+          51
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.123
+          },
+          "ch0_cumulative_pulse_count": {
+            "displayName": "CH0: Cumulative pulse count",
+            "value": 68592
+          },
+          "ch0_pulse_count": {
+            "displayName": "CH0: Pulse count",
+            "value": 4
+          },
+          "ch0_pulse_interval": {
+            "displayName": "CH0: Pulse interval",
+            "unit": "s",
+            "value": 600
+          },
+          "ch1_cumulative_pulse_count": {
+            "displayName": "CH1: Cumulative pulse count",
+            "value": 57038
+          },
+          "ch1_pulse_count": {
+            "displayName": "CH1: Pulse count",
+            "value": 0
+          },
+          "ch1_pulse_interval": {
+            "displayName": "CH1: Pulse interval",
+            "unit": "s",
+            "value": 600
+          },
+          "device_id": 6543,
+          "protocol_version": 2
+        }
+      }
+    },
+    {
+      "description": "Example 2",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          2,
+          25,
+          143,
+          0,
+          4,
+          12,
+          51
+        ]
+      },
+      "output": {
+        "data": {
+          "battery_voltage": {
+            "displayName": "Battery voltage",
+            "unit": "V",
+            "value": 3.123
+          },
+          "device_id": 6543,
+          "protocol_version": 2
+        }
+      }
+    }
+  ]
+}

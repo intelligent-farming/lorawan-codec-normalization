@@ -1,0 +1,36 @@
+{
+  "uplink": [
+    {
+      "description": "Example 1: digital input (closed) + battery frame (flags=0x0003)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 25, 155, 0, 3, 0, 1, 12, 141]
+      },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 6555,
+          "action": {
+            "contactState": "closed"
+          },
+          "battery": 3.213,
+          "make": "decentlab",
+          "model": "dl-dlr2-003"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Battery-only frame (flags=0x0002) carries no digital-input block -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 25, 155, 0, 2, 12, 141]
+      },
+      "expected": {
+        "errors": ["no digital-input field in payload"]
+      },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

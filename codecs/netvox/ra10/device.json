@@ -1,0 +1,25 @@
+{
+  "vendor": "netvox",
+  "device": "ra10",
+  "name": "RA10 - Wireless LoRa Valve keeper",
+  "categories": [
+    "switch"
+  ],
+  "sensors": [],
+  "provides": [
+    "action.switch.state"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "ra10",
+    "codecId": "ra10-codec",
+    "codecFile": "payload/ra10.js",
+    "codecSha256": "2b385b796709246d6c4ad2dbfcc81c4c1f7c2649940a4a589c6ccb46501b4ca9",
+    "referencedAt": "2026-07-10"
+  }
+}

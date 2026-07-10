@@ -1,0 +1,61 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/adeunis/drycontacts-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "0x40 Dry Contacts 2 data",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          64,
+          192,
+          0,
+          1,
+          0,
+          2,
+          0,
+          3,
+          0,
+          4,
+          165
+        ]
+      },
+      "output": {
+        "data": {
+          "bytes": {
+            "type": "0x40 Dry Contacts 2 data",
+            "status": {
+              "frameCounter": 6,
+              "hardwareError": false,
+              "lowBattery": false,
+              "configurationDone": false,
+              "timestamp": false
+            },
+            "decodingInfo": "true: ON/CLOSED, false: OFF/OPEN",
+            "channelA": {
+              "value": 1,
+              "currentState": true,
+              "previousFrameState": false
+            },
+            "channelB": {
+              "value": 2,
+              "currentState": true,
+              "previousFrameState": false
+            },
+            "channelC": {
+              "value": 3,
+              "currentState": false,
+              "previousFrameState": true
+            },
+            "channelD": {
+              "value": 4,
+              "currentState": false,
+              "previousFrameState": true
+            }
+          }
+        },
+        "warnings": [],
+        "errors": []
+      }
+    }
+  ]
+}

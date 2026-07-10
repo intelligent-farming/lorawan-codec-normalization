@@ -1,0 +1,46 @@
+{
+  "uplink": [
+    {
+      "description": "4-20 mA periodic report: 12.5 mA loop current",
+      "input": { "fPort": 1, "bytes": [33, 17, 0, 4, 226] },
+      "expected": {
+        "data": {
+          "make": "radio-bridge", "model": "rbs306-420ma",
+          "analog": { "current": 12.5 },
+          "analogEvent": "periodicReport",
+          "packetCounter": 1
+        }
+      },
+      "source": "synthetic",
+      "_note": "Header 0x21 -> protocol 2, counter 1. Event type 0x11, sub-type 0 (periodic). Current 0x04E2=1250 units of 10 uA / 100 = 12.5 mA. Verified against reference/upstream-codec.js (A420mA.Current 12.5, Event 'Periodic Report')."
+    },
+    {
+      "description": "4-20 mA report-on-change increase: 20.0 mA (full scale)",
+      "input": { "fPort": 1, "bytes": [50, 17, 3, 7, 208] },
+      "expected": {
+        "data": {
+          "make": "radio-bridge", "model": "rbs306-420ma",
+          "analog": { "current": 20 },
+          "analogEvent": "reportOnChangeIncrease",
+          "packetCounter": 2
+        }
+      },
+      "source": "synthetic",
+      "_note": "Event sub-type 3. Current 0x07D0=2000 / 100 = 20.0 mA. Verified against reference/upstream-codec.js (Current 20, Event 'Report on Change Increase')."
+    },
+    {
+      "description": "non-analog event (reset) yields error",
+      "input": { "fPort": 1, "bytes": [33, 0, 17, 16, 0, 0] },
+      "expected": { "errors": ["is not a 4-20 mA analog event"] },
+      "source": "synthetic",
+      "_note": "byte[1]=0x00 is the RESET event, not the 4-20 mA event."
+    },
+    {
+      "description": "empty payload",
+      "input": { "fPort": 1, "bytes": [] },
+      "expected": { "errors": ["empty or truncated payload"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

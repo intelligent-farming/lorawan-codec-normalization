@@ -1,0 +1,32 @@
+{
+  "vendor": "lansitec",
+  "device": "precision-platinum-sensor",
+  "name": "Precision Platinum Sensor",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature",
+    "battery",
+    "rssi"
+  ],
+  "provides": [
+    "batteryPercent",
+    "rssi",
+    "temperature",
+    "temperatures"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "lansitec",
+    "device": "precision-platinum-sensor",
+    "codecId": "precision-platinum-sensor-codec",
+    "codecFile": "precision-platinum-sensor.js",
+    "codecSha256": "fab328e8ffdb2a49cfd4afef3e15ca681e742d528258495f6289232e2ff38079",
+    "referencedAt": "2026-07-10"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "uplink": [
+    {
+      "description": "Status report (TTN example bytes): fire alarm, 3.0 V, high-temp alarm, 120 °C",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 10, 1, 30, 1, 1, 4, 176, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "ra02a",
+          "action": { "smoke": { "detected": true } },
+          "battery": 3,
+          "highTempAlarm": true,
+          "air": { "temperature": 120 }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Status report, no alarm, normal temperature (synthetic)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 10, 1, 32, 0, 0, 0, 210, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "ra02a",
+          "action": { "smoke": { "detected": false } },
+          "battery": 3.2,
+          "highTempAlarm": false,
+          "air": { "temperature": 21 }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Version/date-code frame (report type 0x00) carries no measurement (error)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 10, 0, 100, 21, 32, 32, 8, 17, 0, 0]
+      },
+      "expected": { "errors": ["version frame"] },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

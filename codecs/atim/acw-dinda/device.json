@@ -1,0 +1,32 @@
+{
+  "vendor": "atim",
+  "device": "acw-dinda",
+  "name": "ACW-DINDA - Analog Monitoring",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "analog input"
+  ],
+  "provides": [
+    "analog.current",
+    "analog.voltage",
+    "battery",
+    "frameType",
+    "input1",
+    "input2"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "atim",
+    "device": "acw-dinda",
+    "codecId": "codec2",
+    "codecFile": "decodeur.js",
+    "codecSha256": "b86b0c72a7ee43f4caa766c25057326897faafe3a98f98fe3cf17d12627d8758",
+    "referencedAt": "2026-07-10"
+  }
+}

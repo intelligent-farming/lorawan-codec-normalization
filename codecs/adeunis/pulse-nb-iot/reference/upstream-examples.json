@@ -1,0 +1,73 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/adeunis/pulse-nb-iot-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "0x5a Pulse 4 data - channel A",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          17,
+          34,
+          51,
+          68,
+          85,
+          102,
+          119,
+          136,
+          3,
+          0,
+          0,
+          0,
+          38,
+          90,
+          103,
+          0,
+          0,
+          1,
+          39,
+          0,
+          1,
+          0,
+          2,
+          0,
+          3,
+          0,
+          4,
+          20,
+          171,
+          163,
+          233
+        ]
+      },
+      "output": {
+        "data": {
+          "bytes": {
+            "type": "0x5a Pulse 4 NB-IoT data - channel A",
+            "nbIot": {
+              "imei": "1122334455667788",
+              "signalQuality": 3,
+              "globalFrameCounter": 38
+            },
+            "status": {
+              "frameCounter": 3,
+              "lowBattery": true,
+              "configurationDone": true,
+              "timestamp": true
+            },
+            "timestamp": "2023-12-28T19:22:17.000",
+            "decodingInfo": "counterValues: [t=0, t-1, t-2, ...]",
+            "counterValues": [
+              295,
+              294,
+              292,
+              289,
+              285
+            ]
+          }
+        },
+        "warnings": [],
+        "errors": []
+      }
+    }
+  ]
+}

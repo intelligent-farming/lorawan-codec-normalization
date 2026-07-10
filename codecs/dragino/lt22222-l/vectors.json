@@ -1,0 +1,54 @@
+{
+  "uplink": [
+    {
+      "description": "work mode 1 (2ACI+2AVI): AVI1 1.195 V, ACI1 4.88 mA, DI1 closed",
+      "input": {
+        "fPort": 2,
+        "bytes": [4, 171, 4, 172, 19, 16, 19, 0, 170, 255, 1]
+      },
+      "expected": {
+        "data": {
+          "make": "dragino", "model": "lt22222-l",
+          "hardwareMode": "LT33222", "workMode": 1,
+          "do1": true, "do2": false, "ro1": true, "ro2": false, "do3": true,
+          "analog": { "voltage": 1.195, "current": 4.88 },
+          "voltage2": 1.196, "current2": 4.864,
+          "action": { "contactState": "closed" },
+          "input2": false, "input3": true
+        }
+      },
+      "source": "ttn-example",
+      "_note": "TTN example input. byte[10]=0x01 -> hardware 0 (LT33222), mode 1. AVI1=s16(0x04AB)=1195/1000=1.195 V, ACI1=s16(0x1310)=4880/1000=4.88 mA. byte[8]=0xAA: DI1(bit3)=1 closed, DI2(bit4)=0, DI3(bit5)=1, DO1 H, DO2 L, DO3 H, RO1 ON, RO2 OFF. Verified against reference/upstream-codec.js (AVI1_V 1.195, ACI1_mA 4.88, DI1 'H', DI2 'L', DI3 'H')."
+    },
+    {
+      "description": "work mode 2 (Count mode 1): two cumulative counters",
+      "input": {
+        "fPort": 2,
+        "bytes": [0, 0, 3, 232, 0, 0, 7, 208, 0, 0, 2]
+      },
+      "expected": {
+        "data": {
+          "make": "dragino", "model": "lt22222-l",
+          "hardwareMode": "LT33222", "workMode": 2,
+          "do1": true, "do2": true, "ro1": false, "ro2": false, "do3": true,
+          "pulse": { "count": 1000 }, "count2": 2000
+        }
+      },
+      "source": "synthetic",
+      "_note": "byte[10]=0x02 -> mode 2. Count1=0x000003E8=1000 -> pulse.count, Count2=0x000007D0=2000 -> count2. byte[8]=0 so all DO high / RO off. Verified against reference/upstream-codec.js (Count1_times 1000, Count2_times 2000)."
+    },
+    {
+      "description": "device-status frame (fPort 5) has no interface measurement",
+      "input": { "fPort": 5, "bytes": [1, 255, 1, 2, 0, 0, 30, 0, 0, 0, 0] },
+      "expected": { "errors": ["device-status frame"] },
+      "source": "synthetic"
+    },
+    {
+      "description": "unsupported fPort",
+      "input": { "fPort": 42, "bytes": [4, 171, 4, 172, 19, 16, 19, 0, 170, 255, 1] },
+      "expected": { "errors": ["unsupported fPort 42"] },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

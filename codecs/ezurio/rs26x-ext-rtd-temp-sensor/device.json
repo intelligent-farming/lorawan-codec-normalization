@@ -1,0 +1,33 @@
+{
+  "vendor": "ezurio",
+  "device": "rs26x-ext-rtd-temp-sensor",
+  "name": "Sentrius RS26x External RTD Temperature Sensor",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "batteryStatus",
+    "deviceStatus.backlogWraparound",
+    "deviceStatus.backlogsAvailable",
+    "deviceStatus.bandwidthLimitation",
+    "deviceStatus.sensorFault",
+    "deviceStatus.unsupportedApiVersion",
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "ezurio",
+    "device": "rs26x-ext-rtd-temp-sensor",
+    "codecId": "rs26x-ext-rtd-temp-sensor-codec",
+    "codecFile": "rs26x.js",
+    "codecSha256": "34483c81ed8a104832b71c3b84e49e8a850dc2cb820585b3419476dbf5956ac6",
+    "referencedAt": "2026-07-10"
+  }
+}

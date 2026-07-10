@@ -1,0 +1,52 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/adeunis/analog-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "0x42 Analog data",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          66,
+          80,
+          1,
+          16,
+          0,
+          0,
+          2,
+          16,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "bytes": {
+            "type": "0x42 Analog data",
+            "status": {
+              "frameCounter": 2,
+              "hardwareError": false,
+              "lowBattery": false,
+              "configurationDone": false,
+              "alarmChannelA": false,
+              "alarmChannelB": true
+            },
+            "channels": [
+              {
+                "name": "channel A",
+                "unit": "V",
+                "value": 1.049
+              },
+              {
+                "name": "channel B",
+                "unit": "mA",
+                "value": 10.486
+              }
+            ]
+          }
+        },
+        "warnings": [],
+        "errors": []
+      }
+    }
+  ]
+}

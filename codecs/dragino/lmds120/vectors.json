@@ -1,0 +1,55 @@
+{
+  "uplink": [
+    {
+      "description": "fPort 2 telemetry: 0.356 m radar distance, 28.6 C probe temp, 3.318 V",
+      "input": {
+        "fPort": 2,
+        "bytes": [12, 246, 1, 100, 0, 1, 30, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.318,
+          "tank": { "distance": 0.356 },
+          "interruptFlag": false,
+          "temperature": 28.6,
+          "sensorFlag": false,
+          "make": "dragino",
+          "model": "lmds120"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "invalid-reading sentinel (0x3fff) still emits a numeric distance",
+      "input": {
+        "fPort": 2,
+        "bytes": [12, 246, 63, 255, 0, 1, 30, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.318,
+          "tank": { "distance": 16.383 },
+          "invalidReading": true,
+          "interruptFlag": false,
+          "temperature": 28.6,
+          "sensorFlag": false,
+          "make": "dragino",
+          "model": "lmds120"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "unsupported fPort returns an error",
+      "input": {
+        "fPort": 42,
+        "bytes": [12, 246, 1, 100, 0, 1, 30, 0]
+      },
+      "expected": {
+        "errors": ["unsupported fPort"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

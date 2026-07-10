@@ -1,0 +1,34 @@
+{
+  "vendor": "decentlab",
+  "device": "dl-dlr2-009",
+  "name": "DL-DLR2-009 - Analog PT1000 Sensor Transmitter",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "analog input",
+    "temperature",
+    "battery"
+  ],
+  "provides": [
+    "analog.raw",
+    "battery",
+    "deviceId",
+    "probeTemperature",
+    "protocolVersion",
+    "thermistorResistance"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "decentlab",
+    "device": "dl-dlr2-009",
+    "codecId": "dl-dlr2-009-2000-codec",
+    "codecFile": "dl-dlr2-009-2000.js",
+    "codecSha256": "0986936fed6284890d7c8ea6f1b7f1f5d96616f68956515fb274e0cab349f3a0",
+    "referencedAt": "2026-07-10"
+  }
+}

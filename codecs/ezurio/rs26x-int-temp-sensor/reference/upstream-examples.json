@@ -1,0 +1,962 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/ezurio/rs26x-int-temp-sensor-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Decode Positive 8-Bit Temperature",
+      "input": {
+        "bytes": [
+          0,
+          192,
+          0,
+          20,
+          128
+        ],
+        "fPort": 1
+      },
+      "output": {
+        "data": {
+          "Battery Status": "Good",
+          "Device Status": {
+            "Backlog Wraparound": "No",
+            "Backlogs Available": "No",
+            "Bandwidth Limitation": "No",
+            "Sensor Fault": "No",
+            "Unsupported API Version": "No"
+          },
+          "Temperature": 20.5
+        }
+      }
+    },
+    {
+      "description": "Decode Negative 8-Bit Temperature",
+      "input": {
+        "bytes": [
+          0,
+          192,
+          0,
+          135,
+          90
+        ],
+        "fPort": 1
+      },
+      "output": {
+        "data": {
+          "Battery Status": "Good",
+          "Device Status": {
+            "Backlog Wraparound": "No",
+            "Backlogs Available": "No",
+            "Bandwidth Limitation": "No",
+            "Sensor Fault": "No",
+            "Unsupported API Version": "No"
+          },
+          "Temperature": -120.65
+        }
+      }
+    },
+    {
+      "description": "Decode Aggregated 8-Bit Temperature",
+      "input": {
+        "bytes": [
+          0,
+          192,
+          2,
+          10,
+          104,
+          126,
+          53,
+          55,
+          20,
+          0,
+          21,
+          25,
+          22,
+          51,
+          23,
+          76,
+          24,
+          102,
+          25,
+          128,
+          26,
+          153,
+          27,
+          179,
+          28,
+          204,
+          29,
+          230
+        ],
+        "fPort": 1
+      },
+      "output": {
+        "data": {
+          "Aggregate Temperature": {
+            "Aggregate Count": 10,
+            "Aggregate Temperatures": {
+              "Temperature 1": 20,
+              "Temperature 2": 21.1,
+              "Temperature 3": 22.2,
+              "Temperature 4": 23.3,
+              "Temperature 5": 24.4,
+              "Temperature 6": 25.5,
+              "Temperature 7": 26.6,
+              "Temperature 8": 27.7,
+              "Temperature 9": 28.8,
+              "Temperature 10": 29.9
+            },
+            "Timestamp": "Mon, 21 Jul 2025 12:40:23 GMT"
+          },
+          "Battery Status": "Good",
+          "Device Status": {
+            "Backlog Wraparound": "No",
+            "Backlogs Available": "No",
+            "Bandwidth Limitation": "No",
+            "Sensor Fault": "No",
+            "Unsupported API Version": "No"
+          }
+        }
+      }
+    },
+    {
+      "description": "Decode 8-Bit Temperature Backlogs",
+      "input": {
+        "bytes": [
+          0,
+          192,
+          1,
+          104,
+          126,
+          72,
+          182,
+          5,
+          25,
+          1,
+          104,
+          126,
+          72,
+          212,
+          4,
+          0,
+          1,
+          104,
+          126,
+          72,
+          242,
+          2,
+          230,
+          1,
+          104,
+          126,
+          73,
+          16,
+          1,
+          204,
+          1,
+          104,
+          126,
+          73,
+          46,
+          0,
+          179,
+          1,
+          104,
+          126,
+          73,
+          76,
+          255,
+          154,
+          1,
+          104,
+          126,
+          73,
+          106,
+          254,
+          128,
+          1,
+          104,
+          126,
+          73,
+          136,
+          253,
+          103,
+          1,
+          104,
+          126,
+          73,
+          166,
+          252,
+          77,
+          1,
+          104,
+          126,
+          73,
+          196,
+          251,
+          52
+        ],
+        "fPort": 1
+      },
+      "output": {
+        "data": {
+          "Battery Status": "Good",
+          "Device Status": {
+            "Backlog Wraparound": "No",
+            "Backlogs Available": "No",
+            "Bandwidth Limitation": "No",
+            "Sensor Fault": "No",
+            "Unsupported API Version": "No"
+          },
+          "Temperature Backlog 1": {
+            "Temperature": 5.1,
+            "Timestamp": "Mon, 21 Jul 2025 14:03:34 GMT"
+          },
+          "Temperature Backlog 2": {
+            "Temperature": 4,
+            "Timestamp": "Mon, 21 Jul 2025 14:04:04 GMT"
+          },
+          "Temperature Backlog 3": {
+            "Temperature": 2.9,
+            "Timestamp": "Mon, 21 Jul 2025 14:04:34 GMT"
+          },
+          "Temperature Backlog 4": {
+            "Temperature": 1.8,
+            "Timestamp": "Mon, 21 Jul 2025 14:05:04 GMT"
+          },
+          "Temperature Backlog 5": {
+            "Temperature": 0.7,
+            "Timestamp": "Mon, 21 Jul 2025 14:05:34 GMT"
+          },
+          "Temperature Backlog 6": {
+            "Temperature": -0.4,
+            "Timestamp": "Mon, 21 Jul 2025 14:06:04 GMT"
+          },
+          "Temperature Backlog 7": {
+            "Temperature": -1.5,
+            "Timestamp": "Mon, 21 Jul 2025 14:06:34 GMT"
+          },
+          "Temperature Backlog 8": {
+            "Temperature": -2.6,
+            "Timestamp": "Mon, 21 Jul 2025 14:07:04 GMT"
+          },
+          "Temperature Backlog 9": {
+            "Temperature": -3.7,
+            "Timestamp": "Mon, 21 Jul 2025 14:07:34 GMT"
+          },
+          "Temperature Backlog 10": {
+            "Temperature": -4.8,
+            "Timestamp": "Mon, 21 Jul 2025 14:08:04 GMT"
+          }
+        }
+      }
+    },
+    {
+      "description": "Decode 8-Bit Temperature and Temperature Backlogs",
+      "input": {
+        "bytes": [
+          0,
+          192,
+          0,
+          20,
+          128,
+          1,
+          104,
+          126,
+          72,
+          182,
+          5,
+          25,
+          1,
+          104,
+          126,
+          72,
+          212,
+          4,
+          0,
+          1,
+          104,
+          126,
+          72,
+          242,
+          2,
+          230,
+          1,
+          104,
+          126,
+          73,
+          16,
+          1,
+          204,
+          1,
+          104,
+          126,
+          73,
+          46,
+          0,
+          179,
+          1,
+          104,
+          126,
+          73,
+          76,
+          255,
+          154,
+          1,
+          104,
+          126,
+          73,
+          106,
+          254,
+          128,
+          1,
+          104,
+          126,
+          73,
+          136,
+          253,
+          103,
+          1,
+          104,
+          126,
+          73,
+          166,
+          252,
+          77,
+          1,
+          104,
+          126,
+          73,
+          196,
+          251,
+          52
+        ],
+        "fPort": 1
+      },
+      "output": {
+        "data": {
+          "Battery Status": "Good",
+          "Device Status": {
+            "Backlog Wraparound": "No",
+            "Backlogs Available": "No",
+            "Bandwidth Limitation": "No",
+            "Sensor Fault": "No",
+            "Unsupported API Version": "No"
+          },
+          "Temperature": 20.5,
+          "Temperature Backlog 1": {
+            "Temperature": 5.1,
+            "Timestamp": "Mon, 21 Jul 2025 14:03:34 GMT"
+          },
+          "Temperature Backlog 2": {
+            "Temperature": 4,
+            "Timestamp": "Mon, 21 Jul 2025 14:04:04 GMT"
+          },
+          "Temperature Backlog 3": {
+            "Temperature": 2.9,
+            "Timestamp": "Mon, 21 Jul 2025 14:04:34 GMT"
+          },
+          "Temperature Backlog 4": {
+            "Temperature": 1.8,
+            "Timestamp": "Mon, 21 Jul 2025 14:05:04 GMT"
+          },
+          "Temperature Backlog 5": {
+            "Temperature": 0.7,
+            "Timestamp": "Mon, 21 Jul 2025 14:05:34 GMT"
+          },
+          "Temperature Backlog 6": {
+            "Temperature": -0.4,
+            "Timestamp": "Mon, 21 Jul 2025 14:06:04 GMT"
+          },
+          "Temperature Backlog 7": {
+            "Temperature": -1.5,
+            "Timestamp": "Mon, 21 Jul 2025 14:06:34 GMT"
+          },
+          "Temperature Backlog 8": {
+            "Temperature": -2.6,
+            "Timestamp": "Mon, 21 Jul 2025 14:07:04 GMT"
+          },
+          "Temperature Backlog 9": {
+            "Temperature": -3.7,
+            "Timestamp": "Mon, 21 Jul 2025 14:07:34 GMT"
+          },
+          "Temperature Backlog 10": {
+            "Temperature": -4.8,
+            "Timestamp": "Mon, 21 Jul 2025 14:08:04 GMT"
+          }
+        }
+      }
+    },
+    {
+      "description": "Decode Read Friendly Name",
+      "input": {
+        "bytes": [
+          1,
+          192,
+          0,
+          83,
+          101,
+          110,
+          116,
+          114,
+          105,
+          117,
+          115,
+          32,
+          82,
+          83,
+          50,
+          54,
+          120,
+          0
+        ],
+        "fPort": 1
+      },
+      "output": {
+        "data": {
+          "Battery Status": "Good",
+          "Device Status": {
+            "Backlog Wraparound": "No",
+            "Backlogs Available": "No",
+            "Bandwidth Limitation": "No",
+            "Sensor Fault": "No",
+            "Unsupported API Version": "No"
+          },
+          "Friendly Name": "Sentrius RS26x"
+        }
+      }
+    },
+    {
+      "description": "Decode Read Sensor Type",
+      "input": {
+        "bytes": [
+          1,
+          192,
+          1,
+          1
+        ],
+        "fPort": 1
+      },
+      "output": {
+        "data": {
+          "Battery Status": "Good",
+          "Device Status": {
+            "Backlog Wraparound": "No",
+            "Backlogs Available": "No",
+            "Bandwidth Limitation": "No",
+            "Sensor Fault": "No",
+            "Unsupported API Version": "No"
+          },
+          "Sensor Type": "Internal Temperature Sensor"
+        }
+      }
+    },
+    {
+      "description": "Decode Read Read Period",
+      "input": {
+        "bytes": [
+          1,
+          192,
+          2,
+          1,
+          44
+        ],
+        "fPort": 1
+      },
+      "output": {
+        "data": {
+          "Battery Status": "Good",
+          "Device Status": {
+            "Backlog Wraparound": "No",
+            "Backlogs Available": "No",
+            "Bandwidth Limitation": "No",
+            "Sensor Fault": "No",
+            "Unsupported API Version": "No"
+          },
+          "Read Period": 300
+        }
+      }
+    },
+    {
+      "description": "Decode Read BLE Address",
+      "input": {
+        "bytes": [
+          1,
+          192,
+          3,
+          65,
+          65,
+          66,
+          66,
+          67,
+          67,
+          68,
+          68,
+          69,
+          69,
+          70,
+          70,
+          48,
+          48
+        ],
+        "fPort": 1
+      },
+      "output": {
+        "data": {
+          "Battery Status": "Good",
+          "Device Status": {
+            "Backlog Wraparound": "No",
+            "Backlogs Available": "No",
+            "Bandwidth Limitation": "No",
+            "Sensor Fault": "No",
+            "Unsupported API Version": "No"
+          },
+          "BLE Address": "0xAABBCCDDEEFF00"
+        }
+      }
+    },
+    {
+      "description": "Decode Read Confirmed Packet Retries",
+      "input": {
+        "bytes": [
+          1,
+          192,
+          7,
+          5
+        ],
+        "fPort": 1
+      },
+      "output": {
+        "data": {
+          "Battery Status": "Good",
+          "Device Status": {
+            "Backlog Wraparound": "No",
+            "Backlogs Available": "No",
+            "Bandwidth Limitation": "No",
+            "Sensor Fault": "No",
+            "Unsupported API Version": "No"
+          },
+          "Confirmed Packets Retries": 5
+        }
+      }
+    },
+    {
+      "description": "Decode Read LoRa RF Power",
+      "input": {
+        "bytes": [
+          1,
+          192,
+          8,
+          22
+        ],
+        "fPort": 1
+      },
+      "output": {
+        "data": {
+          "Battery Status": "Good",
+          "Device Status": {
+            "Backlog Wraparound": "No",
+            "Backlogs Available": "No",
+            "Bandwidth Limitation": "No",
+            "Sensor Fault": "No",
+            "Unsupported API Version": "No"
+          },
+          "LoRa RF Power": 22
+        }
+      }
+    },
+    {
+      "description": "Decode Read Downlink Packet Count",
+      "input": {
+        "bytes": [
+          1,
+          192,
+          12,
+          1,
+          0,
+          0,
+          0
+        ],
+        "fPort": 1
+      },
+      "output": {
+        "data": {
+          "Battery Status": "Good",
+          "Device Status": {
+            "Backlog Wraparound": "No",
+            "Backlogs Available": "No",
+            "Bandwidth Limitation": "No",
+            "Sensor Fault": "No",
+            "Unsupported API Version": "No"
+          },
+          "Downlink Packet Count": 16777216
+        }
+      }
+    },
+    {
+      "description": "Decode Read LoRa SNR",
+      "input": {
+        "bytes": [
+          1,
+          192,
+          13,
+          255
+        ],
+        "fPort": 1
+      },
+      "output": {
+        "data": {
+          "Battery Status": "Good",
+          "Device Status": {
+            "Backlog Wraparound": "No",
+            "Backlogs Available": "No",
+            "Bandwidth Limitation": "No",
+            "Sensor Fault": "No",
+            "Unsupported API Version": "No"
+          },
+          "LoRa SNR": -1
+        }
+      }
+    },
+    {
+      "description": "Decode Read RTC Time",
+      "input": {
+        "bytes": [
+          1,
+          192,
+          31,
+          104,
+          126,
+          110,
+          200
+        ],
+        "fPort": 1
+      },
+      "output": {
+        "data": {
+          "Battery Status": "Good",
+          "Device Status": {
+            "Backlog Wraparound": "No",
+            "Backlogs Available": "No",
+            "Bandwidth Limitation": "No",
+            "Sensor Fault": "No",
+            "Unsupported API Version": "No"
+          },
+          "RTC Time": "Mon, 21 Jul 2025 16:46:00 GMT"
+        }
+      }
+    },
+    {
+      "description": "Decode Read Group Internal Temperature",
+      "input": {
+        "bytes": [
+          1,
+          192,
+          0,
+          83,
+          101,
+          110,
+          116,
+          114,
+          105,
+          117,
+          115,
+          32,
+          82,
+          83,
+          50,
+          54,
+          120,
+          0,
+          1,
+          1,
+          2,
+          1,
+          44,
+          3,
+          65,
+          65,
+          66,
+          66,
+          67,
+          67,
+          68,
+          68,
+          69,
+          69,
+          70,
+          70,
+          48,
+          48,
+          7,
+          5,
+          8,
+          22,
+          12,
+          1,
+          0,
+          0,
+          0,
+          13,
+          255,
+          31,
+          104,
+          126,
+          110,
+          200
+        ],
+        "fPort": 1
+      },
+      "output": {
+        "data": {
+          "Battery Status": "Good",
+          "BLE Address": "0xAABBCCDDEEFF00",
+          "Confirmed Packets Retries": 5,
+          "Device Status": {
+            "Backlog Wraparound": "No",
+            "Backlogs Available": "No",
+            "Bandwidth Limitation": "No",
+            "Sensor Fault": "No",
+            "Unsupported API Version": "No"
+          },
+          "Downlink Packet Count": 16777216,
+          "Friendly Name": "Sentrius RS26x",
+          "LoRa RF Power": 22,
+          "LoRa SNR": -1,
+          "Read Period": 300,
+          "RTC Time": "Mon, 21 Jul 2025 16:46:00 GMT",
+          "Sensor Type": "Internal Temperature Sensor"
+        }
+      }
+    },
+    {
+      "description": "Decode Positive 8-Bit Temperature with Sensor Fault status",
+      "input": {
+        "bytes": [
+          0,
+          193,
+          0,
+          25,
+          0
+        ],
+        "fPort": 1
+      },
+      "output": {
+        "data": {
+          "Battery Status": "Good",
+          "Device Status": {
+            "Backlog Wraparound": "No",
+            "Backlogs Available": "No",
+            "Bandwidth Limitation": "No",
+            "Sensor Fault": "Yes",
+            "Unsupported API Version": "No"
+          },
+          "Temperature": 25
+        }
+      }
+    },
+    {
+      "description": "Decode Positive 8-Bit Temperature with Bandwidth Limitation status",
+      "input": {
+        "bytes": [
+          0,
+          194,
+          0,
+          25,
+          0
+        ],
+        "fPort": 1
+      },
+      "output": {
+        "data": {
+          "Battery Status": "Good",
+          "Device Status": {
+            "Backlog Wraparound": "No",
+            "Backlogs Available": "No",
+            "Bandwidth Limitation": "Yes",
+            "Sensor Fault": "No",
+            "Unsupported API Version": "No"
+          },
+          "Temperature": 25
+        }
+      }
+    },
+    {
+      "description": "Decode Positive 8-Bit Temperature with Backlogs Available status",
+      "input": {
+        "bytes": [
+          0,
+          196,
+          0,
+          25,
+          0
+        ],
+        "fPort": 1
+      },
+      "output": {
+        "data": {
+          "Battery Status": "Good",
+          "Device Status": {
+            "Backlog Wraparound": "No",
+            "Backlogs Available": "Yes",
+            "Bandwidth Limitation": "No",
+            "Sensor Fault": "No",
+            "Unsupported API Version": "No"
+          },
+          "Temperature": 25
+        }
+      }
+    },
+    {
+      "description": "Decode Positive 8-Bit Temperature with Backlog Wraparound status",
+      "input": {
+        "bytes": [
+          0,
+          200,
+          0,
+          25,
+          0
+        ],
+        "fPort": 1
+      },
+      "output": {
+        "data": {
+          "Battery Status": "Good",
+          "Device Status": {
+            "Backlog Wraparound": "Yes",
+            "Backlogs Available": "No",
+            "Bandwidth Limitation": "No",
+            "Sensor Fault": "No",
+            "Unsupported API Version": "No"
+          },
+          "Temperature": 25
+        }
+      }
+    },
+    {
+      "description": "Decode Positive 8-Bit Temperature with Unsupported API Version status",
+      "input": {
+        "bytes": [
+          0,
+          208,
+          0,
+          25,
+          0
+        ],
+        "fPort": 1
+      },
+      "output": {
+        "data": {
+          "Battery Status": "Good",
+          "Device Status": {
+            "Backlog Wraparound": "No",
+            "Backlogs Available": "No",
+            "Bandwidth Limitation": "No",
+            "Sensor Fault": "No",
+            "Unsupported API Version": "Yes"
+          },
+          "Temperature": 25
+        }
+      }
+    },
+    {
+      "description": "Decode Positive 8-Bit Temperature with all status bits set",
+      "input": {
+        "bytes": [
+          0,
+          223,
+          0,
+          25,
+          0
+        ],
+        "fPort": 1
+      },
+      "output": {
+        "data": {
+          "Battery Status": "Good",
+          "Device Status": {
+            "Backlog Wraparound": "Yes",
+            "Backlogs Available": "Yes",
+            "Bandwidth Limitation": "Yes",
+            "Sensor Fault": "Yes",
+            "Unsupported API Version": "Yes"
+          },
+          "Temperature": 25
+        }
+      }
+    },
+    {
+      "description": "Decode Read Sensor Type with Critical Battery status",
+      "input": {
+        "bytes": [
+          1,
+          0,
+          1,
+          1
+        ],
+        "fPort": 1
+      },
+      "output": {
+        "data": {
+          "Battery Status": "Critical",
+          "Device Status": {
+            "Backlog Wraparound": "No",
+            "Backlogs Available": "No",
+            "Bandwidth Limitation": "No",
+            "Sensor Fault": "No",
+            "Unsupported API Version": "No"
+          },
+          "Sensor Type": "Internal Temperature Sensor"
+        }
+      }
+    },
+    {
+      "description": "Decode Read Sensor Type with Replace Battery status",
+      "input": {
+        "bytes": [
+          1,
+          64,
+          1,
+          1
+        ],
+        "fPort": 1
+      },
+      "output": {
+        "data": {
+          "Battery Status": "Replace",
+          "Device Status": {
+            "Backlog Wraparound": "No",
+            "Backlogs Available": "No",
+            "Bandwidth Limitation": "No",
+            "Sensor Fault": "No",
+            "Unsupported API Version": "No"
+          },
+          "Sensor Type": "Internal Temperature Sensor"
+        }
+      }
+    },
+    {
+      "description": "Decode Read Sensor Type with OK Battery status",
+      "input": {
+        "bytes": [
+          1,
+          128,
+          1,
+          1
+        ],
+        "fPort": 1
+      },
+      "output": {
+        "data": {
+          "Battery Status": "OK",
+          "Device Status": {
+            "Backlog Wraparound": "No",
+            "Backlogs Available": "No",
+            "Bandwidth Limitation": "No",
+            "Sensor Fault": "No",
+            "Unsupported API Version": "No"
+          },
+          "Sensor Type": "Internal Temperature Sensor"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/netvox/ra02a-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Startup version report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          10,
+          0,
+          100,
+          21,
+          32,
+          32,
+          8,
+          17,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "RA02A",
+          "SWver": 10,
+          "HWver": 21,
+          "Datecode": "20200811"
+        }
+      }
+    },
+    {
+      "description": "Status report",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          10,
+          1,
+          30,
+          1,
+          1,
+          4,
+          176,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Device": "RA02A",
+          "Volt": 3,
+          "FireAlarm": "Alarm",
+          "HighTempAlarm": "Alarm",
+          "Temp": 120
+        }
+      }
+    },
+    {
+      "description": "Configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          129,
+          10,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ConfigReportRsp",
+          "Device": "RA02A",
+          "Status": "Success"
+        }
+      }
+    },
+    {
+      "description": "Read configure report response",
+      "input": {
+        "fPort": 7,
+        "bytes": [
+          130,
+          10,
+          3,
+          132,
+          7,
+          8,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "output": {
+        "data": {
+          "Cmd": "ReadConfigReportRsp",
+          "Device": "RA02A",
+          "MinTime": 900,
+          "MaxTime": 1800,
+          "BatteryChange": 0.1
+        }
+      }
+    }
+  ]
+}

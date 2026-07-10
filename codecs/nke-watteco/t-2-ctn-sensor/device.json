@@ -1,0 +1,28 @@
+{
+  "vendor": "nke-watteco",
+  "device": "t-2-ctn-sensor",
+  "name": "Remote Temperature 2 CTN",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "temperature",
+    "temperature2"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "nke-watteco",
+    "device": "t-2-ctn-sensor",
+    "codecId": "t-2-ctn-sensor-codec",
+    "codecFile": "t-2-ctn-sensor.js",
+    "codecSha256": "16fe01d5ba5542bc8af7af00c650fee4f12ae29d30d5945f161910e2ddb108e3",
+    "referencedAt": "2026-07-10"
+  }
+}

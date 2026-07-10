@@ -1,0 +1,8 @@
+{
+  "id": "analog-interface",
+  "name": "Analog / IO interface",
+  "description": "Generic analog and digital sensor-interface transmitters — 4-20 mA loops, 0-10 V inputs, potentiometers, raw ADC, and dry-contact / pulse counters. The physical quantity is defined by the attached probe; this category normalizes the raw interface reading.",
+  "atLeastOne": ["analog.current", "analog.voltage", "analog.ratio", "analog.raw", "pulse.count", "pulse.total", "action.contactState"],
+  "provides": ["air.temperature", "battery"],
+  "notes": "analog.current is mA, analog.voltage is V, analog.ratio is %, analog.raw is ADC counts; pulse.count/total are counts. A device whose reading has a known physical unit (temperature, pressure, level, …) belongs in that specific category instead."
+}

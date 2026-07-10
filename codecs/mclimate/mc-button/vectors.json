@@ -1,0 +1,52 @@
+{
+  "uplink": [
+    {
+      "description": "Keepalive with triple-press event (TTN example bytes)",
+      "input": {
+        "fPort": 2,
+        "bytes": [1, 171, 2, 155, 3]
+      },
+      "expected": {
+        "data": {
+          "make": "mclimate",
+          "model": "mc-button",
+          "battery": 3,
+          "thermistorProperlyConnected": true,
+          "sensorTemperature": 66.7,
+          "pressEvent": 3,
+          "action": { "button": { "pressed": true, "event": "triple" } }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Keepalive, no press (synthetic: pressEvent 0)",
+      "input": {
+        "fPort": 2,
+        "bytes": [1, 171, 2, 155, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "mclimate",
+          "model": "mc-button",
+          "battery": 3,
+          "thermistorProperlyConnected": true,
+          "sensorTemperature": 66.7,
+          "pressEvent": 0,
+          "action": { "button": { "pressed": false } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Command/response frame returns an error",
+      "input": {
+        "fPort": 2,
+        "bytes": [4, 3, 100, 1, 171, 2, 155, 0]
+      },
+      "expected": { "errors": ["command/response"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

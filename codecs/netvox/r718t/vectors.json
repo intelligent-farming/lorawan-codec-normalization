@@ -1,0 +1,48 @@
+{
+  "uplink": [
+    {
+      "description": "Status report, button pressed via function key 2 (TTN example bytes)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 49, 1, 36, 1, 2, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "r718t",
+          "battery": 3.6,
+          "action": { "button": { "pressed": true, "event": "single" } },
+          "functionKeyTrigger": "functionkey2"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Status report, idle (synthetic)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 49, 1, 36, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "r718t",
+          "battery": 3.6,
+          "action": { "button": { "pressed": false } },
+          "functionKeyTrigger": "others"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Configuration response fPort 7 returns an error",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": { "errors": ["unsupported fPort 7"] },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

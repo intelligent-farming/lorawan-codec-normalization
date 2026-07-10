@@ -1,0 +1,44 @@
+{
+  "uplink": [
+    {
+      "description": "Status report (TTN example bytes): relay ON",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 113, 1, 1, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "ra10",
+          "action": { "switch": { "state": true } }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Status report, relay OFF (synthetic)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 113, 1, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "ra10",
+          "action": { "switch": { "state": false } }
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Config response on fPort 7 carries no measurement (error)",
+      "input": {
+        "fPort": 7,
+        "bytes": [129, 113, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": { "errors": ["unsupported fPort 7"] },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

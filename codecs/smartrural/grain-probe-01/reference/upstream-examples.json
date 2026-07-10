@@ -1,0 +1,76 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/smartrural/grain-probe-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "Grain Tempearture Sensor",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          14,
+          85,
+          1,
+          8,
+          98,
+          8,
+          103,
+          96,
+          228,
+          60,
+          198
+        ]
+      },
+      "output": {
+        "data": {
+          "Ext": 1,
+          "Systimestamp": 1625570502,
+          "battery": 3.669,
+          "debug": {
+            "bytes": [
+              14,
+              85,
+              1,
+              8,
+              98,
+              8,
+              103,
+              96,
+              228,
+              60,
+              198
+            ],
+            "errors": [],
+            "warnings": []
+          },
+          "temperatures": [
+            21.46,
+            21.51
+          ]
+        }
+      }
+    },
+    {
+      "description": "Unknown FPort",
+      "input": {
+        "fPort": 42,
+        "bytes": [
+          14,
+          85,
+          1,
+          8,
+          98,
+          8,
+          103,
+          96,
+          228,
+          60,
+          198
+        ]
+      },
+      "output": {
+        "errors": [
+          "unknown FPort"
+        ]
+      }
+    }
+  ]
+}

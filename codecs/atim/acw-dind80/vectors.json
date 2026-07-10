@@ -1,0 +1,62 @@
+{
+  "uplink": [
+    {
+      "description": "inputs + 2 counters: input0 closed, input3 closed, counter1=100, counter2=200",
+      "input": { "fPort": 1, "bytes": [94, 5, 0, 0, 0, 0, 100, 0, 0, 0, 200] },
+      "expected": {
+        "data": {
+          "make": "atim", "model": "acw-dind80",
+          "action": { "contactState": "closed" },
+          "input2": false, "input3": true, "input4": false,
+          "input5": false, "input6": false, "input7": false, "input8": false,
+          "input9": false, "input10": false, "input11": false, "input12": false,
+          "input13": false, "input14": false, "input15": false, "input16": false,
+          "pulse": { "count": 100 }, "count2": 200,
+          "frameType": "inputsCounters"
+        }
+      },
+      "source": "synthetic",
+      "_note": "0x5E 'entrees digitales et compteurs'. entree byte 0x05 -> bits 0 and 2 set -> input0 (contactState closed) + input3 true. c0=100 -> pulse.count, c1=200 -> count2. Verified against reference/upstream-codec.js (entree [1,0,1,...], compteur0=100, compteur1=200)."
+    },
+    {
+      "description": "digital inputs only: input0 closed",
+      "input": { "fPort": 1, "bytes": [66, 1, 0] },
+      "expected": {
+        "data": {
+          "make": "atim", "model": "acw-dind80",
+          "action": { "contactState": "closed" },
+          "input2": false, "input3": false, "input4": false,
+          "input5": false, "input6": false, "input7": false, "input8": false,
+          "input9": false, "input10": false, "input11": false, "input12": false,
+          "input13": false, "input14": false, "input15": false, "input16": false,
+          "frameType": "digitalInputs"
+        }
+      },
+      "source": "synthetic",
+      "_note": "0x42 'entrees digitales'. entree byte 0x01 -> only input0 -> contactState closed. Verified against reference/upstream-codec.js (entree [1,0,...])."
+    },
+    {
+      "description": "life frame: battery 3.60 V",
+      "input": { "fPort": 1, "bytes": [1, 14, 16] },
+      "expected": {
+        "data": { "make": "atim", "model": "acw-dind80", "battery": 3.6, "frameType": "life" }
+      },
+      "source": "synthetic",
+      "_note": "0x01 'Trame de vie': tensionc 0x0E10=3600 / 1000 = 3.6 V. Verified against reference/upstream-codec.js (tensionc.value=3.6)."
+    },
+    {
+      "description": "unsupported frame type yields error",
+      "input": { "fPort": 1, "bytes": [24, 0, 0, 0] },
+      "expected": { "errors": ["unsupported ATIM frame type"] },
+      "source": "synthetic",
+      "_note": "0x18 is a DINDA analog frame, not a DINDxx digital frame."
+    },
+    {
+      "description": "empty payload",
+      "input": { "fPort": 1, "bytes": [] },
+      "expected": { "errors": ["empty payload"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

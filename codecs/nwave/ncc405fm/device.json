@@ -1,0 +1,32 @@
+{
+  "vendor": "nwave",
+  "device": "ncc405fm",
+  "name": "Smart Car Counter G4 FM",
+  "categories": [
+    "people-counter"
+  ],
+  "sensors": [
+    "magnetometer",
+    "temperature",
+    "proximity"
+  ],
+  "provides": [
+    "battery",
+    "batteryMean24h",
+    "hwHealthStatus",
+    "people.total"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "nwave",
+    "device": "ncc405fm",
+    "codecId": "ncc405-codec",
+    "codecFile": "ncc405.js",
+    "codecSha256": "79bc0ae11259fed4841db7039e91ce8b95d9c208082ae6e70aef107acecf1e9b",
+    "referencedAt": "2026-07-10"
+  }
+}

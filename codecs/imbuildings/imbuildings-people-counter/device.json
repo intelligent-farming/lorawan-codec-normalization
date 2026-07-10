@@ -1,0 +1,35 @@
+{
+  "vendor": "imbuildings",
+  "device": "imbuildings-people-counter",
+  "name": "People counter",
+  "categories": [
+    "people-counter"
+  ],
+  "sensors": [
+    "infrared"
+  ],
+  "provides": [
+    "battery",
+    "deviceStatus",
+    "payloadCounter",
+    "people.in",
+    "people.out",
+    "people.total",
+    "sensorStatus",
+    "totalCounterA",
+    "totalCounterB"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "imbuildings",
+    "device": "imbuildings-people-counter",
+    "codecId": "imbuildings-codec",
+    "codecFile": "imbuildings.js",
+    "codecSha256": "4fc1356abbf7f6f4a87132f796b75569b0ab16379ae9fc0a549a5f678fef574f",
+    "referencedAt": "2026-07-10"
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "uplink": [
+    {
+      "description": "Positive standard temperature (TTN example): +20.5 C, battery Good",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 192, 0, 20, 128]
+      },
+      "expected": {
+        "data": {
+          "make": "ezurio",
+          "model": "rs26x-int-temp-sensor",
+          "temperature": 20.5,
+          "batteryStatus": "Good",
+          "deviceStatus": {
+            "sensorFault": false,
+            "bandwidthLimitation": false,
+            "backlogsAvailable": false,
+            "backlogWraparound": false,
+            "unsupportedApiVersion": false
+          }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Negative standard temperature with sensor-fault status (TTN example): -120.65 C",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 193, 0, 135, 90]
+      },
+      "expected": {
+        "data": {
+          "make": "ezurio",
+          "model": "rs26x-int-temp-sensor",
+          "temperature": -120.65,
+          "batteryStatus": "Good",
+          "deviceStatus": {
+            "sensorFault": true,
+            "bandwidthLimitation": false,
+            "backlogsAvailable": false,
+            "backlogWraparound": false,
+            "unsupportedApiVersion": false
+          }
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Sensor-configuration frame (0x01) is not a measurement",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 192, 1, 1]
+      },
+      "expected": { "errors": ["sensor-configuration frame"] },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

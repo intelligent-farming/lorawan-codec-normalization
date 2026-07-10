@@ -1,0 +1,34 @@
+{
+  "vendor": "yobiiq",
+  "device": "sd-1001",
+  "name": "SD1001 - Smoke Detector",
+  "categories": [
+    "smoke-detector"
+  ],
+  "sensors": [
+    "smoke",
+    "battery"
+  ],
+  "provides": [
+    "action.smoke.detected",
+    "batteryPercent",
+    "faultAlarm",
+    "interconnectAlarm",
+    "lowBatteryAlarm",
+    "powerEvent",
+    "testButtonPressed"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "yobiiq",
+    "device": "sd-1001",
+    "codecId": "sd-1001-codec",
+    "codecFile": "sd-1001.js",
+    "codecSha256": "f7da8a6b5a225ae6a4f98b5113358af0e504cac7e99fe1db4b36cd060df79b73",
+    "referencedAt": "2026-07-10"
+  }
+}

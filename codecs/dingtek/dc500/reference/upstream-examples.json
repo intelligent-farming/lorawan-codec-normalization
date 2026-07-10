@@ -1,0 +1,71 @@
+{
+  "_note": "Snapshot from TheThingsNetwork/lorawan-devices vendor/dingtek/dc500-codec.yaml (Apache-2.0). Authoring reference only; excluded from the npm tarball.",
+  "examples": [
+    {
+      "description": "event trigger upload",
+      "input": {
+        "fPort": 3,
+        "bytes": [
+          128,
+          0,
+          2,
+          1,
+          21,
+          1,
+          1,
+          1,
+          0,
+          1,
+          111,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          129
+        ]
+      },
+      "output": {
+        "data": {
+          "peopleCounter": 257,
+          "alarmCounter": false,
+          "alarmBattery": true,
+          "volt": 3.67,
+          "frameCounter": 1
+        }
+      }
+    },
+    {
+      "description": "parameter packet",
+      "input": {
+        "fPort": 3,
+        "bytes": [
+          128,
+          0,
+          2,
+          3,
+          12,
+          1,
+          3,
+          4,
+          1,
+          244,
+          30,
+          129
+        ]
+      },
+      "output": {
+        "data": {
+          "firmware": "1.3",
+          "uploadInterval": 4,
+          "peopleCounterThreshold": 500,
+          "batteryThreshold": 30
+        }
+      }
+    }
+  ]
+}

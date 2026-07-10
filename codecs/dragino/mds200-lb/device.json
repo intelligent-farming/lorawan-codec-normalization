@@ -1,0 +1,33 @@
+{
+  "vendor": "dragino",
+  "device": "mds200-lb",
+  "name": "MDS200-LB",
+  "categories": [
+    "tank-level"
+  ],
+  "sensors": [
+    "distance",
+    "level"
+  ],
+  "provides": [
+    "battery",
+    "distance2Meters",
+    "distanceAlarm",
+    "distanceAlarmCount",
+    "interruptAlarm",
+    "tank.distance"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "dragino",
+    "device": "mds200-lb",
+    "codecId": "mds200-lb-codec",
+    "codecFile": "mds200-lb.js",
+    "codecSha256": "2dd0728b0c22c2a41b12029df25228138b9a4f573035a4397617c03601854b36",
+    "referencedAt": "2026-07-10"
+  }
+}

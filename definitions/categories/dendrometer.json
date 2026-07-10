@@ -1,0 +1,8 @@
+{
+  "id": "dendrometer",
+  "name": "Dendrometer",
+  "description": "Dendrometers measuring stem, trunk, or fruit dimensional change for plant growth and water-stress monitoring.",
+  "requires": ["plant.dendrometer"],
+  "provides": ["air.temperature", "battery"],
+  "notes": "plant.dendrometer is the dimensional change in micrometres (µm)."
+}

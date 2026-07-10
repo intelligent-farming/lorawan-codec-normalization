@@ -1,0 +1,54 @@
+{
+  "uplink": [
+    {
+      "description": "Normal operation, 0 V on fence (impulses 0), battery-sensor block present",
+      "input": {
+        "fPort": 1,
+        "bytes": [28, 14, 4, 0, 0, 14, 16, 70, 60, 253, 139, 12, 97]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "pulse": { "count": 0 },
+          "activeMode": false,
+          "analog": { "voltage": 0 },
+          "remainingCapacityMah": 12095.3857421875,
+          "air": { "temperature": 31.69 },
+          "make": "fencyboy",
+          "model": "fencyboy"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Normal operation with 10860 V on fence (impulses 473), fence + battery blocks",
+      "input": {
+        "fPort": 1,
+        "bytes": [29, 13, 254, 1, 217, 42, 108, 4, 115, 41, 108, 43, 83, 14, 9, 70, 61, 2, 56, 13, 75]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.593,
+          "pulse": { "count": 473 },
+          "activeMode": true,
+          "analog": { "voltage": 10860 },
+          "fenceVoltageStd": 113.9,
+          "fenceVoltageMin": 10604,
+          "fenceVoltageMax": 11091,
+          "remainingCapacityMah": 12096.5546875,
+          "air": { "temperature": 34.03 },
+          "make": "fencyboy",
+          "model": "fencyboy"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "settings payload on fPort 2 carries no fence/impulse measurement",
+      "input": { "fPort": 2, "bytes": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+      "expected": { "errors": ["only the normal payload on fPort 1 is normalized"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

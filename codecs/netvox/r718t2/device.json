@@ -1,0 +1,32 @@
+{
+  "vendor": "netvox",
+  "device": "r718t2",
+  "name": "R718T2 - Wireless 2-Input Push Button Interface",
+  "categories": [
+    "button"
+  ],
+  "sensors": [
+    "digital input"
+  ],
+  "provides": [
+    "action.button.count",
+    "action.button.event",
+    "action.button.pressed",
+    "battery",
+    "input1Pressed",
+    "input2Pressed"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "netvox",
+    "device": "r718t2",
+    "codecId": "r718t2-codec",
+    "codecFile": "payload/r718t2.js",
+    "codecSha256": "b85c2f7ef91e9e5a7cde66fc450c32a810b01f28d46cba0c44fe19ee74bf62a6",
+    "referencedAt": "2026-07-10"
+  }
+}

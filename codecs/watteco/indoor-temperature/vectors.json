@@ -1,0 +1,23 @@
+{
+  "uplink": [
+    {
+      "description": "standard report: temperature 29.53 C | payload:110A04020000290B89",
+      "input": { "fPort": 125, "bytes": [17, 10, 4, 2, 0, 0, 41, 11, 137] },
+      "expected": { "data": { "temperature": 29.53, "make": "watteco", "model": "indoor-temperature" } },
+      "source": "ttn-example"
+    },
+    {
+      "description": "standard report: disposable battery 3.688 V | payload:110A00500006410503040E6804",
+      "input": { "fPort": 125, "bytes": [17, 10, 0, 80, 0, 6, 65, 5, 3, 4, 14, 104, 4] },
+      "expected": { "data": { "battery": 3.688, "make": "watteco", "model": "indoor-temperature" } },
+      "source": "ttn-example"
+    },
+    {
+      "description": "batch (Huffman) frame is not supported (byte0 bit0 clear)",
+      "input": { "fPort": 125, "bytes": [38, 2, 0, 0, 128, 54, 6, 162, 252, 17, 228, 247] },
+      "expected": { "errors": ["batch frame not supported"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

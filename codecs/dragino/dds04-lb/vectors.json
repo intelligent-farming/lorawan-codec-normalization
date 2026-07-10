@@ -1,0 +1,38 @@
+{
+  "uplink": [
+    {
+      "description": "fPort 2 telemetry: 4-channel ultrasonic distances, 3.318 V",
+      "input": {
+        "fPort": 2,
+        "bytes": [12, 246, 1, 1, 3, 0, 12, 1, 221, 1, 255]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.318,
+          "extiTrigger": false,
+          "extiLevelHigh": false,
+          "tank": { "distance": 0.257 },
+          "distance2Meters": 0.768,
+          "distance3Meters": 3.073,
+          "distance4Meters": 56.577,
+          "messageType": 255,
+          "make": "dragino",
+          "model": "dds04-lb"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "unsupported fPort returns an error",
+      "input": {
+        "fPort": 42,
+        "bytes": [12, 246, 1, 1, 3, 0, 12, 1, 221, 1, 255]
+      },
+      "expected": {
+        "errors": ["unsupported fPort"]
+      },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

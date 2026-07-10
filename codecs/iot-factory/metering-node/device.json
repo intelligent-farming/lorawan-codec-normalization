@@ -1,0 +1,34 @@
+{
+  "vendor": "iot-factory",
+  "device": "metering-node",
+  "name": "Metering Node",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "4-20 ma",
+    "analog input",
+    "digital input",
+    "pulse count"
+  ],
+  "provides": [
+    "analog.current",
+    "analog.voltage",
+    "batteryPercent",
+    "pulse.total",
+    "time"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "iot-factory",
+    "device": "metering-node",
+    "codecId": "generic-codec",
+    "codecFile": "generic-decoder.js",
+    "codecSha256": "d65494907cc7f7ce3112c11819c577773f27cd80225a1139e2f682eefaec5762",
+    "referencedAt": "2026-07-10"
+  }
+}

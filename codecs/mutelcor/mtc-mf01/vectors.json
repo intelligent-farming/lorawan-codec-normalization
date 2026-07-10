@@ -1,0 +1,43 @@
+{
+  "uplink": [
+    {
+      "description": "Switch frame (opcode 6): state byte 5 (switch1+switch3 closed) -> contactState 'closed'; 3.6 V",
+      "input": { "fPort": 1, "bytes": [1, 1, 104, 6, 5] },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "action": { "contactState": "closed" },
+          "switch1": 1,
+          "switch2": 0,
+          "switch3": 1,
+          "make": "mutelcor",
+          "model": "mtc-mf01"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Switch frame (opcode 6): state 0 -> all switches open",
+      "input": { "fPort": 1, "bytes": [1, 1, 104, 6, 0] },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "action": { "contactState": "open" },
+          "switch1": 0,
+          "switch2": 0,
+          "switch3": 0,
+          "make": "mutelcor",
+          "model": "mtc-mf01"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "Measurements frame (opcode 3) carries no contact state",
+      "input": { "fPort": 1, "bytes": [1, 1, 104, 3] },
+      "expected": { "errors": ["is not a Switch/contact frame"] },
+      "source": "synthetic"
+    }
+  ],
+  "downlink": []
+}

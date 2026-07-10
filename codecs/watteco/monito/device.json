@@ -1,0 +1,29 @@
+{
+  "vendor": "watteco",
+  "device": "monito",
+  "name": "Monit'O - Analog Interface",
+  "categories": [
+    "analog-interface"
+  ],
+  "sensors": [
+    "analog input"
+  ],
+  "provides": [
+    "analog.raw",
+    "analog2Raw",
+    "battery"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "watteco",
+    "device": "monito",
+    "codecId": "monito-codec",
+    "codecFile": "monito.js",
+    "codecSha256": "fadb8923e893bb69e30dab64f8a748e4d61cc44a6ff43efb07e774a6b6b8354c",
+    "referencedAt": "2026-07-10"
+  }
+}

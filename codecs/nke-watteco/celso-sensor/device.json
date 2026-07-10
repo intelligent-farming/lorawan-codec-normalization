@@ -1,0 +1,27 @@
+{
+  "vendor": "nke-watteco",
+  "device": "celso-sensor",
+  "name": "Cels'O - Temperature Sensor",
+  "categories": [
+    "temperature"
+  ],
+  "sensors": [
+    "temperature"
+  ],
+  "provides": [
+    "temperature"
+  ],
+  "variantOf": null,
+  "downlink": {
+    "encode": false,
+    "decode": false
+  },
+  "ttn": {
+    "vendor": "nke-watteco",
+    "device": "celso-sensor",
+    "codecId": "celso-sensor-codec",
+    "codecFile": "celso-sensor.js",
+    "codecSha256": "1e4f47113eb399cda1c5c701d003b4c9a8078f42a2b549a714531a40c6e2ee64",
+    "referencedAt": "2026-07-10"
+  }
+}

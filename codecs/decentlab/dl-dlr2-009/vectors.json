@@ -1,0 +1,38 @@
+{
+  "uplink": [
+    {
+      "description": "Example 1: PT1000 analog + battery frame (flags=0x0003)",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 76, 98, 0, 3, 87, 52, 0, 173, 10, 225]
+      },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 19554,
+          "analog": {
+            "raw": 11360052
+          },
+          "thermistorResistance": 1097.0478,
+          "probeTemperature": 24.9081,
+          "battery": 2.785,
+          "make": "decentlab",
+          "model": "dl-dlr2-009"
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Example 2: battery-only frame (flags=0x0002) carries no analog block -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 76, 98, 0, 2, 10, 225]
+      },
+      "expected": {
+        "errors": ["no analog field in payload"]
+      },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}

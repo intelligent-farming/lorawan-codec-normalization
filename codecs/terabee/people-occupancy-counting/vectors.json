@@ -1,0 +1,41 @@
+{
+  "uplink": [
+    {
+      "description": "Counting data uplink (TTN example bytes): global present=5, zones + flags",
+      "input": {
+        "fPort": 83,
+        "bytes": [15, 5, 3, 4, 2, 1, 0, 255, 255, 255]
+      },
+      "expected": {
+        "data": {
+          "make": "terabee",
+          "model": "people-occupancy-counting",
+          "people": { "present": 5 },
+          "stopped": true,
+          "stuck": true,
+          "wifiAccessPointOn": true,
+          "warmup": true,
+          "zone0": 3,
+          "zone1": 4,
+          "zone2": 2,
+          "zone3": 1,
+          "zone4": 0,
+          "zone5": null,
+          "zone6": null,
+          "zone7": null
+        }
+      },
+      "source": "ttn-example"
+    },
+    {
+      "description": "Command/parameter response fPort is not a measurement (error)",
+      "input": {
+        "fPort": 100,
+        "bytes": [1, 0, 120]
+      },
+      "expected": { "errors": ["unsupported fPort"] },
+      "source": "ttn-example"
+    }
+  ],
+  "downlink": []
+}
