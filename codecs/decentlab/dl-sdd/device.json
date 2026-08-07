@@ -15,11 +15,9 @@
     "battery",
     "deviceId",
     "protocolVersion",
+    "salinityIndex",
     "soil.moisture",
-    "soil.temperature",
-    "soilMoistureProfile",
-    "soilSalinityProfile",
-    "soilTemperatureProfile"
+    "soil.temperature"
   ],
   "variantOf": null,
   "downlink": {

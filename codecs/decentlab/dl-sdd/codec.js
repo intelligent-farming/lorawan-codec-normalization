@@ -30,20 +30,26 @@
 //   salinity at level k    = word - 100             [raw index, dimensionless]
 //   battery voltage        = word / 1000            [V]
 //
-// Mapping: this is a multi-level profile probe, but the single-measurement
-// vocabulary models one soil.* set, so the topmost/representative level (level
-// 0) maps to soil.moisture (%) and soil.temperature (°C). The complete per-level
-// readings are emitted as the camelCase extras `soilMoistureProfile`,
-// `soilTemperatureProfile` and `soilSalinityProfile` (each entry carries its
-// level index). The Decentlab "salinity" output is a raw, dimensionless sensor
-// index — not electrical conductivity in dS/m — so it has no vocabulary key and
-// is kept only in the profile extra. Battery voltage is reported by the device
-// already in volts, so it maps directly to `battery`. The protocol version and
-// device id (framing diagnostics the vocabulary does not model) are emitted as
-// the camelCase extras `protocolVersion`/`deviceId`. soil.moisture is a bounded
-// 0-100% percentage and soil.temperature is bounded >= -273.15 °C; if the
-// representative level's value falls outside those bounds it is omitted from the
-// normalized soil.* field but still recorded faithfully in the profile extras.
+// Mapping: a multi-level profile probe. Each connected level becomes one
+// entry in the reserved `channels` array (see AUTHORING.md "Multi-channel
+// devices"), labelled `level0`..`level11` after the wire level index and
+// carrying that level's soil.moisture (%), soil.temperature (°C), and the
+// camelCase extra `salinityIndex` — the Decentlab "salinity" output is a raw,
+// dimensionless sensor index, not electrical conductivity in dS/m, so it has
+// no vocabulary key. Whole-device battery voltage is reported already in
+// volts and stays top-level as `battery`. Physical depth in centimetres is
+// NOT in the payload and varies by probe length (3-12 sensor Drill & Drop
+// variants exist), so no per-entry soil.depth is emitted. The protocol
+// version and device id (framing diagnostics the vocabulary does not model)
+// are emitted as the camelCase extras `protocolVersion`/`deviceId`.
+//
+// A disconnected level reads sentinel word 0 for moisture and temperature
+// (-327.68 after conversion, outside the vocabulary bounds: soil.moisture
+// 0-100 %, soil.temperature >= -273.15 °C). Out-of-range values are dropped
+// per level; a level with no in-range soil value gets no channels entry (its
+// salinityIndex, -100 on a disconnected level, is garbage without the soil
+// readings and is dropped with it); the `channels` key is omitted when no
+// level is connected.
 
 function round(value, decimals) {
   var f = Math.pow(10, decimals);
@@ -97,12 +103,11 @@ function decodeUplinkCore(input) {
   data.protocolVersion = version;
   data.deviceId = deviceId;
 
-  var moistureProfile = [];
-  var temperatureProfile = [];
-  var salinityProfile = [];
-
   // bit0 (levels 0-5) and bit1 (levels 6-11): each an 18-word block laid out as
-  // 6 moisture words, then 6 temperature words, then 6 salinity words.
+  // 6 moisture words, then 6 temperature words, then 6 salinity words. One
+  // channels entry per connected level; disconnected sentinels are dropped per
+  // value and an entry with no in-range soil value is omitted.
+  var channels = [];
   var blockIndex;
   for (blockIndex = 0; blockIndex < 2; blockIndex++) {
     if (words[blockIndex]) {
@@ -110,40 +115,27 @@ function decodeUplinkCore(input) {
       var levelBase = blockIndex * 6;
       var k;
       for (k = 0; k < 6; k++) {
-        var level = levelBase + k;
-        moistureProfile.push({
-          level: level,
-          moisture: round((w[k] - 32768) / 100, 2)
-        });
-        temperatureProfile.push({
-          level: level,
-          temperature: round((w[6 + k] - 32768) / 100, 2)
-        });
-        salinityProfile.push({
-          level: level,
-          salinity: w[12 + k] - 100
-        });
+        var moisture = round((w[k] - 32768) / 100, 2);
+        var temperature = round((w[6 + k] - 32768) / 100, 2);
+        var soil = {};
+        if (moisture >= 0 && moisture <= 100) {
+          soil.moisture = moisture;
+        }
+        if (temperature >= -273.15) {
+          soil.temperature = temperature;
+        }
+        if (soil.moisture !== undefined || soil.temperature !== undefined) {
+          channels.push({
+            channel: 'level' + (levelBase + k),
+            soil: soil,
+            salinityIndex: w[12 + k] - 100
+          });
+        }
       }
     }
   }
-
-  if (moistureProfile.length > 0) {
-    data.soilMoistureProfile = moistureProfile;
-    data.soilTemperatureProfile = temperatureProfile;
-    data.soilSalinityProfile = salinityProfile;
-
-    // Representative (topmost) level -> normalized soil.*. Only emit values that
-    // fall within the vocabulary bounds.
-    var soil = {};
-    var topMoisture = moistureProfile[0].moisture;
-    var topTemperature = temperatureProfile[0].temperature;
-    if (topMoisture >= 0 && topMoisture <= 100) {
-      soil.moisture = topMoisture;
-    }
-    if (topTemperature >= -273.15) {
-      soil.temperature = topTemperature;
-    }
-    data.soil = soil;
+  if (channels.length > 0) {
+    data.channels = channels;
   }
 
   // bit2: battery voltage (V, already volts).

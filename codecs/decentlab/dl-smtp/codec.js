@@ -15,23 +15,27 @@
 // depth (`soil_moisture_at_depth_N` / `soil_temperature_at_depth_N`). The
 // results are then mapped onto the shared normalized vocabulary.
 //
-// Mapping: this is a multi-depth profile probe, but the single-measurement
-// vocabulary models one soil.* set, so the topmost/representative depth (depth
-// 0) maps to soil.moisture (%) and soil.temperature (°C); the complete per-depth
-// readings are emitted as the camelCase extras `soilMoistureProfile` and
-// `soilTemperatureProfile` (each entry carries its depth index). Battery voltage
-// is reported by the device already in volts, so it maps directly to `battery`.
-// The protocol version and device id (framing diagnostics the vocabulary does
-// not model) are emitted as the camelCase extras `protocolVersion`/`deviceId`.
+// Mapping: a multi-depth profile probe. Each connected depth becomes one
+// entry in the reserved `channels` array (see AUTHORING.md "Multi-channel
+// devices"), labelled `depth0`..`depth7` after the wire depth index and
+// carrying that depth's soil.moisture (%) and soil.temperature (°C).
+// Whole-device battery voltage is reported already in volts and stays
+// top-level as `battery`. Physical depth in centimetres is NOT in the payload
+// and varies by probe configuration (Decentlab sells custom lengths/level
+// counts), so no per-entry soil.depth is emitted. The protocol version and
+// device id (framing diagnostics the vocabulary does not model) are emitted
+// as the camelCase extras `protocolVersion`/`deviceId`.
 //
 // Upstream conversions (ported verbatim):
 //   soil moisture at depth k    = (word - 2500) / 500
 //   soil temperature at depth k = (word - 32768) / 100   [°C]
 //   battery voltage             = word / 1000            [V]
-// A disconnected channel reads moisture -5 and temperature -327.68; such values
-// fall outside the vocabulary bounds for soil.moisture/soil.temperature, so a
-// depth whose representative value is out of range is omitted from the
-// normalized soil.* fields but still recorded faithfully in the profile extras.
+// A disconnected depth reads sentinels: moisture -5 and temperature -327.68,
+// outside the vocabulary bounds for soil.moisture (0-100 %) and
+// soil.temperature (>= -273.15 °C). Out-of-range values are dropped per
+// depth, a depth with no in-range values gets no channels entry (a standard
+// 6-level probe yields depth0..depth5), and the `channels` key is omitted
+// when no depth is connected.
 
 function round(value, decimals) {
   var f = Math.pow(10, decimals);
@@ -88,35 +92,29 @@ function decodeUplinkCore(input) {
   data.deviceId = deviceId;
 
   // bit0: 8-depth soil moisture (%) + temperature (°C) profile, interleaved.
+  // One channels entry per connected depth; disconnected sentinels (-5,
+  // -327.68) fall outside the vocabulary bounds and are dropped per value.
   if (words[0]) {
     var profileWords = words[0];
-    var moistureProfile = [];
-    var temperatureProfile = [];
+    var channels = [];
     var k;
     for (k = 0; k < 8; k++) {
       var moisture = round((profileWords[k * 2] - 2500) / 500, 3);
       var temperature = round((profileWords[k * 2 + 1] - 32768) / 100, 2);
-      moistureProfile.push({ depth: k, moisture: moisture });
-      temperatureProfile.push({ depth: k, temperature: temperature });
+      var soil = {};
+      if (moisture >= 0 && moisture <= 100) {
+        soil.moisture = moisture;
+      }
+      if (temperature >= -273.15) {
+        soil.temperature = temperature;
+      }
+      if (soil.moisture !== undefined || soil.temperature !== undefined) {
+        channels.push({ channel: 'depth' + k, soil: soil });
+      }
     }
-    data.soilMoistureProfile = moistureProfile;
-    data.soilTemperatureProfile = temperatureProfile;
-
-    // Representative (topmost) depth -> normalized soil.*. Only emit values that
-    // fall within the vocabulary bounds (soil.moisture is a 0-100% percentage;
-    // soil.temperature is >= -273.15 °C). A disconnected probe reports
-    // out-of-range sentinels (-5, -327.68) which must not be forced into the
-    // bounded vocabulary fields.
-    var soil = {};
-    var topMoisture = moistureProfile[0].moisture;
-    var topTemperature = temperatureProfile[0].temperature;
-    if (topMoisture >= 0 && topMoisture <= 100) {
-      soil.moisture = topMoisture;
+    if (channels.length > 0) {
+      data.channels = channels;
     }
-    if (topTemperature >= -273.15) {
-      soil.temperature = topTemperature;
-    }
-    data.soil = soil;
   }
 
   // bit1: battery voltage (V, already volts).
