@@ -204,6 +204,93 @@ test('validate() enforces history rules', () => {
   assert.ok(badEntry.issues.some((i) => i.rule === 'schema'));
 });
 
+test('validate() enforces channels rules', () => {
+  // A multilayer probe: per-depth groups in channels, whole-device battery at
+  // the top level. Entries may carry extras and an optional time.
+  const ok = lib.validate('soil-monitor', {
+    battery: 3.6,
+    channels: [
+      { channel: 'depth0', soil: { moisture: 5, temperature: 20 } },
+      {
+        channel: 'depth1',
+        time: '2026-06-12T10:00:00Z',
+        soil: { moisture: 5.5 },
+        salinityIndex: 123,
+      },
+    ],
+  });
+  assert.equal(ok.valid, true, JSON.stringify(ok.issues));
+
+  const notArray = lib.validate('soil-monitor', {
+    channels: { channel: 'depth0', soil: { moisture: 5 } },
+  });
+  assert.ok(notArray.issues.some((i) => i.rule === 'reserved-key'));
+
+  // Labels: required, non-empty string, unique within the array.
+  const noLabel = lib.validate('soil-monitor', {
+    channels: [{ soil: { moisture: 5 } }],
+  });
+  assert.ok(noLabel.issues.some((i) => i.rule === 'channel-label'));
+  const emptyLabel = lib.validate('soil-monitor', {
+    channels: [{ channel: '', soil: { moisture: 5 } }],
+  });
+  assert.ok(emptyLabel.issues.some((i) => i.rule === 'channel-label'));
+  const numericLabel = lib.validate('soil-monitor', {
+    channels: [{ channel: 0, soil: { moisture: 5 } }],
+  });
+  assert.ok(numericLabel.issues.some((i) => i.rule === 'channel-label'));
+  const dupLabel = lib.validate('soil-monitor', {
+    channels: [
+      { channel: 'depth0', soil: { moisture: 5 } },
+      { channel: 'depth0', soil: { moisture: 6 } },
+    ],
+  });
+  assert.ok(dupLabel.issues.some((i) => i.rule === 'channel-label'));
+
+  // bounds + collisions are enforced inside channel entries too
+  const badEntry = lib.validate('soil-monitor', {
+    channels: [{ channel: 'depth0', soil: { pH: 99 } }],
+  });
+  assert.ok(badEntry.issues.some((i) => i.rule === 'schema'));
+
+  // Entries are leaf measurements: no nested history/channels.
+  const nested = lib.validate('soil-monitor', {
+    channels: [
+      {
+        channel: 'depth0',
+        soil: { moisture: 5 },
+        channels: [{ channel: 'x', soil: { moisture: 1 } }],
+        history: [{ time: '2026-06-12T10:00:00Z' }],
+      },
+    ],
+  });
+  assert.equal(
+    nested.issues.filter((i) => i.rule === 'reserved-key').length,
+    2,
+    JSON.stringify(nested.issues),
+  );
+
+  // channels inside a history entry are valid (a datalogged profile scan).
+  const inHistory = lib.validate('soil-monitor', {
+    battery: 3.6,
+    history: [
+      {
+        time: '2026-06-12T10:00:00Z',
+        channels: [{ channel: 'depth0', soil: { moisture: 4.5 } }],
+      },
+    ],
+  });
+  assert.equal(inHistory.valid, true, JSON.stringify(inHistory.issues));
+
+  // requireAll membership is satisfied through channel entries alone.
+  const membership = lib.validate(
+    'soil-monitor',
+    { channels: [{ channel: 'depth0', soil: { moisture: 5 } }] },
+    { requireAll: true },
+  );
+  assert.equal(membership.valid, true, JSON.stringify(membership.issues));
+});
+
 test('validate() accepts a TTN-style array of measurements', () => {
   const r = lib.validate('climate', [
     { air: { temperature: 21, relativeHumidity: 50 } },

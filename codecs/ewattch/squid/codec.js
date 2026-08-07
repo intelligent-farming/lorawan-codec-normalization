@@ -25,7 +25,7 @@
 //       then `count` little-endian samples (2 or 3 bytes each) of measureCode.
 //
 // Calibrated fields mapped to the vocabulary (first clamp seen per metric sets
-// the flat key; every clamp is also emitted in the `channels` extra):
+// the flat key; every clamp is also emitted in the `clamps` extra):
 //   power.current (A)        <- measure 1  "current"      (mA / 1000)
 //   power.voltage (V)        <- measure 10 "voltage"      (raw * 0.1)
 //   power.active (W)         <- measure 4  "power"        (W, signed)
@@ -33,7 +33,7 @@
 //   power.frequency (Hz)     <- measure 12 "frequency"    (raw * 0.01)
 //   metering.energy.total Wh <- measure 3  "consumedActiveEnergyIndex" (raw*10)
 // Other genuine device data the flat vocabulary cannot model travels as
-// camelCase extras inside each `channels` entry: currentIndexMah,
+// camelCase extras inside each `clamps` entry: currentIndexMah,
 // producedActiveEnergyWh, reactivePowerVar, positiveReactiveEnergyVarh,
 // negativeReactiveEnergyVarh, apparentEnergyVah.
 
@@ -98,7 +98,7 @@ function decodeUplinkCore(input) {
   }
 
   var i = 2;
-  var channels = [];
+  var clamps = [];
   var channelIndex = {};
   var warnings = [];
 
@@ -108,10 +108,10 @@ function decodeUplinkCore(input) {
   function clampFor(socket, channel) {
     var key = socket + ':' + channel;
     if (channelIndex[key] === undefined) {
-      channelIndex[key] = channels.length;
-      channels.push({ socket: socket, channel: channel });
+      channelIndex[key] = clamps.length;
+      clamps.push({ socket: socket, channel: channel });
     }
-    return channels[channelIndex[key]];
+    return clamps[channelIndex[key]];
   }
 
   while (i < bytes.length) {
@@ -218,7 +218,7 @@ function decodeUplinkCore(input) {
     }
   }
 
-  if (channels.length === 0) {
+  if (clamps.length === 0) {
     return { errors: ['Squid frame contained no clamp measurements'] };
   }
 
@@ -236,7 +236,7 @@ function decodeUplinkCore(input) {
     data.metering = { energy: { total: flat.energyTotal } };
   }
 
-  data.channels = channels;
+  data.clamps = clamps;
 
   if (warnings.length > 0) {
     return { data: data, warnings: warnings };

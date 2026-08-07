@@ -12,7 +12,7 @@
  */
 
 /** Package version, kept in sync with package.json. */
-export const VERSION = '0.1.0';
+export const VERSION = '0.2.0';
 
 export { categories, categorySchema } from './categories';
 export { validate } from './validate';
@@ -28,6 +28,7 @@ export {
 
 export type {
   Measurement,
+  ChannelMeasurement,
   SoilMeasurement,
   AirMeasurement,
   WindMeasurement,

@@ -36,14 +36,12 @@
             "temperature": { "current": 21.8 }
           },
           "connectionType": 3,
-          "channels": {
-            "barometricPressureKpa": 97.2,
-            "barometerTemperature": 23.75
-          }
+          "barometricPressureKpa": 97.2,
+          "barometerTemperature": 23.75
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic in-bounds payload (oracle method). Bytes hand-built: func=1, ct=3, channel mask 0x00D2 selecting P1, TOB1, PBaro, TBaro, each a big-endian IEEE-754 float. Raw values from running reference/upstream-codec.js: P1=2.0 bar, TOB1=21.799999237 C, PBaro=0.972000002861 bar, TBaro=23.75 C. Converted to canonical units: water.pressure = bar*100 = 200 kPa; water.temperature.current = 21.8 C; barometric PBaro -> extra barometricPressureKpa = bar*100 = 97.2 kPa; TBaro -> extra barometerTemperature = 23.75 C."
+      "_note": "Synthetic in-bounds payload (oracle method). Bytes hand-built: func=1, ct=3, channel mask 0x00D2 selecting P1, TOB1, PBaro, TBaro, each a big-endian IEEE-754 float. Raw values from running reference/upstream-codec.js: P1=2.0 bar, TOB1=21.799999237 C, PBaro=0.972000002861 bar, TBaro=23.75 C. Converted to canonical units: water.pressure = bar*100 = 200 kPa; water.temperature.current = 21.8 C; barometric PBaro -> top-level extra barometricPressureKpa = bar*100 = 97.2 kPa; TBaro -> top-level extra barometerTemperature = 23.75 C (non-canonical channels are flat extras; `channels` is a reserved measurement key)."
     },
     {
       "description": "Device information telegram (function code 12): battery voltage, capacity, enclosure humidity, identity",

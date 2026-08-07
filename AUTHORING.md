@@ -52,6 +52,10 @@ suite stays red until you author the codec.
   `normalizeUplink`). Datalog/history uplinks put the current reading at the top
   level and prior readings in a `history` array; every history entry must carry a
   `time` (RFC3339).
+- Devices reporting the **same quantity at multiple sub-sensor positions** (a
+  multilayer soil probe's depths, a datalogger's ports) put one measurement
+  object per position in the reserved `channels` array; every entry must carry
+  a `channel` label. See "Multi-channel devices" below.
 - Use only vocabulary keys (see the schema) with their correct units. Anything
   else is an **extra**: allowed, but it must be camelCase and must not
   case-insensitively collide with a vocabulary key (`Battery`, `soil.Moisture`,
@@ -64,6 +68,53 @@ suite stays red until you author the codec.
   `decodeUplinkCore`. The conformance suite enforces both keys, and they are
   excluded from the generated `provides`. If a device reports its own hardware
   model string, name that extra `deviceModel` (not `model`) to avoid the clash.
+
+### Multi-channel devices (`channels[]`)
+
+When one uplink carries the same physical quantity at several sub-sensor
+positions — a multilayer probe reporting `soil.moisture` at each depth, a
+datalogger with instruments behind several ports — do **not** invent suffixed
+extras (`moisture2`, `soilMoistureChannels: […]`); emit the reserved
+`channels` array:
+
+```json
+{
+  "battery": 3.6,
+  "channels": [
+    { "channel": "depth0", "soil": { "moisture": 5,   "temperature": 20 } },
+    { "channel": "depth1", "soil": { "moisture": 5.5, "temperature": 21 } }
+  ]
+}
+```
+
+Rules (enforced by `validate()` and the conformance suite):
+
+- Each entry is a measurement object plus a required **`channel` label**: a
+  non-empty string, unique within the array. Label with the most stable
+  positional identifier the device gives you — the vendor's own term plus an
+  index (`depth0`, `level3`, `port1`), or the physical position when the
+  payload/datasheet fixes it (`15cm`). Never a bare number.
+- Entries hold vocabulary keys and camelCase extras exactly like a top-level
+  measurement, and may carry their own `time` (RFC3339). They are **leaf**
+  measurements: no nested `history` or `channels` inside an entry.
+- A value emitted inside an entry must **not** also appear at the top level —
+  downstream stores keep top-level readings under the empty channel label and
+  would double-count. Whole-device readings (`battery`, diagnostics) stay
+  top-level.
+- Omit the `channels` key when no positions are connected, and skip a position
+  whose values read as disconnected/sentinel; document the sentinel policy in
+  the codec header.
+- Put `soil.depth` inside an entry only when the codec truly knows the physical
+  depth — probes with configurable lengths report indices, not centimetres.
+- `channels[]` is also legal inside a `history` entry (a datalogged profile
+  scan). Category membership and the generated `provides` see through entries:
+  a probe whose `soil.*` lives only in channels still satisfies `soil-monitor`,
+  and `provides` lists the merged keys (never `channels` itself, never the
+  `channel` labels).
+
+Any *other* array-valued extra is legal but opaque to downstream consumers (it
+produces no per-metric readings) — prefer `channels[]` wherever the array is
+really per-position measurements.
 
 ## Console-compatibility rules (statically linted)
 

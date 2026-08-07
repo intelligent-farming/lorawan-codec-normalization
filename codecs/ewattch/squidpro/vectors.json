@@ -30,7 +30,7 @@
             "voltage": 230,
             "active": 1500
           },
-          "channels": [
+          "clamps": [
             {
               "socket": 0,
               "channel": 0,
@@ -44,7 +44,7 @@
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic clamp frame built to the upstream object-stream layout (header 0x00 + declared length, then three type-0x40 clamp objects with measure codes 1=current/10=voltage/4=power). expected.data derived by running reference/upstream-codec.js (oracle: current 5000 mA, voltage 230 V, power 1500 W) and mapping mA->A (power.current), V (power.voltage), W (power.active); each clamp is also surfaced in the channels extra. Satisfies power-meter (power.current/voltage/active)."
+      "_note": "Synthetic clamp frame built to the upstream object-stream layout (header 0x00 + declared length, then three type-0x40 clamp objects with measure codes 1=current/10=voltage/4=power). expected.data derived by running reference/upstream-codec.js (oracle: current 5000 mA, voltage 230 V, power 1500 W) and mapping mA->A (power.current), V (power.voltage), W (power.active); each clamp is also surfaced in the clamps extra (`channels` is a reserved measurement key). Satisfies power-meter (power.current/voltage/active)."
     },
     {
       "description": "Declared payload length does not match actual length -> error",

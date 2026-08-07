@@ -14,10 +14,10 @@
     "humidity"
   ],
   "provides": [
+    "barometerTemperature",
+    "barometricPressureKpa",
     "battery",
     "batteryPercent",
-    "channels.barometerTemperature",
-    "channels.barometricPressureKpa",
     "classGroup",
     "connectionType",
     "deviceDatetime",
