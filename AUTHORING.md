@@ -87,7 +87,8 @@ extras (`moisture2`, `soilMoistureChannels: […]`); emit the reserved
 }
 ```
 
-Rules (enforced by `validate()` and the conformance suite):
+Rules — the first two are enforced by `validate()` and the conformance suite,
+the rest are authoring conventions a reviewer checks:
 
 - Each entry is a measurement object plus a required **`channel` label**: a
   non-empty string, unique within the array. Label with the most stable
@@ -110,7 +111,10 @@ Rules (enforced by `validate()` and the conformance suite):
   scan). Category membership and the generated `provides` see through entries:
   a probe whose `soil.*` lives only in channels still satisfies `soil-monitor`,
   and `provides` lists the merged keys (never `channels` itself, never the
-  `channel` labels).
+  `channel` labels). Membership (`validate(..., { requireAll: true })`) looks at
+  the top level and **top-level** channel entries only — as with `history`, a
+  reading that exists only inside a history entry does not satisfy a category,
+  so always emit the current scan at the top level.
 
 Any *other* array-valued extra is legal but opaque to downstream consumers (it
 produces no per-metric readings) — prefer `channels[]` wherever the array is

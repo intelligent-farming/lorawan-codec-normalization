@@ -118,6 +118,11 @@ function derefNode(node: unknown): JsonObject | null {
  * Walk an object level mapped to a vocabulary node, collecting case-collision
  * issues (when `collectStyle` is false) or style notes (when true). Recurses
  * into vocabulary group objects only — extras have no defined keys beneath them.
+ *
+ * `atMeasurementLevel` marks the top of a measurement object (root, array
+ * element, history entry or channels entry), where `history`/`channels` are
+ * reserved containers handled by the caller; inside a vocabulary group they are
+ * ordinary keys.
  */
 function walkLevel(
   data: JsonObject,
@@ -125,6 +130,7 @@ function walkLevel(
   base: string,
   issues: ValidationIssue[],
   style: StyleNote[],
+  atMeasurementLevel = false,
 ): void {
   const defined = definedKeysAt(vocabNode);
   const lcToCanonical = new Map<string, string>();
@@ -135,7 +141,9 @@ function walkLevel(
   for (const key of Object.keys(data)) {
     // `history` and `channels` are handled specially by the caller; never
     // treat them as a collision/extra here.
-    if ((key === 'history' || key === 'channels') && base === '') continue;
+    if ((key === 'history' || key === 'channels') && atMeasurementLevel) {
+      continue;
+    }
 
     if (defined.includes(key)) {
       // Defined vocabulary key: recurse into group objects to check deeper.
@@ -207,7 +215,7 @@ function validateMeasurement(
   }
 
   // 2 + 5. Case collisions and style notes at every object level.
-  walkLevel(m, derefNode(measurementSchema()), base, issues, style);
+  walkLevel(m, derefNode(measurementSchema()), base, issues, style, true);
 
   // 4. Reserved `history` key (top-level measurements only).
   if (kind === 'root' && 'history' in m) {
@@ -349,7 +357,7 @@ export function styleNotes(data: Measurement | Measurement[]): StyleNote[] {
   list.forEach((m, i) => {
     const base = Array.isArray(data) ? `[${i}]` : '';
     if (isPlainObject(m)) {
-      walkLevel(m, derefNode(measurementSchema()), base, issues, style);
+      walkLevel(m, derefNode(measurementSchema()), base, issues, style, true);
       walkChannelsStyle(m, base, issues, style);
       if ('history' in m && Array.isArray(m.history)) {
         m.history.forEach((entry, j) => {
@@ -361,6 +369,7 @@ export function styleNotes(data: Measurement | Measurement[]): StyleNote[] {
               entryBase,
               issues,
               style,
+              true,
             );
             walkChannelsStyle(entry, entryBase, issues, style);
           }
@@ -387,6 +396,7 @@ function walkChannelsStyle(
         joinPath(base, `channels[${j}]`),
         issues,
         style,
+        true,
       );
     }
   });

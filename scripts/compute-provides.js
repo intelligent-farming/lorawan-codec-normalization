@@ -59,15 +59,16 @@ function collectFromData(data, acc) {
     }
     if (key === 'channels' && Array.isArray(val)) {
       // Channel entries hold the same metrics as top-level readings, scoped to
-      // a sub-sensor: merge their keys, minus the `channel` label.
+      // a sub-sensor: merge their keys, minus the `channel` label (the
+      // sub-sensor discriminator, not telemetry). Collected through
+      // collectFromData so identity keys stay excluded there too.
       for (const c of val) {
         if (!isPlainObject(c)) continue;
+        const entry = {};
         for (const ck of Object.keys(c)) {
-          if (ck === 'channel') continue;
-          const cv = c[ck];
-          if (isPlainObject(cv)) leaves(cv, ck, acc);
-          else acc.add(ck);
+          if (ck !== 'channel') entry[ck] = c[ck];
         }
+        collectFromData(entry, acc);
       }
       continue;
     }
