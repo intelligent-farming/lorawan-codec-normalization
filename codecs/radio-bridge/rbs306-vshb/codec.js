@@ -12,11 +12,17 @@
 // b4 high-frequency peak g-force (/4 g); b5 accelerometer temperature (signed,
 // C); b6 bias voltage (/100 V).
 //
-// Mapping: high-frequency peak g-force -> vibration.accelerationPeak (g);
-// accelerometer temperature -> air.temperature (C). The low-frequency PEAK
-// velocity has no exact vocabulary key (vibration.velocityRms is an RMS
-// statistic, not a peak), so it is surfaced in SI units as the peakVelocity
-// extra (mm/s); channel, event, protocol/counter and bias voltage are extras.
+// Each frame reports one of the four sensing channels, so the probe-local
+// readings ride in a single entry of the reserved `channels` array (see
+// AUTHORING.md "Multi-channel devices"), labelled with the vendor's own term
+// ("axis Channel 1-4") as `channel1`..`channel4` — keeping each channel's
+// series distinct downstream. Per entry: high-frequency peak g-force ->
+// vibration.accelerationPeak (g); accelerometer temperature -> air.temperature
+// (C); the low-frequency PEAK velocity has no exact vocabulary key
+// (vibration.velocityRms is an RMS statistic, not a peak), so it is surfaced
+// in SI units as the peakVelocity extra (mm/s); biasVoltage is the channel's
+// accelerometer bias rail. Frame metadata (event, protocol/counter) stays
+// top-level.
 function round(value, decimals) { var f = Math.pow(10, decimals); return Math.round(value * f) / f; }
 function s8(b) { return (b & 0x80) ? b - 0x100 : b; }
 
@@ -35,13 +41,13 @@ function decodeUplinkCore(input) {
   if (b[1] < 0x1c || b[1] > 0x1f) {
     return { errors: ['not a high-bandwidth vibration frame (type byte 0x' + (b[1] & 0xff).toString(16) + ', expected 0x1C-0x1F)'] };
   }
-  var data = {};
-  data.vibration = { accelerationPeak: round(b[4] / 4, 2) };
-  data.air = { temperature: s8(b[5]) };
-  data.peakVelocity = round((b[3] > 0 ? b[3] / 100 : 0) * 25.4, 3);
-  data.channel = (b[1] - 0x1b);
+  var entry = { channel: 'channel' + (b[1] - 0x1b) };
+  entry.vibration = { accelerationPeak: round(b[4] / 4, 2) };
+  entry.air = { temperature: s8(b[5]) };
+  entry.peakVelocity = round((b[3] > 0 ? b[3] / 100 : 0) * 25.4, 3);
+  entry.biasVoltage = round(b[6] / 100, 2);
+  var data = { channels: [entry] };
   data.event = EVENTS[b[2] & 0x0f] || ('event ' + (b[2] & 0x0f));
-  data.biasVoltage = round(b[6] / 100, 2);
   data.protocolVersion = (b[0] >> 4) & 0x0f;
   data.packetCounter = b[0] & 0xff;
   return { data: data };

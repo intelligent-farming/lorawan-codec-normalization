@@ -14,24 +14,30 @@
 // with -327.68 / 327.68 as the sensor-fault sentinel), and the life-frame
 // battery voltage (tensionv = raw / 1000) are ported faithfully from upstream.
 //
-// Mapping into the normalized vocabulary:
-//   temperature channel -> air.temperature   (degrees C)
-//   humidity channel    -> air.relativeHumidity (%)
-//   life-frame tensionv -> battery            (V; tensionv is the device's
-//                          battery/pile voltage, so it maps to the volts key)
-//   life-frame tensionc -> supplyVoltage      (V; secondary supply rail, no
-//                          vocabulary key -> camelCase extra)
-//   frame type          -> frameType          (camelCase extra)
-//   measurement channel -> channel            (camelCase extra; the THX voie,
-//                          0 for the internal sensor)
-// Sensor-fault sentinels and non-measurement/non-life frames yield errors.
+// Mapping into the normalized vocabulary: each measurement voie (channel) is a
+// sub-sensor position — the wire format carries up to two temperature and two
+// humidity voies per frame (upstream assembles temperature0/temperature1 and
+// humidity0/humidity1) — so per-voie readings ride in the reserved `channels`
+// array (see AUTHORING.md "Multi-channel devices"), one entry per voie,
+// labelled with the vendor's own term: `voie0` (internal sensor), `voie1`...
+//   temperature TLV (0x08) -> air.temperature       (degrees C, in its voie's entry)
+//   humidity TLV (0x09)    -> air.relativeHumidity  (%, in its voie's entry)
+//   life-frame tensionv    -> battery               (V; tensionv is the device's
+//                             battery/pile voltage, so it maps to the volts key)
+//   life-frame tensionc    -> supplyVoltage         (V; secondary supply rail, no
+//                             vocabulary key -> camelCase extra)
+//   frame type             -> frameType             (camelCase extra, top-level)
+// Sentinel policy: a TLV reading the sensor-fault sentinel (-327.68 / 327.68)
+// is skipped with a warning; a voie whose readings all fault gets no entry; a
+// frame in which every reading faults yields an error. Non-measurement/
+// non-life frames yield errors.
 //
 // Scope note: ATIM measurement frames may carry a history of several samples
 // (echan x historique) and an optional embedded timestamp/period. Deriving an
 // RFC3339 time for each prior sample requires both the absolute timestamp frame
 // header and the sampling period, which the canonical THX uplink does not carry
 // reliably; rather than emit a `history` array without trustworthy `time`
-// values, this codec normalizes the most recent (index 0) sample of the frame.
+// values, this codec normalizes the most recent (index 0) sample per voie.
 
 function round(value, decimals) {
   var f = Math.pow(10, decimals);
@@ -108,14 +114,25 @@ var FRAME_TYPE_LABEL = {
   unknown: 'unknown'
 };
 
-// Walk the channel/type TLV stream of a measurement/test frame, reading only
-// the first (most recent) sample of each temperature (0x08) and humidity (0x09)
-// channel. start is the index of the first TLV byte.
+// Walk the channel/type TLV stream of a measurement/test frame, reading the
+// first (most recent) sample of each temperature (0x08) and humidity (0x09)
+// TLV per voie into that voie's channels entry. start is the index of the
+// first TLV byte.
 function decodeMeasurement(bytes, start, isTest) {
-  var air = {};
-  var channel = null;
+  var entries = [];
+  var entryIndex = {};
   var sawTempOrHum = false;
   var fault = false;
+
+  // One channels entry per voie, created on first healthy reading so entry
+  // order follows the payload.
+  function entryFor(voie) {
+    if (entryIndex[voie] === undefined) {
+      entryIndex[voie] = entries.length;
+      entries.push({ channel: 'voie' + voie, air: {} });
+    }
+    return entries[entryIndex[voie]];
+  }
 
   var i = start;
   while (i < bytes.length) {
@@ -139,9 +156,11 @@ function decodeMeasurement(bytes, start, isTest) {
       var traw = s16be(bytes[i + 1], bytes[i + 2]);
       if (traw / 100 === -327.68) {
         fault = true;
-      } else if (air.temperature === undefined) {
-        air.temperature = round(traw / 100, 2);
-        channel = voie;
+      } else {
+        var te = entryFor(voie);
+        if (te.air.temperature === undefined) {
+          te.air.temperature = round(traw / 100, 2);
+        }
       }
       sawTempOrHum = true;
       i += 3;
@@ -150,10 +169,10 @@ function decodeMeasurement(bytes, start, isTest) {
       var hraw = u16be(bytes[i + 1], bytes[i + 2]);
       if (hraw / 100 === 327.68) {
         fault = true;
-      } else if (air.relativeHumidity === undefined) {
-        air.relativeHumidity = round(hraw / 100, 2);
-        if (channel === null) {
-          channel = voie;
+      } else {
+        var he = entryFor(voie);
+        if (he.air.relativeHumidity === undefined) {
+          he.air.relativeHumidity = round(hraw / 100, 2);
         }
       }
       sawTempOrHum = true;
@@ -170,15 +189,12 @@ function decodeMeasurement(bytes, start, isTest) {
   if (!sawTempOrHum) {
     return { errors: ['no temperature or humidity channel in measurement frame'] };
   }
-  if (air.temperature === undefined && air.relativeHumidity === undefined) {
+  if (entries.length === 0) {
     return { errors: ['temperature/humidity sensor fault (all channels report the error sentinel)'] };
   }
 
   var data = { frameType: isTest ? FRAME_TYPE_LABEL.test : FRAME_TYPE_LABEL.measure };
-  if (channel !== null) {
-    data.channel = channel;
-  }
-  data.air = air;
+  data.channels = entries;
   if (fault) {
     return { data: data, warnings: ['one or more channels report the sensor-fault sentinel'] };
   }

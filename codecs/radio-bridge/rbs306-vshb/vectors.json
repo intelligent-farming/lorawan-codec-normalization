@@ -16,16 +16,20 @@
       },
       "expected": {
         "data": {
-          "vibration": {
-            "accelerationPeak": 11
-          },
-          "air": {
-            "temperature": 27
-          },
-          "peakVelocity": 7.112,
-          "channel": 1,
+          "channels": [
+            {
+              "channel": "channel1",
+              "vibration": {
+                "accelerationPeak": 11
+              },
+              "air": {
+                "temperature": 27
+              },
+              "peakVelocity": 7.112,
+              "biasVoltage": 1.68
+            }
+          ],
           "event": "Periodic Report",
-          "biasVoltage": 1.68,
           "protocolVersion": 1,
           "packetCounter": 31,
           "make": "radio-bridge",
@@ -33,7 +37,7 @@
         }
       },
       "source": "vendor-doc",
-      "_note": "Official RadioBridge doc example (DecoderDocs/HBVibrationSensor.md): 1f1c001c2c1ba8 -> g-force 11 g, velocity 0.28 in/s, temp 27 C, bias 1.68 V. high-frequency peak g-force /4 -> vibration.accelerationPeak (g); accelerometer temp -> air.temperature; low-frequency peak velocity 0.28 in/s -> peakVelocity 7.112 mm/s extra. Satisfies vibration."
+      "_note": "Official RadioBridge doc example (DecoderDocs/HBVibrationSensor.md): 1f1c001c2c1ba8 -> axis Channel 1, g-force 11 g, velocity 0.28 in/s, temp 27 C, bias 1.68 V. Probe-local readings ride in one channels[] entry (label channel1): high-frequency peak g-force /4 -> vibration.accelerationPeak (g); accelerometer temp -> air.temperature; low-frequency peak velocity 0.28 in/s -> peakVelocity 7.112 mm/s extra; biasVoltage. Frame metadata stays top-level. Satisfies vibration."
     },
     {
       "description": "non-vibration frame (wrong type byte) -> error",

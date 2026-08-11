@@ -21,9 +21,14 @@
 // Status byte: bit0x01 configurationDone, bit0x02 lowBattery, bit0x04 timestamp,
 //   bits 0xe0>>5 frame counter. A trailing 4-byte device timestamp (seconds
 //   since 2013-01-01) is appended when the timestamp bit is set -> top-level
-//   `time` (RFC3339). Channel A cumulative counter maps to pulse.total; channel
-//   B, datalog priors and NB-IoT header fields are camelCase extras. Battery is
-//   reported only as a low-battery flag, not a value.
+//   `time` (RFC3339). The two metering inputs are sub-sensor positions, so each
+//   becomes an entry in the reserved `channels` array (see AUTHORING.md
+//   "Multi-channel devices"), labelled `channelA` / `channelB`; each entry
+//   carries the vocabulary pulse.total, and a datalog frame's prior-sample
+//   counters ride in the same entry as the counterHistory extra (no trustworthy
+//   per-sample time exists, so no `history` array). Status flags and the NB-IoT
+//   header fields stay top-level (whole-device). Battery is reported only as a
+//   low-battery flag, not a value.
 
 var ADEUNIS_EPOCH = 1356998400; // 2013-01-01T00:00:00Z, in seconds
 var H = 13; // NB-IoT header offset
@@ -53,7 +58,7 @@ function statusExtras(data, status) {
   data.frameCounter = (status & 0xe0) >> 5;
 }
 
-function decodeDatalog(bytes, channelName) {
+function decodeDatalog(bytes, channelLabel) {
   var status = bytes[H + 1];
   var hasTimestamp = Boolean(status & 0x04);
   var end = hasTimestamp ? bytes.length - 4 : bytes.length;
@@ -66,10 +71,10 @@ function decodeDatalog(bytes, channelName) {
     history.push(acc);
   }
 
-  var data = { pulse: { total: current } };
+  var entry = { channel: channelLabel, pulse: { total: current } };
+  entry.counterHistory = history;
+  var data = { channels: [entry] };
   nbIotHeader(data, bytes);
-  data.channel = channelName;
-  data.counterHistory = history;
   if (hasTimestamp) {
     data.time = decodeTimestamp(bytes);
   }
@@ -87,9 +92,13 @@ function decodeUplinkCore(input) {
   var frameCode = bytes[H];
   if (frameCode === 0x46) {
     var status = bytes[H + 1];
-    var data = { pulse: { total: uint32(bytes, H + 2) } };
+    var data = {
+      channels: [
+        { channel: 'channelA', pulse: { total: uint32(bytes, H + 2) } },
+        { channel: 'channelB', pulse: { total: uint32(bytes, H + 6) } }
+      ]
+    };
     nbIotHeader(data, bytes);
-    data.channelBTotal = uint32(bytes, H + 6);
     if (status & 0x04) {
       data.time = decodeTimestamp(bytes);
     }
@@ -97,10 +106,10 @@ function decodeUplinkCore(input) {
     return { data: data };
   }
   if (frameCode === 0x5a) {
-    return decodeDatalog(bytes, 'A');
+    return decodeDatalog(bytes, 'channelA');
   }
   if (frameCode === 0x5b) {
-    return decodeDatalog(bytes, 'B');
+    return decodeDatalog(bytes, 'channelB');
   }
   return { errors: ['unsupported frame code 0x' + frameCode.toString(16) + ' (expected 0x46 data or 0x5a/0x5b datalog)'] };
 }

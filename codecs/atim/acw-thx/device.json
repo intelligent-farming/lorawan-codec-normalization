@@ -13,7 +13,6 @@
     "air.relativeHumidity",
     "air.temperature",
     "battery",
-    "channel",
     "frameType",
     "supplyVoltage"
   ],

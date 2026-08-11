@@ -18,9 +18,14 @@
 //   bit0x04 timestamp-present, bits 0xe0>>5 frame counter.
 // A trailing 4-byte device timestamp (seconds since 2013-01-01) is appended when
 // the timestamp bit is set; it is emitted as top-level `time` (RFC3339).
-// Channel A cumulative counter maps to the vocabulary pulse.total; channel B and
-// the datalog prior-sample counters are camelCase extras. Battery is reported
-// only as a low-battery flag, not a value.
+// The two metering inputs are sub-sensor positions, so each becomes an entry in
+// the reserved `channels` array (see AUTHORING.md "Multi-channel devices"),
+// labelled with the vendor's own channel letter: `channelA` / `channelB`. Each
+// entry carries the vocabulary pulse.total (cumulative counter); a datalog
+// frame's prior-sample counters ride in the same entry as the counterHistory
+// extra (no trustworthy per-sample time exists, so no `history` array). Status
+// flags stay top-level (whole-device). Battery is reported only as a
+// low-battery flag, not a value.
 
 var ADEUNIS_EPOCH = 1356998400; // 2013-01-01T00:00:00Z, in seconds
 
@@ -43,7 +48,7 @@ function statusExtras(data, status) {
   data.frameCounter = (status & 0xe0) >> 5;
 }
 
-function decodeDatalog(bytes, channelName) {
+function decodeDatalog(bytes, channelLabel) {
   var status = bytes[1];
   var hasTimestamp = Boolean(status & 0x04);
   var end = hasTimestamp ? bytes.length - 4 : bytes.length;
@@ -56,9 +61,9 @@ function decodeDatalog(bytes, channelName) {
     history.push(acc);
   }
 
-  var data = { pulse: { total: current } };
-  data.channel = channelName;
-  data.counterHistory = history;
+  var entry = { channel: channelLabel, pulse: { total: current } };
+  entry.counterHistory = history;
+  var data = { channels: [entry] };
   if (hasTimestamp) {
     data.time = decodeTimestamp(bytes);
   }
@@ -75,8 +80,12 @@ function decodeUplinkCore(input) {
       return { errors: ['expected >=10-byte 0x46 data frame, got ' + bytes.length] };
     }
     var status = bytes[1];
-    var data = { pulse: { total: uint32(bytes, 2) } };
-    data.channelBTotal = uint32(bytes, 6);
+    var data = {
+      channels: [
+        { channel: 'channelA', pulse: { total: uint32(bytes, 2) } },
+        { channel: 'channelB', pulse: { total: uint32(bytes, 6) } }
+      ]
+    };
     if (status & 0x04) {
       data.time = decodeTimestamp(bytes);
     }
@@ -84,10 +93,10 @@ function decodeUplinkCore(input) {
     return { data: data };
   }
   if (frameCode === 0x5a) {
-    return decodeDatalog(bytes, 'A');
+    return decodeDatalog(bytes, 'channelA');
   }
   if (frameCode === 0x5b) {
-    return decodeDatalog(bytes, 'B');
+    return decodeDatalog(bytes, 'channelB');
   }
   return { errors: ['unsupported frame code 0x' + frameCode.toString(16) + ' (expected 0x46 data or 0x5a/0x5b datalog)'] };
 }

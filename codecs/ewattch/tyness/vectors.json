@@ -8,16 +8,38 @@
       },
       "expected": {
         "data": {
-          "power": { "voltage": 230, "current": 5, "active": 1500 },
-          "metering": { "energy": { "total": 1000000 } },
-          "socket": 0,
-          "channel": 0,
+          "channels": [
+            {
+              "channel": "s0c0",
+              "power": { "current": 5, "voltage": 230, "active": 1500 },
+              "metering": { "energy": { "total": 1000000 } }
+            }
+          ],
           "make": "ewattch",
           "model": "tyness"
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic clamp frame built to the upstream object-stream layout (header 0x00 + declared length, then type-0x40 clamp objects with measure codes 1=current, 10=voltage, 4=power, 3=consumedActiveEnergyIndex). expected.data derived via reference/upstream-codec.js (oracle: 5000 mA, 230 V, 1500 W, 1000000 Wh) and mapped to power.current/voltage/active and metering.energy.total. Satisfies power-meter."
+      "_note": "Synthetic clamp frame built to the upstream object-stream layout (header 0x00 + declared length, then type-0x40 clamp objects with measure codes 1=current, 10=voltage, 4=power, 3=consumedActiveEnergyIndex). expected.data derived via reference/upstream-codec.js (oracle: 5000 mA, 230 V, 1500 W, 1000000 Wh); the clamp position becomes the channels[] entry s0c0 carrying power.current/voltage/active and metering.energy.total. Satisfies power-meter."
+    },
+    {
+      "description": "Two clamps in one frame: current on s0c0, voltage on s1c0",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 10, 64, 17, 136, 19, 0, 65, 32, 26, 252, 8]
+      },
+      "expected": {
+        "data": {
+          "channels": [
+            { "channel": "s0c0", "power": { "current": 5 } },
+            { "channel": "s1c0", "power": { "voltage": 230 } }
+          ],
+          "make": "ewattch",
+          "model": "tyness"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Second clamp object carries the has-address bit (0x41) and an address byte 0x20 (socket 1, channel 0). Each clamp is its own channels[] entry, so multi-clamp frames no longer collapse into a single primary-clamp reading."
     },
     {
       "description": "Declared payload length does not match actual length -> error",

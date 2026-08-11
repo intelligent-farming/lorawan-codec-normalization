@@ -8,12 +8,16 @@
       },
       "expected": {
         "data": {
-          "pulse": { "total": 295 },
+          "channels": [
+            {
+              "channel": "channelA",
+              "pulse": { "total": 295 },
+              "counterHistory": [294, 292, 289, 285]
+            }
+          ],
           "imei": "1122334455667788",
           "signalQuality": 3,
           "globalFrameCounter": 38,
-          "channel": "A",
-          "counterHistory": [294, 292, 289, 285],
           "time": "2023-12-28T19:22:17.000Z",
           "configurationDone": true,
           "lowBattery": true,
@@ -22,7 +26,33 @@
           "model": "pulse-nb-iot"
         }
       },
-      "source": "ttn-example"
+      "source": "ttn-example",
+      "_note": "Datalog frames are single-channel: one channels[] entry (label channelA) carrying pulse.total plus the counterHistory extra. NB-IoT header fields and status flags stay top-level."
+    },
+    {
+      "description": "0x46 Pulse 4 NB-IoT data: channel A total 295, channel B total 1000, no timestamp",
+      "input": {
+        "fPort": 1,
+        "bytes": [17, 34, 51, 68, 85, 102, 119, 136, 3, 0, 0, 0, 38, 70, 0, 0, 0, 1, 39, 0, 0, 3, 232]
+      },
+      "expected": {
+        "data": {
+          "channels": [
+            { "channel": "channelA", "pulse": { "total": 295 } },
+            { "channel": "channelB", "pulse": { "total": 1000 } }
+          ],
+          "imei": "1122334455667788",
+          "signalQuality": 3,
+          "globalFrameCounter": 38,
+          "configurationDone": false,
+          "lowBattery": false,
+          "frameCounter": 0,
+          "make": "adeunis",
+          "model": "pulse-nb-iot"
+        }
+      },
+      "source": "synthetic",
+      "_note": "The 0x46 frame carries both metering inputs in one uplink: one channels[] entry per input, both mapping to pulse.total (channel B is no longer a suffixed extra). Application frame identical to the LoRa Pulse 4 0x46 vector, prefixed with the 13-byte NB-IoT header."
     },
     {
       "description": "Unsupported application frame code is rejected",
