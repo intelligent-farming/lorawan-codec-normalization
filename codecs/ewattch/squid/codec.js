@@ -24,8 +24,11 @@
 //     for the clamp object (0x40): 1 header byte = (count<<4) | measureCode,
 //       then `count` little-endian samples (2 or 3 bytes each) of measureCode.
 //
-// Calibrated fields mapped to the vocabulary (first clamp seen per metric sets
-// the flat key; every clamp is also emitted in the `clamps` extra):
+// Every clamp is a sub-sensor position, so each one becomes an entry in the
+// reserved `channels` array (see AUTHORING.md "Multi-channel devices"). The
+// entry label mirrors the vendor's own clamp identifier — upstream names each
+// clamp `clamp_s<socket>_c<channel>` — as `s<socket>c<channel>`, e.g. `s1c0`.
+// Calibrated fields mapped to the vocabulary, per channels entry:
 //   power.current (A)        <- measure 1  "current"      (mA / 1000)
 //   power.voltage (V)        <- measure 10 "voltage"      (raw * 0.1)
 //   power.active (W)         <- measure 4  "power"        (W, signed)
@@ -33,9 +36,15 @@
 //   power.frequency (Hz)     <- measure 12 "frequency"    (raw * 0.01)
 //   metering.energy.total Wh <- measure 3  "consumedActiveEnergyIndex" (raw*10)
 // Other genuine device data the flat vocabulary cannot model travels as
-// camelCase extras inside each `clamps` entry: currentIndexMah,
+// camelCase extras inside the same entry: currentIndexMah,
 // producedActiveEnergyWh, reactivePowerVar, positiveReactiveEnergyVarh,
 // negativeReactiveEnergyVarh, apparentEnergyVah.
+//
+// Nothing metered is repeated at the top level: a clamp reading emitted in an
+// entry must not also appear top-level or downstream stores double-count it,
+// and this meter has no whole-device aggregate to report — clamps may sit on
+// independent (or nested) circuits, so summing them would invent a site total
+// the device never claimed. The top level therefore carries identity only.
 
 function round(value, decimals) {
   var f = Math.pow(10, decimals);
@@ -98,20 +107,28 @@ function decodeUplinkCore(input) {
   }
 
   var i = 2;
-  var clamps = [];
+  var channels = [];
   var channelIndex = {};
   var warnings = [];
 
-  // Flat vocabulary values: first clamp that reports each metric wins.
-  var flat = {};
-
+  // One channels entry per (socket, channel) clamp, created on first sight so
+  // entry order follows the payload.
   function clampFor(socket, channel) {
     var key = socket + ':' + channel;
     if (channelIndex[key] === undefined) {
-      channelIndex[key] = clamps.length;
-      clamps.push({ socket: socket, channel: channel });
+      channelIndex[key] = channels.length;
+      channels.push({ channel: 's' + socket + 'c' + channel });
     }
-    return clamps[channelIndex[key]];
+    return channels[channelIndex[key]];
+  }
+
+  // The `power` group is created lazily: a clamp reporting only an energy index
+  // must not carry an empty `power: {}`.
+  function powerOf(entry) {
+    if (entry.power === undefined) {
+      entry.power = {};
+    }
+    return entry.power;
   }
 
   while (i < bytes.length) {
@@ -181,27 +198,17 @@ function decodeUplinkCore(input) {
       var clamp = clampFor(socket, channel + c);
 
       if (code === 1) {
-        var amps = round(raw / 1000, 3);
-        clamp.current = amps;
-        if (flat.current === undefined) { flat.current = amps; }
+        powerOf(clamp).current = round(raw / 1000, 3);
       } else if (code === 10) {
-        var volts = round(raw * 0.1, 1);
-        clamp.voltage = volts;
-        if (flat.voltage === undefined) { flat.voltage = volts; }
+        powerOf(clamp).voltage = round(raw * 0.1, 1);
       } else if (code === 4) {
-        clamp.activePower = raw;
-        if (flat.active === undefined) { flat.active = raw; }
+        powerOf(clamp).active = raw;
       } else if (code === 11) {
-        clamp.apparentPower = raw;
-        if (flat.apparent === undefined) { flat.apparent = raw; }
+        powerOf(clamp).apparent = raw;
       } else if (code === 12) {
-        var hz = round(raw * 0.01, 2);
-        clamp.frequency = hz;
-        if (flat.frequency === undefined) { flat.frequency = hz; }
+        powerOf(clamp).frequency = round(raw * 0.01, 2);
       } else if (code === 3) {
-        var wh = raw * 10;
-        clamp.consumedActiveEnergyWh = wh;
-        if (flat.energyTotal === undefined) { flat.energyTotal = wh; }
+        clamp.metering = { energy: { total: raw * 10 } };
       } else if (code === 0) {
         clamp.currentIndexMah = raw * 10;
       } else if (code === 5) {
@@ -218,25 +225,11 @@ function decodeUplinkCore(input) {
     }
   }
 
-  if (clamps.length === 0) {
+  if (channels.length === 0) {
     return { errors: ['Squid frame contained no clamp measurements'] };
   }
 
-  var data = {};
-  var power = {};
-  var havePower = false;
-  if (flat.current !== undefined) { power.current = flat.current; havePower = true; }
-  if (flat.voltage !== undefined) { power.voltage = flat.voltage; havePower = true; }
-  if (flat.active !== undefined) { power.active = flat.active; havePower = true; }
-  if (flat.apparent !== undefined) { power.apparent = flat.apparent; havePower = true; }
-  if (flat.frequency !== undefined) { power.frequency = flat.frequency; havePower = true; }
-  if (havePower) { data.power = power; }
-
-  if (flat.energyTotal !== undefined) {
-    data.metering = { energy: { total: flat.energyTotal } };
-  }
-
-  data.clamps = clamps;
+  var data = { channels: channels };
 
   if (warnings.length > 0) {
     return { data: data, warnings: warnings };

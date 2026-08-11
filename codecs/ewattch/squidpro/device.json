@@ -12,7 +12,7 @@
     "voltage"
   ],
   "provides": [
-    "clamps",
+    "metering.energy.total",
     "power.active",
     "power.current",
     "power.voltage"

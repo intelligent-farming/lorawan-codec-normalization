@@ -8,14 +8,51 @@
       },
       "expected": {
         "data": {
-          "power": { "current": 5, "voltage": 230, "active": 1500 },
-          "clamps": [{ "socket": 0, "channel": 0, "current": 5, "voltage": 230, "activePower": 1500 }],
+          "channels": [
+            { "channel": "s0c0", "power": { "current": 5, "voltage": 230, "active": 1500 } }
+          ],
           "make": "ewattch",
           "model": "squid"
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic clamp frame built to the upstream object-stream layout (header 0x00 + declared length, then three type-0x40 clamp objects with measure codes 1=current/10=voltage/4=power). expected.data derived by running reference/upstream-codec.js (oracle: current 5000 mA, voltage 230 V, power 1500 W) and mapping mA->A (power.current), V (power.voltage), W (power.active); each clamp is also surfaced in the clamps extra (`channels` is a reserved measurement key). Satisfies power-meter (power.current/voltage/active)."
+      "_note": "Synthetic clamp frame built to the upstream object-stream layout (header 0x00 + declared length, then three type-0x40 clamp objects with measure codes 1=current/10=voltage/4=power). expected.data derived by running reference/upstream-codec.js (oracle: current 5000 mA, voltage 230 V, power 1500 W) and mapping mA->A (power.current), V (power.voltage), W (power.active). Each clamp is a sub-sensor position, so it lands in the reserved `channels` array labelled `s<socket>c<channel>` after the vendor's own `clamp_s0_c0` identifier; nothing is repeated at the top level. Satisfies power-meter through the entry (power.current/voltage/active)."
+    },
+    {
+      "description": "Three-phase block: four measures across three clamps on socket 1, one clamp exporting (negative active power)",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          0, 45, 65, 32, 49, 148, 17, 0, 130, 20, 0, 112, 23, 0, 65, 32, 58, 253, 8, 6, 9, 247,
+          8, 65, 32, 52, 6, 4, 0, 186, 4, 0, 62, 254, 255, 65, 32, 51, 57, 48, 0, 160, 91, 0, 7,
+          135, 0
+        ]
+      },
+      "expected": {
+        "data": {
+          "channels": [
+            {
+              "channel": "s1c0",
+              "power": { "current": 4.5, "voltage": 230.1, "active": 1030 },
+              "metering": { "energy": { "total": 123450 } }
+            },
+            {
+              "channel": "s1c1",
+              "power": { "current": 5.25, "voltage": 231, "active": 1210 },
+              "metering": { "energy": { "total": 234560 } }
+            },
+            {
+              "channel": "s1c2",
+              "power": { "current": 6, "voltage": 229.5, "active": -450 },
+              "metering": { "energy": { "total": 345670 } }
+            }
+          ],
+          "make": "ewattch",
+          "model": "squid"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic frame exercising the multi-sample clamp path: four type-0x40 objects with the socket/channel byte present (object byte 0x41, sc byte 0x20 = socket 1 / channel 0), each carrying count=3 samples so the codec walks channel+c into three separate clamps. Measure codes 1=current, 10=voltage, 4=power, 3=consumedActiveEnergyIndex. expected.data derived by running reference/upstream-codec.js, which returns clamp_s1_c0..c2 with current 4500/5250/6000 mA, voltage 230.1/231/229.5 V, power 1030/1210/-450 W (the last exercising the 3-byte two's-complement sign path) and consumedActiveEnergyIndex 123450/234560/345670 Wh; mapped per clamp to power.current (mA->A), power.voltage, power.active and metering.energy.total. Proves per-position separation: one `channels` entry per clamp, no cross-clamp flattening."
     },
     {
       "description": "Declared payload length does not match actual length -> error",
