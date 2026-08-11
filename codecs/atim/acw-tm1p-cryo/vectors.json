@@ -4,10 +4,17 @@
       "description": "measurement frame: cryogenic -180.00 C on internal channel (voie 0)",
       "input": { "fPort": 1, "bytes": [160, 8, 185, 176] },
       "expected": {
-        "data": { "make": "atim", "model": "acw-tm1p-cryo", "temperature": -180, "frameType": "measurement" }
+        "data": {
+          "make": "atim",
+          "model": "acw-tm1p-cryo",
+          "frameType": "measurement",
+          "channels": [
+            { "channel": "voie0", "temperature": -180 }
+          ]
+        }
       },
       "source": "synthetic",
-      "_note": "Synthetic 0xA0 'Trame de mesure': temp type 0x08 -> 0xB9B0 signed 16-bit = -18000/100 = -180.00 C (within the TM1P-CRYO -196..+200 C range). Verified against reference/upstream-codec.js decode logic (temperature0.value=[-180])."
+      "_note": "Synthetic 0xA0 'Trame de mesure': temp type 0x08 -> 0xB9B0 signed = -18000/100 = -180.00 C, inside the cryo probe's -196..+200 C range. Verified against reference/upstream-codec.js decode logic (temperature0.value=[-180]); each voie maps to a channels[] entry."
     },
     {
       "description": "measurement frame: two probes, voie 0 = 21.35 C, voie 1 = -5.00 C",
@@ -16,13 +23,15 @@
         "data": {
           "make": "atim",
           "model": "acw-tm1p-cryo",
-          "temperature": 21.35,
-          "temperature2": -5,
-          "frameType": "measurement"
+          "frameType": "measurement",
+          "channels": [
+            { "channel": "voie0", "temperature": 21.35 },
+            { "channel": "voie1", "temperature": -5 }
+          ]
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic: temp voie 0 (0x08) 0x0857=2135/100=21.35 C; temp voie 1 (0x18, high nibble 0x10=voie 1) 0xFE0C signed = -500/100 = -5.00 C. Verified against reference/upstream-codec.js (temperature0=[21.35], temperature1=[-5], voie '1')."
+      "_note": "Synthetic: temp voie 0 (0x08) 0x0857=2135/100=21.35 C; temp voie 1 (0x18, high nibble 0x10=voie 1) 0xFE0C signed = -500/100 = -5.00 C. Verified against reference/upstream-codec.js (temperature0=[21.35], temperature1=[-5], voie '1'). One channels[] entry per probe (temperature2 suffixed extra retired)."
     },
     {
       "description": "life frame: battery 3.60 V, supply rail 3.30 V",

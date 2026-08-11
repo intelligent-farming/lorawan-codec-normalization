@@ -15,20 +15,25 @@
 // battery voltage (tensionv = raw / 1000) are ported faithfully from upstream.
 //
 // The TMxP is a single-purpose temperature probe carrying up to two thermal
-// channels (voie 0 / voie 1). Mapping into the normalized vocabulary:
-//   temperature channel voie 0 -> temperature   (top-level, degrees C)
-//   temperature channel voie 1 -> temperature2  (camelCase extra, degrees C)
+// channels (voie 0 / voie 1). Each voie is a sub-sensor position, so per-voie
+// readings ride in the reserved `channels` array (see AUTHORING.md
+// "Multi-channel devices"), one entry per voie, labelled with the vendor's own
+// term: `voie0`, `voie1`... Mapping into the normalized vocabulary:
+//   temperature TLV (0x08)     -> temperature    (degrees C, in its voie's entry)
 //   life-frame tensionv        -> battery        (V; device battery/pile rail)
 //   life-frame tensionc        -> supplyVoltage  (V; secondary rail, extra)
-//   frame type                 -> frameType      (camelCase extra)
-// Sensor-fault sentinels and non-measurement/non-life frames yield errors.
+//   frame type                 -> frameType      (camelCase extra, top-level)
+// Sentinel policy: a TLV reading the sensor-fault sentinel (-327.68) is
+// skipped with a warning; a voie whose readings all fault gets no entry; a
+// frame in which every reading faults yields an error. Non-measurement/
+// non-life frames yield errors.
 //
 // Scope note: ATIM measurement frames may carry a history of several samples
 // (echan x historique) and an optional embedded timestamp/period. Deriving an
 // RFC3339 time for each prior sample requires both the absolute timestamp frame
 // header and the sampling period, which the canonical TMxP uplink does not
 // carry reliably; rather than emit a `history` array without trustworthy `time`
-// values, this codec normalizes the most recent (index 0) sample of the frame.
+// values, this codec normalizes the most recent (index 0) sample per voie.
 
 function round(value, decimals) {
   var f = Math.pow(10, decimals);
@@ -105,13 +110,24 @@ var FRAME_TYPE_LABEL = {
   unknown: 'unknown'
 };
 
-// Walk the channel/type TLV stream of a measurement/test frame, reading only
-// the first (most recent) sample of each temperature (0x08) channel. voie 0 ->
-// temperature, voie 1 -> temperature2. start is the index of the first TLV byte.
+// Walk the channel/type TLV stream of a measurement/test frame, reading the
+// first (most recent) sample of each temperature (0x08) TLV per voie into that
+// voie's channels entry. start is the index of the first TLV byte.
 function decodeMeasurement(bytes, start, isTest) {
-  var data = {};
+  var entries = [];
+  var entryIndex = {};
   var sawTemp = false;
   var fault = false;
+
+  // One channels entry per voie, created on first healthy reading so entry
+  // order follows the payload.
+  function entryFor(voie) {
+    if (entryIndex[voie] === undefined) {
+      entryIndex[voie] = entries.length;
+      entries.push({ channel: 'voie' + voie });
+    }
+    return entries[entryIndex[voie]];
+  }
 
   var i = start;
   while (i < bytes.length) {
@@ -137,9 +153,9 @@ function decodeMeasurement(bytes, start, isTest) {
       if (traw / 100 === -327.68) {
         fault = true;
       } else {
-        var key = voie === 0 ? 'temperature' : 'temperature' + (voie + 1);
-        if (data[key] === undefined) {
-          data[key] = round(traw / 100, 2);
+        var te = entryFor(voie);
+        if (te.temperature === undefined) {
+          te.temperature = round(traw / 100, 2);
         }
       }
       i += 3;
@@ -155,11 +171,12 @@ function decodeMeasurement(bytes, start, isTest) {
   if (!sawTemp) {
     return { errors: ['no temperature channel in measurement frame'] };
   }
-  if (data.temperature === undefined && data.temperature2 === undefined) {
+  if (entries.length === 0) {
     return { errors: ['temperature sensor fault (all channels report the error sentinel)'] };
   }
 
-  data.frameType = isTest ? FRAME_TYPE_LABEL.test : FRAME_TYPE_LABEL.measure;
+  var data = { frameType: isTest ? FRAME_TYPE_LABEL.test : FRAME_TYPE_LABEL.measure };
+  data.channels = entries;
   if (fault) {
     return { data: data, warnings: ['one or more channels report the sensor-fault sentinel'] };
   }
