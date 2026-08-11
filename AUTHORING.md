@@ -60,7 +60,9 @@ suite stays red until you author the codec.
   else is an **extra**: allowed, but it must be camelCase and must not
   case-insensitively collide with a vocabulary key (`Battery`, `soil.Moisture`,
   `soil.ph` all fail). Extras are for genuine device data the vocabulary does not
-  model (status flags, raw counters, vendor diagnostics).
+  model (status flags, raw counters, vendor diagnostics). One extra name is
+  banned outright: a measurement-level key named `channel` (reserved as the
+  `channels[]` entry label — see "Multi-channel devices" below).
 - Every successful `data` object carries `make` and `model` device-identity
   strings equal to the `<vendor>` and `<device>` folder names (e.g.
   `{ make: "dragino", model: "lds02" }`). The scaffold seeds this via a thin
@@ -87,8 +89,8 @@ extras (`moisture2`, `soilMoistureChannels: […]`); emit the reserved
 }
 ```
 
-Rules — the first two are enforced by `validate()` and the conformance suite,
-the rest are authoring conventions a reviewer checks:
+Rules — the first three are enforced by `validate()` and the conformance
+suite, the rest are authoring conventions a reviewer checks:
 
 - Each entry is a measurement object plus a required **`channel` label**: a
   non-empty string, unique within the array. Label with the most stable
@@ -98,6 +100,13 @@ the rest are authoring conventions a reviewer checks:
 - Entries hold vocabulary keys and camelCase extras exactly like a top-level
   measurement, and may carry their own `time` (RFC3339). They are **leaf**
   measurements: no nested `history` or `channels` inside an entry.
+- The label's *name* is reserved with it: a key called `channel` at the top
+  level or in a `history` entry **fails validation** — downstream flatteners
+  would read it as positional scoping they cannot honor. Scope the readings
+  with a channels entry instead; if the value identifies something that is not
+  a measured position (an alarm output, a config field), name the extra for
+  what it identifies (`outputChannel`, …) or nest it inside its own extra
+  group, where `channel` is an ordinary key.
 - A value emitted inside an entry must **not** also appear at the top level —
   downstream stores keep top-level readings under the empty channel label and
   would double-count. Whole-device readings (`battery`, diagnostics) stay

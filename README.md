@@ -46,7 +46,8 @@ ChirpStack's protobuf Struct rejects arrays). Datalog uplinks put the current
 reading at the top level and prior readings in a `history` array. Multi-channel
 devices (multilayer probes, multi-port dataloggers) put per-position groups in
 a reserved `channels` array — one measurement object per sub-sensor, each with
-a required `channel` label (see `AUTHORING.md`). Every decoded
+a required `channel` label; the `channel` name itself is reserved for that
+label and rejected at any other measurement level (see `AUTHORING.md`). Every decoded
 object also carries `make` and `model` device-identity strings (the vendor and
 device names, e.g. `{ make: "dragino", model: "lds02", ... }`); these are
 excluded from `provides`, which lists only telemetry. The codecs are plain

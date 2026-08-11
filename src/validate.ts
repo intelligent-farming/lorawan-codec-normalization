@@ -19,7 +19,12 @@
  *     dataloggers); a non-array value fails — rule `reserved-key`. Each entry
  *     must carry a non-empty string `channel` label, unique within its array —
  *     rule `channel-label`. Entries are leaf measurements: a nested `history`
- *     or `channels` inside one fails — rule `reserved-key`.
+ *     or `channels` inside one fails — rule `reserved-key`. The label's name is
+ *     reserved with it: a `channel` key at any measurement level *outside* a
+ *     channels entry fails — rule `reserved-key` — because downstream flatteners
+ *     would read it as positional scoping they cannot honor. Scope the readings
+ *     with a channels entry, or name the extra for what it identifies. (Inside a
+ *     vocabulary group or extra object, `channel` is an ordinary key.)
  *  6. Style notes (non-camelCase extras, shadowed concepts) are non-failing and
  *     surfaced via {@link styleNotes}, not {@link validate}.
  *
@@ -239,6 +244,18 @@ function validateMeasurement(
         validateMeasurement(entry, entryBase, 'history', issues, style);
       });
     }
+  }
+
+  // 5. `channel` (the entry label) is reserved along with `channels`: at the
+  // top level or in a history entry it fails outright, so a codec can never
+  // ship positional scoping downstream stores would flatten into a junk metric.
+  if (kind !== 'channel' && 'channel' in m) {
+    issues.push({
+      path: joinPath(base, 'channel'),
+      message:
+        '`channel` is reserved for `channels[]` entry labels — emit a channels entry or rename the extra',
+      rule: 'reserved-key',
+    });
   }
 
   // 5. Reserved `channels` key (top level and history entries). Inside a

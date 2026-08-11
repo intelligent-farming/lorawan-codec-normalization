@@ -297,6 +297,45 @@ test('validate() enforces channels rules', () => {
   assert.equal(membership.valid, true, JSON.stringify(membership.issues));
 });
 
+test('validate() reserves the `channel` key outside channels entries', () => {
+  // A top-level `channel` extra is rejected: positional scoping must ride in a
+  // channels[] entry, where downstream stores can honor it.
+  const top = lib.validate('climate', {
+    air: { temperature: 21, relativeHumidity: 50 },
+    channel: 'A',
+  });
+  assert.ok(
+    top.issues.some((i) => i.rule === 'reserved-key' && i.path === 'channel'),
+    JSON.stringify(top.issues),
+  );
+
+  // ...and inside history entries.
+  const inHistory = lib.validate('climate', {
+    air: { temperature: 21, relativeHumidity: 50 },
+    history: [{ time: '2026-06-12T10:00:00Z', channel: 0 }],
+  });
+  assert.ok(
+    inHistory.issues.some(
+      (i) => i.rule === 'reserved-key' && i.path === 'history[0].channel',
+    ),
+    JSON.stringify(inHistory.issues),
+  );
+
+  // Inside a channels entry it is the (required) label — legal.
+  const label = lib.validate('climate', {
+    channels: [{ channel: 'voie0', air: { temperature: 21 } }],
+  });
+  assert.equal(label.valid, true, JSON.stringify(label.issues));
+
+  // Inside a vocabulary group or an extra object it is an ordinary key
+  // (e.g. netvox r900pd01o1's dryContactOut.channel config field).
+  const nested = lib.validate('water-quality', {
+    water: { ph: 7 },
+    dryContactOut: { channel: 'Channel2', type: 'NormallyHighLevel' },
+  });
+  assert.equal(nested.valid, true, JSON.stringify(nested.issues));
+});
+
 test('validate() accepts a TTN-style array of measurements', () => {
   const r = lib.validate('climate', [
     { air: { temperature: 21, relativeHumidity: 50 } },
