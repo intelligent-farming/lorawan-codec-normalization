@@ -74,22 +74,18 @@ function collectPaths(obj, prefix, acc) {
 
 /**
  * Union of a decoded measurement's paths across every level the category
- * contract may be satisfied at: the top level, each history entry, and each
- * channels entry (top-level or inside a history entry).
+ * contract may actually be satisfied at — the top level and each *top-level*
+ * `channels[]` entry. This mirrors `validate(..., { requireAll: true })`
+ * (src/validate.ts `hasPathWithChannels`) exactly: a reading that exists only
+ * inside a `history` entry does not satisfy a category, so counting history
+ * here would pass a codec in CI that then fails the membership contract at
+ * runtime. See AUTHORING.md "Multi-channel devices".
  */
 function collectMeasurementPaths(data, acc) {
   collectPaths(data, '', acc);
-  const channelEntries = (m) => (Array.isArray(m.channels) ? m.channels : []);
-  for (const c of channelEntries(data)) {
-    if (isPlainObject(c)) collectPaths(c, '', acc);
-  }
-  if (Array.isArray(data.history)) {
-    for (const h of data.history) {
-      if (!isPlainObject(h)) continue;
-      collectPaths(h, '', acc);
-      for (const c of channelEntries(h)) {
-        if (isPlainObject(c)) collectPaths(c, '', acc);
-      }
+  if (Array.isArray(data.channels)) {
+    for (const c of data.channels) {
+      if (isPlainObject(c)) collectPaths(c, '', acc);
     }
   }
 }
