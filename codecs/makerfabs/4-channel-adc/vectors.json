@@ -9,7 +9,7 @@
           "frameCounter": 1,
           "battery": 3.6,
           "differentialVoltage": 0,
-          "timeInterval": 60,
+          "reportingInterval": 60,
           "channels": [
             { "channel": "adc0", "analog": { "voltage": 3 } },
             { "channel": "adc1", "analog": { "voltage": 2.5 } },
@@ -30,7 +30,7 @@
           "frameCounter": 258,
           "battery": 4,
           "differentialVoltage": 0.2,
-          "timeInterval": 300,
+          "reportingInterval": 300,
           "channels": [
             { "channel": "adc0", "analog": { "voltage": 4.095 } },
             { "channel": "adc1", "analog": { "voltage": 3.3 } },

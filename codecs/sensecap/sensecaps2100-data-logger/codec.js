@@ -625,13 +625,21 @@ function decodeUplinkCore(input){
   var raw=sensecapDecode(input,input.fPort); var r=(raw&&raw.data)||raw||{};
   var raw0=r.messages||[];var msgs=[];for(var fi=0;fi<raw0.length;fi++){if(Array.isArray(raw0[fi])){for(var fj=0;fj<raw0[fi].length;fj++)msgs.push(raw0[fi][fj]);}else msgs.push(raw0[fi]);}
   var data={};
-  var MAP={'4097':['air','temperature'],'4098':['air','relativeHumidity'],'4099':['air','lightIntensity'],'4101':['air','pressure'],'4105':['wind','speed'],'4113':['rain','cumulative']};
+  var MAP={'4097':['air','temperature'],'4098':['air','relativeHumidity'],'4099':['air','lightIntensity'],'4101':['air','pressure'],'4104':['wind','direction'],'4105':['wind','speed'],'4113':['rain','cumulative']};
+  // Extras whose auto-derived camelCase name (from upstream's `type` label) would
+  // diverge from the name the rest of the SenseCAP family uses for the same
+  // measurementId. "UV Index" camel-cases to `uVIndex`, but the sibling
+  // sensecap/sensecaps2120-8-in-1 decodes measurementId 4190 as `uvIndex` — one
+  // quantity must not reach downstream stores under two spellings.
+  var EXTRA={'4190':'uvIndex'};
   var i;
   for(i=0;i<msgs.length;i++){
     var m=msgs[i]; if(!m||m.measurementId===undefined)continue;
     var val=m.measurementValue; var num=(typeof val==="number")?val:parseFloat(val);
     var p=MAP[String(m.measurementId)];
     if(p&&!isNaN(num)){ if(String(m.measurementId)==='4101'){num=num/100;} data[p[0]]=data[p[0]]||{}; data[p[0]][p[1]]=num; continue; }
+    var named=EXTRA[String(m.measurementId)];
+    if(named){ if(num===num&&typeof val!=="object")data[named]=isNaN(num)?val:num; continue; }
     if(m.type){ var ck=String(m.type).replace(/[^A-Za-z0-9]+/g,' ').trim().split(' ').map(function(w,ix){return ix===0?w.charAt(0).toLowerCase()+w.slice(1):w.charAt(0).toUpperCase()+w.slice(1);}).join(''); if(num===num&&typeof val!=="object")data[ck]=isNaN(num)?val:num; }
   }
   return {data:data};

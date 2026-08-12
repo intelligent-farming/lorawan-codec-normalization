@@ -24,6 +24,18 @@
 // The sample counter and reporting interval are device diagnostics with no
 // vocabulary home, emitted as camelCase extras.
 
+// UNRESOLVED — the scale of `reportingInterval`. The vendor's own downlink
+// Encoder in reference/upstream-codec.js writes this SAME 4-byte big-endian field
+// as SECONDS (minutes * 60, floored at 300), while its uplink decoder divides the
+// field by 1000, i.e. reads it back as milliseconds. Both readings cannot be
+// right, and nothing in the vendor material settles it. This codec keeps
+// upstream's /1000 rather than silently picking the other reading, and the
+// synthetic vectors carry wire values scaled to match — so if real hardware turns
+// out to report seconds, the divisor here and those vector inputs move together
+// (a device set to the 3600 s the vectors describe would then decode as 3.6).
+// Confirm against a capture from a real unit before trusting this value.
+// It is a camelCase extra, so no category membership or vocabulary key rides on it.
+
 function round(value, decimals) {
   var f = Math.pow(10, decimals);
   return Math.round(value * f) / f;

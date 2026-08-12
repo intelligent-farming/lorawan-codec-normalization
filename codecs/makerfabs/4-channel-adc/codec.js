@@ -19,7 +19,7 @@
 //   bytes[7..8]   ADC3, mV (/1000)                    -> channels[] `adc2`
 //   bytes[9..10]  ADC4, mV (/1000)                    -> channels[] `adc3`
 //   bytes[11..12] differential input, mV (/1000)      -> differentialVoltage (V extra)
-//   bytes[13..16] measurement interval, ms (/1000)    -> timeInterval (s extra)
+//   bytes[13..16] measurement interval, ms (/1000)    -> reportingInterval (s extra)
 //
 // The ADC value carries a real unit (volts), so each channel maps to
 // analog.voltage rather than analog.raw.
@@ -37,7 +37,7 @@
 // vendor's term (the labels are zero-based while the vendor numbers from 1, so
 // `adc0` is ADC1). Whole-device readings stay TOP-LEVEL and are never
 // duplicated inside an entry: `battery`, the `frameCounter` frame counter, the
-// `timeInterval` sampling period, and `differentialVoltage` (below). The
+// `reportingInterval` sampling period, and `differentialVoltage` (below). The
 // `analog-interface` category (atLeastOne includes `analog.voltage`) is still
 // satisfied, since membership resolves through top-level `channels[]` entries.
 //
@@ -64,6 +64,18 @@
 // guard requires exactly 17 bytes, so all four ADC words are present whenever a
 // frame decodes, and `channels` (built lazily) is in practice never omitted.
 
+// UNRESOLVED — the scale of `reportingInterval`. The vendor's own downlink
+// Encoder in reference/upstream-codec.js writes this SAME 4-byte big-endian field
+// as SECONDS (minutes * 60, floored at 300), while its uplink decoder divides the
+// field by 1000, i.e. reads it back as milliseconds. Both readings cannot be
+// right, and nothing in the vendor material settles it. This codec keeps
+// upstream's /1000 rather than silently picking the other reading, and the
+// synthetic vectors carry wire values scaled to match — so if real hardware turns
+// out to report seconds, the divisor here and those vector inputs move together
+// (a device set to the 3600 s the vectors describe would then decode as 3.6).
+// Confirm against a capture from a real unit before trusting this value.
+// It is a camelCase extra, so no category membership or vocabulary key rides on it.
+
 function round(value, decimals) {
   var f = Math.pow(10, decimals);
   return Math.round(value * f) / f;
@@ -83,7 +95,7 @@ function decodeUplinkCore(input) {
     frameCounter: u16(b, 0),
     battery: round(b[2] / 10, 1),
     differentialVoltage: round(u16(b, 11) / 1000, 3),
-    timeInterval: round((((b[13] << 24) | (b[14] << 16) | (b[15] << 8) | b[16]) >>> 0) / 1000, 3)
+    reportingInterval: round((((b[13] << 24) | (b[14] << 16) | (b[15] << 8) | b[16]) >>> 0) / 1000, 3)
   };
 
   // One channels[] entry per ADC input (ADC1..ADC4 -> adc0..adc3), same

@@ -25,16 +25,16 @@
             "relativeHumidity": 50,
             "lightIntensity": 1000
           },
-          "uVIndex": 3,
           "wind": {
             "speed": 5
           },
           "make": "sensecap",
-          "model": "sensecaps2100-data-logger"
+          "model": "sensecaps2100-data-logger",
+          "uvIndex": 3
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic SenseCAP S2100 telemetry frame (dataId 0x01); expected.data via the ported upstream decoder (oracle). 4097->air.temperature, 4098->air.relativeHumidity, 4099->air.lightIntensity, 4105->wind.speed; UV as extra."
+      "_note": "Synthetic SenseCAP S2100 telemetry frame (dataId 0x01); expected.data via the ported upstream decoder (oracle). 4097->air.temperature, 4098->air.relativeHumidity, 4099->air.lightIntensity, 4105->wind.speed; UV index (4190) as the extra `uvIndex`, matching the sensecaps2120-8-in-1 sibling."
     },
     {
       "description": "Weather group (dataId 0x02): wind direction, rainfall, barometric pressure",
@@ -54,7 +54,6 @@
       },
       "expected": {
         "data": {
-          "windDirectionSensor": 180,
           "rain": {
             "cumulative": 1.234
           },
@@ -62,11 +61,14 @@
             "pressure": 1013
           },
           "make": "sensecap",
-          "model": "sensecaps2100-data-logger"
+          "model": "sensecaps2100-data-logger",
+          "wind": {
+            "direction": 180
+          }
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic SenseCAP S2100 frame (dataId 0x02). 4113->rain.cumulative; barometric pressure (Pa) /100 -> air.pressure (hPa). Union with the 0x01 frame covers weather-station + rain-gauge."
+      "_note": "Synthetic SenseCAP S2100 frame (dataId 0x02). 4104->wind.direction (a vocabulary key: the sibling sensecaps2120-8-in-1 decodes it there too, so this device must not hide it in a `windDirectionSensor` extra), 4113->rain.cumulative; barometric pressure (Pa) /100 -> air.pressure (hPa). Union with the 0x01 frame covers weather-station + rain-gauge."
     }
   ],
   "downlink": []
