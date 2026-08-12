@@ -15,14 +15,10 @@
   ],
   "provides": [
     "action.contactState",
-    "adc2Raw",
-    "adc3Raw",
     "air.temperature",
     "analog.raw",
     "battery",
-    "digitalInput2",
-    "digitalInput3",
-    "modbus0",
+    "modbusRegister",
     "wakeup"
   ],
   "variantOf": null,

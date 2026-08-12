@@ -1,42 +1,86 @@
 {
   "uplink": [
     {
-      "description": "0x57 Temp 4 periodic data, 2 channels, with trailing timestamp; t=0 sample of channel 1 -> temperature",
+      "description": "0x57 Temp 4 periodic data, 2 channels, with trailing timestamp: one channels[] entry per probe, each t=0 sample -> temperature",
       "input": {
         "fPort": 1,
         "bytes": [87, 150, 1, 179, 255, 156, 1, 244, 255, 255, 20, 171, 163, 233]
       },
       "expected": {
         "data": {
-          "temperature": 43.5,
-          "temperatures1": [43.5, 50],
-          "temperature2": -10,
-          "temperatures2": [-10, -0.1],
+          "channels": [
+            {
+              "channel": "channel1",
+              "temperature": 43.5,
+              "temperatureSamples": [43.5, 50]
+            },
+            {
+              "channel": "channel2",
+              "temperature": -10,
+              "temperatureSamples": [-10, -0.1]
+            }
+          ],
+          "time": "2023-12-28T19:22:17.000Z",
           "frameCounter": 4,
           "lowBattery": true,
           "make": "adeunis",
           "model": "temp-4"
         }
       },
-      "source": "ttn-example"
+      "source": "ttn-example",
+      "_note": "Both probe channels are sub-sensor positions: one channels[] entry each (labels channel1/channel2), carrying temperature for the current (t=0) sample plus that channel's [t=0, t-1, ...] series as the temperatureSamples extra (no per-sample time exists, so no reserved history array). Frame counter, low-battery flag and the device timestamp stay top-level."
     },
     {
-      "description": "0x30 keep-alive, single channel, no timestamp: one current sample -> temperature",
+      "description": "0x30 keep-alive, 2 channels active, no timestamp: distinct current sample per channel",
       "input": {
         "fPort": 1,
-        "bytes": [48, 128, 0, 210]
+        "bytes": [48, 16, 0, 210, 255, 56]
       },
       "expected": {
         "data": {
-          "temperature": 21,
-          "temperatures1": [21],
-          "frameCounter": 4,
+          "channels": [
+            {
+              "channel": "channel1",
+              "temperature": 21,
+              "temperatureSamples": [21]
+            },
+            {
+              "channel": "channel2",
+              "temperature": -20,
+              "temperatureSamples": [-20]
+            }
+          ],
+          "frameCounter": 0,
           "lowBattery": false,
           "make": "adeunis",
           "model": "temp-4"
         }
       },
       "source": "synthetic"
+    },
+    {
+      "description": "0x30 keep-alive, single channel, no timestamp: only the channel1 entry is emitted",
+      "input": {
+        "fPort": 1,
+        "bytes": [48, 128, 0, 210]
+      },
+      "expected": {
+        "data": {
+          "channels": [
+            {
+              "channel": "channel1",
+              "temperature": 21,
+              "temperatureSamples": [21]
+            }
+          ],
+          "frameCounter": 4,
+          "lowBattery": false,
+          "make": "adeunis",
+          "model": "temp-4"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Status bit4 clear -> 1-channel mode: the payload carries no channel-2 samples, so no channel2 entry is emitted (disconnected-position policy)."
     },
     {
       "description": "configuration frame (0x10) is not periodic telemetry",

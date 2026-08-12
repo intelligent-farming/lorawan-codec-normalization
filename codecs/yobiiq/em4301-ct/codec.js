@@ -1,14 +1,102 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2026 Intelligent Farming Foundation
 //
-// Normalized payload codec for yobiiq/em4301-ct (YOBIIQ electricity energy meter).
+// Normalized payload codec for yobiiq/em4301-ct (YOBIIQ EM4301-CT, 3-phase
+// electricity energy meter).
 //
 // Wire-format decoder ported verbatim from the upstream Apache-2.0 decoder
 // (TheThingsNetwork/lorawan-devices vendor/yobiiq/em4301-ct.js, attributed in
 // NOTICE), renamed yobiiqDecode; downlink encoder renamed to an inert helper.
 // decodeUplinkCore sums the active-energy-import registers (Wh) into
-// metering.energy.total; other measured/config fields (emitted upstream as
-// {data,unit}) are flattened to their numeric value as camelCase extras.
+// metering.energy.total, routes the per-phase registers into `channels[]` and
+// the meter's own aggregates into top-level `power.*` (both below), and
+// flattens the remaining measured/config fields (emitted upstream as
+// {data,unit}) to their numeric value as camelCase extras.
+//
+// Frame layout (fPort 1..10 measurements, fPort 50 basic info): a stream of
+// records, each `channel index byte + register type byte + fixed-length
+// big-endian payload` per CONFIG_MEASUREMENT.TYPES / CONFIG_INFO.TYPES below.
+// The leading channel byte is only a per-frame record index (the special pair
+// channel 11 / type 0x0A carries modbusErrorCode); the register type byte is
+// what names the reading.
+//
+// Per-phase readings ride in `channels[]`
+// --------------------------------------
+// The register table splits cleanly into registers that measure ONE supply
+// phase and registers that describe the whole meter. Every per-phase register
+// is a sub-sensor position measuring the same physical quantity, so its reading
+// goes in the reserved `channels` array (see AUTHORING.md "Multi-channel
+// devices") instead of the suffixed extras the normalization layer used to pass
+// straight through from the ported decoder (`voltageL1N`/`L2N`/`L3N`,
+// `currentL1`..`L3`, `activePowerL1`..`L3`, `reactivePowerL1`..`L3`,
+// `apparentPowerL1`..`L3`, `powerFactorL1`..`L3`, `phaseAngleL1`..`L3`,
+// `maximumL1CurrentDemand`..`L3`). Three positions, labelled after the phase
+// the register names — `phaseA`/`phaseB`/`phaseC` for L1/L2/L3, the label
+// scheme the three-phase arwin-technology/lrs2m001-4xxx, netvox/r718n3 and
+// emu/emu-prof-ii meters use for this concept:
+//   phaseA <- 0x0C voltageL1N             -> power.voltage (V, as decoded)
+//             0x10 currentL1              -> power.current (A; mA / 1000)
+//             0x14 activePowerL1          -> power.active  (W, as decoded)
+//             0x1D powerFactorL1          -> powerFactor          (extra, -1..1)
+//             0x17 reactivePowerL1        -> reactivePower        (extra, kvar)
+//             0x1A apparentPowerL1        -> apparentPower        (extra, kVA)
+//             0x20 phaseAngleL1           -> phaseAngle           (extra, degrees)
+//             0x27 maximumL1CurrentDemand -> maximumCurrentDemand (extra, mA)
+//   phaseB <- 0x0D / 0x11 / 0x15 / 0x1E / 0x18 / 0x1B / 0x21 / 0x28 (L2)
+//   phaseC <- 0x0E / 0x12 / 0x16 / 0x1F / 0x19 / 0x1C / 0x22 / 0x29 (L3)
+// No register is L1 promoted to a bare vocabulary key: the meter has no
+// whole-device voltage register at all (0x0C is L1's own phase-to-neutral
+// voltage, like 0x0D/0x0E), so this codec emits no top-level `power.voltage`.
+// The five extras keep the ported decoder's value and unit verbatim — only the
+// L1/L2/L3 infix is dropped, since the entry's `channel` label already carries
+// the phase. `powerFactor` stays an extra rather than the vocabulary's
+// `power.factor`: it is only being moved out of a suffixed name in this pass,
+// and promoting an extra to a vocabulary key is a separate normalization
+// decision (same for reactive/apparent power, whose vendor units are kvar/kVA
+// rather than the vocabulary's var/VA).
+//
+// Whole-meter readings stay top-level (never repeated inside an entry):
+//   0x13 activePowerL123 -> power.active    (W)  the meter's own 3-phase total
+//   0x0F currentL123     -> power.current   (A)  the meter's own current total
+//   0x23 frequency       -> power.frequency (Hz) line frequency, not per phase
+//   0x04/0x05 activeEnergyImportL123T1/T2 -> metering.energy.total (Wh, summed)
+// 0x13/0x0F are aggregates the METER reports (not a promoted phase and not
+// something we sum), so they describe the whole device and belong to the empty
+// channel label; a frame carrying both them and the per-phase registers emits
+// the aggregate top-level and the phases in entries, and no single reading is
+// ever emitted twice.
+//
+// TRIAGE — deliberately NOT channels[] entries, do not "fix" these into any:
+// the tariff registers 0x06/0x07 activeEnergyExportL123T1/T2 and 0x08..0x0B
+// reactiveEnergyImport/ExportL123T1/T2 (plus the import pair folded into
+// metering.energy.total) are TARIFF BUCKETS of one meter-wide register — T1/T2
+// is a billing rate, not a physical position, and the L123 in their name means
+// "whole meter", so they stay top-level camelCase extras under their existing
+// names. Also whole-device and top-level: 0x24..0x26 totalSystemActive/
+// Reactive/ApparentPower, 0x2A averagePower, 0x00 index, 0x01 timestamp,
+// 0x03 dataloggerTimestamp, 0x2B midYearOfCertification, 0xF0..0xF2
+// manufacturedYear/firmwareVersion/hardwareVersion, the modbusErrorCode status
+// byte, and every fPort-50 identity/config extra (deviceSerialNumber,
+// deviceModel, deviceClass, powerEvent, primary/secondaryCurrentTransformer-
+// Ratio, primary/secondaryVoltageTransformerRatio) — the CT/VT ratios describe
+// the meter's wiring configuration, not one phase's reading.
+//
+// Lazy build: a frame carries only the registers the datalogger profile
+// selected, so an entry is created only when a register for that phase appears,
+// and `channels` is omitted entirely when a frame carries none — the energy /
+// datalog frame emits no `channels` key, and a frame naming only L1 and L3
+// emits exactly two entries (`phaseA`, `phaseC`).
+//
+// Sentinel policy: there is none to honour. The wire format has no absent- or
+// disconnected-phase encoding — every per-phase register is a plain
+// big-endian integer, signed via two's complement with no reserved code
+// (unlike the sibling adeunis/tic-cbe-linky-tri, whose 0x80000000 marks a
+// register absent from the bus) — and 0 A is a legitimate idle reading on an
+// unloaded phase, not a sentinel. So no position is ever skipped for its value:
+// a phase is missing from `channels` only when the frame carried no register
+// for it. A frame the ported decoder cannot parse (fPort outside the
+// measurement/info ports, unknown register type) returns its `error` string as
+// a decode error instead of a partial measurement, since frame sync is lost.
 
 
 // Version Control
@@ -649,21 +737,132 @@ function encodePeriodicPackage(obj, variables)
 
 
 // ---- normalization layer (authored) ----
+
+function yobiiqRound(value, decimals) {
+  var f = Math.pow(10, decimals);
+  return Math.round(value * f) / f;
+}
+
+// The ported decoder already applied each register's RESOLUTION, so the only
+// unit change left is mA -> A (div 1000). div === 1 passes the value through
+// untouched, so nothing else can drift.
+function yobiiqScale(value, div) {
+  if (div === 1) { return value; }
+  return yobiiqRound(value / div, 3);
+}
+
+// Reserved channels[] positions, in emitted order: the meter's three supply
+// phases. Slot index is the conductor's position in the register table above
+// (L1, L2, L3).
+var YOBIIQ_PHASE_LABELS = ['phaseA', 'phaseB', 'phaseC'];
+
+// Per-phase registers whose reading is a `power.*` vocabulary key inside that
+// phase's entry: upstream register name -> [slot, key, divisor].
+var YOBIIQ_PHASE_POWER = {
+  voltageL1N:    [0, 'voltage', 1],
+  voltageL2N:    [1, 'voltage', 1],
+  voltageL3N:    [2, 'voltage', 1],
+  currentL1:     [0, 'current', 1000],
+  currentL2:     [1, 'current', 1000],
+  currentL3:     [2, 'current', 1000],
+  activePowerL1: [0, 'active', 1],
+  activePowerL2: [1, 'active', 1],
+  activePowerL3: [2, 'active', 1]
+};
+
+// Per-phase registers that stay camelCase extras inside that phase's entry:
+// upstream register name -> [slot, key]. The vendor's value and unit are
+// unchanged (powerFactor -1..1, reactivePower kvar, apparentPower kVA,
+// phaseAngle degrees, maximumCurrentDemand mA); only the L1/L2/L3 infix is
+// dropped, because the entry's `channel` label already carries the phase.
+var YOBIIQ_PHASE_EXTRA = {
+  powerFactorL1:          [0, 'powerFactor'],
+  powerFactorL2:          [1, 'powerFactor'],
+  powerFactorL3:          [2, 'powerFactor'],
+  reactivePowerL1:        [0, 'reactivePower'],
+  reactivePowerL2:        [1, 'reactivePower'],
+  reactivePowerL3:        [2, 'reactivePower'],
+  apparentPowerL1:        [0, 'apparentPower'],
+  apparentPowerL2:        [1, 'apparentPower'],
+  apparentPowerL3:        [2, 'apparentPower'],
+  phaseAngleL1:           [0, 'phaseAngle'],
+  phaseAngleL2:           [1, 'phaseAngle'],
+  phaseAngleL3:           [2, 'phaseAngle'],
+  maximumL1CurrentDemand: [0, 'maximumCurrentDemand'],
+  maximumL2CurrentDemand: [1, 'maximumCurrentDemand'],
+  maximumL3CurrentDemand: [2, 'maximumCurrentDemand']
+};
+
+// Whole-meter registers the METER itself aggregates over the whole device ->
+// top-level `power.*`: upstream register name -> [key, divisor]. Never summed
+// by us and never repeated inside an entry.
+var YOBIIQ_AGGREGATE_POWER = {
+  activePowerL123: ['active', 1],
+  currentL123:     ['current', 1000],
+  frequency:       ['frequency', 1]
+};
+
+// Lazily create (and return) the channels entry for one supply phase.
+function yobiiqPhase(slots, idx) {
+  if (slots[idx] === null) {
+    slots[idx] = { channel: YOBIIQ_PHASE_LABELS[idx] };
+  }
+  return slots[idx];
+}
+
 function decodeUplinkCore(input) {
   var raw = yobiiqDecode(input);
   var d = (raw && raw.data) || raw || {};
   var data = {};
   var energyImport = null;
+  // channels[] entries per supply phase (L1, L2, L3), created only when the
+  // frame actually carries a register for that phase.
+  var slots = [null, null, null];
   var k;
   for (k in d) {
     if (!Object.prototype.hasOwnProperty.call(d, k)) { continue; }
     var val = d[k];
     if (val === null || val === undefined) { continue; }
+    // The ported decoder reports a wire-format fault as an `error` string: an
+    // fPort outside the measurement/info ports ("Incorrect fPort"), or a
+    // register type / length its table does not cover (the thrown message).
+    // Either way frame sync is lost, so the frame is a decode error rather
+    // than telemetry with an `error` field attached.
+    if (k === 'error') { return { errors: [String(val)] }; }
     if (/^activeEnergyImport/.test(k) && val && typeof val.data === 'number') { energyImport = (energyImport || 0) + val.data; continue; }
-    if (val && typeof val === 'object' && typeof val.data !== 'undefined' && !Array.isArray(val)) { data[k] = val.data; continue; }
-    data[k] = val;
+    var num = (val && typeof val === 'object' && typeof val.data !== 'undefined' && !Array.isArray(val)) ? val.data : val;
+    var phasePower = YOBIIQ_PHASE_POWER[k];
+    if (phasePower) {
+      var entry = yobiiqPhase(slots, phasePower[0]);
+      if (!entry.power) { entry.power = {}; }
+      entry.power[phasePower[1]] = yobiiqScale(num, phasePower[2]);
+      continue;
+    }
+    var phaseExtra = YOBIIQ_PHASE_EXTRA[k];
+    if (phaseExtra) {
+      yobiiqPhase(slots, phaseExtra[0])[phaseExtra[1]] = num;
+      continue;
+    }
+    var aggregate = YOBIIQ_AGGREGATE_POWER[k];
+    if (aggregate) {
+      if (!data.power) { data.power = {}; }
+      data.power[aggregate[0]] = yobiiqScale(num, aggregate[1]);
+      continue;
+    }
+    data[k] = num;
   }
   if (energyImport !== null) { data.metering = data.metering || {}; data.metering.energy = { total: energyImport }; }
+  // Emit the phase entries in fixed order (L1, L2, L3), skipping phases this
+  // frame said nothing about; a frame with no per-phase register at all carries
+  // no `channels` key.
+  var entries = [];
+  var slot;
+  for (slot = 0; slot < slots.length; slot++) {
+    if (slots[slot] !== null) {
+      entries.push(slots[slot]);
+    }
+  }
+  if (entries.length > 0) { data.channels = entries; }
   return { data: data };
 }
 

@@ -12,9 +12,8 @@
     "frameCounter",
     "lowBattery",
     "temperature",
-    "temperature2",
-    "temperatures1",
-    "temperatures2"
+    "temperatureSamples",
+    "time"
   ],
   "variantOf": null,
   "downlink": {

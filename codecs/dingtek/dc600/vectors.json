@@ -1,7 +1,7 @@
 {
   "uplink": [
     {
-      "description": "heartbeat, no leak on any channel, battery ok",
+      "description": "heartbeat, no leak on any of the four channels, battery ok",
       "input": {
         "fPort": 3,
         "bytes": [128, 0, 1, 1, 17, 0, 0, 0, 25, 0, 0, 0, 240, 0, 0, 0, 129]
@@ -11,23 +11,51 @@
           "make": "dingtek",
           "model": "dc600",
           "water": {
-            "leak": false,
             "temperature": { "current": 25 }
           },
-          "leakChannel1": false,
-          "leakChannel2": false,
-          "leakChannel3": false,
-          "leakChannel4": false,
           "monitorEnabled": true,
           "batteryLow": false,
-          "frameCounter": 0
+          "frameCounter": 0,
+          "channels": [
+            { "channel": "channel0", "water": { "leak": false } },
+            { "channel": "channel1", "water": { "leak": false } },
+            { "channel": "channel2", "water": { "leak": false } },
+            { "channel": "channel3", "water": { "leak": false } }
+          ]
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Input is the upstream TTN heartbeat example (reference/upstream-examples.json). Upstream oracle: monitorStatus true, alarmChannel1..4 all false, alarmBattery false, temperature 25, frameCounter 0 (bytes[12]=0xF0 = all four channel status bits SET = active-LOW so no alarm). expected.data authored to the normalized vocabulary: one channels[] entry per channel carrying water.leak, with the single whole-device temperature left top-level."
+    },
+    {
+      "description": "channels differ: only channel2 is wet, the other three dry (per-position truth, unrepresentable in the old any-channel OR)",
+      "input": {
+        "fPort": 3,
+        "bytes": [128, 0, 1, 1, 17, 0, 0, 0, 21, 0, 0, 0, 176, 0, 7, 0, 129]
+      },
+      "expected": {
+        "data": {
+          "make": "dingtek",
+          "model": "dc600",
+          "water": {
+            "temperature": { "current": 21 }
+          },
+          "monitorEnabled": true,
+          "batteryLow": false,
+          "frameCounter": 7,
+          "channels": [
+            { "channel": "channel0", "water": { "leak": false } },
+            { "channel": "channel1", "water": { "leak": false } },
+            { "channel": "channel2", "water": { "leak": true } },
+            { "channel": "channel3", "water": { "leak": false } }
+          ]
         }
       },
       "source": "synthetic",
-      "_note": "Input is the upstream TTN heartbeat example (bytes[12]=0xF0 = all channel status bits set = active-LOW so no alarm). expected.data authored to the normalized vocabulary and produced by running reference/upstream-codec.js's field extraction; leak=false because no channel alarms."
+      "_note": "Synthetic in-bounds frame derived from the upstream heartbeat example with bytes[12] changed to 0xB0 (= 0x80|0x20|0x10) and a distinct temperature/frame counter. Cross-checked against reference/upstream-codec.js field extraction: only the channel-3 status bit (0x40) is clear, so active-LOW gives alarmChannel3 true and alarmChannel1/2/4 false -> the zero-based entry channel2 is the wet one; low nibble 0 -> alarmBattery false; bytes[13..14]=0,7 -> frameCounter 7. This is the case the retired top-level any-channel OR could not express: three dry channels are hidden behind one wet one."
     },
     {
-      "description": "leak alarm on channels 1 and 3, low battery, temp 18C",
+      "description": "leak alarm on channels 1 and 3 (entries channel0 and channel2), low battery, temp 18C",
       "input": {
         "fPort": 3,
         "bytes": [128, 0, 1, 1, 17, 0, 0, 0, 18, 0, 0, 0, 175, 1, 44, 0, 129]
@@ -37,20 +65,21 @@
           "make": "dingtek",
           "model": "dc600",
           "water": {
-            "leak": true,
             "temperature": { "current": 18 }
           },
-          "leakChannel1": true,
-          "leakChannel2": false,
-          "leakChannel3": true,
-          "leakChannel4": false,
           "monitorEnabled": true,
           "batteryLow": true,
-          "frameCounter": 300
+          "frameCounter": 300,
+          "channels": [
+            { "channel": "channel0", "water": { "leak": true } },
+            { "channel": "channel1", "water": { "leak": false } },
+            { "channel": "channel2", "water": { "leak": true } },
+            { "channel": "channel3", "water": { "leak": false } }
+          ]
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic in-bounds frame. bytes[12]=0xAF: channel-1 (0x10) and channel-3 (0x40) status bits clear = active-LOW alarm = leak; low nibble 0xF = low-battery flag. bytes[13..14]=1,44 -> frameCounter 300. expected.data cross-checked against reference/upstream-codec.js field extraction and normalized to the vocabulary."
+      "_note": "Synthetic in-bounds frame. bytes[12]=0xAF: the channel-1 (0x10) and channel-3 (0x40) status bits are clear = active-LOW alarm = leak on entries channel0/channel2; low nibble 0xF = low-battery flag. bytes[13..14]=1,44 -> frameCounter 300. expected.data cross-checked against reference/upstream-codec.js field extraction and normalized to the vocabulary; batteryLow / monitorEnabled / frameCounter and the single device temperature are whole-device readings and stay top-level."
     },
     {
       "description": "parameter report frame carries no measurement",
@@ -61,8 +90,8 @@
       "expected": {
         "errors": ["parameter report frame carries no normalized measurement"]
       },
-      "source": "synthetic",
-      "_note": "Input is the upstream TTN parameter-packet example (bytes[3]==0x03). Upstream decodes it to device settings (firmware/uploadInterval/batteryThreshold/monitorStatus); these are not normalized measurements, so our codec reports an error."
+      "source": "ttn-example",
+      "_note": "Input is the upstream TTN parameter-packet example (bytes[3]==0x03). Upstream decodes it to device settings (firmware/uploadInterval/batteryThreshold/monitorStatus); these are not normalized measurements, so our codec reports an error and emits no `channels` key."
     }
   ],
   "downlink": []

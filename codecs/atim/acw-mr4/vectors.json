@@ -1,48 +1,126 @@
 {
   "uplink": [
     {
-      "description": "counters 1 & 2: cumulative indices 1000 and 2000",
+      "description": "counters 1 & 2: cumulative indices 1000 and 2000 (meter0/meter1)",
       "input": { "fPort": 1, "bytes": [80, 0, 0, 3, 232, 0, 0, 7, 208] },
       "expected": {
-        "data": { "make": "atim", "model": "acw-mr4", "pulse": { "total": 1000 }, "total2": 2000, "frameType": "counters" }
+        "data": {
+          "make": "atim", "model": "acw-mr4",
+          "frameType": "counters",
+          "channels": [
+            { "channel": "meter0", "pulse": { "total": 1000 } },
+            { "channel": "meter1", "pulse": { "total": 2000 } }
+          ]
+        }
       },
       "source": "synthetic",
-      "_note": "0x50 'compteur 1 et 2'. c1=0x000003E8=1000 -> pulse.total, c2=0x000007D0=2000 -> total2. Verified against reference/upstream-codec.js (compteur1=1000, compteur2=2000)."
+      "_note": "0x50 'compteur 1 et 2'. c1=0x000003E8=1000, c2=0x000007D0=2000. Verified against reference/upstream-codec.js (compteur1=1000, compteur2=2000); upstream's 1-based compteur1/2 are physical positions 0/1 -> meter0/meter1."
+    },
+    {
+      "description": "counters 3 & 4: positions 2 and 3 (meter2/meter3)",
+      "input": { "fPort": 1, "bytes": [81, 0, 0, 11, 184, 0, 0, 15, 160] },
+      "expected": {
+        "data": {
+          "make": "atim", "model": "acw-mr4",
+          "frameType": "counters",
+          "channels": [
+            { "channel": "meter2", "pulse": { "total": 3000 } },
+            { "channel": "meter3", "pulse": { "total": 4000 } }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "0x51 'compteur 3 et 4'. Verified against reference/upstream-codec.js (compteur3=3000, compteur4=4000) -> physical positions 2/3, so meter2/meter3 (the suffixed-extra shape wrongly folded these onto pulse.total/total2)."
     },
     {
       "description": "standard meter frame: wire-cut clear, indices 1000 and 2000",
       "input": { "fPort": 1, "bytes": [20, 0, 0, 0, 3, 232, 0, 0, 7, 208] },
       "expected": {
-        "data": { "make": "atim", "model": "acw-mr4", "wireCut": false, "pulse": { "total": 1000 }, "total2": 2000, "frameType": "meter" }
+        "data": {
+          "make": "atim", "model": "acw-mr4",
+          "wireCut": false,
+          "frameType": "meter",
+          "channels": [
+            { "channel": "meter0", "pulse": { "total": 1000 } },
+            { "channel": "meter1", "pulse": { "total": 2000 } }
+          ]
+        }
       },
       "source": "synthetic",
-      "_note": "0x14 'compteur standard': wirecut byte 0, c1=1000, c2=2000. Verified against reference/upstream-codec.js (wirecut=0, compteur1=1000, compteur2=2000)."
+      "_note": "0x14 'compteur standard': wirecut byte 0, c1=1000, c2=2000. Verified against reference/upstream-codec.js (wirecut=0, compteur1=1000, compteur2=2000). wireCut is whole-device, so it stays top-level."
     },
     {
-      "description": "digital-input (Boolean) mode: channel 0 closed",
+      "description": "digital-input (Boolean) mode: input0 closed, inputs 1-15 open",
       "input": { "fPort": 1, "bytes": [66, 1, 0] },
       "expected": {
         "data": {
           "make": "atim", "model": "acw-mr4",
-          "action": { "contactState": "closed" },
-          "input2": false, "input3": false, "input4": false,
-          "input5": false, "input6": false, "input7": false, "input8": false,
-          "input9": false, "input10": false, "input11": false, "input12": false,
-          "input13": false, "input14": false, "input15": false, "input16": false,
-          "frameType": "digitalInputs"
+          "frameType": "digitalInputs",
+          "channels": [
+            { "channel": "input0", "action": { "contactState": "closed" } },
+            { "channel": "input1", "action": { "contactState": "open" } },
+            { "channel": "input2", "action": { "contactState": "open" } },
+            { "channel": "input3", "action": { "contactState": "open" } },
+            { "channel": "input4", "action": { "contactState": "open" } },
+            { "channel": "input5", "action": { "contactState": "open" } },
+            { "channel": "input6", "action": { "contactState": "open" } },
+            { "channel": "input7", "action": { "contactState": "open" } },
+            { "channel": "input8", "action": { "contactState": "open" } },
+            { "channel": "input9", "action": { "contactState": "open" } },
+            { "channel": "input10", "action": { "contactState": "open" } },
+            { "channel": "input11", "action": { "contactState": "open" } },
+            { "channel": "input12", "action": { "contactState": "open" } },
+            { "channel": "input13", "action": { "contactState": "open" } },
+            { "channel": "input14", "action": { "contactState": "open" } },
+            { "channel": "input15", "action": { "contactState": "open" } }
+          ]
         }
       },
       "source": "synthetic",
-      "_note": "0x42 'entrees digitales'. entree byte 0x01 -> channel 0 closed. Verified against reference/upstream-codec.js (entree [1,0,...])."
+      "_note": "0x42 'entrees digitales'. entree byte 0x01 -> bit0 set. Verified against reference/upstream-codec.js (entree [1,0,...]). The frame always carries 16 bits regardless of variant, so 16 entries are emitted (see codec header limitation)."
     },
     {
-      "description": "life frame: battery 3.60 V",
+      "description": "multi-position: inputs + 4 meter indices in one frame (0x5E)",
+      "input": { "fPort": 1, "bytes": [94, 5, 128, 0, 0, 0, 100, 0, 0, 0, 200, 0, 0, 1, 44, 0, 0, 1, 144] },
+      "expected": {
+        "data": {
+          "make": "atim", "model": "acw-mr4",
+          "frameType": "inputsCounters",
+          "channels": [
+            { "channel": "input0", "action": { "contactState": "closed" } },
+            { "channel": "input1", "action": { "contactState": "open" } },
+            { "channel": "input2", "action": { "contactState": "closed" } },
+            { "channel": "input3", "action": { "contactState": "open" } },
+            { "channel": "input4", "action": { "contactState": "open" } },
+            { "channel": "input5", "action": { "contactState": "open" } },
+            { "channel": "input6", "action": { "contactState": "open" } },
+            { "channel": "input7", "action": { "contactState": "open" } },
+            { "channel": "input8", "action": { "contactState": "open" } },
+            { "channel": "input9", "action": { "contactState": "open" } },
+            { "channel": "input10", "action": { "contactState": "open" } },
+            { "channel": "input11", "action": { "contactState": "open" } },
+            { "channel": "input12", "action": { "contactState": "open" } },
+            { "channel": "input13", "action": { "contactState": "open" } },
+            { "channel": "input14", "action": { "contactState": "open" } },
+            { "channel": "input15", "action": { "contactState": "closed" } },
+            { "channel": "meter0", "pulse": { "total": 100 } },
+            { "channel": "meter1", "pulse": { "total": 200 } },
+            { "channel": "meter2", "pulse": { "total": 300 } },
+            { "channel": "meter3", "pulse": { "total": 400 } }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "0x5E 'entrees digitales et compteurs'. Verified against reference/upstream-codec.js: entree [1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1] (in_lo=0x05 bits 0+2, in_hi=0x80 bit 15) and ancien_compteur0..3 = 100/200/300/400 (already 0-based upstream) -> meter0..meter3. The suffixed-extra shape flattened these to pulse.total + total2..total4 and lost which terminal reported which index."
+    },
+    {
+      "description": "life frame: battery 3.60 V (no positions, so no channels array)",
       "input": { "fPort": 1, "bytes": [1, 14, 16] },
       "expected": {
         "data": { "make": "atim", "model": "acw-mr4", "battery": 3.6, "frameType": "life" }
       },
       "source": "synthetic",
-      "_note": "0x01 'Trame de vie': tensionc 0x0E10=3600 / 1000 = 3.6 V. Verified against reference/upstream-codec.js (tensionc.value=3.6)."
+      "_note": "0x01 'Trame de vie': tensionc 0x0E10=3600 / 1000 = 3.6 V. Verified against reference/upstream-codec.js (tensionc.value=3.6). battery is whole-device and channels is omitted entirely."
     },
     {
       "description": "unsupported frame type yields error",

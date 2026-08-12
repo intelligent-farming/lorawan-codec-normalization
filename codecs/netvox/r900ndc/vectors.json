@@ -1,7 +1,7 @@
 {
   "uplink": [
     {
-      "description": "Status report, no shock alarm (motion false), normal battery",
+      "description": "Status report, no shock alarm (motion false), normal battery, two CT entries",
       "input": {
         "fPort": 22,
         "bytes": [3, 1, 3, 1, 120, 0, 0, 29, 0, 0, 14, 2, 0]
@@ -11,16 +11,15 @@
           "make": "netvox",
           "model": "r900ndc",
           "battery": 12,
-          "current1": 29,
-          "current2": 14,
-          "lowCurrent1Alarm": false,
-          "highCurrent1Alarm": true,
-          "lowCurrent2Alarm": false,
-          "highCurrent2Alarm": false,
+          "channels": [
+            { "channel": "ct1", "current": 29, "lowCurrentAlarm": false, "highCurrentAlarm": true },
+            { "channel": "ct2", "current": 14, "lowCurrentAlarm": false, "highCurrentAlarm": false }
+          ],
           "action": { "motion": { "detected": false } }
         }
       },
-      "source": "ttn-example"
+      "source": "ttn-example",
+      "_note": "Upstream-example input (TTN netvox r900ndc codec yaml, Apache-2.0). Oracle: Volt 12, Current1 29mA, Current2 14mA, HighCurrent1Alarm 1, ShockTamperAlarm NoAlarm. Each CT input's reading and its own low/high alarm pair sit in that input's channels entry; the shock event stays whole-device."
     },
     {
       "description": "Status report, shock/tamper alarm (motion true), low battery",
@@ -34,17 +33,36 @@
           "model": "r900ndc",
           "lowBattery": true,
           "battery": 3.2,
-          "current1": 300,
-          "current2": 200,
-          "lowCurrent1Alarm": true,
-          "highCurrent1Alarm": false,
-          "lowCurrent2Alarm": true,
-          "highCurrent2Alarm": false,
+          "channels": [
+            { "channel": "ct1", "current": 300, "lowCurrentAlarm": true, "highCurrentAlarm": false },
+            { "channel": "ct2", "current": 200, "lowCurrentAlarm": true, "highCurrentAlarm": false }
+          ],
           "action": { "motion": { "detected": true } }
         }
       },
       "source": "synthetic",
       "_note": "Synthetic in-bounds frame: bytes[4]=0xA0 sets the low-battery high bit (3.2 V), bytes[5..7]=300 mA, bytes[8..10]=200 mA, bytes[11]=0x05 sets LowCurrent1+LowCurrent2, bytes[12]=0x01 shock alarm. expected.data authored from the upstream reference decode (Volt '3.2(low battery)', Current1 300mA, Current2 200mA, alarm flags, ShockTamperAlarm 'Alarm')."
+    },
+    {
+      "description": "Status report with a distinct current and alarm pattern per CT (multi-CT)",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 3, 1, 36, 0, 4, 210, 0, 0, 56, 6, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "r900ndc",
+          "battery": 3.6,
+          "channels": [
+            { "channel": "ct1", "current": 1234, "lowCurrentAlarm": false, "highCurrentAlarm": true },
+            { "channel": "ct2", "current": 56, "lowCurrentAlarm": true, "highCurrentAlarm": false }
+          ],
+          "action": { "motion": { "detected": false } }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame giving each CT input a clearly distinct reading and alarm pair, so a per-position mix-up cannot pass: bytes[4]=0x24 -> 3.6 V, currents 1234 / 56 mA, bytes[11]=0x06 (0b0110) -> HighCurrent1Alarm + LowCurrent2Alarm, bytes[12]=0x00 no shock. Verified against reference/upstream-codec.js field-for-field."
     },
     {
       "description": "Startup/device-info frame, reportType 0x00 (no measurement)",

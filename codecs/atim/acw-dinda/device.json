@@ -9,12 +9,11 @@
     "analog input"
   ],
   "provides": [
+    "action.contactState",
     "analog.current",
     "analog.voltage",
     "battery",
-    "frameType",
-    "input1",
-    "input2"
+    "frameType"
   ],
   "variantOf": null,
   "downlink": {

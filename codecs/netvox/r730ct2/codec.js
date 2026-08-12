@@ -10,10 +10,15 @@
 // the R718B2/R718Cx2/R730Cx2 thermocouple-interface family and attributed in
 // NOTICE). Author the normalization here; do NOT copy upstream decodeUplink.
 //
-// The R730CT2 is a two-channel T-type thermocouple interface: each data frame
-// carries two independent temperature readings. The primary channel (Temp1) is
-// reported as the top-level vocabulary key `temperature`; the second channel
-// (Temp2) is the camelCase extra `temperature2` (both °C).
+// The R730CT2 is a two-gang T-type thermocouple interface: each data frame
+// carries two independent temperature readings. Netvox calls the two terminals
+// "gangs"; they are sub-sensor positions of one device, so their readings ride
+// in the reserved `channels` array (see AUTHORING.md "Multi-channel devices")
+// rather than in a suffixed `temperature2` extra. One entry per gang, labelled
+// with the vendor's own term plus a zero-based index — `gang0` (Temp1, bytes
+// 4..5) and `gang1` (Temp2, bytes 6..7) — each carrying the `temperature`
+// vocabulary key in °C. `battery` and the `lowBattery` flag are whole-device
+// readings and stay top-level; no leaf is emitted in both places.
 //
 // fPort 6 frame layout (device id byte[1] == 0x7A for R730CT2):
 //   bytes[0]      frame/software version marker
@@ -22,10 +27,18 @@
 //                 datecode) that carries no measurement
 //   bytes[3]      battery voltage in 0.1 V; high bit (0x80) flags low battery,
 //                 surfaced as the camelCase extra `lowBattery`
-//   bytes[4..5]   channel-1 temperature, 16-bit big-endian signed, in 0.1 °C
-//                 -> `temperature` (°C; raw / 10)
-//   bytes[6..7]   channel-2 temperature, 16-bit big-endian signed, in 0.1 °C
-//                 -> `temperature2` (°C; raw / 10)
+//   bytes[4..5]   gang-1 temperature, 16-bit big-endian signed, in 0.1 °C
+//                 -> channels[gang0].temperature (°C; raw / 10)
+//   bytes[6..7]   gang-2 temperature, 16-bit big-endian signed, in 0.1 °C
+//                 -> channels[gang1].temperature (°C; raw / 10)
+//
+// Sentinel policy: this frame format defines NO disconnected-gang sentinel.
+// Neither the shared upstream decoder nor the frame layout reserves a "no
+// thermocouple" value — both gang words are plain two's-complement 0.1 °C
+// readings across the T-type range — so no value is treated as a sentinel and
+// neither gang entry is ever suppressed on its reading. Frames shorter than 8
+// bytes (which could not carry both gang words) are rejected outright by the
+// length check below, so a data frame always yields both entries.
 //
 // Config responses (fPort 7) and calibration responses (fPort 14) carry no
 // measurement and are reported as errors.
@@ -75,11 +88,12 @@ function decodeUplinkCore(input) {
   }
   data.battery = round((bytes[3] & 0x7f) / 10, 1);
 
-  // Bytes 4..5: channel-1 thermocouple temperature (0.1 °C, signed).
-  data.temperature = round(signed16(bytes[4], bytes[5]) / 10, 1);
-
-  // Bytes 6..7: channel-2 thermocouple temperature (0.1 °C, signed).
-  data.temperature2 = round(signed16(bytes[6], bytes[7]) / 10, 1);
+  // One channels entry per gang: bytes 4..5 = gang0 (Temp1), bytes 6..7 = gang1
+  // (Temp2), both signed 0.1 °C thermocouple readings.
+  data.channels = [
+    { channel: 'gang0', temperature: round(signed16(bytes[4], bytes[5]) / 10, 1) },
+    { channel: 'gang1', temperature: round(signed16(bytes[6], bytes[7]) / 10, 1) }
+  ];
 
   return { data: data };
 }

@@ -15,10 +15,7 @@
     "protocolVersion",
     "pulse.count",
     "pulse.total",
-    "pulseCount2",
-    "pulseInterval",
-    "pulseInterval2",
-    "pulseTotal2"
+    "pulseInterval"
   ],
   "variantOf": null,
   "downlink": {

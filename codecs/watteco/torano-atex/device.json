@@ -14,7 +14,6 @@
   "provides": [
     "action.contactState",
     "analog.raw",
-    "analog2Raw",
     "battery",
     "pulse.total"
   ],

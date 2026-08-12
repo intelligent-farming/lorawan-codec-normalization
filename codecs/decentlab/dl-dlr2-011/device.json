@@ -12,7 +12,6 @@
   "provides": [
     "action.contactState",
     "battery",
-    "contactState2",
     "deviceId",
     "protocolVersion"
   ],

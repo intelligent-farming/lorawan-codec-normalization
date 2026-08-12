@@ -11,8 +11,6 @@
   "provides": [
     "action.motion.count",
     "action.motion.detected",
-    "action.motion.gang1",
-    "action.motion.gang2",
     "battery",
     "lowBattery"
   ],

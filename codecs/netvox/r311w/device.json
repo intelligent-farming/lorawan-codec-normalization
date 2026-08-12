@@ -10,8 +10,6 @@
   ],
   "provides": [
     "battery",
-    "leak1",
-    "leak2",
     "lowBattery",
     "water.leak"
   ],

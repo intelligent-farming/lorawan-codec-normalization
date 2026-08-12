@@ -14,22 +14,52 @@
 // `decodeUplink` (which nests everything under `data.bytes`, never errors, and
 // mis-routes the 0x30 keep-alive through the 0x20 parser) is NOT copied.
 //
-// The 0x49 frame carries CALIBRATED meter registers, ready for the vocabulary:
-//   metering.energy.total (Wh) <- BASE cumulative active-energy index (already
-//     in watt-hours on the wire — no conversion).
-//   power.active (W)   <- PMAX (maximum active power reached).
-//   power.current (A)  <- IINST1 (instantaneous RMS current, phase 1). The
-//     vocabulary's single `power.current` models one phase; phases 2 and 3
-//     (IINST2/IINST3) are genuine extras with no vocabulary home and travel as
-//     currentL2A / currentL3A.
-//   power.apparent (VA)<- PAPP (apparent power).
-// Extras (genuine meter data the vocabulary does not model): meterId (ADCO),
-// currentL2A / currentL3A (IINST2/3), and per-phase maxCurrentL1A / L2A / L3A
-// (IMAX1/2/3). Adeunis status flags travel as extras too.
+// The 0x49 frame carries CALIBRATED meter registers, ready for the vocabulary.
+// Its three-phase layout splits cleanly into per-phase registers and
+// whole-meter registers (upstream Tic0x49Parser, `ticCbeLinkyTri` branch):
+//   per phase: IINST1/2/3 (instantaneous RMS current, A)
+//              IMAX1/2/3  (maximum current reached, A)
+//   whole meter: BASE (cumulative active-energy index, Wh), PMAX (maximum
+//              active power, W), PAPP (apparent power, VA), ADCO (meter id).
+//
+// The three supply phases are three sub-sensor positions measuring the same
+// quantity, so their readings ride in the reserved `channels` array (see
+// AUTHORING.md "Multi-channel devices") instead of the suffixed extras this
+// codec used to emit (`currentL2A`, `currentL3A`, `maxCurrentL1A`/`L2A`/`L3A`)
+// with phase 1 promoted to the bare `power.current`. One entry per phase:
+//   IINST<N> -> power.current (A, unchanged: already amperes on the wire)
+//   IMAX<N>  -> maxCurrent    (extra: that phase's own maximum — per-position
+//               data belongs in its own position's entry)
+// Labels are `phaseA`/`phaseB`/`phaseC` after the register's 1-based suffix
+// (IINST1 -> phaseA), the same label scheme the three-phase
+// arwin-technology/lrs2m001-4xxx and netvox/r718n3 meters use for this concept.
+// Deliberately NOT `channelA`/`channelB` like the sibling adeunis codecs
+// (pulse-4, pulse-nb-iot, analog): those label this vendor's independent
+// *interface channels* (separate pulse inputs / analog inputs), whereas these
+// are the three phases of one supply — a different concept, hence a different
+// label prefix.
+//
+// Whole-meter registers stay top-level and are never repeated inside an entry:
+// metering.energy.total (BASE), power.active (PMAX), power.apparent (PAPP), the
+// meterId extra (ADCO), plus frameType and the Adeunis status extras
+// (frameCounter, lowBattery, configurationDone, configurationInconsistency,
+// readError). PMAX/PAPP are single meter-wide registers in the TRI layout — the
+// TIC bus carries no per-phase power or energy — so nothing else moves.
 //
 // The transmitter exposes only a lowBattery status BIT (no battery voltage on
-// the wire), so no `battery` key is emitted. A register absent on the serial bus
-// is encoded upstream as the sentinel 0x80000000 and is simply omitted here.
+// the wire), so no `battery` key is emitted.
+//
+// Sentinel / absent-phase policy: a register the serial bus did not report is
+// encoded upstream as 0x80000000 and is simply omitted here — so a phase whose
+// IINST is absent yields an entry with only `maxCurrent`, and a phase with both
+// registers absent yields no entry at all. `channels` itself is omitted when no
+// phase reported anything (an all-sentinel TIC read). There is no separate
+// "disconnected phase" encoding on the wire: 0 A is a legitimate reading (idle
+// phase), not a sentinel, and is emitted as measured.
+//
+// The single-phase sibling codecs/adeunis/tic-cbe-linky-mono is intentionally
+// left flat: one phase is one position, so its IINST/IMAX have no sibling to be
+// confused with and need no channels[] entry.
 
 function round(value, decimals) {
   var f = Math.pow(10, decimals);
@@ -73,6 +103,10 @@ function strField(bytes, start, end) {
   return s;
 }
 
+// Supply-phase labels for the reserved channels[] entries, indexed by the
+// 1-based suffix the TIC registers use (IINST1 -> phaseA).
+var TIC_TRI_PHASE_LABELS = ['phaseA', 'phaseB', 'phaseC'];
+
 // Adeunis status byte (payload[1]), shared across frame types. Bit semantics
 // mirror the upstream TicStatusByteParser.
 function applyStatus(data, statusByte) {
@@ -110,13 +144,7 @@ function decodeTicData(bytes) {
     warnings.push('no cumulative energy index on the TIC bus (BASE absent)');
   }
 
-  // power.current (A) phase 1, power.active (W), power.apparent (VA).
-  if (iinst1 !== null) {
-    if (!data.power) {
-      data.power = {};
-    }
-    data.power.current = iinst1;
-  }
+  // Whole-meter power registers: power.active (W), power.apparent (VA).
   if (pmax !== null) {
     if (!data.power) {
       data.power = {};
@@ -130,26 +158,40 @@ function decodeTicData(bytes) {
     data.power.apparent = papp;
   }
 
-  // Genuine meter data the vocabulary does not model -> camelCase extras.
+  // Genuine whole-meter data the vocabulary does not model -> camelCase extra.
   if (adco.length > 0) {
     data.meterId = adco;
   }
-  // Per-phase currents 2 and 3 (the vocabulary models only one phase).
-  if (iinst2 !== null) {
-    data.currentL2A = iinst2;
+
+  // One reserved channels[] entry per supply phase, built lazily so a phase the
+  // TIC bus did not report (0x80000000 sentinel on both its registers) produces
+  // no entry at all.
+  var iinst = [iinst1, iinst2, iinst3];
+  var imax = [imax1, imax2, imax3];
+  var phases = [null, null, null];
+  var i;
+  for (i = 0; i < 3; i++) {
+    if (iinst[i] !== null) {
+      if (phases[i] === null) {
+        phases[i] = { channel: TIC_TRI_PHASE_LABELS[i] };
+      }
+      phases[i].power = { current: iinst[i] };
+    }
+    if (imax[i] !== null) {
+      if (phases[i] === null) {
+        phases[i] = { channel: TIC_TRI_PHASE_LABELS[i] };
+      }
+      phases[i].maxCurrent = imax[i];
+    }
   }
-  if (iinst3 !== null) {
-    data.currentL3A = iinst3;
+  var entries = [];
+  for (i = 0; i < 3; i++) {
+    if (phases[i] !== null) {
+      entries.push(phases[i]);
+    }
   }
-  // Per-phase maximum currents.
-  if (imax1 !== null) {
-    data.maxCurrentL1A = imax1;
-  }
-  if (imax2 !== null) {
-    data.maxCurrentL2A = imax2;
-  }
-  if (imax3 !== null) {
-    data.maxCurrentL3A = imax3;
+  if (entries.length > 0) {
+    data.channels = entries;
   }
 
   applyStatus(data, bytes[1]);

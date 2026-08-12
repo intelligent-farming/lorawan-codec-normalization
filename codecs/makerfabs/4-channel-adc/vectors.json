@@ -8,14 +8,39 @@
           "make": "makerfabs", "model": "4-channel-adc",
           "frameCounter": 1,
           "battery": 3.6,
-          "analog": { "voltage": 3 },
-          "voltage2": 2.5, "voltage3": 1.2, "voltage4": 0,
           "differentialVoltage": 0,
-          "timeInterval": 60
+          "timeInterval": 60,
+          "channels": [
+            { "channel": "adc0", "analog": { "voltage": 3 } },
+            { "channel": "adc1", "analog": { "voltage": 2.5 } },
+            { "channel": "adc2", "analog": { "voltage": 1.2 } },
+            { "channel": "adc3", "analog": { "voltage": 0 } }
+          ]
         }
       },
       "source": "synthetic",
-      "_note": "frameCounter=0x0001; battery byte 36/10=3.6 V; ADC1 0x0BB8=3000 mV=3.0 V -> analog.voltage; ADC2 0x09C4=2500=2.5; ADC3 0x04B0=1200=1.2; ADC4 0; diff 0; interval 0x0000EA60=60000 ms/1000=60 s. Verified against reference/upstream-codec.js (field1 3.6, field2 3, field3 2.5, field4 1.2, field7 60)."
+      "_note": "frameCounter=0x0001; battery byte 36/10=3.6 V; ADC1 0x0BB8=3000 mV=3.0 V -> channels[] adc0; ADC2 0x09C4=2500=2.5 -> adc1; ADC3 0x04B0=1200=1.2 -> adc2; ADC4 0 -> adc3; diff 0; interval 0x0000EA60=60000 ms/1000=60 s. Verified against reference/upstream-codec.js (field1 3.6, field2 3, field3 2.5, field4 1.2, field5 0, field7 60)."
+    },
+    {
+      "description": "4 ADC channels with distinct values: 4.095 / 3.3 / 1.65 / 0.825 V; differential 0.2 V; battery 4.0 V; 300 s interval",
+      "input": { "fPort": 1, "bytes": [1, 2, 40, 15, 255, 12, 228, 6, 114, 3, 57, 0, 200, 0, 4, 147, 224] },
+      "expected": {
+        "data": {
+          "make": "makerfabs", "model": "4-channel-adc",
+          "frameCounter": 258,
+          "battery": 4,
+          "differentialVoltage": 0.2,
+          "timeInterval": 300,
+          "channels": [
+            { "channel": "adc0", "analog": { "voltage": 4.095 } },
+            { "channel": "adc1", "analog": { "voltage": 3.3 } },
+            { "channel": "adc2", "analog": { "voltage": 1.65 } },
+            { "channel": "adc3", "analog": { "voltage": 0.825 } }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Multi-position vector with a distinct value per ADC input, so a channel-ordering or byte-offset bug fails here. frameCounter=0x0102=258; battery 40/10=4.0 V; ADC1 0x0FFF=4095 mV=4.095 V; ADC2 0x0CE4=3300=3.3; ADC3 0x0672=1650=1.65; ADC4 0x0339=825=0.825; differential 0x00C8=200 mV=0.2 V (the ADC3/ADC4 pair reading, kept top-level); interval 0x000493E0=300000 ms=300 s. Verified against reference/upstream-codec.js (field1 4, field2 4.095, field3 3.3, field4 1.65, field5 0.825, field6 0.2, field7 300)."
     },
     {
       "description": "wrong frame length yields error",

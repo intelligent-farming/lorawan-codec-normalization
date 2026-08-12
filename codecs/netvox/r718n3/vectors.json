@@ -1,7 +1,7 @@
 {
   "uplink": [
     {
-      "description": "Measurement frame 1 -> power-meter",
+      "description": "Status frame 0x01: three CT currents + phase A multiplier -> one channels entry per phase",
       "input": {
         "fPort": 6,
         "bytes": [
@@ -22,21 +22,36 @@
         "data": {
           "deviceName": "R718N3",
           "battery": 3.6,
-          "power": {
-            "current": 1
-          },
-          "current2": 0.2,
-          "current3": 7,
-          "multiplier1": 1,
+          "channels": [
+            {
+              "channel": "phaseA",
+              "power": {
+                "current": 1
+              },
+              "multiplier": 1
+            },
+            {
+              "channel": "phaseB",
+              "power": {
+                "current": 0.2
+              }
+            },
+            {
+              "channel": "phaseC",
+              "power": {
+                "current": 7
+              }
+            }
+          ],
           "make": "netvox",
           "model": "r718n3"
         }
       },
       "source": "ttn-example",
-      "_note": "Upstream-example input (TTN netvox r718n3 codec yaml, Apache-2.0). expected.data via the ported netvox decoder (oracle). Mapped to vocabulary per the codec header."
+      "_note": "Upstream-example input (TTN netvox r718n3 codec yaml, Apache-2.0). Oracle fields from the ported netvox decoder: Current1 1000 mA, Current2 200 mA, Current3 7000 mA, Multiplier1 1, Volt 3.6. Per-phase mA/1000 -> power.current inside phaseA/phaseB/phaseC entries; only phase A's multiplier is carried by this frame variant."
     },
     {
-      "description": "Measurement frame 2 -> power-meter",
+      "description": "Status frame 0x03: three CT currents with a distinct multiplier per phase (multi-CT)",
       "input": {
         "fPort": 6,
         "bytes": [
@@ -57,20 +72,120 @@
         "data": {
           "deviceName": "R718N3",
           "battery": 3.6,
-          "power": {
-            "current": 1
-          },
-          "current2": 0.2,
-          "current3": 7,
-          "multiplier1": 10,
-          "multiplier2": 5,
-          "multiplier3": 100,
+          "channels": [
+            {
+              "channel": "phaseA",
+              "power": {
+                "current": 1
+              },
+              "multiplier": 10
+            },
+            {
+              "channel": "phaseB",
+              "power": {
+                "current": 0.2
+              },
+              "multiplier": 5
+            },
+            {
+              "channel": "phaseC",
+              "power": {
+                "current": 7
+              },
+              "multiplier": 100
+            }
+          ],
           "make": "netvox",
           "model": "r718n3"
         }
       },
       "source": "ttn-example",
-      "_note": "Upstream-example input (TTN netvox r718n3 codec yaml, Apache-2.0). expected.data via the ported netvox decoder (oracle). Mapped to vocabulary per the codec header."
+      "_note": "Upstream-example input (TTN netvox r718n3 codec yaml, Apache-2.0). Frame 0x03 unpacks bytes[10]=54 through the vendor 1/5/10/100 map -> Multiplier1 10, Multiplier2 5, Multiplier3 100, so every phase gets a distinct per-position config value alongside its own current (1 A / 0.2 A / 7 A)."
+    },
+    {
+      "description": "Status frame 0x02: phase B/C CT multipliers only (no currents in this frame)",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          74,
+          2,
+          36,
+          3,
+          10,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "deviceName": "R718N3",
+          "battery": 3.6,
+          "channels": [
+            {
+              "channel": "phaseB",
+              "multiplier": 3
+            },
+            {
+              "channel": "phaseC",
+              "multiplier": 10
+            }
+          ],
+          "make": "netvox",
+          "model": "r718n3"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream-example input (TTN netvox r718n3 codec yaml, Apache-2.0). Oracle: Volt 3.6, Multiplier2 3, Multiplier3 10 — no current fields. Entries are emitted only for the phases the frame mentions, carrying just that phase's configuration extra."
+    },
+    {
+      "description": "Status frame 0x04: per-phase low/high current threshold alarms",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          74,
+          4,
+          36,
+          57,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "deviceName": "R718N3",
+          "battery": 3.6,
+          "channels": [
+            {
+              "channel": "phaseA",
+              "lowCurrentAlarm": 1,
+              "highCurrentAlarm": 0
+            },
+            {
+              "channel": "phaseB",
+              "lowCurrentAlarm": 0,
+              "highCurrentAlarm": 1
+            },
+            {
+              "channel": "phaseC",
+              "lowCurrentAlarm": 1,
+              "highCurrentAlarm": 1
+            }
+          ],
+          "make": "netvox",
+          "model": "r718n3"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream-example input (TTN netvox r718n3 codec yaml, Apache-2.0). Oracle: Volt 3.6, LowCurrent1Alarm 1, HighCurrent1Alarm 0, LowCurrent2Alarm 0, HighCurren2Alarm 1 (upstream typo), LowCurrent3Alarm 1, HighCurrent3Alarm 1. Each phase's pair moves into that phase's entry as lowCurrentAlarm/highCurrentAlarm, keeping upstream's 0/1 values."
     },
     {
       "description": "Device-info / config frame -> error",

@@ -41,23 +41,62 @@
       "_note": "Synthetic in-bounds Elsys TLV frame. Raw decode (TEMP 0x01=-50->-5.0C, RH 0x02=80%, LIGHT 0x04=1200 lux, CO2 0x06=450 ppm, MOTION 0x05=4, VDD 0x07=3300 mV) produced by running reference/upstream-codec.js; expected.data is the authored normalization (motion->action.motion.count with detected=count>0)."
     },
     {
-      "description": "External IO frame: external probe temperature, analog/digital inputs, distance, accelerometer (extras only)",
+      "description": "External IO frame: port 1 only (probe temperature, analog + digital input) plus whole-device distance and accelerometer",
       "input": { "fPort": 1, "bytes": [12, 0, 187, 8, 9, 196, 13, 1, 14, 3, 82, 3, 2, 253, 63] },
       "expected": {
         "data": {
           "make": "elsys",
           "model": "elt-2",
-          "externalTemperature": 18.7,
-          "analog1": 2500,
-          "digital1": 1,
           "distance": 850,
           "accelerationX": 2,
           "accelerationY": -3,
-          "accelerationZ": 63
+          "accelerationZ": 63,
+          "channels": [
+            {
+              "channel": "port0",
+              "externalTemperature": 18.7,
+              "analogMv": 2500,
+              "digital": 1
+            }
+          ]
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic in-bounds Elsys TLV frame. Raw decode (EXT_TEMP1 0x0C=187->18.7C, ANALOG1 0x08=2500 mV, EXT_DIGITAL 0x0D=1, EXT_DISTANCE 0x0E=850 mm, ACC 0x03 x=2 y=-3 z=63) produced by running reference/upstream-codec.js; expected.data is the authored normalization. External probe temperature is general-purpose (not a clear water probe) -> externalTemperature extra; IO inputs -> camelCase extras."
+      "_note": "Synthetic in-bounds Elsys TLV frame. Raw decode (EXT_TEMP1 0x0C=187->18.7C, ANALOG1 0x08=2500 mV, EXT_DIGITAL 0x0D=1, EXT_DISTANCE 0x0E=850 mm, ACC 0x03 x=2 y=-3 z=63) produced by running reference/upstream-codec.js; expected.data is the authored normalization. The port-1 bank readings live in the `port0` channels entry (external probe temperature is general-purpose, not a clear water probe -> externalTemperature extra); no port-2 TLV is present so no `port1` entry is emitted. Distance and acceleration are whole-device readings and stay top-level."
+    },
+    {
+      "description": "Both external ports populated: analog + relative/absolute pulse counters + probe temperature + digital input on each port",
+      "input": {
+        "fPort": 1,
+        "bytes": [7, 14, 16, 8, 9, 196, 10, 0, 17, 11, 0, 0, 3, 232, 12, 0, 187, 13, 1, 22, 0, 42, 23, 0, 1, 17, 112, 24, 18, 142, 25, 255, 222, 26, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "elsys",
+          "model": "elt-2",
+          "battery": 3.6,
+          "channels": [
+            {
+              "channel": "port0",
+              "analogMv": 2500,
+              "pulseRelative": 17,
+              "pulseAbsolute": 1000,
+              "externalTemperature": 18.7,
+              "digital": 1
+            },
+            {
+              "channel": "port1",
+              "pulseRelative": 42,
+              "pulseAbsolute": 70000,
+              "analogMv": 4750,
+              "externalTemperature": -3.4,
+              "digital": 0
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds Elsys TLV frame exercising every paired external bank on BOTH ports with distinct values. Raw decode produced by running reference/upstream-codec.js: {vdd:3600, analog1:2500, pulse1:17, pulseAbs:1000, externalTemperature:18.7, digital:1, pulse2:42, pulseAbs2:70000, analog2:4750, externalTemperature2:-3.4, digital2:0}. expected.data is the authored normalization: VDD mV -> battery volts, and each port's bank readings scoped into its own channels entry (port0 = Elsys port 1, port1 = Elsys port 2) under the port-index-free key names."
     },
     {
       "description": "TTN example frame: temperature, humidity, accelerometer, non-atmospheric pressure",

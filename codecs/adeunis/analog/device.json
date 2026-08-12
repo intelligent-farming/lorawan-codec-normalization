@@ -11,11 +11,9 @@
     "voltage"
   ],
   "provides": [
-    "alarmChannelA",
-    "alarmChannelB",
+    "alarm",
     "analog.current",
     "analog.voltage",
-    "channelBCurrent",
     "frameCounter",
     "lowBattery"
   ],

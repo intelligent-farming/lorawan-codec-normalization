@@ -10,26 +10,77 @@
 // the upstream Apache-2.0 decoder (TheThingsNetwork/lorawan-devices
 // vendor/watteco/torano-atex.js, attributed in NOTICE). Ported from that
 // decoder's standard-report path only (fPort 125, command 0x0A/0x8A/0x01); the
-// Huffman "batch" path (byte0 bit0 clear) is NOT implemented and errors.
+// Huffman "batch" path (byte0 bit0 clear) is NOT implemented and errors. Do NOT
+// copy upstream normalizeUplink.
 //
-// Standard report layout: byte0 frame-control (bit0 SET = standard report;
-// endpoint/channel in the top bits), byte1 command id, bytes2-3 cluster (BE),
-// bytes4-5 attribute (BE), byte6 ZCL data-type, then the value. Value offset is
-// 7 for data/alarm reports (cmd 0x0A/0x8A) and 8 for the read-attribute
-// response (cmd 0x01). Channel = endpoint; channel 1 (endpoint 0) uses the
-// vocabulary key, higher channels a numbered camelCase extra.
+// Standard report layout: byte0 frame-control (bit0 SET = standard report; the
+// endpoint rides in the top bits), byte1 command id, bytes2-3 cluster id (BE),
+// bytes4-5 attribute id (BE), byte6 ZCL data-type, then the attribute value.
+// Value offset is 7 for data/alarm reports (cmd 0x0A / 0x8A) and 8 for the
+// read-attribute response (cmd 0x01).
 //
-// Measurement mapping:
+// The inputs are distinguished by the ZCL endpoint, which upstream packs into
+// the frame-control byte:
+//   endpoint = ((byte0 & 0xE0) >> 5) | ((byte0 & 0x06) << 2)
+// A ZCL standard report carries ONE attribute of ONE endpoint, so such a frame
+// yields exactly one input reading. It rides in a single entry of the reserved
+// `channels` array (see AUTHORING.md "Multi-channel devices"), labelled with
+// Watteco's own positional term, the ZCL endpoint: `endpoint0` is Toran'O input
+// 1 (the same position In'O calls input 1), `endpoint1` input 2, … up to
+// `endpoint9` (input 10) on the shared ten-input In'O platform. Upstream renames
+// the same values `analog_input_<endpoint + 1>` / `index_<endpoint + 1>` /
+// `pin_state_<endpoint + 1>`; we keep the endpoint itself as the label because
+// it is the identifier the wire format actually carries. The endpoint is decoded
+// generically, so nothing is special-cased per input: whatever endpoint a frame
+// reports becomes that frame's entry label, carrying the vocabulary key for that
+// frame's measurement type. This retires the former `analog2Raw`, `pulseTotal2`
+// and `contactState2` … `contactState10` suffixed extras, and with them the old
+// behaviour where a frame from an endpoint past the hard-coded list was
+// mis-attributed (silently renamed) instead of labelled for its position.
+//
+// The one exception to "one frame, one endpoint" is the proprietary
+// multi-binary-input cluster 0x8005: its single bitmap16 value enumerates ten
+// inputs at once, so that frame emits ten entries, `endpoint0` … `endpoint9`,
+// one per bit (bits 0-7 = inputs 1-8 in the low byte, bits 8-9 = inputs 9-10 in
+// the high byte). Nothing is fabricated there — every bit is present on the
+// wire. The frame's own endpoint field is not a position for this cluster and is
+// ignored, exactly as upstream fixes its pin_state_1 … pin_state_10 labels
+// regardless of the endpoint the frame arrived on.
+//
+// Measurement mapping — each of these rides INSIDE the frame's channels entry:
 //   cluster 0x000C (12)    attr 0x0055 Analog Input present value (float32)
 //                          -> analog.raw (interface value; unit set by the probe)
 //   cluster 0x000F (15)    attr 0x0055 Binary Input present value (bool)
-//                          -> action.contactState  (true=closed, false=open)
-//   cluster 0x000F (15)    attr 0x0402 pulse count (uint32) -> pulse.total
+//                          -> action.contactState (true=closed, false=open)
+//   cluster 0x000F (15)    attr 0x0402 pulse count (uint32)
+//                          -> pulse.total (cumulative index)
 //   cluster 0x8005 (32773) attr 0x0000 consolidated digital states (bitmap16)
-//                          -> action.contactState (input 1) + contactStateN extras
-//   cluster 0x0050 (80)    attr 0x0006 power config -> battery (mV/1000, volts)
-//   cluster 0x0006 (6)     attr 0x0000 relay output state -> outputState extra
+//                          -> action.contactState, one entry per input
+// Whole-device and actuator readings stay TOP-LEVEL (never also inside an entry
+// — downstream stores would double-count a leaf emitted in both places):
+//   cluster 0x0050 (80)    attr 0x0006 power config -> battery (mV / 1000,
+//                          volts). The rail is a whole-device reading, not an
+//                          input's; a power report carries no input value, so it
+//                          emits no `channels` key at all.
+//   cluster 0x0006 (6)     attr 0x0000 relay output state -> outputState /
+//                          outputState<endpoint + 1> extra ("ON"/"OFF"). A relay
+//                          is actuator state, not a measured position, so per
+//                          AUTHORING.md the extra stays top-level and is named
+//                          for what it identifies; only measured inputs are
+//                          positions here.
 // Binary Input convention: present-value true = CLOSED contact, false = OPEN.
+//
+// Sentinel policy: the standard-report wire format defines NO invalid or
+// disconnected encoding for any of these clusters. A Binary Input present value
+// is a raw byte, the pulse index a plain uint32, and the Analog Input value a
+// pass-through IEEE-754 float32; ZCL's nominal 0x8000 "invalid value" is not
+// honoured by the upstream decoder for any of them, so this codec does not
+// invent a sentinel either — no value is treated as one and no entry is ever
+// suppressed for one. An unwired input simply stops reporting on its endpoint:
+// no frame, no entry (and `channels` is omitted entirely on frames that carry no
+// input value). The one consolidated 0x8005 frame always carries every bit, so
+// an unwired input reads "open" there rather than being absent — the device
+// gives no way to tell the two apart, and inventing one would be a guess.
 
 function round(value, decimals) {
   var f = Math.pow(10, decimals);
@@ -57,6 +108,7 @@ function float32(u) {
   return sign * (mant + 0x800000) * Math.pow(2, exp - 150);
 }
 
+// ZCL endpoint (the input position) packed into frame-control byte 0.
 function endpointOf(b0) {
   return ((b0 & 0xe0) >> 5) | ((b0 & 0x06) << 2);
 }
@@ -82,7 +134,7 @@ function watHeader(input) {
     return { err: 'unsupported Watteco command 0x' + cmd.toString(16) };
   }
   return {
-    ch: endpointOf(bytes[0]),
+    ep: endpointOf(bytes[0]),
     cmd: cmd,
     cluster: u16be(bytes[2], bytes[3]),
     attr: u16be(bytes[4], bytes[5]),
@@ -116,76 +168,69 @@ function decodeUplinkCore(input) {
     return { errors: [hdr.err] };
   }
   var bytes = input.bytes;
-  var ch = hdr.ch;
+  var ep = hdr.ep;
   var cluster = hdr.cluster;
   var attr = hdr.attr;
   var h = hdr.h;
   var data = {};
 
+  // Analog Input present value: 32-bit IEEE-754 float, no wire unit -> raw.
   if (cluster === 12 && attr === 85) {
     if (bytes.length < h + 4) {
       return { errors: ['analog report missing 4-byte value'] };
     }
     var raw = round(float32(u32be(bytes[h], bytes[h + 1], bytes[h + 2], bytes[h + 3])), 6);
-    if (ch <= 0) {
-      data['analog.raw'] = raw;
-    } else {
-      data['analog' + (ch + 1) + 'Raw'] = raw;
-    }
+    data.channels = [{ channel: 'endpoint' + ep, analog: { raw: raw } }];
     return { data: data };
   }
 
+  // Binary Input present value: dry-contact state of this frame's endpoint.
   if (cluster === 15 && attr === 85) {
     if (bytes.length < h + 1) {
       return { errors: ['binary input report missing value'] };
     }
     var st = bytes[h] ? 'closed' : 'open';
-    if (ch <= 0) {
-      data['action.contactState'] = st;
-    } else {
-      data['contactState' + (ch + 1)] = st;
-    }
+    data.channels = [{ channel: 'endpoint' + ep, action: { contactState: st } }];
     return { data: data };
   }
 
+  // Binary Input pulse counter (cumulative index): uint32 on this endpoint.
   if (cluster === 15 && attr === 1026) {
     if (bytes.length < h + 4) {
       return { errors: ['pulse report missing 4-byte counter'] };
     }
     var total = u32be(bytes[h], bytes[h + 1], bytes[h + 2], bytes[h + 3]);
-    if (ch <= 0) {
-      data['pulse.total'] = total;
-    } else {
-      data['pulseTotal' + (ch + 1)] = total;
-    }
+    data.channels = [{ channel: 'endpoint' + ep, pulse: { total: total } }];
     return { data: data };
   }
 
+  // Consolidated digital input states (bitmap16) at h..h+1: bit i is input
+  // i+1 = endpoint i (inputs 1-8 in the low byte, 9-10 in the high byte). This
+  // frame carries every input, hence one entry per bit.
   if (cluster === 32773 && attr === 0) {
     if (bytes.length < h + 2) {
       return { errors: ['Toran\'O state report missing 2-byte bitmap'] };
     }
-    var low = bytes[h + 1];
-    var high = bytes[h];
+    var bitmap = u16be(bytes[h], bytes[h + 1]);
+    var entries = [];
     var i;
-    for (i = 0; i < 8; i++) {
-      var s = (low & (1 << i)) ? 'closed' : 'open';
-      if (i === 0) {
-        data['action.contactState'] = s;
-      } else {
-        data['contactState' + (i + 1)] = s;
-      }
+    for (i = 0; i < 10; i++) {
+      entries.push({
+        channel: 'endpoint' + i,
+        action: { contactState: (bitmap & (1 << i)) ? 'closed' : 'open' }
+      });
     }
-    data.contactState9 = (high & 0x01) ? 'closed' : 'open';
-    data.contactState10 = (high & 0x02) ? 'closed' : 'open';
+    data.channels = entries;
     return { data: data };
   }
 
+  // Relay output state (actuator echo): not a measured input position, so it
+  // stays a top-level extra named for what it identifies (see header).
   if (cluster === 6 && attr === 0) {
     if (bytes.length < h + 1) {
       return { errors: ['output report missing value'] };
     }
-    var okey = ch <= 0 ? 'outputState' : ('outputState' + (ch + 1));
+    var okey = ep <= 0 ? 'outputState' : ('outputState' + (ep + 1));
     data[okey] = bytes[h] ? 'ON' : 'OFF';
     return { data: data };
   }

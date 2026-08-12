@@ -1,49 +1,102 @@
 {
   "uplink": [
     {
-      "description": "standard report: 10 digital input states (In'O bitmap16, cluster 0x8005 attr 0), all inputs closed | payload 110A80050000190FFF03",
+      "description": "standard report: all 10 digital input states (In'O bitmap16, cluster 0x8005 attr 0), all inputs closed | payload 110A800500001903FF",
       "input": { "fPort": 125, "bytes": [17, 10, 128, 5, 0, 0, 25, 3, 255] },
       "expected": {
         "data": {
-          "action.contactState": "closed",
-          "contactState2": "closed",
-          "contactState3": "closed",
-          "contactState4": "closed",
-          "contactState5": "closed",
-          "contactState6": "closed",
-          "contactState7": "closed",
-          "contactState8": "closed",
-          "contactState9": "closed",
-          "contactState10": "closed",
+          "channels": [
+            { "channel": "endpoint0", "action": { "contactState": "closed" } },
+            { "channel": "endpoint1", "action": { "contactState": "closed" } },
+            { "channel": "endpoint2", "action": { "contactState": "closed" } },
+            { "channel": "endpoint3", "action": { "contactState": "closed" } },
+            { "channel": "endpoint4", "action": { "contactState": "closed" } },
+            { "channel": "endpoint5", "action": { "contactState": "closed" } },
+            { "channel": "endpoint6", "action": { "contactState": "closed" } },
+            { "channel": "endpoint7", "action": { "contactState": "closed" } },
+            { "channel": "endpoint8", "action": { "contactState": "closed" } },
+            { "channel": "endpoint9", "action": { "contactState": "closed" } }
+          ],
           "make": "nke-watteco",
           "model": "ino-sensor"
         }
       },
-      "source": "datasheet"
+      "source": "datasheet",
+      "_note": "The proprietary multi-binary-input cluster is the one frame that carries every input at once: bitmap 0x03FF, bits 0-7 from the low byte (inputs 1-8) and bits 8-9 from the high byte (inputs 9-10). Ten entries, endpoint0..endpoint9, matching upstream State1..State10. This replaces the former action.contactState + contactState2..contactState10 flat keys."
     },
     {
-      "description": "standard report: binary input 1 state closed (cluster 0x000F attr 0x0055) | payload 110A000F00551001",
+      "description": "standard report: binary input state closed on endpoint 0 (input 1) (cluster 0x000F attr 0x0055) | payload 110A000F00551001",
       "input": { "fPort": 125, "bytes": [17, 10, 0, 15, 0, 85, 16, 1] },
       "expected": {
-        "data": { "action.contactState": "closed", "make": "nke-watteco", "model": "ino-sensor" }
+        "data": {
+          "channels": [{ "channel": "endpoint0", "action": { "contactState": "closed" } }],
+          "make": "nke-watteco",
+          "model": "ino-sensor"
+        }
       },
-      "source": "datasheet"
+      "source": "datasheet",
+      "_note": "byte0 0x11 -> endpoint ((0x11 & 0xE0) >> 5) | ((0x11 & 0x06) << 2) = 0. One ZCL standard report carries one attribute of one endpoint, so the frame yields a single channels[] entry. Upstream calls the same value State1. Satisfies the analog-interface category through the entry."
     },
     {
-      "description": "standard report: pulse count on input 1 (cluster 0x000F attr 0x0402, uint32) | payload 110A000F04022300000000",
+      "description": "standard report: binary input state open on endpoint 1 (input 2) (cluster 0x000F attr 0x0055) | payload 210A000F00551000",
+      "input": { "fPort": 125, "bytes": [33, 10, 0, 15, 0, 85, 16, 0] },
+      "expected": {
+        "data": {
+          "channels": [{ "channel": "endpoint1", "action": { "contactState": "open" } }],
+          "make": "nke-watteco",
+          "model": "ino-sensor"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Second input position, re-encoded from the documented frame-control packing: byte0 0x21 -> endpoint ((0x21 & 0xE0) >> 5) | ((0x21 & 0x06) << 2) = 1 (upstream State2). Value byte 0 -> open."
+    },
+    {
+      "description": "standard report: pulse count 0 on endpoint 0 (input 1) (cluster 0x000F attr 0x0402, uint32) | payload 110A000F04022300000000",
       "input": { "fPort": 125, "bytes": [17, 10, 0, 15, 4, 2, 35, 0, 0, 0, 0] },
       "expected": {
-        "data": { "pulse.total": 0, "make": "nke-watteco", "model": "ino-sensor" }
+        "data": {
+          "channels": [{ "channel": "endpoint0", "pulse": { "total": 0 } }],
+          "make": "nke-watteco",
+          "model": "ino-sensor"
+        }
       },
-      "source": "datasheet"
+      "source": "datasheet",
+      "_note": "Cumulative index for input 1 (upstream Count1), now scoped to its endpoint entry instead of the bare pulse.total key."
     },
     {
-      "description": "standard report: analog input 1 present value 13.0 (cluster 0x000C attr 0x0055, float32) | payload 110A000C00553941500000",
+      "description": "standard report: pulse count 1234567 on endpoint 9 (input 10) (cluster 0x000F attr 0x0402, uint32) | payload 230A000F0402230012D687",
+      "input": { "fPort": 125, "bytes": [35, 10, 0, 15, 4, 2, 35, 0, 18, 214, 135] },
+      "expected": {
+        "data": {
+          "channels": [{ "channel": "endpoint9", "pulse": { "total": 1234567 } }],
+          "make": "nke-watteco",
+          "model": "ino-sensor"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Highest input position (the 10th input), re-encoded from the documented frame-control packing: byte0 0x23 -> endpoint ((0x23 & 0xE0) >> 5) | ((0x23 & 0x06) << 2) = 1 | 8 = 9 (upstream Count10). Counter 0x0012D687 = 1234567. The old codec had no branch past its hard-coded list, so this frame was mislabelled; the generic endpoint decode fixes it."
+    },
+    {
+      "description": "standard report: analog input present value 13.0 on endpoint 0 (cluster 0x000C attr 0x0055, float32) | payload 110A000C00553941500000",
       "input": { "fPort": 125, "bytes": [17, 10, 0, 12, 0, 85, 57, 65, 80, 0, 0] },
       "expected": {
-        "data": { "analog.raw": 13, "make": "nke-watteco", "model": "ino-sensor" }
+        "data": {
+          "channels": [{ "channel": "endpoint0", "analog": { "raw": 13 } }],
+          "make": "nke-watteco",
+          "model": "ino-sensor"
+        }
       },
-      "source": "datasheet"
+      "source": "datasheet",
+      "_note": "IEEE-754 single 0x41500000 = 13.0, passed through as analog.raw (the attached probe defines the unit), scoped to the reporting endpoint. The Analog Input cluster comes from Watteco's shared family driver, not this OEM decoder's own standard-report path."
+    },
+    {
+      "description": "standard report: relay output 1 state ON (cluster 0x0006 attr 0x0000) | payload 110A000600001001",
+      "input": { "fPort": 125, "bytes": [17, 10, 0, 6, 0, 0, 16, 1] },
+      "expected": {
+        "data": { "outputState": "ON", "make": "nke-watteco", "model": "ino-sensor" }
+      },
+      "source": "datasheet",
+      "_note": "A relay is actuator state, not a measured input position, so it stays a top-level extra (AUTHORING.md allows naming an extra for something that is not a position) and the frame emits no channels key. Upstream calls it Output1."
     },
     {
       "description": "standard report: disposable battery voltage 3.688 V (cluster 0x0050 attr 6) | payload 110A00500006410503040E6804",
@@ -51,7 +104,14 @@
       "expected": {
         "data": { "battery": 3.688, "make": "nke-watteco", "model": "ino-sensor" }
       },
-      "source": "datasheet"
+      "source": "datasheet",
+      "_note": "Power-configuration report: the rail is a whole-device reading, not an input's, so battery stays top-level and the frame emits no channels key."
+    },
+    {
+      "description": "read-attribute response for a firmware/config cluster carries no telemetry -> error | payload 110100000002000D0305020015E2",
+      "input": { "fPort": 125, "bytes": [17, 1, 0, 0, 0, 2, 0, 13, 3, 5, 2, 0, 21, 226] },
+      "expected": { "errors": ["unrecognized Watteco cluster 0 attribute 2"] },
+      "source": "synthetic"
     },
     {
       "description": "batch (Huffman) frame is not decoded -> error",

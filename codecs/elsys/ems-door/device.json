@@ -13,8 +13,10 @@
     "action.contactState",
     "action.motion.count",
     "action.motion.detected",
-    "pulse1",
-    "pulseAbs",
+    "battery",
+    "externalTemperature",
+    "pulseAbsolute",
+    "pulseRelative",
     "x",
     "y",
     "z"

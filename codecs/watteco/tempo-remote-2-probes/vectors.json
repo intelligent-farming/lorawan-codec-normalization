@@ -3,20 +3,37 @@
     {
       "description": "standard report, endpoint 0 (probe 1): temperature 29.53 C | payload:110A04020000290B89",
       "input": { "fPort": 125, "bytes": [17, 10, 4, 2, 0, 0, 41, 11, 137] },
-      "expected": { "data": { "temperature": 29.53, "make": "watteco", "model": "tempo-remote-2-probes" } },
-      "source": "ttn-example"
+      "expected": {
+        "data": {
+          "channels": [{ "channel": "endpoint0", "temperature": 29.53 }],
+          "make": "watteco",
+          "model": "tempo-remote-2-probes"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "byte0 0x11 -> endpoint ((0x11 & 0xE0) >> 5) | ((0x11 & 0x06) << 2) = 0. One ZCL standard report carries one endpoint, so the frame yields a single channels[] entry labelled endpoint0. Upstream calls the same value temperature_1. Satisfies the temperature category through the entry."
     },
     {
-      "description": "standard report, endpoint 1 (probe 2): temperature2 22.90 C | payload:210A0402000029 08F2",
+      "description": "standard report, endpoint 1 (probe 2): temperature 22.90 C | payload:210A040200002908F2",
       "input": { "fPort": 125, "bytes": [33, 10, 4, 2, 0, 0, 41, 8, 242] },
-      "expected": { "data": { "temperature2": 22.9, "make": "watteco", "model": "tempo-remote-2-probes" } },
-      "source": "synthetic"
+      "expected": {
+        "data": {
+          "channels": [{ "channel": "endpoint1", "temperature": 22.9 }],
+          "make": "watteco",
+          "model": "tempo-remote-2-probes"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Second probe position: byte0 0x21 -> endpoint 1. Value 0x08F2 = 2290 -> 22.90 C, the temperature_2 reading upstream publishes for its batch example (reference/upstream-examples.json), re-encoded here as the standard report the same endpoint sends."
     },
     {
       "description": "standard report: disposable battery 3.688 V | payload:110A00500006410503040E6804",
       "input": { "fPort": 125, "bytes": [17, 10, 0, 80, 0, 6, 65, 5, 3, 4, 14, 104, 4] },
-      "expected": { "data": { "battery": 3.688, "make": "watteco", "model": "tempo-remote-2-probes" } },
-      "source": "ttn-example"
+      "expected": {
+        "data": { "battery": 3.688, "make": "watteco", "model": "tempo-remote-2-probes" }
+      },
+      "source": "ttn-example",
+      "_note": "Power-configuration report (cluster 0x0050 attr 6): a whole-device rail, so battery stays top-level and the frame emits no channels key."
     },
     {
       "description": "batch (Huffman) frame is not supported (byte0 bit0 clear) | payload:26020000803606A2FC11E4F7",

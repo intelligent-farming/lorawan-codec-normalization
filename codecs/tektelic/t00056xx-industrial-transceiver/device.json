@@ -11,16 +11,16 @@
     "humidity"
   ],
   "provides": [
+    "action.contactState",
     "air.relativeHumidity",
     "air.temperature",
-    "analogInput2Current",
-    "analogInput3Voltage",
+    "analog.current",
+    "analog.voltage",
     "battery",
-    "digitalInput1",
-    "digitalInput1Count",
     "mcuTemperature",
     "outputState1",
-    "outputState2"
+    "outputState2",
+    "pulse.count"
   ],
   "variantOf": null,
   "downlink": {

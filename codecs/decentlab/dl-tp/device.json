@@ -10,22 +10,7 @@
   ],
   "provides": [
     "battery",
-    "temperature",
-    "temperatureAtLevel1",
-    "temperatureAtLevel10",
-    "temperatureAtLevel11",
-    "temperatureAtLevel12",
-    "temperatureAtLevel13",
-    "temperatureAtLevel14",
-    "temperatureAtLevel15",
-    "temperatureAtLevel2",
-    "temperatureAtLevel3",
-    "temperatureAtLevel4",
-    "temperatureAtLevel5",
-    "temperatureAtLevel6",
-    "temperatureAtLevel7",
-    "temperatureAtLevel8",
-    "temperatureAtLevel9"
+    "temperature"
   ],
   "variantOf": null,
   "downlink": {

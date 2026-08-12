@@ -22,12 +22,47 @@
 //   0x14 standard meter frame  : [0x14, wirecut, c1(4), c2(4)]
 //   0x01 life frame            : [0x01, tensionc_hi, tensionc_lo] -> battery (V)
 //
-// Metering indices are cumulative -> pulse.total (channel 1) with further
-// channels as total2, total3, ... (number camelCase extras). A channel run in
-// Boolean mode reports via the digital-input frame: input 0 -> action.contactState
-// ("closed"/"open"), inputs 1..15 -> input2..input16 (boolean extras). Either a
-// counter frame (pulse.total) or an input frame (action.contactState) satisfies
-// the analog-interface membership.
+// Multi-position shape (`channels[]`, see AUTHORING.md "Multi-channel devices").
+// Every terminal the MR frames report is a sub-sensor position, so each position
+// gets its own entry in the one reserved `channels` array — no suffixed extras:
+//   digital input bit i -> { channel: 'input<i>', action: { contactState } }
+//                          ("closed" when the bit is 1, else "open")
+//   meter position n    -> { channel: 'meter<n>', pulse: { total } }
+//                          (cumulative pulse index)
+// Label scheme: the vendor's own term for the bank plus a zero-based position
+// index. The counter bank is `meter0`..`meterN` because ATIM brands these units
+// "MR" (meter reading) and their counter terminals metering inputs, where the
+// sibling ACW-DINDxx family — marketed as generic digital/pulse monitoring —
+// labels the same bank `counter0`..`counter7`; the dry-contact bank keeps that
+// family's `input0`..`input15`. ATIM's frame names are 1-based ("compteur 1 et
+// 2") while its N-counter frame 0x5E is 0-based (ancien_compteur0…), so the
+// labels are normalized to 0-based physical positions: upstream compteur1 ->
+// meter0, compteur3 -> meter2, ancien_compteur0 -> meter0. Entry order follows
+// the payload (input bits first, then meter indices). A frame carrying both
+// banks (0x52/0x4F/0x5E) puts both kinds of entry in the same array; labels are
+// unique, so the two banks never collide.
+//
+// Whole-device readings stay top-level and are never repeated inside an entry:
+// `battery` (life frame), the `frameType` extra, and the standard-meter frame's
+// `wireCut` cable-cut status. `channels` is built lazily and omitted when a frame
+// carries no positions at all (the life frame).
+//
+// Known limitation (fidelity, carried over unchanged from the suffixed-extra
+// shape this replaced): the legacy ATIM input frame always carries 16 input bits
+// regardless of how many contacts the variant physically exposes, and the payload
+// has no variant or input-count field — so one `input<i>` entry is emitted per
+// bit the frame carries rather than per terminal the product has, and positions
+// above the variant's real count simply read "open". For the same reason the
+// counter-pair frame 0x51 (compteur 3 et 4 -> meter2/meter3) is still decoded
+// when it arrives, even though the MR2-EX itself exposes only meter0/meter1 — the
+// frame set is shared across the legacy range. Do not infer a per-variant
+// position count from these frames.
+//
+// Sentinel policy: none exists, and none is invented here. These frames define no
+// per-position "disconnected"/fault encoding — an unwired contact reads "open"
+// and an unconfigured meter index reads 0, both indistinguishable from real
+// values — so no position is ever skipped: every position the frame carries gets
+// an entry.
 
 function round(value, decimals) {
   var f = Math.pow(10, decimals);
@@ -54,27 +89,35 @@ function inputBits(lo, hi) {
   return bits;
 }
 
-function applyInputs(data, bits) {
-  data.action = { contactState: bits[0] ? 'closed' : 'open' };
+// One channels entry per digital input bit: input0..input15.
+function addInputs(channels, bits) {
   var i;
-  for (i = 1; i < bits.length; i++) {
-    data['input' + (i + 1)] = Boolean(bits[i]);
+  for (i = 0; i < bits.length; i++) {
+    channels.push({
+      channel: 'input' + i,
+      action: { contactState: bits[i] ? 'closed' : 'open' }
+    });
   }
 }
 
-// Cumulative meter indices: first -> pulse.total, rest -> total2..totalN.
-function applyTotals(data, totals) {
-  if (totals.length === 0) {
-    return;
-  }
-  if (!data.pulse) {
-    data.pulse = {};
-  }
-  data.pulse.total = totals[0];
+// One channels entry per cumulative meter index: meter<first>..meter<first+n-1>.
+function addMeters(channels, totals, first) {
   var i;
-  for (i = 1; i < totals.length; i++) {
-    data['total' + (i + 1)] = totals[i];
+  for (i = 0; i < totals.length; i++) {
+    channels.push({
+      channel: 'meter' + (first + i),
+      pulse: { total: totals[i] }
+    });
   }
+}
+
+// Attach the lazily-built channels array (omitted when the frame carries no
+// positions) and return the success result.
+function withChannels(data, channels) {
+  if (channels.length > 0) {
+    data.channels = channels;
+  }
+  return { data: data };
 }
 
 function decodeUplinkCore(input) {
@@ -85,6 +128,7 @@ function decodeUplinkCore(input) {
 
   var ft = bytes[0];
   var data = {};
+  var channels = [];
   var totals;
   var i;
 
@@ -95,14 +139,15 @@ function decodeUplinkCore(input) {
     return { data: { battery: round(u16be(bytes[1], bytes[2]) / 1000, 3), frameType: 'life' } };
   }
 
-  // Counter pairs.
+  // Counter pairs: 0x50 carries compteur 1 & 2 (positions 0-1), 0x51 carries
+  // compteur 3 & 4 (positions 2-3).
   if (ft === 0x50 || ft === 0x51) {
     if (bytes.length < 9) {
       return { errors: ['counter-pair frame too short'] };
     }
-    applyTotals(data, [u32be(bytes, 1), u32be(bytes, 5)]);
+    addMeters(channels, [u32be(bytes, 1), u32be(bytes, 5)], ft === 0x50 ? 0 : 2);
     data.frameType = 'counters';
-    return { data: data };
+    return withChannels(data, channels);
   }
 
   // Standard meter frame: leading wire-cut status byte, then two counters.
@@ -111,9 +156,9 @@ function decodeUplinkCore(input) {
       return { errors: ['standard meter frame too short'] };
     }
     data.wireCut = Boolean(bytes[1]);
-    applyTotals(data, [u32be(bytes, 2), u32be(bytes, 6)]);
+    addMeters(channels, [u32be(bytes, 2), u32be(bytes, 6)], 0);
     data.frameType = 'meter';
-    return { data: data };
+    return withChannels(data, channels);
   }
 
   // Digital inputs (Boolean-mode channels).
@@ -121,9 +166,9 @@ function decodeUplinkCore(input) {
     if (bytes.length < 3) {
       return { errors: ['digital-inputs frame too short'] };
     }
-    applyInputs(data, inputBits(bytes[1], bytes[2]));
+    addInputs(channels, inputBits(bytes[1], bytes[2]));
     data.frameType = 'digitalInputs';
-    return { data: data };
+    return withChannels(data, channels);
   }
 
   // Inputs + counter 1.
@@ -131,10 +176,10 @@ function decodeUplinkCore(input) {
     if (bytes.length < 7) {
       return { errors: ['inputs+counter frame too short'] };
     }
-    applyInputs(data, inputBits(bytes[1], bytes[2]));
-    applyTotals(data, [u32be(bytes, 3)]);
+    addInputs(channels, inputBits(bytes[1], bytes[2]));
+    addMeters(channels, [u32be(bytes, 3)], 0);
     data.frameType = 'inputsCounters';
-    return { data: data };
+    return withChannels(data, channels);
   }
 
   // Inputs + counters 1 & 2.
@@ -142,25 +187,25 @@ function decodeUplinkCore(input) {
     if (bytes.length < 11) {
       return { errors: ['inputs+counters frame too short'] };
     }
-    applyInputs(data, inputBits(bytes[1], bytes[2]));
-    applyTotals(data, [u32be(bytes, 3), u32be(bytes, 7)]);
+    addInputs(channels, inputBits(bytes[1], bytes[2]));
+    addMeters(channels, [u32be(bytes, 3), u32be(bytes, 7)], 0);
     data.frameType = 'inputsCounters';
-    return { data: data };
+    return withChannels(data, channels);
   }
 
-  // Inputs + N counters.
+  // Inputs + N counters (upstream ancien_compteur0..N-1: already 0-based).
   if (ft === 0x5e) {
     if (bytes.length < 7 || (bytes.length - 3) % 4 !== 0) {
       return { errors: ['inputs+counters frame malformed'] };
     }
-    applyInputs(data, inputBits(bytes[1], bytes[2]));
+    addInputs(channels, inputBits(bytes[1], bytes[2]));
     totals = [];
     for (i = 3; i + 3 < bytes.length; i += 4) {
       totals.push(u32be(bytes, i));
     }
-    applyTotals(data, totals);
+    addMeters(channels, totals, 0);
     data.frameType = 'inputsCounters';
-    return { data: data };
+    return withChannels(data, channels);
   }
 
   return {

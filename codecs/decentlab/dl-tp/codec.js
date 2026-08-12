@@ -1,12 +1,47 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2026 Intelligent Farming Foundation
 //
-// Normalized payload codec for decentlab/dl-tp (DL-TP Temperature Profile Sensor).
+// Normalized payload codec for decentlab/dl-tp (DL-TP Temperature Profile
+// Sensor) — a probe string carrying up to 16 temperature sensors at discrete
+// levels, plus a whole-device battery voltage.
 //
 // Decentlab decoder embedded verbatim from the upstream Apache-2.0 decoder
 // (TheThingsNetwork/lorawan-devices vendor/decentlab/dl-tp.js, attributed in
-// NOTICE), renamed dlDecoder. decodeUplinkCore maps the primary temperature
-// reading (C) -> temperature and battery -> battery; other fields are extras.
+// NOTICE), renamed dlDecoder — do not edit it; it is the wire-format source of
+// truth (Decentlab protocol v2: version byte, 16-bit big-endian device id,
+// 16-bit big-endian sensor-flags bitmap, then per-flagged-sensor blocks of
+// 16-bit big-endian words). It emits one raw object per level,
+// `temperature_at_level_0` .. `temperature_at_level_15`
+// (= (word - 32768) / 100 °C), plus `battery_voltage` (= word / 1000 V).
+// Only the normalization below (decodeUplinkCore) is our own work.
+//
+// Mapping: every level on the string is a sub-sensor position of one physical
+// probe, so each connected level becomes one entry in the reserved `channels`
+// array (see AUTHORING.md "Multi-channel devices") instead of the suffixed
+// extras (`temperatureAtLevel1`…) this codec used to emit. Entries are
+// labelled with the vendor's own term plus the wire level index — `level0` ..
+// `level15` — and each carries that level's `temperature` (°C). The
+// `temperature` vocabulary key therefore appears ONLY inside entries: there is
+// no whole-device temperature on this device, and level 0 is just the topmost
+// position, not a device-level reading. Whole-device battery voltage is
+// reported already in volts and stays top-level as `battery`.
+//
+// No per-entry `soil.depth` is emitted (nor the soil.* group at all): the DL-TP
+// is a bare temperature profile string sold in configurable lengths and level
+// counts, and the payload carries level indices only — never the physical
+// depth in centimetres, and not necessarily a soil installation.
+//
+// Sentinel policy: an unconnected or out-of-range level reads word 0x0000,
+// which the upstream conversion turns into -327.68 °C (see
+// reference/upstream-examples.json example 1: levels 0-10 connected, levels
+// 11-15 at -327.68 on an 11-sensor string). That is outside the vocabulary
+// bound for `temperature` (>= -273.15 °C), so such a level is skipped and gets
+// no channels entry — a shorter string simply yields fewer entries. A frame
+// with no connected level at all — including a battery-only frame whose
+// sensor-flags bitmap clears the profile block (upstream example 2) — is
+// rejected with the error `no temperature field in payload`, as before this
+// codec grew `channels[]`; the DL-TP is a single-purpose temperature device and
+// a frame carrying no temperature is not a usable measurement.
 function round(value, decimals) { var f = Math.pow(10, decimals); return Math.round(value * f) / f; }
 
 var dlDecoder = {
@@ -135,27 +170,27 @@ var dlDecoder = {
   }
 };
 
-function camel(name) {
-  var parts = String(name).replace(/[^A-Za-z0-9]+/g, ' ').trim().split(' ');
-  var out = '';
-  var p;
-  for (p = 0; p < parts.length; p++) { if (!parts[p]) { continue; } out = out === '' ? parts[p].charAt(0).toLowerCase() + parts[p].slice(1) : out + parts[p].charAt(0).toUpperCase() + parts[p].slice(1); }
-  return out || 'field';
-}
-
 function decodeUplinkCore(input) {
   var res = dlDecoder.decode(input.bytes);
   if (res.error) { return { errors: [res.error] }; }
-  var data = {};
-  if (res['temperature_at_level_0'] && typeof res['temperature_at_level_0'].value === 'number') {
-    data.temperature = round(res['temperature_at_level_0'].value, 2);
-  } else { return { errors: ['no temperature field in payload'] }; }
-  if (res.battery_voltage && typeof res.battery_voltage.value === 'number') { data.battery = round(res.battery_voltage.value, 3); }
-  var k;
-  for (k in res) {
-    if (k === 'temperature_at_level_0' || k === 'battery_voltage' || k === 'protocol_version' || k === 'device_id') { continue; }
-    if (res[k] && typeof res[k] === 'object' && typeof res[k].value === 'number') { data[camel(k)] = round(res[k].value, 3); }
+
+  // One channels entry per connected level of the probe string; a level reading
+  // the disconnected sentinel (-327.68 °C, i.e. below the vocabulary bound for
+  // temperature) is skipped rather than reported as junk.
+  var channels = [];
+  var k, field, value;
+  for (k = 0; k < 16; k++) {
+    field = res['temperature_at_level_' + k];
+    if (!field || typeof field.value !== 'number') { continue; }
+    value = round(field.value, 2);
+    if (value < -273.15) { continue; }
+    channels.push({ channel: 'level' + k, temperature: value });
   }
+  if (channels.length === 0) { return { errors: ['no temperature field in payload'] }; }
+
+  var data = {};
+  data.channels = channels;
+  if (res.battery_voltage && typeof res.battery_voltage.value === 'number') { data.battery = round(res.battery_voltage.value, 3); }
   return { data: data };
 }
 

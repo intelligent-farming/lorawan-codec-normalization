@@ -22,10 +22,37 @@
 //        upstream current = (hi<<8|lo) * 16 / 47584  mA  (4-20 mA span, has offset)
 //   0x01 life frame              : [0x01, tensionc_hi, tensionc_lo] -> battery (V)
 //
-// logicLevel byte: bit5 -> input1 state, bit4 -> input2 state (upstream
-// postProcessAncienDINDA reads MSB-first string indices [2] and [3]). Reported
-// as camelCase extras input1/input2 (booleans). The analog reading is the
-// primary measurement; the two logic inputs are auxiliary.
+// logicLevel byte: bit5 -> first digital input, bit4 -> second digital input
+// (upstream postProcessAncienDINDA reads MSB-first string indices [2] and [3],
+// yielding logic_level[0] and logic_level[1]).
+//
+// Multi-position output (`channels[]`, see AUTHORING.md "Multi-channel
+// devices"). The two digital status inputs are two sub-sensor positions of the
+// same physical kind, so each becomes an entry in the reserved `channels`
+// array, labelled with the vendor's own term plus a zero-based index -
+// `input0` (bit5) and `input1` (bit4) - matching upstream's logic_level[]
+// ordering. Each entry carries action.contactState ("closed" when the bit is
+// set, else "open"), so this device speaks the same key as its five DINDxx
+// siblings instead of the previous boolean extras input1/input2. That renames
+// the positions by one (old input1/input2 -> input0/input1) and adds
+// action.contactState to `provides`; the analog-interface membership is
+// unaffected, since the category has no `requires` and lists both analog.* and
+// action.contactState among its `atLeastOne` paths (and the analog reading
+// stays top-level regardless).
+//
+// The analog input is a single position, not a bank, so its reading stays
+// top-level as analog.voltage / analog.current - there is nothing to scope it
+// against, and a lone entry would only add indirection. `frameType` (extra) and
+// `battery` (life frame) are likewise whole-device and stay top-level. No leaf
+// is emitted both places.
+//
+// Sentinel policy: none exists to honor. The logicLevel byte has no
+// "disconnected"/fault encoding - each bit is a valid open/closed state - so no
+// position is ever skipped, and every analog/alert frame carries the byte.
+// `channels` is built only for frames that carry it and is omitted from the
+// life frame, which reports no positions. (Out-of-range analog readings are
+// signalled by the vendor with dedicated alert frame types, not by a sentinel
+// value.)
 
 function round(value, decimals) {
   var f = Math.pow(10, decimals);
@@ -36,9 +63,13 @@ function u16be(hi, lo) {
   return ((hi << 8) | lo) & 0xffff;
 }
 
-// logicLevel: upstream reads MSB-first string index [2] -> input1, [3] -> input2.
+// logicLevel -> one channels entry per digital input. Upstream reads MSB-first
+// string index [2] (bit5) as the first input and [3] (bit4) as the second.
 function logicInputs(b) {
-  return { input1: Boolean(b & 0x20), input2: Boolean(b & 0x10) };
+  return [
+    { channel: 'input0', action: { contactState: (b & 0x20) ? 'closed' : 'open' } },
+    { channel: 'input1', action: { contactState: (b & 0x10) ? 'closed' : 'open' } }
+  ];
 }
 
 function decodeUplinkCore(input) {
@@ -62,9 +93,8 @@ function decodeUplinkCore(input) {
     if (bytes.length < 4) {
       return { errors: ['0-10V frame too short'] };
     }
-    var li = logicInputs(bytes[1]);
     var volts = round(u16be(bytes[2], bytes[3]) * 10 / 64240, 2);
-    return { data: { analog: { voltage: volts }, input1: li.input1, input2: li.input2, frameType: 'voltage' } };
+    return { data: { analog: { voltage: volts }, channels: logicInputs(bytes[1]), frameType: 'voltage' } };
   }
 
   // 0-20 mA periodic (0x19): full-scale span 20 mA, no offset byte.
@@ -72,9 +102,8 @@ function decodeUplinkCore(input) {
     if (bytes.length < 4) {
       return { errors: ['0-20mA frame too short'] };
     }
-    var li2 = logicInputs(bytes[1]);
     var mA = round(u16be(bytes[2], bytes[3]) * 20 / 47584, 2);
-    return { data: { analog: { current: mA }, input1: li2.input1, input2: li2.input2, frameType: 'current' } };
+    return { data: { analog: { current: mA }, channels: logicInputs(bytes[1]), frameType: 'current' } };
   }
 
   // 4-20 mA alert frames (0x22/0x23/0x24): span 16 mA, trailing offset byte.
@@ -82,9 +111,8 @@ function decodeUplinkCore(input) {
     if (bytes.length < 4) {
       return { errors: ['4-20mA frame too short'] };
     }
-    var li3 = logicInputs(bytes[1]);
     var mA2 = round(u16be(bytes[2], bytes[3]) * 16 / 47584, 2);
-    return { data: { analog: { current: mA2 }, input1: li3.input1, input2: li3.input2, frameType: 'current' } };
+    return { data: { analog: { current: mA2 }, channels: logicInputs(bytes[1]), frameType: 'current' } };
   }
 
   return {

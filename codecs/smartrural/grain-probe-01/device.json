@@ -12,9 +12,7 @@
     "battery",
     "deviceTime",
     "sensorMode",
-    "temperature",
-    "temperature2",
-    "temperatures"
+    "temperature"
   ],
   "variantOf": null,
   "downlink": {

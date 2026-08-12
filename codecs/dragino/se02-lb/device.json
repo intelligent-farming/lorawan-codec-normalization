@@ -10,13 +10,10 @@
   ],
   "provides": [
     "battery",
-    "ecSoil2",
-    "moistureSoil2",
     "probeTemperature",
     "soil.ec",
     "soil.moisture",
-    "soil.temperature",
-    "tempSoil2"
+    "soil.temperature"
   ],
   "variantOf": null,
   "downlink": {

@@ -11,10 +11,6 @@
   "provides": [
     "batteryLow",
     "frameCounter",
-    "leakChannel1",
-    "leakChannel2",
-    "leakChannel3",
-    "leakChannel4",
     "monitorEnabled",
     "water.leak",
     "water.temperature.current"

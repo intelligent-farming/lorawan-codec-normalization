@@ -12,9 +12,26 @@
 // copy upstream decodeUplink.
 //
 // The R718IA2 samples two 0-5 V analog inputs. Each raw ADC field is expressed
-// in millivolts, so we normalize to volts (mV / 1000). Channel 1 maps to the
-// analog-interface vocabulary key `analog.voltage`; channel 2 is the camelCase
-// extra `voltage2` (the vocabulary models a single analog input per device).
+// in millivolts, so we normalize to volts (mV / 1000, rounded to 3 decimals —
+// the sensor's own 1 mV resolution).
+//
+// Netvox calls the two terminals "inputs" (the datasheet name is "2-Input
+// 0-5V ADC Sampling Interface"). They are sub-sensor positions of one device
+// carrying the same quantity, so their readings ride in the reserved `channels`
+// array (see AUTHORING.md "Multi-channel devices") rather than in a suffixed
+// `voltage2` extra: one entry per input, labelled with the vendor's own term
+// plus a zero-based index — `input0` (Netvox channel 1, bytes[4..5]) and
+// `input1` (Netvox channel 2, bytes[6..7]) — each carrying the `analog.voltage`
+// vocabulary key in V. `battery` and the `lowBattery` flag are whole-device
+// readings and stay top-level; no leaf is emitted in both places.
+//
+// Sentinel policy: this frame format defines NO disconnected-input sentinel.
+// Neither the shared upstream decoder nor the report layout reserves a "no
+// probe" value — both ADC words are plain unsigned millivolt readings across
+// the input's full range — so no value is treated as a sentinel and neither
+// input entry is ever suppressed on its reading. Nor can a short frame
+// fabricate one: the length guard below requires all 8 header+measurement
+// bytes, so both input words are always present when a frame decodes.
 //
 // fPort 6 frame layout (device id byte[1] == 0x41 for R718IA2):
 //   bytes[0]      frame/software version marker
@@ -22,8 +39,8 @@
 //   bytes[2]      report type; 0x00 is a device-info frame (no measurement)
 //   bytes[3]      battery voltage in 0.1 V; high bit (0x80) flags low battery,
 //                 surfaced as the camelCase extra `lowBattery`
-//   bytes[4..5]   channel-1 ADC in mV, 16-bit big-endian -> analog.voltage (V)
-//   bytes[6..7]   channel-2 ADC in mV, 16-bit big-endian -> extra voltage2 (V)
+//   bytes[4..5]   channel-1 ADC in mV, 16-bit big-endian -> channels[] `input0`
+//   bytes[6..7]   channel-2 ADC in mV, 16-bit big-endian -> channels[] `input1`
 //   bytes[8..10]  unused
 //
 // Config responses (fPort 7) carry no measurement and are reported as errors.
@@ -60,13 +77,12 @@ function decodeUplinkCore(input) {
   }
   data.battery = round((bytes[3] & 0x7f) / 10, 1);
 
-  // Bytes 4..5: channel-1 ADC (mV) -> analog.voltage (V).
-  var analog = {};
-  analog.voltage = round(((bytes[4] << 8) | bytes[5]) / 1000, 3);
-  data.analog = analog;
-
-  // Bytes 6..7: channel-2 ADC (mV) -> extra voltage2 (V).
-  data.voltage2 = round(((bytes[6] << 8) | bytes[7]) / 1000, 3);
+  // One channels[] entry per input terminal: bytes 4..5 = Netvox channel 1
+  // (`input0`), bytes 6..7 = Netvox channel 2 (`input1`); both ADC (mV) -> V.
+  data.channels = [
+    { channel: 'input0', analog: { voltage: round(((bytes[4] << 8) | bytes[5]) / 1000, 3) } },
+    { channel: 'input1', analog: { voltage: round(((bytes[6] << 8) | bytes[7]) / 1000, 3) } }
+  ];
 
   return { data: data };
 }

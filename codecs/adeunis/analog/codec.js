@@ -18,9 +18,29 @@
 // Per channel (channel A at offset 2, channel B at offset 6): the low nibble of
 // the first byte is the sensor type (1 = 0-10 V, 2 = 4-20 mA, 0 = deactivated);
 // the reading is the trailing 24 bits. Voltage = raw / 1e6 V, current =
-// raw / 1e5 mA. Channel A maps to the vocabulary analog.voltage/current; channel
-// B is a camelCase extra. Battery is reported only as a low-battery flag, not a
-// value, so no `battery` key is emitted.
+// raw / 1e5 mA.
+//
+// Normalization: the two interface channels are sub-sensor positions of one
+// device, so each becomes an entry in the reserved `channels` array (see
+// AUTHORING.md "Multi-channel devices") instead of a suffixed extra —
+// labelled with the vendor's own channel letters, `channelA` / `channelB`, the
+// same labels the sibling pulse-4 / pulse-nb-iot codecs use for this vendor's
+// two positions. Each entry carries the vocabulary analog.voltage (V) or
+// analog.current (mA) per its own type nibble (the two channels can be
+// configured differently), so `channelBVoltage`/`channelBCurrent` extras are
+// gone. The status byte's per-channel alarm bit is an alarm *output* rather
+// than a measured position, but it is scoped to one position, so it rides
+// inside that position's entry as the `alarm` extra — cleaner than a top-level
+// `alarmChannelA`/`alarmChannelB` suffixed pair, and it disappears with the
+// entry when the channel is deactivated. The frame counter and low-battery flag
+// are whole-device readings and stay top-level. Battery is reported only as a
+// low-battery flag, not a value, so no `battery` key is emitted.
+//
+// Deactivated/sentinel policy: a channel whose type nibble is 0 is deactivated —
+// its 24 raw bits carry no reading, so no entry (and no alarm flag) is emitted
+// for it. When both channels are deactivated there is no measurement at all:
+// the `channels` key is omitted entirely and the frame is reported as an error
+// ('no active analog channel in frame'), as before this conversion.
 
 var TYPE_VOLTAGE = 1;
 var TYPE_CURRENT = 2;
@@ -35,17 +55,21 @@ function uint24At(bytes, o) {
   return (bytes[o + 1] << 16) | (bytes[o + 2] << 8) | bytes[o + 3];
 }
 
-// Returns { key, value } for the analog vocabulary, or null if deactivated.
-function channelReading(bytes, o) {
+// One channels[] entry for the interface channel at offset `o`, or null when
+// that channel is deactivated (type nibble 0).
+function channelEntry(bytes, o, label, alarm) {
   var type = bytes[o] & 0x0f;
   var raw = uint24At(bytes, o);
+  var entry = { channel: label, analog: {} };
   if (type === TYPE_VOLTAGE) {
-    return { key: 'voltage', value: round(raw / 1000000, 3) };
+    entry.analog.voltage = round(raw / 1000000, 3);
+  } else if (type === TYPE_CURRENT) {
+    entry.analog.current = round(raw / 100000, 3);
+  } else {
+    return null;
   }
-  if (type === TYPE_CURRENT) {
-    return { key: 'current', value: round(raw / 100000, 3) };
-  }
-  return null;
+  entry.alarm = alarm;
+  return entry;
 }
 
 function decodeUplinkCore(input) {
@@ -60,24 +84,23 @@ function decodeUplinkCore(input) {
   }
 
   var status = bytes[1];
-  var chA = channelReading(bytes, 2);
-  var chB = channelReading(bytes, 6);
+  var chA = channelEntry(bytes, 2, 'channelA', Boolean(status & 0x08));
+  var chB = channelEntry(bytes, 6, 'channelB', Boolean(status & 0x10));
 
   if (!chA && !chB) {
     return { errors: ['no active analog channel in frame'] };
   }
 
-  var data = { analog: {} };
+  var entries = [];
   if (chA) {
-    data.analog[chA.key] = chA.value;
+    entries.push(chA);
   }
   if (chB) {
-    // Channel B is the secondary channel -> camelCase extra.
-    data['channelB' + (chB.key === 'voltage' ? 'Voltage' : 'Current')] = chB.value;
+    entries.push(chB);
   }
+
+  var data = { channels: entries };
   data.lowBattery = Boolean(status & 0x02);
-  data.alarmChannelA = Boolean(status & 0x08);
-  data.alarmChannelB = Boolean(status & 0x10);
   data.frameCounter = (status & 0xe0) >> 5;
 
   return { data: data };

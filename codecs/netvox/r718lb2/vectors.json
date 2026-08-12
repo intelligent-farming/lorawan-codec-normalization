@@ -1,7 +1,7 @@
 {
   "uplink": [
     {
-      "description": "Status report: channel-1 open, channel-2 closed, battery 3.0 V",
+      "description": "Status report: gang0 open, gang1 closed, battery 3.0 V",
       "input": {
         "fPort": 6,
         "bytes": [1, 69, 1, 30, 1, 0, 0, 0, 0, 0, 0]
@@ -11,17 +11,17 @@
           "make": "netvox",
           "model": "r718lb2",
           "battery": 3,
-          "action": {
-            "contactState": "open"
-          },
-          "contactState2": "closed"
+          "channels": [
+            { "channel": "gang0", "action": { "contactState": "open" } },
+            { "channel": "gang1", "action": { "contactState": "closed" } }
+          ]
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic in-bounds frame derived from the upstream example input (TTN r718lb2 status report). deviceType 69=0x45=R718LB2; reportType 0x01; byte3=30 -> 3.0 V; byte4=1 -> channel-1 open; byte5=0 -> channel-2 closed. expected.data authored to the normalized vocabulary (action.contactState + extra contactState2); confirmed against the upstream oracle which decodes Volt=3, status1=1, status2=0."
+      "_note": "Synthetic in-bounds frame derived from the upstream example input (TTN r718lb2 status report). deviceType 69=0x45=R718LB2; reportType 0x01; byte3=30 -> 3.0 V; byte4=1 -> gang0 open; byte5=0 -> gang1 closed. Each gang's state is a channels[] entry (gang0 = Netvox channel 1); expected.data authored to the normalized vocabulary (action.contactState per entry), confirmed against the upstream oracle which decodes Volt=3, status1=1, status2=0. Satisfies contact through the entries."
     },
     {
-      "description": "Status report: channel-1 closed, channel-2 open, battery 3.6 V",
+      "description": "Status report: gang0 closed, gang1 open, battery 3.6 V",
       "input": {
         "fPort": 6,
         "bytes": [1, 69, 1, 36, 0, 1, 0, 0, 0, 0, 0]
@@ -31,17 +31,17 @@
           "make": "netvox",
           "model": "r718lb2",
           "battery": 3.6,
-          "action": {
-            "contactState": "closed"
-          },
-          "contactState2": "open"
+          "channels": [
+            { "channel": "gang0", "action": { "contactState": "closed" } },
+            { "channel": "gang1", "action": { "contactState": "open" } }
+          ]
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic in-bounds frame. byte3=36 -> 3.6 V; byte4=0 -> channel-1 closed; byte5=1 -> channel-2 open. Covers the inverse channel states from vector 1. Upstream oracle: Volt=3.6, status1=0, status2=1."
+      "_note": "Synthetic in-bounds frame. byte3=36 -> 3.6 V; byte4=0 -> gang0 closed; byte5=1 -> gang1 open. Covers the inverse per-position states from vector 1, so the two entries cannot be transposed unnoticed. Upstream oracle: Volt=3.6, status1=0, status2=1."
     },
     {
-      "description": "Status report: both channels open, low battery flag set (2.8 V)",
+      "description": "Status report: both gangs open, low battery flag set (2.8 V)",
       "input": {
         "fPort": 6,
         "bytes": [1, 69, 1, 156, 1, 1, 0, 0, 0, 0, 0]
@@ -52,14 +52,35 @@
           "model": "r718lb2",
           "lowBattery": true,
           "battery": 2.8,
-          "action": {
-            "contactState": "open"
-          },
-          "contactState2": "open"
+          "channels": [
+            { "channel": "gang0", "action": { "contactState": "open" } },
+            { "channel": "gang1", "action": { "contactState": "open" } }
+          ]
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic in-bounds frame exercising the low-battery flag. byte3=156=0x9C -> high bit set (lowBattery true), low 7 bits 0x1C=28 -> 2.8 V; both channels open. Upstream oracle: Volt='2.8(low battery)', status1=1, status2=1."
+      "_note": "Synthetic in-bounds frame exercising the low-battery flag. byte3=156=0x9C -> high bit set (lowBattery true), low 7 bits 0x1C=28 -> 2.8 V; both gangs open. Upstream oracle: Volt='2.8(low battery)', status1=1, status2=1. battery/lowBattery are whole-device readings and stay top-level, outside the channels[] entries."
+    },
+    {
+      "description": "Status report: low battery (2.8 V) with gang0 closed, gang1 open",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 69, 1, 156, 0, 1, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "r718lb2",
+          "lowBattery": true,
+          "battery": 2.8,
+          "channels": [
+            { "channel": "gang0", "action": { "contactState": "closed" } },
+            { "channel": "gang1", "action": { "contactState": "open" } }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame combining the low-battery flag with differing per-position states, so a whole-device flag and per-entry states are exercised in one frame. Upstream oracle semantics: Volt '2.8(low battery)', status1 = bytes[4] = 0 -> gang0 closed, status2 = bytes[5] = 1 -> gang1 open."
     },
     {
       "description": "Startup version report (fPort 6, reportType 0x00) carries no measurement",

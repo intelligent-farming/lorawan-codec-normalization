@@ -23,14 +23,40 @@
 // This device has two temperature probes distinguished by the ZCL endpoint,
 // which upstream packs into the frame-control byte:
 //   endpoint = ((byte0 & 0xE0) >> 5) | ((byte0 & 0x06) << 2)
-// Endpoint 0 is the primary probe -> top-level `temperature`; endpoint 1 is the
-// second probe -> extra `temperature2` (upstream labels these temperature_1 /
-// temperature_2). Both are cluster 0x0402 attr 0.
+// Both probes report cluster 0x0402 attr 0, and a ZCL standard report carries
+// ONE attribute of ONE endpoint — so a frame yields exactly one probe reading.
+// That reading rides in a single entry of the reserved `channels` array (see
+// AUTHORING.md "Multi-channel devices"), labelled with Watteco's own
+// positional term, the ZCL endpoint: `endpoint0` (probe 1), `endpoint1`
+// (probe 2). Upstream renames the same value temperature_1 / temperature_2 off
+// the endpoint index; we keep the endpoint itself as the label because it is
+// the identifier the wire format actually carries. The endpoint is decoded
+// generically, so nothing is special-cased per probe: whatever endpoint a
+// frame reports becomes that frame's entry label. This retires the former
+// `temperature2` suffixed extra.
 //
 // Measurement mapping:
-//   cluster 0x0402 (1026) attr 0, endpoint 0 -> temperature   (signed centi-deg C / 100)
-//   cluster 0x0402 (1026) attr 0, endpoint 1 -> temperature2  (extra, same scaling)
-//   cluster 0x0050 (80)   attr 6 power        -> battery       (mV / 1000, volts)
+//   cluster 0x0402 (1026) attr 0 -> channels[{ channel: 'endpoint<n>',
+//                                   temperature }] (signed centi-deg C / 100)
+//   cluster 0x0050 (80)   attr 6 power -> battery (mV / 1000, volts), which
+//                                   stays TOP-LEVEL: the power rail is a
+//                                   whole-device reading, not a probe's. A
+//                                   power report carries no temperature, so it
+//                                   emits no `channels` key at all.
+//
+// Sentinel policy: the standard-report wire format defines NO invalid or
+// disconnected encoding for temperature. Upstream sign-extends the 16-bit
+// value (UintToInt) and publishes whatever comes out; ZCL's nominal 0x8000
+// "invalid value" is not honoured by the upstream decoder, so this codec does
+// not invent one either — no value is treated as a sentinel and no entry is
+// ever suppressed for one. An absent or unplugged probe simply stops reporting
+// on its endpoint: no frame, no entry (and `channels` is omitted entirely on
+// frames that carry no temperature). An endpoint this device does not have is
+// still passed through under its own `endpoint<n>` label rather than dropped —
+// upstream's shared driver would mark an unused endpoint "NA" in its per-device
+// label table (publishing the string "NA"), but this device's table declares
+// both endpoints, so no "NA" case exists here; an endpoint past the end of that
+// table loses its label upstream altogether.
 
 function round(value, decimals) {
   var f = Math.pow(10, decimals);
@@ -80,16 +106,14 @@ function decodeUplinkCore(input) {
   var data = {};
 
   if (cluster === 1026 && attr === 0) {
-    // Temperature: signed 16-bit centi-degrees Celsius; endpoint selects probe.
+    // Temperature: signed 16-bit centi-degrees Celsius. The frame's endpoint is
+    // the probe position, so the reading rides in one channels entry labelled
+    // for that endpoint (no per-probe special-casing, no sentinel to skip).
     if (bytes.length < h + 2) {
       return { errors: ['standard report missing temperature value'] };
     }
     var t = round(s16be(bytes[h], bytes[h + 1]) / 100, 2);
-    if (endpoint === 1) {
-      data.temperature2 = t;
-    } else {
-      data.temperature = t;
-    }
+    data.channels = [{ channel: 'endpoint' + endpoint, temperature: t }];
     return { data: data };
   }
   if (cluster === 80 && attr === 6) {

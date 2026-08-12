@@ -44,6 +44,78 @@
       "_note": "Synthetic in-bounds payload. Reference decode: TH_Sensor_Temperature=21.0 (0x00D2*0.1), TH_Sensor_Humidity=55, Supply_Voltage=3600 mV -> battery 3.6 V."
     },
     {
+      "description": "Binary I/O: digital inputs 1/2/4 reported (input 3 disabled) -> channels[]; binary outputs stay top-level",
+      "input": {
+        "fPort": 10,
+        "bytes": [4, 0, 0, 14, 16, 0, 203, 1, 203]
+      },
+      "expected": {
+        "data": {
+          "make": "elv",
+          "model": "elv-bm-trx1",
+          "txReason": "Cyclic_Event",
+          "battery": 3.6,
+          "output1": "Active",
+          "output2": "Inactive",
+          "output4": "Active",
+          "channels": [
+            { "channel": "input0", "action": { "contactState": "closed" } },
+            { "channel": "input1", "action": { "contactState": "open" } },
+            { "channel": "input3", "action": { "contactState": "closed" } }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Multi-position vector with a distinct state per input, so a bit-pairing bug fails. Binary-input datatype 0x00 with payload byte 0xCB = 1100_1011b: Input_1 enabled (0x02) + active (0x01) -> input0 closed; Input_2 enabled (0x08), state bit (0x04) clear -> input1 open; Input_3 enable bit (0x20) clear -> NOT reported, so no input2 entry (the per-position 'present' encoding, see the codec header's sentinel policy); Input_4 enabled (0x80) + active (0x40) -> input3 closed. The binary-output datatype 0x01 carries the same byte and stays top-level as output1 'Active' / output2 'Inactive' / output4 'Active' (Output_3 not reported) — actuator state, not a measured position. Reference decode: Input_1 Active, Input_2 Inactive, Input_4 Active, Output_1 Active, Output_2 Inactive, Output_4 Active, Supply_Voltage 3600 mV -> battery 3.6, tx_reason Cyclic_Event."
+    },
+    {
+      "description": "Voltage+Current+Power (0x0D): all four measurement channels selected, distinct V/I/P per channel -> channels[] channel0..channel3",
+      "input": {
+        "fPort": 10,
+        "bytes": [4, 0, 0, 14, 16, 13, 15, 46, 224, 3, 232, 4, 210, 95, 180, 9, 196, 73, 41, 19, 136, 2, 238, 141, 128, 187, 251, 0, 125, 209, 215]
+      },
+      "expected": {
+        "data": {
+          "make": "elv",
+          "model": "elv-bm-trx1",
+          "txReason": "Cyclic_Event",
+          "battery": 3.6,
+          "channels": [
+            { "channel": "channel0", "power": { "voltage": 12, "current": 1, "active": 1.234 } },
+            { "channel": "channel1", "power": { "voltage": 24.5, "current": 2.5, "active": 23.45 } },
+            { "channel": "channel2", "power": { "voltage": 5, "current": 0.75, "active": 345.6 } },
+            { "channel": "channel3", "power": { "voltage": 48.123, "current": 0.125, "active": 4567 } }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic frame — the 0x0D bank had NO vector before this conversion, which is why its bare-number `power` shape bug (channel 0 wrote a top-level `power` number where the vocabulary defines an object group) never failed CI. Datatype 0x0D with bitfield 0x0F selects all four channels, each followed by 6 bytes (V hi/lo, I hi/lo, P hi/lo). Values are distinct on all four positions so a channel-pairing bug fails, and the four power resolutions (2-bit exponent: 0.001 / 0.01 / 0.1 / 1) are each exercised once: ch0 V 0x2EE0=12000 -> 12.000, I 0x03E8=1000 -> 1.000, P 0x04D2 (scale 0) -> 1234*0.001 = 1.234; ch1 V 0x5FB4=24500 -> 24.500, I 0x09C4=2500 -> 2.500, P 0x4929 (scale 1) -> 2345*0.01 = 23.45; ch2 V 0x1388=5000 -> 5.000, I 0x02EE=750 -> 0.750, P 0x8D80 (scale 2) -> 3456*0.1 = 345.6; ch3 V 0xBBFB=48123 -> 48.123, I 0x007D=125 -> 0.125, P 0xD1D7 (scale 3) -> 4567*1 = 4567. Verified against the upstream Apache-2.0 reference decoder, which returns the same numbers as strings: Voltage 12.000 / Current 1.000 / Power 1.234, Voltage2 24.500 / Current2 2.500 / Power2 23.450, Voltage3 5.000 / Current3 0.750 / Power3 345.600, Voltage4 48.123 / Current4 0.125 / Power4 4567.000, plus TX_Reason Cyclic_Event and Supply_Voltage 3600 mV -> battery 3.6."
+    },
+    {
+      "description": "0x0D partial selection (channels 0 and 2 absent) alongside the 0x00 digital inputs: both label namespaces in one channels[] array, plus a reverse-flow (negative) current",
+      "input": {
+        "fPort": 10,
+        "bytes": [4, 0, 0, 14, 16, 0, 203, 13, 10, 95, 180, 254, 12, 73, 41, 187, 251, 9, 196, 209, 215]
+      },
+      "expected": {
+        "data": {
+          "make": "elv",
+          "model": "elv-bm-trx1",
+          "txReason": "Cyclic_Event",
+          "battery": 3.6,
+          "channels": [
+            { "channel": "input0", "action": { "contactState": "closed" } },
+            { "channel": "input1", "action": { "contactState": "open" } },
+            { "channel": "input3", "action": { "contactState": "closed" } },
+            { "channel": "channel1", "power": { "voltage": 24.5, "active": 23.45 }, "signedCurrentA": -0.5 },
+            { "channel": "channel3", "power": { "voltage": 48.123, "current": 2.5, "active": 4567 } }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic frame covering three things at once. (1) The 0x0D presence encoding: bitfield 0x0A selects only channels 1 and 3, so channels 0 and 2 carry no bytes and produce NO entry (the sentinel policy in the codec header) — upstream likewise emits only Voltage2/Current2/Power2 and Voltage4/Current4/Power4. (2) The two label namespaces coexist: the 0x00 record (payload byte 0xCB, as in the binary-I/O vector above) yields input0 closed / input1 open / input3 closed, and the 0x0D record yields channel1 / channel3 in the same channels[] array with no label clash — the digital-input terminals and the V/I/P measurement channels are separate hardware (see the codec header's label-namespace note). (3) Reverse flow: ch1's current field 0xFE0C is the signed value -500 -> -0.500 A, which the vocabulary's non-negative power.current cannot carry, so that entry gets the extra signedCurrentA -0.5 and no power.current while still reporting power.voltage and power.active. Reference decode: Input_1 Active, Input_2 Inactive, Input_4 Active, Voltage2 24.500 / Current2 -0.500 / Power2 23.450, Voltage4 48.123 / Current4 2.500 / Power4 4567.000, TX_Reason Cyclic_Event, Supply_Voltage 3600 mV -> battery 3.6."
+    },
+    {
       "description": "Combined climate modules: TH (0x03) + concentration/CO2 (0x08) + brightness (0x0B) + pressure (0x0E) + motion (0x0C) + battery indicator (0x07)",
       "input": {
         "fPort": 10,

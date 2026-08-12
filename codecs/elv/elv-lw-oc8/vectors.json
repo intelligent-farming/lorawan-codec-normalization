@@ -1,7 +1,7 @@
 {
   "uplink": [
     {
-      "description": "cyclic event: all 8 outputs off (contact open), supply 5.021 V",
+      "description": "cyclic event: all 8 open-collector channels off (contact open), supply 5.021 V",
       "input": {
         "fPort": 10,
         "bytes": [1, 1, 0, 1, 2, 3, 0, 7, 3, 12, 4, 19, 157, 7, 1, 0]
@@ -11,17 +11,23 @@
           "make": "elv", "model": "elv-lw-oc8",
           "appVersion": "V1.0.1", "blVersion": "V3.0.7",
           "txReason": "CYCLIC_EVENT", "supplyVoltage": 5.021,
-          "action": { "contactState": "open" },
-          "contactState2": false, "contactState3": false, "contactState4": false,
-          "contactState5": false, "contactState6": false, "contactState7": false,
-          "contactState8": false
+          "channels": [
+            { "channel": "oc0", "action": { "contactState": "open" } },
+            { "channel": "oc1", "action": { "contactState": "open" } },
+            { "channel": "oc2", "action": { "contactState": "open" } },
+            { "channel": "oc3", "action": { "contactState": "open" } },
+            { "channel": "oc4", "action": { "contactState": "open" } },
+            { "channel": "oc5", "action": { "contactState": "open" } },
+            { "channel": "oc6", "action": { "contactState": "open" } },
+            { "channel": "oc7", "action": { "contactState": "open" } }
+          ]
         }
       },
       "source": "ttn-example",
-      "_note": "TTN example. 0x07 output states bitfield 0x00 -> all channels off. ch1 -> action.contactState open. supply 0x139D=5021 mV -> 5.021 V. Verified against reference/upstream-codec.js (ch1..ch8 all 0, supply_voltage 5021, tx_reason CYCLIC_EVENT)."
+      "_note": "TTN example. 0x07 output-states bitfield 0x00 -> every channel off, so all eight channels[] entries read 'open'. supply 0x139D=5021 mV -> 5.021 V. Verified against reference/upstream-codec.js (ch1..ch8 all 0, supply_voltage 5021, tx_reason CYCLIC_EVENT)."
     },
     {
-      "description": "output channels 1 and 3 on -> contact closed",
+      "description": "open-collector channels 1 and 3 on -> oc0/oc2 closed",
       "input": {
         "fPort": 10,
         "bytes": [3, 10, 4, 19, 157, 7, 1, 5]
@@ -30,14 +36,62 @@
         "data": {
           "make": "elv", "model": "elv-lw-oc8",
           "txReason": "INPUT_8_EVENT", "supplyVoltage": 5.021,
-          "action": { "contactState": "closed" },
-          "contactState2": false, "contactState3": true, "contactState4": false,
-          "contactState5": false, "contactState6": false, "contactState7": false,
-          "contactState8": false
+          "channels": [
+            { "channel": "oc0", "action": { "contactState": "closed" } },
+            { "channel": "oc1", "action": { "contactState": "open" } },
+            { "channel": "oc2", "action": { "contactState": "closed" } },
+            { "channel": "oc3", "action": { "contactState": "open" } },
+            { "channel": "oc4", "action": { "contactState": "open" } },
+            { "channel": "oc5", "action": { "contactState": "open" } },
+            { "channel": "oc6", "action": { "contactState": "open" } },
+            { "channel": "oc7", "action": { "contactState": "open" } }
+          ]
         }
       },
       "source": "synthetic",
-      "_note": "0x07 bitfield 0x05 -> bit0 (ch1) and bit2 (ch3) set. ch1 -> contactState closed, ch3 -> contactState3 true. Verified against reference/upstream-codec.js (ch1=1, ch3=1, others 0)."
+      "_note": "0x07 bitfield 0x05 -> bit0 (ELV ch1 -> oc0) and bit2 (ch3 -> oc2) set. Verified against reference/upstream-codec.js (ch1=1, ch3=1, others 0)."
+    },
+    {
+      "description": "mixed bitfield 0xA9: channels 1/4/6/8 on -> oc0/oc3/oc5/oc7 closed, plus interval and contact-interface mode",
+      "input": {
+        "fPort": 10,
+        "bytes": [3, 3, 4, 19, 157, 7, 1, 169, 8, 15, 9, 1]
+      },
+      "expected": {
+        "data": {
+          "make": "elv", "model": "elv-lw-oc8",
+          "txReason": "INPUT_1_EVENT", "supplyVoltage": 5.021,
+          "interval": 15, "contactInterfaceEnabled": true,
+          "channels": [
+            { "channel": "oc0", "action": { "contactState": "closed" } },
+            { "channel": "oc1", "action": { "contactState": "open" } },
+            { "channel": "oc2", "action": { "contactState": "open" } },
+            { "channel": "oc3", "action": { "contactState": "closed" } },
+            { "channel": "oc4", "action": { "contactState": "open" } },
+            { "channel": "oc5", "action": { "contactState": "closed" } },
+            { "channel": "oc6", "action": { "contactState": "open" } },
+            { "channel": "oc7", "action": { "contactState": "closed" } }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Multi-position vector with an asymmetric bitfield so a bit-order bug fails: 0xA9 = 1010_1001b -> bits 0,3,5,7 set (ELV ch1, ch4, ch6, ch8), bits 1,2,4,6 clear; the bit-reversed byte would be 0x95, a different expectation. Also exercises 0x08 interval (15) and 0x09 contact-interface mode enabled (a whole-device config flag, kept top-level — the contact interface watches the same eight terminals, it is not a second bank). Verified against reference/upstream-codec.js (ch1=1, ch2=0, ch3=0, ch4=1, ch5=0, ch6=1, ch7=0, ch8=1, interval 15, contact_interface_en 1, supply_voltage 5021, tx_reason INPUT_1_EVENT)."
+    },
+    {
+      "description": "config-only uplink (no 0x07 record): channels omitted entirely",
+      "input": {
+        "fPort": 10,
+        "bytes": [1, 1, 0, 1, 2, 3, 0, 7, 8, 60]
+      },
+      "expected": {
+        "data": {
+          "make": "elv", "model": "elv-lw-oc8",
+          "appVersion": "V1.0.1", "blVersion": "V3.0.7",
+          "interval": 60
+        }
+      },
+      "source": "synthetic",
+      "_note": "Version records (0x01/0x02) plus interval (0x08) and no 0x07 output-states record: the frame carries no position readings, so `channels` is omitted rather than emitted empty. Verified against reference/upstream-codec.js (app_version V1.0.1, bl_version V3.0.7, interval 60, no chN keys)."
     },
     {
       "description": "wrong port yields error",

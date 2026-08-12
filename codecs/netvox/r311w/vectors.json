@@ -11,16 +11,17 @@
           "make": "netvox",
           "model": "r311w",
           "battery": 3,
-          "water": { "leak": false },
-          "leak1": false,
-          "leak2": false
+          "channels": [
+            { "channel": "probe0", "water": { "leak": false } },
+            { "channel": "probe1", "water": { "leak": false } }
+          ]
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic in-bounds frame; expected.data derived by running reference/upstream-codec.js (Volt 30/10 = 3 V, both probes NoLeak) and mapping to vocabulary."
+      "_note": "Synthetic in-bounds frame; expected.data derived by running reference/upstream-codec.js (Volt 30/10 = 3 V, WaterLeak_1 NoLeak, WaterLeak_2 NoLeak) and mapping each probe to its own channels[] entry."
     },
     {
-      "description": "Status report, probe 2 leaking",
+      "description": "Probes differ: probe0 dry, probe1 wet (per-position truth, unrepresentable in the old any-probe OR)",
       "input": {
         "fPort": 6,
         "bytes": [1, 6, 1, 30, 0, 1, 0, 0, 0, 0, 0]
@@ -30,13 +31,34 @@
           "make": "netvox",
           "model": "r311w",
           "battery": 3,
-          "water": { "leak": true },
-          "leak1": false,
-          "leak2": true
+          "channels": [
+            { "channel": "probe0", "water": { "leak": false } },
+            { "channel": "probe1", "water": { "leak": true } }
+          ]
+        }
+      },
+      "source": "ttn-example",
+      "_note": "TTN example \"Status report\" input (reference/upstream-examples.json). Upstream oracle: Volt 3, WaterLeak_1 NoLeak (bytes[4]=0 -> probe0 leak false), WaterLeak_2 Leak (bytes[5]=1 -> probe1 leak true). The two probes disagree, so this is the case the retired top-level any-probe OR could not express."
+    },
+    {
+      "description": "Probes differ the other way: probe0 wet, probe1 dry",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 6, 1, 30, 1, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "r311w",
+          "battery": 3,
+          "channels": [
+            { "channel": "probe0", "water": { "leak": true } },
+            { "channel": "probe1", "water": { "leak": false } }
+          ]
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic in-bounds frame (mirrors the upstream status example: WaterLeak_1 NoLeak, WaterLeak_2 Leak). water.leak is the OR of both probes."
+      "_note": "Synthetic mirror of the TTN status example with the probe bytes swapped; cross-checked against reference/upstream-codec.js (WaterLeak_1 Leak, WaterLeak_2 NoLeak). Pins entry order to the wire order: bytes[4] -> probe0, bytes[5] -> probe1."
     },
     {
       "description": "Status report, both probes leaking with low battery",
@@ -50,13 +72,14 @@
           "model": "r311w",
           "lowBattery": true,
           "battery": 3,
-          "water": { "leak": true },
-          "leak1": true,
-          "leak2": true
+          "channels": [
+            { "channel": "probe0", "water": { "leak": true } },
+            { "channel": "probe1", "water": { "leak": true } }
+          ]
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic in-bounds frame; byte3 0x9E has the low-battery high bit set (0x1E = 30 -> 3 V). Reference decodes Volt '3(low battery)', both probes Leak."
+      "_note": "Synthetic in-bounds frame; byte3 0x9E has the low-battery high bit set (0x1E = 30 -> 3 V). Reference decodes Volt '3(low battery)', both probes Leak. battery / lowBattery are whole-device readings and stay top-level."
     },
     {
       "description": "Config response on fPort 7 (no measurement)",

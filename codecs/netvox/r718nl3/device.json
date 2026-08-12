@@ -12,12 +12,8 @@
   "provides": [
     "air.lightIntensity",
     "battery",
-    "current2",
-    "current3",
     "deviceName",
-    "multiplier1",
-    "multiplier2",
-    "multiplier3",
+    "multiplier",
     "power.current"
   ],
   "variantOf": null,

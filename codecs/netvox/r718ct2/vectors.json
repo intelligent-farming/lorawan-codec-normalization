@@ -1,60 +1,58 @@
 {
   "uplink": [
     {
-      "description": "temperature report (fPort 6)",
+      "description": "ReportDataCmd (fPort 6): battery 3.0 V, gang0 22.0 °C, gang1 23.0 °C",
       "input": {
         "fPort": 6,
-        "bytes": [
-          1,
-          17,
-          1,
-          30,
-          0,
-          220,
-          0,
-          230,
-          0,
-          0,
-          0
-        ]
+        "bytes": [1, 23, 1, 30, 0, 220, 0, 230, 0, 0, 0]
       },
       "expected": {
         "data": {
           "battery": 3,
-          "temperature": 22,
-          "temperature2": 23,
+          "channels": [
+            { "channel": "gang0", "temperature": 22 },
+            { "channel": "gang1", "temperature": 23 }
+          ],
           "make": "netvox",
           "model": "r718ct2"
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic Netvox ReportDataCmd (device type 0x11); cross-checked against the upstream decoder (Temp 22). temperature signed/10 -> temperature. Satisfies temperature."
+      "_note": "Synthetic Netvox ReportDataCmd (device type 0x17 = R718CT2); cross-checked against the upstream decoder (Volt 3, Temp1 22, Temp2 23). Each gang's reading is a channels[] entry carrying `temperature`; battery stays top-level. Satisfies temperature."
+    },
+    {
+      "description": "Both gangs reporting distinct values: 3.6 V, gang0 25.3 °C, gang1 36.5 °C",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 23, 1, 36, 0, 253, 1, 109, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "channels": [
+            { "channel": "gang0", "temperature": 25.3 },
+            { "channel": "gang1", "temperature": 36.5 }
+          ],
+          "make": "netvox",
+          "model": "r718ct2"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "TTN example \"Status report\" input (reference/upstream-examples.json). Upstream oracle: Volt 3.6, Temp1 25.3, Temp2 36.5. byte3 0x24 -> 3.6 V; bytes[4..5]=0x00FD=253 -> gang0 25.3 °C; bytes[6..7]=0x016D=365 -> gang1 36.5 °C."
     },
     {
       "description": "Version frame (report type 0x00) -> error",
       "input": {
         "fPort": 6,
-        "bytes": [
-          1,
-          17,
-          0,
-          100,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ]
+        "bytes": [1, 23, 0, 100, 2, 32, 32, 7, 41, 0, 0]
       },
       "expected": {
         "errors": [
           "version fram"
         ]
       },
-      "source": "synthetic",
-      "_note": "Report type 0x00 carries firmware/version metadata, not a measurement."
+      "source": "ttn-example",
+      "_note": "TTN example startup version report: report type 0x00 carries firmware/version metadata, not a measurement."
     }
   ],
   "downlink": []

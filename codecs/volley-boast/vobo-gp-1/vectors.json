@@ -1,25 +1,51 @@
 {
   "uplink": [
     {
-      "description": "Standard payload (fPort 1): ADC1 raw 160, battery 3.048 V, temp 20 C, DIN1 -> contactState 'closed'",
+      "description": "Standard payload (fPort 1): DIN1 closed, DIN2/DIN3 open, ADC1/ADC2/ADC3 raw 160/800/80, battery 3.048 V, temp 20 C",
       "input": { "fPort": 1, "bytes": [1, 10, 32, 3, 5, 250, 2, 10, 0, 0] },
       "expected": {
         "data": {
-          "analog": { "raw": 160 },
           "battery": 3.048,
           "air": { "temperature": 20 },
-          "action": { "contactState": "closed" },
-          "adc2Raw": 800,
-          "adc3Raw": 80,
-          "digitalInput2": 0,
-          "digitalInput3": 0,
           "wakeup": 0,
-          "modbus0": 0,
+          "channels": [
+            { "channel": "din0", "action": { "contactState": "closed" } },
+            { "channel": "din1", "action": { "contactState": "open" } },
+            { "channel": "din2", "action": { "contactState": "open" } },
+            { "channel": "adc0", "analog": { "raw": 160 } },
+            { "channel": "adc1", "analog": { "raw": 800 } },
+            { "channel": "adc2", "analog": { "raw": 80 } },
+            { "channel": "modbus0", "modbusRegister": 0 }
+          ],
           "make": "volley-boast",
           "model": "vobo-gp-1"
         }
       },
       "source": "synthetic"
+    },
+    {
+      "description": "Mixed positions (fPort 1): DIN1 open + DIN2/DIN3 closed, ADC1/ADC2/ADC3 at distinct 1234/2048/3000, WKUP set, Modbus slot 0 = 0x1234, battery 3.6 V, temp -5.5 C",
+      "input": { "fPort": 1, "bytes": [46, 77, 0, 136, 187, 132, 67, 253, 52, 18] },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "air": { "temperature": -5.5 },
+          "wakeup": 1,
+          "channels": [
+            { "channel": "din0", "action": { "contactState": "open" } },
+            { "channel": "din1", "action": { "contactState": "closed" } },
+            { "channel": "din2", "action": { "contactState": "closed" } },
+            { "channel": "adc0", "analog": { "raw": 1234 } },
+            { "channel": "adc1", "analog": { "raw": 2048 } },
+            { "channel": "adc2", "analog": { "raw": 3000 } },
+            { "channel": "modbus0", "modbusRegister": 4660 }
+          ],
+          "make": "volley-boast",
+          "model": "vobo-gp-1"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Per-position truth vector, derived from reference/upstream-codec.js parseStandardPayload. bytes[0]=46=0b00101110: DIN1=bit0=0 (din0 open), DIN2=bit1=1 (din1 closed), DIN3=bit2=1 (din2 closed), WKUP=bit3=1. ADC1=((46&0xf0)>>4)=2 | (77<<4)=1232 => 1234 (adc0); ADC2=(136&0x0f)<<8=2048 | bytes[2]=0 => 2048 (adc1); ADC3=((136&0xf0)>>4)=8 | (187<<4)=2992 => 3000 (adc2). Battery=((67&0x0f)=3)<<8 | 132 => 900 * 4 = 3600 mV => 3.6 V. Temperature: bytes[7]=253 has bit7 set, raw = ((67&0xf0)>>4)=4 | (253<<4)=4048 => 4052, (4096-4052)*0.125*-1 = -5.5 C. Modbus0 = bytes[9]<<8 | bytes[8] = 18<<8 | 52 = 4660 (0x1234)."
     },
     {
       "description": "non-Standard fPort (Modbus payload) is not normalized",

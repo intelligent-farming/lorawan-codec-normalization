@@ -1,7 +1,7 @@
 {
   "uplink": [
     {
-      "description": "Measurement frame 1 -> power-meter/light",
+      "description": "Status frame 0x01: three CT currents + phase A multiplier -> one channels entry per phase",
       "input": {
         "fPort": 6,
         "bytes": [
@@ -22,21 +22,86 @@
         "data": {
           "deviceName": "R718NL3",
           "battery": 3.6,
-          "power": {
-            "current": 1
-          },
-          "current2": 0.2,
-          "current3": 7,
-          "multiplier1": 1,
+          "channels": [
+            {
+              "channel": "phaseA",
+              "power": {
+                "current": 1
+              },
+              "multiplier": 1
+            },
+            {
+              "channel": "phaseB",
+              "power": {
+                "current": 0.2
+              }
+            },
+            {
+              "channel": "phaseC",
+              "power": {
+                "current": 7
+              }
+            }
+          ],
           "make": "netvox",
           "model": "r718nl3"
         }
       },
       "source": "ttn-example",
-      "_note": "Upstream-example input (TTN netvox r718nl3 codec yaml, Apache-2.0). expected.data via the ported netvox decoder (oracle). Mapped to vocabulary per the codec header."
+      "_note": "Upstream-example input (TTN netvox r718nl3 codec yaml, Apache-2.0). Oracle fields from the ported netvox decoder: Current1 1000 mA, Current2 200 mA, Current3 7000 mA, Multiplier1 1, Volt 3.6. Per-phase mA/1000 -> power.current inside phaseA/phaseB/phaseC entries; only phase A's multiplier is carried by this frame variant."
     },
     {
-      "description": "Measurement frame 2 -> power-meter/light",
+      "description": "Status frame 0x01 with a distinct current per clamp (multi-CT)",
+      "input": {
+        "fPort": 6,
+        "bytes": [
+          1,
+          153,
+          1,
+          36,
+          4,
+          210,
+          0,
+          56,
+          255,
+          255,
+          5
+        ]
+      },
+      "expected": {
+        "data": {
+          "deviceName": "R718NL3",
+          "battery": 3.6,
+          "channels": [
+            {
+              "channel": "phaseA",
+              "power": {
+                "current": 1.234
+              },
+              "multiplier": 5
+            },
+            {
+              "channel": "phaseB",
+              "power": {
+                "current": 0.056
+              }
+            },
+            {
+              "channel": "phaseC",
+              "power": {
+                "current": 65.535
+              }
+            }
+          ],
+          "make": "netvox",
+          "model": "r718nl3"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame 0x01 giving each clamp a clearly distinct reading, so a per-position mix-up cannot pass: verified against reference/upstream-codec.js (Volt 3.6, Current1 1234 mA, Current2 56 mA, Current3 65535 mA — the 16-bit maximum — Multiplier1 5). Currents normalize to 1.234 / 0.056 / 65.535 A in the phaseA/phaseB/phaseC entries."
+    },
+    {
+      "description": "Status frame 0x02: phase B/C CT multipliers + whole-device illuminance",
       "input": {
         "fPort": 6,
         "bytes": [
@@ -57,17 +122,25 @@
         "data": {
           "deviceName": "R718NL3",
           "battery": 3.6,
-          "multiplier2": 3,
-          "multiplier3": 10,
           "air": {
             "lightIntensity": 2500
           },
+          "channels": [
+            {
+              "channel": "phaseB",
+              "multiplier": 3
+            },
+            {
+              "channel": "phaseC",
+              "multiplier": 10
+            }
+          ],
           "make": "netvox",
           "model": "r718nl3"
         }
       },
       "source": "ttn-example",
-      "_note": "Upstream-example input (TTN netvox r718nl3 codec yaml, Apache-2.0). expected.data via the ported netvox decoder (oracle). Mapped to vocabulary per the codec header."
+      "_note": "Upstream-example input (TTN netvox r718nl3 codec yaml, Apache-2.0). Oracle: Volt 3.6, Multiplier2 3, Multiplier3 10, Illuminance 2500 — no current fields. The single ambient light sensor is whole-device and stays top-level (air.lightIntensity); entries are emitted only for the phases the frame mentions, carrying just that phase's configuration extra."
     },
     {
       "description": "Device-info / config frame -> error",

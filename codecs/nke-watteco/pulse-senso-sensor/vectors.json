@@ -1,36 +1,11 @@
 {
   "uplink": [
     {
-      "description": "standard report: pulse count meter 1 (cluster 0x000F attr 0x0402, uint32, endpoint 0) | payload 110A000F04022300000000",
+      "description": "standard report: pulse count meter input 1 (cluster 0x000F attr 0x0402, uint32, endpoint 0) -> channels[endpoint0] | payload 110A000F04022300000000",
       "input": { "fPort": 125, "bytes": [17, 10, 0, 15, 4, 2, 35, 0, 0, 0, 0] },
       "expected": {
-        "data": { "pulse.total": 0, "make": "nke-watteco", "model": "pulse-senso-sensor" }
-      },
-      "source": "datasheet"
-    },
-    {
-      "description": "standard report: pulse count meter 2 (endpoint 1) -> extra pulseTotal2 | payload 310A000F04022300000000",
-      "input": { "fPort": 125, "bytes": [49, 10, 0, 15, 4, 2, 35, 0, 0, 0, 0] },
-      "expected": {
-        "data": { "pulseTotal2": 0, "make": "nke-watteco", "model": "pulse-senso-sensor" }
-      },
-      "source": "datasheet"
-    },
-    {
-      "description": "standard report: 3 input states (In'O bitmap16, cluster 0x8005 attr 0), inputs 1-3 closed | payload 110A80050000190007",
-      "input": { "fPort": 125, "bytes": [17, 10, 128, 5, 0, 0, 25, 0, 7] },
-      "expected": {
         "data": {
-          "action.contactState": "closed",
-          "contactState2": "closed",
-          "contactState3": "closed",
-          "contactState4": "open",
-          "contactState5": "open",
-          "contactState6": "open",
-          "contactState7": "open",
-          "contactState8": "open",
-          "contactState9": "open",
-          "contactState10": "open",
+          "channels": [{ "channel": "endpoint0", "pulse": { "total": 0 } }],
           "make": "nke-watteco",
           "model": "pulse-senso-sensor"
         }
@@ -38,7 +13,66 @@
       "source": "datasheet"
     },
     {
-      "description": "standard report: disposable battery voltage 3.688 V (cluster 0x0050 attr 6) | payload 110A00500006410503040E6804",
+      "description": "standard report: pulse count meter input 2 (endpoint 1) -> channels[endpoint1] | payload 310A000F04022300000000",
+      "input": { "fPort": 125, "bytes": [49, 10, 0, 15, 4, 2, 35, 0, 0, 0, 0] },
+      "expected": {
+        "data": {
+          "channels": [{ "channel": "endpoint1", "pulse": { "total": 0 } }],
+          "make": "nke-watteco",
+          "model": "pulse-senso-sensor"
+        }
+      },
+      "source": "datasheet"
+    },
+    {
+      "description": "standard report: input 1 contact state closed (cluster 0x000F attr 0x0055, endpoint 0) -> channels[endpoint0] | payload 110A000F00551001",
+      "input": { "fPort": 125, "bytes": [17, 10, 0, 15, 0, 85, 16, 1] },
+      "expected": {
+        "data": {
+          "channels": [{ "channel": "endpoint0", "action": { "contactState": "closed" } }],
+          "make": "nke-watteco",
+          "model": "pulse-senso-sensor"
+        }
+      },
+      "source": "datasheet"
+    },
+    {
+      "description": "generic endpoint decode past the old hard-coded list: pulse count on endpoint 9 (frame control 0x23 -> ((0x23&0xE0)>>5)|((0x23&0x06)<<2) = 9) -> channels[endpoint9] | payload 230A000F04022300000005",
+      "input": { "fPort": 125, "bytes": [35, 10, 0, 15, 4, 2, 35, 0, 0, 0, 5] },
+      "expected": {
+        "data": {
+          "channels": [{ "channel": "endpoint9", "pulse": { "total": 5 } }],
+          "make": "nke-watteco",
+          "model": "pulse-senso-sensor"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "standard report: consolidated input states (cluster 0x8005 attr 0, bitmap16 0x0007) -> ten channels entries, inputs 1-3 closed | payload 110A80050000190007",
+      "input": { "fPort": 125, "bytes": [17, 10, 128, 5, 0, 0, 25, 0, 7] },
+      "expected": {
+        "data": {
+          "channels": [
+            { "channel": "endpoint0", "action": { "contactState": "closed" } },
+            { "channel": "endpoint1", "action": { "contactState": "closed" } },
+            { "channel": "endpoint2", "action": { "contactState": "closed" } },
+            { "channel": "endpoint3", "action": { "contactState": "open" } },
+            { "channel": "endpoint4", "action": { "contactState": "open" } },
+            { "channel": "endpoint5", "action": { "contactState": "open" } },
+            { "channel": "endpoint6", "action": { "contactState": "open" } },
+            { "channel": "endpoint7", "action": { "contactState": "open" } },
+            { "channel": "endpoint8", "action": { "contactState": "open" } },
+            { "channel": "endpoint9", "action": { "contactState": "open" } }
+          ],
+          "make": "nke-watteco",
+          "model": "pulse-senso-sensor"
+        }
+      },
+      "source": "datasheet"
+    },
+    {
+      "description": "standard report: disposable battery voltage 3.688 V (cluster 0x0050 attr 6) -> top-level battery, no channels | payload 110A00500006410503040E6804",
       "input": { "fPort": 125, "bytes": [17, 10, 0, 80, 0, 6, 65, 5, 3, 4, 14, 104, 4] },
       "expected": {
         "data": { "battery": 3.688, "make": "nke-watteco", "model": "pulse-senso-sensor" }

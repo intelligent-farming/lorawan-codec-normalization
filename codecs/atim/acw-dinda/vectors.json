@@ -1,31 +1,81 @@
 {
   "uplink": [
     {
-      "description": "0-10 V periodic frame: 5.00 V input, input1 asserted",
+      "description": "0-10 V periodic frame: 5.00 V input, input0 closed / input1 open",
       "input": { "fPort": 1, "bytes": [24, 32, 125, 120] },
       "expected": {
-        "data": { "make": "atim", "model": "acw-dinda", "analog": { "voltage": 5 }, "input1": true, "input2": false, "frameType": "voltage" }
+        "data": {
+          "make": "atim", "model": "acw-dinda",
+          "analog": { "voltage": 5 },
+          "channels": [
+            { "channel": "input0", "action": { "contactState": "closed" } },
+            { "channel": "input1", "action": { "contactState": "open" } }
+          ],
+          "frameType": "voltage"
+        }
       },
       "source": "synthetic",
-      "_note": "0x18 '0-10V' frame. voltage = 0x7D78(32120) * 10 / 64240 = 5.0 V. logicLevel 0x20 -> input1 true. Verified against reference/upstream-codec.js postProcessAncienDINDA (voltage.value=5 V, logic_level [1,0])."
+      "_note": "0x18 '0-10V' frame. voltage = 0x7D78(32120) * 10 / 64240 = 5.0 V, top-level (a single analog position). logicLevel 0x20 -> bit5. Verified against reference/upstream-codec.js postProcessAncienDINDA (voltage.value=5 V, logic_level [1,0])."
     },
     {
-      "description": "0-20 mA periodic frame: 12.00 mA input, no inputs asserted",
+      "description": "0-10 V periodic frame: 2.50 V input, input0 open / input1 closed (per-position values differ)",
+      "input": { "fPort": 1, "bytes": [24, 16, 62, 188] },
+      "expected": {
+        "data": {
+          "make": "atim", "model": "acw-dinda",
+          "analog": { "voltage": 2.5 },
+          "channels": [
+            { "channel": "input0", "action": { "contactState": "open" } },
+            { "channel": "input1", "action": { "contactState": "closed" } }
+          ],
+          "frameType": "voltage"
+        }
+      },
+      "source": "synthetic",
+      "_note": "0x18 '0-10V' frame. voltage = 0x3EBC(16060) * 10 / 64240 = 2.5 V. logicLevel 0x10 -> bit4 only, the complement of the vector above. Verified against reference/upstream-codec.js (voltage.value=2.5 V, logic_level [0,1])."
+    },
+    {
+      "description": "0-20 mA periodic frame: 12.00 mA input, both inputs open",
       "input": { "fPort": 1, "bytes": [25, 0, 111, 134] },
       "expected": {
-        "data": { "make": "atim", "model": "acw-dinda", "analog": { "current": 12 }, "input1": false, "input2": false, "frameType": "current" }
+        "data": {
+          "make": "atim", "model": "acw-dinda",
+          "analog": { "current": 12 },
+          "channels": [
+            { "channel": "input0", "action": { "contactState": "open" } },
+            { "channel": "input1", "action": { "contactState": "open" } }
+          ],
+          "frameType": "current"
+        }
       },
       "source": "synthetic",
-      "_note": "0x19 '0-20mA' frame. current = 0x6F86(28550) * 20 / 47584 = 12.0 mA. Verified against reference/upstream-codec.js (current.value=12 mA)."
+      "_note": "0x19 '0-20mA' frame. current = 0x6F86(28550) * 20 / 47584 = 12.0 mA. Verified against reference/upstream-codec.js (current.value=12 mA, logic_level [0,0])."
     },
     {
-      "description": "life frame: secondary rail 3.60 V -> battery",
+      "description": "4-20 mA low-alert frame: 9.60 mA input, input1 closed",
+      "input": { "fPort": 1, "bytes": [34, 16, 111, 134, 0] },
+      "expected": {
+        "data": {
+          "make": "atim", "model": "acw-dinda",
+          "analog": { "current": 9.6 },
+          "channels": [
+            { "channel": "input0", "action": { "contactState": "open" } },
+            { "channel": "input1", "action": { "contactState": "closed" } }
+          ],
+          "frameType": "current"
+        }
+      },
+      "source": "synthetic",
+      "_note": "0x22 \"Trame d'alerte BAS d'une valeur 4-20mA\": span 16 mA, trailing offset byte. current = 0x6F86(28550) * 16 / 47584 = 9.6 mA. Verified against reference/upstream-codec.js (current.value=9.6 mA, logic_level [0,1])."
+    },
+    {
+      "description": "life frame: secondary rail 3.60 V -> battery (no positions, so no channels[])",
       "input": { "fPort": 1, "bytes": [1, 14, 16] },
       "expected": {
         "data": { "make": "atim", "model": "acw-dinda", "battery": 3.6, "frameType": "life" }
       },
       "source": "synthetic",
-      "_note": "0x01 'Trame de vie': tensionc 0x0E10=3600 / 1000 = 3.6 V. Verified against reference/upstream-codec.js (tensionc.value=3.6)."
+      "_note": "0x01 'Trame de vie': tensionc 0x0E10=3600 / 1000 = 3.6 V. Verified against reference/upstream-codec.js (tensionc.value=3.6). battery and frameType are whole-device readings and stay top-level."
     },
     {
       "description": "unsupported frame type yields error",

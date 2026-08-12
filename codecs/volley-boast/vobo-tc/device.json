@@ -11,11 +11,9 @@
     "voltage"
   ],
   "provides": [
+    "action.contactState",
     "battery",
-    "din1",
-    "din2",
-    "din3",
-    "modbus0",
+    "modbusRegister",
     "temperature",
     "wakeup"
   ],

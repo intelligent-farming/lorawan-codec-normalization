@@ -1,7 +1,7 @@
 {
   "uplink": [
     {
-      "description": "Status report, both probes dry (no leak): water.leak false (report type 0x01)",
+      "description": "Status report, both probes dry (report type 0x01)",
       "input": {
         "fPort": 6,
         "bytes": [1, 70, 1, 36, 0, 0, 0, 0, 0, 0, 0]
@@ -11,14 +11,17 @@
           "make": "netvox",
           "model": "r718wa2",
           "battery": 3.6,
-          "water": { "leak": false, "leak1": false, "leak2": false }
+          "channels": [
+            { "channel": "probe0", "water": { "leak": false } },
+            { "channel": "probe1", "water": { "leak": false } }
+          ]
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic in-bounds input (deviceType 0x46 = 70 = R718WA2). Expected.data from running reference/upstream-codec.js (Volt 3.6, WaterLeak_1 NoLeak, WaterLeak_2 NoLeak); both probes dry -> water.leak false."
+      "_note": "Synthetic in-bounds input (deviceType 0x46 = 70 = R718WA2). Expected.data from running reference/upstream-codec.js (Volt 3.6, WaterLeak_1 NoLeak, WaterLeak_2 NoLeak); each probe is its own channels[] entry carrying water.leak."
     },
     {
-      "description": "Status report, probe 1 wet (leak detected): water.leak true via probe 1 (report type 0x01)",
+      "description": "Probes differ: probe0 wet, probe1 dry (per-position truth)",
       "input": {
         "fPort": 6,
         "bytes": [1, 70, 1, 36, 1, 0, 0, 0, 0, 0, 0]
@@ -28,14 +31,17 @@
           "make": "netvox",
           "model": "r718wa2",
           "battery": 3.6,
-          "water": { "leak": true, "leak1": true, "leak2": false }
+          "channels": [
+            { "channel": "probe0", "water": { "leak": true } },
+            { "channel": "probe1", "water": { "leak": false } }
+          ]
         }
       },
-      "source": "synthetic",
-      "_note": "Synthetic in-bounds input (byte4 = 1). Expected.data from running reference/upstream-codec.js (WaterLeak_1 Leak, WaterLeak_2 NoLeak); water.leak = leak1 || leak2 = true."
+      "source": "ttn-example",
+      "_note": "TTN example \"Status report\" byte pattern (byte4 = 1, byte5 = 0). Expected.data from running reference/upstream-codec.js (WaterLeak_1 Leak, WaterLeak_2 NoLeak): bytes[4] -> probe0 leak true, bytes[5] -> probe1 leak false."
     },
     {
-      "description": "Status report, probe 2 wet (leak detected): water.leak true via probe 2 (report type 0x01)",
+      "description": "Probes differ the other way: probe0 dry, probe1 wet (the case the retired any-probe OR could not express)",
       "input": {
         "fPort": 6,
         "bytes": [1, 70, 1, 36, 0, 1, 0, 0, 0, 0, 0]
@@ -45,14 +51,17 @@
           "make": "netvox",
           "model": "r718wa2",
           "battery": 3.6,
-          "water": { "leak": true, "leak1": false, "leak2": true }
+          "channels": [
+            { "channel": "probe0", "water": { "leak": false } },
+            { "channel": "probe1", "water": { "leak": true } }
+          ]
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic in-bounds input (byte5 = 1). Expected.data from running reference/upstream-codec.js (WaterLeak_1 NoLeak, WaterLeak_2 Leak); water.leak = leak1 || leak2 = true."
+      "_note": "Synthetic in-bounds input (byte5 = 1). Expected.data from running reference/upstream-codec.js (WaterLeak_1 NoLeak, WaterLeak_2 Leak). Pins entry order to the wire order and exercises per-position truth: the old top-level water.leak OR read `true` here with no way to say which probe was wet."
     },
     {
-      "description": "Status report, both probes wet (leak detected): water.leak true (report type 0x01)",
+      "description": "Status report, both probes wet (report type 0x01)",
       "input": {
         "fPort": 6,
         "bytes": [1, 70, 1, 36, 1, 1, 0, 0, 0, 0, 0]
@@ -62,11 +71,14 @@
           "make": "netvox",
           "model": "r718wa2",
           "battery": 3.6,
-          "water": { "leak": true, "leak1": true, "leak2": true }
+          "channels": [
+            { "channel": "probe0", "water": { "leak": true } },
+            { "channel": "probe1", "water": { "leak": true } }
+          ]
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic in-bounds input (byte4 = byte5 = 1). Expected.data from running reference/upstream-codec.js (WaterLeak_1 Leak, WaterLeak_2 Leak); water.leak true."
+      "_note": "Synthetic in-bounds input (byte4 = byte5 = 1). Expected.data from running reference/upstream-codec.js (WaterLeak_1 Leak, WaterLeak_2 Leak)."
     },
     {
       "description": "Low-battery flag set (high bit of voltage byte) surfaces lowBattery extra",
@@ -80,11 +92,14 @@
           "model": "r718wa2",
           "lowBattery": true,
           "battery": 3.6,
-          "water": { "leak": false, "leak1": false, "leak2": false }
+          "channels": [
+            { "channel": "probe0", "water": { "leak": false } },
+            { "channel": "probe1", "water": { "leak": false } }
+          ]
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic input: byte3 = 0x80 | 36 = 164. Upstream emits Volt '3.6(low battery)'; normalized to battery 3.6 + lowBattery true extra."
+      "_note": "Synthetic input: byte3 = 0x80 | 36 = 164. Upstream emits Volt '3.6(low battery)'; normalized to top-level battery 3.6 + lowBattery true (whole-device readings, never inside an entry)."
     },
     {
       "description": "Device-info / startup frame carries no measurement (report type 0x00)",

@@ -11,10 +11,7 @@
     "battery",
     "differentialVoltage",
     "frameCounter",
-    "timeInterval",
-    "voltage2",
-    "voltage3",
-    "voltage4"
+    "timeInterval"
   ],
   "variantOf": null,
   "downlink": {

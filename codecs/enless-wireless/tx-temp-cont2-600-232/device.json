@@ -12,8 +12,7 @@
     "batteryPercent",
     "deviceId",
     "sequenceCounter",
-    "temperature",
-    "temperature2"
+    "temperature"
   ],
   "variantOf": null,
   "downlink": {

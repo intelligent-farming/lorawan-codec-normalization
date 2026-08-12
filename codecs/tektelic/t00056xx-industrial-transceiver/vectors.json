@@ -14,18 +14,59 @@
           "air": { "temperature": 23.5, "relativeHumidity": 45 },
           "outputState1": 1,
           "outputState2": 0,
-          "digitalInput1": 1,
-          "analogInput2Current": 0.012,
-          "analogInput3Voltage": 3.3,
-          "digitalInput1Count": 1234,
-          "mcuTemperature": 30
+          "mcuTemperature": 30,
+          "channels": [
+            {
+              "channel": "input0",
+              "action": { "contactState": "closed" },
+              "pulse": { "count": 1234 }
+            },
+            {
+              "channel": "input1",
+              "analog": { "current": 12 }
+            },
+            {
+              "channel": "input2",
+              "analog": { "voltage": 3.3 }
+            }
+          ]
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic in-bounds payload covering every fPort-10 channel/type the codec recognizes. battery 0x0168=360*0.01=3.6 V; temp 0x00EB=235*0.1=23.5 C; rh 0x5A=90*0.5=45 %; input_2 0x2EE0=12000*1e-6=0.012 A (12 mA in the 4-20 mA band); input_3 0x0CE4=3300*0.001=3.3 V; pulse 0x04D2=1234; mcu 0x012C=300*0.1=30 C. expected.data produced by running reference/upstream-codec.js (raw decode) and normalizing per the mapping notes."
+      "_note": "Synthetic in-bounds payload covering every fPort-10 channel/type the codec recognizes. battery 0x0168=360*0.01=3.6 V; temp 0x00EB=235*0.1=23.5 C; rh 0x5A=90*0.5=45 %; mcu 0x012C=300*0.1=30 C. The three input terminals become channels[] entries with zero-based labels (input0 = TEKTELIC input 1): input_1=1 -> input0 action.contactState 'closed'; input_1_count 0x04D2=1234 -> input0 pulse.count (the counter is input 1's only); input_2 0x2EE0=12000 microamps -> input1 analog.current 12 mA (upstream reports the same raw count as 0.012 A); input_3 0x0CE4=3300 mV -> input2 analog.voltage 3.3 V (unchanged from upstream's 3.3). expected.data produced by running reference/upstream-codec.js (raw decode) and normalizing per the mapping notes; the commanded output states and the MCU diagnostic stay top-level."
     },
     {
-      "description": "Climate-only uplink: battery + onboard air temperature and humidity",
+      "description": "Mixed input frame: open contact with a non-zero counter, 20 mA loop current, 8.75 V analog input (per-position truth, no onboard climate field)",
+      "input": {
+        "fPort": 10,
+        "bytes": [5, 0, 0, 6, 2, 78, 32, 7, 2, 34, 46, 8, 4, 3, 9]
+      },
+      "expected": {
+        "data": {
+          "make": "tektelic",
+          "model": "t00056xx-industrial-transceiver",
+          "channels": [
+            {
+              "channel": "input0",
+              "action": { "contactState": "open" },
+              "pulse": { "count": 777 }
+            },
+            {
+              "channel": "input1",
+              "analog": { "current": 20 }
+            },
+            {
+              "channel": "input2",
+              "analog": { "voltage": 8.75 }
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; expected values cross-checked against reference/upstream-codec.js, which decodes this frame as input_1 = 0, input_2 = 0.02 (A), input_3 = 8.75 (V), input_1_count = 777. Each terminal carries a distinct value so a swapped position would fail: input_1 state byte 0 -> input0 'open' while its counter still reports 777 (an open contact does not clear the count); input_2 0x4E20 = 20000 microamps -> input1 20 mA (top of the 4-20 mA band); input_3 0x222E = 8750 mV -> input2 8.75 V."
+    },
+    {
+      "description": "Climate-only uplink: battery + onboard air temperature and humidity (no input field -> no channels)",
       "input": {
         "fPort": 10,
         "bytes": [0, 255, 1, 104, 3, 103, 0, 235, 4, 104, 90]
@@ -39,7 +80,7 @@
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic minimal climate payload. Matches the temperature/relative_humidity values the upstream decoder produces for the same bytes."
+      "_note": "Synthetic minimal climate payload. Matches the temperature/relative_humidity values the upstream decoder produces for the same bytes. The frame carries no input TLV, so the lazily-built `channels` key is omitted entirely — the common case for this device, and what satisfies the declared `climate` category from the top level."
     },
     {
       "description": "Negative onboard temperature with humidity",
@@ -72,7 +113,29 @@
         }
       },
       "source": "ttn-example",
-      "_note": "Input is the upstream t00056xx-codec.yaml example. Upstream emits change_output_states.output1=0, output2=1; normalized here to the extras outputState1/outputState2 (no climate keys present, so this is a supporting vector)."
+      "_note": "Input is the upstream t00056xx-codec.yaml example. Upstream emits change_output_states.output1=0, output2=1; normalized here to the extras outputState1/outputState2 (no climate keys present, so this is a supporting vector). Commanded output states are actuator state, not measured positions, so they stay top-level extras and this frame emits no `channels` key."
+    },
+    {
+      "description": "Sparse frame: temperature plus the 0-10 V terminal only -> a single channels entry, 0 V emitted (no sentinel)",
+      "input": {
+        "fPort": 10,
+        "bytes": [3, 103, 0, 235, 7, 2, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "tektelic",
+          "model": "t00056xx-industrial-transceiver",
+          "air": { "temperature": 23.5 },
+          "channels": [
+            {
+              "channel": "input2",
+              "analog": { "voltage": 0 }
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; reference/upstream-codec.js decodes the same frame as temperature 23.5, input_3 = 0. TEKTELIC uplinks are sparse TLV streams: only the reported terminal gets an entry (no fabricated input0/input1), and because the wire format defines no disconnected sentinel a genuine 0 V reading is emitted rather than suppressed."
     },
     {
       "description": "Unsupported fPort (configuration/diagnostic port, not measurement data)",

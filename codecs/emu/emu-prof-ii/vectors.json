@@ -60,15 +60,82 @@
           "power": {
             "active": 2300,
             "current": 10.5,
-            "voltage": 230.1,
             "frequency": 50
           },
+          "channels": [
+            { "channel": "phaseA", "power": { "voltage": 230.1 } }
+          ],
           "make": "emu",
           "model": "emu-prof-ii"
         }
       },
       "source": "synthetic",
-      "_note": "In-bounds synthetic frame (valid CRC-8): ActivePowerL123 2300 W (0x0B), CurrentL123 10500 mA -> 10.5 A (0x0F), VoltageL1-N 2301 -> 230.1 V (0x14), Frequency 500 -> 50.0 Hz (0x1A). Exercises power.active/current/voltage."
+      "_note": "In-bounds synthetic frame (valid CRC-8): ActivePowerL123 2300 W (0x0B), CurrentL123 10500 mA -> 10.5 A (0x0F), VoltageL1-N 2301 -> 230.1 V (0x14), Frequency 500 -> 50.0 Hz (0x1A). The three L123/frequency records are whole-meter and stay top-level; VoltageL1-N is L1's own phase-to-neutral voltage, so it is the frame's only per-conductor record and produces a single lazily-built phaseA entry."
+    },
+    {
+      "description": "full three-phase instantaneous frame — per-phase power/current/voltage/power-factor plus neutral current",
+      "input": {
+        "fPort": 1,
+        "bytes": [180, 215, 123, 97, 11, 202, 8, 0, 0, 12, 32, 3, 0, 0, 13, 238, 2, 0, 0, 14, 188, 2, 0, 0, 15, 22, 38, 0, 0, 16, 172, 13, 0, 0, 17, 178, 12, 0, 0, 18, 184, 11, 0, 0, 19, 250, 0, 0, 0, 20, 253, 8, 0, 0, 21, 247, 8, 0, 0, 22, 8, 9, 0, 0, 23, 98, 24, 95, 25, 92, 26, 244, 1, 230]
+      },
+      "expected": {
+        "data": {
+          "timeStamp": 1635506100,
+          "time": "2021-10-29T11:15:00.000Z",
+          "power": {
+            "active": 2250,
+            "current": 9.75,
+            "frequency": 50
+          },
+          "channels": [
+            {
+              "channel": "phaseA",
+              "power": { "active": 800, "current": 3.5, "voltage": 230.1 },
+              "powerFactor": 0.98
+            },
+            {
+              "channel": "phaseB",
+              "power": { "active": 750, "current": 3.25, "voltage": 229.5 },
+              "powerFactor": 0.95
+            },
+            {
+              "channel": "phaseC",
+              "power": { "active": 700, "current": 3, "voltage": 231.2 },
+              "powerFactor": 0.92
+            },
+            {
+              "channel": "neutral",
+              "power": { "current": 0.25 }
+            }
+          ],
+          "make": "emu",
+          "model": "emu-prof-ii"
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic frame (valid CRC-8 0xE6) exercising every per-conductor record with a distinct value per phase, derived from the signature table in reference/upstream-codec.js: ActivePowerL1/L2/L3 (0x0C/0x0D/0x0E) 800/750/700 W; CurrentL1/L2/L3 (0x10/0x11/0x12) 3500/3250/3000 mA -> 3.5/3.25/3 A; CurrentN (0x13) 250 mA -> 0.25 A; VoltageL1-N/L2-N/L3-N (0x14/0x15/0x16) 2301/2295/2312 -> 230.1/229.5/231.2 V; PowerfactorL1/L2/L3 (0x17/0x18/0x19) 98/95/92 Cos -> 0.98/0.95/0.92. The meter's own whole-device aggregates stay top-level: ActivePowerL123 (0x0B) 2250 W = 800+750+700, CurrentL123 (0x0F) 9750 mA -> 9.75 A = 3.5+3.25+3, Frequency (0x1A) 500 -> 50.0 Hz."
+    },
+    {
+      "description": "phase-currents-only frame — lazily built channels, no whole-meter reading",
+      "input": {
+        "fPort": 1,
+        "bytes": [48, 209, 5, 98, 16, 24, 16, 0, 0, 17, 140, 15, 0, 0, 18, 215, 15, 0, 0, 36]
+      },
+      "expected": {
+        "data": {
+          "timeStamp": 1644548400,
+          "time": "2022-02-11T03:00:00.000Z",
+          "channels": [
+            { "channel": "phaseA", "power": { "current": 4.12 } },
+            { "channel": "phaseB", "power": { "current": 3.98 } },
+            { "channel": "phaseC", "power": { "current": 4.055 } }
+          ],
+          "make": "emu",
+          "model": "emu-prof-ii"
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic frame (valid CRC-8 0x24) carrying only CurrentL1/L2/L3 (0x10/0x11/0x12) 4120/3980/4055 mA -> 4.12/3.98/4.055 A. Shows the lazy build: no whole-meter record is present, so no top-level power.* key is emitted and the three entries carry power.current only. The neutral position is absent because the frame carries no 0x13 record — not because of any sentinel value."
     },
     {
       "description": "energy frame with corrupted CRC byte (warning)",

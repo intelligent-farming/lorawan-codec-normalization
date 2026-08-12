@@ -21,12 +21,51 @@
 //   - Pressure (type 0x14) decodes to hPa (raw / 1000). It is emitted as
 //     air.pressure only when atmospheric (900-1100 hPa); otherwise the decoded
 //     value is preserved as the camelCase extra `pressureHpa`.
-//   - The ELT-2's external temperature probe (types 0x0c/0x19/0x10) is a
-//     general-purpose probe, not specifically a water probe, so it is emitted
-//     as the camelCase extra `externalTemperature` (no clear water mapping).
+//   - The ELT-2's external temperature probes (types 0x0c/0x19) are
+//     general-purpose probes, not specifically water probes, so they are
+//     emitted as the camelCase extra `externalTemperature` (no clear water
+//     mapping). IR temperature (0x10) is a separate non-contact sensor, not one
+//     of these probes, and stays top-level as irInternal/irExternalTemperature.
 //   - All other fields with no vocabulary key (acceleration, analog/digital
 //     inputs, distance, pulse counters, GPS, occupancy, water-leak strength,
 //     sound, TVOC, UV) are emitted as camelCase extras.
+//
+// External ports -> reserved `channels[]` (see AUTHORING.md "Multi-channel
+// devices"). The ELT-2 exposes TWO external ports, and Elsys carries the port
+// index in the TLV type itself — every external bank is a numbered pair:
+//     bank                    port 1 type   port 2 type
+//     analog input (mV)          0x08          0x18
+//     pulse counter, relative    0x0a          0x16
+//     pulse counter, absolute    0x0b          0x17
+//     external temperature       0x0c          0x19
+//     external digital input     0x0d          0x1a
+// The two ports are the same physical quantities at two physical positions, so
+// each port becomes one `channels[]` entry instead of a suffixed extra. Entry
+// labels use the vendor's own term plus a 0-based index: `port0` = Elsys port 1
+// (types 0x08/0x0a/0x0b/0x0c/0x0d), `port1` = Elsys port 2 (types
+// 0x18/0x16/0x17/0x19/0x1a).
+//
+// The port index therefore leaves the key name and lives only in the entry
+// label, so both entries carry the *same* keys — mappings are unchanged from
+// the pre-channels codec, only relocated:
+//     analog1 / analog2                  -> entry `analogMv` (raw mV; the bare
+//        name `analog` would collide with the vocabulary `analog.*` group, and
+//        the value is millivolts, not the group's volts)
+//     pulse1 / pulse2                    -> entry `pulseRelative`
+//     pulse1Absolute / pulse2Absolute    -> entry `pulseAbsolute`
+//     externalTemperature / ...2         -> entry `externalTemperature`
+//     digital1 / digital2                -> entry `digital` (raw 1/0)
+// Note the sibling type 0x1b (EXT_ANALOG_UV, µV load-cell/UV input) is a
+// distinct unpaired sensor, not port 2 of the analog bank, so `analogUv` stays
+// top-level. Whole-device readings stay top-level too: battery, air.*,
+// acceleration, action.motion, distance, IR/GPS/sound/occupancy/water-leak/TVOC.
+// Nothing is emitted both places.
+//
+// Sentinel/absent-port policy: an Elsys TLV stream is sparse — a port's TLV is
+// simply absent when nothing is attached to it (there is no disconnected
+// sentinel value), so entries are built lazily on first sight. A port that
+// reported no reading gets no entry, and `channels` is omitted entirely when
+// neither port reported. Entry order follows the payload.
 
 function round(value, decimals) {
   var f = Math.pow(10, decimals);
@@ -62,6 +101,20 @@ function decodeUplinkCore(input) {
   var action = {};
   var motion = {};
   var recognized = false;
+
+  // One `channels[]` entry per external port, created on first sight so entry
+  // order follows the payload and an unused port produces no entry.
+  var channels = [];
+  var portSlot = {};
+
+  function portFor(port) {
+    var label = 'port' + port;
+    if (portSlot[label] === undefined) {
+      portSlot[label] = channels.length;
+      channels.push({ channel: label });
+    }
+    return channels[portSlot[label]];
+  }
 
   var i = 0;
   while (i < bytes.length) {
@@ -108,8 +161,8 @@ function decodeUplinkCore(input) {
       i += 3;
       recognized = true;
     } else if (type === 0x08) {
-      // Analog input 1: 2 bytes unsigned, mV. No vocab key -> extra.
-      data.analog1 = u16be(bytes[i + 1], bytes[i + 2]);
+      // ANALOG1: external port 1 analog input, 2 bytes unsigned, mV.
+      portFor(0).analogMv = u16be(bytes[i + 1], bytes[i + 2]);
       i += 3;
       recognized = true;
     } else if (type === 0x09) {
@@ -123,23 +176,23 @@ function decodeUplinkCore(input) {
       i += 7;
       recognized = true;
     } else if (type === 0x0a) {
-      // Pulse counter 1 (relative): 2 bytes. No vocab key -> extra.
-      data.pulse1 = u16be(bytes[i + 1], bytes[i + 2]);
+      // PULSE1: external port 1 relative pulse count, 2 bytes.
+      portFor(0).pulseRelative = u16be(bytes[i + 1], bytes[i + 2]);
       i += 3;
       recognized = true;
     } else if (type === 0x0b) {
-      // Pulse counter 1 (absolute): 4 bytes. No vocab key -> extra.
-      data.pulse1Absolute = u32be(bytes[i + 1], bytes[i + 2], bytes[i + 3], bytes[i + 4]);
+      // PULSE1_ABS: external port 1 absolute pulse count, 4 bytes.
+      portFor(0).pulseAbsolute = u32be(bytes[i + 1], bytes[i + 2], bytes[i + 3], bytes[i + 4]);
       i += 5;
       recognized = true;
     } else if (type === 0x0c) {
-      // External temperature 1: 2 bytes signed, tenths of a degree. No vocab key.
-      data.externalTemperature = round(s16be(bytes[i + 1], bytes[i + 2]) / 10, 1);
+      // EXT_TEMP1: external port 1 probe, 2 bytes signed, tenths of a degree.
+      portFor(0).externalTemperature = round(s16be(bytes[i + 1], bytes[i + 2]) / 10, 1);
       i += 3;
       recognized = true;
     } else if (type === 0x0d) {
-      // External digital input 1: 1 byte, 0/1. No vocab key -> extra.
-      data.digital1 = bytes[i + 1];
+      // EXT_DIGITAL: external port 1 digital input, 1 byte, 0/1.
+      portFor(0).digital = bytes[i + 1];
       i += 2;
       recognized = true;
     } else if (type === 0x0e) {
@@ -189,28 +242,28 @@ function decodeUplinkCore(input) {
       i += 3;
       recognized = true;
     } else if (type === 0x16) {
-      // Pulse counter 2 (relative): 2 bytes. No vocab key -> extra.
-      data.pulse2 = u16be(bytes[i + 1], bytes[i + 2]);
+      // PULSE2: external port 2 relative pulse count, 2 bytes.
+      portFor(1).pulseRelative = u16be(bytes[i + 1], bytes[i + 2]);
       i += 3;
       recognized = true;
     } else if (type === 0x17) {
-      // Pulse counter 2 (absolute): 4 bytes. No vocab key -> extra.
-      data.pulse2Absolute = u32be(bytes[i + 1], bytes[i + 2], bytes[i + 3], bytes[i + 4]);
+      // PULSE2_ABS: external port 2 absolute pulse count, 4 bytes.
+      portFor(1).pulseAbsolute = u32be(bytes[i + 1], bytes[i + 2], bytes[i + 3], bytes[i + 4]);
       i += 5;
       recognized = true;
     } else if (type === 0x18) {
-      // Analog input 2: 2 bytes unsigned, mV. No vocab key -> extra.
-      data.analog2 = u16be(bytes[i + 1], bytes[i + 2]);
+      // ANALOG2: external port 2 analog input, 2 bytes unsigned, mV.
+      portFor(1).analogMv = u16be(bytes[i + 1], bytes[i + 2]);
       i += 3;
       recognized = true;
     } else if (type === 0x19) {
-      // External temperature 2: 2 bytes signed, tenths of a degree. No vocab key.
-      data.externalTemperature2 = round(s16be(bytes[i + 1], bytes[i + 2]) / 10, 1);
+      // EXT_TEMP2: external port 2 probe, 2 bytes signed, tenths of a degree.
+      portFor(1).externalTemperature = round(s16be(bytes[i + 1], bytes[i + 2]) / 10, 1);
       i += 3;
       recognized = true;
     } else if (type === 0x1a) {
-      // External digital input 2: 1 byte, 0/1. No vocab key -> extra.
-      data.digital2 = bytes[i + 1];
+      // EXT_DIGITAL2: external port 2 digital input, 1 byte, 0/1.
+      portFor(1).digital = bytes[i + 1];
       i += 2;
       recognized = true;
     } else if (type === 0x1b) {
@@ -242,6 +295,10 @@ function decodeUplinkCore(input) {
   }
   if (action.motion !== undefined) {
     data.action = action;
+  }
+  // Omit `channels` entirely when neither external port reported.
+  if (channels.length > 0) {
+    data.channels = channels;
   }
 
   return { data: data };

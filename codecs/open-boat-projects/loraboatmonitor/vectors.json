@@ -23,8 +23,10 @@
             "latitude": 51.193901,
             "longitude": 6.796773
           },
-          "level1": 1.25,
-          "level2": 0,
+          "channels": [
+            { "channel": "level0", "level": 1.25 },
+            { "channel": "level1", "level": 0 }
+          ],
           "water": {
             "leak": true
           },
@@ -32,7 +34,43 @@
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic in-bounds frame; expected.data produced by running reference/upstream-codec.js on this input and normalizing to the vocabulary (renamed keys, dropped upstream-hardcoded device/altitude/hdop and the redundant position object). air.pressure kept within the 900-1100 hPa vocabulary bound."
+      "_note": "Synthetic in-bounds frame; expected.data produced by running reference/upstream-codec.js on this input and normalizing to the vocabulary (renamed keys, dropped upstream-hardcoded device/altitude/hdop and the redundant position object). Upstream level1 1.25 / level2 0 become the channels[] entries level0 / level1 with identical /100 scaling. air.pressure kept within the 900-1100 hPa vocabulary bound."
+    },
+    {
+      "description": "levels differ: both analog inputs non-zero and distinct (level0 3.75, level1 8.4), bilge clear, relay off",
+      "input": {
+        "fPort": 2,
+        "bytes": [42, 0, 238, 27, 148, 39, 217, 18, 152, 23, 56, 49, 232, 28, 167, 2, 117, 26, 255, 19, 61, 15, 119, 1, 72, 3, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "open-boat-projects",
+          "model": "loraboatmonitor",
+          "counter": 42,
+          "dewpoint": 10.4,
+          "air": {
+            "temperature": 21.5,
+            "pressure": 1013.2,
+            "relativeHumidity": 48.25
+          },
+          "battery": 12.6,
+          "batteryTemperature": 24,
+          "position": {
+            "latitude": 51.193901,
+            "longitude": 6.796773
+          },
+          "channels": [
+            { "channel": "level0", "level": 3.75 },
+            { "channel": "level1", "level": 8.4 }
+          ],
+          "water": {
+            "leak": false
+          },
+          "relay": 0
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic multi-position frame: the first frame above with bytes[22..25] set to two distinct non-zero levels (375 and 840 little-endian, /100 -> 3.75 and 8.4) and byte 26 cleared. Cross-checked against reference/upstream-codec.js (level1 3.75, level2 8.4, alarm1 0, relay 0). Pins entry order to the wire order (bytes[22..23] -> level0, bytes[24..25] -> level1) and shows the two positions carrying different readings, which the old flat level1/level2 extras could not distinguish from a renumbering mistake."
     },
     {
       "description": "low-battery boat frame: 9.85V triggers undervoltage warning, no bilge alarm, relay off",
@@ -57,8 +95,10 @@
             "latitude": 51.2,
             "longitude": 6.8
           },
-          "level1": 0,
-          "level2": 2.5,
+          "channels": [
+            { "channel": "level0", "level": 0 },
+            { "channel": "level1", "level": 2.5 }
+          ],
           "water": {
             "leak": false
           },
@@ -67,7 +107,7 @@
         "warnings": ["Battery undervoltage"]
       },
       "source": "synthetic",
-      "_note": "Synthetic in-bounds frame; expected.data produced by running reference/upstream-codec.js on this input and normalizing to the vocabulary. Battery 9.85V is below the upstream 10V threshold; the codec emits a `warnings` array (declared here per the conformance contract: data vectors that emit warnings must declare them)."
+      "_note": "Synthetic in-bounds frame; expected.data produced by running reference/upstream-codec.js on this input and normalizing to the vocabulary. level0 reads 0 — a legitimate empty-tank value, not a disconnected-input sentinel (the frame defines none), so the entry is still emitted. Battery 9.85V is below the upstream 10V threshold; the codec emits a `warnings` array (declared here per the conformance contract: data vectors that emit warnings must declare them)."
     },
     {
       "description": "truncated frame (10 bytes) is rejected",
@@ -79,7 +119,7 @@
         "errors": ["payload too short"]
       },
       "source": "synthetic",
-      "_note": "Synthetic error case: the fixed frame is 27 bytes; anything shorter cannot be decoded."
+      "_note": "Synthetic error case: the fixed frame is 27 bytes; anything shorter cannot be decoded, so no `channels` key is emitted."
     }
   ],
   "downlink": []

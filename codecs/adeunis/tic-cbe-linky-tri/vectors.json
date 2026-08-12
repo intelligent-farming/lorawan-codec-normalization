@@ -10,13 +10,13 @@
         "data": {
           "frameType": "0x49 TIC data",
           "metering": { "energy": { "total": 4660 } },
-          "power": { "current": 43, "active": 32, "apparent": 16 },
+          "power": { "active": 32, "apparent": 16 },
           "meterId": "021728031819",
-          "currentL2A": 44,
-          "currentL3A": 45,
-          "maxCurrentL1A": 17,
-          "maxCurrentL2A": 18,
-          "maxCurrentL3A": 19,
+          "channels": [
+            { "channel": "phaseA", "power": { "current": 43 }, "maxCurrent": 17 },
+            { "channel": "phaseB", "power": { "current": 44 }, "maxCurrent": 18 },
+            { "channel": "phaseC", "power": { "current": 45 }, "maxCurrent": 19 }
+          ],
           "frameCounter": 2,
           "lowBattery": false,
           "configurationDone": false,
@@ -27,7 +27,7 @@
         }
       },
       "source": "ttn-example",
-      "_note": "Upstream codec example (tic-cbe-linky-tri-codec.yaml). expected.data derived by running reference/upstream-codec.js: BASE 0x1234=4660 Wh, IINST1 0x2B=43 A, IINST2 0x2C=44, IINST3 0x2D=45, IMAX1/2/3 17/18/19 A, PMAX 0x20=32 W, PAPP 0x10=16 VA. status byte 0x40 -> frameCounter 2, all flags false. Maps metering.energy.total/power.current/power.active/power.apparent; phases 2-3 + IMAX as extras."
+      "_note": "Upstream codec example (tic-cbe-linky-tri-codec.yaml). expected.data derived by running reference/upstream-codec.js: BASE 0x1234=4660 Wh, IINST1 0x2B=43 A, IINST2 0x2C=44, IINST3 0x2D=45, IMAX1/2/3 17/18/19 A, PMAX 0x20=32 W, PAPP 0x10=16 VA. status byte 0x40 -> frameCounter 2, all flags false. IINST<N>/IMAX<N> are per-phase, so they ride in channels[] entries phaseA/phaseB/phaseC (power.current + maxCurrent); BASE/PMAX/PAPP/ADCO are whole-meter registers and stay top-level."
     },
     {
       "description": "0x49 TIC data — second sample with low-battery and config flags set",
@@ -39,13 +39,13 @@
         "data": {
           "frameType": "0x49 TIC data",
           "metering": { "energy": { "total": 100000 } },
-          "power": { "current": 12, "active": 3000, "apparent": 2500 },
+          "power": { "active": 3000, "apparent": 2500 },
           "meterId": "012345678901",
-          "currentL2A": 10,
-          "currentL3A": 8,
-          "maxCurrentL1A": 30,
-          "maxCurrentL2A": 28,
-          "maxCurrentL3A": 25,
+          "channels": [
+            { "channel": "phaseA", "power": { "current": 12 }, "maxCurrent": 30 },
+            { "channel": "phaseB", "power": { "current": 10 }, "maxCurrent": 28 },
+            { "channel": "phaseC", "power": { "current": 8 }, "maxCurrent": 25 }
+          ],
           "frameCounter": 3,
           "lowBattery": true,
           "configurationDone": true,
@@ -59,7 +59,64 @@
       "_note": "Synthetic in-bounds three-phase frame, cross-checked against reference/upstream-codec.js. BASE 0x000186A0=100000 Wh, IINST1/2/3 12/10/8 A, IMAX1/2/3 30/28/25 A, PMAX 0x0BB8=3000 W, PAPP 0x09C4=2500 VA. status 0x63 -> frameCounter 3, lowBattery+configurationDone true."
     },
     {
-      "description": "0x49 TIC data with BASE register absent (sentinel 0x80000000) — emits warning, still satisfies power-meter via current/active",
+      "description": "0x49 TIC data — unbalanced three-phase load, distinct current and maximum per phase",
+      "input": {
+        "fPort": 1,
+        "bytes": [73, 64, 48, 51, 49, 49, 50, 50, 51, 51, 52, 52, 53, 53, 0, 3, 208, 144, 0, 0, 0, 21, 0, 0, 0, 18, 0, 0, 0, 15, 0, 0, 0, 33, 0, 0, 0, 31, 0, 0, 0, 29, 0, 0, 17, 248, 0, 0, 18, 192]
+      },
+      "expected": {
+        "data": {
+          "frameType": "0x49 TIC data",
+          "metering": { "energy": { "total": 250000 } },
+          "power": { "active": 4600, "apparent": 4800 },
+          "meterId": "031122334455",
+          "channels": [
+            { "channel": "phaseA", "power": { "current": 21 }, "maxCurrent": 33 },
+            { "channel": "phaseB", "power": { "current": 18 }, "maxCurrent": 31 },
+            { "channel": "phaseC", "power": { "current": 15 }, "maxCurrent": 29 }
+          ],
+          "frameCounter": 2,
+          "lowBattery": false,
+          "configurationDone": false,
+          "configurationInconsistency": false,
+          "readError": false,
+          "make": "adeunis",
+          "model": "tic-cbe-linky-tri"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic three-phase frame with a different value on every phase, so the channels[] entries cannot be confused with one another. Byte layout per reference/upstream-codec.js Tic0x49Parser (ticCbeLinkyTri branch): ADCO 2..13 = \"031122334455\", BASE 14 = 0x0003D090 = 250000 Wh, IINST1/2/3 at 18/22/26 = 21/18/15 A, IMAX1/2/3 at 30/34/38 = 33/31/29 A, PMAX 42 = 0x11F8 = 4600 W, PAPP 46 = 0x12C0 = 4800 VA. status 0x40 -> frameCounter 2."
+    },
+    {
+      "description": "0x49 TIC data — phase C absent on the TIC bus and phase B's IMAX absent (0x80000000 sentinels)",
+      "input": {
+        "fPort": 1,
+        "bytes": [73, 64, 48, 52, 53, 53, 54, 54, 55, 55, 56, 56, 57, 57, 0, 1, 86, 98, 0, 0, 0, 9, 0, 0, 0, 11, 128, 0, 0, 0, 0, 0, 0, 24, 128, 0, 0, 0, 128, 0, 0, 0, 0, 0, 8, 52, 0, 0, 8, 152]
+      },
+      "expected": {
+        "data": {
+          "frameType": "0x49 TIC data",
+          "metering": { "energy": { "total": 87650 } },
+          "power": { "active": 2100, "apparent": 2200 },
+          "meterId": "045566778899",
+          "channels": [
+            { "channel": "phaseA", "power": { "current": 9 }, "maxCurrent": 24 },
+            { "channel": "phaseB", "power": { "current": 11 } }
+          ],
+          "frameCounter": 2,
+          "lowBattery": false,
+          "configurationDone": false,
+          "configurationInconsistency": false,
+          "readError": false,
+          "make": "adeunis",
+          "model": "tic-cbe-linky-tri"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Sentinel policy vector. IINST3 and IMAX3 both carry the upstream not-found sentinel 0x80000000, so phase C produces no channels[] entry at all; IMAX2 is also absent, so phase B's entry carries only power.current. BASE 0x00015662 = 87650 Wh, PMAX 0x0834 = 2100 W, PAPP 0x0898 = 2200 VA."
+    },
+    {
+      "description": "0x49 TIC data with BASE register absent (sentinel 0x80000000) — emits warning, still satisfies power-meter via per-phase current/active",
       "input": {
         "fPort": 1,
         "bytes": [73, 64, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 49, 128, 0, 0, 0, 0, 0, 0, 15, 0, 0, 0, 14, 0, 0, 0, 13, 0, 0, 0, 20, 0, 0, 0, 21, 0, 0, 0, 22, 0, 0, 0, 64, 0, 0, 0, 50]
@@ -67,13 +124,13 @@
       "expected": {
         "data": {
           "frameType": "0x49 TIC data",
-          "power": { "current": 15, "active": 64, "apparent": 50 },
+          "power": { "active": 64, "apparent": 50 },
           "meterId": "012345678901",
-          "currentL2A": 14,
-          "currentL3A": 13,
-          "maxCurrentL1A": 20,
-          "maxCurrentL2A": 21,
-          "maxCurrentL3A": 22,
+          "channels": [
+            { "channel": "phaseA", "power": { "current": 15 }, "maxCurrent": 20 },
+            { "channel": "phaseB", "power": { "current": 14 }, "maxCurrent": 21 },
+            { "channel": "phaseC", "power": { "current": 13 }, "maxCurrent": 22 }
+          ],
           "frameCounter": 2,
           "lowBattery": false,
           "configurationDone": false,
@@ -85,7 +142,7 @@
         "warnings": ["no cumulative energy index on the TIC bus (BASE absent)"]
       },
       "source": "synthetic",
-      "_note": "BASE set to the upstream not-found sentinel 0x80000000 so no metering.energy.total is emitted; warning declared. IINST1 15 A -> power.current, PMAX 0x40=64 W -> power.active, PAPP 0x32=50 VA. Confirmed reg32 returns null on sentinel."
+      "_note": "BASE set to the upstream not-found sentinel 0x80000000 so no metering.energy.total is emitted; warning declared. IINST1/2/3 15/14/13 A -> per-phase power.current, PMAX 0x40=64 W -> power.active, PAPP 0x32=50 VA. Confirmed reg32 returns null on sentinel."
     },
     {
       "description": "unsupported frame code 0x99 — error vector",

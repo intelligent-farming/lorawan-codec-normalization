@@ -1,49 +1,17 @@
 {
   "uplink": [
     {
-      "description": "Datalog frame: active energy import -> metering.energy.total",
+      "description": "Datalog frame: active energy import -> metering.energy.total (no per-phase register, so no channels key)",
       "input": {
         "fPort": 1,
         "bytes": [
-          1,
-          1,
-          103,
-          59,
-          36,
-          12,
-          2,
-          3,
-          103,
-          59,
-          33,
-          180,
-          3,
-          4,
-          3,
-          8,
-          15,
-          4,
-          4,
-          5,
-          0,
-          0,
-          0,
-          0,
-          5,
-          6,
-          0,
-          0,
-          0,
-          0,
-          6,
-          7,
-          0,
-          0,
-          0,
-          0,
-          11,
-          10,
-          0
+          1, 1, 103, 59, 36, 12,
+          2, 3, 103, 59, 33, 180,
+          3, 4, 3, 8, 15, 4,
+          4, 5, 0, 0, 0, 0,
+          5, 6, 0, 0, 0, 0,
+          6, 7, 0, 0, 0, 0,
+          11, 10, 0
         ]
       },
       "expected": {
@@ -67,7 +35,211 @@
         }
       },
       "source": "ttn-example",
-      "_note": "Upstream-example input (TTN yobiiq/em4301 codec yaml, Apache-2.0). expected.data via the ported upstream decoder (oracle). Sum of activeEnergyImport* registers (Wh) -> metering.energy.total; other fields flattened from {data,unit} to camelCase extras. Satisfies power-meter."
+      "_note": "Upstream-example input (TTN yobiiq/em4301 codec yaml, Apache-2.0). expected.data via the ported upstream decoder (oracle). Sum of activeEnergyImportL123T1/T2 registers (Wh) -> metering.energy.total; the export T1/T2 registers are TARIFF BUCKETS of one meter-wide register, not physical positions, so they stay top-level camelCase extras. This frame carries no per-phase register at all, so `channels` is omitted entirely (lazy build). Satisfies power-meter via metering.energy.total."
+    },
+    {
+      "description": "Full three-phase instantaneous frame: per-phase voltage/current/active power/power factor plus the meter's own aggregates",
+      "input": {
+        "fPort": 1,
+        "bytes": [
+          1, 1, 103, 59, 36, 12,
+          2, 19, 0, 0, 8, 202,
+          3, 15, 0, 0, 38, 22,
+          4, 12, 0, 0, 8, 253,
+          5, 13, 0, 0, 8, 247,
+          6, 14, 0, 0, 9, 8,
+          7, 16, 0, 0, 13, 172,
+          8, 17, 0, 0, 12, 178,
+          9, 18, 0, 0, 11, 184,
+          10, 20, 0, 0, 3, 32,
+          11, 21, 0, 0, 2, 238,
+          12, 22, 0, 0, 2, 188,
+          13, 29, 98,
+          14, 30, 95,
+          15, 31, 92,
+          16, 35, 19, 136
+        ]
+      },
+      "expected": {
+        "data": {
+          "timestamp": 1731929100,
+          "power": {
+            "active": 2250,
+            "current": 9.75,
+            "frequency": 50
+          },
+          "channels": [
+            {
+              "channel": "phaseA",
+              "power": { "voltage": 230.1, "current": 3.5, "active": 800 },
+              "powerFactor": 0.98
+            },
+            {
+              "channel": "phaseB",
+              "power": { "voltage": 229.5, "current": 3.25, "active": 750 },
+              "powerFactor": 0.95
+            },
+            {
+              "channel": "phaseC",
+              "power": { "voltage": 231.2, "current": 3, "active": 700 },
+              "powerFactor": 0.92
+            }
+          ],
+          "codecVersion": "1.0.1",
+          "genericModel": "EM4301",
+          "productCode": "P1002011",
+          "manufacturer": "YOBIIQ B.V.",
+          "make": "yobiiq",
+          "model": "em4301"
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic frame exercising every core per-phase register with a distinct value per phase, values taken from the register table in reference/upstream-codec.js (verified against it as oracle): voltageL1N/L2N/L3N (0x0C/0x0D/0x0E) 2301/2295/2312 x0.1 -> 230.1/229.5/231.2 V; currentL1/L2/L3 (0x10/0x11/0x12) 3500/3250/3000 mA -> 3.5/3.25/3 A; activePowerL1/L2/L3 (0x14/0x15/0x16) 800/750/700 W; powerFactorL1/L2/L3 (0x1D/0x1E/0x1F) 98/95/92 x0.01 -> 0.98/0.95/0.92. The meter's OWN whole-device aggregates stay top-level and are not repeated in any entry: activePowerL123 (0x13) 2250 W = 800+750+700, currentL123 (0x0F) 9750 mA -> 9.75 A = 3.5+3.25+3, frequency (0x23) 5000 x0.01 -> 50 Hz. Note that no top-level power.voltage exists: 0x0C is L1's own phase-to-neutral voltage, so it lives in phaseA."
+    },
+    {
+      "description": "Three-phase reactive/apparent power, phase angle and maximum current demand — per-phase extras inside the entries",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          1, 1, 103, 59, 37, 56,
+          2, 23, 0, 0, 1, 64,
+          3, 24, 0, 0, 1, 44,
+          4, 25, 0, 0, 1, 24,
+          5, 26, 0, 0, 3, 48,
+          6, 27, 0, 0, 3, 21,
+          7, 28, 0, 0, 2, 249,
+          8, 32, 4, 123,
+          9, 33, 7, 18,
+          10, 34, 8, 252,
+          11, 39, 0, 0, 16, 104,
+          12, 40, 0, 0, 16, 4,
+          13, 41, 0, 0, 15, 160
+        ]
+      },
+      "expected": {
+        "data": {
+          "timestamp": 1731929400,
+          "channels": [
+            {
+              "channel": "phaseA",
+              "reactivePower": 0.32,
+              "apparentPower": 0.82,
+              "phaseAngle": 11.47,
+              "maximumCurrentDemand": 4200
+            },
+            {
+              "channel": "phaseB",
+              "reactivePower": 0.3,
+              "apparentPower": 0.79,
+              "phaseAngle": 18.1,
+              "maximumCurrentDemand": 4100
+            },
+            {
+              "channel": "phaseC",
+              "reactivePower": 0.28,
+              "apparentPower": 0.76,
+              "phaseAngle": 23,
+              "maximumCurrentDemand": 4000
+            }
+          ],
+          "codecVersion": "1.0.1",
+          "genericModel": "EM4301",
+          "productCode": "P1002011",
+          "manufacturer": "YOBIIQ B.V.",
+          "make": "yobiiq",
+          "model": "em4301"
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic frame for the remaining per-phase registers, values verified against reference/upstream-codec.js as oracle: reactivePowerL1/L2/L3 (0x17/0x18/0x19) 320/300/280 x0.001 -> 0.32/0.3/0.28 kvar; apparentPowerL1/L2/L3 (0x1A/0x1B/0x1C) 816/789/761 x0.001 rounded to 2 decimals by the ported decoder -> 0.82/0.79/0.76 kVA; phaseAngleL1/L2/L3 (0x20/0x21/0x22) 1147/1810/2300 x0.01 -> 11.47/18.1/23 degrees; maximumL1/L2/L3CurrentDemand (0x27/0x28/0x29) 4200/4100/4000 mA. All four keep the vendor's value and unit verbatim as camelCase extras inside their phase's entry — only the L1/L2/L3 infix is dropped, since the entry's `channel` label carries the phase."
+    },
+    {
+      "description": "Lazy build: only L1 and L3 report, no whole-meter aggregate — power-meter is satisfied through the channels entries alone",
+      "input": {
+        "fPort": 3,
+        "bytes": [
+          1, 1, 103, 59, 38, 100,
+          2, 12, 0, 0, 8, 250,
+          3, 16, 0, 0, 9, 146,
+          4, 14, 0, 0, 9, 3,
+          5, 18, 0, 0, 7, 188
+        ]
+      },
+      "expected": {
+        "data": {
+          "timestamp": 1731929700,
+          "channels": [
+            {
+              "channel": "phaseA",
+              "power": { "voltage": 229.8, "current": 2.45 }
+            },
+            {
+              "channel": "phaseC",
+              "power": { "voltage": 230.7, "current": 1.98 }
+            }
+          ],
+          "codecVersion": "1.0.1",
+          "genericModel": "EM4301",
+          "productCode": "P1002011",
+          "manufacturer": "YOBIIQ B.V.",
+          "make": "yobiiq",
+          "model": "em4301"
+        }
+      },
+      "source": "synthetic",
+      "_note": "In-bounds synthetic frame naming only L1 and L3 (voltageL1N/currentL1 0x0C/0x10 -> 229.8 V / 2.45 A, voltageL3N/currentL3 0x0E/0x12 -> 230.7 V / 1.98 A), verified against reference/upstream-codec.js as oracle. Exactly two entries are built and phaseB is absent because the frame carried no L2 register — not because of any sentinel value (the wire format has none, and 0 A would be a legitimate idle reading). No whole-meter register is present, so no top-level power.* key is emitted and power-meter membership resolves purely through the entries."
+    },
+    {
+      "description": "Device basic information (fPort 50): identity, class and CT/VT ratio configuration",
+      "input": {
+        "fPort": 50,
+        "bytes": [
+          255, 9, 2, 0,
+          255, 10, 1, 41,
+          255, 22, 1, 84, 108, 136,
+          255, 15, 2,
+          255, 11, 1,
+          255, 30, 0, 150,
+          255, 31, 5,
+          255, 32, 0, 0, 0, 230,
+          255, 33, 0, 230,
+          255, 40, 69, 77, 52, 51, 48, 49, 67, 84
+        ]
+      },
+      "expected": {
+        "data": {
+          "hardwareVersion": "V2.0",
+          "firmwareVersion": "V1.29",
+          "deviceSerialNumber": 22310024,
+          "deviceClass": "Class C",
+          "powerEvent": "AC Power On",
+          "primaryCurrentTransformerRatio": 150,
+          "secondaryCurrentTransformerRatio": 5,
+          "primaryVoltageTransformerRatio": 230,
+          "secondaryVoltageTransformerRatio": 230,
+          "deviceModel": "EM4301CT",
+          "codecVersion": "1.0.1",
+          "genericModel": "EM4301",
+          "productCode": "P1002011",
+          "manufacturer": "YOBIIQ B.V.",
+          "make": "yobiiq",
+          "model": "em4301"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "Upstream-example input (TTN yobiiq/em4301 codec yaml, Apache-2.0). expected.data via the ported upstream decoder (oracle). Identity/config frame: no measured reading, so no `channels` key. The CT/VT ratios describe the meter's wiring configuration rather than one phase's reading, so they stay top-level extras."
+    },
+    {
+      "description": "Uplink on an fPort the meter does not use (not 0, not 1..10, not 50)",
+      "input": {
+        "fPort": 42,
+        "bytes": [1, 1, 103, 59, 36, 12]
+      },
+      "expected": {
+        "errors": ["Incorrect fPort"]
+      },
+      "source": "synthetic",
+      "_note": "The ported decoder's own fPort guard (reference/upstream-codec.js `Decode`): a port outside the measurement range 1..10 and the basic-information port 50 yields the string \"Incorrect fPort\", which the normalization layer surfaces as a decode error instead of attaching it to a measurement. Payload bytes are the first record of the datalog frame above, to show the port alone decides."
     }
   ],
   "downlink": []

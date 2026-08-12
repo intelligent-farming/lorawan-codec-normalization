@@ -15,6 +15,7 @@
     "air.temperature",
     "analog.voltage",
     "battery",
+    "externalTemperature",
     "pulse.count",
     "pulse.total"
   ],

@@ -1,7 +1,7 @@
 {
   "uplink": [
     {
-      "description": "single-channel calibrated soil frame (fPort 2)",
+      "description": "single-channel calibrated soil frame (fPort 2), channel 1 only -> probe0",
       "input": {
         "fPort": 2,
         "bytes": [
@@ -23,17 +23,260 @@
           "battery": 3.3,
           "probeTemperature": 25,
           "channelMask": 8,
-          "soil": {
-            "moisture": 45,
-            "temperature": 22,
-            "ec": 1.5
-          },
+          "channels": [
+            {
+              "channel": "probe0",
+              "soil": {
+                "moisture": 45,
+                "temperature": 22,
+                "ec": 1.5
+              }
+            }
+          ],
           "make": "dragino",
           "model": "se0x-lb"
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic SE0X-LB calibrated frame, channel 1 only (b4=0x08); expected.data via this codec, cross-checked against the upstream decoder (oracle water_SOIL1=45.00, temp_SOIL1=22.00, conduct_SOIL1=1500). moisture/100 -> soil.moisture; temp signed/100 -> soil.temperature; EC µS/cm /1000 -> soil.ec (dS/m). Satisfies soil-monitor."
+      "_note": "Synthetic SE0X-LB calibrated frame, channel 1 only (b4=0x08 -> MOD 0, mask bit3); expected.data via this codec, cross-checked against the upstream decoder (oracle s_flag='1000', water_SOIL1=45.00, temp_SOIL1=22.00, conduct_SOIL1=1500). The single soil block is now a channels[] entry labelled probe0 (= vendor channel 1) instead of the top-level soil.* group. Satisfies soil-monitor through the entry."
+    },
+    {
+      "description": "All four probes calibrated with distinct values (mask 0x0F) -> probe0..probe3",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          11,
+          196,
+          255,
+          241,
+          15,
+          4,
+          210,
+          2,
+          13,
+          5,
+          220,
+          13,
+          22,
+          254,
+          137,
+          0,
+          75,
+          19,
+          247,
+          7,
+          8,
+          9,
+          41,
+          3,
+          37,
+          11,
+          244,
+          2,
+          128
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.012,
+          "probeTemperature": -1.5,
+          "channelMask": 15,
+          "channels": [
+            {
+              "channel": "probe0",
+              "soil": {
+                "moisture": 12.34,
+                "temperature": 5.25,
+                "ec": 1.5
+              }
+            },
+            {
+              "channel": "probe1",
+              "soil": {
+                "moisture": 33.5,
+                "temperature": -3.75,
+                "ec": 0.075
+              }
+            },
+            {
+              "channel": "probe2",
+              "soil": {
+                "moisture": 51.11,
+                "temperature": 18,
+                "ec": 2.345
+              }
+            },
+            {
+              "channel": "probe3",
+              "soil": {
+                "moisture": 8.05,
+                "temperature": 30.6,
+                "ec": 0.64
+              }
+            }
+          ],
+          "make": "dragino",
+          "model": "se0x-lb"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Multi-position vector: full 29-byte frame, every leaf differs between the four probes (12.34 %/5.25 C/1500 uS, 33.50 %/-3.75 C/75 uS, 51.11 %/18.00 C/2345 uS, 8.05 %/30.60 C/640 uS) and both signed temperature paths plus a sub-zero DS18B20 are exercised. Cross-checked against the upstream decoder (oracle s_flag='1111', water/temp/conduct_SOIL1..4 identical) except upstream's negative-temperature arithmetic, which uses (value-0xFFFF)/100 and so reports -3.74 / -1.50 where correct two's complement gives -3.75; this codec uses -0x10000. All four EC values are normalized uS/cm -> dS/m (/1000) inside their entry; the retired ecSoil2/3/4 extras did the same division, so probe1..probe3 values are unchanged in magnitude."
+    },
+    {
+      "description": "Sparse mask: vendor channels 2 and 4 only (mask 0x05) -> probe1 + probe3, not renumbered",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          14,
+          16,
+          0,
+          215,
+          5,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          8,
+          174,
+          255,
+          251,
+          4,
+          210,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          15,
+          159,
+          4,
+          226,
+          1,
+          44
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.6,
+          "probeTemperature": 21.5,
+          "channelMask": 5,
+          "channels": [
+            {
+              "channel": "probe1",
+              "soil": {
+                "moisture": 22.22,
+                "temperature": -0.05,
+                "ec": 1.234
+              }
+            },
+            {
+              "channel": "probe3",
+              "soil": {
+                "moisture": 39.99,
+                "temperature": 12.5,
+                "ec": 0.3
+              }
+            }
+          ],
+          "make": "dragino",
+          "model": "se0x-lb"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Stable-positional-label vector. b4=0x05 sets only mask bit2 (vendor channel 2) and bit0 (vendor channel 4), so the entries MUST be probe1 and probe3 — renumbering the two present probes to probe0/probe1 would silently move readings between physical positions across frames. The 6-byte slots are positional, so the unread channel-1 and channel-3 slots are filled with 0xFF to prove the mask, not presence order, drives which bytes are read (a probe0 entry here would decode 655.35 % moisture). Cross-checked against the upstream decoder (oracle s_flag='0101', water_SOIL2=22.22, conduct_SOIL2=1234, water_SOIL4=39.99, temp_SOIL4=12.50, conduct_SOIL4=300; upstream's temp_SOIL2 reads -0.04 from the (value-0xFFFF) bug noted above)."
+    },
+    {
+      "description": "Raw/uncalibrated mode (MOD 1, b4=0x8C): dielectric + raw counts per probe, no soil.* keys",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          12,
+          228,
+          0,
+          250,
+          140,
+          1,
+          0,
+          16,
+          225,
+          34,
+          61,
+          0,
+          55,
+          3,
+          232,
+          0,
+          250
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "probeTemperature": 25,
+          "channelMask": 12,
+          "channels": [
+            {
+              "channel": "probe0",
+              "dielectric": 25.6,
+              "rawWater": 4321,
+              "rawConduct": 8765
+            },
+            {
+              "channel": "probe1",
+              "dielectric": 5.5,
+              "rawWater": 1000,
+              "rawConduct": 250
+            }
+          ],
+          "make": "dragino",
+          "model": "se0x-lb"
+        }
+      },
+      "source": "synthetic",
+      "_note": "b4=0x8C: bit7 set (MOD 1, raw/uncalibrated) with mask bits3+2 (vendor channels 1 and 2). Raw counts are per-position too, so they become channels[] entries carrying the dielectric / rawWater / rawConduct extras, unsuffixed now that the entry label holds the position — the retired dielectricChannel1..4, rawWaterChannel1..4 and rawConductChannel1..4 extras are gone. As before, uncalibrated counts are NOT published as soil.* readings, so this frame satisfies soil-monitor only through the top-level battery. Cross-checked against the upstream decoder (oracle Mod=1, s_flag='1100', Soil_dielectric_constant1=25.6/Raw_water_SOIL1=4321/Raw_conduct_SOIL1=8765, Soil_dielectric_constant2=5.5/Raw_water_SOIL2=1000/Raw_conduct_SOIL2=250)."
+    },
+    {
+      "description": "Truncated frame: mask claims all four channels but only channel 1's block is present",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          12,
+          228,
+          0,
+          250,
+          15,
+          17,
+          148,
+          8,
+          152,
+          5,
+          220
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "probeTemperature": 25,
+          "channelMask": 15,
+          "channels": [
+            {
+              "channel": "probe0",
+              "soil": {
+                "moisture": 45,
+                "temperature": 22,
+                "ec": 1.5
+              }
+            }
+          ],
+          "make": "dragino",
+          "model": "se0x-lb"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Truncation guard (b.length < 11 + j -> break), preserved from the pre-channels[] codec: an 11-byte frame whose mask nibble is 0x0F yields only the probe0 entry rather than reading undefined bytes past the end. channelMask still reports the raw nibble (15) it was sent, which is why the entry labels — not the mask — are the authoritative record of which positions actually decoded. Upstream has no such guard and emits 0.00/0.00/0 for channels 2-4 here."
     },
     {
       "description": "Device-information frame (fPort 5) -> error",

@@ -10,8 +10,8 @@
 // (TheThingsNetwork/lorawan-devices vendor/mcf88/decoder-digital.js, attributed
 // in NOTICE). Upstream converts each status byte to a bare binary string
 // (inputStatus8_1, outputStatus8_1, ...) and a locale-formatted date string;
-// this module authors normalized vocabulary keys and boolean per-channel extras.
-// Upstream normalization is never copied.
+// this module authors normalized vocabulary keys, channels[] entries and boolean
+// output extras. Upstream normalization is never copied.
 //
 // Frame is selected by byte[0] (uplink id):
 //   0x0A I/O status : [0x0A, date(4), inputStatus(4), outputStatus(4), trigger(4)]
@@ -21,13 +21,83 @@
 //        0x00 counter list: repeated 2-byte little-endian counters
 //        (value = (byte[i+1]<<8) + byte[i]).
 //
-// Mapping into the normalized vocabulary:
-//   input 1                 -> action.contactState ('closed' if active else 'open')
-//   inputs 2..16            -> input2..input16 (boolean camelCase extras)
-//   outputs 1..8            -> output1..output8 (boolean camelCase extras)
-//   first counter (0x10)    -> pulse.count; further counters -> count2..countN
-// The embedded date is locale-dependent in upstream and is not emitted. Frames
-// other than 0x0A / 0x10 carry no interface reading and return an error.
+// Multi-position shape (`channels[]`): the digital inputs are this board's genuine
+// measured positions — the same quantity read at several isolated input terminals
+// of one device — so each rides in the reserved `channels` array (see AUTHORING.md
+// "Multi-channel devices") instead of the suffixed `input2` ... `input16` extras
+// this codec used to emit. Entries are labelled with the vendor's own term plus a
+// zero-based index, `input0` ... `input15`. The labels are zero-based while the
+// vendor's own field names are one-based, so `input0` IS THE BOARD'S INPUT 1
+// (upstream inputStatus8_1 bit 0), `input1` is input 2, ... `input15` is input 16.
+// Per frame type an entry carries:
+//   0x0A I/O status -> action.contactState: 'closed' when the input bit is active
+//        (1), 'open' when it is not — the exact polarity the pre-channels codec
+//        used, unchanged.
+//   0x10 counters   -> pulse.count for that input (see below).
+//
+// Pulse counters are PER-INPUT, not one whole-device counter. Established from
+// the wire format: upstream parseDigitalData (0x10, sub-type 0x00) walks the
+// payload in 2-byte steps and emits a (`measure`, `counter`) pair per step, where
+// `measure` is the 1-based index of the input the counter belongs to and runs up
+// to the family's 16 inputs. Counter n therefore belongs to input n, and each
+// counter goes INSIDE its input's entry as pulse.count — the first pair
+// (upstream measure 1) into `input0`, the second into `input1`, and so on. The
+// old top-level `pulse.count` (which surfaced the first counter only) and the
+// suffixed `count2` ... `countN` extras both retire with this.
+//
+// Relay outputs stay TOP-LEVEL extras — a deliberate, reviewed exception. The
+// output states are surfaced as the extras `output1` ... `output8` (boolean,
+// true = energized/ON) and are NOT converted to `channels[]` entries: an output
+// is actuator state the network server commanded, not a measured sub-sensor
+// reading, and AUTHORING explicitly allows naming an extra for something that is
+// not a measured position. Mixing outputs into the same `channels` array as the
+// inputs would also make an output indistinguishable from an input to a
+// downstream flattener that treats every entry as telemetry. This is a policy
+// call on outputs, not a settled convention: a reviewer may later want an
+// output-position policy of its own (a separate reserved container, or an
+// `outputs[]`-style extra) — which would supersede these eight suffixed extras.
+// Until then, only the measured input positions become channel entries. The
+// sibling netvox/r831d applies exactly this policy to its `relay1` ... `relay3`.
+//
+// Whole-device values stay top-level: `frameType` (the frame discriminator) plus
+// the output extras above. Neither decodable frame carries a battery voltage,
+// temperature or other whole-device diagnostic, so none is emitted; the embedded
+// date is locale-dependent in upstream and is not emitted either. No leaf is
+// emitted both inside an entry and at the top level. The `analog-interface`
+// category still resolves through the entries — its atLeastOne list includes both
+// `action.contactState` (0x0A frames) and `pulse.count` (0x10 frames), and
+// membership sees through top-level `channels[]` entries.
+//
+// Known limitation — a fixed 16 entries, not the variant's physical input count:
+// the 0x0A frame is fixed-width and always carries the full input-status bitfield
+// regardless of how many inputs the specific model physically has, and nothing in
+// the frame reports the board's input count. This codec therefore emits an entry
+// for every input the frame carries (16) rather than inferring a per-variant
+// count. On the 16-input MCF-LW13MIO all 16 entries map to real terminals, while
+// the same code path on the one-input LW13IO sibling reports `input1` ...
+// `input15` as 'open' beside its single real reading. That is the pre-channels
+// behavior (which emitted `input2` ... `input16` the same way) preserved
+// deliberately; a follow-up could narrow the emitted positions from device
+// metadata (the sibling ATIM DIND family has the same property). Upstream also
+// decodes two further input-status bytes (bytes[7], bytes[8] = inputs 17-32) and
+// three further output bytes; the maxima across this product family are 16
+// inputs and 8 outputs, so — as before — only the first 16 input bits and the
+// first 8 output bits are surfaced. Counters are not assumed either: the entry
+// count follows the number of 2-byte counters the frame actually carries.
+//
+// Sentinel policy: the frame defines NO per-input "disconnected" encoding. Every
+// input bit is a valid contact state (1 = closed, 0 = open) and every counter
+// value is a valid count, so no reading is treated as a sentinel and no position
+// is ever skipped on its value — an unwired terminal is indistinguishable from an
+// open contact. `channels` is built lazily per frame and omitted when a frame
+// carries no per-input reading: 0x0A carries contact states, 0x10 carries
+// counters (a counter frame with no counter pair errors out before any entry is
+// built, so `channels` is never emitted empty), and every other uplink id returns
+// an error with no data. The length guard below covers all four input-status
+// bytes (bytes[5..8]), so no entry is ever built from an `undefined` byte. The
+// output byte bytes[9] sits just outside that guard, so a minimal 9-byte 0x0A
+// frame reports all eight outputs as false — pre-existing behavior, left
+// unchanged (outputs are top-level extras, not entries), noted as a follow-up.
 
 function bitStates(byteVal) {
   var s = [];
@@ -49,14 +119,21 @@ function decodeIoStatus(bytes) {
     .concat(bitStates(bytes[8]));
   var outputs = bitStates(bytes[9]);
 
-  var data = { action: { contactState: inputs[0] ? 'closed' : 'open' } };
+  var data = {};
   var i;
-  for (i = 1; i < 16; i++) {
-    data['input' + (i + 1)] = inputs[i];
-  }
+  // Outputs 1..8: actuator status -> top-level extras, never channels entries.
   for (i = 0; i < 8; i++) {
     data['output' + (i + 1)] = outputs[i];
   }
+  // One channels[] entry per input the frame carries: `input0` = board input 1.
+  var channels = [];
+  for (i = 0; i < 16; i++) {
+    channels.push({
+      channel: 'input' + i,
+      action: { contactState: inputs[i] ? 'closed' : 'open' }
+    });
+  }
+  data.channels = channels;
   data.frameType = 'ioStatus';
   return { data: data };
 }
@@ -74,12 +151,12 @@ function decodeCounters(bytes) {
   if (counts.length === 0) {
     return { errors: ['counter frame carries no counter'] };
   }
-  var data = { pulse: { count: counts[0] } };
-  for (i = 1; i < counts.length; i++) {
-    data['count' + (i + 1)] = counts[i];
+  // Counter n belongs to input n (upstream `measure`): pulse.count per entry.
+  var channels = [];
+  for (i = 0; i < counts.length; i++) {
+    channels.push({ channel: 'input' + i, pulse: { count: counts[i] } });
   }
-  data.frameType = 'counters';
-  return { data: data };
+  return { data: { channels: channels, frameType: 'counters' } };
 }
 
 function decodeUplinkCore(input) {

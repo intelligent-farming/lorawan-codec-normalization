@@ -1,7 +1,7 @@
 {
   "uplink": [
     {
-      "description": "Status report, probe 1 leak, probe 2 dry (any-probe leak true)",
+      "description": "Status report, probe0 wet, probe1 dry",
       "input": {
         "fPort": 6,
         "bytes": [1, 71, 1, 30, 1, 0, 0, 0, 0, 0, 0]
@@ -11,16 +11,37 @@
           "make": "netvox",
           "model": "r718wb2",
           "battery": 3,
-          "leak1": true,
-          "leak2": false,
-          "water": { "leak": true }
+          "channels": [
+            { "channel": "probe0", "water": { "leak": true } },
+            { "channel": "probe1", "water": { "leak": false } }
+          ]
+        }
+      },
+      "source": "ttn-example",
+      "_note": "TTN status example input (reference/upstream-examples.json). Cross-checked against reference/upstream-codec.js (Volt 3.0, WaterLeak_1 Leak, WaterLeak_2 NoLeak): bytes[4] -> probe0 leak true, bytes[5] -> probe1 leak false."
+    },
+    {
+      "description": "Probes differ the other way: probe0 dry, probe1 wet (the case the retired any-probe OR could not express)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 71, 1, 30, 0, 1, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "r718wb2",
+          "battery": 3,
+          "channels": [
+            { "channel": "probe0", "water": { "leak": false } },
+            { "channel": "probe1", "water": { "leak": true } }
+          ]
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic in-bounds frame derived from the TTN status example (probe 1 leak, probe 2 dry). expected.data authored here; cross-checked against reference/upstream-codec.js (Volt 3.0, WaterLeak_1=Leak, WaterLeak_2=NoLeak)."
+      "_note": "Synthetic in-bounds frame: the TTN status example with the two probe bytes swapped; cross-checked against reference/upstream-codec.js (WaterLeak_1 NoLeak, WaterLeak_2 Leak). Pins entry order to the wire order and exercises per-position truth: the old top-level water.leak OR read `true` here with no way to say which probe was wet."
     },
     {
-      "description": "Status report, both probes dry (any-probe leak false)",
+      "description": "Status report, both probes dry",
       "input": {
         "fPort": 6,
         "bytes": [1, 71, 1, 28, 0, 0, 0, 0, 0, 0, 0]
@@ -30,16 +51,17 @@
           "make": "netvox",
           "model": "r718wb2",
           "battery": 2.8,
-          "leak1": false,
-          "leak2": false,
-          "water": { "leak": false }
+          "channels": [
+            { "channel": "probe0", "water": { "leak": false } },
+            { "channel": "probe1", "water": { "leak": false } }
+          ]
         }
       },
       "source": "synthetic",
       "_note": "Synthetic in-bounds frame, both probes dry, battery 2.8 V. expected.data authored here; cross-checked against reference/upstream-codec.js (Volt 2.8, both WaterLeak NoLeak)."
     },
     {
-      "description": "Status report, both probes leak, low-battery flag set",
+      "description": "Status report, both probes wet, low-battery flag set",
       "input": {
         "fPort": 6,
         "bytes": [1, 71, 1, 156, 1, 1, 0, 0, 0, 0, 0]
@@ -50,13 +72,14 @@
           "model": "r718wb2",
           "lowBattery": true,
           "battery": 2.8,
-          "leak1": true,
-          "leak2": true,
-          "water": { "leak": true }
+          "channels": [
+            { "channel": "probe0", "water": { "leak": true } },
+            { "channel": "probe1", "water": { "leak": true } }
+          ]
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic in-bounds frame, both probes leak, byte[3]=156 (0x80|28) sets the low-battery flag, masked voltage 2.8 V. expected.data authored here; cross-checked against reference/upstream-codec.js (Volt '2.8(low battery)', both WaterLeak Leak)."
+      "_note": "Synthetic in-bounds frame, both probes leak, byte[3]=156 (0x80|28) sets the low-battery flag, masked voltage 2.8 V. Cross-checked against reference/upstream-codec.js (Volt '2.8(low battery)', both WaterLeak Leak). battery / lowBattery are whole-device readings and stay top-level."
     },
     {
       "description": "Device-info / startup frame (no measurement)",

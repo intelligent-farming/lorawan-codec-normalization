@@ -1,7 +1,7 @@
 {
   "uplink": [
     {
-      "description": "Example 1: dual pulse + battery frame (flags=0x0007)",
+      "description": "Example 1: both pulse channels + battery (flags=0x0007) -> one channels entry per channel",
       "input": {
         "fPort": 1,
         "bytes": [2, 25, 143, 0, 7, 0, 4, 2, 88, 11, 240, 0, 1, 0, 0, 2, 88, 222, 206, 0, 0, 12, 51]
@@ -10,20 +10,80 @@
         "data": {
           "protocolVersion": 2,
           "deviceId": 6543,
-          "pulse": {
-            "count": 4,
-            "total": 68592
-          },
-          "pulseInterval": 600,
-          "pulseCount2": 0,
-          "pulseInterval2": 600,
-          "pulseTotal2": 57038,
+          "channels": [
+            {
+              "channel": "channel0",
+              "pulse": { "count": 4, "total": 68592 },
+              "pulseInterval": 600
+            },
+            {
+              "channel": "channel1",
+              "pulse": { "count": 0, "total": 57038 },
+              "pulseInterval": 600
+            }
+          ],
           "battery": 3.123,
           "make": "decentlab",
           "model": "dl-dlr2-010"
         }
       },
-      "source": "ttn-example"
+      "source": "ttn-example",
+      "_note": "reference/upstream-examples.json example 1: ch0_pulse_count 4 / ch0_pulse_interval 600 s / ch0_cumulative_pulse_count 68592 and ch1_pulse_count 0 / ch1_pulse_interval 600 s / ch1_cumulative_pulse_count 57038, battery 3.123 V — values taken verbatim from that upstream output, now scoped into channels entries labelled channel0/channel1 instead of the retired pulseCount2 / pulseInterval2 / pulseTotal2 extras. ch1's pulse count of 0 is a real reading on a connected input, not a sentinel. Satisfies analog-interface (membership sees through top-level channels entries)."
+    },
+    {
+      "description": "Both channels with fully distinct per-channel values (flags=0x0007) -> no cross-talk between entries",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 25, 143, 0, 7, 0, 12, 1, 44, 134, 160, 0, 1, 0, 5, 3, 132, 0, 42, 0, 0, 12, 228]
+      },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 6543,
+          "channels": [
+            {
+              "channel": "channel0",
+              "pulse": { "count": 12, "total": 100000 },
+              "pulseInterval": 300
+            },
+            {
+              "channel": "channel1",
+              "pulse": { "count": 5, "total": 42 },
+              "pulseInterval": 900
+            }
+          ],
+          "battery": 3.3,
+          "make": "decentlab",
+          "model": "dl-dlr2-010"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic Decentlab v2 frame, decoded values cross-checked against reference/upstream-codec.js: ch0 count 12 / interval 300 s / cumulative 100000 (words 34464 + 1*65536), ch1 count 5 / interval 900 s / cumulative 42, battery word 3300 -> 3.3 V. Every field differs between the two channels, so the vector pins that each entry carries only its own channel's words."
+    },
+    {
+      "description": "Channel-1-only frame (flags=0x0006, channel-0 block deselected) -> single entry still labelled channel1",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 25, 143, 0, 6, 0, 7, 3, 132, 226, 64, 0, 1, 12, 51]
+      },
+      "expected": {
+        "data": {
+          "protocolVersion": 2,
+          "deviceId": 6543,
+          "channels": [
+            {
+              "channel": "channel1",
+              "pulse": { "count": 7, "total": 123456 },
+              "pulseInterval": 900
+            }
+          ],
+          "battery": 3.123,
+          "make": "decentlab",
+          "model": "dl-dlr2-010"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic Decentlab v2 frame, decoded values cross-checked against reference/upstream-codec.js: the sensor-flags bitmap selects only the channel-1 pulse block (bit1) and battery (bit2), so upstream emits ch1_pulse_count 7 / ch1_pulse_interval 900 s / ch1_cumulative_pulse_count 123456 (words 57920 + 1*65536) and no ch0_* field. Pins the presence policy: the absent channel gets no entry and the surviving entry keeps its wire index — it is NOT renumbered to channel0."
     },
     {
       "description": "Example 2: battery-only frame (flags=0x0004) carries no pulse block -> error",
@@ -34,7 +94,20 @@
       "expected": {
         "errors": ["no pulse field in payload"]
       },
-      "source": "ttn-example"
+      "source": "ttn-example",
+      "_note": "reference/upstream-examples.json example 2: the sensor-flags bitmap selects only the 1-word battery block, so neither pulse channel is present. Pins the header's policy — the `channels` key is omitted and the frame is rejected rather than emitting an empty channels array."
+    },
+    {
+      "description": "Wrong protocol version -> error",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 25, 143, 0, 7]
+      },
+      "expected": {
+        "errors": ["protocol version 1"]
+      },
+      "source": "synthetic",
+      "_note": "Decentlab v2 framing rejects a non-v2 version byte."
     }
   ],
   "downlink": []

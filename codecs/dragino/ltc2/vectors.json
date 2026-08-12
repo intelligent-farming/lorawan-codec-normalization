@@ -1,7 +1,7 @@
 {
   "uplink": [
     {
-      "description": "temperature report (fPort 2)",
+      "description": "temperature report (fPort 2): channel0 22.00 °C, channel1 24.00 °C",
       "input": {
         "fPort": 2,
         "bytes": [
@@ -21,14 +21,120 @@
       "expected": {
         "data": {
           "battery": 3.3,
-          "temperature": 22,
-          "temperature2": 24,
+          "channels": [
+            {
+              "channel": "channel0",
+              "temperature": 22
+            },
+            {
+              "channel": "channel1",
+              "temperature": 24
+            }
+          ],
           "make": "dragino",
           "model": "ltc2"
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic LTC2 thermocouple frame (Ext 0x01); cross-checked against the upstream decoder (Temp_Channel1 22, Temp_Channel2 24). channel signed/100 -> temperature, temperature2. Satisfies temperature."
+      "_note": "Synthetic LTC2 thermocouple frame (Ext 0x01); cross-checked against the upstream decoder (Temp_Channel1 22, Temp_Channel2 24). Each thermocouple input is a channels[] entry carrying `temperature` (signed/100); battery stays top-level. Satisfies temperature."
+    },
+    {
+      "description": "both thermocouples connected with distinct readings: channel0 21.46 °C, channel1 21.51 °C",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          14,
+          85,
+          1,
+          8,
+          98,
+          8,
+          103,
+          96,
+          228,
+          60,
+          198
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.669,
+          "channels": [
+            {
+              "channel": "channel0",
+              "temperature": 21.46
+            },
+            {
+              "channel": "channel1",
+              "temperature": 21.51
+            }
+          ],
+          "make": "dragino",
+          "model": "ltc2"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "TTN example \"Industrial LoRaWAN Temperature Transmitter\" input (reference/upstream-examples.json). Upstream oracle: BatV 3.669, Temp_Channel1 21.46, Temp_Channel2 21.51. bytes[3..4]=0x0862=2146 -> channel0 21.46 °C; bytes[5..6]=0x0867=2151 -> channel1 21.51 °C."
+    },
+    {
+      "description": "channel 1 unconnected (0x8001 sentinel): only the channel1 entry is emitted",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          12,
+          228,
+          1,
+          128,
+          1,
+          9,
+          96,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.3,
+          "channels": [
+            {
+              "channel": "channel1",
+              "temperature": 24
+            }
+          ],
+          "make": "dragino",
+          "model": "ltc2"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic: bytes[3..4]=0x8001 is the vendor's unconnected-channel sentinel (upstream Temp_Channel1 = 'NULL'), so that position is skipped instead of decoding as -327.67 °C; the surviving position keeps its own label `channel1`. bytes[5..6]=0x0960=2400 -> 24.00 °C."
+    },
+    {
+      "description": "both thermocouple channels unconnected -> error",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          12,
+          228,
+          1,
+          128,
+          1,
+          128,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "both thermocouple channels unconnected"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Both channel words read the 0x8001 sentinel: no measurement at all, so the frame is rejected rather than emitting an empty channels[]."
     },
     {
       "description": "non-measurement / wrong mode -> error",
