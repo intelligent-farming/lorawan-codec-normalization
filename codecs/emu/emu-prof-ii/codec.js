@@ -12,10 +12,100 @@
 // Frame layout: bytes[0..3] little-endian Uint32 datalogger timestamp,
 // then a stream of records (1 signature byte + fixed-length little-endian
 // payload per the signature table), then a trailing CRC-8 byte.
+//
+// Per-conductor readings ride in `channels[]`
+// ------------------------------------------
+// The signature table separates records that measure ONE conductor from records
+// that describe the whole meter (upstream `dataTypes`, reference/
+// upstream-codec.js). Every per-conductor record is a sub-sensor position
+// measuring the same physical quantity, so its reading goes in the reserved
+// `channels` array (see AUTHORING.md "Multi-channel devices") instead of the
+// suffixed extras this codec used to emit (`activePowerL1W`..`L3W`,
+// `currentL1A`..`L3A`, `currentNeutralA`, `voltageL2NV`/`L3NV`,
+// `powerFactorL1`..`L3`). Four positions, labelled after the conductor the
+// record names — `phaseA`/`phaseB`/`phaseC` for L1/L2/L3 (the label scheme the
+// three-phase arwin-technology/lrs2m001-4xxx and netvox/r718n3 meters use for
+// this concept) and `neutral` for N:
+//   phaseA <- 0x0C ActivePowerL1  -> power.active  (W)
+//             0x10 CurrentL1      -> power.current (A; mA / 1000)
+//             0x14 VoltageL1-N    -> power.voltage (V; raw / 10)
+//             0x17 PowerfactorL1  -> powerFactor   (extra; Cos x0.01)
+//   phaseB <- 0x0D / 0x11 / 0x15 / 0x18   (same four quantities for L2)
+//   phaseC <- 0x0E / 0x12 / 0x16 / 0x19   (same four quantities for L3)
+//   neutral <- 0x13 CurrentN      -> power.current (A; mA / 1000)
+// 0x14 VoltageL1-N used to be promoted to a bare top-level `power.voltage`
+// while only L2/L3 were suffixed extras; it is L1's phase-to-neutral voltage
+// like any other per-phase record (upstream marks it cfgphase 1), so it now sits
+// in `phaseA` and no top-level `power.voltage` is emitted at all.
+// `neutral` is a channels entry rather than a top-level `currentNeutralA` extra
+// because it is the same measured quantity (RMS current) at a distinct physical
+// conductor — exactly the channels[] criterion — even though the neutral is not
+// one of the three phases; upstream tags it cfgphase 4, i.e. the meter itself
+// treats it as a fourth position.
+// `powerFactor` stays an extra rather than the vocabulary's `power.factor`: it
+// is only being moved out of a suffixed name in this pass, and promoting an
+// extra to a vocabulary key is a separate normalization decision.
+//
+// Whole-meter records stay top-level (never repeated inside an entry):
+//   0x0B ActivePowerL123 -> power.active   (W)  the meter's own three-phase sum
+//   0x0F CurrentL123     -> power.current  (A)  the meter's own current total
+//   0x1A Frequency       -> power.frequency(Hz) line frequency, not per phase
+//   0x03/0x04, 0x1C/0x1D, 0x24/0x25 -> metering.energy.total (Wh, accumulated)
+// 0x0B/0x0F are aggregates the METER reports (not a promoted phase and not
+// summed by us), so they describe the whole device and belong to the empty
+// channel label; a frame carrying both them and the per-phase records emits the
+// aggregate top-level and the phases in entries, and no single reading is ever
+// emitted twice. Also top-level, all of it whole-device: the tariff energy
+// registers (activeEnergyImportT1Wh/T2Wh, activeEnergyExportT1Wh/T2Wh,
+// reactiveEnergy*T1Varh/T2Varh) — these are TARIFF BUCKETS of one meter-wide
+// register, not physical positions, so they are deliberately NOT channels[]
+// entries and must not be "fixed" into any; plus activePowerAverageW,
+// dataLoggerIndex, recordTimestamp/recordTimestampPrevious, systemTime,
+// timeStamp/time, errorCode and the meter identity/config extras (meterType,
+// serialNumber, factorNumber, midYear, midVersion, factoryYear,
+// firmwareVersion, manufacturer, hwIndex, currentTransformerPrimary/Secondary,
+// voltageTransformerPrimary/Secondary).
+//
+// Lazy build: records arrive selectively (the datalogger profile decides which
+// signatures a frame carries), so an entry is created only when a record for
+// that position appears, and `channels` is omitted entirely when a frame carries
+// none — an energy-totals frame emits no `channels` key, a phase-current frame
+// emits three entries holding just `power.current`, and a frame with only
+// 0x14 emits a single `phaseA` entry holding just `power.voltage`.
+//
+// Sentinel policy: there is none to honour. The wire format has no
+// absent/disconnected-conductor encoding — every per-conductor record is a plain
+// signed little-endian value with no reserved code, and 0 (unloaded phase, open
+// CT) is a legitimate reading — so no position is ever skipped for its value and
+// a position is missing from `channels` only when the frame carried no record
+// for it. Frame-level corruption is reported as it always was: a CRC-8 mismatch
+// or a truncated/unknown record yields a warning and the records parsed so far.
 
 function emuRound(value, decimals) {
   var f = Math.pow(10, decimals);
   return Math.round(value * f) / f;
+}
+
+// Reserved channels[] positions, in emitted order: the three supply phases then
+// the neutral conductor. Slot index matches the conductor's position in the
+// signature table (L1, L2, L3, N).
+var EMU_POSITION_LABELS = ['phaseA', 'phaseB', 'phaseC', 'neutral'];
+
+// Lazily create (and return) the channels entry for one conductor.
+function emuPosition(slots, idx) {
+  if (slots[idx] === null) {
+    slots[idx] = { channel: EMU_POSITION_LABELS[idx] };
+  }
+  return slots[idx];
+}
+
+// Set one power.* vocabulary key inside a conductor's channels entry.
+function emuPositionPower(slots, idx, key, value) {
+  var entry = emuPosition(slots, idx);
+  if (!entry.power) {
+    entry.power = {};
+  }
+  entry.power[key] = value;
 }
 
 function emuUint32LE(b, off) {
@@ -167,6 +257,10 @@ function decodeUplinkCore(input) {
   var energyImportWh = 0;
   var haveEnergyImport = false;
 
+  // channels[] entries per measured conductor (L1, L2, L3, N), created only
+  // when the frame actually carries a record for that position.
+  var slots = [null, null, null, null];
+
   var i = 4;
   var end = bytes.length - 1; // exclude CRC byte
   while (i < end) {
@@ -225,60 +319,62 @@ function decodeUplinkCore(input) {
         data.reactiveEnergyExportT2Varh = emuUint32LE(bytes, i);
         break;
 
-      // Active power (W).
+      // Active power (W). L123 is the meter's own three-phase total (whole
+      // device); L1/L2/L3 are per-conductor and ride in their channels entry.
       case 0x0b:
         if (!data.power) { data.power = {}; }
         data.power.active = emuInt32LE(bytes, i);
         break;
       case 0x0c:
-        data.activePowerL1W = emuInt32LE(bytes, i);
+        emuPositionPower(slots, 0, 'active', emuInt32LE(bytes, i));
         break;
       case 0x0d:
-        data.activePowerL2W = emuInt32LE(bytes, i);
+        emuPositionPower(slots, 1, 'active', emuInt32LE(bytes, i));
         break;
       case 0x0e:
-        data.activePowerL3W = emuInt32LE(bytes, i);
+        emuPositionPower(slots, 2, 'active', emuInt32LE(bytes, i));
         break;
 
-      // Current (mA -> A).
+      // Current (mA -> A). L123 is the meter's own total; L1/L2/L3/N are the
+      // four measured conductors.
       case 0x0f:
         if (!data.power) { data.power = {}; }
         data.power.current = emuRound(emuInt32LE(bytes, i) / 1000, 3);
         break;
       case 0x10:
-        data.currentL1A = emuRound(emuInt32LE(bytes, i) / 1000, 3);
+        emuPositionPower(slots, 0, 'current', emuRound(emuInt32LE(bytes, i) / 1000, 3));
         break;
       case 0x11:
-        data.currentL2A = emuRound(emuInt32LE(bytes, i) / 1000, 3);
+        emuPositionPower(slots, 1, 'current', emuRound(emuInt32LE(bytes, i) / 1000, 3));
         break;
       case 0x12:
-        data.currentL3A = emuRound(emuInt32LE(bytes, i) / 1000, 3);
+        emuPositionPower(slots, 2, 'current', emuRound(emuInt32LE(bytes, i) / 1000, 3));
         break;
       case 0x13:
-        data.currentNeutralA = emuRound(emuInt32LE(bytes, i) / 1000, 3);
+        emuPositionPower(slots, 3, 'current', emuRound(emuInt32LE(bytes, i) / 1000, 3));
         break;
 
-      // Voltage (V/10 -> V). Use L1-N as the representative RMS voltage.
+      // Voltage (V/10 -> V). All three are phase-to-neutral voltages of one
+      // phase each, L1-N included — no whole-meter voltage exists.
       case 0x14:
-        if (!data.power) { data.power = {}; }
-        data.power.voltage = emuRound(emuInt32LE(bytes, i) / 10, 1);
+        emuPositionPower(slots, 0, 'voltage', emuRound(emuInt32LE(bytes, i) / 10, 1));
         break;
       case 0x15:
-        data.voltageL2NV = emuRound(emuInt32LE(bytes, i) / 10, 1);
+        emuPositionPower(slots, 1, 'voltage', emuRound(emuInt32LE(bytes, i) / 10, 1));
         break;
       case 0x16:
-        data.voltageL3NV = emuRound(emuInt32LE(bytes, i) / 10, 1);
+        emuPositionPower(slots, 2, 'voltage', emuRound(emuInt32LE(bytes, i) / 10, 1));
         break;
 
-      // Power factor (Cos, x0.01).
+      // Power factor (Cos, x0.01) — per phase, extra inside that phase's entry.
       case 0x17:
-        data.powerFactorL1 = emuRound(emuInt8(bytes[i]) / 100, 2);
+        emuPosition(slots, 0).powerFactor = emuRound(emuInt8(bytes[i]) / 100, 2);
         break;
       case 0x18:
-        data.powerFactorL2 = emuRound(emuInt8(bytes[i]) / 100, 2);
+        emuPosition(slots, 1).powerFactor = emuRound(emuInt8(bytes[i]) / 100, 2);
         break;
       case 0x19:
-        data.powerFactorL3 = emuRound(emuInt8(bytes[i]) / 100, 2);
+        emuPosition(slots, 2).powerFactor = emuRound(emuInt8(bytes[i]) / 100, 2);
         break;
 
       // Frequency (Hz, x0.1).
@@ -410,21 +506,22 @@ function decodeUplinkCore(input) {
     data.metering.energy.total = energyImportWh;
   }
 
-  var hasVocab =
-    haveEnergyImport ||
-    (data.power && (
-      data.power.active !== undefined ||
-      data.power.voltage !== undefined ||
-      data.power.current !== undefined
-    ));
-
-  if (!hasVocab) {
-    if (warnings.length > 0) {
-      return { data: data, warnings: warnings };
+  // Emit the conductor entries in fixed order (L1, L2, L3, N), skipping
+  // positions this frame said nothing about; a frame with no per-conductor
+  // record at all carries no `channels` key.
+  var entries = [];
+  var slot;
+  for (slot = 0; slot < slots.length; slot++) {
+    if (slots[slot] !== null) {
+      entries.push(slots[slot]);
     }
-    return { data: data };
+  }
+  if (entries.length > 0) {
+    data.channels = entries;
   }
 
+  // A frame may legitimately carry no vocabulary key at all (meter identity /
+  // diagnostics records only); that still decodes, with any frame-level warning.
   if (warnings.length > 0) {
     return { data: data, warnings: warnings };
   }

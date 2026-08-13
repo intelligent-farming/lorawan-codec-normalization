@@ -8,34 +8,87 @@
       },
       "expected": {
         "data": {
-          "analog": { "voltage": 1.049 },
-          "channelBCurrent": 10.486,
+          "channels": [
+            { "channel": "channelA", "analog": { "voltage": 1.049 }, "alarm": false },
+            { "channel": "channelB", "analog": { "current": 10.486 }, "alarm": true }
+          ],
           "lowBattery": false,
-          "alarmChannelA": false,
-          "alarmChannelB": true,
           "frameCounter": 2,
           "make": "adeunis",
           "model": "analog"
         }
       },
-      "source": "ttn-example"
+      "source": "ttn-example",
+      "_note": "Both interface channels are sub-sensor positions: one channels[] entry each (labels channelA/channelB), each carrying the vocabulary key its own type nibble selects (channel B is no longer a suffixed extra) plus its own alarm bit."
     },
     {
-      "description": "0x42 Analog data: ch A 4-20mA -> 10.486 mA, ch B deactivated",
+      "description": "0x42 Analog data: both channels 0-10V with distinct values (2.5 V / 7.5 V), ch A alarm set, low battery",
+      "input": {
+        "fPort": 1,
+        "bytes": [66, 42, 1, 38, 37, 160, 1, 114, 112, 224]
+      },
+      "expected": {
+        "data": {
+          "channels": [
+            { "channel": "channelA", "analog": { "voltage": 2.5 }, "alarm": true },
+            { "channel": "channelB", "analog": { "voltage": 7.5 }, "alarm": false }
+          ],
+          "lowBattery": true,
+          "frameCounter": 1,
+          "make": "adeunis",
+          "model": "analog"
+        }
+      },
+      "source": "synthetic"
+    },
+    {
+      "description": "0x42 Analog data: ch A 4-20mA -> 10.486 mA, ch B deactivated (no entry)",
       "input": {
         "fPort": 1,
         "bytes": [66, 0, 2, 16, 0, 0, 0, 0, 0, 0]
       },
       "expected": {
         "data": {
-          "analog": { "current": 10.486 },
+          "channels": [
+            { "channel": "channelA", "analog": { "current": 10.486 }, "alarm": false }
+          ],
           "lowBattery": false,
-          "alarmChannelA": false,
-          "alarmChannelB": false,
           "frameCounter": 0,
           "make": "adeunis",
           "model": "analog"
         }
+      },
+      "source": "synthetic",
+      "_note": "Type nibble 0 = deactivated: channel B gets no entry (and no alarm flag)."
+    },
+    {
+      "description": "0x42 Analog data: ch A deactivated, ch B 4-20mA -> 5.243 mA with its alarm set",
+      "input": {
+        "fPort": 1,
+        "bytes": [66, 16, 0, 0, 0, 0, 2, 8, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "channels": [
+            { "channel": "channelB", "analog": { "current": 5.243 }, "alarm": true }
+          ],
+          "lowBattery": false,
+          "frameCounter": 0,
+          "make": "adeunis",
+          "model": "analog"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Skipping a deactivated position never renumbers the remaining one: channel B keeps its own label."
+    },
+    {
+      "description": "0x42 Analog data with both channels deactivated carries no measurement",
+      "input": {
+        "fPort": 1,
+        "bytes": [66, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "errors": ["no active analog channel in frame"]
       },
       "source": "synthetic"
     },

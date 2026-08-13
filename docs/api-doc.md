@@ -134,6 +134,136 @@ A category defines membership with either `requires` or [atLeastOne](#atleastone
 
 ***
 
+### ChannelMeasurement
+
+One [Measurement.channels](#channels-1) entry: a measurement scoped to a single
+sub-sensor (a depth on a multilayer probe, a port on a datalogger). The
+`channel` label discriminates the sub-sensor and must be unique within the
+array. Entries may carry their own `time` and extras; they are leaf
+measurements — nested `history`/`channels` are not allowed.
+
+#### Extends
+
+- [`Measurement`](#measurement)
+
+#### Indexable
+
+> \[`extra`: `string`\]: `unknown`
+
+#### Properties
+
+##### action?
+
+> `optional` **action?**: [`ActionMeasurement`](#actionmeasurement)
+
+###### Inherited from
+
+[`Measurement`](#measurement).[`action`](#action-1)
+
+##### air?
+
+> `optional` **air?**: [`AirMeasurement`](#airmeasurement)
+
+###### Inherited from
+
+[`Measurement`](#measurement).[`air`](#air-1)
+
+##### battery?
+
+> `optional` **battery?**: `number`
+
+Battery voltage (V).
+
+###### Inherited from
+
+[`Measurement`](#measurement).[`battery`](#battery-1)
+
+##### channel
+
+> **channel**: `string`
+
+Sub-sensor label (e.g. `"depth0"`, `"port1"`, `"15cm"`).
+
+##### channels?
+
+> `optional` **channels?**: `undefined`
+
+Not allowed inside a channels entry.
+
+###### Overrides
+
+[`Measurement`](#measurement).[`channels`](#channels-1)
+
+##### history?
+
+> `optional` **history?**: `undefined`
+
+Not allowed inside a channels entry.
+
+###### Overrides
+
+[`Measurement`](#measurement).[`history`](#history-1)
+
+##### metering?
+
+> `optional` **metering?**: [`MeteringMeasurement`](#meteringmeasurement)
+
+###### Inherited from
+
+[`Measurement`](#measurement).[`metering`](#metering-1)
+
+##### position?
+
+> `optional` **position?**: [`PositionMeasurement`](#positionmeasurement)
+
+###### Inherited from
+
+[`Measurement`](#measurement).[`position`](#position-1)
+
+##### rain?
+
+> `optional` **rain?**: [`RainMeasurement`](#rainmeasurement)
+
+###### Inherited from
+
+[`Measurement`](#measurement).[`rain`](#rain-1)
+
+##### soil?
+
+> `optional` **soil?**: [`SoilMeasurement`](#soilmeasurement)
+
+###### Inherited from
+
+[`Measurement`](#measurement).[`soil`](#soil-1)
+
+##### time?
+
+> `optional` **time?**: `string`
+
+Date and time of the measurement (RFC3339).
+
+###### Inherited from
+
+[`Measurement`](#measurement).[`time`](#time-1)
+
+##### water?
+
+> `optional` **water?**: [`WaterMeasurement`](#watermeasurement)
+
+###### Inherited from
+
+[`Measurement`](#measurement).[`water`](#water-1)
+
+##### wind?
+
+> `optional` **wind?**: [`WindMeasurement`](#windmeasurement)
+
+###### Inherited from
+
+[`Measurement`](#measurement).[`wind`](#wind-1)
+
+***
+
 ### DeviceInfo
 
 Public description of a registry device, from its `device.json`.
@@ -209,8 +339,14 @@ TTN provenance, or null for devices with no upstream (e.g. Makerfabs).
 
 A single normalized reading. Mirrors `definitions/vocabulary.schema.json`.
 Datalog/history uplinks place the current reading at the top level and prior
-readings in [Measurement.history](#history); each history entry must carry a
-`time`.
+readings in [Measurement.history](#history-1); each history entry must carry a
+`time`. Multi-channel devices (multilayer probes, multi-port dataloggers)
+place per-sub-sensor groups in [Measurement.channels](#channels-1); each entry must
+carry a unique `channel` label.
+
+#### Extended by
+
+- [`ChannelMeasurement`](#channelmeasurement)
 
 #### Indexable
 
@@ -231,6 +367,14 @@ readings in [Measurement.history](#history); each history entry must carry a
 > `optional` **battery?**: `number`
 
 Battery voltage (V).
+
+##### channels?
+
+> `optional` **channels?**: [`ChannelMeasurement`](#channelmeasurement)[]
+
+Per-sub-sensor readings for multi-channel devices; each entry must carry a
+unique `channel` label. A value emitted inside an entry is not repeated at
+the top level.
 
 ##### history?
 
@@ -678,7 +822,7 @@ Wind speed (m/s).
 
 ### ValidationRule
 
-> **ValidationRule** = `"schema"` \| `"case-collision"` \| `"reserved-key"` \| `"history-time"`
+> **ValidationRule** = `"schema"` \| `"case-collision"` \| `"reserved-key"` \| `"history-time"` \| `"channel-label"`
 
 Why a [ValidationIssue](#validationissue) was raised.
 
@@ -686,7 +830,7 @@ Why a [ValidationIssue](#validationissue) was raised.
 
 ### VERSION
 
-> `const` **VERSION**: `"0.1.0"` = `'0.1.0'`
+> `const` **VERSION**: `"0.2.0"` = `'0.2.0'`
 
 Package version, kept in sync with package.json.
 

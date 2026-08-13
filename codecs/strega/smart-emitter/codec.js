@@ -2,15 +2,83 @@
 // Copyright (C) 2026 Intelligent Farming Foundation
 //
 // Normalized payload codec for strega/smart-emitter (Strega smart actuator; its
-// periodic uplink carries a box temperature and humidity).
+// periodic uplink carries a box temperature and humidity plus the state of two
+// digital inputs).
 //
 // The uplink wire-format decoder is ported verbatim from the upstream Apache-2.0
 // decoder (TheThingsNetwork/lorawan-devices vendor/strega/smart-valve.js,
 // attributed in NOTICE), renamed stregaDecode; the upstream downlink encoder/
-// decoder are renamed to inert helpers (this codec exposes uplink only).
+// decoder are renamed to inert helpers (this codec exposes uplink only). That
+// embedded decoder builds its own capitalised output object (DI0, DI1, Unit1,
+// Unit2, ...) and is left untouched; only the normalization below changed.
 // decodeUplinkCore adds the normalization: box temperature/humidity ->
 // air.temperature / air.relativeHumidity (climate); battery % -> batteryPercent;
-// valve/actuator/leak/fraud/DI status and counters travel as camelCase extras.
+// valve/actuator/leak/fraud status and counters travel as camelCase extras; the
+// two digital inputs ride in the reserved `channels` array.
+//
+// Multi-position output (`channels[]`, see AUTHORING.md "Multi-channel
+// devices"). The status nibble carries TWO digital inputs -- upstream's DI_0
+// (status.substr(4,1)) and DI_1 (status.substr(3,1)) -- the same quantity at two
+// sub-sensor positions of one device, so each rides in the reserved `channels`
+// array instead of the suffixed `dI0` / `dI1` extras this codec used to emit:
+//   { channel: "di0", di: <bit> }, { channel: "di1", di: <bit> }
+// Label scheme: the vendor's own term (`DI_0` / `DI_1`) with the vendor's own
+// index. Unlike most devices converted in this pass, Strega already numbers its
+// inputs from ZERO, so no renumbering was needed: `di0` IS upstream DI_0 and
+// `di1` IS upstream DI_1, and no off-by-one caveat applies to old data.
+//
+// Per-entry value: the raw status bit, preserved unchanged, as the unsuffixed
+// per-entry extra `di` (the string "0" or "1" -- upstream slices the bit out of
+// the status byte as a character and this codec has always passed it through).
+// It is deliberately NOT mapped to the `action.contactState` vocabulary key the
+// converted dry-contact siblings use (netvox/r311ca, netvox/r831d,
+// atim/acw-dind*), because nothing available fixes this bit's POLARITY:
+//   * upstream gives DI_0 / DI_1 no open/closed meaning -- it returns the bit
+//     verbatim (`DI0 : DI_0`) with no mapping, table or comment;
+//   * the TTN codec-yaml snapshot in reference/ carries no value labels, and its
+//     single example has both bits "0", so no example disambiguates them;
+//   * the vendor mixes polarities inside this very status byte -- the Valve bit
+//     is a position while Tamper/Cable/Leakage/Fraud are alarm asserts -- and
+//     the sibling strega/motorized-valve reuses this same DI_1 bit as its
+//     open-limit-switch flag (`LSO`), so the firmware repurposes these bits per
+//     model.
+// Claiming "closed" for "1" would invent a truth the wire format does not state
+// (a dry-contact input behind a pull-up reads 1 when the contact is OPEN), so
+// the existing truth value is kept as-is. The declared category did NOT block
+// the vocabulary key: `climate` (definitions/categories/climate.json) requires
+// only air.temperature + air.relativeHumidity, has no closed-world key
+// restriction, and both required keys stay top-level -- so membership resolves
+// at the top level without looking at entries -- while validate() accepts an
+// extra vocabulary key inside an entry. The blocker is polarity alone: once the
+// Strega payload spec documents it, swap the entry value for
+// `action: { contactState: ... }` here; labels and vector shape need no change.
+//
+// Whole-device readings stay TOP-LEVEL and are never duplicated inside an entry:
+// `batteryPercent`, `air.temperature` / `air.relativeHumidity`, and the
+// camelCase extras `actuator` (valve/relay position -- actuator state the
+// network server commanded, not a measured position), `powerState`, `cable`,
+// `tamper`, `fraud`, `leak`, `vt`, `class`, `counterValue`, `ana` and the ack
+// fields. Each is whole-device or actuator state, or a distinct quantity -- not
+// one position of a shared quantity -- so none becomes a channels entry.
+// `unit1` / `unit2` stay top-level too and are NOT positions despite the
+// numbering: they are the uplink-frequency time-UNIT flags of the port-11
+// configuration ack, each paired with `time1` / `time2` in the embedded decoder
+// (unit1+time1, unit2+time2 = unit selector plus interval), i.e. device
+// configuration rather than two measurements of one quantity. These were triaged
+// out of the channels conversion deliberately -- please do not "fix" them into
+// entries.
+//
+// Sentinel policy: there is NO disconnected-input sentinel, and none is
+// invented. A status bit is always a valid state ("0" or "1"), the frame
+// reserves no third value, and upstream defines no fault code for DI_0 / DI_1 --
+// so no entry is ever skipped on account of its reading. In practice both
+// entries always appear together, because every frame shape that decodes the
+// status nibble (V3/V4 battery-powered, externally powered, V4 class variation)
+// assigns DI_0 and DI_1 in the same block. `channels` is nevertheless built
+// LAZILY: a frame shape that never populated the status nibble (e.g. the
+// counter/analog ack frames, where upstream leaves both variables undefined)
+// emits no `channels` key at all, rather than an empty array or fabricated
+// states.
 
 function stregaDecode(input) {
   var ports = input.fPort;
@@ -628,6 +696,9 @@ function decodeUplinkCore(input) {
   if (raw && raw.errors && raw.errors.length) { return { errors: raw.errors }; }
   var d = (raw && raw.data) || {};
   var data = {};
+  var di0;
+  var di1;
+  var channels;
   var k;
   for (k in d) {
     if (!Object.prototype.hasOwnProperty.call(d, k)) { continue; }
@@ -637,9 +708,20 @@ function decodeUplinkCore(input) {
     if (k === "Hygro") { if (typeof val === "number") { data.air = data.air || {}; data.air.relativeHumidity = val; } continue; }
     if (k === "Bat") { if (typeof val === "number") { data.batteryPercent = val; } continue; }
     if (k === "Power") { data.powerState = val; continue; }
+    // The two digital inputs are sub-sensor positions: held aside here and
+    // emitted as channels[] entries below, never as top-level extras.
+    if (k === "DI0") { di0 = val; continue; }
+    if (k === "DI1") { di1 = val; continue; }
     var ck = k.charAt(0).toLowerCase() + k.slice(1);
     data[ck] = val;
   }
+  // One entry per digital input, labelled with the vendor's own zero-based term.
+  // Built lazily: a frame that never decoded the status nibble emits no
+  // `channels` key. No sentinel exists to skip a position on (see header).
+  channels = [];
+  if (di0 !== undefined) { channels.push({ channel: "di0", di: di0 }); }
+  if (di1 !== undefined) { channels.push({ channel: "di1", di: di1 }); }
+  if (channels.length > 0) { data.channels = channels; }
   return { data: data };
 }
 

@@ -9,7 +9,10 @@
  * plus device-specific camelCase extras (e.g. `lowBattery`). It is derived
  * deterministically by running the codec in a vm sandbox over its vectors; the
  * `history` container is excluded and its element keys merged into the top level
- * (they mirror the current reading).
+ * (they mirror the current reading). The `channels` container is likewise
+ * excluded and its entry keys merged (minus each entry's `channel` label — the
+ * sub-sensor discriminator, not telemetry), so `devicesProviding('soil.moisture')`
+ * finds multilayer probes whose readings live only inside channel entries.
  *
  * Used as a module (by the scaffold) and as a CLI (by the build):
  *   node scripts/compute-provides.js               # write provides for every device
@@ -49,7 +52,24 @@ function collectFromData(data, acc) {
     if (IDENTITY_KEYS.has(key)) continue; // make/model are device identity, not telemetry
     const val = data[key];
     if (key === 'history' && Array.isArray(val)) {
-      for (const h of val) if (isPlainObject(h)) leaves(h, '', acc);
+      // History entries mirror the current reading (and may carry their own
+      // channels): merge their keys at the top level.
+      for (const h of val) if (isPlainObject(h)) collectFromData(h, acc);
+      continue;
+    }
+    if (key === 'channels' && Array.isArray(val)) {
+      // Channel entries hold the same metrics as top-level readings, scoped to
+      // a sub-sensor: merge their keys, minus the `channel` label (the
+      // sub-sensor discriminator, not telemetry). Collected through
+      // collectFromData so identity keys stay excluded there too.
+      for (const c of val) {
+        if (!isPlainObject(c)) continue;
+        const entry = {};
+        for (const ck of Object.keys(c)) {
+          if (ck !== 'channel') entry[ck] = c[ck];
+        }
+        collectFromData(entry, acc);
+      }
       continue;
     }
     if (isPlainObject(val)) leaves(val, key, acc);

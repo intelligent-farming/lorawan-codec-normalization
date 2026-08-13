@@ -1,7 +1,7 @@
 {
   "uplink": [
     {
-      "description": "Status report: 3.6 V, channel-1 25.3 °C, channel-2 36.5 °C",
+      "description": "Status report: 3.6 V, gang0 25.3 °C, gang1 36.5 °C",
       "input": {
         "fPort": 6,
         "bytes": [1, 122, 1, 36, 0, 253, 1, 109, 0, 0, 0]
@@ -11,15 +11,17 @@
           "make": "netvox",
           "model": "r730ct2",
           "battery": 3.6,
-          "temperature": 25.3,
-          "temperature2": 36.5
+          "channels": [
+            { "channel": "gang0", "temperature": 25.3 },
+            { "channel": "gang1", "temperature": 36.5 }
+          ]
         }
       },
       "source": "ttn-example",
-      "_note": "TTN example status report (netvox r730ct2 codec yaml, Apache-2.0). Upstream oracle: Volt 3.6, Temp1 25.3, Temp2 36.5. byte3 0x24 -> 3.6 V; bytes[4..5]=0x00FD=253 -> 25.3 °C; bytes[6..7]=0x016D=365 -> 36.5 °C."
+      "_note": "TTN example status report (netvox r730ct2 codec yaml, Apache-2.0). Upstream oracle: Volt 3.6, Temp1 25.3, Temp2 36.5. byte3 0x24 -> 3.6 V; bytes[4..5]=0x00FD=253 -> gang0 25.3 °C; bytes[6..7]=0x016D=365 -> gang1 36.5 °C, each as its own channels[] entry."
     },
     {
-      "description": "Status report with low battery and a negative channel-1 reading: 2.9 V (low), channel-1 -1.0 °C, channel-2 40.0 °C",
+      "description": "Status report with low battery and a negative gang0 reading: 2.9 V (low), gang0 -1.0 °C, gang1 40.0 °C",
       "input": {
         "fPort": 6,
         "bytes": [1, 122, 1, 157, 255, 246, 1, 144, 0, 0, 0]
@@ -30,12 +32,34 @@
           "model": "r730ct2",
           "lowBattery": true,
           "battery": 2.9,
-          "temperature": -1.0,
-          "temperature2": 40.0
+          "channels": [
+            { "channel": "gang0", "temperature": -1.0 },
+            { "channel": "gang1", "temperature": 40.0 }
+          ]
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic in-bounds input. byte3 0x9D = 0x80 | 29 -> battery 2.9 V + lowBattery. bytes[4..5]=0xFFF6 signed -10 -> -1.0 °C; bytes[6..7]=0x0190=400 -> 40.0 °C."
+      "_note": "Synthetic in-bounds input. byte3 0x9D = 0x80 | 29 -> battery 2.9 V + lowBattery (both whole-device, top-level). bytes[4..5]=0xFFF6 signed -10 -> gang0 -1.0 °C; bytes[6..7]=0x0190=400 -> gang1 40.0 °C."
+    },
+    {
+      "description": "Both gangs across the T-type range: 3.5 V, gang0 -20.5 °C, gang1 150.0 °C",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 122, 1, 35, 255, 51, 5, 220, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "r730ct2",
+          "battery": 3.5,
+          "channels": [
+            { "channel": "gang0", "temperature": -20.5 },
+            { "channel": "gang1", "temperature": 150 }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic two-gang input with widely separated per-gang values, both inside the T-type range. byte3 0x23 -> 3.5 V; bytes[4..5]=0xFF33 signed -205 -> gang0 -20.5 °C; bytes[6..7]=0x05DC=1500 -> gang1 150.0 °C."
     },
     {
       "description": "Startup version frame (report type 0x00) carries no measurement",

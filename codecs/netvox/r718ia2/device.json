@@ -10,8 +10,7 @@
   ],
   "provides": [
     "analog.voltage",
-    "battery",
-    "voltage2"
+    "battery"
   ],
   "variantOf": null,
   "downlink": {

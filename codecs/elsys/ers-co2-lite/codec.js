@@ -21,6 +21,46 @@
 // distance, sound, occupancy, water leak, TVOC, etc.) are emitted as camelCase
 // extras. The ERS CO2 Lite hardware reports temperature, humidity and CO2; the
 // rest of the Elsys type table is ported for faithfulness and robustness.
+//
+// External ports -> reserved `channels[]` (see AUTHORING.md "Multi-channel
+// devices"). Elsys carries the external-port index in the TLV type byte itself,
+// and this decoder covers all FIVE external banks at BOTH positions -- every one
+// of them is a numbered pair:
+//     bank                    port 1 type   port 2 type
+//     analog input (mV)          0x08          0x18
+//     pulse counter, relative    0x0a          0x16
+//     pulse counter, absolute    0x0b          0x17
+//     external temperature       0x0c          0x19
+//     external digital input     0x0d          0x1a
+// The two ports are the same physical quantities at two physical positions, so
+// each port becomes one `channels[]` entry instead of a suffixed extra. Entry
+// labels use the vendor's own term plus a 0-based index: `port0` = Elsys port 1
+// (types 0x08/0x0a/0x0b/0x0c/0x0d), `port1` = Elsys port 2 (types
+// 0x18/0x16/0x17/0x19/0x1a).
+//
+// The port index therefore leaves the key name and lives only in the entry
+// label, so both entries carry the *same* keys -- mappings are unchanged from
+// the pre-channels codec, only relocated. Note that upstream's *unnumbered*
+// names for the port-1 banks (`pulseAbs` for 0x0b, `digital` for 0x0d,
+// `externalTemperature` for 0x0c) are aliases for port 1, not separate sensors,
+// so they move into `port0`:
+//     analog1 / analog2                  -> entry `analogMv` (raw mV; the bare
+//        name `analog` would collide with the vocabulary `analog.*` group, and
+//        the value is millivolts, not the group's volts)
+//     pulse1 / pulse2                    -> entry `pulseRelative`
+//     pulseAbs / pulseAbs2               -> entry `pulseAbsolute`
+//     externalTemperature / ...2         -> entry `externalTemperature`
+//     digital / digital2                 -> entry `digital` (raw 1/0)
+// Whole-device readings stay top-level: battery, air.* (temperature,
+// relativeHumidity, co2, lightIntensity, pressure), accelerationX/Y/Z,
+// action.motion, accMotion, distance, occupancy, waterleak, soundPeak /
+// soundAvg, tvoc. Nothing is emitted both places.
+//
+// Sentinel/absent-port policy: an Elsys TLV stream is sparse -- a port's TLV is
+// simply absent when nothing is attached to it (there is no disconnected
+// sentinel value), so entries are built lazily on first sight. A port that
+// reported no reading gets no entry, and `channels` is omitted entirely when
+// neither port reported. Entry order follows the payload.
 
 function round(value, decimals) {
   var f = Math.pow(10, decimals);
@@ -56,6 +96,20 @@ function decodeUplinkCore(input) {
   var action = {};
   var motion = {};
   var recognized = false;
+
+  // One `channels[]` entry per external port, created on first sight so entry
+  // order follows the payload and an unused port produces no entry.
+  var channels = [];
+  var portSlot = {};
+
+  function portFor(port) {
+    var label = 'port' + port;
+    if (portSlot[label] === undefined) {
+      portSlot[label] = channels.length;
+      channels.push({ channel: label });
+    }
+    return channels[portSlot[label]];
+  }
 
   var i = 0;
   while (i < bytes.length) {
@@ -102,28 +156,28 @@ function decodeUplinkCore(input) {
       i += 3;
       recognized = true;
     } else if (type === 0x08) {
-      // Analog input 1: 2 bytes unsigned, mV. No vocab key -> extra.
-      data.analog1 = u16be(bytes[i + 1], bytes[i + 2]);
+      // ANALOG1: external port 1 analog input, 2 bytes unsigned, mV.
+      portFor(0).analogMv = u16be(bytes[i + 1], bytes[i + 2]);
       i += 3;
       recognized = true;
     } else if (type === 0x0a) {
-      // Pulse counter 1 (relative): 2 bytes unsigned. No vocab key -> extra.
-      data.pulse1 = u16be(bytes[i + 1], bytes[i + 2]);
+      // PULSE1: external port 1 relative pulse count, 2 bytes unsigned.
+      portFor(0).pulseRelative = u16be(bytes[i + 1], bytes[i + 2]);
       i += 3;
       recognized = true;
     } else if (type === 0x0b) {
-      // Pulse counter 1 absolute: 4 bytes unsigned. No vocab key -> extra.
-      data.pulseAbs = u32be(bytes[i + 1], bytes[i + 2], bytes[i + 3], bytes[i + 4]);
+      // PULSE1_ABS: external port 1 absolute pulse count, 4 bytes unsigned.
+      portFor(0).pulseAbsolute = u32be(bytes[i + 1], bytes[i + 2], bytes[i + 3], bytes[i + 4]);
       i += 5;
       recognized = true;
     } else if (type === 0x0c) {
-      // External temperature 1: 2 bytes signed, tenths of a degree. No vocab key.
-      data.externalTemperature = round(s16be(bytes[i + 1], bytes[i + 2]) / 10, 1);
+      // EXT_TEMP1: external port 1 probe, 2 bytes signed, tenths of a degree.
+      portFor(0).externalTemperature = round(s16be(bytes[i + 1], bytes[i + 2]) / 10, 1);
       i += 3;
       recognized = true;
     } else if (type === 0x0d) {
-      // External digital input: 1 byte (0/1). No vocab key -> extra.
-      data.digital = bytes[i + 1];
+      // EXT_DIGITAL: external port 1 digital input, 1 byte (0/1).
+      portFor(0).digital = bytes[i + 1];
       i += 2;
       recognized = true;
     } else if (type === 0x0e) {
@@ -158,28 +212,28 @@ function decodeUplinkCore(input) {
       i += 3;
       recognized = true;
     } else if (type === 0x16) {
-      // Pulse counter 2 (relative): 2 bytes unsigned. No vocab key -> extra.
-      data.pulse2 = u16be(bytes[i + 1], bytes[i + 2]);
+      // PULSE2: external port 2 relative pulse count, 2 bytes unsigned.
+      portFor(1).pulseRelative = u16be(bytes[i + 1], bytes[i + 2]);
       i += 3;
       recognized = true;
     } else if (type === 0x17) {
-      // Pulse counter 2 absolute: 4 bytes unsigned. No vocab key -> extra.
-      data.pulseAbs2 = u32be(bytes[i + 1], bytes[i + 2], bytes[i + 3], bytes[i + 4]);
+      // PULSE2_ABS: external port 2 absolute pulse count, 4 bytes unsigned.
+      portFor(1).pulseAbsolute = u32be(bytes[i + 1], bytes[i + 2], bytes[i + 3], bytes[i + 4]);
       i += 5;
       recognized = true;
     } else if (type === 0x18) {
-      // Analog input 2: 2 bytes unsigned, mV. No vocab key -> extra.
-      data.analog2 = u16be(bytes[i + 1], bytes[i + 2]);
+      // ANALOG2: external port 2 analog input, 2 bytes unsigned, mV.
+      portFor(1).analogMv = u16be(bytes[i + 1], bytes[i + 2]);
       i += 3;
       recognized = true;
     } else if (type === 0x19) {
-      // External temperature 2: 2 bytes signed, tenths of a degree. No vocab key.
-      data.externalTemperature2 = round(s16be(bytes[i + 1], bytes[i + 2]) / 10, 1);
+      // EXT_TEMP2: external port 2 probe, 2 bytes signed, tenths of a degree.
+      portFor(1).externalTemperature = round(s16be(bytes[i + 1], bytes[i + 2]) / 10, 1);
       i += 3;
       recognized = true;
     } else if (type === 0x1a) {
-      // External digital input 2: 1 byte (0/1). No vocab key -> extra.
-      data.digital2 = bytes[i + 1];
+      // EXT_DIGITAL2: external port 2 digital input, 1 byte (0/1).
+      portFor(1).digital = bytes[i + 1];
       i += 2;
       recognized = true;
     } else if (type === 0x1c) {
@@ -206,6 +260,10 @@ function decodeUplinkCore(input) {
   }
   if (action.motion !== undefined) {
     data.action = action;
+  }
+  // Omit `channels` entirely when neither external port reported.
+  if (channels.length > 0) {
+    data.channels = channels;
   }
 
   return { data: data };

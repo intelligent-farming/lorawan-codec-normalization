@@ -15,13 +15,35 @@
 // verbatim from the upstream SENSORS table; the results are then mapped onto
 // the shared normalized vocabulary. Upstream normalizeUplink is NOT copied.
 //
-// Mapping (flag bit order, LSB first):
-//   bit0 channel-0 input (1 word): x[0] !== 0 -> `action.contactState` =
-//     "closed", else "open" (dry contact: 1 = closed, 0 = open).
-//   bit1 channel-1 input (1 word): mapped to the extra contactState2 with the
-//     same convention (the vocabulary models a single contact).
-//   bit2 battery (1 word): x[0] / 1000 -> V -> `battery`.
-// Protocol header fields are emitted as the extras protocolVersion / deviceId.
+// Sensor blocks (flag bit order, LSB first), from the upstream SENSORS table:
+//   bit0 channel-0 input (1 word), bit1 channel-1 input (1 word) — each the raw
+//     input word x[0] (dry contact: 1 = closed, 0 = open).
+//   bit2 battery (1 word): x[0] / 1000 -> V.
+//
+// Mapping: the two dry-contact terminals are sub-sensor positions of one device
+// reporting the same physical quantity, so each present channel becomes one entry
+// in the reserved `channels` array (see AUTHORING.md "Multi-channel devices")
+// instead of the suffixed extra (`contactState2`) this codec used to emit.
+// Entries are labelled with the vendor's own channel term plus the wire index —
+// `channel0` / `channel1`, after upstream's `ch0_input` / `ch1_input` field names
+// — and each carries that channel's `action.contactState`, with the unchanged
+// convention x[0] !== 0 -> "closed", else "open". `action.contactState`
+// therefore appears ONLY inside entries: neither terminal is a whole-device
+// reading, and there is no meaningful way to reduce two contacts to one state.
+// Whole-device battery voltage (already volts) stays top-level as `battery`, as
+// do the protocol-header framing diagnostics, emitted as the extras
+// protocolVersion / deviceId.
+//
+// Presence / sentinel policy: the Decentlab sensor-flags bitmap is the presence
+// indicator — a channel whose flag bit is clear contributes no word to the
+// payload and gets no entry, and entry labels follow the wire index rather than
+// the array position, so a channel-1-only frame (flags 0x0006) still reports
+// `channel1`. There is no in-band sentinel value: an input word of 0 is a real
+// reading ("open"), not a disconnected marker. The `channels` key is omitted when
+// neither input block is present, and such a frame — e.g. the battery-only frame
+// of upstream example 2 (flags 0x0004) — is rejected with the error
+// `no digital-input field in payload`, exactly as before this codec grew
+// `channels[]`.
 
 function round(value, decimals) {
   var f = Math.pow(10, decimals);
@@ -79,27 +101,28 @@ function decodeUplinkCore(input) {
   data.protocolVersion = version;
   data.deviceId = deviceId;
 
-  var hasContact = false;
-
-  // bit0: channel-0 input -> contact state.
-  if (words[0]) {
-    data.action = { contactState: contactState(words[0][0]) };
-    hasContact = true;
+  // bit0 / bit1: the two dry-contact digital inputs — one channels entry per
+  // channel whose flag bit is set, labelled by the wire channel index (never
+  // renumbered to close a gap).
+  var channels = [];
+  var c;
+  for (c = 0; c < 2; c++) {
+    if (words[c]) {
+      channels.push({
+        channel: 'channel' + c,
+        action: { contactState: contactState(words[c][0]) }
+      });
+    }
   }
 
-  // bit1: channel-1 input -> extra contact state.
-  if (words[1]) {
-    data.contactState2 = contactState(words[1][0]);
-    hasContact = true;
+  if (channels.length === 0) {
+    return { errors: ['no digital-input field in payload'] };
   }
+  data.channels = channels;
 
-  // bit2: battery voltage (already volts).
+  // bit2: battery voltage (already volts), a whole-device reading.
   if (words[2]) {
     data.battery = round(words[2][0] / 1000, 3);
-  }
-
-  if (!hasContact) {
-    return { errors: ['no digital-input field in payload'] };
   }
 
   return { data: data };

@@ -1,7 +1,7 @@
 {
   "uplink": [
     {
-      "description": "Status report: 3.6 V, channel-1 5.1 mA, channel-2 10.3 mA",
+      "description": "Status report: 3.6 V, input0 5.1 mA, input1 10.3 mA",
       "input": {
         "fPort": 6,
         "bytes": [1, 68, 1, 36, 5, 10, 1, 3, 0, 0, 0]
@@ -11,12 +11,34 @@
           "make": "netvox",
           "model": "r718ka2",
           "battery": 3.6,
-          "analog": { "current": 5.1 },
-          "current2": 10.3
+          "channels": [
+            { "channel": "input0", "analog": { "current": 5.1 } },
+            { "channel": "input1", "analog": { "current": 10.3 } }
+          ]
         }
       },
       "source": "ttn-example",
-      "_note": "TTN example status report (netvox r718ka2 codec yaml, Apache-2.0). Upstream oracle: Volt 3.6, Current_1 5, Current_2 10, FineCurrent_1 0.1, FineCurrent_2 0.3. byte3 0x24 -> 3.6 V; byte4=5 + byte6=1 (0.1) -> analog.current 5.1 mA; byte5=10 + byte7=3 (0.1) -> current2 10.3 mA."
+      "_note": "TTN example status report (netvox r718ka2 codec yaml, Apache-2.0). Upstream oracle: Volt 3.6, Current_1 5, Current_2 10, FineCurrent_1 0.1, FineCurrent_2 0.3. byte3 0x24 -> 3.6 V; interleaved layout: byte4=5 + byte6=1 (0.1) -> input0 analog.current 5.1 mA; byte5=10 + byte7=3 (0.1) -> input1 analog.current 10.3 mA. Each input loop's reading is a channels[] entry; battery stays top-level. Satisfies analog-interface."
+    },
+    {
+      "description": "Both loops across the 4-20 mA span: 3.6 V, input0 4.2 mA, input1 19.7 mA",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 68, 1, 36, 4, 19, 2, 7, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "r718ka2",
+          "battery": 3.6,
+          "channels": [
+            { "channel": "input0", "analog": { "current": 4.2 } },
+            { "channel": "input1", "analog": { "current": 19.7 } }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic two-loop frame in the TTN status-report shape (device id 0x44), pinning the interleaved byte order: the per-channel integer mA sit side by side in bytes[4]/bytes[5] and the 0.1 mA parts in bytes[6]/bytes[7], so each entry reads a straddling pair. Upstream oracle semantics: Current_1=4 + FineCurrent_1=0.2 -> input0 4.2 mA (loop low end); Current_2=19 + FineCurrent_2=0.7 -> input1 19.7 mA (loop high end). Values are far apart so a transposed pair would fail."
     },
     {
       "description": "Startup version frame (report type 0x00) carries no measurement",

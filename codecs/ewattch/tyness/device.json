@@ -16,12 +16,10 @@
     "temperature"
   ],
   "provides": [
-    "channel",
     "metering.energy.total",
     "power.active",
     "power.current",
-    "power.voltage",
-    "socket"
+    "power.voltage"
   ],
   "variantOf": null,
   "downlink": {

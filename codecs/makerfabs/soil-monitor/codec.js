@@ -17,13 +17,25 @@
 //   bytes[6..7]  soil temperature, signed, 0.1 C       -> soil.temperature (C)
 //   bytes[8..9]  soil electrical conductivity (uS/cm)  -> soil.ec (dS/m, /1000)
 //   bytes[10..11] soil pH, 0.1 resolution              -> soil.pH
-//   bytes[12..15] transmit interval, milliseconds      -> transmitInterval (s)
+//   bytes[12..15] reporting interval                    -> reportingInterval (s)
 //
 // Upstream emits the integrated probe's moisture/temperature channels as the
 // generic field names "humi"/"temp"; on this soil probe they are the soil
 // volumetric water content and soil temperature, so they normalize to the
 // `soil.*` vocabulary. Conductivity is uS/cm on the wire and is divided by 1000
 // to the vocabulary's dS/m (see definitions/categories/soil-monitor.json).
+
+// UNRESOLVED — the scale of `reportingInterval`. The vendor's own downlink
+// Encoder in reference/upstream-codec.js writes this SAME 4-byte big-endian field
+// as SECONDS (minutes * 60, floored at 300), while its uplink decoder divides the
+// field by 1000, i.e. reads it back as milliseconds. Both readings cannot be
+// right, and nothing in the vendor material settles it. This codec keeps
+// upstream's /1000 rather than silently picking the other reading, and the
+// synthetic vectors carry wire values scaled to match — so if real hardware turns
+// out to report seconds, the divisor here and those vector inputs move together
+// (a device set to the 3600 s the vectors describe would then decode as 3.6).
+// Confirm against a capture from a real unit before trusting this value.
+// It is a camelCase extra, so no category membership or vocabulary key rides on it.
 
 function round(value, decimals) {
   var f = Math.pow(10, decimals);
@@ -67,11 +79,14 @@ function decodeUplinkCore(input) {
 
   data.soil = soil;
 
-  // bytes[12..15]: transmit interval, milliseconds -> seconds. Device-specific
-  // diagnostic; not in the vocabulary, so emitted as a camelCase extra.
-  var intervalMs =
+  // bytes[12..15]: reporting interval. Device-specific diagnostic; not in the
+  // vocabulary, so emitted as a camelCase extra. The name is shared across the
+  // whole AgroSense family (4-channel-adc, leaf-moisture-sn-3001, pipe-pressure,
+  // soil-monitor) — every one of them decodes this same 4-byte word, so they must
+  // not each invent their own key for it.
+  var intervalRaw =
     bytes[12] * 16777216 + bytes[13] * 65536 + bytes[14] * 256 + bytes[15];
-  data.transmitInterval = round(intervalMs / 1000, 3);
+  data.reportingInterval = round(intervalRaw / 1000, 3);
 
   return { data: data };
 }

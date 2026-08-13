@@ -1,8 +1,8 @@
 {
-  "_note": "Oracle vectors. Wire-format byte alignment (Elsys typed-TLV) is taken from reference/upstream-codec.js (DecodeElsysPayload); expected.data is the authored normalization to the shared vocabulary (action.contactState for the reed/door switch, action.motion for the accelerometer movement count). Vector 1 uses the upstream TTN example input (ACC + PULSE1 + PULSE1_ABS -> extras only, no door/motion fields present in that capture). Vectors 2-3 are synthetic door + motion captures; vectors 4-5 are error inputs.",
+  "_note": "Oracle vectors. Wire-format byte alignment (Elsys typed-TLV) is taken from reference/upstream-codec.js (DecodeElsysPayload); expected.data is the authored normalization to the shared vocabulary (action.contactState for a port's dry contact — the reed/door switch on port 1 — scoped into that port's `channels[]` entry, action.motion at the top level for the whole-device accelerometer movement count). Vector 1 uses the upstream TTN example input (ACC + PULSE1 + PULSE1_ABS: whole-device axes top-level, port-1 pulse counters in the `port0` entry, no door/motion fields present in that capture). Vectors 2-3 are synthetic door + motion captures; vector 4 exercises both external ports; vectors 5-6 are error inputs.",
   "uplink": [
     {
-      "description": "EMS Door accelerometer (raw X/Y/Z) and pulse counters -> extras only",
+      "description": "EMS Door accelerometer (raw X/Y/Z) top-level plus port 1 pulse counters",
       "input": {
         "fPort": 1,
         "bytes": [3, 1, 39, 5, 10, 17, 1, 11, 0, 10, 0, 17]
@@ -14,14 +14,19 @@
           "x": 1,
           "y": 39,
           "z": 5,
-          "pulse1": 4353,
-          "pulseAbs": 655377
+          "channels": [
+            {
+              "channel": "port0",
+              "pulseRelative": 4353,
+              "pulseAbsolute": 655377
+            }
+          ]
         }
       },
       "source": "ttn-example"
     },
     {
-      "description": "Door open (reed digital=1) with 3 movement events",
+      "description": "Door open (port 1 reed digital=1) with 3 movement events",
       "input": {
         "fPort": 1,
         "bytes": [13, 1, 5, 3]
@@ -31,15 +36,20 @@
           "make": "elsys",
           "model": "ems-door",
           "action": {
-            "contactState": "open",
             "motion": { "detected": true, "count": 3 }
-          }
+          },
+          "channels": [
+            {
+              "channel": "port0",
+              "action": { "contactState": "open" }
+            }
+          ]
         }
       },
       "source": "synthetic"
     },
     {
-      "description": "Door closed (reed digital=0) with no movement",
+      "description": "Door closed (port 1 reed digital=0) with no movement",
       "input": {
         "fPort": 1,
         "bytes": [13, 0, 5, 0]
@@ -49,12 +59,49 @@
           "make": "elsys",
           "model": "ems-door",
           "action": {
-            "contactState": "closed",
             "motion": { "detected": false, "count": 0 }
-          }
+          },
+          "channels": [
+            {
+              "channel": "port0",
+              "action": { "contactState": "closed" }
+            }
+          ]
         }
       },
       "source": "synthetic"
+    },
+    {
+      "description": "Both external ports populated: port 1 open contact + probe temperature, port 2 closed contact + probe temperature + pulse count",
+      "input": {
+        "fPort": 1,
+        "bytes": [5, 2, 7, 14, 16, 12, 0, 210, 13, 1, 22, 0, 7, 25, 255, 236, 26, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "elsys",
+          "model": "ems-door",
+          "battery": 3.6,
+          "action": {
+            "motion": { "detected": true, "count": 2 }
+          },
+          "channels": [
+            {
+              "channel": "port0",
+              "externalTemperature": 21,
+              "action": { "contactState": "open" }
+            },
+            {
+              "channel": "port1",
+              "pulseRelative": 7,
+              "externalTemperature": -2,
+              "action": { "contactState": "closed" }
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds Elsys TLV frame exercising BOTH external ports with distinct values, including two quantities on each port. Raw decode confirmed via the ORACLE method against reference/upstream-codec.js: {motion:2, vdd:3600, externalTemperature:21, digital:1, pulse2:7, externalTemperature2:-2, digital2:0}. expected.data is the authored normalization: MOTION and VDD are whole-device (action.motion / battery = mV/1000, top-level); each port's dry contact maps to action.contactState inside that port's entry (digital!==0 -> open), and the port-2 probe/pulse readings use the same port-index-free key names as port 1."
     },
     {
       "description": "Empty payload -> error",

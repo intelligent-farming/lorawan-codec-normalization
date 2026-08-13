@@ -1,7 +1,7 @@
 {
   "uplink": [
     {
-      "description": "Onboard climate: battery 3.60 V, temperature 23.5 C, humidity 51.5 %",
+      "description": "Onboard climate: battery 3.60 V, temperature 23.5 C, humidity 51.5 % (no input field -> no channels)",
       "input": {
         "fPort": 10,
         "bytes": [0, 255, 1, 104, 3, 103, 0, 235, 4, 104, 103]
@@ -18,10 +18,10 @@
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic in-bounds frame; expected values produced by running reference/upstream-codec.js (battery_voltage signed16*0.01, temperature signed16*0.1, relative_humidity u8*0.5) and mapping temperature->air.temperature, relative_humidity->air.relativeHumidity, battery_voltage(V)->battery."
+      "_note": "Synthetic in-bounds frame; expected values produced by running reference/upstream-codec.js (battery_voltage signed16*0.01, temperature signed16*0.1, relative_humidity u8*0.5) and mapping temperature->air.temperature, relative_humidity->air.relativeHumidity, battery_voltage(V)->battery. The frame carries no input TLV, so the lazily-built `channels` key is omitted entirely — the common case for this device."
     },
     {
-      "description": "Full I/O sweep: battery, outputs, negative temperature, humidity, digital/analog inputs, pulse count, MCU temperature",
+      "description": "Full I/O sweep: battery, outputs, negative temperature, humidity, all three input terminals (contact + counter, 4-20 mA loop, 0-10 V), MCU temperature",
       "input": {
         "fPort": 10,
         "bytes": [0, 255, 1, 104, 1, 1, 1, 2, 1, 0, 3, 103, 255, 206, 4, 104, 90, 5, 0, 1, 6, 2, 39, 16, 7, 2, 3, 232, 8, 4, 0, 42, 9, 103, 1, 44]
@@ -31,10 +31,6 @@
           "make": "tektelic",
           "model": "t00053xx-industrial-transceiver",
           "battery": 3.6,
-          "input1": 1,
-          "input2": 0.01,
-          "input3": 1,
-          "input1Count": 42,
           "mcuTemperature": 30,
           "air": {
             "temperature": -5,
@@ -43,11 +39,80 @@
           "changeOutputStates": {
             "output1": 1,
             "output2": 0
-          }
+          },
+          "channels": [
+            {
+              "channel": "input0",
+              "action": { "contactState": "closed" },
+              "pulse": { "count": 42 }
+            },
+            {
+              "channel": "input1",
+              "analog": { "current": 10 }
+            },
+            {
+              "channel": "input2",
+              "analog": { "voltage": 1 }
+            }
+          ]
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic in-bounds frame exercising every port-10 channel; expected values produced by running reference/upstream-codec.js. temperature 0xFFCE = -50 -> -5.0 C (two's complement); input_2 0x2710=10000 * 0.000001 = 0.01; input_3 0x03E8=1000 * 0.001 = 1; mcu_temperature 0x012C=300 * 0.1 = 30. Onboard temperature/humidity map to air.*; battery_voltage(V)->battery; digital outputs/inputs, analog inputs, pulse count and MCU temperature -> camelCase extras."
+      "_note": "Synthetic in-bounds frame exercising every port-10 channel; expected values produced by running reference/upstream-codec.js. temperature 0xFFCE = -50 -> -5.0 C (two's complement); mcu_temperature 0x012C = 300 -> 30.0 C. Input terminals map to channels[] entries (zero-based labels; input0 = TEKTELIC input 1): input_1 = 1 -> input0 action.contactState 'closed'; input_1_count 0x002A = 42 -> input0 pulse.count (the counter is input 1's only); input_2 0x2710 = 10000 microamps -> input1 analog.current 10 mA (upstream reports the same raw count as 0.01 A); input_3 0x03E8 = 1000 mV -> input2 analog.voltage 1 V (unchanged from upstream's 1). Onboard temperature/humidity map to air.*; battery_voltage(V)->battery; the MCU diagnostic and the commanded output states stay top-level."
+    },
+    {
+      "description": "Mixed input frame: open contact with a non-zero counter, 4 mA loop current, 7.5 V analog input (per-position truth, no onboard climate field)",
+      "input": {
+        "fPort": 10,
+        "bytes": [5, 0, 0, 6, 2, 15, 160, 7, 2, 29, 76, 8, 4, 48, 57]
+      },
+      "expected": {
+        "data": {
+          "make": "tektelic",
+          "model": "t00053xx-industrial-transceiver",
+          "channels": [
+            {
+              "channel": "input0",
+              "action": { "contactState": "open" },
+              "pulse": { "count": 12345 }
+            },
+            {
+              "channel": "input1",
+              "analog": { "current": 4 }
+            },
+            {
+              "channel": "input2",
+              "analog": { "voltage": 7.5 }
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; expected values cross-checked against reference/upstream-codec.js, which decodes this frame as input_1 = 0, input_2 = 0.004 (A), input_3 = 7.5 (V), input_1_count = 12345. Each terminal carries a distinct value so a swapped position would fail: input_1 state byte 0 -> input0 'open' while its counter still reports 12345 (an open contact does not clear the count); input_2 0x0FA0 = 4000 microamps -> input1 4 mA (loop live at its 4 mA zero point); input_3 0x1D4C = 7500 mV -> input2 7.5 V."
+    },
+    {
+      "description": "Sparse frame: temperature plus the 0-10 V terminal only -> a single channels entry, 0 V emitted (no sentinel)",
+      "input": {
+        "fPort": 10,
+        "bytes": [3, 103, 0, 235, 7, 2, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "tektelic",
+          "model": "t00053xx-industrial-transceiver",
+          "air": {
+            "temperature": 23.5
+          },
+          "channels": [
+            {
+              "channel": "input2",
+              "analog": { "voltage": 0 }
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; reference/upstream-codec.js decodes the same frame as temperature 23.5, input_3 = 0. TEKTELIC uplinks are sparse TLV streams: only the reported terminal gets an entry (no fabricated input0/input1), and because the wire format defines no disconnected sentinel a genuine 0 V reading is emitted rather than suppressed."
     },
     {
       "description": "Unrecognized TLV header is rejected",

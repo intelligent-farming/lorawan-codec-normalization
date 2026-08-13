@@ -61,13 +61,32 @@ function isPlainObject(v) {
   return typeof v === 'object' && v !== null && !Array.isArray(v);
 }
 
-/** All dotted paths (intermediate + leaf) in a measurement, excluding history. */
+/** All dotted paths (intermediate + leaf) in a measurement, excluding the
+ * reserved `history`/`channels` containers. */
 function collectPaths(obj, prefix, acc) {
   for (const key of Object.keys(obj)) {
-    if (key === 'history' && prefix === '') continue;
+    if ((key === 'history' || key === 'channels') && prefix === '') continue;
     const p = prefix ? `${prefix}.${key}` : key;
     acc.add(p);
     if (isPlainObject(obj[key])) collectPaths(obj[key], p, acc);
+  }
+}
+
+/**
+ * Union of a decoded measurement's paths across every level the category
+ * contract may actually be satisfied at — the top level and each *top-level*
+ * `channels[]` entry. This mirrors `validate(..., { requireAll: true })`
+ * (src/validate.ts `hasPathWithChannels`) exactly: a reading that exists only
+ * inside a `history` entry does not satisfy a category, so counting history
+ * here would pass a codec in CI that then fails the membership contract at
+ * runtime. See AUTHORING.md "Multi-channel devices".
+ */
+function collectMeasurementPaths(data, acc) {
+  collectPaths(data, '', acc);
+  if (Array.isArray(data.channels)) {
+    for (const c of data.channels) {
+      if (isPlainObject(c)) collectPaths(c, '', acc);
+    }
   }
 }
 
@@ -245,12 +264,7 @@ for (const { vendor, device, dir } of DEVICES) {
       for (const vec of vectors.uplink) {
         if (!(vec.expected && vec.expected.data)) continue;
         const r = runDecodeUplink(source, vec.input);
-        collectPaths(r.data, '', union);
-        if (Array.isArray(r.data.history)) {
-          for (const h of r.data.history) {
-            if (isPlainObject(h)) collectPaths(h, '', union);
-          }
-        }
+        collectMeasurementPaths(r.data, union);
       }
       for (const cat of meta.categories) {
         const info = categories().find((c) => c.id === cat);

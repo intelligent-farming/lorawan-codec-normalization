@@ -10,8 +10,7 @@
   ],
   "provides": [
     "battery",
-    "pulse.count",
-    "pulseCount2"
+    "pulse.count"
   ],
   "variantOf": null,
   "downlink": {

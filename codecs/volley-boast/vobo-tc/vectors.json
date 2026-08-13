@@ -1,7 +1,7 @@
 {
   "uplink": [
     {
-      "description": "fPort 1 standard payload: 25.00 C, 3.60 V, DIN1 asserted",
+      "description": "fPort 1 standard payload: 25.00 C, 3.60 V, DIN1 asserted (din0 closed), DIN2/DIN3 open",
       "input": { "fPort": 1, "bytes": [1, 0, 0, 0, 0, 132, 131, 12, 0, 0] },
       "expected": {
         "data": {
@@ -9,18 +9,20 @@
           "model": "vobo-tc",
           "temperature": 25,
           "battery": 3.6,
-          "din1": true,
-          "din2": false,
-          "din3": false,
           "wakeup": false,
-          "modbus0": 0
+          "channels": [
+            { "channel": "din0", "action": { "contactState": "closed" } },
+            { "channel": "din1", "action": { "contactState": "open" } },
+            { "channel": "din2", "action": { "contactState": "open" } },
+            { "channel": "modbus0", "modbusRegister": 0 }
+          ]
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic, verified against reference/upstream-codec.js parseStandardPayload: temp 12-bit = (bytes[6]&0xf0)>>4=8 | bytes[7]<<4=192 => 200 * 0.125 = 25.0 C (bytes[7] bit7=0 positive); Battery raw = ((bytes[6]&0x0f)=3)<<8 | bytes[5]=132 => 900 * 4 = 3600 mV => 3.6 V; DIN1 = bytes[0] bit0 = 1."
+      "_note": "Synthetic, verified against reference/upstream-codec.js parseStandardPayload: temp 12-bit = (bytes[6]&0xf0)>>4=8 | bytes[7]<<4=192 => 200 * 0.125 = 25.0 C (bytes[7] bit7=0 positive); Battery raw = ((bytes[6]&0x0f)=3)<<8 | bytes[5]=132 => 900 * 4 = 3600 mV => 3.6 V; DIN1 = bytes[0] bit0 = 1 -> channels entry din0 'closed' (din1/din2 are the vendor's DIN2/DIN3, both clear)."
     },
     {
-      "description": "fPort 1 standard payload: negative -10.00 C, 3.60 V",
+      "description": "fPort 1 standard payload: negative -10.00 C, 3.60 V, all three digital inputs open",
       "input": { "fPort": 1, "bytes": [0, 0, 0, 0, 0, 132, 3, 251, 0, 0] },
       "expected": {
         "data": {
@@ -28,15 +30,38 @@
           "model": "vobo-tc",
           "temperature": -10,
           "battery": 3.6,
-          "din1": false,
-          "din2": false,
-          "din3": false,
           "wakeup": false,
-          "modbus0": 0
+          "channels": [
+            { "channel": "din0", "action": { "contactState": "open" } },
+            { "channel": "din1", "action": { "contactState": "open" } },
+            { "channel": "din2", "action": { "contactState": "open" } },
+            { "channel": "modbus0", "modbusRegister": 0 }
+          ]
         }
       },
       "source": "synthetic",
       "_note": "Synthetic, verified against reference parseStandardPayload below-zero branch: temp 12-bit = 0 | (251<<4)&0xfff = 4016; bytes[7] bit7=1 => (4096-4016)*0.125*-1 = -10.0 C; Battery raw = 3<<8|132 = 900 * 4 = 3600 mV => 3.6 V."
+    },
+    {
+      "description": "Mixed positions (fPort 1): DIN1 open + DIN2/DIN3 closed, WKUP set, Modbus slot 0 = 0x1234, 42.5 C, 3.60 V",
+      "input": { "fPort": 1, "bytes": [14, 0, 0, 0, 0, 132, 67, 21, 52, 18] },
+      "expected": {
+        "data": {
+          "make": "volley-boast",
+          "model": "vobo-tc",
+          "temperature": 42.5,
+          "battery": 3.6,
+          "wakeup": true,
+          "channels": [
+            { "channel": "din0", "action": { "contactState": "open" } },
+            { "channel": "din1", "action": { "contactState": "closed" } },
+            { "channel": "din2", "action": { "contactState": "closed" } },
+            { "channel": "modbus0", "modbusRegister": 4660 }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Per-position truth vector, derived from reference/upstream-codec.js parseStandardPayload. bytes[0]=14=0b1110: DIN1=bit0=0 (din0 open), DIN2=bit1=1 (din1 closed), DIN3=bit2=1 (din2 closed), WKUP=bit3=1. Temperature: raw = ((67&0xf0)>>4)=4 | (21<<4)=336 => 340, bytes[7]=21 bit7=0 so positive, 340 * 0.125 = 42.5 C. Battery raw = ((67&0x0f)=3)<<8 | 132 => 900 * 4 = 3600 mV => 3.6 V. Modbus0 = bytes[9]<<8 | bytes[8] = 18<<8 | 52 = 4660 (0x1234)."
     },
     {
       "description": "heartbeat / non-standard payload fPort is not normalized",

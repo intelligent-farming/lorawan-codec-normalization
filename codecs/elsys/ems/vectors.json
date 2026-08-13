@@ -84,6 +84,43 @@
       "_note": "In-bounds synthetic payload exercising the signed temperature decode and a zero motion count. Raw values (temperature -10, humidity 40, motion 0) confirmed by running reference/upstream-codec.js; expected.data is the authored normalization (motion count 0 -> detected false)."
     },
     {
+      "description": "both external pulse-counter ports reporting, alongside port 1's analog input and probe temperature",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 0, 215, 2, 55, 7, 14, 16, 8, 5, 220, 10, 0, 7, 11, 0, 1, 226, 64, 12, 0, 125, 13, 1, 22, 0, 9]
+      },
+      "expected": {
+        "data": {
+          "make": "elsys",
+          "model": "ems",
+          "battery": 3.6,
+          "digital": 1,
+          "air": {
+            "temperature": 21.5,
+            "relativeHumidity": 55
+          },
+          "action": {
+            "contactState": "open"
+          },
+          "channels": [
+            {
+              "channel": "port0",
+              "analogMv": 1500,
+              "pulseRelative": 7,
+              "pulseAbsolute": 123456,
+              "externalTemperature": 12.5
+            },
+            {
+              "channel": "port1",
+              "pulseRelative": 9
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds Elsys TLV frame exercising the external pulse counter on BOTH ports with distinct values. Raw decode confirmed via the ORACLE method against reference/upstream-codec.js: {temperature:21.5, humidity:55, vdd:3600, analog1:1500, pulse1:7, pulseAbs:123456, externalTemperature:12.5, digital:1, pulse2:9}. expected.data is the authored normalization: every port-1 external reading (analog1, pulse1, pulseAbs, externalTemperature) is scoped into channels entry `port0` under port-index-free names, and pulse2 (Elsys port 2) into `port1` as pulseRelative. Only the relative pulse counter is decoded at both positions here, so `port1` carries just that one key -- no absent-port keys are fabricated. EXT_DIGITAL (0x0d) is this unit's own reed/door switch, so `digital` and action.contactState stay top-level, as do battery and air.*."
+    },
+    {
       "description": "empty payload yields an error",
       "input": {
         "fPort": 1,

@@ -25,12 +25,52 @@
 //
 // Input bits: byte1 carries inputs 0-7 (LSB = input 0), byte2 inputs 8-15
 // (upstream postProcessEntrerAncien reverses each nibble/byte to MSB-first
-// order, yielding entree[0]=input0). Mapping into the vocabulary:
-//   input 0 (dry contact)     -> action.contactState ("closed" if 1 else "open")
-//   inputs 1..15              -> input2..input16 (boolean camelCase extras)
-//   counter channel 1         -> pulse.count (cumulative meter index)
-//   further counters          -> count2, count3, ... (number camelCase extras)
-// contactState + pulse.count together satisfy the analog-interface membership.
+// order, yielding entree[0] = input 0).
+//
+// Multi-position output (`channels[]`, see AUTHORING.md "Multi-channel
+// devices"). This product reports two independent banks of sub-sensor
+// positions - dry-contact digital inputs and pulse counters - and both ride in
+// the one reserved `channels` array. They are different physical things, so
+// they are separate entries rather than a merged position: entry labels only
+// have to be unique within the array, and a single array keeps every position
+// addressable in one flattener pass. Labels use the vendor's own term plus a
+// zero-based index:
+//   input bank   -> `input0` ... `input15`, each carrying action.contactState
+//                   ("closed" when the bit is set, else "open"). Matches
+//                   upstream's entree[] ordering, where entree[0] = input 0.
+//   counter bank -> `counter0` ... `counter7`, each carrying pulse.count (the
+//                   cumulative meter index). `counter0` is the vendor's
+//                   "compteur 1" - upstream numbers the variable-length 0x5E
+//                   frame's counters from 0 and the fixed pair frames from 1;
+//                   the labels here are uniformly zero-based.
+// Counter labels follow the frame's own counter base, so the index identifies
+// the physical counter rather than its slot in this frame: 0x50 ->
+// counter0/counter1, 0x51 -> counter2/counter3, 0x5F -> counter4/counter5,
+// 0x60 -> counter6/counter7; 0x52/0x4F/0x5E start at counter0. (The previous
+// flat shape mapped every counter frame onto pulse.count/count2 and so
+// conflated counters 3-8 with counters 1-2.)
+//
+// Whole-device readings stay top-level and are never duplicated inside an
+// entry: `battery` (life frame) and the `frameType` extra.
+//
+// Sentinel policy: there is no sentinel to honor. These frames carry no
+// per-input "disconnected"/fault encoding - every one of the 16 input bits is
+// a valid open/closed state - and a counter word is a plain unsigned 32-bit
+// index with no reserved value. No position is therefore ever skipped for
+// reading as unwired. An uplink carries input entries (0x42), counter entries
+// (0x50/0x51/0x5F/0x60), or both (0x52/0x4F/0x5E) depending on frame type, so
+// `channels` is built lazily and omitted entirely when a frame carries neither
+// bank (the life frame).
+//
+// Known limitation - shared-frame width: the legacy ATIM frames are common to
+// the whole DINDxx line and are fixed-width per frame type. 0x42 always
+// carries 16 input bits and the counter frames up to 8 counters, whichever
+// variant is talking, and the payload carries neither a population mask nor a
+// model id. A 2-input DIND21 therefore still reports all 16 bits, with the
+// unwired ones reading permanently "open", and this codec emits an entry for
+// every bit/counter the frame carries. That is deliberate: a per-variant input
+// count cannot be derived from the payload, and guessing one would silently
+// drop real states on the wide models.
 
 function round(value, decimals) {
   var f = Math.pow(10, decimals);
@@ -58,28 +98,40 @@ function inputBits(lo, hi) {
   return bits;
 }
 
-// Attach input 0 as action.contactState and inputs 1..15 as extras.
-function applyInputs(data, bits) {
-  data.action = { contactState: bits[0] ? 'closed' : 'open' };
+// Append one channels entry per digital input: action.contactState scoped to
+// `input<n>`. Every bit the frame carries gets an entry (no fault sentinel
+// exists to skip on).
+function applyInputs(channels, bits) {
   var i;
-  for (i = 1; i < bits.length; i++) {
-    data['input' + (i + 1)] = Boolean(bits[i]);
+  for (i = 0; i < bits.length; i++) {
+    channels.push({
+      channel: 'input' + i,
+      action: { contactState: bits[i] ? 'closed' : 'open' }
+    });
   }
 }
 
-// Attach a list of counter values: first -> pulse.count, rest -> count2..countN.
-function applyCounters(data, counts) {
-  if (counts.length === 0) {
-    return;
-  }
-  if (!data.pulse) {
-    data.pulse = {};
-  }
-  data.pulse.count = counts[0];
+// Append one channels entry per pulse counter: pulse.count scoped to
+// `counter<base + n>`, base being the frame's first physical counter index.
+function applyCounters(channels, counts, base) {
   var i;
-  for (i = 1; i < counts.length; i++) {
-    data['count' + (i + 1)] = counts[i];
+  for (i = 0; i < counts.length; i++) {
+    channels.push({
+      channel: 'counter' + (base + i),
+      pulse: { count: counts[i] }
+    });
   }
+}
+
+// Assemble the measurement, attaching `channels` only when this frame carried
+// sub-sensor positions.
+function measurement(channels, frameType) {
+  var data = {};
+  if (channels.length > 0) {
+    data.channels = channels;
+  }
+  data.frameType = frameType;
+  return { data: data };
 }
 
 function decodeUplinkCore(input) {
@@ -89,8 +141,9 @@ function decodeUplinkCore(input) {
   }
 
   var ft = bytes[0];
-  var data = {};
+  var channels = [];
   var counts;
+  var base;
   var i;
 
   if (ft === 0x01) {
@@ -105,19 +158,26 @@ function decodeUplinkCore(input) {
     if (bytes.length < 3) {
       return { errors: ['digital-inputs frame too short'] };
     }
-    applyInputs(data, inputBits(bytes[1], bytes[2]));
-    data.frameType = 'digitalInputs';
-    return { data: data };
+    applyInputs(channels, inputBits(bytes[1], bytes[2]));
+    return measurement(channels, 'digitalInputs');
   }
 
-  // Counter pairs (no inputs).
+  // Counter pairs (no inputs). The frame type names the pair it carries, so the
+  // labels start at that pair's base index.
   if (ft === 0x50 || ft === 0x51 || ft === 0x5f || ft === 0x60) {
     if (bytes.length < 9) {
       return { errors: ['counter-pair frame too short'] };
     }
-    applyCounters(data, [u32be(bytes, 1), u32be(bytes, 5)]);
-    data.frameType = 'counters';
-    return { data: data };
+    base = 0;
+    if (ft === 0x51) {
+      base = 2;
+    } else if (ft === 0x5f) {
+      base = 4;
+    } else if (ft === 0x60) {
+      base = 6;
+    }
+    applyCounters(channels, [u32be(bytes, 1), u32be(bytes, 5)], base);
+    return measurement(channels, 'counters');
   }
 
   // Inputs + counter 1.
@@ -125,10 +185,9 @@ function decodeUplinkCore(input) {
     if (bytes.length < 7) {
       return { errors: ['inputs+counter frame too short'] };
     }
-    applyInputs(data, inputBits(bytes[1], bytes[2]));
-    applyCounters(data, [u32be(bytes, 3)]);
-    data.frameType = 'inputsCounters';
-    return { data: data };
+    applyInputs(channels, inputBits(bytes[1], bytes[2]));
+    applyCounters(channels, [u32be(bytes, 3)], 0);
+    return measurement(channels, 'inputsCounters');
   }
 
   // Inputs + counters 1 & 2.
@@ -136,10 +195,9 @@ function decodeUplinkCore(input) {
     if (bytes.length < 11) {
       return { errors: ['inputs+counters frame too short'] };
     }
-    applyInputs(data, inputBits(bytes[1], bytes[2]));
-    applyCounters(data, [u32be(bytes, 3), u32be(bytes, 7)]);
-    data.frameType = 'inputsCounters';
-    return { data: data };
+    applyInputs(channels, inputBits(bytes[1], bytes[2]));
+    applyCounters(channels, [u32be(bytes, 3), u32be(bytes, 7)], 0);
+    return measurement(channels, 'inputsCounters');
   }
 
   // Inputs + N counters.
@@ -147,14 +205,13 @@ function decodeUplinkCore(input) {
     if (bytes.length < 7 || (bytes.length - 3) % 4 !== 0) {
       return { errors: ['inputs+counters frame malformed'] };
     }
-    applyInputs(data, inputBits(bytes[1], bytes[2]));
+    applyInputs(channels, inputBits(bytes[1], bytes[2]));
     counts = [];
     for (i = 3; i + 3 < bytes.length; i += 4) {
       counts.push(u32be(bytes, i));
     }
-    applyCounters(data, counts);
-    data.frameType = 'inputsCounters';
-    return { data: data };
+    applyCounters(channels, counts, 0);
+    return measurement(channels, 'inputsCounters');
   }
 
   return {

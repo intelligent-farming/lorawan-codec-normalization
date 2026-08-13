@@ -18,9 +18,62 @@
 // Temperature is a signed 16-bit value in tenths of a degree Celsius. CO2,
 // light and distance are unsigned 16-bit; relative humidity is one byte.
 // Pressure is tenths of a hPa. The vocabulary has no key for TVOC, particulate
-// matter, digital inputs, switch state or the message framing fields, so those
-// are emitted as camelCase extras (tvoc, pm1_0, pm2_5, pm10, distance,
-// digitalInputs, switchState, messageType, payloadVersion).
+// matter, switch state or the message framing fields, so those are emitted as
+// camelCase extras (tvoc, pm1_0, pm2_5, pm10, distance, switchState,
+// messageType, payloadVersion).
+//
+// Multi-channel shape (`channels[]`) — the digital inputs are the one
+// multi-position reading on this node: the same quantity (a dry-contact / logic
+// level) at up to four terminals of one device. They move into the reserved
+// `channels` array (see AUTHORING.md "Multi-channel devices") and the
+// `digitalInputs` extra group that used to wrap them (`digitalInputs.input1`,
+// `digitalInputs.input2`, …) is GONE — one entry per fitted input instead.
+//
+// Label scheme and renumbering — the labels are the vendor's own term for the
+// terminal ("digital input", upstream field `[08] Digital Inputs`) plus a
+// zero-based index, so they are renumbered against upstream's one-based keys:
+//   `input0` = upstream dinputs[1] = presence bit 0x01, level bit 0x10
+//   `input1` = upstream dinputs[2] = presence bit 0x02, level bit 0x20
+//   `input2` = upstream dinputs[3] = presence bit 0x04, level bit 0x40
+//   `input3` = upstream dinputs[4] = presence bit 0x08, level bit 0x80
+// The label `input1` therefore means the SECOND terminal here and meant the
+// FIRST upstream — read the bit mask, not the digit, when comparing to upstream.
+// The wire format carries four inputs (upstream loops `diginp < 4`), not two, so
+// all four are decoded; a real frame simply reports only the fitted ones.
+//
+// Each entry carries the `action.contactState` vocabulary key ("open" |
+// "closed") rather than the raw boolean the old `digitalInputs.inputN` extras
+// held: a level bit set is a closed contact, clear is open. Promoting to the
+// vocabulary key disturbs nothing — this device declares only `climate`
+// (requires air.temperature + air.relativeHumidity) and `air-quality` (requires
+// air.co2), so its membership never depended on the inputs — and it matches the
+// sibling Mutelcor switch device (mtc-mf01) and the netvox dry-contact family,
+// so a downstream consumer sees one contact metric across all of them instead of
+// a per-vendor boolean extra.
+//
+// Everything else stays TOP-LEVEL (whole-device readings, never duplicated in
+// entries): the whole `air` block, `battery`, `tvoc`, `distance`, `pm1_0` /
+// `pm2_5` / `pm10`, `switchState`, `messageType`, `payloadVersion`.
+//
+// NOT positions — deliberately left alone: the digits in `air.co2`, `pm1_0`,
+// `pm2_5` and `pm10` are part of the pollutant's NAME (carbon dioxide; the
+// 1.0 / 2.5 / 10 µm particulate size bins), not sub-sensor position indices.
+// They were explicitly triaged out of the channels[] conversion — do not "fix"
+// them into `channels[]` entries later; each names a different quantity, so they
+// are not the same quantity at several positions and the reserved array does not
+// apply.
+//
+// Sentinel policy: the digital-inputs byte carries its own presence mask, and
+// that mask IS the disconnected-position policy. The low nibble flags which
+// terminals are fitted and the matching high-nibble bit gives that terminal's
+// level, so an input whose presence bit is CLEAR is not connected and is skipped
+// entirely — no entry, rather than a fabricated "open" from a level bit that
+// means nothing. This is exactly upstream's own gate
+// (`if (digital_inputs & (1 << diginp)) dinputs[diginp + 1] = …`); no other
+// value is treated as a sentinel. `channels` is built lazily and attached only
+// when at least one input is present, so the far more common frame — a
+// CO2/climate measurement with no digital-inputs field at all, or one where no
+// terminal is fitted — omits the key rather than shipping an empty array.
 
 function round(value, decimals) {
   var f = Math.pow(10, decimals);
@@ -63,6 +116,9 @@ function decodeUplinkCore(input) {
   var pos = 0;
   var data = {};
   var air = {};
+  // Built lazily: stays null (and the `channels` key is omitted) unless the
+  // frame reports at least one fitted digital input.
+  var channels = null;
 
   // Byte 0: payload version.
   data.payloadVersion = bytes[pos];
@@ -163,20 +219,25 @@ function decodeUplinkCore(input) {
 
       if (ext & 1) {
         // Digital inputs: one byte. Low nibble flags which inputs are present;
-        // the matching high-nibble bit gives that input's level. No vocabulary
-        // key -> camelCase extra keyed by input number.
+        // the matching high-nibble bit gives that input's level. One channels[]
+        // entry per PRESENT input (zero-based label, `input0` = presence bit
+        // 0x01), each carrying action.contactState; an absent input is skipped.
         if (bytes.length < pos + 1) {
           return { errors: ['unexpected end, no digital inputs value'] };
         }
         var di = bytes[pos];
         pos += 1;
-        var digitalInputs = {};
         for (var n = 0; n < 4; n += 1) {
           if (di & (1 << n)) {
-            digitalInputs['input' + (n + 1)] = (di & (1 << (n + 4))) !== 0;
+            if (!channels) {
+              channels = [];
+            }
+            channels.push({
+              channel: 'input' + n,
+              action: { contactState: (di & (1 << (n + 4))) !== 0 ? 'closed' : 'open' }
+            });
           }
         }
-        data.digitalInputs = digitalInputs;
       }
       if (ext & 2) {
         // Particulate matter: three unsigned 16-bit values (PM1.0, PM2.5,
@@ -204,6 +265,10 @@ function decodeUplinkCore(input) {
       air.lightIntensity !== undefined ||
       air.co2 !== undefined) {
     data.air = air;
+  }
+
+  if (channels && channels.length > 0) {
+    data.channels = channels;
   }
 
   return { data: data };

@@ -1,7 +1,7 @@
 {
   "uplink": [
     {
-      "description": "Status report: 3.6 V, channel-1 0.005 V, channel-2 0.003 V",
+      "description": "Status report: 3.6 V, input0 0.005 V, input1 0.003 V",
       "input": {
         "fPort": 6,
         "bytes": [1, 65, 1, 36, 0, 5, 0, 3, 0, 0, 0]
@@ -11,12 +11,34 @@
           "make": "netvox",
           "model": "r718ia2",
           "battery": 3.6,
-          "analog": { "voltage": 0.005 },
-          "voltage2": 0.003
+          "channels": [
+            { "channel": "input0", "analog": { "voltage": 0.005 } },
+            { "channel": "input1", "analog": { "voltage": 0.003 } }
+          ]
         }
       },
       "source": "ttn-example",
-      "_note": "TTN example status report (netvox r718ia2 codec yaml, Apache-2.0). Upstream oracle: Volt 3.6, ADCRawValue1 5, ADCRawValue2 3. byte3 0x24 -> 3.6 V; bytes[4..5]=5 mV -> analog.voltage 0.005 V; bytes[6..7]=3 mV -> voltage2 0.003 V."
+      "_note": "TTN example status report (netvox r718ia2 codec yaml, Apache-2.0). Upstream oracle: Volt 3.6, ADCRawValue1 5, ADCRawValue2 3. byte3 0x24 -> 3.6 V; bytes[4..5]=5 mV -> input0 analog.voltage 0.005 V; bytes[6..7]=3 mV -> input1 analog.voltage 0.003 V. Each input terminal's reading is a channels[] entry; battery stays top-level. Satisfies analog-interface."
+    },
+    {
+      "description": "Both inputs mid/full scale: 3.6 V, input0 2.5 V, input1 4.999 V",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 65, 1, 36, 9, 196, 19, 135, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "r718ia2",
+          "battery": 3.6,
+          "channels": [
+            { "channel": "input0", "analog": { "voltage": 2.5 } },
+            { "channel": "input1", "analog": { "voltage": 4.999 } }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic two-input frame in the TTN status-report shape (device id 0x41), with distinct per-input values across the 0-5 V range so the entries cannot be transposed unnoticed. Upstream oracle semantics: ADCRawValue1 = bytes[4..5] = 0x09C4 = 2500 mV -> input0 2.5 V; ADCRawValue2 = bytes[6..7] = 0x1387 = 4999 mV -> input1 4.999 V."
     },
     {
       "description": "Startup version frame (report type 0x00) carries no measurement",

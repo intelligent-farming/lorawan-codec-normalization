@@ -25,6 +25,7 @@
     "power.current",
     "power.frequency",
     "power.voltage",
+    "powerFactor",
     "reactiveEnergyExportT1Varh",
     "reactiveEnergyExportT2Varh",
     "reactiveEnergyImportT1Varh",

@@ -12,35 +12,43 @@
           "model": "dl-smtp",
           "protocolVersion": 2,
           "deviceId": 2896,
-          "soilMoistureProfile": [
-            { "depth": 0, "moisture": 5 },
-            { "depth": 1, "moisture": 5.5 },
-            { "depth": 2, "moisture": 6 },
-            { "depth": 3, "moisture": 6.5 },
-            { "depth": 4, "moisture": 7 },
-            { "depth": 5, "moisture": 7.5 },
-            { "depth": 6, "moisture": 8 },
-            { "depth": 7, "moisture": 8.5 }
+          "channels": [
+            { "channel": "depth0", "soil": { "moisture": 5, "temperature": 20 } },
+            { "channel": "depth1", "soil": { "moisture": 5.5, "temperature": 21 } },
+            { "channel": "depth2", "soil": { "moisture": 6, "temperature": 22 } },
+            { "channel": "depth3", "soil": { "moisture": 6.5, "temperature": 23 } },
+            { "channel": "depth4", "soil": { "moisture": 7, "temperature": 24 } },
+            { "channel": "depth5", "soil": { "moisture": 7.5, "temperature": 25 } },
+            { "channel": "depth6", "soil": { "moisture": 8, "temperature": 26 } },
+            { "channel": "depth7", "soil": { "moisture": 8.5, "temperature": 27 } }
           ],
-          "soilTemperatureProfile": [
-            { "depth": 0, "temperature": 20 },
-            { "depth": 1, "temperature": 21 },
-            { "depth": 2, "temperature": 22 },
-            { "depth": 3, "temperature": 23 },
-            { "depth": 4, "temperature": 24 },
-            { "depth": 5, "temperature": 25 },
-            { "depth": 6, "temperature": 26 },
-            { "depth": 7, "temperature": 27 }
-          ],
-          "soil": {
-            "moisture": 5,
-            "temperature": 20
-          },
           "battery": 3.6
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic in-bounds payload; per-depth moisture raws chosen so (raw-2500)/500 lands in [0,100] %, temperature raws so (raw-32768)/100 lands at 20-27 °C, battery raw 3600 -> 3.6 V. expected.data derived by running reference/upstream-codec.js on this input and mapping its raw per-depth channels onto the normalized vocabulary (topmost depth -> soil.*, full profile -> camelCase extras)."
+      "_note": "Synthetic in-bounds payload; per-depth moisture raws chosen so (raw-2500)/500 lands in [0,100] %, temperature raws so (raw-32768)/100 lands at 20-27 °C, battery raw 3600 -> 3.6 V. expected.data derived by running reference/upstream-codec.js on this input and mapping its raw per-depth values onto the reserved channels array (one entry per connected depth, labels depth0..depth7); whole-device battery stays top-level."
+    },
+    {
+      "description": "Partial profile: depth0 fully connected, depth1 temperature-only, depths 2-7 disconnected (sentinel words) — sentinel values and empty depths are omitted",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 11, 80, 0, 3, 15, 160, 133, 220, 0, 0, 131, 232, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11, 184]
+      },
+      "expected": {
+        "data": {
+          "make": "decentlab",
+          "model": "dl-smtp",
+          "protocolVersion": 2,
+          "deviceId": 2896,
+          "channels": [
+            { "channel": "depth0", "soil": { "moisture": 3, "temperature": 15 } },
+            { "channel": "depth1", "soil": { "temperature": 10 } }
+          ],
+          "battery": 3
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic sentinel payload: depth0 words 4000/34268 -> moisture 3 % / temperature 15 °C; depth1 moisture word 0 -> sentinel -5 (dropped, outside 0-100 %) with temperature word 33768 -> 10 °C kept; depths 2-7 all-zero words -> both sentinels (-5, -327.68) -> no channels entry. Battery word 3000 -> 3 V. Pins the per-value bounds gating and entry omission a standard 6-level probe relies on."
     },
     {
       "description": "Battery-only uplink: profile block absent, only the 1-word battery block present (flags 0x0002)",

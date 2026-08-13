@@ -1,7 +1,7 @@
 {
   "uplink": [
     {
-      "description": "Status report: 3.0 V, channel-1 closed, channel-2 open",
+      "description": "Status report: 3.0 V, input0 closed, input1 open",
       "input": {
         "fPort": 6,
         "bytes": [1, 67, 1, 30, 1, 0, 0, 0, 0, 0, 0]
@@ -11,12 +11,34 @@
           "make": "netvox",
           "model": "r718j2",
           "battery": 3.0,
-          "action": { "contactState": "closed" },
-          "contactState2": "open"
+          "channels": [
+            { "channel": "input0", "action": { "contactState": "closed" } },
+            { "channel": "input1", "action": { "contactState": "open" } }
+          ]
         }
       },
       "source": "ttn-example",
-      "_note": "TTN example status report (netvox r718j2 codec yaml, Apache-2.0). Upstream oracle: Volt 3, status1 1, status2 0. byte3 0x1E=30 -> 3.0 V; byte4=1 -> action.contactState 'closed'; byte5=0 -> contactState2 'open'."
+      "_note": "TTN example status report (netvox r718j2 codec yaml, Apache-2.0). Upstream oracle: Volt 3, status1 1, status2 0. byte3 0x1E=30 -> 3.0 V; byte4=1 -> input0 action.contactState 'closed'; byte5=0 -> input1 action.contactState 'open'. Each contact terminal's state is a channels[] entry (input0 = Netvox channel 1); battery stays top-level. Satisfies analog-interface through the entries."
+    },
+    {
+      "description": "Status report: 3.6 V, input0 open, input1 closed (inverse per-position states)",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 67, 1, 36, 0, 1, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "r718j2",
+          "battery": 3.6,
+          "channels": [
+            { "channel": "input0", "action": { "contactState": "open" } },
+            { "channel": "input1", "action": { "contactState": "closed" } }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic frame in the TTN status-report shape (device id 0x43), with the two positions in opposite states so the entries cannot be transposed unnoticed. Upstream oracle semantics: status1 = bytes[4] = 0 -> input0 'open'; status2 = bytes[5] = 1 -> input1 'closed' (this family reads non-zero as a closed contact). byte3=36 -> 3.6 V."
     },
     {
       "description": "Startup version frame (report type 0x00) carries no measurement",

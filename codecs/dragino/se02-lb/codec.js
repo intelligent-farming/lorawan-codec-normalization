@@ -7,12 +7,51 @@
 // (TheThingsNetwork/lorawan-devices vendor/dragino/se02-lb.js, attributed in
 // NOTICE; upstream stores the JS with escaped newlines). Original normalization.
 //
-// fPort 2: battery (bytes[0..1]); DS18B20 probe temp (bytes[2..3] signed/10);
-// channel 1 moisture bytes[4..5]/100 (%) -> soil.moisture, temp bytes[6..7]
-// signed/100 -> soil.temperature, EC bytes[8..9] uS/cm -> soil.ec (dS/m);
-// channel 2 (bytes[10..15]) as camelCase extras.
+// fPort 2: battery (bytes[0..1] & 0x3FFF, mV -> V); DS18B20 probe temp
+// (bytes[2..3] signed/10). Then two identical 6-byte soil blocks — the vendor's
+// "channel 1" (bytes[4..9], upstream *_soil) and "channel 2" (bytes[10..15],
+// upstream *_soil2) — each carrying moisture (hi<<8|lo)/100 %, temperature
+// signed/100 (C), EC (hi<<8|lo) in uS/cm. Frames are read as the calibrated
+// MOD 0 layout; the raw/uncalibrated MOD 1 layout (mod bit in the trailing
+// status byte) is not normalized.
+//
+// Both blocks are the same three quantities at two physical positions, so each
+// becomes an entry in the reserved `channels` array (see AUTHORING.md
+// "Multi-channel devices") instead of a suffixed extra. Labels are the vendor's
+// term plus a 0-based index: `probe0` = vendor channel 1, `probe1` = vendor
+// channel 2. Each entry carries soil.moisture (%), soil.temperature (C) and
+// soil.ec (dS/m, uS/cm / 1000) with identical scaling/rounding for both probes;
+// the old moistureSoil2 / tempSoil2 / ecSoil2 extras are retired (ecSoil2 used to
+// leak raw uS/cm — probe1's EC is now normalized to dS/m like probe0's).
+//
+// Whole-device readings stay top-level and are never duplicated in an entry:
+// `battery`, and `probeTemperature` — the on-board DS18B20, a separate single
+// probe on its own bus (upstream `temperature_pro`), not one of the two soil
+// positions, so it remains a top-level extra rather than a third channels entry.
+//
+// Sentinel / disconnected-position policy: the frame carries NO per-probe
+// presence, fault or sentinel indicator. The trailing mod/status byte
+// (bytes[16], not decoded here) holds a single device-level sensor flag plus the
+// MOD bit — device-wide, not per position — and upstream emits the channel-2
+// block unconditionally. An unconnected probe reads as zeros (or a stale count),
+// which is indistinguishable from a genuine 0.00 % / 0.00 C / 0 uS/cm reading, so
+// no position can be skipped: both entries are always emitted and no sentinel is
+// invented here.
 function round(value, decimals) { var f = Math.pow(10, decimals); return Math.round(value * f) / f; }
 function s16(hi, lo) { var v = ((hi & 0xff) << 8) | (lo & 0xff); return (v & 0x8000) ? v - 0x10000 : v; }
+function u16(hi, lo) { return ((hi & 0xff) << 8) | (lo & 0xff); }
+
+// One soil position: 6 bytes at offset o (moisture, temperature, EC).
+function soilProbe(b, o, label) {
+  return {
+    channel: label,
+    soil: {
+      moisture: round(u16(b[o], b[o + 1]) / 100, 2),
+      temperature: round(s16(b[o + 2], b[o + 3]) / 100, 2),
+      ec: round(u16(b[o + 4], b[o + 5]) / 1000, 4)
+    }
+  };
+}
 
 function decodeUplinkCore(input) {
   var b = input.bytes;
@@ -22,14 +61,7 @@ function decodeUplinkCore(input) {
   var data = {};
   data.battery = round((((b[0] << 8) | b[1]) & 0x3fff) / 1000, 3);
   data.probeTemperature = round(s16(b[2], b[3]) / 10, 2);
-  data.soil = {
-    moisture: round((((b[4] & 0xff) << 8) | b[5]) / 100, 2),
-    temperature: round(s16(b[6], b[7]) / 100, 2),
-    ec: round((((b[8] & 0xff) << 8) | b[9]) / 1000, 4)
-  };
-  data.moistureSoil2 = round((((b[10] & 0xff) << 8) | b[11]) / 100, 2);
-  data.tempSoil2 = round(s16(b[12], b[13]) / 100, 2);
-  data.ecSoil2 = ((b[14] & 0xff) << 8) | b[15];
+  data.channels = [soilProbe(b, 4, 'probe0'), soilProbe(b, 10, 'probe1')];
   return { data: data };
 }
 

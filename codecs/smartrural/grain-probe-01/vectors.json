@@ -1,16 +1,17 @@
 {
   "uplink": [
     {
-      "description": "Grain temperature sensor, Ext=1 (hundredths); channel 1 -> temperature",
+      "description": "Grain temperature sensor, Ext=1 (hundredths): channel0 21.46 °C, channel1 21.51 °C",
       "input": {
         "fPort": 2,
         "bytes": [14, 85, 1, 8, 98, 8, 103, 96, 228, 60, 198]
       },
       "expected": {
         "data": {
-          "temperature": 21.46,
-          "temperature2": 21.51,
-          "temperatures": [21.46, 21.51],
+          "channels": [
+            { "channel": "channel0", "temperature": 21.46 },
+            { "channel": "channel1", "temperature": 21.51 }
+          ],
           "battery": 3.669,
           "sensorMode": 1,
           "deviceTime": 1625570502,
@@ -18,7 +19,8 @@
           "model": "grain-probe-01"
         }
       },
-      "source": "ttn-example"
+      "source": "ttn-example",
+      "_note": "TTN example \"Grain Tempearture Sensor\" input. Upstream oracle: temperatures [21.46, 21.51], battery 3.669, Ext 1, Systimestamp 1625570502. Each grain channel is now a channels[] entry carrying `temperature`; battery / sensorMode / deviceTime stay top-level. Satisfies temperature."
     },
     {
       "description": "Ext=1 with a negative channel-2 reading (two's complement)",
@@ -28,9 +30,10 @@
       },
       "expected": {
         "data": {
-          "temperature": 21.46,
-          "temperature2": -12.34,
-          "temperatures": [21.46, -12.34],
+          "channels": [
+            { "channel": "channel0", "temperature": 21.46 },
+            { "channel": "channel1", "temperature": -12.34 }
+          ],
           "battery": 3.669,
           "sensorMode": 1,
           "deviceTime": 1625570502,
@@ -39,6 +42,40 @@
         }
       },
       "source": "synthetic"
+    },
+    {
+      "description": "Ext=2 (tenths): both channels reporting distinct values, channel0 25.0 °C and channel1 -10.0 °C",
+      "input": {
+        "fPort": 2,
+        "bytes": [14, 85, 2, 0, 250, 255, 156, 96, 228, 60, 198]
+      },
+      "expected": {
+        "data": {
+          "channels": [
+            { "channel": "channel0", "temperature": 25 },
+            { "channel": "channel1", "temperature": -10 }
+          ],
+          "battery": 3.669,
+          "sensorMode": 2,
+          "deviceTime": 1625570502,
+          "make": "smartrural",
+          "model": "grain-probe-01"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic frame exercising the Ext=0x02 tenths scaling on both positions; cross-checked against the upstream decoder (Temp_Channel1 25.0, Temp_Channel2 -10.0). bytes[3..4]=0x00FA=250 -> 25.0 °C; bytes[5..6]=0xFF9C=-100 -> -10.0 °C. No channel word is a sentinel in this format, so both entries are always emitted."
+    },
+    {
+      "description": "Ext=3 (channel resistance in Ω, not a temperature) returns an error",
+      "input": {
+        "fPort": 2,
+        "bytes": [14, 85, 3, 8, 98, 8, 103, 96, 228, 60, 198]
+      },
+      "expected": {
+        "errors": ["sensor mode 0x3"]
+      },
+      "source": "synthetic",
+      "_note": "Resistance mode carries no confident temperature for either channel, so the frame is rejected rather than emitting channels[] entries with a non-temperature value."
     },
     {
       "description": "Unknown FPort returns an error",

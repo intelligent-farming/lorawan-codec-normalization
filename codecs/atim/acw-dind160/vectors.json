@@ -1,48 +1,91 @@
 {
   "uplink": [
     {
-      "description": "inputs + 2 counters: input0 closed, input3 closed, counter1=100, counter2=200",
+      "description": "inputs + 2 counters: input0 and input2 closed, counter0=100, counter1=200",
       "input": { "fPort": 1, "bytes": [94, 5, 0, 0, 0, 0, 100, 0, 0, 0, 200] },
       "expected": {
         "data": {
           "make": "atim", "model": "acw-dind160",
-          "action": { "contactState": "closed" },
-          "input2": false, "input3": true, "input4": false,
-          "input5": false, "input6": false, "input7": false, "input8": false,
-          "input9": false, "input10": false, "input11": false, "input12": false,
-          "input13": false, "input14": false, "input15": false, "input16": false,
-          "pulse": { "count": 100 }, "count2": 200,
+          "channels": [
+        { "channel": "input0", "action": { "contactState": "closed" } },
+        { "channel": "input1", "action": { "contactState": "open" } },
+        { "channel": "input2", "action": { "contactState": "closed" } },
+        { "channel": "input3", "action": { "contactState": "open" } },
+        { "channel": "input4", "action": { "contactState": "open" } },
+        { "channel": "input5", "action": { "contactState": "open" } },
+        { "channel": "input6", "action": { "contactState": "open" } },
+        { "channel": "input7", "action": { "contactState": "open" } },
+        { "channel": "input8", "action": { "contactState": "open" } },
+        { "channel": "input9", "action": { "contactState": "open" } },
+        { "channel": "input10", "action": { "contactState": "open" } },
+        { "channel": "input11", "action": { "contactState": "open" } },
+        { "channel": "input12", "action": { "contactState": "open" } },
+        { "channel": "input13", "action": { "contactState": "open" } },
+        { "channel": "input14", "action": { "contactState": "open" } },
+        { "channel": "input15", "action": { "contactState": "open" } },
+        { "channel": "counter0", "pulse": { "count": 100 } },
+        { "channel": "counter1", "pulse": { "count": 200 } }
+          ],
           "frameType": "inputsCounters"
         }
       },
       "source": "synthetic",
-      "_note": "0x5E 'entrees digitales et compteurs'. entree byte 0x05 -> bits 0 and 2 set -> input0 (contactState closed) + input3 true. c0=100 -> pulse.count, c1=200 -> count2. Verified against reference/upstream-codec.js (entree [1,0,1,...], compteur0=100, compteur1=200)."
+      "_note": "0x5E 'entrees digitales et compteurs'. entree byte 0x05 -> bits 0 and 2 set. Verified against reference/upstream-codec.js: entree [1,0,1,0,...], compteur0=100, compteur1=200. Both banks share one channels[] array: input0..input15 carry action.contactState, counter0/counter1 carry pulse.count."
     },
     {
-      "description": "digital inputs only: input0 closed",
-      "input": { "fPort": 1, "bytes": [66, 1, 0] },
+      "description": "digital inputs only: input0 and input15 closed (exercises both input bytes)",
+      "input": { "fPort": 1, "bytes": [66, 1, 128] },
       "expected": {
         "data": {
           "make": "atim", "model": "acw-dind160",
-          "action": { "contactState": "closed" },
-          "input2": false, "input3": false, "input4": false,
-          "input5": false, "input6": false, "input7": false, "input8": false,
-          "input9": false, "input10": false, "input11": false, "input12": false,
-          "input13": false, "input14": false, "input15": false, "input16": false,
+          "channels": [
+        { "channel": "input0", "action": { "contactState": "closed" } },
+        { "channel": "input1", "action": { "contactState": "open" } },
+        { "channel": "input2", "action": { "contactState": "open" } },
+        { "channel": "input3", "action": { "contactState": "open" } },
+        { "channel": "input4", "action": { "contactState": "open" } },
+        { "channel": "input5", "action": { "contactState": "open" } },
+        { "channel": "input6", "action": { "contactState": "open" } },
+        { "channel": "input7", "action": { "contactState": "open" } },
+        { "channel": "input8", "action": { "contactState": "open" } },
+        { "channel": "input9", "action": { "contactState": "open" } },
+        { "channel": "input10", "action": { "contactState": "open" } },
+        { "channel": "input11", "action": { "contactState": "open" } },
+        { "channel": "input12", "action": { "contactState": "open" } },
+        { "channel": "input13", "action": { "contactState": "open" } },
+        { "channel": "input14", "action": { "contactState": "open" } },
+        { "channel": "input15", "action": { "contactState": "closed" } }
+          ],
           "frameType": "digitalInputs"
         }
       },
       "source": "synthetic",
-      "_note": "0x42 'entrees digitales'. entree byte 0x01 -> only input0 -> contactState closed. Verified against reference/upstream-codec.js (entree [1,0,...])."
+      "_note": "0x42 'entrees digitales'. in_lo 0x01 -> bit 0, in_hi 0x80 -> bit 15. Verified against reference/upstream-codec.js (entree [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1])."
     },
     {
-      "description": "life frame: battery 3.60 V",
+      "description": "counter pair 3 & 4: counter2=1000, counter3=2000 (labels follow the frame's counter base)",
+      "input": { "fPort": 1, "bytes": [81, 0, 0, 3, 232, 0, 0, 7, 208] },
+      "expected": {
+        "data": {
+          "make": "atim", "model": "acw-dind160",
+          "channels": [
+        { "channel": "counter2", "pulse": { "count": 1000 } },
+        { "channel": "counter3", "pulse": { "count": 2000 } }
+          ],
+          "frameType": "counters"
+        }
+      },
+      "source": "synthetic",
+      "_note": "0x51 'Trame du compteur 3 et 4'. Verified against reference/upstream-codec.js (compteur3=1000, compteur4=2000; upstream numbers the pair frames from 1, so the zero-based labels are counter2/counter3). No input bank in this frame type, so no input entries."
+    },
+    {
+      "description": "life frame: battery 3.60 V (no positions, so no channels[])",
       "input": { "fPort": 1, "bytes": [1, 14, 16] },
       "expected": {
         "data": { "make": "atim", "model": "acw-dind160", "battery": 3.6, "frameType": "life" }
       },
       "source": "synthetic",
-      "_note": "0x01 'Trame de vie': tensionc 0x0E10=3600 / 1000 = 3.6 V. Verified against reference/upstream-codec.js (tensionc.value=3.6)."
+      "_note": "0x01 'Trame de vie': tensionc 0x0E10=3600 / 1000 = 3.6 V. Verified against reference/upstream-codec.js (tensionc.value=3.6). battery and frameType are whole-device readings and stay top-level."
     },
     {
       "description": "unsupported frame type yields error",

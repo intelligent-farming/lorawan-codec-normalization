@@ -1,19 +1,20 @@
 {
   "uplink": [
     {
-      "description": "measurement frame: cable current 12.34 A on internal channel 0",
+      "description": "measurement frame: cable current 12.34 A on internal voie 0",
       "input": { "fPort": 1, "bytes": [160, 11, 4, 210] },
       "expected": {
         "data": {
           "make": "atim",
           "model": "e-green-sensor",
           "frameType": "measurement",
-          "channel": 0,
-          "power": { "current": 12.34 }
+          "channels": [
+            { "channel": "voie0", "power": { "current": 12.34 } }
+          ]
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic in-bounds 0xA0 'Trame de mesure': current type 0x0b -> 0x04D2=1234, /100=12.34 A. expected.data produced by running reference/upstream-codec.js (courant.value=[12.34], unit 'A') and mapping to power.current."
+      "_note": "Synthetic in-bounds 0xA0 'Trame de mesure': current type 0x0b -> 0x04D2=1234, /100=12.34 A. expected.data produced by running reference/upstream-codec.js (courant.value=[12.34], unit 'A') and mapping each voie to a channels[] entry."
     },
     {
       "description": "measurement frame: current 50.00 A and equipment temperature 25.00 C",
@@ -23,13 +24,17 @@
           "make": "atim",
           "model": "e-green-sensor",
           "frameType": "measurement",
-          "channel": 0,
-          "power": { "current": 50 },
-          "equipmentTemperature": 25
+          "channels": [
+            {
+              "channel": "voie0",
+              "power": { "current": 50 },
+              "equipmentTemperature": 25
+            }
+          ]
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic: current 0x1388=5000/100=50.00 A; temperature type 0x08 -> 0x09C4=2500/100=25.00 C. Verified against reference/upstream-codec.js (courant.value=[50], temperature0.value=[25], voie '0'). Current maps to power.current, equipment temperature to the camelCase extra equipmentTemperature."
+      "_note": "Synthetic: current 0x1388=5000/100=50.00 A; temperature type 0x08 -> 0x09C4=2500/100=25.00 C. Verified against reference/upstream-codec.js (courant.value=[50], temperature0.value=[25], voie '0'). Both readings share voie 0, so they share one channels[] entry: current maps to power.current, equipment temperature to the camelCase extra equipmentTemperature."
     },
     {
       "description": "measurement frame: cable voltage 14.400 V",
@@ -39,8 +44,9 @@
           "make": "atim",
           "model": "e-green-sensor",
           "frameType": "measurement",
-          "channel": 0,
-          "power": { "voltage": 14.4 }
+          "channels": [
+            { "channel": "voie0", "power": { "voltage": 14.4 } }
+          ]
         }
       },
       "source": "synthetic",
@@ -54,12 +60,30 @@
           "make": "atim",
           "model": "e-green-sensor",
           "frameType": "measurement",
-          "channel": 0,
-          "equipmentTemperature": -3.56
+          "channels": [
+            { "channel": "voie0", "equipmentTemperature": -3.56 }
+          ]
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic two's-complement temperature: 0xFE9C as signed 16-bit = -356/100 = -3.56 C. Verified against reference/upstream-codec.js (temperature0.value=[-3.56])."
+      "_note": "Synthetic two's-complement temperature: 0xFE9C as signed 16-bit = -356/100 = -3.56 C. Verified against reference/upstream-codec.js (temperature0.value=[-3.56]). A voie reporting only temperature carries no power group."
+    },
+    {
+      "description": "measurement frame with two current voies: 12.34 A on voie 0, 50.00 A on voie 1",
+      "input": { "fPort": 1, "bytes": [160, 11, 4, 210, 27, 19, 136] },
+      "expected": {
+        "data": {
+          "make": "atim",
+          "model": "e-green-sensor",
+          "frameType": "measurement",
+          "channels": [
+            { "channel": "voie0", "power": { "current": 12.34 } },
+            { "channel": "voie1", "power": { "current": 50 } }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic multi-voie frame (0x0b current voie 0, 0x1b current voie 1) — the ACW TLV walk carries a voie index on every TLV. Each voie is its own channels[] entry, so a second measured position is no longer dropped."
     },
     {
       "description": "measurement frame: temperature sensor fault, current valid",
@@ -69,13 +93,14 @@
           "make": "atim",
           "model": "e-green-sensor",
           "frameType": "measurement",
-          "channel": 0,
-          "power": { "current": 50 }
+          "channels": [
+            { "channel": "voie0", "power": { "current": 50 } }
+          ]
         },
         "warnings": ["one or more channels report the sensor-fault sentinel"]
       },
       "source": "synthetic",
-      "_note": "Synthetic: temperature 0x8000 = -327.68 C is the upstream sensor-fault sentinel (reference temperature0.value=['erreur']); current 0x1388=50.00 A remains valid. Faulty temperature channel is dropped, current is emitted, and a warning is raised. channel reflects the temperature channel (voie 0), set first in the TLV walk."
+      "_note": "Synthetic: temperature 0x8000 = -327.68 C is the upstream sensor-fault sentinel (reference temperature0.value=['erreur']); current 0x1388=50.00 A remains valid. The faulty reading is dropped from the voie's entry, current is emitted, and a warning is raised."
     },
     {
       "description": "life frame: harvester rail 3.550 V, capacitor rail 5.000 V",

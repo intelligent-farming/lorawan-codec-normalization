@@ -12,7 +12,6 @@
   "provides": [
     "air.temperature",
     "biasVoltage",
-    "channel",
     "event",
     "packetCounter",
     "peakVelocity",

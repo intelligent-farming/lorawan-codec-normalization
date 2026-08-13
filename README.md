@@ -43,7 +43,11 @@ device('milesight-iot', 'em500-smtc');                 // metadata: categories, 
 
 The codec output is a **single measurement object** (never a top-level array —
 ChirpStack's protobuf Struct rejects arrays). Datalog uplinks put the current
-reading at the top level and prior readings in a `history` array. Every decoded
+reading at the top level and prior readings in a `history` array. Multi-channel
+devices (multilayer probes, multi-port dataloggers) put per-position groups in
+a reserved `channels` array — one measurement object per sub-sensor, each with
+a required `channel` label; the `channel` name itself is reserved for that
+label and rejected at any other measurement level (see `AUTHORING.md`). Every decoded
 object also carries `make` and `model` device-identity strings (the vendor and
 device names, e.g. `{ make: "dragino", model: "lds02", ... }`); these are
 excluded from `provides`, which lists only telemetry. The codecs are plain
@@ -99,12 +103,12 @@ validate('soil-monitor', reading, { requireAll: true }); // require every `requi
 Value bounds come from `definitions/vocabulary.schema.json`. Device-specific
 extras are allowed but must be camelCase and must not case-insensitively collide
 with a vocabulary key. Issues are rated `schema`, `case-collision`,
-`reserved-key`, or `history-time`. `requireAll` defaults to `false`, which keeps
-fPort-variant, config, and partial uplinks legal.
+`reserved-key`, `history-time`, or `channel-label`. `requireAll` defaults to
+`false`, which keeps fPort-variant, config, and partial uplinks legal.
 
 ## Categories
 
-`categories()` lists all 27; `categorySchema(id)` returns the JSON Schema for a
+`categories()` lists all 37; `categorySchema(id)` returns the JSON Schema for a
 category. Coverage grows over time — devices are added incrementally. Use
 `devices({ category })` for the live member list; the counts below are a snapshot.
 

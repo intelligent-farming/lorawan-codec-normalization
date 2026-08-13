@@ -16,14 +16,37 @@
 // verbatim from the upstream SENSORS table; the results are then mapped onto
 // the shared normalized vocabulary. Upstream normalizeUplink is NOT copied.
 //
-// Mapping (flag bit order, LSB first):
-//   bit0 channel-0 pulse block (4 words): x[0]=count -> `pulse.count`;
-//     x[1]=interval (s) -> extra pulseInterval; x[2]+x[3]*65536 = cumulative ->
-//     `pulse.total`.
-//   bit1 channel-1 pulse block (4 words): mapped to the extras pulseCount2 /
-//     pulseInterval2 / pulseTotal2 (the vocabulary models a single pulse input).
-//   bit2 battery (1 word): x[0] / 1000 -> V -> `battery`.
-// Protocol header fields are emitted as the extras protocolVersion / deviceId.
+// Sensor blocks (flag bit order, LSB first), from the upstream SENSORS table:
+//   bit0 channel-0 pulse block (4 words), bit1 channel-1 pulse block (4 words) —
+//     each x[0]=pulse count, x[1]=pulse interval (s),
+//     x[2]+x[3]*65536 = cumulative pulse count.
+//   bit2 battery (1 word): x[0] / 1000 -> V.
+//
+// Mapping: the two dry-contact terminals are sub-sensor positions of one device
+// counting the same physical quantity, so each present channel becomes one entry
+// in the reserved `channels` array (see AUTHORING.md "Multi-channel devices")
+// instead of the suffixed extras (`pulseCount2` / `pulseInterval2` /
+// `pulseTotal2`) this codec used to emit. Entries are labelled with the vendor's
+// own channel term plus the wire index — `channel0` / `channel1`, after
+// upstream's `ch0_*` / `ch1_*` field names — and each carries that channel's
+// `pulse.count` (pulses in the reporting window) and `pulse.total` (cumulative
+// counter) plus the per-channel `pulseInterval` extra (the reporting window in
+// seconds, unsuffixed inside its entry). `pulse.*` therefore appears ONLY inside
+// entries: neither terminal is a whole-device reading, and the two counters must
+// never be merged or summed. Whole-device battery voltage (already volts) stays
+// top-level as `battery`, as do the protocol-header framing diagnostics, emitted
+// as the extras protocolVersion / deviceId.
+//
+// Presence / sentinel policy: the Decentlab sensor-flags bitmap is the presence
+// indicator — a channel whose flag bit is clear contributes no words to the
+// payload and gets no entry, and entry labels follow the wire index rather than
+// the array position, so a channel-1-only frame (flags 0x0006) still reports
+// `channel1`. There is no in-band sentinel value: a count of 0 is a real reading
+// (upstream example 1 reports ch1 pulse count 0 on a connected input). The
+// `channels` key is omitted when neither pulse block is present, and such a frame
+// — e.g. the battery-only frame of upstream example 2 (flags 0x0004) — is
+// rejected with the error `no pulse field in payload`, exactly as before this
+// codec grew `channels[]`.
 
 function round(value, decimals) {
   var f = Math.pow(10, decimals);
@@ -77,33 +100,33 @@ function decodeUplinkCore(input) {
   data.protocolVersion = version;
   data.deviceId = deviceId;
 
-  var hasPulse = false;
-
-  // bit0: channel-0 pulse counter.
-  if (words[0]) {
-    data.pulse = {
-      count: words[0][0],
-      total: words[0][2] + words[0][3] * 65536
-    };
-    data.pulseInterval = words[0][1];
-    hasPulse = true;
+  // bit0 / bit1: the two dry-contact pulse channels — one channels entry per
+  // channel whose flag bit is set, labelled by the wire channel index (never
+  // renumbered to close a gap).
+  var channels = [];
+  var c;
+  for (c = 0; c < 2; c++) {
+    if (words[c]) {
+      var w = words[c];
+      channels.push({
+        channel: 'channel' + c,
+        pulse: {
+          count: w[0],
+          total: w[2] + w[3] * 65536
+        },
+        pulseInterval: w[1]
+      });
+    }
   }
 
-  // bit1: channel-1 pulse counter (extras).
-  if (words[1]) {
-    data.pulseCount2 = words[1][0];
-    data.pulseInterval2 = words[1][1];
-    data.pulseTotal2 = words[1][2] + words[1][3] * 65536;
-    hasPulse = true;
+  if (channels.length === 0) {
+    return { errors: ['no pulse field in payload'] };
   }
+  data.channels = channels;
 
-  // bit2: battery voltage (already volts).
+  // bit2: battery voltage (already volts), a whole-device reading.
   if (words[2]) {
     data.battery = round(words[2][0] / 1000, 3);
-  }
-
-  if (!hasPulse) {
-    return { errors: ['no pulse field in payload'] };
   }
 
   return { data: data };

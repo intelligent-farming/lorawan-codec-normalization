@@ -23,11 +23,35 @@
 //   0x10/0x20/0x2f/0x33/0x36/0x37/0x58  configuration / ack / alarm / version
 //         frames -> not periodic telemetry -> reported as an error.
 //
-// Normalization: this is a standalone temperature probe, so channel 1's current
-// reading (t=0) is the top-level `temperature` (°C). Channel 2 (when present),
-// the full per-channel sample arrays, the frame counter and the low-battery flag
-// are exposed as camelCase extras. The device has no battery-voltage telemetry
-// (only a low-battery status bit), so `battery` (volts) is not emitted.
+// Normalization: the two probe channels are sub-sensor positions of one device,
+// so each becomes an entry in the reserved `channels` array (see AUTHORING.md
+// "Multi-channel devices") rather than a suffixed extra pair. Label scheme:
+// `channel1` / `channel2` — this device's wire format and `temp_lib.js` number
+// the probes ("temperature 1"/"temperature 2", status bit
+// `configuration2ChannelsActivated`), where the sibling pulse family letters its
+// inputs (frame codes 0x5a "data ch A" / 0x5b "data ch B" -> `channelA` /
+// `channelB`); each codec uses the vendor's own term for its own positions.
+// Each entry carries the vocabulary `temperature` (°C) for its current (t=0)
+// sample plus that channel's full sample series as the `temperatureSamples`
+// extra, ordered [t=0, t-1, t-2, ...] (element 0 is the entry's `temperature`).
+// The frame counter, the low-battery flag and the optional device timestamp
+// (`time`, RFC3339) are whole-device readings and stay top-level. The device has
+// no battery-voltage telemetry (only a low-battery status bit), so `battery`
+// (volts) is not emitted.
+//
+// Disconnected-position policy: the number of live probes is declared by status
+// bit4 — a `channel2` entry is emitted only when that 2-channels bit is set. In
+// 1-channel mode the payload carries no channel-2 samples at all, so there is
+// nothing to sentinel-check; no entry is emitted for the unused position.
+//
+// Scope note: the sample series is a datalog ordered [t=0, t-1, t-2, ...], but
+// the frame carries no per-sample time (only an optional timestamp for the
+// frame, and no sampling period), so the prior samples cannot be given
+// trustworthy RFC3339 `time` values. They therefore ride as a plain array extra
+// inside the channel entry, not as a reserved `history` array — and channels
+// entries are leaf measurements, which may not nest `history` anyway.
+
+var ADEUNIS_EPOCH = 1356998400; // 2013-01-01T00:00:00Z, in seconds
 
 function round(value, decimals) {
   var f = Math.pow(10, decimals);
@@ -40,6 +64,17 @@ function signed16(hi, lo) {
     v -= 0x10000;
   }
   return v;
+}
+
+function decodeTimestamp(bytes) {
+  var o = bytes.length - 4;
+  var secs = (((bytes[o] << 24) | (bytes[o + 1] << 16) | (bytes[o + 2] << 8) | bytes[o + 3]) >>> 0) + ADEUNIS_EPOCH;
+  return new Date(secs * 1000).toISOString();
+}
+
+// One channels[] entry: current sample -> temperature, series -> extra.
+function channelEntry(label, samples) {
+  return { channel: label, temperature: samples[0], temperatureSamples: samples };
 }
 
 function decodeUplinkCore(input) {
@@ -70,12 +105,14 @@ function decodeUplinkCore(input) {
       }
     }
 
-    var data = {};
-    data.temperature = ch1[0];
-    data.temperatures1 = ch1;
+    var entries = [channelEntry('channel1', ch1)];
     if (nbSensors === 2) {
-      data.temperature2 = ch2[0];
-      data.temperatures2 = ch2;
+      entries.push(channelEntry('channel2', ch2));
+    }
+
+    var data = { channels: entries };
+    if (hasTimestamp) {
+      data.time = decodeTimestamp(bytes);
     }
     data.frameCounter = (status & 0xe0) >> 5;
     data.lowBattery = lowBattery;

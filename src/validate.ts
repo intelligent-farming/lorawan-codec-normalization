@@ -14,7 +14,18 @@
  *  4. `history` is reserved at the measurement top level; a non-array value
  *     fails — rule `reserved-key`. Each entry must carry `time` — rule
  *     `history-time`.
- *  5. Style notes (non-camelCase extras, shadowed concepts) are non-failing and
+ *  5. `channels` is reserved at the measurement top level and inside history
+ *     entries (multi-channel devices: multilayer probes, multi-port
+ *     dataloggers); a non-array value fails — rule `reserved-key`. Each entry
+ *     must carry a non-empty string `channel` label, unique within its array —
+ *     rule `channel-label`. Entries are leaf measurements: a nested `history`
+ *     or `channels` inside one fails — rule `reserved-key`. The label's name is
+ *     reserved with it: a `channel` key at any measurement level *outside* a
+ *     channels entry fails — rule `reserved-key` — because downstream flatteners
+ *     would read it as positional scoping they cannot honor. Scope the readings
+ *     with a channels entry, or name the extra for what it identifies. (Inside a
+ *     vocabulary group or extra object, `channel` is an ordinary key.)
+ *  6. Style notes (non-camelCase extras, shadowed concepts) are non-failing and
  *     surfaced via {@link styleNotes}, not {@link validate}.
  *
  * @packageDocumentation
@@ -79,6 +90,22 @@ function hasPath(obj: unknown, dotted: string): boolean {
   return cur !== undefined;
 }
 
+/**
+ * True when a dotted path resolves at the top level or inside any top-level
+ * `channels[]` entry. Category membership counts channel-scoped readings (a
+ * multilayer probe's `soil.*` lives only inside entries), but not `history`
+ * entries — those mirror the current reading by contract.
+ */
+function hasPathWithChannels(obj: unknown, dotted: string): boolean {
+  if (hasPath(obj, dotted)) return true;
+  if (!isPlainObject(obj)) return false;
+  const chans = obj.channels;
+  return (
+    Array.isArray(chans) &&
+    chans.some((e) => isPlainObject(e) && hasPath(e, dotted))
+  );
+}
+
 /** Local deref of a `#/$defs/...` node within the vocabulary document. */
 function derefNode(node: unknown): JsonObject | null {
   if (!isPlainObject(node)) return null;
@@ -96,6 +123,11 @@ function derefNode(node: unknown): JsonObject | null {
  * Walk an object level mapped to a vocabulary node, collecting case-collision
  * issues (when `collectStyle` is false) or style notes (when true). Recurses
  * into vocabulary group objects only — extras have no defined keys beneath them.
+ *
+ * `atMeasurementLevel` marks the top of a measurement object (root, array
+ * element, history entry or channels entry), where `history`/`channels` are
+ * reserved containers handled by the caller; inside a vocabulary group they are
+ * ordinary keys.
  */
 function walkLevel(
   data: JsonObject,
@@ -103,6 +135,7 @@ function walkLevel(
   base: string,
   issues: ValidationIssue[],
   style: StyleNote[],
+  atMeasurementLevel = false,
 ): void {
   const defined = definedKeysAt(vocabNode);
   const lcToCanonical = new Map<string, string>();
@@ -111,9 +144,11 @@ function walkLevel(
   const props = (vocabNode?.properties as JsonObject | undefined) ?? {};
 
   for (const key of Object.keys(data)) {
-    // `history` is handled specially at the top level by the caller; never
-    // treat it as a collision/extra here.
-    if (key === 'history' && base === '') continue;
+    // `history` and `channels` are handled specially by the caller; never
+    // treat them as a collision/extra here.
+    if ((key === 'history' || key === 'channels') && atMeasurementLevel) {
+      continue;
+    }
 
     if (defined.includes(key)) {
       // Defined vocabulary key: recurse into group objects to check deeper.
@@ -145,11 +180,19 @@ function walkLevel(
   }
 }
 
-/** Schema + collision + reserved-key/history validation of one measurement. */
+/**
+ * Where a measurement object sits in the reserved-container tree: the top
+ * level (`root`), a `history[]` entry, or a `channels[]` entry. Decides which
+ * reserved keys are processed (`history` at root only; `channels` at root and
+ * in history entries) and which are rejected (both, inside channel entries).
+ */
+type MeasurementKind = 'root' | 'history' | 'channel';
+
+/** Schema + collision + reserved-key (history/channels) validation of one measurement. */
 function validateMeasurement(
   m: unknown,
   base: string,
-  isHistoryEntry: boolean,
+  kind: MeasurementKind,
   issues: ValidationIssue[],
   style: StyleNote[],
 ): void {
@@ -177,10 +220,10 @@ function validateMeasurement(
   }
 
   // 2 + 5. Case collisions and style notes at every object level.
-  walkLevel(m, derefNode(measurementSchema()), base, issues, style);
+  walkLevel(m, derefNode(measurementSchema()), base, issues, style, true);
 
   // 4. Reserved `history` key (top-level measurements only).
-  if (!isHistoryEntry && 'history' in m) {
+  if (kind === 'root' && 'history' in m) {
     const hist = m.history;
     if (!Array.isArray(hist)) {
       issues.push({
@@ -198,7 +241,68 @@ function validateMeasurement(
             rule: 'history-time',
           });
         }
-        validateMeasurement(entry, entryBase, true, issues, style);
+        validateMeasurement(entry, entryBase, 'history', issues, style);
+      });
+    }
+  }
+
+  // 5. `channel` (the entry label) is reserved along with `channels`: at the
+  // top level or in a history entry it fails outright, so a codec can never
+  // ship positional scoping downstream stores would flatten into a junk metric.
+  if (kind !== 'channel' && 'channel' in m) {
+    issues.push({
+      path: joinPath(base, 'channel'),
+      message:
+        '`channel` is reserved for `channels[]` entry labels — emit a channels entry or rename the extra',
+      rule: 'reserved-key',
+    });
+  }
+
+  // 5. Reserved `channels` key (top level and history entries). Inside a
+  // channel entry, both reserved containers are rejected — entries are leaf
+  // measurements.
+  if (kind === 'channel') {
+    for (const nested of ['history', 'channels'] as const) {
+      if (nested in m) {
+        issues.push({
+          path: joinPath(base, nested),
+          message: `\`${nested}\` is not allowed inside a channels entry`,
+          rule: 'reserved-key',
+        });
+      }
+    }
+  } else if ('channels' in m) {
+    const chans = m.channels;
+    if (!Array.isArray(chans)) {
+      issues.push({
+        path: joinPath(base, 'channels'),
+        message: '`channels` must be an array of measurements',
+        rule: 'reserved-key',
+      });
+    } else {
+      const seenLabels = new Set<string>();
+      chans.forEach((entry, j) => {
+        const entryBase = joinPath(base, `channels[${j}]`);
+        if (isPlainObject(entry)) {
+          const label = entry.channel;
+          if (typeof label !== 'string' || label === '') {
+            issues.push({
+              path: entryBase,
+              message:
+                'channels entry must carry a non-empty string `channel` label',
+              rule: 'channel-label',
+            });
+          } else if (seenLabels.has(label)) {
+            issues.push({
+              path: joinPath(entryBase, 'channel'),
+              message: `duplicate channel label "${label}"`,
+              rule: 'channel-label',
+            });
+          } else {
+            seenLabels.add(label);
+          }
+        }
+        validateMeasurement(entry, entryBase, 'channel', issues, style);
       });
     }
   }
@@ -229,12 +333,12 @@ export function validate(
 
   list.forEach((m, i) => {
     const base = Array.isArray(data) ? `[${i}]` : '';
-    validateMeasurement(m, base, false, issues, style);
+    validateMeasurement(m, base, 'root', issues, style);
 
     if (opts?.requireAll) {
-      // `requires`: every listed path must be present.
+      // `requires`: every listed path must be present (top level or channels).
       for (const req of info.requires ?? []) {
-        if (!hasPath(m, req)) {
+        if (!hasPathWithChannels(m, req)) {
           issues.push({
             path: joinPath(base, req),
             message: `missing required "${req}" for category "${info.id}"`,
@@ -244,7 +348,7 @@ export function validate(
       }
       // `atLeastOne`: at least one of the listed paths must be present.
       const anyOf = info.atLeastOne ?? [];
-      if (anyOf.length > 0 && !anyOf.some((p) => hasPath(m, p))) {
+      if (anyOf.length > 0 && !anyOf.some((p) => hasPathWithChannels(m, p))) {
         issues.push({
           path: base,
           message: `category "${info.id}" requires at least one of [${anyOf.join(', ')}]`,
@@ -270,23 +374,49 @@ export function styleNotes(data: Measurement | Measurement[]): StyleNote[] {
   list.forEach((m, i) => {
     const base = Array.isArray(data) ? `[${i}]` : '';
     if (isPlainObject(m)) {
-      walkLevel(m, derefNode(measurementSchema()), base, issues, style);
+      walkLevel(m, derefNode(measurementSchema()), base, issues, style, true);
+      walkChannelsStyle(m, base, issues, style);
       if ('history' in m && Array.isArray(m.history)) {
         m.history.forEach((entry, j) => {
           if (isPlainObject(entry)) {
+            const entryBase = joinPath(base, `history[${j}]`);
             walkLevel(
               entry,
               derefNode(measurementSchema()),
-              joinPath(base, `history[${j}]`),
+              entryBase,
               issues,
               style,
+              true,
             );
+            walkChannelsStyle(entry, entryBase, issues, style);
           }
         });
       }
     }
   });
   return style;
+}
+
+/** Style-walk each `channels[]` entry of one measurement level. */
+function walkChannelsStyle(
+  m: JsonObject,
+  base: string,
+  issues: ValidationIssue[],
+  style: StyleNote[],
+): void {
+  if (!('channels' in m) || !Array.isArray(m.channels)) return;
+  m.channels.forEach((entry, j) => {
+    if (isPlainObject(entry)) {
+      walkLevel(
+        entry,
+        derefNode(measurementSchema()),
+        joinPath(base, `channels[${j}]`),
+        issues,
+        style,
+        true,
+      );
+    }
+  });
 }
 
 /** Resolve a dotted vocabulary path (re-exported for the conformance harness). */

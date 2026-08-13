@@ -10,8 +10,7 @@
   ],
   "provides": [
     "analog.current",
-    "battery",
-    "current2"
+    "battery"
   ],
   "variantOf": null,
   "downlink": {

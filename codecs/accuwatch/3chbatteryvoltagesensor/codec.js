@@ -15,9 +15,43 @@
 // copied.
 //
 // 12-byte frame (little-endian float32 per channel):
-//   bytes[0..3]   channel 1 voltage (V) -> analog.voltage
-//   bytes[4..7]   channel 2 voltage (V) -> voltage2 (V extra)
-//   bytes[8..11]  channel 3 voltage (V) -> voltage3 (V extra)
+//   bytes[0..3]   channel 1 voltage (V) -> channels[] `channel0`
+//   bytes[4..7]   channel 2 voltage (V) -> channels[] `channel1`
+//   bytes[8..11]  channel 3 voltage (V) -> channels[] `channel2`
+//
+// Multi-position output (`channels[]`, see AUTHORING.md "Multi-channel
+// devices"). The three voltage inputs are sub-sensor positions of one device all
+// carrying the same quantity, so each rides in the reserved `channels` array
+// rather than in the suffixed `voltage2` / `voltage3` extras this codec used to
+// emit: one entry per position, each carrying the `analog.voltage` vocabulary
+// key in V with identical scaling and rounding (the raw float32 rounded to 2
+// decimals, matching upstream's toFixed(2) resolution). Labels are the vendor's
+// own term plus a zero-based index — `channel0` (frame channel 1), `channel1`
+// (channel 2), `channel2` (channel 3): Accuwatch brands the product "3ch
+// Battery Voltage Sensor", i.e. it calls the positions channels, so `channelN`
+// is the vendor's term. Upstream's `sensorNVoltage` keys are not used as the
+// label stem — "sensor" there names the whole device (one sensor, three
+// channels), and `channelN` matches the label scheme of the other
+// fixed-channel-bank codecs in this repo (e.g. dragino/ltc2). The labels are
+// zero-based while the vendor numbers the channels 1..3, so `channel0` is
+// Accuwatch channel 1.
+//
+// Nothing is emitted both inside an entry and at the top level: this frame
+// carries no whole-device reading at all (no battery, no diagnostics), so after
+// the conversion `channels` is the codec's entire measurement payload. The
+// `analog-interface` category (atLeastOne includes `analog.voltage`) is still
+// satisfied, since membership resolves through top-level `channels[]` entries.
+//
+// Sentinel policy: this frame format defines NO disconnected-channel sentinel.
+// Neither the vendor payload nor the upstream decoder reserves a "no probe"
+// value — all three words are plain IEEE-754 floats read across the input's
+// full range — so no value is treated as a sentinel and no entry is ever
+// suppressed on its reading. A non-finite float (NaN / +-Inf) is NOT treated as
+// a per-channel sentinel either: it means a corrupt frame, and the whole uplink
+// is rejected with the pre-existing frame-level error (unchanged below).
+// Likewise no short frame can fabricate a missing position: the length guard
+// requires exactly 12 bytes, so all three channel words are present whenever a
+// frame decodes, and `channels` (built lazily) is in practice never omitted.
 
 function round(value, decimals) {
   var f = Math.pow(10, decimals);
@@ -60,11 +94,18 @@ function decodeUplinkCore(input) {
     return { errors: ['non-finite voltage in payload'] };
   }
 
-  var data = {
-    analog: { voltage: round(v1, 2) },
-    voltage2: round(v2, 2),
-    voltage3: round(v3, 2)
-  };
+  // One channels[] entry per voltage channel, same scaling/rounding for each.
+  var volts = [v1, v2, v3];
+  var channels = [];
+  var i;
+  for (i = 0; i < volts.length; i++) {
+    channels.push({ channel: 'channel' + i, analog: { voltage: round(volts[i], 2) } });
+  }
+
+  var data = {};
+  if (channels.length > 0) {
+    data.channels = channels;
+  }
 
   return { data: data };
 }

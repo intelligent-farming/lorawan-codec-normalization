@@ -9,8 +9,6 @@
     "pulse count"
   ],
   "provides": [
-    "channel",
-    "channelBTotal",
     "configurationDone",
     "counterHistory",
     "frameCounter",

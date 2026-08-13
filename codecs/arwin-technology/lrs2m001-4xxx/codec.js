@@ -25,6 +25,17 @@
 //     bytes[7..10]: active energy (kWh x10)
 //   fPort 8: firmware version (major . minor . patch16)
 //   fPort 16, bytes[0]==0x0a: device settings
+//
+// The meter's measured positions are sub-sensor channels, so their readings
+// ride in the reserved `channels` array (see AUTHORING.md "Multi-channel
+// devices") and never collapse into one downstream series:
+//   fPort 50..61 -> one entry per uplink labelled `ch<N>-<P>` (CT channel 1-4
+//     x supply phase A-C, from the fPort map) carrying power.current/.active/
+//     .factor, metering.energy.total and that phase's event extra.
+//   fPort 10 -> three entries labelled `phaseA`/`phaseB`/`phaseC`, one per
+//     supply phase, each carrying power.voltage (phases B/C are no longer
+//     suffixed extras). Line frequency, backup battery and the meter event
+//     summary are whole-device and stay top-level.
 
 var LRS2M001_METER_EVENTS = ['heartbeat/button', 'bakcup power', 'ph_C_under_V', 'ph_C_over_V', 'ph_B_under_V', 'ph_B_over_V', 'ph_A_under_V', 'ph_A_over_V', 'backup_batt_low'];
 var LRS2M001_PHASE_EVENTS = ['over_current', 'heartbeat/button'];
@@ -72,19 +83,22 @@ function decodePhase(bytes, channel, phase) {
   var energyKwh = (bytes[7] << 24 | bytes[8] << 16 | bytes[9] << 8 | bytes[10]) / 10;
   return {
     data: {
-      power: {
-        current: round((evtAmp & 0x3fff) / 10, 1),
-        active: round(s22(powPf >>> 10) / 10, 1),
-        factor: round((powPf & 0x03ff) / 1000, 3)
-      },
-      metering: {
-        energy: {
-          total: round(energyKwh * 1000, 0)
+      channels: [
+        {
+          channel: 'ch' + channel + '-' + phase,
+          power: {
+            current: round((evtAmp & 0x3fff) / 10, 1),
+            active: round(s22(powPf >>> 10) / 10, 1),
+            factor: round((powPf & 0x03ff) / 1000, 3)
+          },
+          metering: {
+            energy: {
+              total: round(energyKwh * 1000, 0)
+            }
+          },
+          event: evt
         }
-      },
-      channel: channel,
-      phase: phase,
-      event: evt
+      ]
     }
   };
 }
@@ -110,12 +124,12 @@ function decodeUplinkCore(input) {
       }
       return {
         data: {
-          power: {
-            voltage: round((bytes[1] << 8 | bytes[2]) / 10, 1),
-            frequency: freqEvt >> 10
-          },
-          phaseBVoltage: round((bytes[3] << 8 | bytes[4]) / 10, 1),
-          phaseCVoltage: round((bytes[5] << 8 | bytes[6]) / 10, 1),
+          channels: [
+            { channel: 'phaseA', power: { voltage: round((bytes[1] << 8 | bytes[2]) / 10, 1) } },
+            { channel: 'phaseB', power: { voltage: round((bytes[3] << 8 | bytes[4]) / 10, 1) } },
+            { channel: 'phaseC', power: { voltage: round((bytes[5] << 8 | bytes[6]) / 10, 1) } }
+          ],
+          power: { frequency: freqEvt >> 10 },
           batteryPercent: bytes[10],
           event: evt
         }

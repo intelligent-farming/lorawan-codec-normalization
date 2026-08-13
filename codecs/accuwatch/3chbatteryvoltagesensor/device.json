@@ -9,9 +9,7 @@
     "voltage"
   ],
   "provides": [
-    "analog.voltage",
-    "voltage2",
-    "voltage3"
+    "analog.voltage"
   ],
   "variantOf": null,
   "downlink": {

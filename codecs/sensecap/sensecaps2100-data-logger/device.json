@@ -19,9 +19,9 @@
     "air.relativeHumidity",
     "air.temperature",
     "rain.cumulative",
-    "uVIndex",
-    "wind.speed",
-    "windDirectionSensor"
+    "uvIndex",
+    "wind.direction",
+    "wind.speed"
   ],
   "variantOf": null,
   "downlink": {

@@ -3,14 +3,16 @@
   "device": "soil-moisture",
   "name": "Soil Moisture",
   "categories": [
-    "soil-monitor"
+    "soil-monitor",
+    "analog-interface"
   ],
   "sensors": [
+    "moisture",
     "battery"
   ],
   "provides": [
-    "battery",
-    "soilMoistureAdc"
+    "analog.raw",
+    "battery"
   ],
   "variantOf": null,
   "downlink": {

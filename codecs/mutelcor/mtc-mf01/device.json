@@ -11,10 +11,7 @@
   ],
   "provides": [
     "action.contactState",
-    "battery",
-    "switch1",
-    "switch2",
-    "switch3"
+    "battery"
   ],
   "variantOf": null,
   "downlink": {

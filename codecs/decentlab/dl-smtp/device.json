@@ -15,9 +15,7 @@
     "deviceId",
     "protocolVersion",
     "soil.moisture",
-    "soil.temperature",
-    "soilMoistureProfile",
-    "soilTemperatureProfile"
+    "soil.temperature"
   ],
   "variantOf": null,
   "downlink": {

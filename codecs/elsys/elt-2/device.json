@@ -32,12 +32,14 @@
     "air.pressure",
     "air.relativeHumidity",
     "air.temperature",
-    "analog1",
+    "analogMv",
     "battery",
-    "digital1",
+    "digital",
     "distance",
     "externalTemperature",
-    "pressureHpa"
+    "pressureHpa",
+    "pulseAbsolute",
+    "pulseRelative"
   ],
   "variantOf": null,
   "downlink": {

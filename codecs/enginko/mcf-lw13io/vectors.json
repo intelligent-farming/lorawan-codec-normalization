@@ -6,27 +6,95 @@
       "expected": {
         "data": {
           "make": "enginko", "model": "mcf-lw13io",
-          "action": { "contactState": "closed" },
-          "input2": false, "input3": false, "input4": false, "input5": false,
-          "input6": false, "input7": false, "input8": false, "input9": false,
-          "input10": false, "input11": false, "input12": false, "input13": false,
-          "input14": false, "input15": false, "input16": false,
           "output1": false, "output2": false, "output3": false, "output4": false,
           "output5": false, "output6": false, "output7": false, "output8": false,
+          "channels": [
+            { "channel": "input0", "action": { "contactState": "closed" } },
+            { "channel": "input1", "action": { "contactState": "open" } },
+            { "channel": "input2", "action": { "contactState": "open" } },
+            { "channel": "input3", "action": { "contactState": "open" } },
+            { "channel": "input4", "action": { "contactState": "open" } },
+            { "channel": "input5", "action": { "contactState": "open" } },
+            { "channel": "input6", "action": { "contactState": "open" } },
+            { "channel": "input7", "action": { "contactState": "open" } },
+            { "channel": "input8", "action": { "contactState": "open" } },
+            { "channel": "input9", "action": { "contactState": "open" } },
+            { "channel": "input10", "action": { "contactState": "open" } },
+            { "channel": "input11", "action": { "contactState": "open" } },
+            { "channel": "input12", "action": { "contactState": "open" } },
+            { "channel": "input13", "action": { "contactState": "open" } },
+            { "channel": "input14", "action": { "contactState": "open" } },
+            { "channel": "input15", "action": { "contactState": "open" } }
+          ],
           "frameType": "ioStatus"
         }
       },
       "source": "synthetic",
-      "_note": "0x0A I/O-status frame: date(4)=0, inputStatus[0]=0x01 -> input1 active, outputs 0. Verified against reference/upstream-codec.js parseIO (inputStatus8_1='1', outputStatus8_1='0')."
+      "_note": "0x0A I/O-status frame: date(4)=0, inputStatus[0]=0x01 -> input 1 active, i.e. channels entry `input0` closed and `input1`..`input15` open; outputs 0. Verified against reference/upstream-codec.js parseIO (inputStatus8_1='1', outputStatus8_1='0')."
     },
     {
-      "description": "digital counter frame: counter = 1000",
-      "input": { "fPort": 1, "bytes": [16, 0, 232, 3] },
+      "description": "I/O status frame: mixed input pattern (inputs 1, 3, 6, 8, 9, 10 closed), outputs 1 and 8 on",
+      "input": { "fPort": 1, "bytes": [10, 0, 0, 0, 0, 165, 3, 0, 0, 129, 0, 0, 0, 0, 0, 0, 0] },
       "expected": {
-        "data": { "make": "enginko", "model": "mcf-lw13io", "pulse": { "count": 1000 }, "frameType": "counters" }
+        "data": {
+          "make": "enginko", "model": "mcf-lw13io",
+          "output1": true, "output2": false, "output3": false, "output4": false,
+          "output5": false, "output6": false, "output7": false, "output8": true,
+          "channels": [
+            { "channel": "input0", "action": { "contactState": "closed" } },
+            { "channel": "input1", "action": { "contactState": "open" } },
+            { "channel": "input2", "action": { "contactState": "closed" } },
+            { "channel": "input3", "action": { "contactState": "open" } },
+            { "channel": "input4", "action": { "contactState": "open" } },
+            { "channel": "input5", "action": { "contactState": "closed" } },
+            { "channel": "input6", "action": { "contactState": "open" } },
+            { "channel": "input7", "action": { "contactState": "closed" } },
+            { "channel": "input8", "action": { "contactState": "closed" } },
+            { "channel": "input9", "action": { "contactState": "closed" } },
+            { "channel": "input10", "action": { "contactState": "open" } },
+            { "channel": "input11", "action": { "contactState": "open" } },
+            { "channel": "input12", "action": { "contactState": "open" } },
+            { "channel": "input13", "action": { "contactState": "open" } },
+            { "channel": "input14", "action": { "contactState": "open" } },
+            { "channel": "input15", "action": { "contactState": "open" } }
+          ],
+          "frameType": "ioStatus"
+        }
       },
       "source": "synthetic",
-      "_note": "0x10 sub-type 0x00: counter = (0x03<<8)+0xE8 = 1000. Verified against reference/upstream-codec.js parseDigitalData (counter='1000')."
+      "_note": "Mixed per-position truth: inputStatus[0]=0xA5 (bits 0,2,5,7) -> board inputs 1,3,6,8 active -> entries input0/input2/input5/input7 closed; inputStatus[1]=0x03 (bits 0,1) -> inputs 9,10 -> entries input8/input9 closed; the rest open. outputStatus[0]=0x81 -> outputs 1 and 8 energized. Verified against reference/upstream-codec.js parseIO (inputStatus8_1=10100101, inputStatus9_16=11, outputStatus8_1=10000001)."
+    },
+    {
+      "description": "digital counter frame: input 1 counter = 1000",
+      "input": { "fPort": 1, "bytes": [16, 0, 232, 3] },
+      "expected": {
+        "data": {
+          "make": "enginko", "model": "mcf-lw13io",
+          "channels": [
+            { "channel": "input0", "pulse": { "count": 1000 } }
+          ],
+          "frameType": "counters"
+        }
+      },
+      "source": "synthetic",
+      "_note": "0x10 sub-type 0x00: one counter pair = (0x03<<8)+0xE8 = 1000. Verified against reference/upstream-codec.js parseDigitalData (measure=1, counter=1000) — measure 1 is board input 1, so the count belongs to entry `input0`."
+    },
+    {
+      "description": "digital counter frame: three per-input counters (1000, 5, 0)",
+      "input": { "fPort": 1, "bytes": [16, 0, 232, 3, 5, 0, 0, 0] },
+      "expected": {
+        "data": {
+          "make": "enginko", "model": "mcf-lw13io",
+          "channels": [
+            { "channel": "input0", "pulse": { "count": 1000 } },
+            { "channel": "input1", "pulse": { "count": 5 } },
+            { "channel": "input2", "pulse": { "count": 0 } }
+          ],
+          "frameType": "counters"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Per-input counters: upstream parseDigitalData walks 2-byte pairs emitting (measure, counter) per pair, measure being the 1-based input index — measure 1/2/3 with counters 1000/5/0 here, so each count rides in its own entry (input0/input1/input2) rather than a single whole-device pulse.count."
     },
     {
       "description": "unsupported uplink id",

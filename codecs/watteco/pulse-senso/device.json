@@ -12,8 +12,7 @@
   "provides": [
     "action.contactState",
     "battery",
-    "pulse.total",
-    "pulseTotal2"
+    "pulse.total"
   ],
   "variantOf": null,
   "downlink": {

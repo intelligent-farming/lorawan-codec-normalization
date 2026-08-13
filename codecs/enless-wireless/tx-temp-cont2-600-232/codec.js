@@ -20,11 +20,27 @@
 //   bytes[10..11] alarm-status word (not telemetry)
 //   bytes[12..13] state word: bits 2..3 = battery level code
 //                 (0=100%,1=75%,2=50%,3=25%); bit 0 = msg alarm flag
-// Channel mapping: probe 1 (upstream temperature_1) is the primary channel and
-// maps to the top-level vocabulary key `temperature`; probe 2 is exposed as the
-// camelCase extra `temperature2` (no vocabulary key for a second probe).
-// Battery is a coarse 2-bit percentage, not a voltage, so it is emitted as the
-// camelCase extra `batteryPercent` (the vocabulary `battery` key is volts).
+// Both PT1000 probes measure the same quantity at two sub-sensor positions, so
+// each rides in the reserved `channels` array (see AUTHORING.md "Multi-channel
+// devices") instead of the old `temperature` + `temperature2` suffixed pair.
+// Labels are the vendor's own term plus a zero-based index: Enless calls them
+// probe 1 (bytes[6..7], upstream temperature_1) and probe 2 (bytes[8..9],
+// upstream temperature_2), which map to `probe0` and `probe1` respectively. Each
+// entry carries the `temperature` vocabulary key in °C with the same ÷10 scaling
+// and 1-decimal rounding as before.
+//
+// Whole-device readings stay top-level and are never duplicated in an entry:
+// `batteryPercent` (a coarse 2-bit percentage, not a voltage — the vocabulary
+// `battery` key is volts), plus the `deviceId` and `sequenceCounter` frame
+// metadata extras.
+//
+// Sentinel policy: this frame format defines NO disconnected-probe sentinel.
+// The upstream dispatcher decodes both probe words unconditionally as plain
+// two's-complement tenths with no reserved "no probe" code, and the alarm-status
+// word it parses alongside them carries only per-probe high/low *threshold*
+// flags (not a presence indicator) — those bits are not telemetry and remain
+// undecoded here, as before. So no value is treated as a sentinel and neither
+// entry is ever suppressed on its reading; none is invented.
 
 function round(value, decimals) {
   var f = Math.pow(10, decimals);
@@ -55,8 +71,10 @@ function decodeUplinkCore(input) {
   }
 
   var data = {};
-  data.temperature = round(signed16(bytes[6], bytes[7]) / 10, 1);
-  data.temperature2 = round(signed16(bytes[8], bytes[9]) / 10, 1);
+  data.channels = [
+    { channel: 'probe0', temperature: round(signed16(bytes[6], bytes[7]) / 10, 1) },
+    { channel: 'probe1', temperature: round(signed16(bytes[8], bytes[9]) / 10, 1) }
+  ];
   data.batteryPercent = batteryPercentFromState(bytes[12], bytes[13]);
   data.deviceId = (bytes[0] << 16) | (bytes[1] << 8) | bytes[2];
   data.sequenceCounter = bytes[4];

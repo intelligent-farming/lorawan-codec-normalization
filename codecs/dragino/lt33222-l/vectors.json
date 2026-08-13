@@ -1,7 +1,7 @@
 {
   "uplink": [
     {
-      "description": "work mode 1 (2ACI+2AVI): AVI1 1.195 V, ACI1 4.88 mA, DI1 closed",
+      "description": "work mode 1 (2ACI+2AVI): all four analog positions plus three digital-input positions",
       "input": {
         "fPort": 2,
         "bytes": [4, 171, 4, 172, 19, 16, 19, 0, 170, 255, 1]
@@ -11,17 +11,46 @@
           "make": "dragino", "model": "lt33222-l",
           "hardwareMode": "LT33222", "workMode": 1,
           "do1": true, "do2": false, "ro1": true, "ro2": false, "do3": true,
-          "analog": { "voltage": 1.195, "current": 4.88 },
-          "voltage2": 1.196, "current2": 4.864,
-          "action": { "contactState": "closed" },
-          "input2": false, "input3": true
+          "channels": [
+            { "channel": "avi0", "analog": { "voltage": 1.195 } },
+            { "channel": "avi1", "analog": { "voltage": 1.196 } },
+            { "channel": "aci0", "analog": { "current": 4.88 } },
+            { "channel": "aci1", "analog": { "current": 4.864 } },
+            { "channel": "input0", "action": { "contactState": "closed" } },
+            { "channel": "input1", "action": { "contactState": "open" } },
+            { "channel": "input2", "action": { "contactState": "closed" } }
+          ]
         }
       },
       "source": "ttn-example",
-      "_note": "TTN example input. byte[10]=0x01 -> hardware 0 (LT33222), mode 1. AVI1=s16(0x04AB)=1195/1000=1.195 V, ACI1=s16(0x1310)=4880/1000=4.88 mA. byte[8]=0xAA: DI1(bit3)=1 closed, DI2(bit4)=0, DI3(bit5)=1, DO1 H, DO2 L, DO3 H, RO1 ON, RO2 OFF. Verified against reference/upstream-codec.js (AVI1_V 1.195, ACI1_mA 4.88, DI1 'H', DI2 'L', DI3 'H')."
+      "_note": "TTN example input. byte[10]=0x01 -> hardware 0 (LT33222, so DI3/DO3 exist), mode 1. avi0=AVI1=s16(0x04AB)=1195/1000=1.195 V, avi1=AVI2=s16(0x04AC)=1.196 V, aci0=ACI1=s16(0x1310)=4.88 mA, aci1=ACI2=s16(0x1300)=4.864 mA. byte[8]=0xAA: DI1(bit3)=1 -> input0 closed, DI2(bit4)=0 -> input1 open, DI3(bit5)=1 -> input2 closed; DO1 H, DO2 L, DO3 H, RO1 ON, RO2 OFF. Verified against reference/upstream-codec.js (AVI1_V 1.195, AVI2_V 1.196, ACI1_mA 4.88, ACI2_mA 4.864, DI1 'H', DI2 'L', DI3 'H', DO1 'H', DO2 'L', DO3 'H', RO1 'ON', RO2 'OFF')."
     },
     {
-      "description": "work mode 2 (Count mode 1): two cumulative counters",
+      "description": "work mode 1 on LT22222 hardware: distinct value per position, mixed input states, no third DI/DO",
+      "input": {
+        "fPort": 2,
+        "bytes": [48, 57, 1, 244, 78, 32, 15, 160, 201, 0, 65]
+      },
+      "expected": {
+        "data": {
+          "make": "dragino", "model": "lt33222-l",
+          "hardwareMode": "LT22222", "workMode": 1,
+          "do1": false, "do2": true, "ro1": true, "ro2": true,
+          "channels": [
+            { "channel": "avi0", "analog": { "voltage": 12.345 } },
+            { "channel": "avi1", "analog": { "voltage": 0.5 } },
+            { "channel": "aci0", "analog": { "current": 20 } },
+            { "channel": "aci1", "analog": { "current": 4 } },
+            { "channel": "input0", "action": { "contactState": "closed" } },
+            { "channel": "input1", "action": { "contactState": "open" } }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Multi-position vector: every position carries a different value, so a per-position mix-up cannot pass. byte[10]=0x41 -> hardware 1 (LT22222: 2 DI / 2 DO, so no input2 entry and no do3), mode 1. AVI1=0x3039=12345 -> 12.345 V, AVI2=0x01F4=500 -> 0.5 V, ACI1=0x4E20=20000 -> 20 mA, ACI2=0x0FA0=4000 -> 4 mA. byte[8]=0xC9: DI1(bit3)=1 -> input0 closed, DI2(bit4)=0 -> input1 open, DO1 bit0=1 -> do1 false, DO2 bit1=0 -> do2 true, RO1 bit7=1, RO2 bit6=1. Verified against reference/upstream-codec.js (Hardware_mode 'LT22222', AVI1_V 12.345, AVI2_V 0.5, ACI1_mA 20, ACI2_mA 4, DI1 'H', DI2 'L', DO1 'L', DO2 'H', RO1 'ON', RO2 'ON', and no DI3_status/DO3_status)."
+    },
+    {
+      "description": "work mode 2 (double DI counting): two counter positions, no analog positions",
       "input": {
         "fPort": 2,
         "bytes": [0, 0, 3, 232, 0, 0, 7, 208, 0, 0, 2]
@@ -31,11 +60,84 @@
           "make": "dragino", "model": "lt33222-l",
           "hardwareMode": "LT33222", "workMode": 2,
           "do1": true, "do2": true, "ro1": false, "ro2": false, "do3": true,
-          "pulse": { "count": 1000 }, "count2": 2000
+          "channels": [
+            { "channel": "counter0", "pulse": { "count": 1000 } },
+            { "channel": "counter1", "pulse": { "count": 2000 } }
+          ]
         }
       },
       "source": "synthetic",
-      "_note": "byte[10]=0x02 -> mode 2. Count1=0x000003E8=1000 -> pulse.count, Count2=0x000007D0=2000 -> count2. byte[8]=0 so all DO high / RO off. Verified against reference/upstream-codec.js (Count1_times 1000, Count2_times 2000)."
+      "_note": "Second work mode, exercising the lazy channels build: mode 2 reports only the counter bank, so no avi*/aci*/input* entries are emitted. byte[10]=0x02 -> mode 2. COUNT1=0x000003E8=1000 -> counter0, COUNT2=0x000007D0=2000 -> counter1. byte[8]=0 so all DO high / RO off. Verified against reference/upstream-codec.js (Count1_times 1000, Count2_times 2000, no AVI/ACI/DI fields)."
+    },
+    {
+      "description": "work mode 3 (1 DI counter + 2ACI): mixed banks - one counter position and both current positions",
+      "input": {
+        "fPort": 2,
+        "bytes": [0, 1, 226, 64, 33, 52, 61, 134, 33, 0, 3]
+      },
+      "expected": {
+        "data": {
+          "make": "dragino", "model": "lt33222-l",
+          "hardwareMode": "LT33222", "workMode": 3,
+          "do1": false, "do2": true, "ro1": false, "ro2": false, "do3": true,
+          "channels": [
+            { "channel": "counter0", "pulse": { "count": 123456 } },
+            { "channel": "aci0", "analog": { "current": 8.5 } },
+            { "channel": "aci1", "analog": { "current": 15.75 } }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Third work mode: counter bank + current bank, and NO voltage or digital-input entries (mode 3 does not report them). byte[10]=0x03 -> hardware 0, mode 3. COUNT1=0x0001E240=123456 -> counter0, ACI1=0x2134=8500 -> 8.5 mA, ACI2=0x3D86=15750 -> 15.75 mA. byte[8]=0x21: DO1 bit0=1 -> do1 false, DO2 bit1=0 -> do2 true, DO3 bit2=0 -> do3 true, RO1/RO2 clear; bit5 here is upstream's FIRST flag, not DI3, which is why no input entry is emitted outside mode 1. Verified against reference/upstream-codec.js (Count1_times 123456, ACI1_mA 8.5, ACI2_mA 15.75, First_status 'Yes')."
+    },
+    {
+      "description": "work mode 4 (DI counter + AVI1 threshold counter): counter0 and acount0",
+      "input": {
+        "fPort": 2,
+        "bytes": [0, 0, 0, 7, 0, 1, 0, 2, 130, 0, 68]
+      },
+      "expected": {
+        "data": {
+          "make": "dragino", "model": "lt33222-l",
+          "hardwareMode": "LT22222", "workMode": 4,
+          "do1": true, "do2": false, "ro1": true, "ro2": false,
+          "channels": [
+            { "channel": "counter0", "pulse": { "count": 7 } },
+            { "channel": "acount0", "pulse": { "count": 65538 } }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Covers the position the pre-channels codec dropped: mode 4 carries COUNT1 in bytes[0..3] AND ACOUNT (the AVI1 threshold-crossing counter) in bytes[4..7], but the old shape mapped only bytes[4..7] onto pulse.count. byte[10]=0x44 -> hardware 1 (LT22222, no do3), mode 4. COUNT1=0x00000007=7 -> counter0, ACOUNT=0x00010002=65538 -> acount0 (distinct values, so the two 32-bit reads cannot be swapped unnoticed). byte[8]=0x82: DO1 bit0=0 -> do1 true, DO2 bit1=1 -> do2 false, RO1 bit7=1 -> true, RO2 bit6=0 -> false. Verified against reference/upstream-codec.js (Count1_times 7, Acount_times 65538)."
+    },
+    {
+      "description": "work mode 5 (1ACI+2AVI+1Count): both voltage positions, ACI1 only, 16-bit counter",
+      "input": {
+        "fPort": 2,
+        "bytes": [12, 228, 252, 24, 15, 161, 18, 52, 68, 0, 5]
+      },
+      "expected": {
+        "data": {
+          "make": "dragino", "model": "lt33222-l",
+          "hardwareMode": "LT33222", "workMode": 5,
+          "do1": true, "do2": true, "ro1": false, "ro2": true, "do3": false,
+          "channels": [
+            { "channel": "avi0", "analog": { "voltage": 3.3 } },
+            { "channel": "avi1", "analog": { "voltage": -1 } },
+            { "channel": "aci0", "analog": { "current": 4.001 } },
+            { "channel": "counter0", "pulse": { "count": 4660 } }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Fourth work mode: three banks at once and an aci1 that must NOT appear (mode 5 reports only ACI1). byte[10]=0x05 -> hardware 0, mode 5. AVI1=0x0CE4=3300 -> 3.3 V, AVI2=0xFC18=-1000 -> -1 V (signed 16-bit path; analog.voltage has no lower bound in the vocabulary, unlike analog.current), ACI1=0x0FA1=4001 -> 4.001 mA, COUNT1 is the 16-bit 0x1234=4660 -> counter0. byte[8]=0x44: DO1 bit0=0 -> do1 true, DO2 bit1=0 -> do2 true, DO3 bit2=1 -> do3 false, RO2 bit6=1 -> true, RO1 bit7=0 -> false. Verified against reference/upstream-codec.js (AVI1_V 3.3, AVI2_V -1, ACI1_mA 4.001, Count1_times 4660)."
+    },
+    {
+      "description": "work mode 6 (exit/alarm) carries only flag bits, no measured position",
+      "input": { "fPort": 2, "bytes": [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 6] },
+      "expected": { "errors": ["work mode 6 carries no normalizable interface reading"] },
+      "source": "synthetic",
+      "_note": "byte[10]=0x06 -> mode 6. Upstream decodes this frame into AV/AC/DI threshold flags only (no AVI/ACI/count value), so there is no position to emit and the frame is rejected rather than shipping an empty channels array."
     },
     {
       "description": "device-status frame (fPort 5) has no interface measurement",

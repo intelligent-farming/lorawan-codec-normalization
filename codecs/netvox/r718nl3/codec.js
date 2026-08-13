@@ -1,16 +1,48 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2026 Intelligent Farming Foundation
 //
-// Normalized payload codec for netvox/r718nl3 (3-channel current + light sensor).
+// Normalized payload codec for netvox/r718nl3 (light sensor + 3-phase AC current
+// meter with three 150 A clamp-on/split-core current transformers).
 //
 // Netvox payload decoder ported verbatim from the upstream Apache-2.0 decoder
 // (TheThingsNetwork/lorawan-devices vendor/netvox/r718nl3.js, attributed in
 // NOTICE), renamed netvoxDecode; the upstream downlink encoder/decoder are
-// renamed to inert helpers. decodeUplinkCore maps measurement fields to the
-// vocabulary (Vol/Voltage->power.voltage, Current/Current_n/Channel_x mA->
-// power.current, Power->power.active, Energy->metering.energy.total, Angle*->
-// tilt.*, Illuminance->air.lightIntensity, Temp->air.temperature, Volt->battery)
-// and errors on device-info / configuration-response frames.
+// renamed to inert helpers. That decoder's own output object keeps the vendor's
+// capitalised field names (Volt, Current1, Multiplier1, Illuminance, ...)
+// untouched; decodeUplinkCore below is the authored normalization layer and is
+// the only place the emitted key names are decided.
+//
+// Multi-CT shape: the meter's three CTs sit on the three supply phases, so each
+// phase is a sub-sensor position and its readings ride in the reserved
+// `channels` array (see AUTHORING.md "Multi-channel devices") instead of the
+// suffixed extras this codec used to emit (`current2`, `current3`,
+// `multiplier1`..`multiplier3`). Entries are labelled `phaseA`/`phaseB`/`phaseC`
+// after the upstream field's 1-based suffix (Current1 -> phaseA), the same label
+// scheme the 3-phase arwin-technology/lrs2m001-4xxx meter uses for this concept
+// and the same as the sibling solid-core netvox/r718n3. Per entry:
+//   Current<N> (mA)          -> power.current (A, mA / 1000, unchanged rounding)
+//   Multiplier<N>            -> multiplier (extra: that CT's configured scale
+//                               factor — per-position config belongs in its own
+//                               position's entry)
+//   Low/HighCurrent<N>Alarm  -> lowCurrentAlarm / highCurrentAlarm (extras, 0/1
+//                               exactly as emitted; not carried by this model's
+//                               frames, handled for parity with r718n3)
+// Whole-device fields stay top-level and are never repeated in an entry: the
+// on-board ambient light reading Illuminance -> air.lightIntensity (lux, one
+// sensor, not per phase), Volt -> battery (V), Device -> deviceName.
+//
+// Frame variants (fPort 6, discriminator bytes[2]): 0x01 carries all three CT
+// currents plus phase A's raw multiplier byte; 0x02 carries the phase B/C
+// multipliers plus the illuminance reading. A frame therefore emits an entry
+// only for the phases it mentions, and the 0x02 frame's entries carry only that
+// phase's configuration extra.
+//
+// Sentinel policy: the wire format has no disconnected-CT encoding — a current
+// is a plain unsigned 16-bit mA value with no reserved code, and 0 mA is a
+// legitimate reading (unloaded circuit), not a sentinel — so no phase is ever
+// skipped and every phase a frame mentions is emitted as-is. Frames that carry
+// no measurement at all (device info on fPort 6 with bytes[2]==0x00,
+// configuration responses on fPort 7) still return an error.
 
 function getCfgCmd(cfgcmd){
   var cfgcmdlist = {
@@ -179,6 +211,10 @@ function netvoxDecodeDownlink(input) {
 }
 
 // ---- normalization layer (authored) ----
+// Supply-phase labels for the reserved channels[] entries, indexed by the
+// 1-based suffix upstream puts on its per-CT fields (Current1 -> phaseA).
+var R718NL3_PHASE_LABELS = ['phaseA', 'phaseB', 'phaseC'];
+
 function round(value, decimals) { var f = Math.pow(10, decimals); return Math.round(value * f) / f; }
 function setp(o, path, v) { o[path[0]] = o[path[0]] || {}; if (path.length === 2) { o[path[0]][path[1]] = v; } else { o[path[0]][path[1]] = o[path[0]][path[1]] || {}; o[path[0]][path[1]][path[2]] = v; } }
 function decodeUplinkCore(input) {
@@ -187,28 +223,53 @@ function decodeUplinkCore(input) {
   if (d.Cmd !== undefined) { return { errors: ['configuration response frame, not a measurement'] }; }
   if (d.SWver !== undefined || d.Datecode !== undefined) { return { errors: ['device information frame, not a measurement'] }; }
   var data = {};
+  // One channels entry per supply phase, created on first reference so a frame
+  // emits entries only for the phases it actually carries.
+  var phases = [null, null, null];
+  function phaseEntry(n) {
+    if (n < 1 || n > 3) { return null; }
+    if (phases[n - 1] === null) { phases[n - 1] = { channel: R718NL3_PHASE_LABELS[n - 1] }; }
+    return phases[n - 1];
+  }
   var k;
   for (k in d) {
     if (!Object.prototype.hasOwnProperty.call(d, k)) { continue; }
     var val = d[k];
     if (val === null || val === undefined) { continue; }
-    if (k === 'Vol' || k === 'Voltage') { if (typeof val === 'number') { setp(data, ['power', 'voltage'], val); } continue; }
-    if (k === 'Current') { if (typeof val === 'number') { setp(data, ['power', 'current'], round(val / 1000, 5)); } continue; }
-    if (k === 'Power') { if (typeof val === 'number') { setp(data, ['power', 'active'], val); } continue; }
-    if (k === 'Energy') { if (typeof val === 'number') { setp(data, ['metering', 'energy', 'total'], val); } continue; }
-    if (k === 'Volt') { if (typeof val === 'number') { data.battery = val; } continue; }
-    if (k === 'AngleX') { if (typeof val === 'number') { setp(data, ['tilt', 'x'], val); } continue; }
-    if (k === 'AngleY') { if (typeof val === 'number') { setp(data, ['tilt', 'y'], val); } continue; }
-    if (k === 'AngleZ') { if (typeof val === 'number') { setp(data, ['tilt', 'z'], val); } continue; }
-    if (k === 'AngleOfInclination') { if (typeof val === 'number') { setp(data, ['tilt', 'angle'], val); } continue; }
+    var m;
+    // Per-phase CT reading: mA -> power.current (A) inside that phase's entry.
+    m = /^Current([0-9]+)$/.exec(k);
+    if (m && typeof val === 'number') {
+      var ce = phaseEntry(parseInt(m[1], 10));
+      if (ce !== null) { setp(ce, ['power', 'current'], round(val / 1000, 5)); continue; }
+    }
+    // Per-phase CT scale factor (configuration) -> that phase's entry.
+    m = /^Multiplier([0-9]+)$/.exec(k);
+    if (m && typeof val === 'number') {
+      var me = phaseEntry(parseInt(m[1], 10));
+      if (me !== null) { me.multiplier = val; continue; }
+    }
+    // Per-phase threshold alarms -> that phase's entry. The optional `t` absorbs
+    // the typo field name (`HighCurren2Alarm`) used by sibling Netvox decoders.
+    m = /^(Low|High)Current?([0-9]+)Alarm$/.exec(k);
+    if (m) {
+      var ae = phaseEntry(parseInt(m[2], 10));
+      if (ae !== null) { ae[(m[1] === 'Low' ? 'low' : 'high') + 'CurrentAlarm'] = val; continue; }
+    }
+    // Whole-device fields: one ambient light sensor, one battery rail.
     if (k === 'Illuminance') { if (typeof val === 'number') { setp(data, ['air', 'lightIntensity'], val); } continue; }
-    if (k === 'Temp' || k === 'Temperature') { if (typeof val === 'number') { setp(data, ['air', 'temperature'], val); } continue; }
-    if (/^Current[0-9]+$/.test(k) && typeof val === 'number') { if (!(data.power && data.power.current !== undefined)) { setp(data, ['power', 'current'], round(val / 1000, 5)); } else { data[k.charAt(0).toLowerCase()+k.slice(1)] = round(val/1000,5); } continue; }
-    if (/^Channel_[A-Z]$/.test(k) && typeof val === 'number') { if (!(data.power && data.power.current !== undefined)) { setp(data, ['power', 'current'], round(val / 1000, 5)); } else { data['channel'+k.slice(8)] = round(val/1000,5); } continue; }
+    if (k === 'Volt') { if (typeof val === 'number') { data.battery = val; } continue; }
     if (k === 'Device') { data.deviceName = val; continue; }
+    // Anything else the ported decoder emits rides as a camelCase extra.
     var ck = k.charAt(0).toLowerCase() + k.slice(1);
     data[ck] = val;
   }
+  var entries = [];
+  var i;
+  for (i = 0; i < 3; i++) {
+    if (phases[i] !== null) { entries.push(phases[i]); }
+  }
+  if (entries.length > 0) { data.channels = entries; }
   return { data: data };
 }
 

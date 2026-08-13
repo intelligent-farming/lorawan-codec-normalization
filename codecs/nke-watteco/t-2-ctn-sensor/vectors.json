@@ -1,16 +1,30 @@
 {
   "uplink": [
     {
-      "description": "standard report, endpoint 0 (probe 1): temperature 24.27 C | payload:110A0402000029 097B",
+      "description": "standard report, endpoint 0 (CTN probe 1): temperature 24.27 C | payload:110A0402000029097B",
       "input": { "fPort": 125, "bytes": [17, 10, 4, 2, 0, 0, 41, 9, 123] },
-      "expected": { "data": { "temperature": 24.27, "make": "nke-watteco", "model": "t-2-ctn-sensor" } },
-      "source": "ttn-example"
+      "expected": {
+        "data": {
+          "channels": [{ "channel": "endpoint0", "temperature": 24.27 }],
+          "make": "nke-watteco",
+          "model": "t-2-ctn-sensor"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "byte0 0x11 -> endpoint ((0x11 & 0xE0) >> 5) | ((0x11 & 0x06) << 2) = 0. One ZCL standard report carries one endpoint, so the frame yields a single channels[] entry labelled endpoint0 (upstream labels this sample temperature<endpoint + 1> = temperature1). Satisfies the temperature category through the entry."
     },
     {
-      "description": "standard report, endpoint 1 (probe 2): temperature2 24.07 C | payload:210A0402000029 0967",
+      "description": "standard report, endpoint 1 (CTN probe 2): temperature 24.07 C | payload:210A04020000290967",
       "input": { "fPort": 125, "bytes": [33, 10, 4, 2, 0, 0, 41, 9, 103] },
-      "expected": { "data": { "temperature2": 24.07, "make": "nke-watteco", "model": "t-2-ctn-sensor" } },
-      "source": "synthetic"
+      "expected": {
+        "data": {
+          "channels": [{ "channel": "endpoint1", "temperature": 24.07 }],
+          "make": "nke-watteco",
+          "model": "t-2-ctn-sensor"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Second probe position: byte0 0x21 -> endpoint 1. Value 0x0967 = 2407 -> 24.07 C by the upstream scaling (UintToInt(bytes[7] * 256 + bytes[8], 2) / 100); upstream would label it temperature2. reference/upstream-examples.json ships no examples for this device, so the payload is synthetic but the value follows the reference decoder exactly."
     },
     {
       "description": "batch (Huffman) frame is not supported (byte0 bit0 clear)",

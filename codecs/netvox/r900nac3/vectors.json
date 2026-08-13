@@ -1,7 +1,7 @@
 {
   "uplink": [
     {
-      "description": "Status report with shock/tamper alarm (motion detected)",
+      "description": "Status report with shock/tamper alarm (motion detected), three CT entries",
       "input": {
         "fPort": 22,
         "bytes": [3, 1, 1, 1, 110, 0, 0, 11, 0, 0, 11, 0, 0, 11, 1, 1]
@@ -11,24 +11,20 @@
           "make": "netvox",
           "model": "r900nac3",
           "battery": 11,
-          "current1": 11,
-          "current2": 11,
-          "current3": 11,
-          "lowCurrent1Alarm": true,
-          "highCurrent1Alarm": false,
-          "lowCurrent2Alarm": false,
-          "highCurrent2Alarm": false,
-          "lowCurrent3Alarm": false,
-          "highCurrent3Alarm": false,
+          "channels": [
+            { "channel": "ct1", "current": 11, "lowCurrentAlarm": true, "highCurrentAlarm": false },
+            { "channel": "ct2", "current": 11, "lowCurrentAlarm": false, "highCurrentAlarm": false },
+            { "channel": "ct3", "current": 11, "lowCurrentAlarm": false, "highCurrentAlarm": false }
+          ],
           "action": { "motion": { "detected": true } },
           "tamperAlarm": true
         }
       },
       "source": "synthetic",
-      "_note": "Wire shape from the upstream R900NAC3 status-report example (bytes[15]=0x01 shock/tamper alarm); expected.data authored here and produced by running reference/upstream-codec.js to confirm the field layout (Volt 11, Current 11mA, LowCurrent1Alarm 1, ShockTamperAlarm Alarm). Shock maps to action.motion.detected=true."
+      "_note": "Wire shape from the upstream R900NAC3 status-report example (bytes[15]=0x01 shock/tamper alarm); expected.data authored here and produced by running reference/upstream-codec.js to confirm the field layout (Volt 11, Current1..3 11mA, LowCurrent1Alarm 1, ShockTamperAlarm Alarm). Each CT input's reading and its own low/high alarm pair sit in that input's channels entry; shock maps to the whole-device action.motion.detected=true."
     },
     {
-      "description": "Status report with no alarm and low battery (motion not detected)",
+      "description": "Status report with no alarm and low battery (motion not detected); 0 mA is a real reading, not a sentinel",
       "input": {
         "fPort": 22,
         "bytes": [3, 1, 1, 1, 165, 0, 1, 44, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -39,21 +35,40 @@
           "model": "r900nac3",
           "lowBattery": true,
           "battery": 3.7,
-          "current1": 300,
-          "current2": 0,
-          "current3": 0,
-          "lowCurrent1Alarm": false,
-          "highCurrent1Alarm": false,
-          "lowCurrent2Alarm": false,
-          "highCurrent2Alarm": false,
-          "lowCurrent3Alarm": false,
-          "highCurrent3Alarm": false,
+          "channels": [
+            { "channel": "ct1", "current": 300, "lowCurrentAlarm": false, "highCurrentAlarm": false },
+            { "channel": "ct2", "current": 0, "lowCurrentAlarm": false, "highCurrentAlarm": false },
+            { "channel": "ct3", "current": 0, "lowCurrentAlarm": false, "highCurrentAlarm": false }
+          ],
           "action": { "motion": { "detected": false } },
           "tamperAlarm": false
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic in-bounds frame: bytes[4]=0xA5 sets the low-battery high bit (0x25=37 -> 3.7 V), bytes[15]=0x00 NoAlarm -> action.motion.detected=false. Verified against reference/upstream-codec.js (Volt '3.7(low battery)', Current1 300mA, ShockTamperAlarm NoAlarm)."
+      "_note": "Synthetic in-bounds frame: bytes[4]=0xA5 sets the low-battery high bit (0x25=37 -> 3.7 V), bytes[15]=0x00 NoAlarm -> action.motion.detected=false. Verified against reference/upstream-codec.js (Volt '3.7(low battery)', Current1 300mA, Current2/3 0mA, ShockTamperAlarm NoAlarm). The wire format has no disconnected-CT code, so the 0 mA inputs still get entries."
+    },
+    {
+      "description": "Status report with a distinct current and alarm pattern per CT (multi-CT)",
+      "input": {
+        "fPort": 22,
+        "bytes": [3, 1, 1, 1, 36, 0, 1, 44, 0, 39, 16, 0, 255, 255, 26, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "r900nac3",
+          "battery": 3.6,
+          "channels": [
+            { "channel": "ct1", "current": 300, "lowCurrentAlarm": false, "highCurrentAlarm": true },
+            { "channel": "ct2", "current": 10000, "lowCurrentAlarm": false, "highCurrentAlarm": true },
+            { "channel": "ct3", "current": 65535, "lowCurrentAlarm": true, "highCurrentAlarm": false }
+          ],
+          "action": { "motion": { "detected": false } },
+          "tamperAlarm": false
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame giving each CT input a clearly distinct reading and alarm pair, so a per-position mix-up cannot pass: bytes[4]=0x24 -> 3.6 V, currents 300 / 10000 / 65535 mA, bytes[14]=26 (0b011010) -> HighCurrent1Alarm, HighCurrent2Alarm, LowCurrent3Alarm, bytes[15]=0x00 NoAlarm. Verified against reference/upstream-codec.js field-for-field."
     },
     {
       "description": "Device info / startup frame carries no measurement",

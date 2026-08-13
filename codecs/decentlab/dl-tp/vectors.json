@@ -1,93 +1,88 @@
 {
   "uplink": [
     {
-      "description": "temperature report",
+      "description": "Full profile uplink: all 16 levels of the probe string connected, plus battery (flags 0x0003)",
       "input": {
         "fPort": 1,
-        "bytes": [
-          2,
-          0,
-          1,
-          0,
-          3,
-          136,
-          102,
-          136,
-          152,
-          136,
-          152,
-          136,
-          152,
-          136,
-          152,
-          136,
-          152,
-          136,
-          152,
-          136,
-          152,
-          136,
-          152,
-          136,
-          152,
-          136,
-          152,
-          136,
-          152,
-          136,
-          152,
-          136,
-          152,
-          136,
-          152,
-          136,
-          152,
-          12,
-          228
-        ]
+        "bytes": [2, 0, 1, 0, 3, 136, 102, 136, 152, 136, 152, 136, 152, 136, 152, 136, 152, 136, 152, 136, 152, 136, 152, 136, 152, 136, 152, 136, 152, 136, 152, 136, 152, 136, 152, 136, 152, 12, 228]
       },
       "expected": {
         "data": {
-          "temperature": 21.5,
+          "channels": [
+            { "channel": "level0", "temperature": 21.5 },
+            { "channel": "level1", "temperature": 22 },
+            { "channel": "level2", "temperature": 22 },
+            { "channel": "level3", "temperature": 22 },
+            { "channel": "level4", "temperature": 22 },
+            { "channel": "level5", "temperature": 22 },
+            { "channel": "level6", "temperature": 22 },
+            { "channel": "level7", "temperature": 22 },
+            { "channel": "level8", "temperature": 22 },
+            { "channel": "level9", "temperature": 22 },
+            { "channel": "level10", "temperature": 22 },
+            { "channel": "level11", "temperature": 22 },
+            { "channel": "level12", "temperature": 22 },
+            { "channel": "level13", "temperature": 22 },
+            { "channel": "level14", "temperature": 22 },
+            { "channel": "level15", "temperature": 22 }
+          ],
           "battery": 3.3,
-          "temperatureAtLevel1": 22,
-          "temperatureAtLevel2": 22,
-          "temperatureAtLevel3": 22,
-          "temperatureAtLevel4": 22,
-          "temperatureAtLevel5": 22,
-          "temperatureAtLevel6": 22,
-          "temperatureAtLevel7": 22,
-          "temperatureAtLevel8": 22,
-          "temperatureAtLevel9": 22,
-          "temperatureAtLevel10": 22,
-          "temperatureAtLevel11": 22,
-          "temperatureAtLevel12": 22,
-          "temperatureAtLevel13": 22,
-          "temperatureAtLevel14": 22,
-          "temperatureAtLevel15": 22,
           "make": "decentlab",
           "model": "dl-tp"
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic Decentlab v2 frame (temperature word chosen for a realistic ~22 C) decoded by the embedded upstream decoder; temperature_at_level_0 -> temperature; battery -> battery. Satisfies temperature."
+      "_note": "Synthetic Decentlab v2 frame (level words chosen for realistic ~22 C readings; level 0 word 34918 -> 21.5 C, levels 1-15 word 34968 -> 22 C, battery word 3300 -> 3.3 V) decoded by the embedded upstream decoder. Every temperature_at_level_N becomes one channels entry labelled level0..level15; whole-device battery stays top-level. Satisfies temperature (membership sees through top-level channels entries)."
+    },
+    {
+      "description": "11-sensor probe string: levels 0-10 connected, levels 11-15 read the disconnected sentinel and get no entry",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 62, 62, 0, 3, 138, 188, 138, 146, 138, 160, 138, 132, 138, 179, 138, 137, 138, 195, 138, 173, 138, 183, 138, 146, 138, 161, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 252]
+      },
+      "expected": {
+        "data": {
+          "channels": [
+            { "channel": "level0", "temperature": 27.48 },
+            { "channel": "level1", "temperature": 27.06 },
+            { "channel": "level2", "temperature": 27.2 },
+            { "channel": "level3", "temperature": 26.92 },
+            { "channel": "level4", "temperature": 27.39 },
+            { "channel": "level5", "temperature": 26.97 },
+            { "channel": "level6", "temperature": 27.55 },
+            { "channel": "level7", "temperature": 27.33 },
+            { "channel": "level8", "temperature": 27.43 },
+            { "channel": "level9", "temperature": 27.06 },
+            { "channel": "level10", "temperature": 27.21 }
+          ],
+          "battery": 2.812,
+          "make": "decentlab",
+          "model": "dl-tp"
+        }
+      },
+      "source": "ttn-example",
+      "_note": "reference/upstream-examples.json example 1 (upstream vendor example). Its output has temperature_at_level_0..10 at 27.48/27.06/27.2/26.92/27.39/26.97/27.55/27.33/27.43/27.06/27.21 C and temperature_at_level_11..15 at -327.68 C (word 0x0000, the unconnected-level sentinel, below the vocabulary bound -273.15 C) — expected values taken verbatim from that upstream output. Pins the sentinel policy: the five disconnected levels are skipped, so an 11-sensor string yields 11 entries. Battery word 2812 -> 2.812 V."
+    },
+    {
+      "description": "Battery-only frame (profile block deselected, flags 0x0002) -> no temperature to report",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 62, 62, 0, 2, 10, 252]
+      },
+      "expected": {
+        "errors": ["no temperature field in payload"]
+      },
+      "source": "ttn-example",
+      "_note": "reference/upstream-examples.json example 2: the sensor-flags bitmap selects only the 1-word battery block, so the embedded decoder returns no temperature_at_level_N at all. Pins the header's policy — a DL-TP frame with no connected level (deselected block, or every level at the -327.68 sentinel) is rejected rather than emitting an empty channels array."
     },
     {
       "description": "Wrong protocol version -> error",
       "input": {
         "fPort": 1,
-        "bytes": [
-          1,
-          0,
-          1,
-          0,
-          0
-        ]
+        "bytes": [1, 0, 1, 0, 0]
       },
       "expected": {
-        "errors": [
-          "protocol version 1"
-        ]
+        "errors": ["protocol version 1"]
       },
       "source": "synthetic",
       "_note": "Decentlab decoder rejects non-v2 payloads."

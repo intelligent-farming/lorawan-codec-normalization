@@ -5,14 +5,22 @@
   "categories": [
     "gps-tracker"
   ],
-  "sensors": [],
+  "sensors": [
+    "gps",
+    "accelerometer",
+    "battery"
+  ],
   "provides": [
     "battery",
+    "gSensorEnabled",
+    "gSensorSensitivity",
     "gSensorState",
+    "messageCounter",
     "position.latitude",
-    "position.longitude"
+    "position.longitude",
+    "time"
   ],
-  "variantOf": null,
+  "variantOf": "makerfabs/gps-tracker-pa1010d",
   "downlink": {
     "encode": false,
     "decode": false

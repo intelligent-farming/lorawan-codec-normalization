@@ -38,7 +38,8 @@
 //   barometerTemperature (degC). Conductivity (reported mS/cm) -> water.ec in
 //   uS/cm (mS/cm x 1000). Other channels (P2, P3, differential Pd, voltage
 //   inputs, counters, SDI-12, AquaMaster, tank, etc.) carry no canonical key
-//   and are emitted as camelCase extras under "channels".
+//   and are emitted as top-level camelCase extras. (`channels` itself is a
+//   reserved measurement key — see AUTHORING.md.)
 //   On the info telegram: battery_voltage -> battery (V); capacity% ->
 //   batteryPercent; enclosure humidity -> enclosureHumidity; the remaining
 //   identity fields are emitted as camelCase extras.
@@ -160,8 +161,6 @@ function decodeMeasurement(bytes, data) {
   }
 
   var water = {};
-  var extras = {};
-  var hasExtras = false;
   var firstIndex = reverted.indexOf('1');
 
   for (var i = 1; i <= channelCount; i++) {
@@ -172,8 +171,7 @@ function decodeMeasurement(bytes, data) {
 
     if (name === undefined) {
       // Set bit with no name in this device-type layout: keep as raw extra.
-      extras['channel' + i] = round(value, 6);
-      hasExtras = true;
+      data['channel' + i] = round(value, 6);
       continue;
     }
 
@@ -192,16 +190,13 @@ function decodeMeasurement(bytes, data) {
       // conductivity, mS/cm -> water.ec uS/cm
       water.ec = round(value * 1000, 2);
     } else if (name === 'PBaro') {
-      extras.barometricPressureKpa = round(value * 100, 4);
-      hasExtras = true;
+      data.barometricPressureKpa = round(value * 100, 4);
     } else if (name === 'TBaro') {
-      extras.barometerTemperature = round(value, 2);
-      hasExtras = true;
+      data.barometerTemperature = round(value, 2);
     } else {
       // P2, P3, differential Pd, voltage inputs, counters, SDI-12,
       // AquaMaster, tank content, etc. -> camelCase extras.
-      extras[camel(name)] = round(value, 6);
-      hasExtras = true;
+      data[camel(name)] = round(value, 6);
     }
   }
 
@@ -212,7 +207,6 @@ function decodeMeasurement(bytes, data) {
 
   data.water = water;
   data.connectionType = ct;
-  if (hasExtras) { data.channels = extras; }
   return { data: data };
 }
 

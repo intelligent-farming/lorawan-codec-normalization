@@ -12,8 +12,33 @@
 //
 // The R718KA2 measures two 4-20 mA current loops. Each channel's reading is
 // split into an integer-milliamp part and a fractional (0.1 mA) part; the true
-// loop current is their sum. Channel 1 maps to the analog-interface vocabulary
-// key `analog.current` (mA); channel 2 is the camelCase extra `current2` (mA).
+// loop current is their sum (rounded to 1 decimal, the sensor's own 0.1 mA
+// resolution).
+//
+// Netvox calls the two terminals "inputs" (the datasheet name is "2-Input-mA
+// Current Meter Interface"). They are sub-sensor positions of one device
+// carrying the same quantity, so their readings ride in the reserved `channels`
+// array (see AUTHORING.md "Multi-channel devices") rather than in a suffixed
+// `current2` extra: one entry per input, labelled with the vendor's own term
+// plus a zero-based index — `input0` (Netvox channel 1) and `input1` (Netvox
+// channel 2) — each carrying the `analog.current` vocabulary key in mA.
+// `battery` and the `lowBattery` flag are whole-device readings and stay
+// top-level; no leaf is emitted in both places.
+//
+// Note the *interleaved* byte layout: unlike the rest of the family the two
+// channels do not occupy adjacent words. bytes[4]/bytes[5] are the two
+// channels' integer-mA parts and bytes[6]/bytes[7] their 0.1 mA parts, so each
+// entry reads a byte pair straddling the frame: input0 = bytes[4] + bytes[6]/10
+// and input1 = bytes[5] + bytes[7]/10.
+//
+// Sentinel policy: this frame format defines NO disconnected-input sentinel.
+// Neither the shared upstream decoder nor the report layout reserves a "no
+// loop" value — all four current bytes are plain unsigned magnitudes across the
+// loop's full range (a broken 4-20 mA loop simply reads near 0 mA, which is a
+// real measurement, not a flag) — so no value is treated as a sentinel and
+// neither input entry is ever suppressed on its reading. Nor can a short frame
+// fabricate one: the length guard below requires all 8 header+measurement
+// bytes, so both channels' byte pairs are always present when a frame decodes.
 //
 // fPort 6 frame layout (device id byte[1] == 0x44 for R718KA2):
 //   bytes[0]      frame/software version marker
@@ -21,12 +46,10 @@
 //   bytes[2]      report type; 0x00 is a device-info frame (no measurement)
 //   bytes[3]      battery voltage in 0.1 V; high bit (0x80) flags low battery,
 //                 surfaced as the camelCase extra `lowBattery`
-//   bytes[4]      channel-1 loop current, integer mA
-//   bytes[5]      channel-2 loop current, integer mA
-//   bytes[6]      channel-1 fractional current, 0.1 mA
-//   bytes[7]      channel-2 fractional current, 0.1 mA
-//                 (analog.current = bytes[4] + bytes[6] / 10;
-//                  current2       = bytes[5] + bytes[7] / 10)
+//   bytes[4]      channel-1 loop current, integer mA   \ channels[] `input0`
+//   bytes[6]      channel-1 fractional current, 0.1 mA /
+//   bytes[5]      channel-2 loop current, integer mA   \ channels[] `input1`
+//   bytes[7]      channel-2 fractional current, 0.1 mA /
 //   bytes[8..10]  unused
 //
 // Config responses (fPort 7) carry no measurement and are reported as errors.
@@ -63,13 +86,13 @@ function decodeUplinkCore(input) {
   }
   data.battery = round((bytes[3] & 0x7f) / 10, 1);
 
-  // Channel 1 = byte4 (mA) + byte6 (0.1 mA) -> analog.current (mA).
-  var analog = {};
-  analog.current = round(bytes[4] + bytes[6] / 10, 1);
-  data.analog = analog;
-
-  // Channel 2 = byte5 (mA) + byte7 (0.1 mA) -> extra current2 (mA).
-  data.current2 = round(bytes[5] + bytes[7] / 10, 1);
+  // One channels[] entry per input terminal. Interleaved layout: Netvox
+  // channel 1 (`input0`) = byte4 (mA) + byte6 (0.1 mA); channel 2 (`input1`)
+  // = byte5 (mA) + byte7 (0.1 mA).
+  data.channels = [
+    { channel: 'input0', analog: { current: round(bytes[4] + bytes[6] / 10, 1) } },
+    { channel: 'input1', analog: { current: round(bytes[5] + bytes[7] / 10, 1) } }
+  ];
 
   return { data: data };
 }

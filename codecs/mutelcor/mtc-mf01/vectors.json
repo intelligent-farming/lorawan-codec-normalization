@@ -1,42 +1,72 @@
 {
   "uplink": [
     {
-      "description": "Switch frame (opcode 6): state byte 5 (switch1+switch3 closed) -> contactState 'closed'; 3.6 V",
+      "description": "Switch frame (opcode 6): state byte 5 -> switch0 + switch2 closed, switch1 open; 3.6 V",
       "input": { "fPort": 1, "bytes": [1, 1, 104, 6, 5] },
       "expected": {
         "data": {
-          "battery": 3.6,
-          "action": { "contactState": "closed" },
-          "switch1": 1,
-          "switch2": 0,
-          "switch3": 1,
           "make": "mutelcor",
-          "model": "mtc-mf01"
+          "model": "mtc-mf01",
+          "battery": 3.6,
+          "channels": [
+            { "channel": "switch0", "action": { "contactState": "closed" } },
+            { "channel": "switch1", "action": { "contactState": "open" } },
+            { "channel": "switch2", "action": { "contactState": "closed" } }
+          ]
         }
       },
-      "source": "synthetic"
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds Mutelcor switch frame. State byte 0x05 sets bits 0x01 and 0x04, so the zero-based entries switch0 and switch2 are closed and switch1 is open. Same input and same per-bit convention as the pre-channels vector; the old `switch1`/`switch2`/`switch3` extras and the old top-level action.contactState (bit 0) are now the three entries. Voltage bytes[1..2] = 0x0168 = 360 centivolts -> battery 3.6 V (whole-device, stays top-level)."
     },
     {
-      "description": "Switch frame (opcode 6): state 0 -> all switches open",
+      "description": "Switch frame (opcode 6): mixed pattern, state byte 2 -> only switch1 closed while the primary switch0 is open",
+      "input": { "fPort": 1, "bytes": [1, 1, 104, 6, 2] },
+      "expected": {
+        "data": {
+          "make": "mutelcor",
+          "model": "mtc-mf01",
+          "battery": 3.6,
+          "channels": [
+            { "channel": "switch0", "action": { "contactState": "open" } },
+            { "channel": "switch1", "action": { "contactState": "closed" } },
+            { "channel": "switch2", "action": { "contactState": "open" } }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds multi-position frame: state byte 0x02 sets only bit 0x02. This is the case that pins the renumbering — the primary switch (bit 0, which used to be BOTH the top-level action.contactState and `switch1`) reads open while the second input reads closed, so an off-by-one in the label mapping would flip both entries and fail the vector."
+    },
+    {
+      "description": "Switch frame (opcode 6): state 0 -> all three switches open",
       "input": { "fPort": 1, "bytes": [1, 1, 104, 6, 0] },
       "expected": {
         "data": {
-          "battery": 3.6,
-          "action": { "contactState": "open" },
-          "switch1": 0,
-          "switch2": 0,
-          "switch3": 0,
           "make": "mutelcor",
-          "model": "mtc-mf01"
+          "model": "mtc-mf01",
+          "battery": 3.6,
+          "channels": [
+            { "channel": "switch0", "action": { "contactState": "open" } },
+            { "channel": "switch1", "action": { "contactState": "open" } },
+            { "channel": "switch2", "action": { "contactState": "open" } }
+          ]
         }
       },
-      "source": "synthetic"
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds switch frame with no bit set. All three entries are still emitted: the state byte carries no presence mask, so an unwired input is indistinguishable from an open contact and no entry is suppressed (see the codec header's sentinel policy)."
     },
     {
       "description": "Measurements frame (opcode 3) carries no contact state",
       "input": { "fPort": 1, "bytes": [1, 1, 104, 3] },
       "expected": { "errors": ["is not a Switch/contact frame"] },
-      "source": "synthetic"
+      "source": "synthetic",
+      "_note": "Synthetic. Non-switch opcodes carry no dry-contact input, so no measurement (and no `channels` key) is produced; the error string is unchanged from the pre-channels codec."
+    },
+    {
+      "description": "Switch frame (opcode 6) truncated before the state byte",
+      "input": { "fPort": 1, "bytes": [1, 1, 104, 6] },
+      "expected": { "errors": ["Switch frame missing state byte"] },
+      "source": "synthetic",
+      "_note": "Synthetic. Guards the sentinel policy: without bytes[4] the codec errors rather than reading `undefined` and fabricating three open contacts."
     }
   ],
   "downlink": []

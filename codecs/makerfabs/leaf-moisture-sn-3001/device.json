@@ -3,18 +3,18 @@
   "device": "leaf-moisture-sn-3001",
   "name": "Leaf Moisture SN-3001",
   "categories": [
-    "climate"
+    "leaf-wetness"
   ],
   "sensors": [
+    "leaf wetness",
     "temperature",
-    "humidity",
     "battery"
   ],
   "provides": [
-    "air.relativeHumidity",
-    "air.temperature",
     "battery",
-    "intervalSeconds"
+    "leaf.temperature",
+    "leaf.wetness",
+    "reportingInterval"
   ],
   "variantOf": null,
   "downlink": {

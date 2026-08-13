@@ -6,12 +6,31 @@
       "expected": {
         "data": {
           "make": "accuwatch", "model": "3chbatteryvoltagesensor",
-          "analog": { "voltage": 3.3 },
-          "voltage2": 3.25, "voltage3": 3.1
+          "channels": [
+            { "channel": "channel0", "analog": { "voltage": 3.3 } },
+            { "channel": "channel1", "analog": { "voltage": 3.25 } },
+            { "channel": "channel2", "analog": { "voltage": 3.1 } }
+          ]
         }
       },
       "source": "synthetic",
-      "_note": "Three little-endian float32: 0x405333 33=3.30, 0x40500000=3.25, 0x40466666=3.10. ch1 -> analog.voltage. Verified against reference/upstream-codec.js (sensor1Voltage '3.30', sensor2Voltage '3.25', sensor3Voltage '3.10')."
+      "_note": "Three little-endian float32: 0x40533333=3.30, 0x40500000=3.25, 0x40466666=3.10. One channels[] entry per channel, each carrying analog.voltage. Verified against reference/upstream-codec.js (sensor1Voltage '3.30', sensor2Voltage '3.25', sensor3Voltage '3.10')."
+    },
+    {
+      "description": "three channels with distinct values: 12.60 V, 6.05 V, 0.75 V",
+      "input": { "fPort": 1, "bytes": [154, 153, 73, 65, 154, 153, 193, 64, 0, 0, 64, 63] },
+      "expected": {
+        "data": {
+          "make": "accuwatch", "model": "3chbatteryvoltagesensor",
+          "channels": [
+            { "channel": "channel0", "analog": { "voltage": 12.6 } },
+            { "channel": "channel1", "analog": { "voltage": 6.05 } },
+            { "channel": "channel2", "analog": { "voltage": 0.75 } }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Multi-position vector with a distinct value per channel, so a channel-ordering or offset bug fails here. Little-endian float32: 0x41499999=12.600000381 -> 12.6, 0x40C19999=6.050000191 -> 6.05, 0x3F400000=0.75. Verified against reference/upstream-codec.js (sensor1Voltage '12.60', sensor2Voltage '6.05', sensor3Voltage '0.75')."
     },
     {
       "description": "wrong frame length yields error",

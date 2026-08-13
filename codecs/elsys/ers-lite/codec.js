@@ -15,6 +15,55 @@
 // when it falls in the atmospheric band (900-1100 hPa); otherwise it is kept as
 // the extra `pressureHpa`. Accelerometer axes and other sensor types the
 // vocabulary does not model are emitted as camelCase extras.
+//
+// External ports -> reserved `channels[]` (see AUTHORING.md "Multi-channel
+// devices"). ELSYS carries the external-port index in the TLV type byte itself,
+// and this decoder covers all FIVE external banks at BOTH positions -- every one
+// of them is a numbered pair:
+//     bank                    port 1 type   port 2 type
+//     analog input (mV)          0x08          0x18
+//     pulse counter, relative    0x0a          0x16
+//     pulse counter, absolute    0x0b          0x17
+//     external temperature       0x0c          0x19
+//     external digital input     0x0d          0x1a
+// The two ports are the same physical quantities at two physical positions, so
+// each port becomes one `channels[]` entry instead of a suffixed extra. Entry
+// labels use the vendor's own term plus a 0-based index: `port0` = Elsys port 1
+// (types 0x08/0x0a/0x0b/0x0c/0x0d), `port1` = Elsys port 2 (types
+// 0x18/0x16/0x17/0x19/0x1a).
+//
+// The port index therefore leaves the key name and lives only in the entry
+// label, so both entries carry the *same* keys -- mappings are unchanged from
+// the pre-channels codec, only relocated. Note that upstream's *unnumbered*
+// names for the port-1 banks (`pulseAbs` for 0x0b, `digital` for 0x0d,
+// `externalTemperature` for 0x0c) are aliases for port 1, not separate sensors,
+// so they move into `port0`:
+//     analog1Mv / analog2Mv              -> entry `analogMv` (raw mV; the bare
+//        name `analog` would collide with the vocabulary `analog.*` group, and
+//        the value is millivolts, not the group's volts)
+//     pulse1 / pulse2                    -> entry `pulseRelative`
+//     pulseAbs / pulseAbs2               -> entry `pulseAbsolute`
+//     externalTemperature / ...2         -> entry `externalTemperature`
+//     digital / digital2                 -> entry `digital` (raw 1/0)
+// 0x1b (EXT_ANALOG_UV, microvolt load-cell/UV input) is a distinct unpaired
+// sensor, not port 2 of the analog bank, so `analogUv` stays top-level. Other
+// whole-device readings stay top-level too: battery, air.*, position (GPS),
+// accelerationX/Y/Z, action.motion, irInternal/irExternalTemperature, distanceMm,
+// waterleak, grideye, soundPeak/soundAvg, tvoc, pressureHpa. Nothing is emitted
+// both places.
+//
+// Known upstream quirk, preserved: EXT_TEMP2 (0x19) may repeat within one frame
+// (several DS18B20 probes daisy-chained on port 2), and upstream accumulates the
+// repeats into an array. That array is carried through into the `port1` entry's
+// `externalTemperature` as-is rather than being split into further entries --
+// the payload gives no per-probe identifier to label them with.
+//
+// Sentinel/absent-port policy: an ELSYS TLV stream is sparse -- a port's TLV is
+// simply absent when nothing is attached to it (there is no disconnected
+// sentinel value), so entries are built lazily on first sight. A port that
+// reported no reading gets no entry, and `channels` is omitted entirely when
+// neither port reported. Entry order is fixed (port0 before port1) because this
+// codec normalizes from the fully-decoded frame rather than as it walks it.
 
 function round(value, decimals) {
   var f = Math.pow(10, decimals);
@@ -220,6 +269,19 @@ function decodeUplinkCore(input) {
   var hasAir = false;
   var hasMotion = false;
 
+  // One `channels[]` entry per external port, built lazily so a port that
+  // reported nothing produces no entry at all. Held in slots and emitted in
+  // fixed port order (port0 then port1) because this codec normalizes from the
+  // fully-decoded frame rather than as it walks the TLV stream.
+  var ports = [null, null];
+
+  function portFor(port) {
+    if (ports[port] === null) {
+      ports[port] = { channel: 'port' + port };
+    }
+    return ports[port];
+  }
+
   if (obj.temperature !== undefined) {
     air.temperature = round(obj.temperature, 1);
     hasAir = true;
@@ -286,11 +348,16 @@ function decodeUplinkCore(input) {
   if (obj.z !== undefined) {
     data.accelerationZ = obj.z;
   }
+  // EXT_TEMP1/EXT_TEMP2 -> the external-temperature bank at port 1 / port 2.
   if (obj.externalTemperature !== undefined) {
-    data.externalTemperature = round(obj.externalTemperature, 1);
+    portFor(0).externalTemperature = round(obj.externalTemperature, 1);
   }
   if (obj.externalTemperature2 !== undefined) {
-    data.externalTemperature2 = obj.externalTemperature2;
+    // Numbers get the same rounding as port 1 (a no-op for tenths, but keeps the
+    // bank consistent); the repeated-0x19 array quirk is carried through as-is.
+    portFor(1).externalTemperature = typeof obj.externalTemperature2 === 'number'
+      ? round(obj.externalTemperature2, 1)
+      : obj.externalTemperature2;
   }
   if (obj.irInternalTemperature !== undefined) {
     data.irInternalTemperature = round(obj.irInternalTemperature, 1);
@@ -301,11 +368,12 @@ function decodeUplinkCore(input) {
   if (obj.distance !== undefined) {
     data.distanceMm = obj.distance;
   }
+  // EXT_DIGITAL/EXT_DIGITAL2 -> the digital-input bank at port 1 / port 2.
   if (obj.digital !== undefined) {
-    data.digital = obj.digital;
+    portFor(0).digital = obj.digital;
   }
   if (obj.digital2 !== undefined) {
-    data.digital2 = obj.digital2;
+    portFor(1).digital = obj.digital2;
   }
   if (obj.waterleak !== undefined) {
     data.waterleak = obj.waterleak;
@@ -319,29 +387,33 @@ function decodeUplinkCore(input) {
   if (obj.soundAvg !== undefined) {
     data.soundAvg = obj.soundAvg;
   }
+  // ANALOG1/ANALOG2 -> the analog-input bank at port 1 / port 2 (raw mV).
   if (obj.analog1 !== undefined) {
-    data.analog1Mv = obj.analog1;
+    portFor(0).analogMv = obj.analog1;
   }
   if (obj.analog2 !== undefined) {
-    data.analog2Mv = obj.analog2;
+    portFor(1).analogMv = obj.analog2;
   }
+  // EXT_ANALOG_UV is a distinct unpaired sensor, not port 2 of the analog bank.
   if (obj.analogUv !== undefined) {
     data.analogUv = obj.analogUv;
   }
   if (obj.tvoc !== undefined) {
     data.tvoc = obj.tvoc;
   }
+  // PULSE1/PULSE2 (relative) and PULSE1_ABS/PULSE2_ABS (absolute) are two
+  // readings of the same counter at each port -> that port's entry.
   if (obj.pulse1 !== undefined) {
-    data.pulse1 = obj.pulse1;
+    portFor(0).pulseRelative = obj.pulse1;
   }
   if (obj.pulse2 !== undefined) {
-    data.pulse2 = obj.pulse2;
+    portFor(1).pulseRelative = obj.pulse2;
   }
   if (obj.pulseAbs !== undefined) {
-    data.pulseAbs = obj.pulseAbs;
+    portFor(0).pulseAbsolute = obj.pulseAbs;
   }
   if (obj.pulseAbs2 !== undefined) {
-    data.pulseAbs2 = obj.pulseAbs2;
+    portFor(1).pulseAbsolute = obj.pulseAbs2;
   }
 
   if (hasMotion) {
@@ -352,7 +424,20 @@ function decodeUplinkCore(input) {
     data.air = air;
   }
 
-  if (hasAir || hasMotion || data.battery !== undefined || data.position !== undefined) {
+  // Omit `channels` entirely when neither external port reported.
+  var channels = [];
+  if (ports[0] !== null) {
+    channels.push(ports[0]);
+  }
+  if (ports[1] !== null) {
+    channels.push(ports[1]);
+  }
+  if (channels.length > 0) {
+    data.channels = channels;
+  }
+
+  if (hasAir || hasMotion || data.battery !== undefined ||
+    data.position !== undefined || channels.length > 0) {
     return { data: data };
   }
   return { errors: ['no recognized ELSYS measurements'] };

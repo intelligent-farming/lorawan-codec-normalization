@@ -1,7 +1,7 @@
 {
   "uplink": [
     {
-      "description": "Status report: 3.6 V, channel-1 pulse count 100, channel-2 pulse count 150",
+      "description": "Status report: 3.6 V, input0 pulse count 100, input1 pulse count 150",
       "input": {
         "fPort": 6,
         "bytes": [1, 63, 1, 36, 0, 100, 0, 150, 0, 0, 0]
@@ -11,12 +11,34 @@
           "make": "netvox",
           "model": "r718h2",
           "battery": 3.6,
-          "pulse": { "count": 100 },
-          "pulseCount2": 150
+          "channels": [
+            { "channel": "input0", "pulse": { "count": 100 } },
+            { "channel": "input1", "pulse": { "count": 150 } }
+          ]
         }
       },
       "source": "ttn-example",
-      "_note": "TTN example status report (netvox r718h2 codec yaml, Apache-2.0). Upstream oracle: Volt 3.6, PulseCount1 100, PulseCount2 150. byte3 0x24 -> 3.6 V; bytes[4..5]=0x0064=100 -> pulse.count; bytes[6..7]=0x0096=150 -> pulseCount2."
+      "_note": "TTN example status report (netvox r718h2 codec yaml, Apache-2.0). Upstream oracle: Volt 3.6, PulseCount1 100, PulseCount2 150. byte3 0x24 -> 3.6 V; bytes[4..5]=0x0064=100 -> input0 pulse.count; bytes[6..7]=0x0096=150 -> input1 pulse.count. Each input terminal's count is a channels[] entry; battery stays top-level. Satisfies analog-interface."
+    },
+    {
+      "description": "Both inputs counting, input1 at 16-bit full scale: 3.6 V, input0 1234, input1 65535",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 63, 1, 36, 4, 210, 255, 255, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "r718h2",
+          "battery": 3.6,
+          "channels": [
+            { "channel": "input0", "pulse": { "count": 1234 } },
+            { "channel": "input1", "pulse": { "count": 65535 } }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic two-input frame in the TTN status-report shape (device id 0x3F), with distinct per-input counts so the entries cannot be transposed unnoticed and the counter's unsigned 16-bit ceiling is exercised. Upstream oracle semantics: PulseCount1 = bytes[4..5] = 0x04D2 = 1234 -> input0; PulseCount2 = bytes[6..7] = 0xFFFF = 65535 -> input1 (roll-over boundary, not a sentinel)."
     },
     {
       "description": "Startup version frame (report type 0x00) carries no measurement",

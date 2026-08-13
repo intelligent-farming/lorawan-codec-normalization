@@ -22,8 +22,45 @@
 //   byte1 low nibble == 0x0E => "Trame d'erreur" (error): byte2 = error code.
 //   empty payload => error.
 //
-// Leak mapping: the WL-O is a single-probe liquid detector wired to digital
-// input channel 0. Input bit0 high (1) = liquid/leak detected => water.leak.
+// Multi-position shape (`channels[]`, see AUTHORING.md "Multi-channel devices").
+// A temperature marker's high nibble is a real sub-sensor index — ATIM calls it
+// the *voie* (0..3), and upstream's own struct names carry it (`temp0`, `temp1`,
+// with `temperature<n>.voie` in its output). One measurement frame can therefore
+// carry several thermal voies, so each becomes its own entry in the reserved
+// `channels` array, labelled with the vendor's term plus the decoded index:
+//   temperature TLV (0x08) -> { channel: 'voie<n>', water.temperature.current }
+// matching the already-converted ATIM siblings ACW-TM2P / ACW-THX. Entries are
+// created on the first healthy reading, so entry order follows the payload; a
+// repeated TLV for a voie already seen keeps the first (most recent) reading.
+// This fixes real data loss: the previous shape wrote every voie's temperature to
+// the same top-level `water.temperature.current`, so in a multi-voie frame the
+// last channel silently overwrote all earlier ones. (It also reads voie 2 and 3,
+// which upstream's postProcessTemp drops — it only shapes temp0/temp1.)
+//
+// Leak mapping — `water.leak` stays TOP-LEVEL (whole-device), deliberately, and
+// is therefore never repeated inside an entry: unlike the temperature TLV, the
+// digital-input TLV is not positional in this wire format. Upstream's struct
+// builder names it plain `entree` with no voie suffix (contrast `temp0`/`temp1`/
+// `compte0`) and its four decoded values are the four input *lines* carried in
+// that single byte's low nibble, not four voies. The WL-O is a single-probe
+// liquid detector with the probe wired to line bit0, so bit0 high (1) =
+// liquid/leak detected => `water.leak`; the raw four lines stay as the top-level
+// `digitalInputs` extra. Nothing in the payload identifies a second probe, so
+// scoping the leak into a channels entry would invent a position the device does
+// not report.
+//
+// Sentinel policy: a temperature voie reading the raw sentinel -32768
+// (= -327.68 degC, upstream's "erreur") is a faulted/disconnected probe. That
+// voie is skipped — it gets no entry, so no bogus -327.68 is ever published —
+// and a warning names the voie ('temperature sensor error on channel <n>'). A
+// frame whose every voie faults yields no entries at all: if the frame also
+// carried the digital-input line it still decodes (leak only, no `channels`
+// key, warnings listing each faulted voie); if it carried nothing else it is an
+// error ('measurement frame contained no recognized channels'). `channels` is
+// built lazily and omitted whenever no healthy voie is present.
+//
+// Whole-device readings stay top-level: `water.leak`, the `digitalInputs` extra,
+// and the life frame's `battery` / `chargeVoltage`.
 
 function round(value, decimals) {
   var f = Math.pow(10, decimals);
@@ -96,9 +133,22 @@ function decodeUplinkCore(input) {
   return { errors: ['unsupported frame type (byte1=0x' + b1.toString(16) + ')'] };
 }
 
+// One channels entry per temperature voie, created on the first healthy reading
+// so entry order follows the payload. `index` maps a label to its slot.
+function entryFor(entries, index, channel) {
+  var label = 'voie' + channel;
+  if (index[label] === undefined) {
+    index[label] = entries.length;
+    entries.push({ channel: label });
+  }
+  return entries[index[label]];
+}
+
 function decodeMeasurement(bytes) {
   var data = {};
   var warnings = [];
+  var entries = []; // channels[]: one entry per healthy temperature voie
+  var entryIndex = {};
   var i = 1; // skip byte0 (frame header); WL-O measurement frames are not timestamped
   while (i < bytes.length) {
     var marker = bytes[i];
@@ -106,7 +156,9 @@ function decodeMeasurement(bytes) {
     var channel = (marker & 0xf0) >> 4; // high nibble = channel index (0..3)
 
     if (type === 0x01) {
-      // digital input: 1 data byte, low nibble holds 4 input bits
+      // digital input: 1 data byte, low nibble holds 4 input bits. Not a
+      // positional voie (see header): the byte's four bits are input lines on
+      // the one connector, so this stays a whole-device reading.
       var v = bytes[i + 1];
       if (v === undefined) {
         return { errors: ['truncated digital-input channel'] };
@@ -125,7 +177,7 @@ function decodeMeasurement(bytes) {
       ];
       i += 2;
     } else if (type === 0x08) {
-      // temperature: 2 bytes, signed, /100 degC
+      // temperature: 2 bytes, signed, /100 degC, scoped to its own voie entry
       var hi = bytes[i + 1];
       var lo = bytes[i + 2];
       if (hi === undefined || lo === undefined) {
@@ -133,15 +185,13 @@ function decodeMeasurement(bytes) {
       }
       var raw = ((hi << 8) | lo) << 16 >> 16; // sign-extend 16-bit
       if (raw === -32768) {
+        // faulted/disconnected probe: skip the position, name it in a warning
         warnings.push('temperature sensor error on channel ' + channel);
       } else {
-        if (data.water === undefined) {
-          data.water = {};
+        var entry = entryFor(entries, entryIndex, channel);
+        if (entry.water === undefined) {
+          entry.water = { temperature: { current: round(raw / 100, 2) } };
         }
-        if (data.water.temperature === undefined) {
-          data.water.temperature = {};
-        }
-        data.water.temperature.current = round(raw / 100, 2);
       }
       i += 3;
     } else {
@@ -149,8 +199,11 @@ function decodeMeasurement(bytes) {
     }
   }
 
-  if (data.water === undefined) {
+  if (data.water === undefined && entries.length === 0) {
     return { errors: ['measurement frame contained no recognized channels'] };
+  }
+  if (entries.length > 0) {
+    data.channels = entries;
   }
   var out = { data: data };
   if (warnings.length) {

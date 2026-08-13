@@ -1,7 +1,7 @@
 {
   "uplink": [
     {
-      "description": "Status report, gang 1 vibrating (TTN example bytes; report type 0x01)",
+      "description": "Status report: gang0 vibrating, gang1 idle, battery 3.0 V (TTN example bytes; report type 0x01)",
       "input": {
         "fPort": 6,
         "bytes": [1, 47, 1, 30, 1, 0, 0, 0, 0, 0, 0]
@@ -11,15 +11,39 @@
           "make": "netvox",
           "model": "r718da2",
           "battery": 3,
-          "vibration1": 1,
-          "vibration2": 0,
-          "action": { "motion": { "detected": true, "count": 1 } }
+          "action": { "motion": { "count": 1 } },
+          "channels": [
+            { "channel": "gang0", "action": { "motion": { "detected": true } } },
+            { "channel": "gang1", "action": { "motion": { "detected": false } } }
+          ]
         }
       },
-      "source": "ttn-example"
+      "source": "ttn-example",
+      "_note": "Upstream example status-report input. Upstream oracle: Volt 3, status1 = bytes[4] = 1 -> gang0 vibrating, status2 = bytes[5] = 0 -> gang1 idle. expected.data authored to the normalized vocabulary (one channels[] entry per gang, each with its own action.motion.detected), not copied from upstream's Volt/status1/status2 output. The positions DIFFER here, so the two entries cannot be transposed unnoticed - the case the old top-level either-gang OR could not express. `motion` resolves through the entries; action.motion.count is the whole-device roll-up and stays top-level."
     },
     {
-      "description": "Status report, both gangs vibrating, low battery flag set (synthetic)",
+      "description": "Status report: gang0 idle, gang1 vibrating, battery 3.6 V",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 47, 1, 36, 0, 1, 0, 0, 0, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "r718da2",
+          "battery": 3.6,
+          "action": { "motion": { "count": 1 } },
+          "channels": [
+            { "channel": "gang0", "action": { "motion": { "detected": false } } },
+            { "channel": "gang1", "action": { "motion": { "detected": true } } }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame. byte3=36 -> 3.6 V; byte4=0 -> gang0 idle; byte5=1 -> gang1 vibrating. The inverse per-position states from vector 1 at the same count of 1, so a swapped-entry bug shows up in exactly one of the two vectors."
+    },
+    {
+      "description": "Status report: both gangs vibrating, low battery flag set (2.8 V)",
       "input": {
         "fPort": 6,
         "bytes": [1, 47, 1, 156, 1, 1, 0, 0, 0, 0, 0]
@@ -30,16 +54,18 @@
           "model": "r718da2",
           "lowBattery": true,
           "battery": 2.8,
-          "vibration1": 1,
-          "vibration2": 1,
-          "action": { "motion": { "detected": true, "count": 2 } }
+          "action": { "motion": { "count": 2 } },
+          "channels": [
+            { "channel": "gang0", "action": { "motion": { "detected": true } } },
+            { "channel": "gang1", "action": { "motion": { "detected": true } } }
+          ]
         }
       },
       "source": "synthetic",
-      "_note": "byte[3]=0x9C -> high bit set (lowBattery), 0x1C=28 -> 2.8 V; status1=status2=1 -> both channels vibrating, count 2"
+      "_note": "byte[3]=0x9C -> high bit set (lowBattery), low 7 bits 0x1C=28 -> 2.8 V; status1=status2=1 -> both gangs vibrating, roll-up count 2. battery/lowBattery are whole-device readings and stay top-level, outside the channels[] entries."
     },
     {
-      "description": "Status report, no vibration on either gang (synthetic)",
+      "description": "Status report: no vibration on either gang",
       "input": {
         "fPort": 6,
         "bytes": [1, 47, 1, 30, 0, 0, 0, 0, 0, 0, 0]
@@ -49,13 +75,15 @@
           "make": "netvox",
           "model": "r718da2",
           "battery": 3,
-          "vibration1": 0,
-          "vibration2": 0,
-          "action": { "motion": { "detected": false, "count": 0 } }
+          "action": { "motion": { "count": 0 } },
+          "channels": [
+            { "channel": "gang0", "action": { "motion": { "detected": false } } },
+            { "channel": "gang1", "action": { "motion": { "detected": false } } }
+          ]
         }
       },
       "source": "synthetic",
-      "_note": "both status bytes zero -> no motion detected, count 0; still a valid measurement frame"
+      "_note": "Both status bytes zero -> neither gang detecting, roll-up count 0; still a valid measurement frame, and both entries are still emitted (no disconnected-gang sentinel exists in this format)."
     },
     {
       "description": "Startup version report carries no measurement (TTN example bytes; report type 0x00)",

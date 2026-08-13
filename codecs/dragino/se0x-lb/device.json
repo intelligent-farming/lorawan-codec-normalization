@@ -11,7 +11,10 @@
   "provides": [
     "battery",
     "channelMask",
+    "dielectric",
     "probeTemperature",
+    "rawConduct",
+    "rawWater",
     "soil.ec",
     "soil.moisture",
     "soil.temperature"

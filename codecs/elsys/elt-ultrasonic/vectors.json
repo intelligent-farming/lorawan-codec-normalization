@@ -47,6 +47,42 @@
       "_note": "Synthetic in-bounds payload (TEMP 21.5 C, RH 55%, LIGHT 350 lux, VDD 3600 mV, EXT_DISTANCE 1200 mm). expected.data confirmed against reference/upstream-codec.js via the ORACLE method: upstream emits {temperature:21.5,humidity:55,light:350,vdd:3600,distance:1200}; normalization maps temp/humidity/light into air, VDD mV -> battery volts (/1000), distance mm -> extra."
     },
     {
+      "description": "Both external ports populated: analog + relative/absolute pulse counters + probe temperature + digital input on each port, alongside the onboard temperature",
+      "input": {
+        "fPort": 1,
+        "bytes": [1, 0, 215, 8, 5, 220, 10, 0, 5, 11, 0, 1, 226, 64, 12, 0, 125, 13, 1, 22, 0, 9, 23, 0, 9, 251, 241, 24, 12, 228, 25, 255, 241, 26, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "elsys",
+          "model": "elt-ultrasonic",
+          "air": {
+            "temperature": 21.5
+          },
+          "channels": [
+            {
+              "channel": "port0",
+              "analogMv": 1500,
+              "pulseRelative": 5,
+              "pulseAbsolute": 123456,
+              "externalTemperature": 12.5,
+              "digital": 1
+            },
+            {
+              "channel": "port1",
+              "pulseRelative": 9,
+              "pulseAbsolute": 654321,
+              "analogMv": 3300,
+              "externalTemperature": -1.5,
+              "digital": 0
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds Elsys TLV frame exercising every paired external bank on BOTH ports with distinct values. Raw decode confirmed via the ORACLE method against reference/upstream-codec.js: {temperature:21.5, analog1:1500, pulse1:5, pulseAbs:123456, externalTemperature:12.5, digital:1, pulse2:9, pulseAbs2:654321, analog2:3300, externalTemperature2:-1.5, digital2:0}. expected.data is the authored normalization: onboard TEMP -> air.temperature (whole-device, top-level), and each port's bank readings scoped into its own channels entry (port0 = Elsys port 1, port1 = Elsys port 2) under the port-index-free key names. Note upstream's unnumbered `digital`/`pulseAbs` are port-1 aliases, hence their placement in port0."
+    },
+    {
       "description": "unknown Elsys type stops decoding; recognized fields kept, remainder warned",
       "input": {
         "fPort": 1,

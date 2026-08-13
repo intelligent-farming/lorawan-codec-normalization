@@ -1,7 +1,7 @@
 {
   "uplink": [
     {
-      "description": "Status report: relays 1&2 ON, relay 3 OFF; inputs 1&2 open, input 3 closed",
+      "description": "Status report: relays 1&2 ON, relay 3 OFF; input0/input1 open, input2 closed",
       "input": {
         "fPort": 6,
         "bytes": [1, 176, 1, 1, 1, 0, 0, 0, 1, 0, 0]
@@ -13,13 +13,61 @@
           "relay1": true,
           "relay2": true,
           "relay3": false,
-          "action": { "contactState": "open" },
-          "contactState2": "open",
-          "contactState3": "closed"
+          "channels": [
+            { "channel": "input0", "action": { "contactState": "open" } },
+            { "channel": "input1", "action": { "contactState": "open" } },
+            { "channel": "input2", "action": { "contactState": "closed" } }
+          ]
         }
       },
       "source": "ttn-example",
-      "_note": "TTN example status report (netvox r831d codec yaml, Apache-2.0). Upstream oracle: Relay_1 ON, Relay_2 ON, Relay_3 OFF, Input_1 OFF, Input_2 OFF, Input_3 ON. byte3/4/5 relays; byte6=0 -> action.contactState 'open'; byte7=0 -> contactState2 'open'; byte8=1 -> contactState3 'closed'. No battery byte in this device's data frame."
+      "_note": "TTN example status report (netvox r831d codec yaml, Apache-2.0). Upstream oracle: Relay_1 ON, Relay_2 ON, Relay_3 OFF, Input_1 OFF, Input_2 OFF, Input_3 ON. bytes 3/4/5 are relay outputs -> top-level extras (actuator state, not a measured position); byte6=0 -> input0 'open'; byte7=0 -> input1 'open'; byte8=1 -> input2 'closed'. The input positions DIFFER here, so a transposed entry is caught. No battery byte in this device's data frame. `analog-interface` resolves action.contactState through the entries."
+    },
+    {
+      "description": "Status report: input0 closed, input1 open, input2 closed; all relays OFF",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 176, 1, 0, 0, 0, 1, 0, 1, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "r831d",
+          "relay1": false,
+          "relay2": false,
+          "relay3": false,
+          "channels": [
+            { "channel": "input0", "action": { "contactState": "closed" } },
+            { "channel": "input1", "action": { "contactState": "open" } },
+            { "channel": "input2", "action": { "contactState": "closed" } }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds frame with a distinct pattern per input terminal (closed / open / closed) and no relay energized, so per-position truth is exercised independently of the relay bytes. Upstream oracle semantics: Input_1 ON -> closed, Input_2 OFF -> open, Input_3 ON -> closed; Relay_1..3 all OFF."
+    },
+    {
+      "description": "Status report: all inputs closed, relay 3 ON only",
+      "input": {
+        "fPort": 6,
+        "bytes": [1, 176, 1, 0, 0, 1, 1, 1, 1, 0, 0]
+      },
+      "expected": {
+        "data": {
+          "make": "netvox",
+          "model": "r831d",
+          "relay1": false,
+          "relay2": false,
+          "relay3": true,
+          "channels": [
+            { "channel": "input0", "action": { "contactState": "closed" } },
+            { "channel": "input1", "action": { "contactState": "closed" } },
+            { "channel": "input2", "action": { "contactState": "closed" } }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "All three terminals closed with only the third relay energized: covers the all-same input case and keeps the relay extras independent of the input entries. All three entries are emitted unconditionally (this format defines no disconnected-input sentinel)."
     },
     {
       "description": "Startup version frame (report type 0x00) carries no measurement",

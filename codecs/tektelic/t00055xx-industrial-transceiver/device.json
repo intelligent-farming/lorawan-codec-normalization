@@ -15,16 +15,16 @@
     "digital output"
   ],
   "provides": [
+    "action.contactState",
     "air.relativeHumidity",
     "air.temperature",
+    "analog.current",
+    "analog.voltage",
     "battery",
     "changeOutputStates.output1",
     "changeOutputStates.output2",
-    "input1",
-    "input1Count",
-    "input2",
-    "input3",
-    "mcuTemperature"
+    "mcuTemperature",
+    "pulse.count"
   ],
   "variantOf": null,
   "downlink": {

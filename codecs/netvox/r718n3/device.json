@@ -10,12 +10,10 @@
   ],
   "provides": [
     "battery",
-    "current2",
-    "current3",
     "deviceName",
-    "multiplier1",
-    "multiplier2",
-    "multiplier3",
+    "highCurrentAlarm",
+    "lowCurrentAlarm",
+    "multiplier",
     "power.current"
   ],
   "variantOf": null,

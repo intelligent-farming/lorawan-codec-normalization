@@ -11,9 +11,7 @@
   "provides": [
     "battery",
     "lowBattery",
-    "water.leak",
-    "water.leak1",
-    "water.leak2"
+    "water.leak"
   ],
   "variantOf": null,
   "downlink": {

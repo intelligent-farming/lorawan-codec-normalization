@@ -18,36 +18,19 @@
           "model": "dl-sdd",
           "protocolVersion": 2,
           "deviceId": 17379,
-          "soilMoistureProfile": [
-            { "level": 0, "moisture": 0 },
-            { "level": 1, "moisture": 0 },
-            { "level": 2, "moisture": 0 },
-            { "level": 3, "moisture": 0 },
-            { "level": 4, "moisture": 0 },
-            { "level": 5, "moisture": 0 }
+          "channels": [
+            { "channel": "level0", "soil": { "moisture": 0, "temperature": 18.57 }, "salinityIndex": -100 },
+            { "channel": "level1", "soil": { "moisture": 0, "temperature": 19.15 }, "salinityIndex": -100 },
+            { "channel": "level2", "soil": { "moisture": 0, "temperature": 18.65 }, "salinityIndex": -100 },
+            { "channel": "level3", "soil": { "moisture": 0, "temperature": 19 }, "salinityIndex": -100 },
+            { "channel": "level4", "soil": { "moisture": 0, "temperature": 19 }, "salinityIndex": -100 },
+            { "channel": "level5", "soil": { "moisture": 0, "temperature": 18.94 }, "salinityIndex": 230 }
           ],
-          "soilTemperatureProfile": [
-            { "level": 0, "temperature": 18.57 },
-            { "level": 1, "temperature": 19.15 },
-            { "level": 2, "temperature": 18.65 },
-            { "level": 3, "temperature": 19 },
-            { "level": 4, "temperature": 19 },
-            { "level": 5, "temperature": 18.94 }
-          ],
-          "soilSalinityProfile": [
-            { "level": 0, "salinity": -100 },
-            { "level": 1, "salinity": -100 },
-            { "level": 2, "salinity": -100 },
-            { "level": 3, "salinity": -100 },
-            { "level": 4, "salinity": -100 },
-            { "level": 5, "salinity": 230 }
-          ],
-          "soil": { "moisture": 0, "temperature": 18.57 },
           "battery": 2.531
         }
       },
       "source": "ttn-example",
-      "_note": "Input bytes are the upstream TTN dl-sdd-codec.yaml Example 1; expected.data authored here by normalizing the upstream per-level conversions ((word-32768)/100 for moisture % and temperature °C, word-100 for the dimensionless salinity index, word/1000 for battery V). Level 0 maps to the bounded vocabulary soil.moisture/soil.temperature; full per-level readings are kept in the profile extras."
+      "_note": "Input bytes are the upstream TTN dl-sdd-codec.yaml Example 1; expected.data authored here by normalizing the upstream per-level conversions ((word-32768)/100 for moisture % and temperature °C, word-100 for the dimensionless salinity index, word/1000 for battery V) into the reserved channels array — one entry per connected level, labels level0..level5 (moisture 0 % = probe in air, in-bounds, so all six levels are present); whole-device battery stays top-level."
     },
     {
       "description": "Synthetic full profile: levels 0-11 + battery (flags 0b111)",
@@ -70,54 +53,47 @@
           "model": "dl-sdd",
           "protocolVersion": 2,
           "deviceId": 17379,
-          "soilMoistureProfile": [
-            { "level": 0, "moisture": 10 },
-            { "level": 1, "moisture": 12.32 },
-            { "level": 2, "moisture": 22.32 },
-            { "level": 3, "moisture": 32.32 },
-            { "level": 4, "moisture": 42.32 },
-            { "level": 5, "moisture": 52.32 },
-            { "level": 6, "moisture": 5 },
-            { "level": 7, "moisture": 6 },
-            { "level": 8, "moisture": 7 },
-            { "level": 9, "moisture": 8 },
-            { "level": 10, "moisture": 9 },
-            { "level": 11, "moisture": 10 }
+          "channels": [
+            { "channel": "level0", "soil": { "moisture": 10, "temperature": 20 }, "salinityIndex": 100 },
+            { "channel": "level1", "soil": { "moisture": 12.32, "temperature": 21 }, "salinityIndex": 110 },
+            { "channel": "level2", "soil": { "moisture": 22.32, "temperature": 22 }, "salinityIndex": 120 },
+            { "channel": "level3", "soil": { "moisture": 32.32, "temperature": 23 }, "salinityIndex": 130 },
+            { "channel": "level4", "soil": { "moisture": 42.32, "temperature": 24 }, "salinityIndex": 140 },
+            { "channel": "level5", "soil": { "moisture": 52.32, "temperature": 25 }, "salinityIndex": 150 },
+            { "channel": "level6", "soil": { "moisture": 5, "temperature": 19 }, "salinityIndex": 50 },
+            { "channel": "level7", "soil": { "moisture": 6, "temperature": 18 }, "salinityIndex": 60 },
+            { "channel": "level8", "soil": { "moisture": 7, "temperature": 17 }, "salinityIndex": 70 },
+            { "channel": "level9", "soil": { "moisture": 8, "temperature": 16 }, "salinityIndex": 80 },
+            { "channel": "level10", "soil": { "moisture": 9, "temperature": 15 }, "salinityIndex": 90 },
+            { "channel": "level11", "soil": { "moisture": 10, "temperature": 14 }, "salinityIndex": 95 }
           ],
-          "soilTemperatureProfile": [
-            { "level": 0, "temperature": 20 },
-            { "level": 1, "temperature": 21 },
-            { "level": 2, "temperature": 22 },
-            { "level": 3, "temperature": 23 },
-            { "level": 4, "temperature": 24 },
-            { "level": 5, "temperature": 25 },
-            { "level": 6, "temperature": 19 },
-            { "level": 7, "temperature": 18 },
-            { "level": 8, "temperature": 17 },
-            { "level": 9, "temperature": 16 },
-            { "level": 10, "temperature": 15 },
-            { "level": 11, "temperature": 14 }
-          ],
-          "soilSalinityProfile": [
-            { "level": 0, "salinity": 100 },
-            { "level": 1, "salinity": 110 },
-            { "level": 2, "salinity": 120 },
-            { "level": 3, "salinity": 130 },
-            { "level": 4, "salinity": 140 },
-            { "level": 5, "salinity": 150 },
-            { "level": 6, "salinity": 50 },
-            { "level": 7, "salinity": 60 },
-            { "level": 8, "salinity": 70 },
-            { "level": 9, "salinity": 80 },
-            { "level": 10, "salinity": 90 },
-            { "level": 11, "salinity": 95 }
-          ],
-          "soil": { "moisture": 10, "temperature": 20 },
           "battery": 2.531
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic in-bounds payload exercising both profile blocks (levels 0-11) plus battery. Header reuses the upstream device id 17379 / protocol v2; sensor words chosen to land in-bounds. expected.data produced by running reference/upstream-codec.js over these bytes and normalizing per the documented mapping."
+      "_note": "Synthetic in-bounds payload exercising both profile blocks (levels 0-11, labels level0..level11) plus battery. Header reuses the upstream device id 17379 / protocol v2; sensor words chosen to land in-bounds. expected.data produced by running reference/upstream-codec.js over these bytes and normalizing per the documented mapping (one channels entry per level, per-level salinityIndex extra)."
+    },
+    {
+      "description": "Partial profile: level0 fully connected, level1 temperature-only, levels 2-5 disconnected (sentinel words) — sentinel values and empty levels are omitted",
+      "input": {
+        "fPort": 1,
+        "bytes": [2, 67, 227, 0, 5, 133, 220, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 135, 208, 133, 120, 0, 0, 0, 0, 0, 0, 0, 0, 1, 144, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11, 184]
+      },
+      "expected": {
+        "data": {
+          "make": "decentlab",
+          "model": "dl-sdd",
+          "protocolVersion": 2,
+          "deviceId": 17379,
+          "channels": [
+            { "channel": "level0", "soil": { "moisture": 15, "temperature": 20 }, "salinityIndex": 300 },
+            { "channel": "level1", "soil": { "temperature": 14 }, "salinityIndex": -100 }
+          ],
+          "battery": 3
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic sentinel payload (flags 0b101, levels 0-5 block + battery): level0 words 34268/34768/400 -> moisture 15 % / temperature 20 °C / salinityIndex 300; level1 moisture word 0 -> sentinel -327.68 (dropped, outside 0-100 %) with temperature word 34168 -> 14 °C kept, salinity word 0 -> index -100 rides along; levels 2-5 all-zero words -> both soil sentinels -> no channels entry. Battery word 3000 -> 3 V. Pins per-value bounds gating, entry omission, and the salinity-rides-with-soil rule."
     },
     {
       "description": "TTN example 2: battery only (flags 0b100)",

@@ -1,7 +1,7 @@
 {
   "uplink": [
     {
-      "description": "soil-monitor measurement frame (fPort 2)",
+      "description": "soil-monitor measurement frame (fPort 2), both probes reporting",
       "input": {
         "fPort": 2,
         "bytes": [
@@ -27,20 +27,83 @@
         "data": {
           "battery": 3.3,
           "probeTemperature": 25,
-          "soil": {
-            "moisture": 45.5,
-            "temperature": 22.5,
-            "ec": 0.28
-          },
-          "moistureSoil2": 40,
-          "tempSoil2": 21,
-          "ecSoil2": 250,
+          "channels": [
+            {
+              "channel": "probe0",
+              "soil": {
+                "moisture": 45.5,
+                "temperature": 22.5,
+                "ec": 0.28
+              }
+            },
+            {
+              "channel": "probe1",
+              "soil": {
+                "moisture": 40,
+                "temperature": 21,
+                "ec": 0.25
+              }
+            }
+          ],
           "make": "dragino",
           "model": "se02-lb"
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic SE02-LB frame; expected.data via this codec, cross-checked against the upstream decoder (oracle). Channel-1 moisture/temp/EC -> soil.*; EC uS/cm -> dS/m (/1000); channel 2 as extras. Satisfies soil-monitor."
+      "_note": "Synthetic SE02-LB frame; expected.data via this codec, cross-checked against the upstream decoder (oracle: moisture_soil 45.50/temp_soil 22.50/conduct_soil 280, moisture_soil2 40.00/temp_soi2 21.00/conduct_soil2 250). Both 6-byte soil blocks become channels[] entries (probe0 = vendor channel 1, probe1 = vendor channel 2); EC uS/cm -> dS/m (/1000) for both. battery and the DS18B20 probeTemperature stay top-level. Satisfies soil-monitor through the entries."
+    },
+    {
+      "description": "Both probes with distinct values: sub-zero DS18B20 and sub-zero probe1 soil temperature (17-byte frame)",
+      "input": {
+        "fPort": 2,
+        "bytes": [
+          11,
+          196,
+          255,
+          241,
+          4,
+          210,
+          2,
+          13,
+          5,
+          220,
+          13,
+          22,
+          254,
+          137,
+          0,
+          75,
+          16
+        ]
+      },
+      "expected": {
+        "data": {
+          "battery": 3.012,
+          "probeTemperature": -1.5,
+          "channels": [
+            {
+              "channel": "probe0",
+              "soil": {
+                "moisture": 12.34,
+                "temperature": 5.25,
+                "ec": 1.5
+              }
+            },
+            {
+              "channel": "probe1",
+              "soil": {
+                "moisture": 33.5,
+                "temperature": -3.75,
+                "ec": 0.075
+              }
+            }
+          ],
+          "make": "dragino",
+          "model": "se02-lb"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Multi-position vector: every leaf differs between probe0 (12.34 %, 5.25 C, 1500 uS/cm) and probe1 (33.50 %, -3.75 C, 75 uS/cm), and both signed temperature paths are exercised. Byte 16 (0x10) is the real frame's mod/status byte (MOD 0, sensor flag set); it is not decoded, so the extra byte is ignored."
     },
     {
       "description": "Device-information frame (fPort 5) -> error",

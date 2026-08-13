@@ -1,7 +1,7 @@
 {
   "uplink": [
     {
-      "description": "Periodic uplink (fPort 4): box temperature + humidity -> climate",
+      "description": "Periodic uplink (fPort 4): box temperature + humidity -> climate; both digital inputs clear",
       "input": {
         "fPort": 4,
         "bytes": [
@@ -23,8 +23,6 @@
           "actuator": "0",
           "tamper": "1",
           "cable": "0",
-          "dI0": "0",
-          "dI1": "0",
           "leak": "0",
           "fraud": "0",
           "class": "0",
@@ -34,12 +32,71 @@
             "temperature": 23.96,
             "relativeHumidity": 46.82
           },
+          "channels": [
+            {
+              "channel": "di0",
+              "di": "0"
+            },
+            {
+              "channel": "di1",
+              "di": "0"
+            }
+          ],
           "make": "strega",
           "model": "smart-emitter"
         }
       },
       "source": "ttn-example",
-      "_note": "Upstream-example input (TTN strega smart-valve codec yaml, Apache-2.0). expected.data via the ported upstream decoder (oracle: Temp 23.96 C, Hygro 46.82 %). Temp->air.temperature, Hygro->air.relativeHumidity (climate); Bat->batteryPercent; Power->powerState and valve/leak/fraud/DI status as camelCase extras."
+      "_note": "Upstream-example input (TTN strega smart-valve codec yaml, Apache-2.0). expected.data via the ported upstream decoder (oracle: Temp 23.96 C, Hygro 46.82 %, DI0 \"0\", DI1 \"0\"). Temp->air.temperature, Hygro->air.relativeHumidity (climate); Bat->batteryPercent; Power->powerState; valve/leak/fraud/tamper status as top-level camelCase extras; DI_0/DI_1 -> channels[] entries di0/di1, each carrying the raw status bit as the unsuffixed extra `di` (polarity is undocumented upstream - see codec header)."
+    },
+    {
+      "description": "Periodic uplink (fPort 4): digital inputs differ - DI_0 set (di0 \"1\"), DI_1 clear (di1 \"0\")",
+      "input": {
+        "fPort": 4,
+        "bytes": [
+          51,
+          49,
+          56,
+          56,
+          58,
+          35,
+          99,
+          61,
+          119,
+          219
+        ]
+      },
+      "expected": {
+        "data": {
+          "batteryPercent": 74,
+          "actuator": "0",
+          "tamper": "1",
+          "cable": "0",
+          "leak": "0",
+          "fraud": "0",
+          "class": "0",
+          "powerState": "0",
+          "vt": "10",
+          "air": {
+            "temperature": 23.96,
+            "relativeHumidity": 46.82
+          },
+          "channels": [
+            {
+              "channel": "di0",
+              "di": "1"
+            },
+            {
+              "channel": "di1",
+              "di": "0"
+            }
+          ],
+          "make": "strega",
+          "model": "smart-emitter"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Same frame with byte 4 changed 0x32->0x3A, which sets DI_0 and leaves DI_1 clear (oracle: reference/upstream-codec.js returns DI0 \"1\", DI1 \"0\", every other field unchanged). Exercises per-position truth: a transposed di0/di1 mapping would fail this vector. All other status bits (Tamper \"1\", vt \"10\") and the temperature/humidity/battery fields are identical to the upstream example above."
     }
   ],
   "downlink": []

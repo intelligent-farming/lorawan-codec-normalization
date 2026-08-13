@@ -132,7 +132,9 @@ export interface PositionMeasurement {
  * A single normalized reading. Mirrors `definitions/vocabulary.schema.json`.
  * Datalog/history uplinks place the current reading at the top level and prior
  * readings in {@link Measurement.history}; each history entry must carry a
- * `time`.
+ * `time`. Multi-channel devices (multilayer probes, multi-port dataloggers)
+ * place per-sub-sensor groups in {@link Measurement.channels}; each entry must
+ * carry a unique `channel` label.
  */
 export interface Measurement {
   /** Date and time of the measurement (RFC3339). */
@@ -149,7 +151,29 @@ export interface Measurement {
   position?: PositionMeasurement;
   /** Prior readings for datalog uplinks; each entry must carry `time`. */
   history?: Measurement[];
+  /**
+   * Per-sub-sensor readings for multi-channel devices; each entry must carry a
+   * unique `channel` label. A value emitted inside an entry is not repeated at
+   * the top level.
+   */
+  channels?: ChannelMeasurement[];
   [extra: string]: unknown;
+}
+
+/**
+ * One {@link Measurement.channels} entry: a measurement scoped to a single
+ * sub-sensor (a depth on a multilayer probe, a port on a datalogger). The
+ * `channel` label discriminates the sub-sensor and must be unique within the
+ * array. Entries may carry their own `time` and extras; they are leaf
+ * measurements — nested `history`/`channels` are not allowed.
+ */
+export interface ChannelMeasurement extends Measurement {
+  /** Sub-sensor label (e.g. `"depth0"`, `"port1"`, `"15cm"`). */
+  channel: string;
+  /** Not allowed inside a channels entry. */
+  history?: never;
+  /** Not allowed inside a channels entry. */
+  channels?: never;
 }
 
 /** Why a {@link ValidationIssue} was raised. */
@@ -157,7 +181,8 @@ export type ValidationRule =
   | 'schema'
   | 'case-collision'
   | 'reserved-key'
-  | 'history-time';
+  | 'history-time'
+  | 'channel-label';
 
 /** A single validation failure. */
 export interface ValidationIssue {

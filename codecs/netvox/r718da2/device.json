@@ -12,9 +12,7 @@
     "action.motion.count",
     "action.motion.detected",
     "battery",
-    "lowBattery",
-    "vibration1",
-    "vibration2"
+    "lowBattery"
   ],
   "variantOf": null,
   "downlink": {

@@ -16,10 +16,11 @@
 // Categories: contact + motion.
 //
 // Mapping notes:
-//   - EXT_DIGITAL (0x0D) is the reed/door switch state -> action.contactState.
-//     Elsys reports the digital input as 1 (high) / 0 (low). For a door reed
-//     switch, the contact is open when the magnet is away from the sensor (the
-//     door is open) -> digital !== 0 maps to "open", 0 maps to "closed".
+//   - EXT_DIGITAL (0x0D) is the reed/door switch state -> action.contactState
+//     (inside the `port0` channels entry, see below). Elsys reports the digital
+//     input as 1 (high) / 0 (low). For a door reed switch, the contact is open
+//     when the magnet is away from the sensor (the door is open) -> digital !== 0
+//     maps to "open", 0 maps to "closed".
 //   - MOTION (0x05) counts movements detected -> action.motion.count, with
 //     action.motion.detected = (count > 0).
 //   - ACC_MOTION (0x0F) is the accelerometer-based movement count. When MOTION
@@ -33,6 +34,53 @@
 //   - All other typed fields (analog, pulse counters, external/IR temperature,
 //     GPS, distance, occupancy, water leak, sound, TVOC, etc.) have no
 //     vocabulary key and are emitted as camelCase extras, matching upstream.
+//
+// External ports -> reserved `channels[]` (see AUTHORING.md "Multi-channel
+// devices"). The EMS Door exposes TWO external ports (the door reed hangs off
+// port 1), and Elsys carries the port index in the TLV type itself — every
+// external bank is a numbered pair:
+//     bank                    port 1 type   port 2 type
+//     analog input (mV)          0x08          0x18
+//     pulse counter, relative    0x0a          0x16
+//     pulse counter, absolute    0x0b          0x17
+//     external temperature       0x0c          0x19
+//     external digital input     0x0d          0x1a
+// The two ports are the same physical quantities at two physical positions, so
+// each port becomes one `channels[]` entry instead of a suffixed extra. Entry
+// labels use the vendor's own term plus a 0-based index: `port0` = Elsys port 1
+// (types 0x08/0x0a/0x0b/0x0c/0x0d), `port1` = Elsys port 2 (types
+// 0x18/0x16/0x17/0x19/0x1a). A port can carry several quantities at once, so one
+// entry may hold e.g. action.contactState, externalTemperature and a pulse
+// count together.
+//
+// The port index therefore leaves the key name and lives only in the entry
+// label, so both entries carry the *same* keys — mappings are unchanged from
+// the pre-channels codec, only relocated. Note that upstream's *unnumbered*
+// names for the port-1 banks (`digital` for 0x0d, `pulseAbs` for 0x0b) are
+// aliases for port 1, not separate sensors, so they move into `port0`:
+//     digital (0x0d) / digital2 (0x1a)   -> entry `action.contactState`; port 2
+//        is a second dry contact, so it gets the same vocabulary key the door
+//        reed already used rather than a raw suffixed `digital2` extra
+//     analog1 / analog2                  -> entry `analogMv` (raw mV; the bare
+//        name `analog` would collide with the vocabulary `analog.*` group, and
+//        the value is millivolts, not the group's volts)
+//     pulse1 / pulse2                    -> entry `pulseRelative`
+//     pulseAbs / pulseAbs2               -> entry `pulseAbsolute`
+//     externalTemperature / ...2         -> entry `externalTemperature`
+// The look-alike sibling 0x1b (EXT_ANALOG_UV, µV load-cell/UV input) is a
+// distinct unpaired sensor, not port 2 of the analog bank, so `analogUv` stays
+// top-level. Whole-device readings stay top-level too: battery, air.*, x/y/z,
+// accMotion and action.motion (the onboard accelerometer belongs to the device,
+// not to a port), pressure, distance, IR/GPS/sound/occupancy/water-leak/TVOC.
+// Nothing is emitted both places — with the reed scoped to `port0`, the
+// top-level `action` group carries motion only. The `contact` category is still
+// satisfied, since membership sees top-level channels entries.
+//
+// Sentinel/absent-port policy: an Elsys TLV stream is sparse — a port's TLV is
+// simply absent when nothing is attached to it (there is no disconnected
+// sentinel value), so entries are built lazily on first sight. A port that
+// reported no reading gets no entry, and `channels` is omitted entirely when
+// neither port reported. Entry order follows the payload.
 
 function round(value, decimals) {
   var f = Math.pow(10, decimals);
@@ -73,6 +121,30 @@ function decodeUplinkCore(input) {
   var motionCount;
   var recognized = false;
   var unknownType = false;
+
+  // One `channels[]` entry per external port, created on first sight so entry
+  // order follows the payload and an unused port produces no entry.
+  var channels = [];
+  var portSlot = {};
+
+  function portFor(port) {
+    var label = 'port' + port;
+    if (portSlot[label] === undefined) {
+      portSlot[label] = channels.length;
+      channels.push({ channel: label });
+    }
+    return channels[portSlot[label]];
+  }
+
+  // The entry's `action` group is created lazily so a port reporting only a
+  // pulse count or probe temperature carries no empty `action: {}`.
+  function portAction(port) {
+    var entry = portFor(port);
+    if (entry.action === undefined) {
+      entry.action = {};
+    }
+    return entry.action;
+  }
 
   var i = 0;
   while (i < bytes.length) {
@@ -116,8 +188,8 @@ function decodeUplinkCore(input) {
       i += 3;
       recognized = true;
     } else if (type === 0x08) {
-      // ANALOG1: 2 bytes unsigned, mV. No vocab key -> extra.
-      data.analog1 = u16be(bytes[i + 1], bytes[i + 2]);
+      // ANALOG1: external port 1 analog input, 2 bytes unsigned, mV.
+      portFor(0).analogMv = u16be(bytes[i + 1], bytes[i + 2]);
       i += 3;
       recognized = true;
     } else if (type === 0x09) {
@@ -131,24 +203,25 @@ function decodeUplinkCore(input) {
       i += 7;
       recognized = true;
     } else if (type === 0x0a) {
-      // PULSE1: 2 bytes relative pulse count. No vocab key -> extra.
-      data.pulse1 = u16be(bytes[i + 1], bytes[i + 2]);
+      // PULSE1: external port 1 relative pulse count, 2 bytes.
+      portFor(0).pulseRelative = u16be(bytes[i + 1], bytes[i + 2]);
       i += 3;
       recognized = true;
     } else if (type === 0x0b) {
-      // PULSE1_ABS: 4 bytes absolute pulse count. No vocab key -> extra.
-      data.pulseAbs = u32be(bytes[i + 1], bytes[i + 2], bytes[i + 3], bytes[i + 4]);
+      // PULSE1_ABS: external port 1 absolute pulse count, 4 bytes.
+      portFor(0).pulseAbsolute = u32be(bytes[i + 1], bytes[i + 2], bytes[i + 3], bytes[i + 4]);
       i += 5;
       recognized = true;
     } else if (type === 0x0c) {
-      // EXT_TEMP1: 2 bytes signed, tenths of a degree. No vocab key -> extra.
-      data.externalTemperature = round(s16be(bytes[i + 1], bytes[i + 2]) / 10, 1);
+      // EXT_TEMP1: external port 1 probe, 2 bytes signed, tenths of a degree.
+      portFor(0).externalTemperature = round(s16be(bytes[i + 1], bytes[i + 2]) / 10, 1);
       i += 3;
       recognized = true;
     } else if (type === 0x0d) {
-      // EXT_DIGITAL: reed/door switch state, 1 byte (1/0) -> action.contactState.
+      // EXT_DIGITAL: external port 1 dry contact — the reed/door switch on this
+      // model — 1 byte (1/0) -> action.contactState in the `port0` entry.
       // digital !== 0 -> door open; 0 -> closed.
-      action.contactState = bytes[i + 1] !== 0 ? 'open' : 'closed';
+      portAction(0).contactState = bytes[i + 1] !== 0 ? 'open' : 'closed';
       i += 2;
       recognized = true;
     } else if (type === 0x0e) {
@@ -193,28 +266,29 @@ function decodeUplinkCore(input) {
       i += 3;
       recognized = true;
     } else if (type === 0x16) {
-      // PULSE2: 2 bytes relative pulse count. No vocab key -> extra.
-      data.pulse2 = u16be(bytes[i + 1], bytes[i + 2]);
+      // PULSE2: external port 2 relative pulse count, 2 bytes.
+      portFor(1).pulseRelative = u16be(bytes[i + 1], bytes[i + 2]);
       i += 3;
       recognized = true;
     } else if (type === 0x17) {
-      // PULSE2_ABS: 4 bytes absolute pulse count. No vocab key -> extra.
-      data.pulseAbs2 = u32be(bytes[i + 1], bytes[i + 2], bytes[i + 3], bytes[i + 4]);
+      // PULSE2_ABS: external port 2 absolute pulse count, 4 bytes.
+      portFor(1).pulseAbsolute = u32be(bytes[i + 1], bytes[i + 2], bytes[i + 3], bytes[i + 4]);
       i += 5;
       recognized = true;
     } else if (type === 0x18) {
-      // ANALOG2: 2 bytes unsigned, mV. No vocab key -> extra.
-      data.analog2 = u16be(bytes[i + 1], bytes[i + 2]);
+      // ANALOG2: external port 2 analog input, 2 bytes unsigned, mV.
+      portFor(1).analogMv = u16be(bytes[i + 1], bytes[i + 2]);
       i += 3;
       recognized = true;
     } else if (type === 0x19) {
-      // EXT_TEMP2: 2 bytes signed, tenths of a degree. No vocab key -> extra.
-      data.externalTemperature2 = round(s16be(bytes[i + 1], bytes[i + 2]) / 10, 1);
+      // EXT_TEMP2: external port 2 probe, 2 bytes signed, tenths of a degree.
+      portFor(1).externalTemperature = round(s16be(bytes[i + 1], bytes[i + 2]) / 10, 1);
       i += 3;
       recognized = true;
     } else if (type === 0x1a) {
-      // EXT_DIGITAL2: 1 byte (1/0). No vocab key -> extra.
-      data.digital2 = bytes[i + 1];
+      // EXT_DIGITAL2: external port 2 dry contact, 1 byte (1/0) — same quantity
+      // as port 1, so the same vocabulary key inside the `port1` entry.
+      portAction(1).contactState = bytes[i + 1] !== 0 ? 'open' : 'closed';
       i += 2;
       recognized = true;
     } else if (type === 0x1b) {
@@ -250,8 +324,14 @@ function decodeUplinkCore(input) {
     data.air = air;
   }
 
-  if (action.contactState !== undefined || action.motion !== undefined) {
+  // The top-level `action` group carries motion only — the contact state is
+  // port-scoped and lives in its channels entry.
+  if (action.motion !== undefined) {
     data.action = action;
+  }
+  // Omit `channels` entirely when neither external port reported.
+  if (channels.length > 0) {
+    data.channels = channels;
   }
 
   var result = { data: data };

@@ -19,11 +19,34 @@
 // `raw / 100000` yields hectopascals directly (raw 101325000 -> 1013.25 hPa),
 // so it maps to the vocabulary `air.pressure` (hPa) with no further conversion.
 // Battery is a VOLTAGE (tenths of a volt), so it maps to `battery` (volts).
-// Upstream applies no sign extension to the temperature word; kept verbatim.
+//
+// SIGN EXTENSION (a fixed upstream bug): upstream reads the temperature word as
+// unsigned, so a sub-zero reading decodes as ~4.29e7 °C rather than a negative
+// number. That value clears the vocabulary's `air.temperature` bound (minimum
+// -273.15) and so would be stored as a plausible-looking reading rather than
+// rejected — on a device deployed outdoors, where sub-zero is routine. This
+// codec applies two's complement over the full 32-bit field, matching how every
+// sibling in this family (ath20, air-temperature-and-humidity,
+// temperature-humidity-sht31, soil-monitor, leaf-moisture-sn-3001,
+// rtd-pt1000-temperature) sign-extends its own temperature word. The negative
+// vector below is synthetic: the vendor supplies no sub-zero example, so a real
+// cold-weather capture should confirm the encoding (a device that sign-extends
+// only the low 16 bits into the upper bytes decodes identically here).
 
 function round(value, decimals) {
   var f = Math.pow(10, decimals);
   return Math.round(value * f) / f;
+}
+
+// Two's-complement interpretation of a 32-bit big-endian field. Built by
+// multiplication rather than shifts: `<<` coerces to int32, which would silently
+// wrap the pressure field's larger magnitudes.
+function signed32(b0, b1, b2, b3) {
+  var v = b0 * 16777216 + b1 * 65536 + b2 * 256 + b3;
+  if (v >= 2147483648) {
+    v -= 4294967296;
+  }
+  return v;
 }
 
 function decodeUplinkCore(input) {
@@ -36,9 +59,7 @@ function decodeUplinkCore(input) {
   var press =
     (bytes[3] * 16777216 + bytes[4] * 65536 + bytes[5] * 256 + bytes[6]) /
     100000.0;
-  var temp =
-    (bytes[7] * 16777216 + bytes[8] * 65536 + bytes[9] * 256 + bytes[10]) /
-    100.0;
+  var temp = signed32(bytes[7], bytes[8], bytes[9], bytes[10]) / 100.0;
 
   return {
     data: {

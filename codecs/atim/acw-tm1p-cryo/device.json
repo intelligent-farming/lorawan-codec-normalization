@@ -13,8 +13,7 @@
     "battery",
     "frameType",
     "supplyVoltage",
-    "temperature",
-    "temperature2"
+    "temperature"
   ],
   "variantOf": null,
   "downlink": {

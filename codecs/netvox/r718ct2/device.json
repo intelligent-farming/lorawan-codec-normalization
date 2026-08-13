@@ -10,8 +10,7 @@
   ],
   "provides": [
     "battery",
-    "temperature",
-    "temperature2"
+    "temperature"
   ],
   "variantOf": null,
   "downlink": {

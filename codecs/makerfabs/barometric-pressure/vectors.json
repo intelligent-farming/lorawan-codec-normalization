@@ -43,6 +43,20 @@
       "_note": "Synthetic in-bounds input; expected.data derived by running reference/upstream-codec.js."
     },
     {
+      "description": "Sub-zero temperature -8.25 C at 1002.5 hPa, battery 3.3 V (two's-complement temperature word)",
+      "input": { "fPort": 1, "bytes": [0, 1, 33, 5, 249, 177, 144, 255, 255, 252, 199] },
+      "expected": {
+        "data": {
+          "make": "makerfabs",
+          "model": "barometric-pressure",
+          "battery": 3.3,
+          "air": { "temperature": -8.25, "pressure": 1002.5 }
+        }
+      },
+      "source": "synthetic",
+      "_note": "Regression vector for the fixed upstream sign bug: bytes[7..10]=0xFFFFFCC7 is -825 hundredths = -8.25 C under two's complement, but 4294966471/100 = 42949664.71 C read unsigned as upstream does — a value that clears the air.temperature bound (min -273.15) and so would be stored rather than rejected. Pressure raw 100250000/100000 = 1002.5 hPa. Synthetic: the vendor supplies no sub-zero example, so the encoding is inferred from the 16-bit two's complement every sibling in this family uses."
+    },
+    {
       "description": "Truncated payload (5 bytes) is rejected",
       "input": { "fPort": 1, "bytes": [0, 1, 36, 6, 10] },
       "expected": { "errors": ["payload too short"] },

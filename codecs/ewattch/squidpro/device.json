@@ -12,7 +12,7 @@
     "voltage"
   ],
   "provides": [
-    "channels",
+    "metering.energy.total",
     "power.active",
     "power.current",
     "power.voltage"

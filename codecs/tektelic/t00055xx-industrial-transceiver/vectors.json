@@ -1,7 +1,7 @@
 {
   "uplink": [
     {
-      "description": "Full port-10 uplink: battery, both outputs, onboard temperature + humidity, digital/analog inputs, pulse count, MCU temperature",
+      "description": "Full port-10 uplink: battery, both outputs, onboard temperature + humidity, all three input terminals (contact + counter, 4-20 mA loop, 0-10 V), MCU temperature",
       "input": {
         "fPort": 10,
         "bytes": [
@@ -22,10 +22,6 @@
           "make": "tektelic",
           "model": "t00055xx-industrial-transceiver",
           "battery": 3,
-          "input1": 1,
-          "input2": 0.01,
-          "input3": 1,
-          "input1Count": 100,
           "mcuTemperature": -10,
           "air": {
             "temperature": 23,
@@ -34,14 +30,29 @@
           "changeOutputStates": {
             "output1": 0,
             "output2": 1
-          }
+          },
+          "channels": [
+            {
+              "channel": "input0",
+              "action": { "contactState": "closed" },
+              "pulse": { "count": 100 }
+            },
+            {
+              "channel": "input1",
+              "analog": { "current": 10 }
+            },
+            {
+              "channel": "input2",
+              "analog": { "voltage": 1 }
+            }
+          ]
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic in-bounds TLV stream covering every recognized port-10 header. Expected values produced by running reference/upstream-codec.js (the TTN source of truth) and applying the documented vocabulary mapping (battery_voltage->battery, temperature->air.temperature, relative_humidity->air.relativeHumidity, others->camelCase extras)."
+      "_note": "Synthetic in-bounds TLV stream covering every recognized port-10 header. Expected values produced by running reference/upstream-codec.js (the TTN source of truth) and applying the documented vocabulary mapping: battery_voltage->battery, temperature->air.temperature, relative_humidity->air.relativeHumidity, mcu_temperature/change_output_states stay top-level, and the three input terminals become channels[] entries with zero-based labels (input0 = TEKTELIC input 1). input_1 = 1 -> input0 action.contactState 'closed'; input_1_count = 100 -> input0 pulse.count (input 1 is the only counted terminal); input_2 0x2710 = 10000 microamps -> input1 analog.current 10 mA (upstream reports the same raw count as 0.01 A); input_3 0x03E8 = 1000 mV -> input2 analog.voltage 1 V (upstream's number unchanged)."
     },
     {
-      "description": "Temperature + humidity only (onboard climate sensor)",
+      "description": "Temperature + humidity only (onboard climate sensor, no input field -> no channels)",
       "input": {
         "fPort": 10,
         "bytes": [3, 103, 0, 231, 4, 104, 85]
@@ -57,7 +68,7 @@
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic; expected from reference/upstream-codec.js (temperature 0x00E7=231*0.1; relative_humidity 0x55=85*0.5)."
+      "_note": "Synthetic; expected from reference/upstream-codec.js (temperature 0x00E7=231*0.1; relative_humidity 0x55=85*0.5). No input TLV is present, so the lazily-built `channels` key is omitted entirely — the common case for this device."
     },
     {
       "description": "TTN catalog example: change output states for output1 and output2",
@@ -75,7 +86,39 @@
           }
         }
       },
-      "source": "ttn-example"
+      "source": "ttn-example",
+      "_note": "Commanded actuator state only: the outputs stay in the top-level `changeOutputStates` extra group (an output is not a measured position), and no `channels` key is emitted."
+    },
+    {
+      "description": "Mixed input frame: closed contact (state byte 0xFF) with counter 7, 20 mA loop current, 10 V analog input, alongside battery",
+      "input": {
+        "fPort": 10,
+        "bytes": [0, 255, 1, 104, 5, 0, 255, 6, 2, 78, 32, 7, 2, 39, 16, 8, 4, 0, 7]
+      },
+      "expected": {
+        "data": {
+          "make": "tektelic",
+          "model": "t00055xx-industrial-transceiver",
+          "battery": 3.6,
+          "channels": [
+            {
+              "channel": "input0",
+              "action": { "contactState": "closed" },
+              "pulse": { "count": 7 }
+            },
+            {
+              "channel": "input1",
+              "analog": { "current": 20 }
+            },
+            {
+              "channel": "input2",
+              "analog": { "voltage": 10 }
+            }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic; expected values cross-checked against reference/upstream-codec.js, which decodes this frame as battery_voltage 3.6, input_1 = 255, input_2 = 0.02 (A), input_3 = 10 (V), input_1_count = 7. Each terminal carries a distinct top-of-range value so a swapped position would fail: the state byte is 0xFF rather than 1, proving the contact mapping is 'non-zero = closed' (the pre-channels polarity); input_2 0x4E20 = 20000 microamps -> input1 20 mA (loop at full scale); input_3 0x2710 = 10000 mV -> input2 10 V (0-10 V input at full scale). Battery stays top-level as a whole-device reading."
     },
     {
       "description": "Unrecognized TLV header is rejected",

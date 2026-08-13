@@ -62,7 +62,7 @@
       "_note": "Synthetic in-bounds payload (OpCode 3, mask=0x01 temp only). raw 0xFFCC = -52 tenths. Expected from reference/upstream-codec.js: voltage 3.00 V, temp -5.2 C."
     },
     {
-      "description": "Measurements: temp + CO2 with extended digital inputs and particulate matter",
+      "description": "Measurements: temp + CO2 with extended digital inputs (two fitted, differing states) and particulate matter",
       "input": { "fPort": 2, "bytes": [1, 1, 74, 3, 145, 0, 220, 2, 188, 3, 19, 0, 5, 0, 10, 0, 15] },
       "expected": {
         "data": {
@@ -71,18 +71,46 @@
           "payloadVersion": 1,
           "battery": 3.3,
           "messageType": "measurements",
-          "digitalInputs": { "input1": true, "input2": false },
           "pm1_0": 5,
           "pm2_5": 10,
           "pm10": 15,
           "air": {
             "temperature": 22,
             "co2": 700
-          }
+          },
+          "channels": [
+            { "channel": "input0", "action": { "contactState": "closed" } },
+            { "channel": "input1", "action": { "contactState": "open" } }
+          ]
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic in-bounds payload (OpCode 3, mask=0x91 temp|co2|extended; ext=0x03 dinputs|PM). Expected from reference/upstream-codec.js: temp 22.0 C, CO2 700 ppm, dinputs {1:true,2:false}, PM1.0/2.5/10 = 5/10/15 ug/m3 (dinputs, PM and TVOC have no vocabulary keys -> camelCase extras)."
+      "_note": "Synthetic in-bounds payload (OpCode 3, mask=0x91 temp|co2|extended; ext=0x03 dinputs|PM). Expected from reference/upstream-codec.js: temp 22.0 C, CO2 700 ppm, dinputs {1:true,2:false}, PM1.0/2.5/10 = 5/10/15 ug/m3. dinputs byte 0x13: presence nibble 0x3 fits terminals 1 and 2 only (terminals 3/4 absent -> no entry, per the presence-mask sentinel policy), level nibble 0x1 sets only 0x10 -> the zero-based entries input0 closed / input1 open. The two positions differ, so an off-by-one in the label mapping would fail the vector. PM and TVOC keep their names: the digits are pollutant size bins, not position indices."
+    },
+    {
+      "description": "Measurements: all four digital inputs fitted with a mixed contact pattern (input1 + input3 closed)",
+      "input": { "fPort": 2, "bytes": [1, 1, 74, 3, 145, 0, 220, 2, 188, 1, 175] },
+      "expected": {
+        "data": {
+          "make": "mutelcor",
+          "model": "mtc-co2-05",
+          "payloadVersion": 1,
+          "battery": 3.3,
+          "messageType": "measurements",
+          "air": {
+            "temperature": 22,
+            "co2": 700
+          },
+          "channels": [
+            { "channel": "input0", "action": { "contactState": "open" } },
+            { "channel": "input1", "action": { "contactState": "closed" } },
+            { "channel": "input2", "action": { "contactState": "open" } },
+            { "channel": "input3", "action": { "contactState": "closed" } }
+          ]
+        }
+      },
+      "source": "synthetic",
+      "_note": "Synthetic in-bounds payload (OpCode 3, mask=0x91 temp|co2|extended; ext=0x01 dinputs only). dinputs byte 0xAF: presence nibble 0xF fits all four terminals, level nibble 0xA sets 0x20 and 0x80 -> upstream dinputs {1:false, 2:true, 3:false, 4:true} = the zero-based entries input0 open / input1 closed / input2 open / input3 closed. Covers the third and fourth terminals the wire format carries (upstream loops diginp < 4) but which no earlier vector exercised, and pins the zero-based renumbering across all four."
     },
     {
       "description": "Heartbeat (OpCode 0): battery only, no measurements",

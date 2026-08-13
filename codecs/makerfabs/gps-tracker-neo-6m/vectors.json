@@ -1,68 +1,74 @@
 {
   "uplink": [
     {
-      "description": "GPS fix -> position.latitude/longitude",
+      "description": "live GNSS fix (northern/eastern hemisphere): 22.70935 N, 114.25126 E, battery 3.7 V, RTC timestamp",
       "input": {
         "fPort": 1,
-        "bytes": [
-          0,
-          0,
-          37,
-          2,
-          1,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          34,
-          166,
-          215,
-          0,
-          0,
-          174,
-          85,
-          102,
-          0,
-          0,
-          0
-        ]
+        "bytes": [0, 7, 37, 2, 1, 7, 234, 6, 22, 9, 5, 30, 0, 34, 166, 215, 0, 0, 174, 85, 102, 0, 1, 0]
       },
       "expected": {
         "data": {
+          "make": "makerfabs",
+          "model": "gps-tracker-neo-6m",
+          "messageCounter": 7,
           "battery": 3.7,
           "gSensorState": 2,
-          "position": {
-            "latitude": 22.70935,
-            "longitude": 114.25126
-          },
-          "make": "makerfabs",
-          "model": "gps-tracker-neo-6m"
+          "gSensorEnabled": true,
+          "gSensorSensitivity": 0,
+          "position": { "latitude": 22.70935, "longitude": 114.25126 },
+          "time": "2026-06-22T09:05:30Z"
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic frame built to the upstream byte layout; expected.data via this codec (which ports the upstream offsets/scaling). Mapped per the codec header."
+      "_note": "Synthetic in-bounds frame over the 24-byte layout upstream reads (bytes 22/23 included). lat 0x0022A6D7 = 2270935 / 100000 = 22.70935 with bytes[16]=0 (N); lon 0x00AE5566 = 11425126 / 100000 = 114.25126 with bytes[21]=0 (E). Same key set as the byte-identical makerfabs/gps-tracker-pa1010d sibling."
     },
     {
-      "description": "Payload too short -> error",
+      "description": "live GNSS fix in the southern/western hemispheres: -33.44890, -70.66930 (exercises the hemisphere bytes upstream ignores)",
       "input": {
         "fPort": 1,
-        "bytes": [
-          0,
-          0,
-          37
-        ]
+        "bytes": [0, 9, 36, 4, 1, 7, 234, 7, 1, 23, 45, 0, 0, 51, 9, 250, 1, 0, 107, 213, 50, 1, 1, 1]
       },
       "expected": {
-        "errors": [
-          "payload too shor"
-        ]
+        "data": {
+          "make": "makerfabs",
+          "model": "gps-tracker-neo-6m",
+          "messageCounter": 9,
+          "battery": 3.6,
+          "gSensorState": 4,
+          "gSensorEnabled": true,
+          "gSensorSensitivity": 1,
+          "position": { "latitude": -33.4489, "longitude": -70.6693 },
+          "time": "2026-07-01T23:45:00Z"
+        }
       },
       "source": "synthetic",
-      "_note": "Length guard."
+      "_note": "Regression vector for the fixed upstream bug: upstream derives the hemisphere from the always-positive magnitude (`nsHemi = latitude < 0 ? 'S' : 'N'` after the magnitude has been read) and then calls Math.abs on both coordinates, so it can never report S or W — every southern/western fix comes out mirrored into the northern/eastern hemisphere. This codec reads the hemisphere flags: bytes[16]=1 -> South, bytes[21]=1 -> West. lat magnitude 0x003309FA = 3344890 -> -33.4489; lon magnitude 0x006BD532 = 7066930 -> -70.6693."
+    },
+    {
+      "description": "no GNSS fix (gpsStatus=0): battery and g-sensor only, position and time suppressed",
+      "input": {
+        "fPort": 1,
+        "bytes": [0, 8, 35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+      },
+      "expected": {
+        "data": {
+          "make": "makerfabs",
+          "model": "gps-tracker-neo-6m",
+          "messageCounter": 8,
+          "battery": 3.5,
+          "gSensorState": 0,
+          "gSensorEnabled": false,
+          "gSensorSensitivity": 1
+        }
+      },
+      "source": "synthetic",
+      "_note": "bytes[4]=0 means no live fix, so position.* is suppressed rather than reported as 0,0 (a false fix in the Gulf of Guinea). Whole-device readings still decode."
+    },
+    {
+      "description": "truncated frame (too short for the 24-byte layout)",
+      "input": { "fPort": 1, "bytes": [0, 7, 37] },
+      "expected": { "errors": ["requires 24 bytes"] },
+      "source": "synthetic"
     }
   ],
   "downlink": []

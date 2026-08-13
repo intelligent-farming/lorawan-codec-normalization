@@ -13,14 +13,42 @@
 //
 // The R831D is a mains-powered control box: it drives three relay outputs and
 // reads three dry-contact digital inputs. Its data frame carries NO battery
-// voltage (byte 3 is the first relay state, not a voltage byte). The digital
-// inputs are the device's genuine input measurements, so the first input maps
-// to the analog-interface vocabulary key `action.contactState` ("open" |
-// "closed") and the remaining two are the camelCase extras `contactState2` and
-// `contactState3`. The relay OUTPUT states are actuator status, not an input
-// measurement; they are surfaced as diagnostic extras `relay1`/`relay2`/
-// `relay3` (boolean, true = energized/ON). A non-zero input byte is a closed
-// (connected) contact; zero is open.
+// voltage (byte 3 is the first relay state, not a voltage byte) — so this codec
+// emits no `battery`.
+//
+// The three digital inputs are the device's genuine input measurements, and they
+// report the same quantity at three sub-sensor positions (three dry-contact
+// terminals) of one device — so each rides in the reserved `channels` array (see
+// AUTHORING.md "Multi-channel devices") rather than in the suffixed
+// `contactState2` / `contactState3` extras this codec used to emit: one entry per
+// terminal, labelled with the vendor's own term plus a zero-based index —
+// `input0` (Netvox Input_1, bytes[6]), `input1` (Input_2, bytes[7]) and `input2`
+// (Input_3, bytes[8]) — each carrying the `action.contactState` vocabulary key
+// ("open" | "closed"). The state mapping is unchanged from the pre-channels
+// codec: a non-zero input byte is a closed (connected) contact, zero is open.
+// The entry labels are zero-based while Netvox's own field names are one-based,
+// so the mapping is `input0` = Input_1 = bytes[6], and so on. `input0`/`input1`
+// follows the label scheme of the Netvox 2-input dry-contact siblings (R311CA /
+// R718J2), whose datasheets brand them "2-Input Dry Contact Interface"; the
+// "2-Gang" branded products use `gang0`/`gang1` instead. Because
+// `action.contactState` now lives only inside the entries and nowhere at the top
+// level, no leaf is emitted in both places; the `analog-interface` category
+// (atLeastOne includes `action.contactState`) is still satisfied, since
+// membership resolves through top-level `channels[]` entries.
+//
+// Relay outputs stay TOP-LEVEL extras — a deliberate, reviewed exception. The
+// relay states are surfaced as the diagnostic extras `relay1` / `relay2` /
+// `relay3` (boolean, true = energized/ON) and are NOT converted to `channels[]`
+// entries: a relay is actuator state the network server commanded, not a measured
+// sub-sensor reading, and AUTHORING explicitly allows naming an extra for
+// something that is not a measured position. Mixing the three outputs into the
+// same `channels` array as the three inputs would also make an output
+// indistinguishable from an input to a downstream flattener that treats every
+// entry as telemetry. This is a policy call on outputs, not a settled
+// convention: a reviewer may later want an output-position policy of its own
+// (a separate reserved container, or an `outputs[]`-style extra) — which would
+// supersede these three suffixed extras. Until then, only the measured input
+// positions become channel entries.
 //
 // Note: the sibling R831C (device id 0xAD) carries only the three relay outputs
 // and no digital inputs, so it has no decodable input measurement and is not
@@ -33,10 +61,21 @@
 //   bytes[3]      relay-1 output state (0 = OFF, non-zero = ON) -> extra relay1
 //   bytes[4]      relay-2 output state -> extra relay2
 //   bytes[5]      relay-3 output state -> extra relay3
-//   bytes[6]      digital input-1 state -> action.contactState
-//   bytes[7]      digital input-2 state -> extra contactState2
-//   bytes[8]      digital input-3 state -> extra contactState3
+//   bytes[6]      digital input-1 state -> channels[] entry `input0`
+//   bytes[7]      digital input-2 state -> channels[] entry `input1`
+//   bytes[8]      digital input-3 state -> channels[] entry `input2`
 //   bytes[9..10]  unused
+//
+// Sentinel policy: this frame format defines NO disconnected-input sentinel.
+// Upstream maps each input byte with a plain two-way test
+// (`bytes[6] === 0x00 ? 'OFF' : 'ON'`) and reserves no third "terminal not
+// wired" value, so an unwired terminal is indistinguishable from an open
+// contact, no value is treated as a sentinel, and no input entry is ever
+// suppressed on its reading. Nor can a short frame fabricate an open contact
+// from `undefined`: the length guard below requires all 9 header+relay+input
+// bytes — the last input byte, bytes[8], is inside the guard — so all three
+// input bytes are present whenever a frame decodes, and all three entries are
+// emitted unconditionally.
 //
 // Config responses (fPort 7) carry no measurement and are reported as errors.
 
@@ -66,18 +105,18 @@ function decodeUplinkCore(input) {
   var data = {};
 
   // Bytes 3..5: relay OUTPUT states (actuator status) -> diagnostic extras.
+  // Not channels[] entries: an output is not a measured position (see header).
   data.relay1 = bytes[3] !== 0x00;
   data.relay2 = bytes[4] !== 0x00;
   data.relay3 = bytes[5] !== 0x00;
 
-  // Byte 6: digital input-1 state -> action.contactState.
-  var action = {};
-  action.contactState = contact(bytes[6]);
-  data.action = action;
-
-  // Bytes 7..8: digital input-2/3 states -> extras.
-  data.contactState2 = contact(bytes[7]);
-  data.contactState3 = contact(bytes[8]);
+  // One channels[] entry per digital input terminal: bytes[6] = Netvox Input_1
+  // (`input0`), bytes[7] = Input_2 (`input1`), bytes[8] = Input_3 (`input2`).
+  data.channels = [
+    { channel: 'input0', action: { contactState: contact(bytes[6]) } },
+    { channel: 'input1', action: { contactState: contact(bytes[7]) } },
+    { channel: 'input2', action: { contactState: contact(bytes[8]) } }
+  ];
 
   return { data: data };
 }

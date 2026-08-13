@@ -10,8 +10,6 @@
   ],
   "provides": [
     "action.contactState",
-    "contactState2",
-    "contactState3",
     "relay1",
     "relay2",
     "relay3"
