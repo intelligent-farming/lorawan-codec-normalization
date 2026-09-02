@@ -10,9 +10,39 @@
 // measured current (single-channel current, or channel-1 of a multi-channel CT)
 // to power.current (A); per-channel min/max and alarm/threshold fields and any
 // other channels travel as camelCase extras.
+//
+// Channel mapping (vendor payload table, Milesight-IoT/SensorDecoders
+// ct-series/ct105, identical in its -v2 revision):
+//   0x04/0x98 current (A)       -> power.current
+//   0x84/0x98 current alarm     -> power.current + currentMax/currentMin (A)
+//                                  + currentAlarm extras
+//   0x09/0x67 temperature (C)   -> temperature, the optional NTC cable probe on
+//                                  the USB-C port per the CT10x datasheet
+//                                  (-20..100 C)
+//   0x89/0x67 temperature alarm -> temperature + a temperatureAlarm extra
+//   0x03/0x97 total current     -> totalCurrent (Ah) extra: an accumulated
+//                                  ampere-hour counter, NOT energy — mapping it
+//                                  to metering.energy.total (Wh) would need a
+//                                  line voltage the device never reports
+//
+// Sentinel readings (0xffff current, 0xfffd/0xffff temperature) carry no value
+// and surface as the currentSensorStatus / temperatureSensorStatus extras.
+//
+// A payload with no bytes, or one whose first channel is unrecognized (the
+// ported decoder breaks out of its TLV loop and yields nothing), returns
+// `errors` rather than an identity-only `data` object; the upstream decoder also
+// throws on an unknown downlink-response type, which the wrapper converts to
+// `errors` so no throw escapes decodeUplink.
 
 function milesightDecode(input) {
-    var res = Decoder(input.bytes, input.fPort);
+    var res;
+    try {
+        res = Decoder(input.bytes, input.fPort);
+    } catch (err) {
+        return {
+            errors: [(err && err.message) ? err.message : String(err)],
+        };
+    }
     if (res.error) {
         return {
             errors: [res.error],
@@ -360,20 +390,24 @@ if (!Object.assign) {
 }
 // ---- normalization layer (authored) ----
 function decodeUplinkCore(input) {
+  if (!input || !input.bytes || input.bytes.length === 0) { return { errors: ["empty payload"] }; }
   var raw = milesightDecode(input);
   if (raw && raw.errors && raw.errors.length) { return { errors: raw.errors }; }
   var d = (raw && raw.data) || raw || {};
   var data = {};
+  var recognized = false;
   var k;
   for (k in d) {
     if (!Object.prototype.hasOwnProperty.call(d, k)) { continue; }
     var val = d[k];
     if (val === null || val === undefined) { continue; }
+    recognized = true;
     if ((k === "current" || k === "current_chn1") && typeof val === "number" && !(data.power && data.power.current !== undefined)) { data.power = data.power || {}; data.power.current = val; continue; }
     if (k === "battery" && typeof val === "number") { data.batteryPercent = val; continue; }
     var ck = k.replace(/_([a-z])/g, function (m, c) { return c.toUpperCase(); });
     data[ck] = val;
   }
+  if (!recognized) { return { errors: ["no recognized Milesight channels"] }; }
   return { data: data };
 }
 

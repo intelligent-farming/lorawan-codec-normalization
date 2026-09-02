@@ -35,6 +35,247 @@
       },
       "source": "ttn-example",
       "_note": "Upstream-example input (TTN milesight-iot ct103 codec yaml, Apache-2.0). expected.data via the ported Milesight TLV decoder (oracle). Measured current (A) -> power.current; per-channel min/max and alarm fields as camelCase extras. Satisfies power-meter."
+    },
+    {
+      "description": "Periodic current channel (0x04/0x98): 30.00 A -> power.current",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          4,
+          152,
+          184,
+          11
+        ]
+      },
+      "expected": {
+        "data": {
+          "power": {
+            "current": 30
+          },
+          "make": "milesight-iot",
+          "model": "ct103"
+        }
+      },
+      "source": "datasheet",
+      "sourceUrl": "https://github.com/Milesight-IoT/SensorDecoders/blob/main/ct-series/ct103/README.md",
+      "_note": "Input `0498B80B` verbatim from the vendor payload table's example (uint16/100 A). Satisfies power-meter."
+    },
+    {
+      "description": "Total current channel (0x03/0x97): 100 Ah -> totalCurrent extra",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          3,
+          151,
+          16,
+          39,
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "totalCurrent": 100,
+          "make": "milesight-iot",
+          "model": "ct103"
+        }
+      },
+      "source": "datasheet",
+      "sourceUrl": "https://github.com/Milesight-IoT/SensorDecoders/blob/main/ct-series/ct103/README.md",
+      "_note": "Input `039710270000` verbatim from the vendor payload table's example. The channel is an accumulated ampere-hour counter (uint32/100 Ah), not energy, so it stays the `totalCurrent` extra rather than metering.energy.total (Wh)."
+    },
+    {
+      "description": "Current sentinel 0xFFFF: no reading, currentSensorStatus extra only",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          4,
+          152,
+          255,
+          255
+        ]
+      },
+      "expected": {
+        "data": {
+          "currentSensorStatus": "read failed",
+          "make": "milesight-iot",
+          "model": "ct103"
+        }
+      },
+      "source": "datasheet",
+      "sourceUrl": "https://github.com/Milesight-IoT/SensorDecoders/blob/main/ct-series/ct103/README.md",
+      "_note": "Input `0498FFFF` verbatim from the vendor payload table's example. The sentinel carries no current value, so power.current is omitted rather than emitted as 655.35 A."
+    },
+    {
+      "description": "Cable temperature channel (0x09/0x67): 23.5 C -> temperature",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          9,
+          103,
+          235,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "temperature": 23.5,
+          "make": "milesight-iot",
+          "model": "ct103"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Authored input for the documented 0x09/0x67 channel (int16/10 C) \u2014 the optional NTC cable probe on the USB-C port. 23.5 C is inside the probe's -20..100 C measuring range (https://resource.milesight.com/milesight/iot/document/ct10x-datasheet-en.pdf). Emits the top-level vocabulary key `temperature`."
+    },
+    {
+      "description": "Cable temperature, negative: -5.2 C (two's complement)",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          9,
+          103,
+          204,
+          255
+        ]
+      },
+      "expected": {
+        "data": {
+          "temperature": -5.2,
+          "make": "milesight-iot",
+          "model": "ct103"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Authored input pinning the sign handling of the int16/10 temperature channel; -5.2 C is inside the probe's -20..100 C range."
+    },
+    {
+      "description": "Temperature sentinel 0xFFFD: no reading, temperatureSensorStatus extra only",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          9,
+          103,
+          253,
+          255
+        ]
+      },
+      "expected": {
+        "data": {
+          "temperatureSensorStatus": "over range alarm",
+          "make": "milesight-iot",
+          "model": "ct103"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Authored input for the documented temperature sentinels (0xFFFD over range, 0xFFFF read failed). No temperature value is emitted."
+    },
+    {
+      "description": "Temperature alarm channel (0x89/0x67): 45.0 C + threshold alarm",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          137,
+          103,
+          194,
+          1,
+          1
+        ]
+      },
+      "expected": {
+        "data": {
+          "temperature": 45,
+          "temperatureAlarm": "temperature threshold alarm",
+          "make": "milesight-iot",
+          "model": "ct103"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Authored input for the documented 0x89/0x67 channel (int16/10 C + 1-byte alarm; 0 = threshold alarm release, 1 = threshold alarm). The reading itself normalizes to `temperature`; the alarm travels as the `temperatureAlarm` extra."
+    },
+    {
+      "description": "Combined periodic uplink: total current + current + cable temperature",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          3,
+          151,
+          16,
+          39,
+          0,
+          0,
+          4,
+          152,
+          184,
+          11,
+          9,
+          103,
+          235,
+          0
+        ]
+      },
+      "expected": {
+        "data": {
+          "totalCurrent": 100,
+          "power": {
+            "current": 30
+          },
+          "temperature": 23.5,
+          "make": "milesight-iot",
+          "model": "ct103"
+        }
+      },
+      "source": "synthetic",
+      "_note": "Authored multi-channel stream (the three documented telemetry channels concatenated) pinning TLV index advancement across channels of different lengths."
+    },
+    {
+      "description": "Empty payload returns an error",
+      "input": {
+        "fPort": 85,
+        "bytes": []
+      },
+      "expected": {
+        "errors": [
+          "empty payload"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "A zero-byte uplink decodes to nothing; the codec must report an error rather than a data object carrying only make/model."
+    },
+    {
+      "description": "Unrecognized channel returns an error",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          119,
+          119,
+          1
+        ]
+      },
+      "expected": {
+        "errors": [
+          "no recognized Milesight channels"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "Synthetic input with an unrecognized channel id (0x77); the ported decoder breaks out of its TLV loop and recognizes nothing, so our codec reports an error."
+    },
+    {
+      "description": "Unknown downlink-response type is reported, not thrown",
+      "input": {
+        "fPort": 85,
+        "bytes": [
+          254,
+          153,
+          0
+        ]
+      },
+      "expected": {
+        "errors": [
+          "unknown downlink response"
+        ]
+      },
+      "source": "synthetic",
+      "_note": "The ported decoder throws on an unrecognized 0xFE/0xFF response type; the wrapper converts it to `errors` so no exception escapes decodeUplink into the network server."
     }
   ],
   "downlink": []

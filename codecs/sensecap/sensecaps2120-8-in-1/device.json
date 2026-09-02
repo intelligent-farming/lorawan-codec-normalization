@@ -6,7 +6,6 @@
     "weather-station",
     "climate",
     "wind",
-    "rain-gauge",
     "light"
   ],
   "sensors": [
@@ -25,7 +24,7 @@
     "air.relativeHumidity",
     "air.temperature",
     "batteryPercent",
-    "rain.cumulative",
+    "rain.intensity",
     "uvIndex",
     "wind.direction",
     "wind.speed"

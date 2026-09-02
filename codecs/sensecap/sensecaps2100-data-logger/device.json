@@ -6,8 +6,7 @@
     "climate",
     "weather-station",
     "light",
-    "wind",
-    "rain-gauge"
+    "wind"
   ],
   "sensors": [
     "4-20 ma",
@@ -18,7 +17,7 @@
     "air.pressure",
     "air.relativeHumidity",
     "air.temperature",
-    "rain.cumulative",
+    "rain.intensity",
     "uvIndex",
     "wind.direction",
     "wind.speed"

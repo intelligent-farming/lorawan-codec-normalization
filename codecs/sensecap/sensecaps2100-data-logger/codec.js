@@ -9,7 +9,10 @@
 // attributed in NOTICE), renamed sensecapDecode. decodeUplinkCore maps the
 // measurement messages by measurementId: 4097->air.temperature, 4098->
 // air.relativeHumidity, 4099->air.lightIntensity, 4101->air.pressure,
-// 4105->wind.speed, 4113->rain.cumulative; other measurements -> camelCase extras.
+// 4105->wind.speed, 4113->rain.intensity; other measurements -> camelCase extras.
+// 4113 is SenseCAP "Rainfall(hour)" (mm/hour), an intensity and not a depth — see the
+// sibling sensecap/sensecaps2120-8-in-1 codec header for the manufacturer sources. This
+// device therefore cannot satisfy the `rain-gauge` category, which requires rain.cumulative.
 
 /**
  * Entry, decoder.js
@@ -625,7 +628,7 @@ function decodeUplinkCore(input){
   var raw=sensecapDecode(input,input.fPort); var r=(raw&&raw.data)||raw||{};
   var raw0=r.messages||[];var msgs=[];for(var fi=0;fi<raw0.length;fi++){if(Array.isArray(raw0[fi])){for(var fj=0;fj<raw0[fi].length;fj++)msgs.push(raw0[fi][fj]);}else msgs.push(raw0[fi]);}
   var data={};
-  var MAP={'4097':['air','temperature'],'4098':['air','relativeHumidity'],'4099':['air','lightIntensity'],'4101':['air','pressure'],'4104':['wind','direction'],'4105':['wind','speed'],'4113':['rain','cumulative']};
+  var MAP={'4097':['air','temperature'],'4098':['air','relativeHumidity'],'4099':['air','lightIntensity'],'4101':['air','pressure'],'4104':['wind','direction'],'4105':['wind','speed'],'4113':['rain','intensity']};
   // Extras whose auto-derived camelCase name (from upstream's `type` label) would
   // diverge from the name the rest of the SenseCAP family uses for the same
   // measurementId. "UV Index" camel-cases to `uVIndex`, but the sibling

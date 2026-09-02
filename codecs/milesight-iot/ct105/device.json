@@ -15,7 +15,12 @@
     "currentAlarm.current_threshold_alarm_release",
     "currentMax",
     "currentMin",
-    "power.current"
+    "currentSensorStatus",
+    "power.current",
+    "temperature",
+    "temperatureAlarm",
+    "temperatureSensorStatus",
+    "totalCurrent"
   ],
   "variantOf": null,
   "downlink": {

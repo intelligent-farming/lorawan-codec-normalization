@@ -18,8 +18,8 @@
 //   dataId 01 (10 value bytes): air temperature (2B big-endian, signed, /10 degC),
 //     air humidity (1B, %), light intensity (4B, lux), UV index (1B, /10),
 //     wind speed (2B, /10 m/s). measurementIds 4097/4098/4099/4190/4105.
-//   dataId 02 (8 value bytes): wind direction (2B, deg), rainfall cumulative
-//     (4B, /1000 mm), barometric pressure (2B, in 0.1 hPa units).
+//   dataId 02 (8 value bytes): wind direction (2B, deg), rainfall intensity
+//     (4B, /1000 mm/hour), barometric pressure (2B, in 0.1 hPa units).
 //     measurementIds 4104/4113/4101.
 //   dataId 03 (1 value byte): battery percentage.
 //   dataId 04 (9 value bytes): device status — battery %, hardware version,
@@ -33,7 +33,25 @@
 // Numeric fields are big-endian; signed fields (temperature, wind speed) use
 // two's complement. Barometric pressure is reported by the device in units of
 // 0.1 hPa (raw 0x2703 = 9987 -> 998.7 hPa); we divide by 10 to reach the
-// vocabulary unit hPa. Rainfall raw is in 0.001 mm; divide by 1000 for mm.
+// vocabulary unit hPa. Rainfall raw is in 0.001 mm/hour; divide by 1000 for mm/hour.
+//
+// Rainfall on this device is an INTENSITY, not a depth. It maps to `rain.intensity`
+// (mm/hour) and must never be mapped to `rain.cumulative` (mm), per three
+// manufacturer sources:
+//   - the S2120 datasheet names the parameter "Rain Hourly" — range 0~450 mm/h,
+//     resolution 0.254 mm/h, accuracy +/-7%;
+//   - SenseCAP's measurement-ID table lists 0x1011 (4113) as "Rainfall(hour)",
+//     range 0~240, unit mm/hour;
+//   - Seeed support: the device recomputes it every minute as the rainfall of the
+//     past 10 minutes multiplied by 6.
+// So a reading of 152.4 means "raining hard enough to deliver 6 in in an hour if it
+// kept up", inferred from the last 10 minutes — NOT 6 in of collected water. The
+// device exposes no accumulator: dividing a reading by 6 recovers the depth for its
+// own 10-minute window, and only a consumer sampling every 10 minutes can sum those
+// into a true total. A codec is stateless per payload and cannot, which is why this
+// device does NOT declare the `rain-gauge` category (that category requires
+// `rain.cumulative`, and promising it here would hand downstream consumers a rate
+// while they read it as a total).
 //
 // Authored normalization (NOT upstream's array output): values are mapped onto
 // the shared vocabulary by measurementId. We do not fabricate a CRC check (the
@@ -96,13 +114,22 @@ function decodeUplinkCore(input) {
   var hasWind = false;
   var hasRain = false;
   var hasTelemetry = false;
+  var warnings = [];
 
   var i = 0;
   while (i + 2 <= hex.length) {
     var dataId = hex.substring(i, i + 2);
     var dv;
 
-    if (dataId === '01') {
+    // 4A/4B are the same two measurement frames as 01/02 — identical field layouts and
+    // lengths — but with the ids this firmware actually transmits. Confirmed against a real
+    // S2120 (DevEUI 2CF7F1C082000316, fPort 3): markers land at bytes 0/11/20 with 10/8/6
+    // byte bodies, and reading 4A as 01 and 4B as 02 yields 22.5 C / 94 % / 6884 lux / UV 0 /
+    // 0.0 m/s / 201 deg / 228.6 mm/h / 984.4 hPa. The rain figure is exactly 900 x the device's
+    // 0.254 mm/h resolution step (9.00 in/h), which a mis-sliced frame would not produce; that
+    // is an extreme intensity, most likely bucket tips from handling a bench unit. The vectors this codec
+    // shipped with came from a datasheet documenting 01/02; the hardware disagrees.
+    if (dataId === '01' || dataId === '4A') {
       dv = hex.substring(i + 2, i + 22);
       if (dv.length < 20) {
         return { errors: ['truncated dataId 01 frame'] };
@@ -117,14 +144,14 @@ function decodeUplinkCore(input) {
       hasAir = true;
       hasWind = true;
       hasTelemetry = true;
-    } else if (dataId === '02') {
+    } else if (dataId === '02' || dataId === '4B') {
       dv = hex.substring(i + 2, i + 18);
       if (dv.length < 16) {
         return { errors: ['truncated dataId 02 frame'] };
       }
       i += 18;
       wind.direction = round(beUnsigned(dv.substring(0, 4)), 0);
-      rain.cumulative = round(beUnsigned(dv.substring(4, 12)) / 1000, 3);
+      rain.intensity = round(beUnsigned(dv.substring(4, 12)) / 1000, 3);
       // Device reports pressure in 0.1 hPa units -> /10 for hPa.
       air.pressure = round(beUnsigned(dv.substring(12, 16)) / 10, 1);
       hasAir = true;
@@ -166,7 +193,15 @@ function decodeUplinkCore(input) {
       // Reserved/extended (10 value bytes); no field measurement.
       i += 22;
     } else {
-      // Unknown dataId: cannot determine frame length, so stop parsing.
+      // Unknown dataId: its length is unknown, so parsing cannot safely continue — skipping a
+      // guessed number of bytes would misalign every frame after it. Stop, but record which id
+      // and where, because a bare "no telemetry in payload" gives an operator nothing to search
+      // for. 0x4C arrives here: real, 6 bytes in the one payload seen, semantics undocumented —
+      // one sample is not enough to commit to a length.
+      warnings.push(
+        'stopped at unmodelled frame 0x' + dataId + ' (byte offset ' + (i / 2) +
+          '); any frames after it were not decoded',
+      );
       break;
     }
   }
@@ -182,10 +217,18 @@ function decodeUplinkCore(input) {
   }
 
   if (!hasTelemetry) {
-    return { errors: ['no telemetry in payload'] };
+    var noneResult = { errors: ['no telemetry in payload'] };
+    if (warnings.length > 0) {
+      noneResult.warnings = warnings;
+    }
+    return noneResult;
   }
 
-  return { data: data };
+  var result = { data: data };
+  if (warnings.length > 0) {
+    result.warnings = warnings;
+  }
+  return result;
 }
 
 // Device identity (make/model), emitted on every successful decode. See AUTHORING.md.

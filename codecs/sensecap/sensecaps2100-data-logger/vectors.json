@@ -55,7 +55,7 @@
       "expected": {
         "data": {
           "rain": {
-            "cumulative": 1.234
+            "intensity": 1.234
           },
           "air": {
             "pressure": 1013
@@ -68,7 +68,7 @@
         }
       },
       "source": "synthetic",
-      "_note": "Synthetic SenseCAP S2100 frame (dataId 0x02). 4104->wind.direction (a vocabulary key: the sibling sensecaps2120-8-in-1 decodes it there too, so this device must not hide it in a `windDirectionSensor` extra), 4113->rain.cumulative; barometric pressure (Pa) /100 -> air.pressure (hPa). Union with the 0x01 frame covers weather-station + rain-gauge."
+      "_note": "Synthetic SenseCAP S2100 frame (dataId 0x02). 4104->wind.direction (a vocabulary key: the sibling sensecaps2120-8-in-1 decodes it there too, so this device must not hide it in a `windDirectionSensor` extra), 4113->rain.intensity; barometric pressure (Pa) /100 -> air.pressure (hPa). Union with the 0x01 frame covers weather-station. Not rain-gauge: 4113 is an hourly intensity, not a cumulative depth."
     }
   ],
   "downlink": []

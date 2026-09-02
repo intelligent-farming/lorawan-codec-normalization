@@ -123,7 +123,7 @@ of the listed paths present).
 | `light` | `air.lightIntensity` | 79 |
 | `weather-station` | `air.temperature`, `air.pressure` | 76 |
 | `wind` | `wind.speed` | 14 |
-| `rain-gauge` | `rain.cumulative` | 15 |
+| `rain-gauge` | `rain.cumulative` | 13 |
 | `water-meter` | `metering.water.total` | 15 |
 | `motion` | `action.motion` | 141 |
 | `contact` | `action.contactState` | 33 |
