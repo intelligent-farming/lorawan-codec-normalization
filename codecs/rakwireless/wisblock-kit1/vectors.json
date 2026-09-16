@@ -40,7 +40,7 @@
     {
       "description": "Empty payload is rejected as too short",
       "input": { "fPort": 2, "bytes": [] },
-      "expected": { "errors": ["payload too short"] },
+      "expected": { "errors": ["empty payload: no application bytes to decode"] },
       "source": "synthetic"
     },
     {

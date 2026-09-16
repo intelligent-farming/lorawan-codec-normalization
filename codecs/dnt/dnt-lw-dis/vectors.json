@@ -91,7 +91,7 @@
     {
       "description": "Empty payload — no bytes",
       "input": { "fPort": 10, "bytes": [] },
-      "expected": { "errors": ["missing payload bytes"] },
+      "expected": { "errors": ["empty payload: no application bytes to decode"] },
       "source": "synthetic"
     },
     {

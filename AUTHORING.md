@@ -71,6 +71,29 @@ suite stays red until you author the codec.
   excluded from the generated `provides`. If a device reports its own hardware
   model string, name that extra `deviceModel` (not `model`) to avoid the clash.
 
+### Non-application uplinks (the wrapper owns these)
+
+ChirpStack runs the codec against **every** uplink it stores, including ones that
+carry no application payload at all. The identity wrapper handles both cases
+before `decodeUplinkCore` is called, so do not re-implement them:
+
+- **`fPort === 0`** is MAC-commands-only by the LoRaWAN spec and never carries an
+  application payload. The wrapper returns identity-only `data`
+  (`{ make, model }`). This is deliberately **not** an error: treating a MAC frame
+  as a decode failure makes ChirpStack log `UPLINK_CODEC` and raises a device
+  alert every time the device answers a MAC command.
+- **Missing or zero-length `bytes`** on any other port is a genuine fault. The
+  wrapper returns `{ errors: ['empty payload: no application bytes to decode'] }`.
+
+`decodeUplinkCore` may therefore assume `input.bytes` is a non-empty array and
+`input.fPort` is non-zero. It still owns every *other* length check — a frame
+that is present but truncated for its declared type is the core's error to
+report, with a message specific to that device.
+
+The suite-level test `every codec handles non-application uplinks uniformly`
+enforces this across all devices: no throw, no fabricated data, identity-only on
+fPort 0. `npm run scaffold` seeds the wrapper with both guards already in place.
+
 ### Multi-channel devices (`channels[]`)
 
 When one uplink carries the same physical quantity at several sub-sensor

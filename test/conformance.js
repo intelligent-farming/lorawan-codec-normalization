@@ -319,6 +319,75 @@ describe('suite-level', () => {
     }
   });
 
+  // Non-application uplinks must be handled uniformly by every codec's identity
+  // wrapper, not by each bespoke decodeUplinkCore. ChirpStack runs the codec on
+  // fPort-0 MAC frames too, so a codec that rejects them turns every MAC command
+  // into a spurious UPLINK_CODEC error; a codec that *decodes* them fabricates
+  // telemetry from bytes that carry none.
+  it('every codec handles non-application uplinks uniformly', () => {
+    const failures = [];
+
+    for (const { vendor, device, dir } of DEVICES) {
+      const codecPath = path.join(dir, 'codec.js');
+      if (!fs.existsSync(codecPath)) continue;
+      const source = fs.readFileSync(codecPath, 'utf8');
+      const id = `${vendor}/${device}`;
+
+      const run = (input) => {
+        try {
+          return { ok: true, r: runDecodeUplink(source, input) };
+        } catch (e) {
+          return { ok: false, e };
+        }
+      };
+
+      // fPort 0 is MAC-commands-only: identity-only success, never an error.
+      for (const input of [{ fPort: 0, bytes: [] }, { fPort: 0, bytes: [1, 2, 3, 4] }]) {
+        const out = run(input);
+        if (!out.ok) {
+          failures.push(`${id}: threw on ${JSON.stringify(input)} — ${out.e.message}`);
+          continue;
+        }
+        const { r } = out;
+        if (r.errors && r.errors.length > 0) {
+          failures.push(
+            `${id}: reported ${JSON.stringify(input)} as a decode failure ` +
+              `(${JSON.stringify(r.errors)}); fPort 0 is a MAC frame, not a bad payload`,
+          );
+          continue;
+        }
+        const keys = r.data ? Object.keys(r.data).sort() : [];
+        if (keys.join(',') !== 'make,model') {
+          failures.push(
+            `${id}: ${JSON.stringify(input)} must decode to identity only, got ${JSON.stringify(r.data)}`,
+          );
+        }
+      }
+
+      // No application bytes on an application port is a genuine error, never
+      // a throw and never fabricated data.
+      for (const input of [{ fPort: 1, bytes: [] }, { fPort: 1 }]) {
+        const out = run(input);
+        if (!out.ok) {
+          failures.push(`${id}: threw on ${JSON.stringify(input)} — ${out.e.message}`);
+          continue;
+        }
+        const { r } = out;
+        if (!r.errors || r.errors.length === 0) {
+          failures.push(
+            `${id}: ${JSON.stringify(input)} must return errors, got ${JSON.stringify(r).slice(0, 120)}`,
+          );
+        }
+      }
+    }
+
+    assert.deepEqual(
+      failures,
+      [],
+      `${failures.length} codec(s) mishandle non-application uplinks:\n  ${failures.join('\n  ')}`,
+    );
+  });
+
   it('no case-insensitive device folder collisions', () => {
     const seen = new Map();
     for (const { vendor, device } of DEVICES) {

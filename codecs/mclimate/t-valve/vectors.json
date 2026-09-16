@@ -97,7 +97,7 @@
         "bytes": []
       },
       "expected": {
-        "errors": ["unrecognized payload length"]
+        "errors": ["empty payload: no application bytes to decode"]
       },
       "source": "synthetic",
       "_note": "Synthetic error input: zero-length payload matches neither short (2) nor long (>2) package."

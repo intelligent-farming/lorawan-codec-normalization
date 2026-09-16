@@ -254,15 +254,16 @@
       "sourceUrl": "captured 2026-08-13 from DevEUI 2CF7F1C082000316 via ChirpStack event_up"
     },
     {
-      "description": "REAL DEVICE: fPort 0 MAC-only uplink with an empty payload. ChirpStack still writes these into event_up, so a decode-failure check will count them — expected, not a codec fault.",
+      "description": "REAL DEVICE: fPort 0 MAC-only uplink with an empty payload. fPort 0 carries MAC commands, never an application payload, so this decodes to device identity only — not a decode failure. ChirpStack writes these into event_up with an identity-only object and logs no UPLINK_CODEC error.",
       "input": {
         "fPort": 0,
         "bytes": []
       },
       "expected": {
-        "errors": [
-          "payload too short for a SenseCAP S2120 frame"
-        ]
+        "data": {
+          "make": "sensecap",
+          "model": "sensecaps2120-8-in-1"
+        }
       },
       "source": "real-device",
       "sourceUrl": "captured 2026-08-13 from DevEUI 2CF7F1C082000316 via ChirpStack event_up"

@@ -96,7 +96,7 @@
     {
       "description": "Empty payload is rejected",
       "input": { "fPort": 1, "bytes": [] },
-      "expected": { "errors": ["payload too short"] },
+      "expected": { "errors": ["empty payload: no application bytes to decode"] },
       "source": "synthetic"
     }
   ],

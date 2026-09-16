@@ -468,4 +468,13 @@ function decodeUplinkCore(input){
 }
 
 // Device identity (make/model), emitted on every successful decode. See AUTHORING.md.
-function decodeUplink(input){var result=decodeUplinkCore(input);if(result&&result.data){result.data.make="slscorp";result.data.model="volc2180";}return result;}
+function decodeUplink(input){
+  // fPort 0 carries MAC commands only (LoRaWAN spec): there is no application
+  // payload to decode, so this is not a decode failure. See AUTHORING.md.
+  if (input && input.fPort === 0) {
+    return { data: { make: "slscorp", model: "volc2180" } };
+  }
+  if (!input || !input.bytes || input.bytes.length === 0) {
+    return { errors: ['empty payload: no application bytes to decode'] };
+  }
+var result=decodeUplinkCore(input);if(result&&result.data){result.data.make="slscorp";result.data.model="volc2180";}return result;}

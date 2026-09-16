@@ -61,7 +61,7 @@
     {
       "description": "invalid frame type 40 (no decoder) -> error",
       "input": { "fPort": 168, "bytes": [] },
-      "expected": { "errors": ["Invalid key: 40"] },
+      "expected": { "errors": ["empty payload: no application bytes to decode"] },
       "source": "synthetic",
       "_note": "Synthetic error case. fPort 168 = LAST_BLOCK encoding of frame type 40, which has no decoder. Reference/upstream-codec.js returns errors: ['Invalid key: 40']."
     }
