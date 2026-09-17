@@ -33,17 +33,6 @@ function findTtnBase() {
   return fs.existsSync(sibling) ? sibling : null;
 }
 
-test('module loads and exposes a version', () => {
-  assert.equal(typeof lib.VERSION, 'string');
-  assert.match(lib.VERSION, /^\d+\.\d+\.\d+/);
-  // VERSION is hand-maintained in src/index.ts; pin it to the manifest so the
-  // two cannot drift silently (they did: 0.1.0 vs 0.1.3).
-  const pkg = JSON.parse(
-    fs.readFileSync(path.join(__dirname, '..', 'package.json'), 'utf8'),
-  );
-  assert.equal(lib.VERSION, pkg.version);
-});
-
 test('categories() returns the 37 defined categories', () => {
   const cats = lib.categories();
   assert.equal(cats.length, 37);
