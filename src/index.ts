@@ -12,7 +12,7 @@
  */
 
 /** Package version, kept in sync with package.json. */
-export const VERSION = '0.2.2';
+export const VERSION = '0.2.3';
 
 export { categories, categorySchema } from './categories';
 export { validate } from './validate';
@@ -43,6 +43,7 @@ export type {
   ValidationIssue,
   ValidationResult,
   CategoryInfo,
+  DeviceIndexEntry,
   DeviceInfo,
   TtnProvenance,
   MissingDevice,

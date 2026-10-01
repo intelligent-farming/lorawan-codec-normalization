@@ -35,7 +35,7 @@
 //  - On-board ambient channels -> air.temperature / air.relativeHumidity /
 //    air.pressure (vocab). Upstream zero-fills these when the payload is short;
 //    we only emit them when the bytes are actually present, because air.pressure
-//    has a 900-1100 hPa bound that a zero-fill would violate.
+//    has a 300-1100 hPa bound that a zero-fill would violate.
 //  - GNSS fix -> position.latitude / position.longitude (vocab).
 //  - batteryCharge is 0-100 -> `batteryPercent` extra (the vocabulary `battery`
 //    is volts; see AUTHORING.md "Battery is volts, not percent").

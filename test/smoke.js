@@ -349,6 +349,26 @@ test('devices() and device() enumerate the registry', () => {
   assert.throws(() => lib.device('nope', 'nope'), /unknown device/);
 });
 
+test('dist/device-index.json mirrors devices() for browser consumers', () => {
+  const index = JSON.parse(
+    fs.readFileSync(path.join(__dirname, '..', 'dist', 'device-index.json'), 'utf8'),
+  );
+  const all = lib.devices();
+  assert.deepEqual(
+    index.map((e) => `${e.vendor}/${e.device}`),
+    all.map((d) => `${d.vendor}/${d.device}`),
+  );
+  const entry = index.find((e) => e.vendor === 'makerfabs' && e.device === 'air-temperature-and-humidity');
+  assert.ok(entry, 'makerfabs/air-temperature-and-humidity indexed');
+  assert.ok(entry.provides.includes('air.temperature'));
+  assert.deepEqual(entry.ttn, { vendor: 'makerfabs', device: 'air-temperature-and-humidity' });
+  for (const e of index) {
+    assert.equal(typeof e.name, 'string');
+    assert.ok(Array.isArray(e.provides));
+    assert.ok(e.ttn === null || (typeof e.ttn.vendor === 'string' && typeof e.ttn.device === 'string'));
+  }
+});
+
 test('devicesProviding() searches devices by provided value, segment-aware', () => {
   const all = lib.devices();
   assert.ok(

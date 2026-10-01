@@ -155,8 +155,8 @@
             },
             "pressure": {
               "type": "number",
-              "description": "Atmospheric pressure (hPa)",
-              "minimum": 900,
+              "description": "Atmospheric pressure (hPa) at the station, not reduced to sea level; the floor admits high-altitude sites, and the summit of Everest is about 337 hPa.",
+              "minimum": 300,
               "maximum": 1100
             },
             "co2": {

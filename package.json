@@ -1,6 +1,6 @@
 {
   "name": "@intelligent-farming/lorawan-codec-normalization",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Curated, standalone normalized LoRaWAN payload codecs for agriculture sensors, grouped by device category so every codec in a category emits the same shared keys.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -16,7 +16,7 @@
   "files": ["dist/", "definitions/", "codecs/", "!codecs/**/reference"],
   "engines": { "node": ">=18" },
   "scripts": {
-    "build": "tsc && node scripts/compute-provides.js",
+    "build": "tsc && node scripts/compute-provides.js && node scripts/build-device-index.js",
     "provides": "node scripts/compute-provides.js",
     "provides:check": "node scripts/compute-provides.js --check",
     "scaffold": "node scripts/scaffold-device.js",
